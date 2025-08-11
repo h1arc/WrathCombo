@@ -198,7 +198,12 @@ internal partial class BLM
 
                 case Preset.BLM_Retargetting_Aetherial_Manipulation:
                     DrawAdditionalBoolChoice(BLM_AM_FieldMouseover,
-                        "Add Field Mouseover", "Adds Field mouseover targetting");
+                        "Add Field Mouseover", "Adds Field mouseover targetting.");
+                    break;
+
+                case Preset.BLM_AmplifierXeno:
+                    DrawAdditionalBoolChoice(BLM_AmplifierXenoCD,
+                        "Show Xenoglossy when Amplifier is on cooldown", "Makes it so that Xenoglossy also shows when Amplifier is on cooldown.");
                     break;
             }
         }
@@ -235,7 +240,8 @@ internal partial class BLM
             BLM_AoE_LeyLinesTimeStill = new("BLM_AoE_LeyLinesTimeStill", 2.5f);
 
         public static UserBool
-            BLM_AM_FieldMouseover = new("BLM_AM_FieldMouseover");
+            BLM_AM_FieldMouseover = new("BLM_AM_FieldMouseover"),
+            BLM_AmplifierXenoCD = new("BLM_AmplifierXenoCD");
 
         public static UserBoolArray
             BLM_ST_MovementOption = new("BLM_ST_MovementOption");
