@@ -108,6 +108,7 @@ public static class ConflictingPluginsChecks
                     $"or config updated");
                 Conflicted = false;
                 _conflictsInARow = 0;
+                _conflictRegistered = null;
                 return;
             }
 
