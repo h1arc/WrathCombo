@@ -389,7 +389,7 @@ internal static class SimpleTarget
         var range = dotAction.ActionRange();
         var nearbyEnemies = Svc.Objects
             .OfType<IBattleChara>()
-            .Where(x => x.IsHostile() && x.IsTargetable && x.IsWithinRange(range))
+            .Where(x => x.IsHostile() && x.IsTargetable && x.IsWithinRange(range) && x.IsInCombat())
             .ToArray();
 
         if (nearbyEnemies.Length > maxNumberOfEnemiesInRange)
@@ -418,7 +418,7 @@ internal static class SimpleTarget
         var range = refreshAction.ActionRange();
         var nearbyEnemies = Svc.Objects
             .OfType<IBattleChara>()
-            .Where(x => x.IsHostile() && x.IsTargetable && x.IsWithinRange(range))
+            .Where(x => x.IsHostile() && x.IsTargetable && x.IsWithinRange(range) && x.IsInCombat())
             .ToArray();
 
         if (nearbyEnemies.Length > maxNumberOfEnemiesInRange)
