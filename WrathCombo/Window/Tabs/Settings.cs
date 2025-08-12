@@ -1,6 +1,7 @@
 ﻿using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility.Raii;
+using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
 using System;
@@ -96,7 +97,7 @@ internal class Settings : ConfigWindow
             ImGuiComponents.HelpMarker("Draws a box around party members in the vanilla Party List, as targeted by certain features.\nSet Alpha to 0 to hide the box.");
 
             ImGui.SameLine();
-            ImGui.TextColored(ImGuiColors.DalamudGrey, $"(Only used by {CustomComboFunctions.JobIDs.JobIDToName(33)} currently)");
+            ImGui.TextColored(ImGuiColors.DalamudGrey, $"(Only used by {CustomComboFunctions.JobIDs.JobToName(Job.AST)} currently)");
 
                 #endregion
 

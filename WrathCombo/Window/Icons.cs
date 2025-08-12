@@ -2,54 +2,122 @@
 using Dalamud.Interface.Textures.TextureWraps;
 using Dalamud.Utility;
 using ECommons.DalamudServices;
-using ECommons.Throttlers;
+using ECommons.ExcelServices;
 using Lumina.Data.Files;
+using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
-using WrathCombo.Combos.PvE;
+using System.Linq;
+using WrathCombo.Attributes;
 namespace WrathCombo.Window;
 
 internal static class Icons
 {
     public static Dictionary<uint, IDalamudTextureWrap> CachedModdedIcons = new();
-    public static Dictionary<int, IDalamudTextureWrap?> OccultIcons = [];
-    private static int OccultIdx = -1; // Instead of 0 to show Freelancer
-    public static IDalamudTextureWrap? GetJobIcon(uint jobId)
-    {
-        switch (jobId)
-        {
-            case All.JobID: jobId = 62146; break; //Adventurer / General
-            case > All.JobID and <= 42: jobId += 62100; break; //Classes
-            case DOL.JobID: jobId = 82096; break;
-            case OccultCrescent.JobID: return GetOccultIcon();
-            default: return null; //Unknown, return null
-        }
-        return GetTextureFromIconId(jobId);
-    }
 
-    private static IDalamudTextureWrap? GetOccultIcon()
+    public static readonly FrozenDictionary<int, IDalamudTextureWrap?[]> OccultIcons = LoadOccultJobIcons();
+
+    // Generates a dictionary with a pair of frames at startup
+    private static FrozenDictionary<int, IDalamudTextureWrap?[]> LoadOccultJobIcons()
     {
-        if (OccultIcons.Count < 26)
+        var dict = new Dictionary<int, IDalamudTextureWrap?[]>();
+
+        var uld = Svc.PluginInterface.UiBuilder.LoadUld("ui/uld/MKDSupportJob.uld");
+
+        const int maxJobId = 12; //Change later when new Occult classes have sprites
+        const int animationOffset = 30;
+
+        for (int jobId = 0; jobId <= maxJobId; jobId++)
         {
-            for (int i = 0; i <= 25; i++)
-            {
-                var uld = Svc.PluginInterface.UiBuilder.LoadUld("ui/uld/MKDSupportJob.uld");
-                OccultIcons[i] = uld.LoadTexturePart("ui/uld/MKDSupportJob_hr1.tex", i);
-            }
-            for (int i = 30; i <= 55; i++)
-            {
-                var uld = Svc.PluginInterface.UiBuilder.LoadUld("ui/uld/MKDSupportJob.uld");
-                OccultIcons[i] = uld.LoadTexturePart("ui/uld/MKDSupportJob_hr1.tex", i);
-            }
+            var frames = new IDalamudTextureWrap?[2];
+            frames[0] = uld.LoadTexturePart("ui/uld/MKDSupportJob_hr1.tex", jobId);
+            frames[1] = uld.LoadTexturePart("ui/uld/MKDSupportJob_hr1.tex", jobId + animationOffset);
+
+            dict[jobId] = frames;
         }
 
-        if (EzThrottler.Throttle("OccultAnimateIdx", 800))
-            OccultIdx++;
-
-        if (OccultIdx == 13) // Only cycle through the current ones, set to 26 after new ones added
-            OccultIdx = 0;
-
-        return OccultIcons[OccultIdx];
+        return dict.ToFrozenDictionary();
     }
+
+    //private static int OccultIdx = -1; // Instead of 0 to show Freelancer
+
+    private static readonly Job MaxJob = Enum.GetValues<Job>().Max();
+
+    public static IDalamudTextureWrap? GetJobIcon(Job job)
+    {
+        // Reject invalid enum values
+        if (!Enum.IsDefined(typeof(Job), job))
+            return null;
+
+        return job switch
+        {
+            Job.ADV => GetTextureFromIconId(62146),
+
+            // DOL
+            Job.MIN or Job.BTN or Job.FSH => GetTextureFromIconId(82096),
+
+            // Special case
+            //Job.ADV => GetOccultIcon(),
+
+            // Classes: from GLA to MaxJob (auto-calculated)
+            _ when job >= Job.GLA && job <= MaxJob => GetTextureFromIconId(62100 + (uint)job),
+
+            _ => null
+        };
+    }
+
+    //public static IDalamudTextureWrap? GetJobIcon(uint jobId)
+    //{
+    //    switch (jobId)
+    //    {
+    //        case All.JobID: jobId = 62146; break; //Adventurer / General
+    //        case > All.JobID and <= 42: jobId += 62100; break; //Classes
+    //        case DOL.JobID: jobId = 82096; break;
+    //        case OccultCrescent.JobID: return GetOccultIcon();
+    //        default: return null; //Unknown, return null
+    //    }
+    //    return GetTextureFromIconId(jobId);
+    //}
+
+    public static IDalamudTextureWrap? GetRoleIcon(JobRole jobRole)
+    {
+        const uint BaseIconID = 62580;
+        uint? iconID = jobRole switch
+        {
+            JobRole.Tank => BaseIconID + 1,
+            JobRole.Healer => BaseIconID + 2,
+            JobRole.MeleeDPS => BaseIconID + 4,
+            JobRole.RangedDPS => BaseIconID + 6,
+            JobRole.MagicalDPS => BaseIconID + 7,
+            _ => null
+        };
+        return iconID is null ? null : GetTextureFromIconId(iconID.Value);
+    }
+
+    //private static IDalamudTextureWrap? GetOccultIcon()
+    //{
+    //    if (OccultIcons.Count < 26)
+    //    {
+    //        for (int i = 0; i <= 25; i++)
+    //        {
+    //            var uld = Svc.PluginInterface.UiBuilder.LoadUld("ui/uld/MKDSupportJob.uld");
+    //            OccultIcons[i] = uld.LoadTexturePart("ui/uld/MKDSupportJob_hr1.tex", i);
+    //        }
+    //        for (int i = 30; i <= 55; i++)
+    //        {
+    //            var uld = Svc.PluginInterface.UiBuilder.LoadUld("ui/uld/MKDSupportJob.uld");
+    //            OccultIcons[i] = uld.LoadTexturePart("ui/uld/MKDSupportJob_hr1.tex", i);
+    //        }
+    //    }
+
+    //    if (EzThrottler.Throttle("OccultAnimateIdx", 800))
+    //        OccultIdx++;
+
+    //    if (OccultIdx == 13) // Only cycle through the current ones, set to 26 after new ones added
+    //        OccultIdx = 0;
+
+    //    return OccultIcons[OccultIdx];
+    //}
 
     private static string ResolvePath(string path) => Svc.TextureSubstitution.GetSubstitutedPath(path);
 

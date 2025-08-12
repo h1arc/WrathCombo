@@ -1,5 +1,6 @@
 ﻿#region
 
+using ECommons.ExcelServices;
 using WrathCombo.Attributes;
 using WrathCombo.Combos.PvE;
 using WrathCombo.Combos.PvP;
@@ -19,6 +20,29 @@ namespace WrathCombo.Combos;
 public enum Preset
 {
     #region PvE Combos
+
+    #region VARIANT ACTIONS
+    [Variant]
+    [CustomComboInfo("Variant Tank", "Enable this to add Variant Actions in Variant Dungeons.", Job.ADV)]
+    Variant_Tank = 200000,
+
+    [Variant]
+    [CustomComboInfo("Variant Healer", "Enable this to add Variant Actions in Variant Dungeons.", Job.ADV)]
+    Variant_Healer = 200003,
+
+    [Variant]
+    [CustomComboInfo("Variant Melee", "Enable this to add Variant Actions in Variant Dungeons.", Job.ADV)]
+    Variant_Melee = 200006,
+
+    [Variant]
+    [CustomComboInfo("Variant Physical Ranged", "Enable this to add Variant Actions in Variant Dungeons.", Job.ADV)]
+    Variant_PhysRanged = 200009,
+
+    [Variant]
+    [CustomComboInfo("Variant Magic", "Enable this to add Variant Actions in Variant Dungeons.", Job.ADV)]
+    Variant_Magic = 200012,
+
+    #endregion
 
     #region PHANTOM ACTIONS
     [OccultCrescent(OccultCrescent.JobIDs.Freelancer)]
@@ -393,19 +417,12 @@ public enum Preset
 
     #region GLOBAL FEATURES
 
-    [Role(JobRole.All)]
-    [ReplaceSkill(All.Sprint)]
-    [CustomComboInfo("Island Sanctuary Sprint Feature",
-        "Replaces Sprint with Isle Sprint.\nOnly works at the Island Sanctuary. Icon does not change.\nDo not use with SimpleTweaks' Island Sanctuary Sprint fix.",
-        All.JobID)]
-    ALL_IslandSanctuary_Sprint = 100093,
-
     #region Global Tank Features
 
     [Role(JobRole.Tank)]
     [CustomComboInfo("Global Tank Features",
         "Features and options involving shared role actions for Tanks.",
-        All.JobID)]
+        Job.ADV)]
     ALL_Tank_Menu = 100099,
 
     [Role(JobRole.Tank)]
@@ -414,40 +431,40 @@ public enum Preset
     [ParentCombo(ALL_Tank_Menu)]
     [CustomComboInfo("Tank: Interrupt Feature",
         "Replaces Low Blow (Stun) with Interject (Interrupt) when the target can be interrupted.\nPLDs can slot Shield Bash to have the feature to work with Shield Bash.",
-        All.JobID)]
+        Job.ADV)]
     ALL_Tank_Interrupt = 100000,
 
     [ParentCombo(ALL_Tank_Interrupt)]
     [Retargeted(RoleActions.Tank.Interject, RoleActions.Tank.LowBlow)]
-    [CustomComboInfo("Retarget Interrupts", "Will retarget the interrupt if the caster is not your current target.", All.JobID)]
+    [CustomComboInfo("Retarget Interrupts", "Will retarget the interrupt if the caster is not your current target.", Job.ADV)]
     ALL_Tank_Interrupt_Retarget = 100005,
 
     [Role(JobRole.Tank)]
     [ReplaceSkill(RoleActions.Tank.Reprisal)]
     [ParentCombo(ALL_Tank_Menu)]
     [CustomComboInfo("Tank: Double Reprisal Protection",
-        "Prevents the use of Reprisal when target already has the effect by replacing it with Savage Blade.", All.JobID)]
+        "Prevents the use of Reprisal when target already has the effect by replacing it with Savage Blade.", Job.ADV)]
     ALL_Tank_Reprisal = 100001,
 
     [Role(JobRole.Tank)]
     [ReplaceSkill(RoleActions.Tank.Shirk)]
     [ParentCombo(ALL_Tank_Menu)]
     [CustomComboInfo("Tank: Shirk Retargeting",
-        "Retargets Shirk to the other tank if there is one.", All.JobID)]
+        "Retargets Shirk to the other tank if there is one.", Job.ADV)]
     [Retargeted(RoleActions.Tank.Shirk)]
     ALL_Tank_ShirkRetargeting = 100002,
 
     [Role(JobRole.Tank)]
     [ParentCombo(ALL_Tank_ShirkRetargeting)]
     [CustomComboInfo("Use Healers instead",
-        "Will Retarget Shirk to healers, instead of the other tank.\nOnly recommended during some specific enrages.", All.JobID)]
+        "Will Retarget Shirk to healers, instead of the other tank.\nOnly recommended during some specific enrages.", Job.ADV)]
     [Retargeted]
     ALL_Tank_ShirkRetargeting_Healer = 100003,
 
     [Role(JobRole.Tank)]
     [ParentCombo(ALL_Tank_ShirkRetargeting)]
     [CustomComboInfo("Fallback to Any Support",
-        "Will Retarget Shirk to tanks or healers, per your setting above, but will include a fallback to any tank OR healer if none of your setting is found.\nUseful to help your Shirk always go to *someone* even if your chosen players are not alive.", All.JobID)]
+        "Will Retarget Shirk to tanks or healers, per your setting above, but will include a fallback to any tank OR healer if none of your setting is found.\nUseful to help your Shirk always go to *someone* even if your chosen players are not alive.", Job.ADV)]
     [Retargeted]
     ALL_Tank_ShirkRetargeting_Fallback = 100004,
 
@@ -458,18 +475,18 @@ public enum Preset
     [Role(JobRole.Healer)]
     [CustomComboInfo("Global Healer Features",
         "Features and options involving shared role actions for Healers.",
-        All.JobID)]
+        Job.ADV)]
     ALL_Healer_Menu = 100098,
 
     [Role(JobRole.Healer)]
     [ReplaceSkill(AST.Ascend, WHM.Raise, SCH.Resurrection, SGE.Egeiro)]
     [ConflictingCombos(AST_Raise_Alternative, SCH_Raise, SGE_Raise, WHM_Raise)]
     [ParentCombo(ALL_Healer_Menu)]
-    [CustomComboInfo("Healer: Raise Feature", "Changes the class' Raise Ability into Swiftcast.", All.JobID)]
+    [CustomComboInfo("Healer: Raise Feature", "Changes the class' Raise Ability into Swiftcast.", Job.ADV)]
     ALL_Healer_Raise = 100010,
 
     [ParentCombo(ALL_Healer_Raise)]
-    [CustomComboInfo("Retarget Raises", "Will Retarget the Raises affected here to your Heal Stack.", All.JobID)]
+    [CustomComboInfo("Retarget Raises", "Will Retarget the Raises affected here to your Heal Stack.", Job.ADV)]
     [Retargeted(WHM.Raise, AST.Ascend, SGE.Egeiro, SCH.Resurrection)]
     ALL_Healer_Raise_Retarget = 100011,
 
@@ -477,14 +494,14 @@ public enum Preset
     [ReplaceSkill(RoleActions.Healer.Esuna)]
     [ParentCombo(ALL_Healer_Menu)]
     [CustomComboInfo("Healer: Esuna Retargeting",
-        "Retargets Esuna (outside of combo usage) to your Heal Stack, checking if each potential target in the stack has a cleansable debuff.", All.JobID)]
+        "Retargets Esuna (outside of combo usage) to your Heal Stack, checking if each potential target in the stack has a cleansable debuff.", Job.ADV)]
     [Retargeted(RoleActions.Healer.Esuna)]
     ALL_Healer_EsunaRetargeting = 100012,
     
     [Role(JobRole.Healer)]
     [ReplaceSkill(RoleActions.Healer.Rescue)]
     [ParentCombo(ALL_Healer_Menu)]
-    [CustomComboInfo("Healer: Rescue Retargeting", "Retargets Rescue (outside of combo usage) to UI Mouseover and additional options.", All.JobID)]
+    [CustomComboInfo("Healer: Rescue Retargeting", "Retargets Rescue (outside of combo usage) to UI Mouseover and additional options.", Job.ADV)]
     [Retargeted(RoleActions.Healer.Rescue)]
     ALL_Healer_RescueRetargeting = 100013,
     #endregion
@@ -494,14 +511,14 @@ public enum Preset
     [Role(JobRole.MagicalDPS)]
     [CustomComboInfo("Global Magical Ranged Features",
         "Features and options involving shared role actions for Magical Ranged DPS.",
-        All.JobID)]
+        Job.ADV)]
     ALL_Caster_Menu = 100097,
 
     [Role(JobRole.MagicalDPS)]
     [ReplaceSkill(RoleActions.Caster.Addle)]
     [ParentCombo(ALL_Caster_Menu)]
     [CustomComboInfo("Magical Ranged DPS: Double Addle Protection",
-        "Prevents the use of Addle when target already has the effect by replacing it with Savage Blade.", All.JobID)]
+        "Prevents the use of Addle when target already has the effect by replacing it with Savage Blade.", Job.ADV)]
     ALL_Caster_Addle = 100020,
 
     [Role(JobRole.MagicalDPS)]
@@ -510,11 +527,11 @@ public enum Preset
     [ParentCombo(ALL_Caster_Menu)]
     [CustomComboInfo("Magical Ranged DPS: Raise Feature",
         "Changes the class' Raise Ability into Swiftcast. Red Mage will also show VerCure if Swiftcast is on cooldown.",
-        All.JobID)]
+        Job.ADV)]
     ALL_Caster_Raise = 100021,
 
     [ParentCombo(ALL_Caster_Raise)]
-    [CustomComboInfo("Retarget Raises", "Will Retarget the Raises affected here to your Heal Stack.", All.JobID)]
+    [CustomComboInfo("Retarget Raises", "Will Retarget the Raises affected here to your Heal Stack.", Job.ADV)]
     [Retargeted(BLU.AngelWhisper, RDM.Verraise, SMN.Resurrection)]
     ALL_Caster_Raise_Retarget = 100022,
 
@@ -525,21 +542,21 @@ public enum Preset
     [Role(JobRole.MeleeDPS)]
     [CustomComboInfo("Global Melee DPS Features",
         "Features and options involving shared role actions for Melee DPS.",
-        All.JobID)]
+        Job.ADV)]
     ALL_Melee_Menu = 100096,
 
     [Role(JobRole.MeleeDPS)]
     [ReplaceSkill(RoleActions.Melee.Feint)]
     [ParentCombo(ALL_Melee_Menu)]
     [CustomComboInfo("Melee DPS: Double Feint Protection",
-        "Prevents the use of Feint when target already has the effect by replacing it with Savage Blade.", All.JobID)]
+        "Prevents the use of Feint when target already has the effect by replacing it with Savage Blade.", Job.ADV)]
     ALL_Melee_Feint = 100030,
 
     [Role(JobRole.MeleeDPS)]
     [ReplaceSkill(RoleActions.Melee.TrueNorth)]
     [ParentCombo(ALL_Melee_Menu)]
     [CustomComboInfo("Melee DPS: True North Protection",
-        "Prevents the use of True North when its buff is already active by replacing it with Savage Blade.", All.JobID)]
+        "Prevents the use of True North when its buff is already active by replacing it with Savage Blade.", Job.ADV)]
     ALL_Melee_TrueNorth = 100031,
 
     #endregion
@@ -549,7 +566,7 @@ public enum Preset
     [Role(JobRole.RangedDPS)]
     [CustomComboInfo("Global Physical Ranged Features",
         "Features and options involving shared role actions for Physical Ranged DPS.",
-        All.JobID)]
+        Job.ADV)]
     ALL_Ranged_Menu = 100095,
 
     [Role(JobRole.RangedDPS)]
@@ -557,20 +574,20 @@ public enum Preset
     [ParentCombo(ALL_Ranged_Menu)]
     [CustomComboInfo("Physical Ranged DPS: Double Mitigation Protection",
         "Prevents the use of Tactician/Troubadour/Shield Samba when target already has one of those three effects by replacing them with Savage Blade.",
-        All.JobID)]
+        Job.ADV)]
     ALL_Ranged_Mitigation = 100040,
 
     [Role(JobRole.RangedDPS)]
     [ReplaceSkill(RoleActions.PhysRanged.FootGraze)]
     [ParentCombo(ALL_Ranged_Menu)]
     [CustomComboInfo("Physical Ranged DPS: Ranged Interrupt Feature",
-        "Replaces Foot Graze with Head Graze when target can be interrupted.", All.JobID)]
+        "Replaces Foot Graze with Head Graze when target can be interrupted.", Job.ADV)]
     ALL_Ranged_Interrupt = 100041,
 
     #endregion
 
     //Non-gameplay Features
-    //[CustomComboInfo("Output Combat Log", "Outputs your performed actions to the chat.", ALL.JobID)]
+    //[CustomComboInfo("Output Combat Log", "Outputs your performed actions to the chat.", Job.ADV)]
     //AllOutputCombatLog = 100094,
 
     // Last value = 100094
@@ -8292,75 +8309,75 @@ public enum Preset
     [Role(JobRole.DoL)]
     [ReplaceSkill(DOL.AgelessWords, DOL.SolidReason)]
     [CustomComboInfo("[BTN/MIN] Eureka Feature",
-        "Replaces Ageless Words and Solid Reason with Wise to the World when available", DOL.JobID)]
+        "Replaces Ageless Words and Solid Reason with Wise to the World when available", Job.MIN)]
     DOL_Eureka = 51001,
 
     [Role(JobRole.DoL)]
     [ReplaceSkill(DOL.ArborCall, DOL.ArborCall2, DOL.LayOfTheLand, DOL.LayOfTheLand2)]
     [CustomComboInfo("[BTN/MIN] Locate & Truth Feature",
         "Replaces Lay of the Lands or Arbor Calls with Prospect/Triangulate and Truth of Mountains/Forests if not active.",
-        DOL.JobID)]
+        Job.MIN)]
     DOL_NodeSearchingBuffs = 51012,
 
     [Role(JobRole.DoL)]
     [ReplaceSkill(DOL.Cast)]
-    [CustomComboInfo("[FSH] Cast to Hook Feature", "Replaces Cast with Hook when fishing", DOL.JobID)]
+    [CustomComboInfo("[FSH] Cast to Hook Feature", "Replaces Cast with Hook when fishing", Job.FSH)]
     FSH_CastHook = 51002,
 
     [Role(JobRole.DoL)]
     [CustomComboInfo("[FSH] Diving Feature", "Replace fishing abilities with diving abilities when underwater",
-        DOL.JobID)]
+        Job.FSH)]
     FSH_Swim = 51008,
 
     [Role(JobRole.DoL)]
     [ReplaceSkill(DOL.Cast)]
     [ParentCombo(FSH_Swim)]
-    [CustomComboInfo("[FSH] Cast to Gig Option", "Replaces Cast with Gig when diving.", DOL.JobID)]
+    [CustomComboInfo("[FSH] Cast to Gig Option", "Replaces Cast with Gig when diving.", Job.FSH)]
     FSH_CastGig = 51003,
 
     [Role(JobRole.DoL)]
     [ReplaceSkill(DOL.SurfaceSlap)]
     [ParentCombo(FSH_Swim)]
     [CustomComboInfo("Surface Slap to Veteran Trade Option", "Replaces Surface Slap with Veteran Trade when diving.",
-        DOL.JobID)]
+        Job.FSH)]
     FSH_SurfaceTrade = 51004,
 
     [Role(JobRole.DoL)]
     [ReplaceSkill(DOL.PrizeCatch)]
     [ParentCombo(FSH_Swim)]
     [CustomComboInfo("Prize Catch to Nature's Bounty Option", "Replaces Prize Catch with Nature's Bounty when diving.",
-        DOL.JobID)]
+        Job.FSH)]
     FSH_PrizeBounty = 51005,
 
     [Role(JobRole.DoL)]
     [ReplaceSkill(DOL.Snagging)]
     [ParentCombo(FSH_Swim)]
-    [CustomComboInfo("Snagging to Salvage Option", "Replaces Snagging with Salvage when diving.", DOL.JobID)]
+    [CustomComboInfo("Snagging to Salvage Option", "Replaces Snagging with Salvage when diving.", Job.FSH)]
     FSH_SnaggingSalvage = 51006,
 
     [Role(JobRole.DoL)]
     [ReplaceSkill(DOL.CastLight)]
     [ParentCombo(FSH_Swim)]
     [CustomComboInfo("Cast Light to Electric Current Option", "Replaces Cast Light with Electric Current when diving.",
-        DOL.JobID)]
+        Job.FSH)]
     FSH_CastLight_ElectricCurrent = 51007,
 
     [Role(JobRole.DoL)]
     [ReplaceSkill(DOL.Mooch, DOL.MoochII)]
     [ParentCombo(FSH_Swim)]
-    [CustomComboInfo("Mooch to Shark Eye Option", "Replaces Mooch with Shark Eye when diving.", DOL.JobID)]
+    [CustomComboInfo("Mooch to Shark Eye Option", "Replaces Mooch with Shark Eye when diving.", Job.FSH)]
     FSH_Mooch_SharkEye = 51009,
 
     [Role(JobRole.DoL)]
     [ReplaceSkill(DOL.FishEyes)]
     [ParentCombo(FSH_Swim)]
-    [CustomComboInfo("Fish Eyes to Vital Sight Option", "Replaces Fish Eyes with Vital Sight when diving.", DOL.JobID)]
+    [CustomComboInfo("Fish Eyes to Vital Sight Option", "Replaces Fish Eyes with Vital Sight when diving.", Job.FSH)]
     FSH_FishEyes_VitalSight = 51010,
 
     [Role(JobRole.DoL)]
     [ReplaceSkill(DOL.Chum)]
     [ParentCombo(FSH_Swim)]
-    [CustomComboInfo("Chum to Baited Breath Option", "Replaces Chum with Baited Breath when diving.", DOL.JobID)]
+    [CustomComboInfo("Chum to Baited Breath Option", "Replaces Chum with Baited Breath when diving.", Job.FSH)]
     FSH_Chum_BaitedBreath = 51011,
 
     // Last value = 51011
@@ -8376,30 +8393,30 @@ public enum Preset
     [Role(JobRole.All)]
     [PvPCustomCombo]
     [CustomComboInfo("Emergency Heals Feature",
-        "Uses Recuperate when your HP is under the set threshold and you have sufficient MP.", All.JobID)]
+        "Uses Recuperate when your HP is under the set threshold and you have sufficient MP.", Job.ADV)]
     PvP_EmergencyHeals = 1100000,
 
     [Role(JobRole.All)]
     [PvPCustomCombo]
-    [CustomComboInfo("Emergency Guard Feature", "Uses Guard when your HP is under the set threshold.", All.JobID)]
+    [CustomComboInfo("Emergency Guard Feature", "Uses Guard when your HP is under the set threshold.", Job.ADV)]
     PvP_EmergencyGuard = 1100010,
 
     [Role(JobRole.All)]
     [PvPCustomCombo]
-    [CustomComboInfo("Quick Purify Feature", "Uses Purify when afflicted with any selected debuff.", All.JobID)]
+    [CustomComboInfo("Quick Purify Feature", "Uses Purify when afflicted with any selected debuff.", Job.ADV)]
     PvP_QuickPurify = 1100020,
 
     [Role(JobRole.All)]
     [PvPCustomCombo]
     [CustomComboInfo("Prevent Mash Cancelling Feature",
-        "Stops you cancelling your guard if you're pressing buttons quickly by replacing your buttons with Savage Blade.", All.JobID)]
+        "Stops you cancelling your guard if you're pressing buttons quickly by replacing your buttons with Savage Blade.", Job.ADV)]
     PvP_MashCancel = 1100030,
 
     [Role(JobRole.All)]
     [ParentCombo(PvP_MashCancel)]
     [CustomComboInfo("Recuperate Option",
         "Allows you to cancel your guard with Recuperate on the Guard button if health is low enough to not waste it.",
-        All.JobID)]
+        Job.ADV)]
     PvP_MashCancelRecup = 1100031,
 
     // Last value = 1100030

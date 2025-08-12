@@ -8,10 +8,6 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class All
 {
-    public const byte 
-        JobID = 0,
-        ClassID = 0;
-
     /// Used to block user input.
     public const uint SavageBlade = 11;
 
@@ -55,16 +51,6 @@ internal partial class All
             Stun = 2,
             Weakness = 43,
             BrinkOfDeath = 44;
-    }
-
-    internal class ALL_IslandSanctuary_Sprint : CustomCombo
-    {
-        protected internal override Preset Preset => Preset.ALL_IslandSanctuary_Sprint;
-
-        protected override uint Invoke(uint actionID) =>
-            actionID is Sprint && Svc.ClientState.TerritoryType is 1055
-                ? IsleSprint
-                : actionID;
     }
 
     //Tank Features

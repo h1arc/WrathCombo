@@ -34,6 +34,7 @@ using WrathCombo.Services.IPC_Subscriber;
 using WrathCombo.Services.IPC;
 using WrathCombo.Window;
 using WrathCombo.Window.Tabs;
+using ECommons.ExcelServices;
 namespace WrathCombo;
 
 /// <summary> Main plugin implementation. </summary>
@@ -63,35 +64,35 @@ public sealed partial class WrathCombo : IDalamudPlugin
     private static uint? jobID;
     private static bool inInstancedContent;
 
-    public static readonly List<uint> DisabledJobsPVE =
+    public static readonly List<Job> DisabledJobsPVE =
     [
-        //ADV.JobID,
-        //AST.JobID,
-        //BLM.JobID,
-        //BLU.JobID,
-        //BRD.JobID,
-        //DNC.JobID,
-        //DOL.JobID,
-        //DRG.JobID,
-        //DRK.JobID,
-        //GNB.JobID,
-        //MCH.JobID,
-        //MNK.JobID,
-        //NIN.JobID,
-        //PCT.JobID,
-        //PLD.JobID,
-        //RDM.JobID,
-        //RPR.JobID,
-        //SAM.JobID,
-        //SCH.JobID,
-        //SGE.JobID,
-        //SMN.JobID,
-        //VPR.JobID,
-        //WAR.JobID,
-        //WHM.JobID
+        //Job.ADV,
+        //Job.AST,
+        //Job.BLM,
+        //Job.BLU,
+        //Job.BRD,
+        //Job.DNC,
+        //Job.DOL,
+        //Job.DRG,
+        //Job.DRK,
+        //Job.GNB,
+        //Job.MCH,
+        //Job.MNK,
+        //Job.NIN,
+        //Job.PCT,
+        //Job.PLD,
+        //Job.RDM,
+        //Job.RPR,
+        //Job.SAM,
+        //Job.SCH,
+        //Job.SGE,
+        //Job.SMN,
+        //Job.VPR,
+        //Job.WAR,
+        //Job.WHM
     ];
 
-    public static readonly List<uint> DisabledJobsPVP = [];
+    public static readonly List<Job> DisabledJobsPVP = [];
 
     public static uint? JobID
     {

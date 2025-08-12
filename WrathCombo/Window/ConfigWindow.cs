@@ -3,6 +3,7 @@ using Dalamud.Interface.ManagedFontAtlas;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Utility;
 using ECommons.DalamudServices;
+using ECommons.ExcelServices;
 using ECommons.ImGuiMethods;
 using ECommons.Logging;
 using ECommons.Throttlers;
@@ -41,8 +42,8 @@ internal class ConfigWindow : Dalamud.Interface.Windowing.Window
             .ThenByDescending(tpl => tpl.Info.Role == 2)
             .ThenByDescending(tpl => tpl.Info.Role == 3)
             .ThenByDescending(tpl => tpl.Info.JobID == 0)
-            .ThenByDescending(tpl => tpl.Info.JobID == DOL.JobID)
-            .ThenBy(tpl => tpl.Info.ClassJobCategory)
+            .ThenByDescending(tpl => tpl.Info.JobID == Job.MIN)
+            //.ThenBy(tpl => tpl.Info.ClassJobCategory)
             .ThenBy(tpl => tpl.Info.JobName)
             .ThenBy(tpl => tpl.Info.Order)
             .GroupBy(tpl => tpl.Info.JobName)

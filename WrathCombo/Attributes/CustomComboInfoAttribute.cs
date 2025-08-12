@@ -1,3 +1,4 @@
+using ECommons.ExcelServices;
 using System;
 using System.Runtime.CompilerServices;
 using WrathCombo.CustomComboNS.Functions;
@@ -19,7 +20,16 @@ internal class CustomComboInfoAttribute : Attribute
     {
         Name = name;
         Description = description;
-        JobID = jobID;
+        //JobID = (Job)jobID;
+        JobID = Enum.IsDefined(typeof(Job), jobID) ? (Job)jobID : Job.ADV; //Safety rails....thanks DOL...
+        Order = order;
+    }
+
+    internal CustomComboInfoAttribute(string name, string description, Job job, [CallerLineNumber] int order = 0)
+    {
+        Name = name;
+        Description = description;
+        JobID = job;
         Order = order;
     }
 
@@ -30,20 +40,20 @@ internal class CustomComboInfoAttribute : Attribute
     public string Description { get; }
 
     /// <summary> Gets the job ID. </summary>
-    public uint JobID { get; }
+    public Job JobID { get; }
 
     /// <summary> Gets the display order. </summary>
     public int Order { get; }
 
     /// <summary> Gets the job role. </summary>
-    public int Role => CustomComboFunctions.JobIDs.JobIDToRole(JobID);
+    public int Role => JobID.GetData().Role;
 
     /// <summary> Gets the job category. </summary>
-    public uint ClassJobCategory => CustomComboFunctions.JobIDs.JobIDToClassJobCategory(JobID);
+    //public uint ClassJobCategory => CustomComboFunctions.JobIDs.JobIDToClassJobCategory(JobID);
 
     /// <summary> Gets the job name. </summary>
-    public string JobName => CustomComboFunctions.JobIDs.JobIDToName(JobID);
+    public string JobName => CustomComboFunctions.JobIDs.JobToName(JobID);
 
     /// <summary> Gets the job shorthand. </summary>
-    public string JobShorthand => CustomComboFunctions.JobIDs.JobIDToShorthand(JobID);
+    public string JobShorthand => CustomComboFunctions.JobIDs.JobToShorthand(JobID);
 }

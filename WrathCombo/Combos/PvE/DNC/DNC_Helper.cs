@@ -3,6 +3,7 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
 using ECommons.DalamudServices;
+using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using System;
 using System.Collections.Generic;
@@ -320,22 +321,19 @@ internal partial class DNC
             #endregion
 
             if (restrictions.HasFlag(PartnerPriority.Restrictions.Melee))
-                filter = filter
-                    .Where(x => x.ClassJob.RowId.Role() is melee).ToList();
+                filter = [.. filter.Where(x => x.ClassJob.Value.Role is melee)];
 
             if (restrictions.HasFlag(PartnerPriority.Restrictions.DPS))
-                filter = filter
-                    .Where(x => x.ClassJob.RowId.Role() is melee or ranged)
-                    .ToList();
+                filter = [.. filter.Where(x => x.ClassJob.Value.Role is melee or ranged)];
 
             if (restrictions.HasFlag(PartnerPriority.Restrictions.NotDD))
-                filter = filter.Where(DamageDownFree).ToList();
+                filter = [.. filter.Where(DamageDownFree)];
 
             if (restrictions.HasFlag(PartnerPriority.Restrictions.NotSick))
-                filter = filter.Where(SicknessFree).ToList();
+                filter = [.. filter.Where(SicknessFree)];
 
             if (restrictions.HasFlag(PartnerPriority.Restrictions.NotBrink))
-                filter = filter.Where(BrinkFree).ToList();
+                filter = [.. filter.Where(BrinkFree)];
 
             // Run the next step if no matches were found
             if (filter.Count == 0 &&
@@ -354,7 +352,7 @@ internal partial class DNC
             var orderedFilter = filter
                 .OrderBy(x =>
                     PartnerPriority.RolePrio.GetValueOrDefault(
-                        x.ClassJob.RowId.Role(), int.MaxValue));
+                        x.ClassJob.Value.Role, int.MaxValue));
 
             switch (Player.Level)
             {

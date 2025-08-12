@@ -599,13 +599,13 @@ internal static class SimpleTarget
     public static IGameObject? AnyMeleeDPS =>
         GetPartyMembers()
             .Where(x => x.BattleChara.IsNotThePlayer())
-            .FirstOrDefault(x => x.RealJob?.RowId.Role() is 2)?.BattleChara;
+            .FirstOrDefault(x => x.RealJob?.Role is 2)?.BattleChara;
 
     /// Gets any Physical Ranged DPS that is not the player.
     public static IGameObject? AnyRangedDPS =>
         GetPartyMembers()
             .Where(x => x.BattleChara.IsNotThePlayer())
-            .FirstOrDefault(x => x.RealJob?.RowId.Role() is 3)?.BattleChara;
+            .FirstOrDefault(x => x.RealJob?.Role is 3)?.BattleChara;
 
     /// Gets any Magical DPS that is not the player.
     public static IGameObject? AnyPhysRangeDPS =>

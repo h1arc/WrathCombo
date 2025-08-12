@@ -1,9 +1,9 @@
 ﻿using ECommons.DalamudServices;
+using ECommons.ExcelServices;
 using Lumina.Excel.Sheets;
 using System.Collections.Frozen;
 using System.Globalization;
-using WrathCombo.Combos;
-using WrathCombo.Combos.PvE;
+using System.Linq;
 using WrathCombo.Core;
 namespace WrathCombo.CustomComboNS.Functions;
 
@@ -39,40 +39,39 @@ internal abstract partial class CustomComboFunctions
     {
         private static TextInfo? _cachedTextInfo;
 
-        public static readonly FrozenDictionary<uint, ClassJob> ClassJobs = Svc.Data.GetExcelSheet<ClassJob>()!.ToFrozenDictionary(i => i.RowId);
+        public static string JobToShorthand(Job job)
+        {
+            if (job != 0)
+            {
+                if (job is Job.MIN) return "DOL";
+                return job.GetData().Abbreviation.ToString();
+            }
+            else return string.Empty;
+        }
 
-        public static int JobIDToRole(uint jobId) => ClassJobs.TryGetValue(jobId, out var classJob) ? classJob.Role : 0;
-
-        public static uint JobIDToClassJobCategory(uint jobId) => ClassJobs.TryGetValue(jobId, out var classJob) ? classJob.ClassJobCategory.RowId : 0;
-
-        public static string JobIDToShorthand(uint jobId) => jobId != 0 && ClassJobs.TryGetValue(jobId, out var classJob) ? classJob.Abbreviation.ToString() : string.Empty;
-
-        public static string JobIDToName(uint jobId)
+        public static string JobToName(Job job)
         {
             // Special Cases
-            switch (jobId)
+            switch (job)
             {
-                case 0:     return "General/Multiple Jobs";
-                case 99:    return "Global";
-                case 100:   return OccultCrescent.ContentName;
+                case Job.ADV:     return "Roles and Content";
+                //case 99:    return "Global";
+                //case 100:   return OccultCrescent.ContentName;
             }
 
             // Override DoH/DoL
-            jobId = jobId switch
+            job = job switch
             {
-                DOL.JobID   => 16, // Miner
-                _           => jobId
+                Job.BTN   => Job.MIN, // Miner
+                Job.FSH   => Job.MIN,
+                _           => job
             };
 
-            // Invalid Job
-            if (!ClassJobs.TryGetValue(jobId, out var classJob))
-                return "Unknown";
-
             // Combat Jobs: Use Job Name
-            // DoH/DoL Jobs: Use Category Name
-            string jobName = (jobId is 8 or 16)
-                ? classJob.ClassJobCategory.Value.Name.ToString()
-                : classJob.Name.ToString();
+            // DoL Jobs: Use Category Name
+            string jobName = (job is Job.MIN)
+                ? job.GetData().ClassJobCategory.Value.Name.ToString()
+                : job.GetData().Name.ToString();
 
             return GetTextInfo().ToTitleCase(jobName);
         }
@@ -99,74 +98,28 @@ internal abstract partial class CustomComboFunctions
             return _cachedTextInfo;
         }
 
-        public static readonly FrozenSet<byte> Melee =
-        [
-            DRG.JobID, DRG.ClassID,
-            MNK.JobID, MNK.ClassID,
-            NIN.JobID, NIN.ClassID,
-            VPR.JobID,
-            RPR.JobID,
-            SAM.JobID
-        ];
-        public static readonly FrozenSet<byte> Ranged =
-        [
-            BLM.JobID, BLM.ClassID,
-            BRD.JobID, BRD.ClassID,
-            SMN.JobID, SMN.ClassID,
-            PCT.JobID,
-            MCH.JobID,
-            RDM.JobID,
-            DNC.JobID,
-            BLU.JobID
-        ];
-        public static readonly FrozenSet<byte> Tank =
-        [
-            PLD.JobID, PLD.ClassID,
-            WAR.JobID, WAR.ClassID,
-            DRK.JobID,
-            GNB.JobID
-        ];
-        public static readonly FrozenSet<byte> Healer =
-        [
-            WHM.JobID, WHM.ClassID,
-            SCH.JobID,
-            AST.JobID,
-            SGE.JobID
-        ];
+        public static readonly FrozenSet<uint> Tank =
+            Svc.Data.GetExcelSheet<ClassJob>()!
+            .Where(cj => cj.Role == 1)
+            .Select(cj => cj.RowId)
+            .ToFrozenSet();
 
-        public static byte JobToClass(uint jobId)
-        {
-            return jobId switch
-            {
-                BLM.JobID => BLM.ClassID,
-                BRD.JobID => BRD.ClassID,
-                DRG.JobID => DRG.ClassID,
-                MNK.JobID => MNK.ClassID,
-                NIN.JobID => NIN.ClassID,
-                PLD.JobID => PLD.ClassID,
-                SCH.JobID => SCH.ClassID,
-                SMN.JobID => SMN.ClassID,
-                WAR.JobID => WAR.ClassID,
-                WHM.JobID => WHM.ClassID,
-                _         => (byte)jobId,
-            };
-        }
+        public static readonly FrozenSet<uint> Healer =
+            Svc.Data.GetExcelSheet<ClassJob>()!
+                .Where(cj => cj.Role == 4)
+                .Select(cj => cj.RowId)
+                .ToFrozenSet();
 
-        public static byte ClassToJob(uint classId)
-        {
-            return classId switch
-            {
-                BLM.ClassID => BLM.JobID,
-                BRD.ClassID => BRD.JobID,
-                DRG.ClassID => DRG.JobID,
-                MNK.ClassID => MNK.JobID,
-                NIN.ClassID => NIN.JobID,
-                PLD.ClassID => PLD.JobID,
-                SMN.ClassID => SMN.JobID,
-                WAR.ClassID => WAR.JobID,
-                WHM.ClassID => WHM.JobID,
-                _           => (byte)classId,
-            };
-        }
+        public static readonly FrozenSet<uint> Melee =
+            Svc.Data.GetExcelSheet<ClassJob>()!
+                .Where(cj => cj.Role == 2)
+                .Select(cj => cj.RowId)
+                .ToFrozenSet();
+
+        public static readonly FrozenSet<uint> Ranged =
+            Svc.Data.GetExcelSheet<ClassJob>()!
+                .Where(cj => cj.Role == 3)
+                .Select(cj => cj.RowId)
+                .ToFrozenSet();
     }
 }

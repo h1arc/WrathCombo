@@ -2,11 +2,13 @@
 using Dalamud.Interface.Utility.Raii;
 using ECommons;
 using ECommons.DalamudServices;
+using ECommons.ExcelServices;
 using ECommons.ImGuiMethods;
 using Lumina.Excel.Sheets;
 using System;
 using System.Linq;
 using WrathCombo.Combos.PvE;
+using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions.JobIDs;
 using WrathCombo.Extensions;
 using WrathCombo.Services;
 using WrathCombo.Services.IPC;
@@ -221,7 +223,7 @@ internal class AutoRotationTab : ConfigWindow
             P.UIHelper.ShowIPCControlledIndicatorIfNeeded("AutoRez");
             changed |= P.UIHelper.ShowIPCControlledCheckboxIfNeeded(
                 "Auto-Resurrect", ref cfg.HealerSettings.AutoRez, "AutoRez");
-            ImGuiComponents.HelpMarker($"Will attempt to resurrect dead party members. Applies to {WHM.ClassID.JobAbbreviation()}, {WHM.JobID.JobAbbreviation()}, {SCH.JobID.JobAbbreviation()}, {AST.JobID.JobAbbreviation()}, {SGE.JobID.JobAbbreviation()} and {OccultCrescent.ContentName} {Svc.Data.GetExcelSheet<MKDSupportJob>().GetRow(10).Unknown0} {OccultCrescent.Revive.ActionName()}");
+            ImGuiComponents.HelpMarker($"Will attempt to resurrect dead party members. Applies to {JobToShorthand(Job.CNJ)}, {JobToShorthand(Job.WHM)}, {JobToShorthand(Job.SCH)}, {JobToShorthand(Job.AST)}, {JobToShorthand(Job.SGE)} and {OccultCrescent.ContentName} {Svc.Data.GetExcelSheet<MKDSupportJob>().GetRow(10).Unknown0} {OccultCrescent.Revive.ActionName()}");
             var autoRez = (bool)P.IPC.GetAutoRotationConfigState(AutoRotationConfigOption.AutoRez)!;
             if (autoRez)
             {
@@ -235,14 +237,14 @@ internal class AutoRotationTab : ConfigWindow
                     cfg.HealerSettings.AutoRezRequireSwift);
                 ImGuiComponents.HelpMarker(
                     $"Requires {RoleActions.Magic.Swiftcast.ActionName()} " +
-                    $"(or {RDM.JobID.JobAbbreviation()}'s Dualcast) " +
+                    $"(or {JobToShorthand(Job.RDM)}'s Dualcast) " +
                     $"to be available to resurrect a party member, to avoid hard-casting.");
 
                 ImGuiExtensions.Prefix(true);
                 P.UIHelper.ShowIPCControlledIndicatorIfNeeded("AutoRezDPSJobs");
                 changed |= P.UIHelper.ShowIPCControlledCheckboxIfNeeded(
-                    $"Apply to {SMN.JobID.JobAbbreviation()} & {RDM.JobID.JobAbbreviation()}", ref cfg.HealerSettings.AutoRezDPSJobs, "AutoRezDPSJobs");
-                ImGuiComponents.HelpMarker($"When playing as {SMN.JobID.JobAbbreviation()} or {RDM.JobID.JobAbbreviation()}, also attempt to raise a dead party member. {RDM.JobID.JobAbbreviation()} will only resurrect with {RoleActions.Magic.Buffs.Swiftcast.StatusName()} or {RDM.Buffs.Dualcast.StatusName()} active.");
+                    $"Apply to {JobToShorthand(Job.SMN)} & {JobToShorthand(Job.RDM)}", ref cfg.HealerSettings.AutoRezDPSJobs, "AutoRezDPSJobs");
+                ImGuiComponents.HelpMarker($"When playing as {JobToShorthand(Job.SMN)} or {JobToShorthand(Job.RDM)}, also attempt to raise a dead party member. {JobToShorthand(Job.RDM)} will only resurrect with {RoleActions.Magic.Buffs.Swiftcast.StatusName()} or {RDM.Buffs.Dualcast.StatusName()} active.");
             }
 
             P.UIHelper.ShowIPCControlledIndicatorIfNeeded("AutoCleanse");
@@ -252,7 +254,7 @@ internal class AutoRotationTab : ConfigWindow
 
             P.UIHelper.ShowIPCControlledIndicatorIfNeeded("ManageKardia");
             changed |= P.UIHelper.ShowIPCControlledCheckboxIfNeeded(
-                $"[{SGE.JobID.JobAbbreviation()}] Automatically Manage Kardia", ref cfg.HealerSettings.ManageKardia, "ManageKardia");
+                $"[{JobToShorthand(Job.SGE)}] Automatically Manage Kardia", ref cfg.HealerSettings.ManageKardia, "ManageKardia");
             ImGuiComponents.HelpMarker($"Switches {SGE.Kardia.ActionName()} to party members currently being targeted by enemies, prioritising tanks if multiple people are being targeted.");
             if (cfg.HealerSettings.ManageKardia)
             {
@@ -260,7 +262,7 @@ internal class AutoRotationTab : ConfigWindow
                 changed |= ImGui.Checkbox($"Limit {SGE.Kardia.ActionName()} swapping to tanks only", ref cfg.HealerSettings.KardiaTanksOnly);
             }
 
-            changed |= ImGui.Checkbox($"[{WHM.JobID.JobAbbreviation()}/{AST.JobID.JobAbbreviation()}] Pre-emptively apply heal over time on focus target", ref cfg.HealerSettings.PreEmptiveHoT);
+            changed |= ImGui.Checkbox($"[{JobToShorthand(Job.WHM)}/{JobToShorthand(Job.AST)}] Pre-emptively apply heal over time on focus target", ref cfg.HealerSettings.PreEmptiveHoT);
             ImGuiComponents.HelpMarker($"Applies {WHM.Regen.ActionName()}/{AST.AspectedBenefic.ActionName()} to your focus target when out of combat and they are 30y or less away from an enemy. (Bypasses \"Only in Combat\" setting)");
 
             P.UIHelper.ShowIPCControlledIndicatorIfNeeded("IncludeNPCs");

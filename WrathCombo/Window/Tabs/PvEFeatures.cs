@@ -147,7 +147,9 @@ internal class PvEFeatures : ConfigWindow
                     {
                         if (ImGui.BeginTabBar($"subTab{OpenJob}", ImGuiTabBarFlags.Reorderable | ImGuiTabBarFlags.AutoSelectNewTabs))
                         {
-                            if (ImGui.BeginTabItem("Normal"))
+                            string mainTabName = "Normal";
+                            if (OpenJob == "Roles and Content") mainTabName = "Job Roles";
+                            if (ImGui.BeginTabItem(mainTabName))
                             {
                                 DrawHeadingContents(OpenJob);
                                 ImGui.EndTabItem();
@@ -179,6 +181,15 @@ internal class PvEFeatures : ConfigWindow
                                 }
                             }
 
+                            if (groupedPresets[OpenJob].Any(x => PresetStorage.IsOccultCrescent(x.Preset)))
+                            {
+                                if (ImGui.BeginTabItem("Occult Crescent"))
+                                {
+                                    DrawOccultContents(OpenJob);
+                                    ImGui.EndTabItem();
+                                }
+                            }
+
                             ImGui.EndTabBar();
                         }
                     }
@@ -204,10 +215,23 @@ internal class PvEFeatures : ConfigWindow
             ImGuiEx.Spacing(new Vector2(0, 12));
         }
     }
+
     private static void DrawBozjaContents(string jobName)
     {
         foreach (var (preset, info) in groupedPresets[jobName].Where(x =>
             PresetStorage.IsBozja(x.Preset) &&
+            !PresetStorage.ShouldBeHidden(x.Preset)))
+        {
+            InfoBox presetBox = new() { Color = Colors.Grey, BorderThickness = 1f, CurveRadius = 8f, ContentsAction = () => { Presets.DrawPreset(preset, info); } };
+            presetBox.Draw();
+            ImGuiEx.Spacing(new Vector2(0, 12));
+        }
+    }
+
+    private static void DrawOccultContents(string jobName)
+    {
+        foreach (var (preset, info) in groupedPresets[jobName].Where(x =>
+            PresetStorage.IsOccultCrescent(x.Preset) &&
             !PresetStorage.ShouldBeHidden(x.Preset)))
         {
             InfoBox presetBox = new() { Color = Colors.Grey, BorderThickness = 1f, CurveRadius = 8f, ContentsAction = () => { Presets.DrawPreset(preset, info); } };
@@ -225,6 +249,7 @@ internal class PvEFeatures : ConfigWindow
             !PresetStorage.IsVariant(x.Preset) &&
             !PresetStorage.IsBozja(x.Preset) &&
             !PresetStorage.IsEureka(x.Preset) &&
+            !PresetStorage.IsOccultCrescent(x.Preset) &&
             !PresetStorage.ShouldBeHidden(x.Preset)))
         {
             InfoBox presetBox = new() { Color = Colors.Grey, BorderThickness = 2f.Scale(), ContentsOffset = 5f.Scale(), ContentsAction = () => { Presets.DrawPreset(preset, info); } };
@@ -287,11 +312,11 @@ internal class PvEFeatures : ConfigWindow
 
         if (Player.Job.IsDol())
         {
-            OpenJob = JobIDToName(DOL.JobID);
+            OpenJob = JobToName(Job.MIN);
             return;
         }
 
-        var job = JobIDToName(ClassToJob((uint)Player.Job));
+        var job = JobToName(Player.Job.GetUpgradedJob());
         if (groupedPresets.TryGetValue(job, out var foundJob))
             OpenJob = foundJob.First().Info.JobName;
     }
