@@ -41,12 +41,14 @@ internal partial class BLM : Caster
                         return Manafont;
 
                     if (ActionReady(Role.Swiftcast) && JustUsed(Despair) &&
-                        !ActionReady(Manafont) && !HasStatusEffect(Buffs.Triplecast))
+                        !ActionReady(Manafont) && !HasStatusEffect(Buffs.Triplecast) &&
+                        HasBattleTarget())
                         return Role.Swiftcast;
 
                     if (ActionReady(Triplecast) && IsOnCooldown(Role.Swiftcast) &&
                         !HasStatusEffect(Role.Buffs.Swiftcast) && !HasStatusEffect(Buffs.Triplecast) &&
-                        !HasStatusEffect(Buffs.LeyLines) && JustUsed(Despair) && !ActionReady(Manafont))
+                        HasBattleTarget() && !HasStatusEffect(Buffs.LeyLines) &&
+                        JustUsed(Despair) && !ActionReady(Manafont))
                         return Triplecast;
 
                     if (ActionReady(Transpose) &&
@@ -62,7 +64,8 @@ internal partial class BLM : Caster
                         return Transpose;
 
                     if (LevelChecked(Blizzard3) && UmbralIceStacks < 3 &&
-                        ActionReady(Role.Swiftcast) && !HasStatusEffect(Buffs.Triplecast))
+                        ActionReady(Role.Swiftcast) && !HasStatusEffect(Buffs.Triplecast) &&
+                        HasBattleTarget())
                         return Role.Swiftcast;
                 }
 
@@ -237,14 +240,15 @@ internal partial class BLM : Caster
 
                     if (IsEnabled(Preset.BLM_ST_Swiftcast) &&
                         ActionReady(Role.Swiftcast) && JustUsed(Despair) &&
-                        !ActionReady(Manafont) && !HasStatusEffect(Buffs.Triplecast))
+                        HasBattleTarget() && !ActionReady(Manafont) &&
+                        !HasStatusEffect(Buffs.Triplecast))
                         return Role.Swiftcast;
 
                     if (IsEnabled(Preset.BLM_ST_Triplecast) &&
-                        ActionReady(Triplecast) && IsOnCooldown(Role.Swiftcast) &&
+                        ActionReady(Triplecast) && IsOnCooldown(Role.Swiftcast) && HasBattleTarget() &&
                         !HasStatusEffect(Role.Buffs.Swiftcast) && !HasStatusEffect(Buffs.Triplecast) &&
-                        (BLM_ST_Triplecast_SubOption == 0 || !HasStatusEffect(Buffs.LeyLines)) &&
-                        (BLM_ST_MovementOption[0] && GetRemainingCharges(Triplecast) > BLM_ST_Triplecast_Movement ||
+                        (BLM_ST_Triplecast_WhenToUse == 0 || !HasStatusEffect(Buffs.LeyLines)) &&
+                        (BLM_ST_MovementOption[0] && GetRemainingCharges(Triplecast) > BLM_ST_Triplecast_MovementCharges ||
                          !BLM_ST_MovementOption[0]) && JustUsed(Despair) && !ActionReady(Manafont))
                         return Triplecast;
 
@@ -265,14 +269,16 @@ internal partial class BLM : Caster
                     if (LevelChecked(Blizzard3) && UmbralIceStacks < 3)
                     {
                         if (IsEnabled(Preset.BLM_ST_Swiftcast) &&
-                            ActionReady(Role.Swiftcast) && !HasStatusEffect(Buffs.Triplecast))
+                            ActionReady(Role.Swiftcast) &&
+                            !HasStatusEffect(Buffs.Triplecast) &&
+                            HasBattleTarget())
                             return Role.Swiftcast;
 
                         if (IsEnabled(Preset.BLM_ST_Triplecast) &&
-                            ActionReady(Triplecast) && IsOnCooldown(Role.Swiftcast) &&
+                            ActionReady(Triplecast) && IsOnCooldown(Role.Swiftcast) && HasBattleTarget() &&
                             !HasStatusEffect(Role.Buffs.Swiftcast) && !HasStatusEffect(Buffs.Triplecast) &&
-                            (BLM_ST_Triplecast_SubOption == 0 || !HasStatusEffect(Buffs.LeyLines)) &&
-                            (BLM_ST_MovementOption[0] && GetRemainingCharges(Triplecast) > BLM_ST_Triplecast_Movement ||
+                            (BLM_ST_Triplecast_WhenToUse == 0 || !HasStatusEffect(Buffs.LeyLines)) &&
+                            (BLM_ST_MovementOption[0] && GetRemainingCharges(Triplecast) > BLM_ST_Triplecast_MovementCharges ||
                              !BLM_ST_MovementOption[0]) && JustUsed(Despair) && !ActionReady(Manafont))
                             return Triplecast;
                     }

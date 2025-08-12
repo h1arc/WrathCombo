@@ -94,14 +94,14 @@ internal partial class BLM
                     break;
 
                 case Preset.BLM_ST_Triplecast:
-                    DrawHorizontalRadioButton(BLM_ST_Triplecast_SubOption,
+                    DrawHorizontalRadioButton(BLM_ST_Triplecast_WhenToUse,
                         "Always", "Use always.", 0);
 
-                    DrawHorizontalRadioButton(BLM_ST_Triplecast_SubOption,
+                    DrawHorizontalRadioButton(BLM_ST_Triplecast_WhenToUse,
                         "Not under Leylines", "Do not use while under the effect of Leylines.\nThis is the recommended behaviour.", 1);
 
                     if (BLM_ST_MovementOption[0])
-                        DrawSliderInt(1, 2, BLM_ST_Triplecast_Movement,
+                        DrawSliderInt(1, 2, BLM_ST_Triplecast_MovementCharges,
                             "How many charges to save for movement?");
                     break;
 
@@ -122,7 +122,7 @@ internal partial class BLM
                     DrawHorizontalRadioButton(BLM_ST_ThunderBossOption,
                         "All Enemies", "Applies the HP check above to all enemies.", 1);
 
-                    DrawSliderInt(0, 5, BLM_ST_ThunderResfresh,
+                    DrawSliderInt(0, 5, BLM_ST_ThunderRefresh,
                         "Seconds remaining before reapplying the DoT. Set to Zero to disable this check.");
 
                     ImGui.Unindent();
@@ -219,9 +219,9 @@ internal partial class BLM
             BLM_ST_LeyLinesBossOption = new("BLM_ST_LeyLinesSubOption", 0),
             BLM_ST_ThunderHPOption = new("BLM_ST_ThunderOption", 10),
             BLM_ST_ThunderBossOption = new("BLM_ST_Thunder_SubOption", 0),
-            BLM_ST_Triplecast_SubOption = new("BLM_ST_Triplecast_SubOption", 1),
-            BLM_ST_ThunderResfresh = new("BLM_ST_ThunderUptime_Threshold", 5),
-            BLM_ST_Triplecast_Movement = new("BLM_ST_Triplecast_Movement", 1),
+            BLM_ST_Triplecast_WhenToUse = new("BLM_ST_Triplecast_WhenToUse", 1),
+            BLM_ST_ThunderRefresh = new("BLM_ST_ThunderUptime_Threshold", 5),
+            BLM_ST_Triplecast_MovementCharges = new("BLM_ST_Triplecast_MovementCharges", 1),
             BLM_ST_Polyglot_Movement = new("BLM_ST_Polyglot_Movement", 1),
             BLM_ST_Polyglot_Save = new("BLM_ST_Polyglot_Save", 0),
             BLM_ST_Manaward_Threshold = new("BLM_ST_Manaward_Threshold", 40),
