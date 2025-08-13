@@ -44,32 +44,30 @@ internal partial class NIN : Melee
             
             #region OGCDS
             
-            if (InCombat())
+            if (InCombat() && HasBattleTarget())
             {
-                if (ActionReady(Kassatsu) && NinjaWeave && (TrickCD < 10 || BuffWindow) && !MudraPhase &&
-                    HasStatusEffect(Buffs.ShadowWalker))
+                if (CanKassatsu)
                     return Kassatsu;
 
-                if (ActionReady(Bunshin) && NinjaWeave && (!MudraPhase || HasKassatsu))
+                if (CanBunshin)
                     return Bunshin;
 
-                if (ActionReady(TenChiJin) && NinjaWeave && BuffWindow && !MudraPhase && !MudraAlmostReady)
+                if (CanTenChiJin)
                     return OriginalHook(TenChiJin);
                 
-                if (ActionReady(OriginalHook(Assassinate)) && NinjaWeave && BuffWindow && !MudraPhase)
+                if (CanAssassinate)
                     return OriginalHook(Assassinate);
 
-                if (ActionReady(Meisui) && NinjaWeave && BuffWindow && HasStatusEffect(Buffs.ShadowWalker) && !MudraPhase)
-                    return gauge.Ninki > 50 ? OriginalHook(Bhavacakra) : OriginalHook(Meisui);
+                if (CanMeisui)
+                    return NinkiOvercapCheck ? OriginalHook(Bhavacakra) : OriginalHook(Meisui);
 
-                if (ActionReady(Bhavacakra) && NinjaWeave && HasBattleTarget() && !MudraPhase &&
-                    (gauge.Ninki >= BhavaPool() || TrickDebuff && gauge.Ninki >= 50 || MugCD < 5 && gauge.Ninki >= 50))
-                    return OriginalHook(Bhavacakra);
+                if (CanBhavacakra)
+                    return LevelChecked(Bhavacakra) ? OriginalHook(Bhavacakra) : OriginalHook(HellfrogMedium);
                 
-                if (MugReady && (!MudraPhase || HasKassatsu))
+                if (CanMug)
                     return OriginalHook(Mug);
 
-                if (TrickReady && (!MudraPhase || HasKassatsu))
+                if (CanTrick)
                     return OriginalHook(TrickAttack);
             }
             
@@ -102,19 +100,14 @@ internal partial class NIN : Melee
             #endregion
            
             #region GCDS
-
             
-            if (ActionReady(ThrowingDaggers) && HasTarget() && !InMeleeRange() && !HasStatusEffect(Buffs.RaijuReady))
+            if (CanThrowingDaggers)
                 return OriginalHook(ThrowingDaggers);
             
-            if (HasStatusEffect(Buffs.RaijuReady) && 
-                HasBattleTarget() && 
-                InMeleeRange())
+            if (CanRaiju)
                 return FleetingRaiju;
 
-            if (HasStatusEffect(Buffs.PhantomReady) && 
-                (TrickDebuff && ComboAction != GustSlash || 
-                 !TrickDebuff))
+            if (CanPhantomKamaitachi)
                 return PhantomKamaitachi;
             
             if (ComboTimer > 1f)
@@ -123,6 +116,10 @@ internal partial class NIN : Melee
                 {
                     case SpinningEdge when GustSlash.LevelChecked():
                         return OriginalHook(GustSlash);
+                    
+                    case GustSlash when GetTargetHPPercent() <= 10 && gauge.Kazematoi > 0: //Kazematoi Dump Below 10%
+                        return TNAeolianEdge ? Role.TrueNorth : AeolianEdge;
+                    
                     case GustSlash when ArmorCrush.LevelChecked():
                         return gauge.Kazematoi switch
                         {
@@ -136,128 +133,117 @@ internal partial class NIN : Melee
             }
             return OriginalHook(SpinningEdge);
             #endregion
-            
         }
     }
     
     internal class NIN_AoE_SimpleMode : CustomCombo
     {
-        private readonly MudraCasting _mudraState = new();
         protected internal override Preset Preset => Preset.NIN_AoE_SimpleMode;
 
         protected override uint Invoke(uint actionID)
+        
         {
             if (actionID is not DeathBlossom)
                 return actionID;
-
-            Status? dotonBuff = GetStatusEffect(Buffs.Doton);
-            NINGauge gauge = GetJobGauge<NINGauge>();
-            bool canWeave = CanWeave();
-
-            if (ActionWatching.TimeSinceLastAction.TotalSeconds >= 5 && !InCombat())
-                _mudraState.CurrentMudra = MudraCasting.MudraState.None;
-
-            if (OriginalHook(Ninjutsu) is Rabbit)
+            
+            if (OriginalHook(Ninjutsu) is Rabbit or Huton or Doton or Suiton)
                 return OriginalHook(Ninjutsu);
-
-            if (InMudra)
-            {
-                if (_mudraState.ContinueCurrentMudra(ref actionID))
-                    return actionID;
-            }
-
+            
             if (HasStatusEffect(Buffs.TenChiJin))
-            {
-                if (WasLastAction(TCJFumaShurikenJin))
-                    return OriginalHook(Ten);
-                if (WasLastAction(TCJKaton) || WasLastAction(HollowNozuchi))
-                    return OriginalHook(Chi);
-                return OriginalHook(Jin);
-            }
-
-            if (HasStatusEffect(Buffs.Kassatsu))
-            {
-                if (GokaMekkyaku.LevelChecked())
-                {
-                    _mudraState.CurrentMudra = MudraCasting.MudraState.CastingGokaMekkyaku;
-                    if (_mudraState.CastGokaMekkyaku(ref actionID))
-                        return actionID;
-                }
-                else
-                {
-                    _mudraState.CurrentMudra = MudraCasting.MudraState.CastingKaton;
-                    if (_mudraState.CastKaton(ref actionID))
-                        return actionID;
-                }
-            }
-
-            if (Variant.CanCure(Preset.NIN_Variant_Cure, NIN_VariantCure))
-                return Variant.Cure;
-
-            if (OccultCrescent.ShouldUsePhantomActions())
+                return AoETenChiJin(actionID);
+            
+            #region Special Content
+            
+            if (OccultCrescent.ShouldUsePhantomActions() && !MudraPhase)
                 return OccultCrescent.BestPhantomAction();
-
-            if (!HasStatusEffect(Buffs.ShadowWalker) && KunaisBane.LevelChecked() && GetCooldownRemainingTime(KunaisBane) < 5 && _mudraState.CastHuton(ref actionID))
-                return actionID;
-
-            if (HasStatusEffect(Buffs.ShadowWalker) && KunaisBane.LevelChecked() && IsOffCooldown(KunaisBane) && canWeave)
-                return KunaisBane;
-
-            if (GetTargetHPPercent() > 20 && (dotonBuff is null || dotonBuff.RemainingTime <= GetCooldownChargeRemainingTime(Ten)) && !JustUsed(Doton) && IsOnCooldown(TenChiJin))
+            
+            if (Variant.CanRampart(Preset.NIN_Variant_Rampart) && !MudraPhase)
+                return Variant.Rampart;
+            
+            if (Variant.CanCure(Preset.NIN_Variant_Cure, NIN_VariantCure) && !MudraPhase)
+                return Variant.Cure;
+            
+            #endregion
+            
+            #region OGCDS
+            
+            if (InCombat() && HasBattleTarget())
             {
-                if (_mudraState.CastDoton(ref actionID))
-                    return actionID;
-            }
-            else if (_mudraState.CurrentMudra == MudraCasting.MudraState.CastingDoton)
-                _mudraState.CurrentMudra = MudraCasting.MudraState.None;
+                if (CanKassatsu)
+                    return Kassatsu;
 
-            if (_mudraState.CastKaton(ref actionID))
-                return actionID;
+                if (CanBunshin)
+                    return Bunshin;
 
-            if (canWeave && !InMudra)
-            {
-                if (Variant.CanRampart(Preset.NIN_Variant_Rampart))
-                    return Variant.Rampart;
-
-                if (IsOffCooldown(TenChiJin) && TenChiJin.LevelChecked())
+                if (CanTenChiJin)
                     return OriginalHook(TenChiJin);
+                
+                if (CanAssassinate)
+                    return OriginalHook(Assassinate);
 
-                if (HasStatusEffect(Buffs.TenriJendo))
-                    return TenriJendo;
+                if (CanMeisui)
+                    return NinkiOvercapCheck ? OriginalHook(HellfrogMedium) : OriginalHook(Meisui);
 
-                if (IsOffCooldown(Bunshin) && gauge.Ninki >= 50 && Bunshin.LevelChecked())
-                    return OriginalHook(Bunshin);
+                if (CanHellfrogMedium)
+                    return OriginalHook(HellfrogMedium);
+                
+                if (CanMug)
+                    return OriginalHook(Mug);
 
-                if (HasStatusEffect(Buffs.ShadowWalker) && gauge.Ninki < 50 && IsOffCooldown(Meisui) && Meisui.LevelChecked())
-                    return OriginalHook(Meisui);
-
-                if (HasStatusEffect(Buffs.Meisui) && gauge.Ninki >= 50)
-                    return OriginalHook(Bhavacakra);
-
-                if (gauge.Ninki >= 50 && Hellfrog.LevelChecked())
-                    return OriginalHook(Hellfrog);
-
-                if (gauge.Ninki >= 50 && !Hellfrog.LevelChecked() && Bhavacakra.LevelChecked())
-                    return OriginalHook(Bhavacakra);
-
-                if (IsOffCooldown(Kassatsu) && Kassatsu.LevelChecked())
-                    return OriginalHook(Kassatsu);
+                if (CanTrick)
+                    return OriginalHook(TrickAttack);
             }
-            else
-            {
-                if (HasStatusEffect(Buffs.PhantomReady))
-                    return OriginalHook(PhantomKamaitachi);
-            }
+            
+            #endregion
+            
+            #region Ninjutsu
+            if (CanUseGokaMekkyaku)
+                return UseGokaMekkyaku(actionID);
 
-            if (ComboTimer > 1f)
-            {
-                if (ComboAction is DeathBlossom && HakkeMujinsatsu.LevelChecked())
-                    return OriginalHook(HakkeMujinsatsu);
-            }
+            if (CanUseHuton)
+                return UseHuton(actionID);
+            
+            if (CanUseDoton && GetTargetHPPercent() >= 30 && (!HasDoton || DotonRemaining <= 2))
+                return UseDoton(actionID);
+            
+            if (CanUseKaton)
+                return LevelChecked(Katon) ?
+                    UseRaiton(actionID):
+                    UseFumaShuriken(actionID);
+            #endregion
+            
+            #region Selfcare
+            
+            if (Role.CanSecondWind(40))
+                return Role.SecondWind;
+
+            if (ActionReady(ShadeShift) && (PlayerHealthPercentageHp() < 60 || RaidWideCasting()))
+                return ShadeShift;
+
+            if (Role.CanBloodBath(40))
+                return Role.Bloodbath;
+            
+            #endregion
+           
+            #region GCDS
+            
+            if (CanThrowingDaggersAoE)
+                return OriginalHook(ThrowingDaggers);
+            
+            if (CanRaiju)
+                return FleetingRaiju;
+
+            if (CanPhantomKamaitachi)
+                return PhantomKamaitachi;
+            
+            if (ComboTimer > 1f && ComboAction is DeathBlossom && LevelChecked(HakkeMujinsatsu))
+                return OriginalHook(HakkeMujinsatsu);
 
             return OriginalHook(DeathBlossom);
+            #endregion
         }
     }
+    
     #endregion
     
     #region Advanced
@@ -438,8 +424,8 @@ internal partial class NIN : Melee
                 if (IsEnabled(Preset.NIN_ST_AdvancedMode_Bhavacakra) &&
                     (TrickDebuff && gauge.Ninki >= 50 || useBhakaBeforeTrickWindow && gauge.Ninki >= 60) &&
                     (IsNotEnabled(Preset.NIN_ST_AdvancedMode_Mug) || IsEnabled(Preset.NIN_ST_AdvancedMode_Mug) && IsOnCooldown(Mug)) &&
-                    !Bhavacakra.LevelChecked() && Hellfrog.LevelChecked())
-                    return OriginalHook(Hellfrog);
+                    !Bhavacakra.LevelChecked() && HellfrogMedium.LevelChecked())
+                    return OriginalHook(HellfrogMedium);
 
                 if (!inTrickBurstSaveWindow)
                 {
@@ -455,8 +441,8 @@ internal partial class NIN : Melee
                     if (IsEnabled(Preset.NIN_ST_AdvancedMode_Bhavacakra) && gauge.Ninki >= bhavaPool && Bhavacakra.LevelChecked())
                         return OriginalHook(Bhavacakra);
 
-                    if (IsEnabled(Preset.NIN_ST_AdvancedMode_Bhavacakra) && gauge.Ninki >= bhavaPool && !Bhavacakra.LevelChecked() && Hellfrog.LevelChecked())
-                        return OriginalHook(Hellfrog);
+                    if (IsEnabled(Preset.NIN_ST_AdvancedMode_Bhavacakra) && gauge.Ninki >= bhavaPool && !Bhavacakra.LevelChecked() && HellfrogMedium.LevelChecked())
+                        return OriginalHook(HellfrogMedium);
 
                     if (IsEnabled(Preset.NIN_ST_AdvancedMode_AssassinateDWAD) && IsOffCooldown(OriginalHook(Assassinate)) && Assassinate.LevelChecked())
                         return OriginalHook(Assassinate);
@@ -664,15 +650,15 @@ internal partial class NIN : Melee
                 if (IsEnabled(Preset.NIN_AoE_AdvancedMode_Bunshin) && Bunshin.LevelChecked() && IsOffCooldown(Bunshin) && gauge.Ninki >= bunshingPool)
                     return OriginalHook(Bunshin);
 
-                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_HellfrogMedium) && gauge.Ninki >= hellfrogPool && Hellfrog.LevelChecked())
+                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_HellfrogMedium) && gauge.Ninki >= hellfrogPool && HellfrogMedium.LevelChecked())
                 {
                     if (HasStatusEffect(Buffs.Meisui) && TraitLevelChecked(440))
                         return OriginalHook(Bhavacakra);
 
-                    return OriginalHook(Hellfrog);
+                    return OriginalHook(HellfrogMedium);
                 }
 
-                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_HellfrogMedium) && gauge.Ninki >= hellfrogPool && !Hellfrog.LevelChecked() && Bhavacakra.LevelChecked())
+                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_HellfrogMedium) && gauge.Ninki >= hellfrogPool && !HellfrogMedium.LevelChecked() && Bhavacakra.LevelChecked())
                 {
                     return OriginalHook(Bhavacakra);
                 }

@@ -253,8 +253,6 @@ public static class ActionWatching
             LastActionType = actionType;
             TimeLastActionUsed = dateNow + TimeSpan.FromMilliseconds(ActionManager.GetAdjustedCastTime((ActionType)actionType, actionId));
 
-            // Update Helpers
-            NIN.InMudra = NIN.MudraSigns.Contains(actionId);
             WrathOpener.CurrentOpener?.ProgressOpener(actionId);
 
 #if DEBUG
