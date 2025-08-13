@@ -9,6 +9,7 @@ using System.Linq;
 using System.Numerics;
 using WrathCombo.Combos.PvE;
 using WrathCombo.Core;
+using WrathCombo.Extensions;
 using WrathCombo.Services;
 using WrathCombo.Window.Functions;
 using WrathCombo.Window.MessagesNS;
@@ -312,11 +313,11 @@ internal class PvEFeatures : ConfigWindow
 
         if (Player.Job.IsDol())
         {
-            OpenJob = JobToName(Job.MIN);
+            OpenJob = Job.MIN.Name();
             return;
         }
 
-        var job = JobToName(Player.Job.GetUpgradedJob());
+        var job = Player.Job.GetUpgradedJob().Name();
         if (groupedPresets.TryGetValue(job, out var foundJob))
             OpenJob = foundJob.First().Info.JobName;
     }

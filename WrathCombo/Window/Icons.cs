@@ -45,39 +45,15 @@ internal static class Icons
 
     public static IDalamudTextureWrap? GetJobIcon(Job job)
     {
-        // Reject invalid enum values
-        if (!Enum.IsDefined(typeof(Job), job))
-            return null;
-
-        return job switch
+        uint iconID = job switch
         {
-            Job.ADV => GetTextureFromIconId(62146),
-
-            // DOL
-            Job.MIN or Job.BTN or Job.FSH => GetTextureFromIconId(82096),
-
-            // Special case
-            //Job.ADV => GetOccultIcon(),
-
-            // Classes: from GLA to MaxJob (auto-calculated)
-            _ when job >= Job.GLA && job <= MaxJob => GetTextureFromIconId(62100 + (uint)job),
-
-            _ => null
+            Job.ADV => 62146,
+            Job.MIN or Job.BTN or Job.FSH => 82096,
+            _ => (uint)ExcelJobHelper.GetIcon(job)
         };
-    }
 
-    //public static IDalamudTextureWrap? GetJobIcon(uint jobId)
-    //{
-    //    switch (jobId)
-    //    {
-    //        case All.JobID: jobId = 62146; break; //Adventurer / General
-    //        case > All.JobID and <= 42: jobId += 62100; break; //Classes
-    //        case DOL.JobID: jobId = 82096; break;
-    //        case OccultCrescent.JobID: return GetOccultIcon();
-    //        default: return null; //Unknown, return null
-    //    }
-    //    return GetTextureFromIconId(jobId);
-    //}
+        return GetTextureFromIconId(iconID);
+    }
 
     public static IDalamudTextureWrap? GetRoleIcon(JobRole jobRole)
     {

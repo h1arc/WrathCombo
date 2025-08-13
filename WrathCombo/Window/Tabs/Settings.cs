@@ -8,6 +8,7 @@ using System;
 using System.Linq;
 using System.Numerics;
 using WrathCombo.CustomComboNS.Functions;
+using WrathCombo.Extensions;
 using WrathCombo.Services;
 using WrathCombo.Window.Functions;
 namespace WrathCombo.Window.Tabs;
@@ -97,7 +98,7 @@ internal class Settings : ConfigWindow
             ImGuiComponents.HelpMarker("Draws a box around party members in the vanilla Party List, as targeted by certain features.\nSet Alpha to 0 to hide the box.");
 
             ImGui.SameLine();
-            ImGui.TextColored(ImGuiColors.DalamudGrey, $"(Only used by {CustomComboFunctions.JobIDs.JobToName(Job.AST)} currently)");
+            ImGui.TextColored(ImGuiColors.DalamudGrey, $"(Only used by {Job.AST.Name()} currently)");
 
                 #endregion
 

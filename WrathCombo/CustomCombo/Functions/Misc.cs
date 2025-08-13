@@ -37,67 +37,6 @@ internal abstract partial class CustomComboFunctions
 
     public class JobIDs
     {
-        private static TextInfo? _cachedTextInfo;
-
-        public static string JobToShorthand(Job job)
-        {
-            if (job != 0)
-            {
-                if (job is Job.MIN) return "DOL";
-                return job.GetData().Abbreviation.ToString();
-            }
-            else return string.Empty;
-        }
-
-        public static string JobToName(Job job)
-        {
-            // Special Cases
-            switch (job)
-            {
-                case Job.ADV:     return "Roles and Content";
-                //case 99:    return "Global";
-                //case 100:   return OccultCrescent.ContentName;
-            }
-
-            // Override DoH/DoL
-            job = job switch
-            {
-                Job.BTN   => Job.MIN, // Miner
-                Job.FSH   => Job.MIN,
-                _           => job
-            };
-
-            // Combat Jobs: Use Job Name
-            // DoL Jobs: Use Category Name
-            string jobName = (job is Job.MIN)
-                ? job.GetData().ClassJobCategory.Value.Name.ToString()
-                : job.GetData().Name.ToString();
-
-            return GetTextInfo().ToTitleCase(jobName);
-        }
-
-        public static TextInfo GetTextInfo()
-        {
-            // Use cached TextInfo if available
-            // Otherwise create new and cache for future use
-            if (_cachedTextInfo is null)
-            {
-                // Job names are lowercase by default
-                // This capitalizes based on regional rules
-                var cultureId = Svc.ClientState.ClientLanguage switch
-                {
-                    Dalamud.Game.ClientLanguage.French      => "fr-FR",
-                    Dalamud.Game.ClientLanguage.Japanese    => "ja-JP",
-                    Dalamud.Game.ClientLanguage.German      => "de-DE",
-                    _                                       => "en-US",
-                };
-
-                _cachedTextInfo = new CultureInfo(cultureId, useUserOverride: false).TextInfo;
-            }
-
-            return _cachedTextInfo;
-        }
-
         public static readonly FrozenSet<uint> Tank =
             Svc.Data.GetExcelSheet<ClassJob>()!
             .Where(cj => cj.Role == 1)

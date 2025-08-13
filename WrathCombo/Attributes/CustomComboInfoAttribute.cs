@@ -2,6 +2,7 @@ using ECommons.ExcelServices;
 using System;
 using System.Runtime.CompilerServices;
 using WrathCombo.CustomComboNS.Functions;
+using WrathCombo.Extensions;
 
 namespace WrathCombo.Attributes;
 
@@ -52,8 +53,8 @@ internal class CustomComboInfoAttribute : Attribute
     //public uint ClassJobCategory => CustomComboFunctions.JobIDs.JobIDToClassJobCategory(JobID);
 
     /// <summary> Gets the job name. </summary>
-    public string JobName => CustomComboFunctions.JobIDs.JobToName(JobID);
+    public string JobName => JobID.Name();
 
     /// <summary> Gets the job shorthand. </summary>
-    public string JobShorthand => CustomComboFunctions.JobIDs.JobToShorthand(JobID);
+    public string JobShorthand => JobID.Shorthand();
 }

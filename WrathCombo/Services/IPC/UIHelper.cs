@@ -11,6 +11,7 @@ using System.Numerics;
 using WrathCombo.AutoRotation;
 using WrathCombo.Combos;
 using WrathCombo.CustomComboNS.Functions;
+using WrathCombo.Extensions;
 
 // ReSharper disable VariableHidesOuterVariable
 
@@ -72,7 +73,7 @@ public class UIHelper(Leasing leasing)
 
     internal (string controllers, bool state)? JobControlled(Job job)
     {
-        var jobName = CustomComboFunctions.JobIDs.JobToShorthand(job);
+        var jobName = job.Shorthand();
 
         if (_jobsUpdated != _leasing.JobsUpdated)
             JobsControlled.Clear();
