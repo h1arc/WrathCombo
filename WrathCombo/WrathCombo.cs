@@ -23,7 +23,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using WrathCombo.Attributes;
 using WrathCombo.AutoRotation;
-using WrathCombo.Combos;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
@@ -61,7 +60,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
     internal MovementHook MoveHook;
 
     private readonly TextPayload starterMotd = new("[Wrath Message of the Day] ");
-    private static uint? jobID;
+    private static Job? jobID;
     private static bool inInstancedContent;
 
     public static readonly List<Job> DisabledJobsPVE =
@@ -94,7 +93,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
 
     public static readonly List<Job> DisabledJobsPVP = [];
 
-    public static uint? JobID
+    public static Job? JobID
     {
         get => jobID;
         private set
@@ -284,9 +283,9 @@ public sealed partial class WrathCombo : IDalamudPlugin
 
     private void OnFrameworkUpdate(IFramework framework)
     {
-        if (Svc.ClientState.LocalPlayer is not null)
+        if (Player.Object is not null)
         {
-            JobID = Svc.ClientState.LocalPlayer?.ClassJob.RowId;
+            JobID = Player.Job;
             CustomComboFunctions.IsMoving(); //Hacky workaround to ensure it's always running
         }
 

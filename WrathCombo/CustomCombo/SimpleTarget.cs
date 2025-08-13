@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using Dalamud.Game.ClientState.Objects.Types;
 using ECommons.DalamudServices;
+using ECommons.ExcelServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using ECommons.Logging;
@@ -722,21 +723,21 @@ internal static class SimpleTarget
         GetPartyMembers()
             .Where(x => x.BattleChara.IsNotThePlayer())
             .FirstOrDefault(x =>
-                x.RealJob?.RowId is WHM.JobID or AST.JobID)?.BattleChara;
+                x.RealJob?.GetJob() is Job.WHM or Job.AST)?.BattleChara;
 
     /// Gets any Shield Healer that is not the player.
     public static IGameObject? AnyShieldHealer =>
         GetPartyMembers()
             .Where(x => x.BattleChara.IsNotThePlayer())
             .FirstOrDefault(x =>
-                x.RealJob?.RowId is SCH.JobID or SGE.JobID)?.BattleChara;
+                x.RealJob?.GetJob() is Job.SCH or Job.SGE)?.BattleChara;
 
     /// Gets any Selfish DPS that is not the player.
     public static IGameObject? AnySelfishDPS =>
         GetPartyMembers()
             .Where(x => x.BattleChara.IsNotThePlayer())
-            .FirstOrDefault(x => x.RealJob?.RowId is
-                SAM.JobID or BLM.JobID or MCH.JobID or VPR.JobID)?.BattleChara;
+            .FirstOrDefault(x => x.RealJob?.GetJob() is
+                Job.SAM or Job.BLM or Job.MCH or Job.VPR)?.BattleChara;
 
     #endregion
 
