@@ -1,6 +1,5 @@
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
-using WrathCombo.Window.Functions;
 using static WrathCombo.Window.Functions.UserConfig;
 namespace WrathCombo.Combos.PvE;
 
@@ -70,7 +69,8 @@ internal partial class NIN
                         DrawHorizontalMultiChoice(NIN_ST_AdvancedMode_Raiton_Options, "Raiton Pooling",
                             "Will Pool the charges, saving them for Trick Window", 2, 0);
                         DrawHorizontalMultiChoice(NIN_ST_AdvancedMode_Raiton_Options, "Raiton Uptime",
-                            "Will Use Raiton when out of Melee range of the target, /nThis can negatively affect your burst windows", 2, 1);
+                            "Will Use Raiton when out of Melee range of the target, " +
+                            "\nThis can negatively affect your burst windows", 2, 1);
                     }
                     if (NIN_ST_AdvancedMode_Ninjitsus_Options[1])
                     {
