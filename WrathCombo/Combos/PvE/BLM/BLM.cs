@@ -680,13 +680,16 @@ internal partial class BLM : Caster
             if (actionID is not (Blizzard or Blizzard3))
                 return actionID;
 
-            if (BLM_B1to3 == 0 && LevelChecked(Blizzard3) && (FirePhase || UmbralIceStacks is 1 || UmbralIceStacks is 2))
-                return Blizzard3;
+            return actionID switch
+            {
+                Blizzard when BLM_B1to3 == 0 && LevelChecked(Blizzard3) &&
+                              (FirePhase ||
+                               UmbralIceStacks is 1 ||
+                               UmbralIceStacks is 2) => Blizzard3,
 
-            if (BLM_B1to3 == 1 && LevelChecked(Blizzard3) && IcePhase && UmbralIceStacks is 3)
-                return OriginalHook(Blizzard);
-
-            return actionID;
+                Blizzard3 when BLM_B1to3 == 1 && LevelChecked(Blizzard3) && IcePhase && UmbralIceStacks is 3 => OriginalHook(Blizzard),
+                var _ => actionID
+            };
         }
     }
 
@@ -699,20 +702,22 @@ internal partial class BLM : Caster
             if (actionID is not (Fire or Fire3))
                 return actionID;
 
-            if (BLM_F1to3 == 0 && LevelChecked(Fire3) &&
-                (AstralFireStacks is 1 or 2 && HasStatusEffect(Buffs.Firestarter) ||
-                 LevelChecked(Paradox) && !ActiveParadox ||
-                 !InCombat() && LevelChecked(Fire4) ||
-                 IcePhase && !ActiveParadox ||
-                 !LevelChecked(Fire4) && HasStatusEffect(Buffs.Firestarter)) && !JustUsed(Fire3))
-                return Fire3;
+            return actionID switch
+            {
+                Fire when BLM_F1to3 == 0 && LevelChecked(Fire3) &&
+                          (AstralFireStacks is 1 or 2 && HasStatusEffect(Buffs.Firestarter) ||
+                           LevelChecked(Paradox) && !ActiveParadox ||
+                           !InCombat() && LevelChecked(Fire4) ||
+                           IcePhase && !ActiveParadox ||
+                           !LevelChecked(Fire4) &&
+                           HasStatusEffect(Buffs.Firestarter)) && !JustUsed(Fire3) => Fire3,
 
-            if (BLM_F1to3 == 1 && LevelChecked(Fire3) && FirePhase &&
-                (LevelChecked(Paradox) && ActiveParadox && AstralFireStacks is 3 ||
-                 !LevelChecked(Fire4) && !HasStatusEffect(Buffs.Firestarter)) && !JustUsed(OriginalHook(Fire)))
-                return OriginalHook(Fire);
-
-            return actionID;
+                Fire3 when BLM_F1to3 == 1 && LevelChecked(Fire3) && FirePhase &&
+                           (LevelChecked(Paradox) && ActiveParadox && AstralFireStacks is 3 ||
+                            !LevelChecked(Fire4) && !HasStatusEffect(Buffs.Firestarter)) &&
+                           !JustUsed(OriginalHook(Fire)) => OriginalHook(Fire),
+                var _ => actionID
+            };
         }
     }
 
@@ -743,19 +748,14 @@ internal partial class BLM : Caster
             if (actionID is not (Fire4 or Flare))
                 return actionID;
 
-            if (FirePhase && LevelChecked(Fire4))
-                return Fire4;
-
-            if (IcePhase && LevelChecked(Blizzard4))
-                return Blizzard4;
-
-            if (FirePhase && LevelChecked(Flare))
-                return Flare;
-
-            if (IcePhase && LevelChecked(Freeze))
-                return Freeze;
-
-            return actionID;
+            return actionID switch
+            {
+                Fire4 when FirePhase && LevelChecked(Fire4) => Fire4,
+                Fire4 when IcePhase && LevelChecked(Blizzard4) => Blizzard4,
+                Flare when FirePhase && LevelChecked(Flare) => Flare,
+                Flare when IcePhase && LevelChecked(Freeze) => Freeze,
+                var _ => actionID
+            };
         }
     }
 
@@ -782,10 +782,12 @@ internal partial class BLM : Caster
             if (actionID is not (Blizzard3 or Blizzard4))
                 return actionID;
 
-            return BLM_B4toDespair == 0 && FirePhase && LevelChecked(Despair) && CurMp >= 800 ||
-                   BLM_B4toDespair == 1 && FirePhase && LevelChecked(Despair) && CurMp >= 800
-                ? Despair
-                : actionID;
+            return actionID switch
+            {
+                Blizzard4 when BLM_B4toDespair == 0 && FirePhase && LevelChecked(Despair) && CurMp >= 800 => Despair,
+                Blizzard3 when BLM_B4toDespair == 1 && FirePhase && LevelChecked(Despair) && CurMp >= 800 => Despair,
+                var _ => actionID
+            };
         }
     }
 
