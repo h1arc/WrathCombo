@@ -80,15 +80,13 @@ internal partial class NIN
     #endregion
     
     #region OGCD Logic
-    
-    #region Buff Window Logic
+    // Buffs
     internal static bool BuffWindow => TrickDebuff || MugDebuff && TrickCD >= 30;
     internal static float TrickCD => GetCooldownRemainingTime(OriginalHook(TrickAttack));
     internal static float MugCD => GetCooldownRemainingTime(OriginalHook(Mug));
     
-    internal static bool CanTrick => ActionReady(OriginalHook(TrickAttack)) && NinjaWeave &&
+    internal static bool CanTrick => ActionReady(OriginalHook(TrickAttack)) && NinjaWeave && HasStatusEffect(Buffs.ShadowWalker) && 
                                      (!MudraPhase || HasKassatsu) &&
-                                     HasStatusEffect(Buffs.ShadowWalker) && 
                                      (MugDebuff || MugCD >= 50 || IsNotEnabled(Preset.NIN_ST_AdvancedMode_Mug) && !STSimpleMode);
     
     internal static bool CanMug => ActionReady(OriginalHook(Mug)) && CanDelayedWeave(1.25f, .6f, 10) && 
@@ -102,12 +100,12 @@ internal partial class NIN
     internal static bool MugDebuff => HasStatusEffect(Debuffs.Mug, CurrentTarget) || 
                                       HasStatusEffect(Debuffs.Dokumori, CurrentTarget) ||
                                       JustUsed(OriginalHook(Mug));
-    #endregion
-    
-    #region Ninki Logic
-    
+   
+    // Ninki Usage
     internal static bool NinkiWillOvercap => gauge.Ninki > 50;
-
+    internal static float BunshinCD => GetCooldownRemainingTime(Bunshin);
+    internal static bool CanBunshin => LevelChecked(Bunshin) && IsOffCooldown(Bunshin) && gauge.Ninki >= 50 && NinjaWeave && !MudraPhase;
+    
     internal static bool CanBhavacakra => NinjaWeave && !MudraPhase && gauge.Ninki >= 50 &&
                                           (BunshinCD < 20 && gauge.Ninki >= NinkiPool() || //Pooling for Bunshin
                                            BunshinCD > 20 ||
@@ -123,20 +121,14 @@ internal partial class NIN
     internal static bool HellfrogMediumPooling => gauge.Ninki >= NinkiPool() || 
                                                   TrickDebuff && gauge.Ninki >= 50 ||
                                                   MugCD < 5 && gauge.Ninki >= 50;
-    
-    internal static bool CanBunshin => LevelChecked(Bunshin) && IsOffCooldown(Bunshin) &&
-                                       gauge.Ninki >= 50 && NinjaWeave && !MudraPhase;
-    
-    internal static float BunshinCD => GetCooldownRemainingTime(Bunshin);
-    
     internal static int NinkiPool()
     {
         if (HasStatusEffect(Buffs.Bunshin))
             return ComboAction == GustSlash ? 75: 95;
         return ComboAction == GustSlash ? 90 : 100;
     }
-    #endregion
     
+    // Other OGCDs
     internal static bool HasKassatsu => HasStatusEffect(Buffs.Kassatsu);
     internal static float KassatsuRemaining => GetStatusEffectRemainingTime(Buffs.Kassatsu);
     internal static bool CanKassatsu => !MudraPhase && ActionReady(Kassatsu) && NinjaWeave &&  
@@ -152,11 +144,8 @@ internal partial class NIN
 
     internal static bool CanTenChiJin => !MudraPhase && !MudraAlmostReady && IsOffCooldown(TenChiJin) && LevelChecked(TenChiJin) && NinjaWeave &&
                                          (BuffWindow || IsNotEnabled(Preset.NIN_ST_AdvancedMode_TrickAttack) && !STSimpleMode);
-                                         
 
     internal static bool CanTenriJindo => NinjaWeave && HasStatusEffect(Buffs.TenriJendoReady);
-
-    
     #endregion
     
     #endregion
