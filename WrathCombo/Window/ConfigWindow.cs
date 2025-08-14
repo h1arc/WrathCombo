@@ -26,11 +26,11 @@ namespace WrathCombo.Window;
 /// <summary> Plugin configuration window. </summary>
 internal class ConfigWindow : Dalamud.Interface.Windowing.Window
 {
-    internal static readonly Dictionary<string, List<(Preset Preset, CustomComboInfoAttribute Info)>> groupedPresets = GetGroupedPresets();
+    internal static readonly Dictionary<Job, List<(Preset Preset, CustomComboInfoAttribute Info)>> groupedPresets = GetGroupedPresets();
     internal static readonly Dictionary<Preset, (Preset Preset, CustomComboInfoAttribute Info)[]> presetChildren = GetPresetChildren();
     internal static int currentPreset = 1;
     internal static float lastLeftColumnWidth;
-    internal static Dictionary<string, List<(Preset Preset, CustomComboInfoAttribute Info)>> GetGroupedPresets()
+    internal static Dictionary<Job, List<(Preset Preset, CustomComboInfoAttribute Info)>> GetGroupedPresets()
     {
         return Enum
             .GetValues<Preset>()
@@ -44,9 +44,9 @@ internal class ConfigWindow : Dalamud.Interface.Windowing.Window
             .ThenByDescending(tpl => tpl.Info.JobID == 0)
             .ThenByDescending(tpl => tpl.Info.JobID == Job.MIN)
             //.ThenBy(tpl => tpl.Info.ClassJobCategory)
-            .ThenBy(tpl => tpl.Info.JobName)
+            .ThenBy(tpl => tpl.Info.JobID)
             .ThenBy(tpl => tpl.Info.Order)
-            .GroupBy(tpl => tpl.Info.JobName)
+            .GroupBy(tpl => tpl.Info.JobID)
             .ToDictionary(
                 tpl => tpl.Key,
                 tpl => tpl.ToList())!;

@@ -30,7 +30,11 @@ internal class CustomComboInfoAttribute : Attribute
     {
         Name = name;
         Description = description;
-        JobID = job;
+        JobID = job switch
+        {
+            Job.BTN or Job.MIN or Job.FSH => Job.MIN,
+            _ => job
+        };
         Order = order;
     }
 

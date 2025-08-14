@@ -711,13 +711,15 @@ public partial class WrathCombo
             // Skip trying to process arguments
             return;
         }
-
+        
         // Open to specified job
-        var jobName = argument[0].ToUpperInvariant();
-        jobName = ConfigWindow.groupedPresets
-            .FirstOrDefault(x =>
-                x.Value.Any(y => y.Info.JobShorthand == jobName)).Key;
-        if (jobName is null)
+        var jobAbbrev = argument[0];
+
+        var rowId = Svc.Data.GetExcelSheet<ClassJob>()?
+            .FirstOrDefault(cj => cj.Abbreviation.ToString().Equals(jobAbbrev, StringComparison.OrdinalIgnoreCase))
+            .RowId;
+
+        if (!rowId.HasValue)
         {
             DuoLog.Error($"{argument[0]} is not a correct job abbreviation.");
             return;
@@ -725,6 +727,6 @@ public partial class WrathCombo
 
         ConfigWindow.IsOpen = true;
         ConfigWindow.OpenWindow = OpenWindow.PvE;
-        PvEFeatures.OpenJob = jobName;
+        PvEFeatures.OpenJob = (Job)rowId.Value;
     }
 }
