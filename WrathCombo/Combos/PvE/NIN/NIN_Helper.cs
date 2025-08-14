@@ -11,112 +11,6 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class NIN
 {
-    #region ID's
-
-    public const byte ClassID = 29;
-    public const byte JobID = 30;
-
-    public const uint
-        SpinningEdge = 2240,
-        ShadeShift = 2241,
-        GustSlash = 2242,
-        Hide = 2245,
-        Assassinate = 2246,
-        ThrowingDaggers = 2247,
-        Mug = 2248,
-        DeathBlossom = 2254,
-        AeolianEdge = 2255,
-        TrickAttack = 2258,
-        Kassatsu = 2264,
-        ArmorCrush = 3563,
-        DreamWithinADream = 3566,
-        TenChiJin = 7403,
-        Bhavacakra = 7402,
-        HakkeMujinsatsu = 16488,
-        Meisui = 16489,
-        Bunshin = 16493,
-        PhantomKamaitachi = 25774,
-        ForkedRaiju = 25777,
-        FleetingRaiju = 25778,
-        HellfrogMedium = 7401,
-        HollowNozuchi = 25776,
-        TenriJendo = 36961,
-        KunaisBane = 36958,
-        ZeshoMeppo = 36960,
-        Dokumori = 36957,
-
-        //Mudras
-        Ninjutsu = 2260,
-        Rabbit = 2272,
-
-        //-- initial state mudras (the ones with charges)
-        Ten = 2259,
-        Chi = 2261,
-        Jin = 2263,
-
-        //-- mudras used for combos (the ones used while you have the mudra buff)
-        TenCombo = 18805,
-        ChiCombo = 18806,
-        JinCombo = 18807,
-
-        //Ninjutsu
-        FumaShuriken = 2265,
-        Hyoton = 2268,
-        Doton = 2270,
-        Katon = 2266,
-        Suiton = 2271,
-        Raiton = 2267,
-        Huton = 2269,
-        GokaMekkyaku = 16491,
-        HyoshoRanryu = 16492,
-
-        //TCJ Jutsus (why they have another ID I will never know)
-        TCJFumaShurikenTen = 18873,
-        TCJFumaShurikenChi = 18874,
-        TCJFumaShurikenJin = 18875,
-        TCJKaton = 18876,
-        TCJRaiton = 18877,
-        TCJHyoton = 18878,
-        TCJHuton = 18879,
-        TCJDoton = 18880,
-        TCJSuiton = 18881;
-
-    public static class Buffs
-    {
-        public const ushort
-            Mudra = 496,
-            Kassatsu = 497,
-            //Suiton = 507,
-            Higi = 3850,
-            TenriJendoReady = 3851,
-            ShadowWalker = 3848,
-            Hidden = 614,
-            TenChiJin = 1186,
-            AssassinateReady = 1955,
-            RaijuReady = 2690,
-            PhantomReady = 2723,
-            Meisui = 2689,
-            Doton = 501,
-            Bunshin = 1954;
-    }
-
-    public static class Debuffs
-    {
-        public const ushort
-            Dokumori = 3849,
-            TrickAttack = 3254,
-            KunaisBane = 3906,
-            Mug = 638;
-    }
-
-    public static class Traits
-    {
-        public const uint
-            EnhancedKasatsu = 250;
-    }
-
-    #endregion
-
     #region Variables
 
     static NINGauge gauge = GetJobGauge<NINGauge>();
@@ -127,21 +21,6 @@ internal partial class NIN
     internal static bool STSimpleMode => IsEnabled(Preset.NIN_ST_SimpleMode);
     internal static bool AoESimpleMode => IsEnabled(Preset.NIN_AoE_SimpleMode);
     internal static bool NinjaWeave => CanWeave(.6f, 10);
-    internal static bool TNArmorCrush => !OnTargetsFlank() && TargetNeedsPositionals() && Role.CanTrueNorth();
-    internal static bool TNAeolianEdge => !OnTargetsRear() && TargetNeedsPositionals() && Role.CanTrueNorth();
-    internal static bool HasKassatsu => HasStatusEffect(Buffs.Kassatsu);
-    internal static float KassatsuRemaining => GetStatusEffectRemainingTime(Buffs.Kassatsu);
-    internal static bool NinkiWillOvercap => gauge.Ninki > 50;
-    internal static bool HasDoton => HasStatusEffect(Buffs.Doton);
-    internal static float DotonRemaining => GetStatusEffectRemainingTime(Buffs.Doton);
-    
-    internal static int BhavaPool()
-    {
-        if (HasStatusEffect(Buffs.Bunshin))
-            return ComboAction == GustSlash ? 75: 95;
-        return ComboAction == GustSlash ? 90 : 100;
-    }
-    
     
     #region Mudra Logic
     internal static bool MudraPhase => OriginalHook(Ten) != Ten || OriginalHook(Chi) != Chi || OriginalHook(Jin) != Jin;
@@ -153,62 +32,7 @@ internal partial class NIN
                                       MudraCharges == 2;
     #endregion
     
-    #region Buff Window Logic
-    internal static bool BuffWindow => TrickDebuff || MugDebuff && TrickCD >= 30;
-    internal static float TrickCD => GetCooldownRemainingTime(OriginalHook(TrickAttack));
-    internal static float MugCD => GetCooldownRemainingTime(OriginalHook(Mug));
-    
-    internal static bool CanTrick => ActionReady(OriginalHook(TrickAttack)) && NinjaWeave &&
-                                       (!MudraPhase || HasKassatsu) &&
-                                       HasStatusEffect(Buffs.ShadowWalker) && 
-                                       (MugDebuff || MugCD >= 50);
-    
-    internal static bool CanMug => ActionReady(OriginalHook(Mug)) && CanDelayedWeave(1.25f, .6f, 10) && 
-                                   (HasStatusEffect(Buffs.ShadowWalker) || !LevelChecked(Huton)) &&
-                                   (!MudraPhase || HasKassatsu) &&
-                                   (LevelChecked(Dokumori) && GetTargetDistance() <= 8 || InMeleeRange());
-    
-    internal static bool TrickDebuff => HasStatusEffect(Debuffs.TrickAttack, CurrentTarget) || 
-                                        HasStatusEffect(Debuffs.KunaisBane, CurrentTarget) || 
-                                        JustUsed(OriginalHook(TrickAttack));
-    internal static bool MugDebuff => HasStatusEffect(Debuffs.Mug, CurrentTarget) || 
-                                      HasStatusEffect(Debuffs.Dokumori, CurrentTarget) ||
-                                      JustUsed(OriginalHook(Mug));
-    internal static int s => ComboAction == GustSlash ? 90: 100;
-
-    #endregion
-    
-    #region Action Logic
-
-    internal static bool CanBhavacakra => NinjaWeave && !MudraPhase;
-    
-    internal static bool BhavacakraPooling => gauge.Ninki >= BhavaPool() || 
-                                              TrickDebuff && gauge.Ninki >= 50 ||
-                                              MugCD < 5 && gauge.Ninki >= 50;
-    
-    internal static bool CanHellfrogMedium => ActionReady(OriginalHook(HellfrogMedium)) && NinjaWeave &&
-                                          !MudraPhase &&
-                                          (gauge.Ninki >= BhavaPool() || 
-                                           TrickDebuff && gauge.Ninki >= 50 ||
-                                           MugCD < 5 && gauge.Ninki >= 50);
-
-    internal static bool CanMeisui => ActionReady(Meisui) && NinjaWeave && BuffWindow && HasStatusEffect(Buffs.ShadowWalker) &&
-                                      !MudraPhase;
-
-    internal static bool CanAssassinate => ActionReady(OriginalHook(Assassinate)) && NinjaWeave && BuffWindow && 
-                                           !MudraPhase;
-
-    internal static bool CanTenChiJin => IsOffCooldown(TenChiJin) && LevelChecked(TenChiJin) && NinjaWeave && BuffWindow 
-                                         && !MudraPhase && !MudraAlmostReady;
-
-    internal static bool CanTenriJindo => NinjaWeave && HasStatusEffect(Buffs.TenriJendoReady);
-
-    internal static bool CanBunshin => ActionReady(Bunshin) && NinjaWeave && 
-                                       (!MudraPhase || HasKassatsu);
-
-    internal static bool CanKassatsu => ActionReady(Kassatsu) && NinjaWeave && HasStatusEffect(Buffs.ShadowWalker) &&
-                                        !MudraPhase && 
-                                        (TrickCD < 10 || BuffWindow);
+    #region Ninjutsu Logic
      
     internal static bool CanUseRaiton =>  LevelChecked(FumaShuriken) && 
                                           (MudraPool || 
@@ -233,6 +57,9 @@ internal partial class NIN
                                          MudraPhase && !HasKassatsu || // Finish if you dont have Kassatsu for Hyosho Ranryu
                                          MudraPhase && !LevelChecked(HyoshoRanryu)); // Use if you have Kassatsu before you get Hosho Ranryu
     
+    internal static bool HasDoton => HasStatusEffect(Buffs.Doton);
+    internal static float DotonRemaining => GetStatusEffectRemainingTime(Buffs.Doton);
+    
     internal static bool CanUseKaton =>  LevelChecked(Katon) &&
                                          (MudraPool || //Start based on pooling
                                          MudraReady && !LevelChecked(Huton) || //Start without pooling because of no Suiton
@@ -245,18 +72,91 @@ internal partial class NIN
     internal static bool CanUseGokaMekkyaku => HasKassatsu && LevelChecked(GokaMekkyaku) &&
                                                (MudraPhase || MudraReady) &&
                                                (TrickDebuff || KassatsuRemaining < 3);
-
+    
+    #endregion
+    
+    #region GCD Logic
+    internal static bool TNArmorCrush => !OnTargetsFlank() && TargetNeedsPositionals() && Role.CanTrueNorth();
+    internal static bool TNAeolianEdge => !OnTargetsRear() && TargetNeedsPositionals() && Role.CanTrueNorth();
     internal static bool CanPhantomKamaitachi => HasStatusEffect(Buffs.PhantomReady) &&
-                                              (TrickDebuff && ComboAction != GustSlash ||
-                                               !TrickDebuff);
-
+                                                 (TrickDebuff && ComboAction != GustSlash ||
+                                                  !TrickDebuff);
     internal static bool CanThrowingDaggers => ActionReady(ThrowingDaggers) && HasTarget() && !InMeleeRange() &&
                                                !HasStatusEffect(Buffs.RaijuReady);
     internal static bool CanThrowingDaggersAoE => ActionReady(ThrowingDaggers) && HasTarget() && GetTargetDistance() >= 4.5 &&
-                                               !HasStatusEffect(Buffs.RaijuReady);
-
+                                                  !HasStatusEffect(Buffs.RaijuReady);
     internal static bool CanRaiju => HasStatusEffect(Buffs.RaijuReady);
+    #endregion
     
+    #region OGCD Logic
+    
+    #region Buff Window Logic
+    internal static bool BuffWindow => TrickDebuff || MugDebuff && TrickCD >= 30;
+    internal static float TrickCD => GetCooldownRemainingTime(OriginalHook(TrickAttack));
+    internal static float MugCD => GetCooldownRemainingTime(OriginalHook(Mug));
+    
+    internal static bool CanTrick => ActionReady(OriginalHook(TrickAttack)) && NinjaWeave &&
+                                     (!MudraPhase || HasKassatsu) &&
+                                     HasStatusEffect(Buffs.ShadowWalker) && 
+                                     (MugDebuff || MugCD >= 50);
+    
+    internal static bool CanMug => ActionReady(OriginalHook(Mug)) && CanDelayedWeave(1.25f, .6f, 10) && 
+                                   (HasStatusEffect(Buffs.ShadowWalker) || !LevelChecked(Huton)) &&
+                                   (!MudraPhase || HasKassatsu) &&
+                                   (LevelChecked(Dokumori) && GetTargetDistance() <= 8 || InMeleeRange());
+    
+    internal static bool TrickDebuff => HasStatusEffect(Debuffs.TrickAttack, CurrentTarget) || 
+                                        HasStatusEffect(Debuffs.KunaisBane, CurrentTarget) || 
+                                        JustUsed(OriginalHook(TrickAttack));
+    internal static bool MugDebuff => HasStatusEffect(Debuffs.Mug, CurrentTarget) || 
+                                      HasStatusEffect(Debuffs.Dokumori, CurrentTarget) ||
+                                      JustUsed(OriginalHook(Mug));
+    #endregion
+    
+    #region Ninki Logic
+    
+    internal static bool NinkiWillOvercap => gauge.Ninki > 50;
+    
+    internal static bool CanBhavacakra => NinjaWeave && !MudraPhase;
+    
+    internal static bool BhavacakraPooling => gauge.Ninki >= BhavaPool() || 
+                                              TrickDebuff && gauge.Ninki >= 50 ||
+                                              MugCD < 5 && gauge.Ninki >= 50;
+    
+    internal static bool CanHellfrogMedium => ActionReady(OriginalHook(HellfrogMedium)) && NinjaWeave &&
+                                              !MudraPhase &&
+                                              (gauge.Ninki >= BhavaPool() || 
+                                               TrickDebuff && gauge.Ninki >= 50 ||
+                                               MugCD < 5 && gauge.Ninki >= 50);
+    
+    internal static int BhavaPool()
+    {
+        if (HasStatusEffect(Buffs.Bunshin))
+            return ComboAction == GustSlash ? 75: 95;
+        return ComboAction == GustSlash ? 90 : 100;
+    }
+    #endregion
+    
+    internal static bool HasKassatsu => HasStatusEffect(Buffs.Kassatsu);
+    internal static float KassatsuRemaining => GetStatusEffectRemainingTime(Buffs.Kassatsu);
+    internal static bool CanKassatsu => ActionReady(Kassatsu) && NinjaWeave && HasStatusEffect(Buffs.ShadowWalker) &&
+                                        !MudraPhase && 
+                                        (TrickCD < 10 || BuffWindow);
+    
+    internal static bool CanMeisui => ActionReady(Meisui) && NinjaWeave && BuffWindow && HasStatusEffect(Buffs.ShadowWalker) &&
+                                      !MudraPhase;
+    
+
+    internal static bool CanAssassinate => ActionReady(OriginalHook(Assassinate)) && NinjaWeave && BuffWindow && 
+                                           !MudraPhase;
+
+    internal static bool CanTenChiJin => IsOffCooldown(TenChiJin) && LevelChecked(TenChiJin) && NinjaWeave && BuffWindow 
+                                         && !MudraPhase && !MudraAlmostReady;
+
+    internal static bool CanTenriJindo => NinjaWeave && HasStatusEffect(Buffs.TenriJendoReady);
+
+    internal static bool CanBunshin => ActionReady(Bunshin) && NinjaWeave && 
+                                       (!MudraPhase || HasKassatsu);
     #endregion
     
     #endregion
@@ -1019,6 +919,112 @@ internal partial class NIN
             return true;
         }
     }
+    #endregion
+    
+    #region ID's
+
+    public const byte ClassID = 29;
+    public const byte JobID = 30;
+
+    public const uint
+        SpinningEdge = 2240,
+        ShadeShift = 2241,
+        GustSlash = 2242,
+        Hide = 2245,
+        Assassinate = 2246,
+        ThrowingDaggers = 2247,
+        Mug = 2248,
+        DeathBlossom = 2254,
+        AeolianEdge = 2255,
+        TrickAttack = 2258,
+        Kassatsu = 2264,
+        ArmorCrush = 3563,
+        DreamWithinADream = 3566,
+        TenChiJin = 7403,
+        Bhavacakra = 7402,
+        HakkeMujinsatsu = 16488,
+        Meisui = 16489,
+        Bunshin = 16493,
+        PhantomKamaitachi = 25774,
+        ForkedRaiju = 25777,
+        FleetingRaiju = 25778,
+        HellfrogMedium = 7401,
+        HollowNozuchi = 25776,
+        TenriJendo = 36961,
+        KunaisBane = 36958,
+        ZeshoMeppo = 36960,
+        Dokumori = 36957,
+
+        //Mudras
+        Ninjutsu = 2260,
+        Rabbit = 2272,
+
+        //-- initial state mudras (the ones with charges)
+        Ten = 2259,
+        Chi = 2261,
+        Jin = 2263,
+
+        //-- mudras used for combos (the ones used while you have the mudra buff)
+        TenCombo = 18805,
+        ChiCombo = 18806,
+        JinCombo = 18807,
+
+        //Ninjutsu
+        FumaShuriken = 2265,
+        Hyoton = 2268,
+        Doton = 2270,
+        Katon = 2266,
+        Suiton = 2271,
+        Raiton = 2267,
+        Huton = 2269,
+        GokaMekkyaku = 16491,
+        HyoshoRanryu = 16492,
+
+        //TCJ Jutsus (why they have another ID I will never know)
+        TCJFumaShurikenTen = 18873,
+        TCJFumaShurikenChi = 18874,
+        TCJFumaShurikenJin = 18875,
+        TCJKaton = 18876,
+        TCJRaiton = 18877,
+        TCJHyoton = 18878,
+        TCJHuton = 18879,
+        TCJDoton = 18880,
+        TCJSuiton = 18881;
+
+    public static class Buffs
+    {
+        public const ushort
+            Mudra = 496,
+            Kassatsu = 497,
+            //Suiton = 507,
+            Higi = 3850,
+            TenriJendoReady = 3851,
+            ShadowWalker = 3848,
+            Hidden = 614,
+            TenChiJin = 1186,
+            AssassinateReady = 1955,
+            RaijuReady = 2690,
+            PhantomReady = 2723,
+            Meisui = 2689,
+            Doton = 501,
+            Bunshin = 1954;
+    }
+
+    public static class Debuffs
+    {
+        public const ushort
+            Dokumori = 3849,
+            TrickAttack = 3254,
+            KunaisBane = 3906,
+            Mug = 638;
+    }
+
+    public static class Traits
+    {
+        public const uint
+            EnhancedKasatsu = 250;
+    }
+
     #endregion
 }
 
