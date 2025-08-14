@@ -1,8 +1,7 @@
 ﻿using ECommons.DalamudServices;
-using ECommons.ExcelServices;
 using Lumina.Excel.Sheets;
+using System;
 using System.Collections.Frozen;
-using System.Globalization;
 using System.Linq;
 using WrathCombo.Core;
 namespace WrathCombo.CustomComboNS.Functions;
@@ -35,30 +34,22 @@ internal abstract partial class CustomComboFunctions
     /// <summary> Checks if the given preset is not enabled. </summary>
     public static bool IsNotEnabled(Preset preset) => !IsEnabled(preset);
 
-    public class JobIDs
+    public static class JobRoles
     {
-        public static readonly FrozenSet<uint> Tank =
-            Svc.Data.GetExcelSheet<ClassJob>()!
-            .Where(cj => cj.Role == 1)
-            .Select(cj => cj.RowId)
-            .ToFrozenSet();
-
-        public static readonly FrozenSet<uint> Healer =
-            Svc.Data.GetExcelSheet<ClassJob>()!
-                .Where(cj => cj.Role == 4)
+        private static Lazy<FrozenSet<uint>> MakeRoleSet(int roleId) =>
+            new(() => Svc.Data.GetExcelSheet<ClassJob>()!
+                .Where(cj => cj.Role == roleId)
                 .Select(cj => cj.RowId)
-                .ToFrozenSet();
+                .ToFrozenSet());
 
-        public static readonly FrozenSet<uint> Melee =
-            Svc.Data.GetExcelSheet<ClassJob>()!
-                .Where(cj => cj.Role == 2)
-                .Select(cj => cj.RowId)
-                .ToFrozenSet();
+        private static readonly Lazy<FrozenSet<uint>> _tank = MakeRoleSet(1);
+        private static readonly Lazy<FrozenSet<uint>> _healer = MakeRoleSet(4);
+        private static readonly Lazy<FrozenSet<uint>> _melee = MakeRoleSet(2);
+        private static readonly Lazy<FrozenSet<uint>> _ranged = MakeRoleSet(3);
 
-        public static readonly FrozenSet<uint> Ranged =
-            Svc.Data.GetExcelSheet<ClassJob>()!
-                .Where(cj => cj.Role == 3)
-                .Select(cj => cj.RowId)
-                .ToFrozenSet();
+        public static FrozenSet<uint> Tank => _tank.Value;
+        public static FrozenSet<uint> Healer => _healer.Value;
+        public static FrozenSet<uint> Melee => _melee.Value;
+        public static FrozenSet<uint> Ranged => _ranged.Value;
     }
 }

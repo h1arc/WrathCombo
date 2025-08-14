@@ -627,15 +627,12 @@ internal class Presets : ConfigWindow
         if (preset.Attributes().Parent != null) return false;
         var role = preset.Attributes().RoleAttribute.Role;
         //if (jobID == -1) return false;
-        var icon = Icons.GetRoleIcon(role);
+        var icon = Icons.Role.GetRoleIcon(role);
         if (icon is null) return false;
-        var iconMaxSize = 32f.Scale();
         ImGui.SameLine();
-        var scale = Math.Min(iconMaxSize / icon.Size.X, iconMaxSize / icon.Size.Y);
-        var imgSize = new Vector2(icon.Size.X * scale, icon.Size.Y * scale);
-
-        ImGui.SetCursorPosY(ImGui.GetCursorPosY() - 6f.Scale());
-        ImGui.Image(icon.Handle, imgSize);
+        ImGui.SetCursorPosY(ImGui.GetCursorPosY() - 3f.Scale());
+        ImGui.Image(icon.Handle, (icon.Size / 2f) * ImGui.GetIO().FontGlobalScale);
+        ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 3f.Scale());
         return true;
     }
 
@@ -652,7 +649,7 @@ internal class Presets : ConfigWindow
         if (EzThrottler.Throttle("AnimFrameUpdater", 400))
             _animFrame = !_animFrame;
 
-        if (!Icons.OccultIcons.TryGetValue(baseJobID, out var frames))
+        if (!Icons.Occult.JobSprites.Value.TryGetValue(baseJobID, out var frames))
             error = "FIND";
 
         if (frames is null || frames.Length < 2)
@@ -677,6 +674,7 @@ internal class Presets : ConfigWindow
 
         ImGui.SetCursorPosY(ImGui.GetCursorPosY() - 6f.Scale());
         ImGui.Image(icon.Handle, imgSize);
+        ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 6f.Scale());
         return true;
     }
 

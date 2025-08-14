@@ -307,12 +307,12 @@ internal partial class AST
                 !HasStatusEffect(Buffs.SpearBuff, thisTarget, true);
 
             bool IsMeleeOrTank (ClassJob job) =>
-                JobIDs.Melee.Contains((byte)job.RowId) ||
-                JobIDs.Tank.Contains((byte)job.RowId);
+                JobRoles.Melee.Contains(job.RowId) ||
+                JobRoles.Tank.Contains(job.RowId);
 
             bool IsRangedOrHealer(ClassJob job) =>
-                JobIDs.Ranged.Contains((byte)job.RowId) ||
-                JobIDs.Healer.Contains((byte)job.RowId);
+                JobRoles.Ranged.Contains(job.RowId) ||
+                JobRoles.Healer.Contains(job.RowId);
 
             bool DamageDownFree(IGameObject? thisTarget) =>
                 !TargetHasDamageDown(thisTarget);

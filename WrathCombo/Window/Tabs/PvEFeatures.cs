@@ -7,13 +7,11 @@ using ECommons.Logging;
 using System;
 using System.Linq;
 using System.Numerics;
-using WrathCombo.Combos.PvE;
 using WrathCombo.Core;
 using WrathCombo.Extensions;
 using WrathCombo.Services;
 using WrathCombo.Window.Functions;
 using WrathCombo.Window.MessagesNS;
-using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions.JobIDs;
 namespace WrathCombo.Window.Tabs;
 
 internal class PvEFeatures : ConfigWindow
@@ -148,8 +146,7 @@ internal class PvEFeatures : ConfigWindow
                     {
                         if (ImGui.BeginTabBar($"subTab{OpenJob}", ImGuiTabBarFlags.Reorderable | ImGuiTabBarFlags.AutoSelectNewTabs))
                         {
-                            string mainTabName = "Normal";
-                            if (OpenJob == "Roles and Content") mainTabName = "Job Roles";
+                            string mainTabName = OpenJob == Job.ADV.Name() ? "Job Roles" : "Normal";
                             if (ImGui.BeginTabItem(mainTabName))
                             {
                                 DrawHeadingContents(OpenJob);
