@@ -29,15 +29,13 @@ internal partial class NIN
     internal static bool MudraReady => MudraCasting.CanCast();
     internal static uint MudraCharges => GetRemainingCharges(Ten);
     internal static bool MudraAlmostReady => MudraCharges == 1 && GetCooldownChargeRemainingTime(Ten) < 3;
-    internal static bool MudraPool => MudraAlmostReady ||
-                                      MudraCharges >= 1 && TrickDebuff ||
-                                      MudraCharges == 2;
     #endregion
     
     #region Ninjutsu Logic
     internal static bool CanUseFumaShuriken => LevelChecked(FumaShuriken) && MudraReady;
      
-    internal static bool CanUseRaiton =>  LevelChecked(Raiton) && MudraReady &&
+    internal static bool CanUseRaiton =>  LevelChecked(Raiton) && MudraReady && 
+                                          (!HasKassatsu || !NIN_ST_AdvancedMode_Ninjitsus_Options[2] && !STSimpleMode) &&
                                            (TrickDebuff || // Buff Window
                                            !LevelChecked(Suiton) || //Dont Pool because of Suiton not learned yet
                                            GetCooldownChargeRemainingTime(Ten) < 3 || // Spend to avoid cap
@@ -61,9 +59,11 @@ internal partial class NIN
     
     internal static bool CanUseHuton => LevelChecked(Huton) && MudraReady && !HasStatusEffect(Buffs.ShadowWalker);
     
-    internal static bool CanUseHyoshoRanryu => LevelChecked(HyoshoRanryu) && MudraReady && HasKassatsu && (TrickDebuff || KassatsuRemaining < 3);
+    internal static bool CanUseHyoshoRanryu => LevelChecked(HyoshoRanryu) && MudraReady && HasKassatsu && 
+                                               (BuffWindow || IsNotEnabled(Preset.NIN_ST_AdvancedMode_TrickAttack) && !STSimpleMode || KassatsuRemaining < 3);
 
-    internal static bool CanUseGokaMekkyaku => LevelChecked(GokaMekkyaku) && MudraReady && HasKassatsu && (TrickDebuff || KassatsuRemaining < 3);
+    internal static bool CanUseGokaMekkyaku => LevelChecked(GokaMekkyaku) && MudraReady && HasKassatsu && 
+                                               (BuffWindow || IsNotEnabled(Preset.NIN_ST_AdvancedMode_TrickAttack) && !STSimpleMode || KassatsuRemaining < 3);
     #endregion
     
     #region GCD Logic
@@ -89,11 +89,11 @@ internal partial class NIN
     internal static bool CanTrick => ActionReady(OriginalHook(TrickAttack)) && NinjaWeave &&
                                      (!MudraPhase || HasKassatsu) &&
                                      HasStatusEffect(Buffs.ShadowWalker) && 
-                                     (MugDebuff || MugCD >= 50);
+                                     (MugDebuff || MugCD >= 50 || IsNotEnabled(Preset.NIN_ST_AdvancedMode_Mug) && !STSimpleMode);
     
     internal static bool CanMug => ActionReady(OriginalHook(Mug)) && CanDelayedWeave(1.25f, .6f, 10) && 
-                                   (HasStatusEffect(Buffs.ShadowWalker) || !LevelChecked(Huton)) &&
                                    (!MudraPhase || HasKassatsu) &&
+                                   (TrickCD <= 6 || IsNotEnabled(Preset.NIN_ST_AdvancedMode_TrickAttack) && !STSimpleMode) &&
                                    (LevelChecked(Dokumori) && GetTargetDistance() <= 8 || InMeleeRange());
     
     internal static bool TrickDebuff => HasStatusEffect(Debuffs.TrickAttack, CurrentTarget) || 
@@ -107,20 +107,29 @@ internal partial class NIN
     #region Ninki Logic
     
     internal static bool NinkiWillOvercap => gauge.Ninki > 50;
+
+    internal static bool CanBhavacakra => NinjaWeave && !MudraPhase && gauge.Ninki >= 50 &&
+                                          (BunshinCD < 20 && gauge.Ninki >= NinkiPool() || //Pooling for Bunshin
+                                           BunshinCD > 20 ||
+                                           IsNotEnabled(Preset.NIN_ST_AdvancedMode_Bunshin) && !STSimpleMode); //Bunshin not enabled to pool for
     
-    internal static bool CanBhavacakra => NinjaWeave && !MudraPhase;
-    
-    internal static bool BhavacakraPooling => gauge.Ninki >= BhavaPool() || 
+    internal static bool BhavacakraPooling => gauge.Ninki >= NinkiPool() || 
                                               TrickDebuff && gauge.Ninki >= 50 ||
                                               MugCD < 5 && gauge.Ninki >= 50;
     
-    internal static bool CanHellfrogMedium => ActionReady(OriginalHook(HellfrogMedium)) && NinjaWeave &&
-                                              !MudraPhase &&
-                                              (gauge.Ninki >= BhavaPool() || 
-                                               TrickDebuff && gauge.Ninki >= 50 ||
-                                               MugCD < 5 && gauge.Ninki >= 50);
+    internal static bool CanHellfrogMedium => NinjaWeave && !MudraPhase && 
+                                              LevelChecked(HellfrogMedium) && gauge.Ninki >= 50;
     
-    internal static int BhavaPool()
+    internal static bool HellfrogMediumPooling => gauge.Ninki >= NinkiPool() || 
+                                                  TrickDebuff && gauge.Ninki >= 50 ||
+                                                  MugCD < 5 && gauge.Ninki >= 50;
+    
+    internal static bool CanBunshin => LevelChecked(Bunshin) && IsOffCooldown(Bunshin) &&
+                                       gauge.Ninki >= 50 && NinjaWeave && !MudraPhase;
+    
+    internal static float BunshinCD => GetCooldownRemainingTime(Bunshin);
+    
+    internal static int NinkiPool()
     {
         if (HasStatusEffect(Buffs.Bunshin))
             return ComboAction == GustSlash ? 75: 95;
@@ -130,24 +139,24 @@ internal partial class NIN
     
     internal static bool HasKassatsu => HasStatusEffect(Buffs.Kassatsu);
     internal static float KassatsuRemaining => GetStatusEffectRemainingTime(Buffs.Kassatsu);
-    internal static bool CanKassatsu => ActionReady(Kassatsu) && NinjaWeave && HasStatusEffect(Buffs.ShadowWalker) &&
-                                        !MudraPhase && 
-                                        (TrickCD < 10 || BuffWindow);
+    internal static bool CanKassatsu => !MudraPhase && ActionReady(Kassatsu) && NinjaWeave &&  
+                                        (TrickCD < 10 && HasStatusEffect(Buffs.ShadowWalker) ||
+                                         BuffWindow || 
+                                         IsNotEnabled(Preset.NIN_ST_AdvancedMode_TrickAttack) && !STSimpleMode);
     
-    internal static bool CanMeisui => ActionReady(Meisui) && NinjaWeave && BuffWindow && HasStatusEffect(Buffs.ShadowWalker) &&
-                                      !MudraPhase;
-    
+    internal static bool CanMeisui => !MudraPhase && ActionReady(Meisui) && NinjaWeave && HasStatusEffect(Buffs.ShadowWalker) && 
+                                      (BuffWindow || IsNotEnabled(Preset.NIN_ST_AdvancedMode_TrickAttack) && !STSimpleMode);
 
-    internal static bool CanAssassinate => ActionReady(OriginalHook(Assassinate)) && NinjaWeave && BuffWindow && 
-                                           !MudraPhase;
+    internal static bool CanAssassinate => !MudraPhase && ActionReady(OriginalHook(Assassinate)) && NinjaWeave && 
+                                           (BuffWindow || IsNotEnabled(Preset.NIN_ST_AdvancedMode_TrickAttack) && !STSimpleMode);
 
-    internal static bool CanTenChiJin => IsOffCooldown(TenChiJin) && LevelChecked(TenChiJin) && NinjaWeave && BuffWindow 
-                                         && !MudraPhase && !MudraAlmostReady;
+    internal static bool CanTenChiJin => !MudraPhase && !MudraAlmostReady && IsOffCooldown(TenChiJin) && LevelChecked(TenChiJin) && NinjaWeave &&
+                                         (BuffWindow || IsNotEnabled(Preset.NIN_ST_AdvancedMode_TrickAttack) && !STSimpleMode);
+                                         
 
     internal static bool CanTenriJindo => NinjaWeave && HasStatusEffect(Buffs.TenriJendoReady);
 
-    internal static bool CanBunshin => ActionReady(Bunshin) && NinjaWeave && 
-                                       (!MudraPhase || HasKassatsu);
+    
     #endregion
     
     #endregion

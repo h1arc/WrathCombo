@@ -192,7 +192,7 @@ internal partial class NIN : Melee
                 if (CanMeisui)
                     return NinkiWillOvercap ? OriginalHook(HellfrogMedium) : OriginalHook(Meisui);
 
-                if (CanHellfrogMedium)
+                if (CanHellfrogMedium && HellfrogMediumPooling)
                     return OriginalHook(HellfrogMedium);
                 
                 if (CanMug && CombatEngageDuration().TotalSeconds > 5)
@@ -272,7 +272,7 @@ internal partial class NIN : Melee
                 OriginalHook(Ninjutsu) is Rabbit or Huton or Suiton or Doton or GokaMekkyaku or HyoshoRanryu)
                 return OriginalHook(Ninjutsu);
             
-            if (InMudra && MudraState.ContinueCurrentMudra(ref actionID))
+            if (OriginalHook(Ninjutsu) != Ninjutsu && InMudra && MudraState.ContinueCurrentMudra(ref actionID))
                 return actionID;
             
             if (NIN_ST_AdvancedMode_TenChiJin_Options[0] &&
