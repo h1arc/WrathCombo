@@ -3739,7 +3739,7 @@ public enum Preset
     [CustomComboInfo("Overdrive Feature", "Replace Rook Autoturret and Automaton Queen with Overdrive while active.", MCH.JobID)]
     MCH_Overdrive = 8002,
 
-    [ReplaceSkill(MCH.Drill, MCH.AirAnchor, MCH.HotShot, MCH.Chainsaw)]
+    [ReplaceSkill(MCH.HotShot)]
     [CustomComboInfo("Big Hitter Feature", "Replace Hot Shot, Drill, Air Anchor, Chainsaw and Excavator depending on which is on cooldown.", MCH.JobID)]
     MCH_HotShotDrillChainsawExcavator = 8004,
 

@@ -163,26 +163,26 @@ internal partial class MNK : Melee
                 {
                     if (IsEnabled(Preset.MNK_STUseBrotherhood) &&
                         UseBrotherhood() &&
-                        (MNK_ST_Brotherhood_SubOption == 0 || InBossEncounter()))
+                        (MNK_ST_BrotherhoodBossOption == 0 || InBossEncounter()))
                         return Brotherhood;
 
                     if (IsEnabled(Preset.MNK_STUseROF) &&
                         UseRoF() &&
-                        (MNK_ST_RiddleOfFire_SubOption == 0 || InBossEncounter()))
+                        (MNK_ST_RiddleOfFireBossOption == 0 || InBossEncounter()))
                         return RiddleOfFire;
 
                     if (IsEnabled(Preset.MNK_STUseROW) &&
                         UseRoW() &&
-                        (MNK_ST_RiddleOfWind_SubOption == 0 || InBossEncounter()))
+                        (MNK_ST_RiddleOfWindBossOption == 0 || InBossEncounter()))
                         return RiddleOfWind;
                 }
 
                 if (IsEnabled(Preset.MNK_ST_ComboHeals))
                 {
-                    if (Role.CanSecondWind(MNK_ST_SecondWind_Threshold))
+                    if (Role.CanSecondWind(MNK_ST_SecondWindHPThreshold))
                         return Role.SecondWind;
 
-                    if (Role.CanBloodBath(MNK_ST_Bloodbath_Threshold))
+                    if (Role.CanBloodBath(MNK_ST_BloodbathHPThreshold))
                         return Role.Bloodbath;
                 }
 
@@ -395,26 +395,26 @@ internal partial class MNK : Melee
                 {
                     if (IsEnabled(Preset.MNK_AoEUseBrotherhood) &&
                         UseBrotherhood() &&
-                        GetTargetHPPercent() >= MNK_AoE_Brotherhood_HP)
+                        GetTargetHPPercent() >= MNK_AoE_BrotherhoodHPThreshold)
                         return Brotherhood;
 
                     if (IsEnabled(Preset.MNK_AoEUseROF) &&
                         UseRoF() &&
-                        GetTargetHPPercent() >= MNK_AoE_RiddleOfFire_HP)
+                        GetTargetHPPercent() >= MNK_AoE_RiddleOfFireHPTreshold)
                         return RiddleOfFire;
 
                     if (IsEnabled(Preset.MNK_AoEUseROW) &&
                         UseRoW() &&
-                        GetTargetHPPercent() >= MNK_AoE_RiddleOfWind_HP)
+                        GetTargetHPPercent() >= MNK_AoE_RiddleOfWindHPTreshold)
                         return RiddleOfWind;
                 }
 
                 if (IsEnabled(Preset.MNK_AoE_ComboHeals))
                 {
-                    if (Role.CanSecondWind(MNK_AoE_SecondWind_Threshold))
+                    if (Role.CanSecondWind(MNK_AoE_SecondWindHPThreshold))
                         return Role.SecondWind;
 
-                    if (Role.CanBloodBath(MNK_AoE_Bloodbath_Threshold))
+                    if (Role.CanBloodBath(MNK_AoE_BloodbathHPThreshold))
                         return Role.Bloodbath;
                 }
 
@@ -546,13 +546,12 @@ internal partial class MNK : Melee
             if (actionID is not (Brotherhood or RiddleOfFire))
                 return actionID;
 
-            if (MNK_BH_RoF == 0 && ActionReady(RiddleOfFire) && IsOnCooldown(Brotherhood))
-                return OriginalHook(RiddleOfFire);
-
-            if (MNK_BH_RoF == 1 && ActionReady(Brotherhood) && IsOnCooldown(RiddleOfFire))
-                return Brotherhood;
-
-            return actionID;
+            return actionID switch
+            {
+                Brotherhood when MNK_BH_RoF == 0 && ActionReady(RiddleOfFire) && IsOnCooldown(Brotherhood) => OriginalHook(RiddleOfFire),
+                RiddleOfFire when MNK_BH_RoF == 1 && ActionReady(Brotherhood) && IsOnCooldown(RiddleOfFire) => Brotherhood,
+                var _ => actionID
+            };
         }
     }
 

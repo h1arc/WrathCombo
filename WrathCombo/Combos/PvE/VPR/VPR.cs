@@ -735,17 +735,13 @@ internal partial class VPR : Melee
                     return OriginalHook(Twinblood);
             }
 
-            // Vicewinder Combo
-            if (LevelChecked(Vicewinder))
-            {
-                // Swiftskin's Coil
-                if (VicewinderReady && (!OnTargetsFlank() || !TargetNeedsPositionals()) || HuntersCoilReady)
-                    return SwiftskinsCoil;
+            // Swiftskin's Coil
+            if (VicewinderReady && (!OnTargetsFlank() || !TargetNeedsPositionals()) || HuntersCoilReady)
+                return SwiftskinsCoil;
 
-                // Hunter's Coil
-                if (VicewinderReady && (!OnTargetsRear() || !TargetNeedsPositionals()) || SwiftskinsCoilReady)
-                    return HuntersCoil;
-            }
+            // Hunter's Coil
+            if (VicewinderReady && (!OnTargetsRear() || !TargetNeedsPositionals()) || SwiftskinsCoilReady)
+                return HuntersCoil;
 
             return actionID;
         }
@@ -807,17 +803,21 @@ internal partial class VPR : Melee
             if (actionID is not (Reawaken or ReavingFangs))
                 return actionID;
 
-            if (VPR_ReawakenLegacyButton == 0 && HasStatusEffect(Buffs.Reawakened) ||
-                VPR_ReawakenLegacyButton == 1 && HasStatusEffect(Buffs.Reawakened))
+            switch (actionID)
             {
-                // Legacy Weaves
-                if (IsEnabled(Preset.VPR_ReawakenLegacyWeaves) &&
-                    TraitLevelChecked(Traits.SerpentsLegacy) && HasStatusEffect(Buffs.Reawakened)
-                    && OriginalHook(SerpentsTail) is not SerpentsTail)
-                    return OriginalHook(SerpentsTail);
+                case Reawaken when VPR_ReawakenLegacyButton == 0 && HasStatusEffect(Buffs.Reawakened):
+                case ReavingFangs when VPR_ReawakenLegacyButton == 1 && HasStatusEffect(Buffs.Reawakened):
+                {
+                    // Legacy Weaves
+                    if (IsEnabled(Preset.VPR_ReawakenLegacyWeaves) &&
+                        TraitLevelChecked(Traits.SerpentsLegacy) && HasStatusEffect(Buffs.Reawakened)
+                        && OriginalHook(SerpentsTail) is not SerpentsTail)
+                        return OriginalHook(SerpentsTail);
 
-                if (ReawakenComboST(ref actionID))
-                    return actionID;
+                    if (ReawakenComboST(ref actionID))
+                        return actionID;
+                    break;
+                }
             }
 
             return actionID;

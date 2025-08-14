@@ -25,57 +25,57 @@ internal partial class MNK
                     break;
 
                 case Preset.MNK_STUseBrotherhood:
-                    DrawHorizontalRadioButton(MNK_ST_Brotherhood_SubOption,
+                    DrawHorizontalRadioButton(MNK_ST_BrotherhoodBossOption,
                         "All content", $"Uses {Brotherhood.ActionName()} regardless of content.", 0);
 
-                    DrawHorizontalRadioButton(MNK_ST_Brotherhood_SubOption,
+                    DrawHorizontalRadioButton(MNK_ST_BrotherhoodBossOption,
                         "Boss encounters Only", $"Only uses {Brotherhood.ActionName()} when in Boss encounters.", 1);
                     break;
 
                 case Preset.MNK_STUseROF:
-                    DrawHorizontalRadioButton(MNK_ST_RiddleOfFire_SubOption,
+                    DrawHorizontalRadioButton(MNK_ST_RiddleOfFireBossOption,
                         "All content", $"Uses {RiddleOfFire.ActionName()}  regardless of content.", 0);
 
-                    DrawHorizontalRadioButton(MNK_ST_RiddleOfFire_SubOption,
+                    DrawHorizontalRadioButton(MNK_ST_RiddleOfFireBossOption,
                         "Boss encounters Only", $"Only uses {RiddleOfFire.ActionName()}  when in Boss encounters.", 1);
                     break;
 
                 case Preset.MNK_STUseROW:
-                    DrawHorizontalRadioButton(MNK_ST_RiddleOfWind_SubOption,
+                    DrawHorizontalRadioButton(MNK_ST_RiddleOfWindBossOption,
                         "All content", $"Uses {RiddleOfWind.ActionName()}  regardless of content.", 0);
 
-                    DrawHorizontalRadioButton(MNK_ST_RiddleOfWind_SubOption,
+                    DrawHorizontalRadioButton(MNK_ST_RiddleOfWindBossOption,
                         "Boss encounters Only", $"Only uses {RiddleOfWind.ActionName()} when in Boss encounters.", 1);
                     break;
 
                 case Preset.MNK_ST_ComboHeals:
-                    DrawSliderInt(0, 100, MNK_ST_SecondWind_Threshold,
+                    DrawSliderInt(0, 100, MNK_ST_SecondWindHPThreshold,
                         $"{Role.SecondWind.ActionName()} HP percentage threshold");
 
-                    DrawSliderInt(0, 100, MNK_ST_Bloodbath_Threshold,
+                    DrawSliderInt(0, 100, MNK_ST_BloodbathHPThreshold,
                         $"{Role.Bloodbath.ActionName()} HP percentage threshold");
                     break;
 
                 case Preset.MNK_AoEUseBrotherhood:
-                    DrawSliderInt(0, 100, MNK_AoE_Brotherhood_HP,
+                    DrawSliderInt(0, 100, MNK_AoE_BrotherhoodHPThreshold,
                         $"Stop Using {Brotherhood.ActionName()} When Target HP% is at or Below (Set to 0 to Disable This Check)");
                     break;
 
                 case Preset.MNK_AoEUseROF:
-                    DrawSliderInt(0, 100, MNK_AoE_RiddleOfFire_HP,
+                    DrawSliderInt(0, 100, MNK_AoE_RiddleOfFireHPTreshold,
                         $"Stop Using {RiddleOfFire.ActionName()} When Target HP% is at or Below (Set to 0 to Disable This Check)");
                     break;
 
                 case Preset.MNK_AoEUseROW:
-                    DrawSliderInt(0, 100, MNK_AoE_RiddleOfWind_HP,
+                    DrawSliderInt(0, 100, MNK_AoE_RiddleOfWindHPTreshold,
                         $"Stop Using {RiddleOfWind.ActionName()} When Target HP% is at or Below (Set to 0 to Disable This Check)");
                     break;
 
                 case Preset.MNK_AoE_ComboHeals:
-                    DrawSliderInt(0, 100, MNK_AoE_SecondWind_Threshold,
+                    DrawSliderInt(0, 100, MNK_AoE_SecondWindHPThreshold,
                         $"{Role.SecondWind.ActionName()} HP percentage threshold");
 
-                    DrawSliderInt(0, 100, MNK_AoE_Bloodbath_Threshold,
+                    DrawSliderInt(0, 100, MNK_AoE_BloodbathHPThreshold,
                         $"{Role.Bloodbath.ActionName()} HP percentage threshold");
                     break;
 
@@ -114,16 +114,16 @@ internal partial class MNK
         public static UserInt
             MNK_SelectedOpener = new("MNK_SelectedOpener", 0),
             MNK_Balance_Content = new("MNK_Balance_Content", 1),
-            MNK_ST_Brotherhood_SubOption = new("MNK_ST_Brotherhood_SubOption", 1),
-            MNK_ST_RiddleOfFire_SubOption = new("MNK_ST_RiddleOfFire_SubOption", 1),
-            MNK_ST_RiddleOfWind_SubOption = new("MNK_ST_RiddleOfWind_SubOption", 1),
-            MNK_ST_SecondWind_Threshold = new("MNK_ST_SecondWindThreshold", 40),
-            MNK_ST_Bloodbath_Threshold = new("MNK_ST_BloodbathThreshold", 30),
-            MNK_AoE_Brotherhood_HP = new("MNK_AoE_Brotherhood_HP", 20),
-            MNK_AoE_RiddleOfWind_HP = new("MNK_AoE_RiddleOfWind_HP", 20),
-            MNK_AoE_RiddleOfFire_HP = new("MNK_AoE_RiddleOfFire_HP", 20),
-            MNK_AoE_SecondWind_Threshold = new("MNK_AoE_SecondWindThreshold", 40),
-            MNK_AoE_Bloodbath_Threshold = new("MNK_AoE_BloodbathThreshold", 30),
+            MNK_ST_BrotherhoodBossOption = new("MNK_ST_Brotherhood_SubOption", 1),
+            MNK_ST_RiddleOfFireBossOption = new("MNK_ST_RiddleOfFire_SubOption", 1),
+            MNK_ST_RiddleOfWindBossOption = new("MNK_ST_RiddleOfWind_SubOption", 1),
+            MNK_ST_SecondWindHPThreshold = new("MNK_ST_SecondWindThreshold", 40),
+            MNK_ST_BloodbathHPThreshold = new("MNK_ST_BloodbathThreshold", 30),
+            MNK_AoE_BrotherhoodHPThreshold = new("MNK_AoE_Brotherhood_HP", 20),
+            MNK_AoE_RiddleOfWindHPTreshold = new("MNK_AoE_RiddleOfWind_HP", 20),
+            MNK_AoE_RiddleOfFireHPTreshold = new("MNK_AoE_RiddleOfFire_HP", 20),
+            MNK_AoE_SecondWindHPThreshold = new("MNK_AoE_SecondWindThreshold", 40),
+            MNK_AoE_BloodbathHPThreshold = new("MNK_AoE_BloodbathThreshold", 30),
             MNK_VariantCure = new("MNK_Variant_Cure", 50),
             MNK_BH_RoF = new("MNK_BH_RoF", 0);
 
