@@ -1,6 +1,7 @@
 ﻿using System.Collections.Frozen;
 using System.Collections.Generic;
 using Dalamud.Game.ClientState.JobGauge.Types;
+using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
@@ -16,6 +17,7 @@ internal partial class NIN
     static NINGauge gauge = GetJobGauge<NINGauge>();
     
     public static FrozenSet<uint> MudraSigns = [Ten, Chi, Jin, TenCombo, ChiCombo, JinCombo];
+    public static uint CurrentNinjutsu => OriginalHook(Ninjutsu);
     
     internal static bool InMudra = false;
     internal static bool STSimpleMode => IsEnabled(Preset.NIN_ST_SimpleMode);
@@ -24,7 +26,7 @@ internal partial class NIN
     
     #region Mudra Logic
     internal static bool MudraPhase => OriginalHook(Ten) != Ten || OriginalHook(Chi) != Chi || OriginalHook(Jin) != Jin;
-    internal static bool MudraReady => ActionReady(Ten);
+    internal static bool MudraReady => MudraCasting.CanCast();
     internal static uint MudraCharges => GetRemainingCharges(Ten);
     internal static bool MudraAlmostReady => MudraCharges == 1 && GetCooldownChargeRemainingTime(Ten) < 3;
     internal static bool MudraPool => MudraAlmostReady ||
@@ -33,46 +35,35 @@ internal partial class NIN
     #endregion
     
     #region Ninjutsu Logic
+    internal static bool CanUseFumaShuriken => LevelChecked(FumaShuriken) && MudraReady;
      
-    internal static bool CanUseRaiton =>  LevelChecked(FumaShuriken) && 
-                                          (MudraPool || 
-                                           MudraReady && !LevelChecked(Suiton) || //Dont Pool because of Suiton
-                                           MudraReady && (!NIN_ST_AdvancedMode_Raiton_Options[0] && !STSimpleMode || //Dont Pool because of Raiton Option
-                                           MudraReady && NIN_ST_AdvancedMode_Raiton_Options[1] &&!InMeleeRange() && 
-                                           GetCooldownChargeRemainingTime(Ten) <= GetCooldownRemainingTime(OriginalHook(TrickAttack) - 10) || //Uptime option
-                                           MudraPhase && !HasKassatsu || // Finish if you dont have Kassatsu for Hyosho Ranryu
-                                           MudraPhase && !LevelChecked(HyoshoRanryu))); // Use if you have Kassatsu before you get Hosho Ranryun // Use if you have Kassatsu before you get Hosho Ranryu
+    internal static bool CanUseRaiton =>  LevelChecked(Raiton) && MudraReady &&
+                                           (TrickDebuff || // Buff Window
+                                           !LevelChecked(Suiton) || //Dont Pool because of Suiton not learned yet
+                                           GetCooldownChargeRemainingTime(Ten) < 3 || // Spend to avoid cap
+                                           !NIN_ST_AdvancedMode_Raiton_Options[0] && !STSimpleMode || //Dont Pool because of Raiton Option
+                                           NIN_ST_AdvancedMode_Raiton_Options[1] && !InMeleeRange() && 
+                                           GetCooldownChargeRemainingTime(Ten) <= TrickCD - 10); //Uptime option
     
-    internal static bool CanUseSuiton => !HasStatusEffect(Buffs.ShadowWalker) && LevelChecked(Suiton) && 
-                                         (MudraPhase || MudraReady);
-
-    internal static bool CanUseHyoshoRanryu => HasKassatsu && LevelChecked(HyoshoRanryu) &&
-                                               (MudraPhase || MudraReady) &&
-                                               (TrickDebuff || KassatsuRemaining < 3);
-    
-    
-    internal static bool CanUseDoton =>  LevelChecked(Doton) && 
-                                         (MudraPool || //Start based on pooling
-                                         MudraReady && !LevelChecked(Huton) || //Start without pooling because of no Suiton
-                                         MudraPhase && !HasKassatsu || // Finish if you dont have Kassatsu for Hyosho Ranryu
-                                         MudraPhase && !LevelChecked(HyoshoRanryu)); // Use if you have Kassatsu before you get Hosho Ranryu
+    internal static bool CanUseKaton =>  LevelChecked(Katon) && MudraReady &&
+                                         (TrickDebuff || //Buff Window
+                                          !LevelChecked(Huton) || //Dont Pool because of Huton not learned yet
+                                          GetCooldownChargeRemainingTime(Ten) < 3); // Use if you have Kassatsu before you get Hosho Ranryu
     
     internal static bool HasDoton => HasStatusEffect(Buffs.Doton);
     internal static float DotonRemaining => GetStatusEffectRemainingTime(Buffs.Doton);
+    internal static bool CanUseDoton => LevelChecked(Doton) && MudraReady && GetTargetHPPercent() >= 30 && (!HasDoton || DotonRemaining <= 2) &&
+                                        (TrickDebuff || //Buff Window
+                                         GetCooldownChargeRemainingTime(Ten) < 3); // Use if you have Kassatsu before you get Hosho Ranryu
+                                        
     
-    internal static bool CanUseKaton =>  LevelChecked(Katon) &&
-                                         (MudraPool || //Start based on pooling
-                                         MudraReady && !LevelChecked(Huton) || //Start without pooling because of no Suiton
-                                         MudraPhase && !HasKassatsu || // Finish if you dont have Kassatsu for Hyosho Ranryu
-                                         MudraPhase && !LevelChecked(HyoshoRanryu)); // Use if you have Kassatsu before you get Hosho Ranryu
+    internal static bool CanUseSuiton => LevelChecked(Suiton) && MudraReady && !HasStatusEffect(Buffs.ShadowWalker);
     
-    internal static bool CanUseHuton => GetCooldownRemainingTime(OriginalHook(TrickAttack)) <= 18 && !HasStatusEffect(Buffs.ShadowWalker) && LevelChecked(Huton) && 
-                                         (MudraPhase || MudraReady);
+    internal static bool CanUseHuton => LevelChecked(Huton) && MudraReady && !HasStatusEffect(Buffs.ShadowWalker);
+    
+    internal static bool CanUseHyoshoRanryu => LevelChecked(HyoshoRanryu) && MudraReady && HasKassatsu && (TrickDebuff || KassatsuRemaining < 3);
 
-    internal static bool CanUseGokaMekkyaku => HasKassatsu && LevelChecked(GokaMekkyaku) &&
-                                               (MudraPhase || MudraReady) &&
-                                               (TrickDebuff || KassatsuRemaining < 3);
-    
+    internal static bool CanUseGokaMekkyaku => LevelChecked(GokaMekkyaku) && MudraReady && HasKassatsu && (TrickDebuff || KassatsuRemaining < 3);
     #endregion
     
     #region GCD Logic
@@ -161,7 +152,7 @@ internal partial class NIN
     
     #endregion
 
-    #region Ninjutsu Methods
+    #region TCJ Methods
     internal static uint STTenChiJin(uint actionId)
     {
         if (OriginalHook(Ten) == TCJFumaShurikenTen)
@@ -170,7 +161,7 @@ internal partial class NIN
             return OriginalHook(Chi);
         return OriginalHook(Jin) == TCJSuiton ? OriginalHook(Jin) : actionId;
     }
-    internal static uint AoETenChiJin(uint actionId)
+    internal static uint AoETenChiJinDoton(uint actionId)
     {
         if (OriginalHook(Jin) == TCJFumaShurikenJin)
             return OriginalHook(Jin);
@@ -178,485 +169,36 @@ internal partial class NIN
             return OriginalHook(Ten);
         return OriginalHook(Chi) == TCJDoton ? OriginalHook(Chi) : actionId;
     }
-    // Single Target
-    internal static uint UseFumaShuriken(uint actionId)
+    internal static uint AoETenChiJinSuiton(uint actionId)
     {
-        return OriginalHook(Ninjutsu) == FumaShuriken ? OriginalHook(Ninjutsu) : Ten;
-    }
-    internal static uint UseRaiton(uint actionId) // Ten Chi
-    {
-        if (OriginalHook(Ninjutsu) == Ninjutsu) 
-            return HasKassatsu ? TenCombo : Ten;
-        return OriginalHook(Ninjutsu) == FumaShuriken &&
-               ActionWatching.LastAction is TenCombo or Ten or JinCombo or Jin 
-            ? ChiCombo 
-            : OriginalHook(Ninjutsu);
-    }
-    internal static uint UseHyoshoRanryu(uint actionId) // Ten Jin
-    {
-        if (OriginalHook(Ninjutsu) == Ninjutsu)
-            return TenCombo;
-        return OriginalHook(Ninjutsu) == FumaShuriken &&
-               ActionWatching.LastAction is TenCombo 
-            ? JinCombo 
-            : OriginalHook(Ninjutsu);
-    }
-    internal static uint UseSuiton(uint actionId) // Ten Chi Jin
-    {
-        if (OriginalHook(Ninjutsu) == Ninjutsu)
-            return Ten;
-        if (ActionWatching.LastAction is Ten)
-            return ChiCombo;
-        return ActionWatching.LastAction is ChiCombo ? JinCombo : OriginalHook(Ninjutsu);
-    }
-    //Multi Target
-    internal static uint UseGokaMekkyaku(uint actionId) // Jin Ten
-    {
-        if (OriginalHook(Ninjutsu) == Ninjutsu)
-            return HasKassatsu ? JinCombo : Jin;
-        return OriginalHook(Ninjutsu) == FumaShuriken && 
-               ActionWatching.LastAction is Jin or JinCombo 
-            ? TenCombo 
-            : OriginalHook(Ninjutsu);
-    }
-    internal static uint UseKaton(uint actionId) // Jin Ten
-    {
-        if (OriginalHook(Ninjutsu) == Ninjutsu)
-        {
-            if (LevelChecked(Jin))
-                return HasKassatsu ? JinCombo : Jin;
-            return HasKassatsu ? ChiCombo : Chi;
-        }
-        return OriginalHook(Ninjutsu) == FumaShuriken && 
-               ActionWatching.LastAction is Jin or JinCombo or ChiCombo or Chi
-            ? TenCombo 
-            : OriginalHook(Ninjutsu);
-    }
-    internal static uint UseDoton(uint actionId)  //Jin Ten Chi
-    {
-        if (OriginalHook(Ninjutsu) == Ninjutsu)
-            return HasKassatsu ? JinCombo : Jin;
-        if (ActionWatching.LastAction is Jin or JinCombo)
-            return TenCombo;
-        return ActionWatching.LastAction is TenCombo ? ChiCombo : OriginalHook(Ninjutsu);
-    }
-    internal static uint UseHuton(uint actionId) // Jin Chi Ten
-    {
-        if (OriginalHook(Ninjutsu) == Ninjutsu)
-            return Jin;
-        if (ActionWatching.LastAction is Jin)
-            return ChiCombo;
-        return ActionWatching.LastAction is ChiCombo ? TenCombo : Huton;
+        if (OriginalHook(Chi) == TCJFumaShurikenChi)
+            return OriginalHook(Chi);
+        if (OriginalHook(Ten) == TCJKaton)
+            return OriginalHook(Ten);
+        return OriginalHook(Jin) == TCJDoton ? OriginalHook(Jin) : actionId;
     }
     #endregion
-
-    #region old shit
-    public static uint CurrentNinjutsu => OriginalHook(Ninjutsu);
     
     #region Mudra
     internal class MudraCasting
     {
+        #region Mudra State Stuff
+        
+        public MudraState CurrentMudra = MudraState.None;
+        
         public enum MudraState
         {
             None,
             CastingFumaShuriken,
             CastingKaton,
             CastingRaiton,
-            CastingHyoton,
             CastingHuton,
             CastingDoton,
             CastingSuiton,
             CastingGokaMekkyaku,
             CastingHyoshoRanryu
         }
-
-        public MudraState CurrentMudra = MudraState.None;
         
-
-        ///<summary> Checks if the player is in a state to be able to cast a ninjitsu.</summary>
-        private static bool CanCast()
-        {
-            if (InMudra)
-                return true;
-
-            float gcd = GetCooldown(GustSlash).CooldownTotal;
-
-            if (gcd == 0.5)
-                return true;
-
-            if (GetRemainingCharges(Ten) == 0 &&
-                !HasStatusEffect(Buffs.Mudra) &&
-                !HasStatusEffect(Buffs.Kassatsu))
-                return false;
-
-            return true;
-        }
-
-        /// <summary> Simple method of casting Fuma Shuriken.</summary>
-        /// <param name="actionID">The actionID from the combo.</param>
-        /// <returns>True if in a state to cast or continue the ninjitsu, modifies actionID to the step of the ninjitsu.</returns>
-        public bool CastFumaShuriken(ref uint actionID)
-        {
-            if (FumaShuriken.LevelChecked() && CurrentMudra is MudraState.None or MudraState.CastingFumaShuriken)
-            {
-                if (!CanCast() || ActionWatching.LastAction == FumaShuriken)
-                {
-                    CurrentMudra = MudraState.None;
-
-                    return false;
-                }
-
-                if (ActionWatching.LastAction is Ten or TenCombo)
-                {
-                    actionID = OriginalHook(Ninjutsu);
-
-                    return true;
-                }
-
-                actionID = OriginalHook(Ten);
-                CurrentMudra = MudraState.CastingFumaShuriken;
-
-                return true;
-            }
-
-            CurrentMudra = MudraState.None;
-
-            return false;
-        }
-
-        /// <summary> Simple method of casting Raiton.</summary>
-        /// <param name="actionID">The actionID from the combo.</param>
-        /// <returns>True if in a state to cast or continue the ninjitsu, modifies actionID to the step of the ninjitsu.</returns>
-        public bool CastRaiton(ref uint actionID)
-        {
-            if (Raiton.LevelChecked() && CurrentMudra is MudraState.None or MudraState.CastingRaiton)
-            {
-                if (!CanCast() || ActionWatching.LastAction == Raiton)
-                {
-                    CurrentMudra = MudraState.None;
-
-                    return false;
-                }
-
-                if (ActionWatching.LastAction is Ten or TenCombo)
-                {
-                    actionID = OriginalHook(Chi);
-
-                    return true;
-                }
-
-                if (ActionWatching.LastAction == ChiCombo)
-                {
-                    actionID = OriginalHook(Ninjutsu);
-
-                    return true;
-                }
-
-                actionID = OriginalHook(Ten);
-                CurrentMudra = MudraState.CastingRaiton;
-
-                return true;
-            }
-
-            CurrentMudra = MudraState.None;
-
-            return false;
-        }
-
-        /// <summary> Simple method of casting Katon.</summary>
-        /// <param name="actionID">The actionID from the combo.</param>
-        /// <returns>True if in a state to cast or continue the ninjitsu, modifies actionID to the step of the ninjitsu.</returns>
-        public bool CastKaton(ref uint actionID)
-        {
-            if (Katon.LevelChecked() && CurrentMudra is MudraState.None or MudraState.CastingKaton)
-            {
-                if (!CanCast() || ActionWatching.LastAction == Katon)
-                {
-                    CurrentMudra = MudraState.None;
-
-                    return false;
-                }
-
-                if (ActionWatching.LastAction is Chi or ChiCombo)
-                {
-                    actionID = OriginalHook(Ten);
-
-                    return true;
-                }
-
-                if (ActionWatching.LastAction == TenCombo)
-                {
-                    actionID = OriginalHook(Ninjutsu);
-
-                    return true;
-                }
-
-                actionID = OriginalHook(Chi);
-                CurrentMudra = MudraState.CastingKaton;
-
-                return true;
-            }
-
-            CurrentMudra = MudraState.None;
-
-            return false;
-        }
-
-        /// <summary> Simple method of casting Hyoton.</summary>
-        /// <param name="actionID">The actionID from the combo.</param>
-        /// <returns>True if in a state to cast or continue the ninjitsu, modifies actionID to the step of the ninjitsu.</returns>
-        public bool CastHyoton(ref uint actionID)
-        {
-            if (Hyoton.LevelChecked() && CurrentMudra is MudraState.None or MudraState.CastingHyoton)
-            {
-                if (!CanCast() || HasStatusEffect(Buffs.Kassatsu) || ActionWatching.LastAction == Hyoton)
-                {
-                    CurrentMudra = MudraState.None;
-
-                    return false;
-                }
-
-                if (ActionWatching.LastAction == TenCombo)
-                {
-                    actionID = OriginalHook(Jin);
-
-                    return true;
-                }
-
-                if (ActionWatching.LastAction == JinCombo)
-                {
-                    actionID = OriginalHook(Ninjutsu);
-
-                    return true;
-                }
-
-                actionID = OriginalHook(Ten);
-                CurrentMudra = MudraState.CastingHyoton;
-
-                return true;
-            }
-
-            CurrentMudra = MudraState.None;
-
-            return false;
-        }
-
-        /// <summary> Simple method of casting Huton.</summary>
-        /// <param name="actionID">The actionID from the combo.</param>
-        /// <returns>True if in a state to cast or continue the ninjitsu, modifies actionID to the step of the ninjitsu.</returns>
-        public bool CastHuton(ref uint actionID)
-        {
-            if (Huton.LevelChecked() && CurrentMudra is MudraState.None or MudraState.CastingHuton)
-            {
-                if (!CanCast() || ActionWatching.LastAction == Huton)
-                {
-                    CurrentMudra = MudraState.None;
-
-                    return false;
-                }
-
-                if (ActionWatching.LastAction is Chi or ChiCombo)
-                {
-                    actionID = OriginalHook(Jin);
-
-                    return true;
-                }
-
-                if (ActionWatching.LastAction == JinCombo)
-                {
-                    actionID = OriginalHook(Ten);
-
-                    return true;
-                }
-
-                if (ActionWatching.LastAction == TenCombo)
-                {
-                    actionID = OriginalHook(Ninjutsu);
-
-                    return true;
-                }
-
-                actionID = OriginalHook(Chi);
-                CurrentMudra = MudraState.CastingHuton;
-
-                return true;
-            }
-
-            CurrentMudra = MudraState.None;
-
-            return false;
-        }
-
-        /// <summary> Simple method of casting Doton.</summary>
-        /// <param name="actionID">The actionID from the combo.</param>
-        /// <returns>True if in a state to cast or continue the ninjitsu, modifies actionID to the step of the ninjitsu.</returns>
-        public bool CastDoton(ref uint actionID)
-        {
-            if (Doton.LevelChecked() && CurrentMudra is MudraState.None or MudraState.CastingDoton)
-            {
-                if (!CanCast() || ActionWatching.LastAction == Doton)
-                {
-                    CurrentMudra = MudraState.None;
-
-                    return false;
-                }
-
-                if (ActionWatching.LastAction is Ten or TenCombo)
-                {
-                    actionID = OriginalHook(Jin);
-
-                    return true;
-                }
-
-                if (ActionWatching.LastAction == JinCombo)
-                {
-                    actionID = OriginalHook(Chi);
-
-                    return true;
-                }
-
-                if (ActionWatching.LastAction == ChiCombo)
-                {
-                    actionID = OriginalHook(Ninjutsu);
-
-                    return true;
-                }
-
-                actionID = OriginalHook(Ten);
-                CurrentMudra = MudraState.CastingDoton;
-
-                return true;
-            }
-
-            CurrentMudra = MudraState.None;
-
-            return false;
-        }
-
-        /// <summary> Simple method of casting Suiton.</summary>
-        /// <param name="actionID">The actionID from the combo.</param>
-        /// <returns>True if in a state to cast or continue the ninjitsu, modifies actionID to the step of the ninjitsu.</returns>
-        public bool CastSuiton(ref uint actionID)
-        {
-            if (Suiton.LevelChecked() && CurrentMudra is MudraState.None or MudraState.CastingSuiton)
-            {
-                if (!CanCast() || ActionWatching.LastAction == Suiton)
-                {
-                    CurrentMudra = MudraState.None;
-
-                    return false;
-                }
-
-                if (ActionWatching.LastAction is Ten or TenCombo)
-                {
-                    actionID = OriginalHook(Chi);
-
-                    return true;
-                }
-
-                if (ActionWatching.LastAction == ChiCombo)
-                {
-                    actionID = OriginalHook(Jin);
-
-                    return true;
-                }
-
-                if (ActionWatching.LastAction == JinCombo)
-                {
-                    actionID = OriginalHook(Ninjutsu);
-
-                    return true;
-                }
-
-                actionID = OriginalHook(Ten);
-                CurrentMudra = MudraState.CastingSuiton;
-
-                return true;
-            }
-
-            CurrentMudra = MudraState.None;
-
-            return false;
-        }
-
-        /// <summary> Simple method of casting Goka Mekkyaku.</summary>
-        /// <param name="actionID">The actionID from the combo.</param>
-        /// <returns>True if in a state to cast or continue the ninjitsu, modifies actionID to the step of the ninjitsu.</returns>
-        public bool CastGokaMekkyaku(ref uint actionID)
-        {
-            if (GokaMekkyaku.LevelChecked() && CurrentMudra is MudraState.None or MudraState.CastingGokaMekkyaku)
-            {
-                if (!CanCast() || !HasStatusEffect(Buffs.Kassatsu) || ActionWatching.LastAction == GokaMekkyaku)
-                {
-                    CurrentMudra = MudraState.None;
-
-                    return false;
-                }
-
-                if (ActionWatching.LastAction == ChiCombo)
-                {
-                    actionID = OriginalHook(Ten);
-
-                    return true;
-                }
-
-                if (ActionWatching.LastAction == TenCombo)
-                {
-                    actionID = OriginalHook(Ninjutsu);
-
-                    return true;
-                }
-
-                actionID = OriginalHook(Chi);
-                CurrentMudra = MudraState.CastingGokaMekkyaku;
-
-                return true;
-            }
-
-            CurrentMudra = MudraState.None;
-
-            return false;
-        }
-
-        /// <summary> Simple method of casting Hyosho Ranryu.</summary>
-        /// <param name="actionID">The actionID from the combo.</param>
-        /// <returns>True if in a state to cast or continue the ninjitsu, modifies actionID to the step of the ninjitsu.</returns>
-        public bool CastHyoshoRanryu(ref uint actionID)
-        {
-            if (HyoshoRanryu.LevelChecked() && CurrentMudra is MudraState.None or MudraState.CastingHyoshoRanryu)
-            {
-                if (!CanCast() || !HasStatusEffect(Buffs.Kassatsu) || ActionWatching.LastAction == HyoshoRanryu)
-                {
-                    CurrentMudra = MudraState.None;
-
-                    return false;
-                }
-
-                if (ActionWatching.LastAction == ChiCombo)
-                {
-                    actionID = OriginalHook(Jin);
-
-                    return true;
-                }
-
-                if (ActionWatching.LastAction == JinCombo)
-                {
-                    actionID = OriginalHook(Ninjutsu);
-
-                    return true;
-                }
-
-                actionID = OriginalHook(Chi);
-                CurrentMudra = MudraState.CastingHyoshoRanryu;
-
-                return true;
-            }
-
-            CurrentMudra = MudraState.None;
-
-            return false;
-        }
-
         public bool ContinueCurrentMudra(ref uint actionID)
         {
             if (ActionWatching.TimeSinceLastAction.TotalSeconds >= 1 && CurrentNinjutsu == Ninjutsu)
@@ -668,14 +210,14 @@ internal partial class NIN
             }
 
             if (ActionWatching.LastAction == FumaShuriken ||
-                 ActionWatching.LastAction == Katon ||
-                 ActionWatching.LastAction == Raiton ||
-                 ActionWatching.LastAction == Hyoton ||
-                 ActionWatching.LastAction == Huton ||
-                 ActionWatching.LastAction == Doton ||
-                 ActionWatching.LastAction == Suiton ||
-                 ActionWatching.LastAction == GokaMekkyaku ||
-                 ActionWatching.LastAction == HyoshoRanryu)
+                ActionWatching.LastAction == Katon ||
+                ActionWatching.LastAction == Raiton ||
+                ActionWatching.LastAction == Hyoton ||
+                ActionWatching.LastAction == Huton ||
+                ActionWatching.LastAction == Doton ||
+                ActionWatching.LastAction == Suiton ||
+                ActionWatching.LastAction == GokaMekkyaku ||
+                ActionWatching.LastAction == HyoshoRanryu)
             {
                 CurrentMudra = MudraState.None;
                 InMudra = false;
@@ -687,7 +229,6 @@ internal partial class NIN
                 MudraState.CastingFumaShuriken => CastFumaShuriken(ref actionID),
                 MudraState.CastingKaton => CastKaton(ref actionID),
                 MudraState.CastingRaiton => CastRaiton(ref actionID),
-                MudraState.CastingHyoton => CastHyoton(ref actionID),
                 MudraState.CastingHuton => CastHuton(ref actionID),
                 MudraState.CastingDoton => CastDoton(ref actionID),
                 MudraState.CastingSuiton => CastSuiton(ref actionID),
@@ -696,9 +237,278 @@ internal partial class NIN
                 _ => false
             };
         }
+        #endregion
+        
+        #region Mudra Cast Check
+        public static bool CanCast()
+        {
+            if (InMudra) return true;
+            
+            if (GetCooldown(GustSlash).CooldownTotal == 0.5) return true;
+
+            if (GetRemainingCharges(Ten) == 0 &&
+                !HasStatusEffect(Buffs.Mudra) &&
+                !HasStatusEffect(Buffs.Kassatsu))
+                return false;
+            return true;
+        }
+        #endregion
+        
+        #region Fuma Shuriken
+        public bool CastFumaShuriken(ref uint actionID) // Ten
+        {
+            if (CurrentMudra is MudraState.None or MudraState.CastingFumaShuriken)
+            {
+                // Reset State
+                if (!CanCast() || ActionWatching.LastAction == FumaShuriken) 
+                {
+                    CurrentMudra = MudraState.None;
+                    return false;
+                }
+                // Finish the Mudra
+                if (ActionWatching.LastAction is Ten or TenCombo) 
+                {
+                    actionID = OriginalHook(Ninjutsu);
+                    return true;
+                }
+                // Start the Mudra
+                actionID = OriginalHook(Ten);
+                CurrentMudra = MudraState.CastingFumaShuriken;
+                return true;
+            }
+            CurrentMudra = MudraState.None;
+            return false;
+        }
+        #endregion
+        
+        #region Raiton
+        public bool CastRaiton(ref uint actionID)  // Ten Chi
+        {
+            if (Raiton.LevelChecked() && CurrentMudra is MudraState.None or MudraState.CastingRaiton)
+            {
+                // Reset State
+                if (!CanCast() || ActionWatching.LastAction == OriginalHook(Ninjutsu))
+                {
+                    CurrentMudra = MudraState.None;
+                    return false;
+                }
+                // Finish the Mudra
+                switch (ActionWatching.LastAction)
+                {
+                    case Ten or TenCombo or Jin or JinCombo:
+                        actionID = OriginalHook(Chi);
+                        return true;
+                    case Chi or ChiCombo: //Chi == Bailout Fuma
+                        actionID = OriginalHook(Ninjutsu);
+                        return true;
+                }
+                // Start the Mudra
+                actionID = OriginalHook(Ten);
+                CurrentMudra = MudraState.CastingRaiton;
+                return true;
+            }
+            CurrentMudra = MudraState.None;
+            return false;
+        }
+        #endregion
+        
+        #region Suiton
+        public bool CastSuiton(ref uint actionID)  //Ten Chi Jin
+        {
+            if (Suiton.LevelChecked() && CurrentMudra is MudraState.None or MudraState.CastingSuiton)
+            {
+                // Reset State
+                if (!CanCast() || ActionWatching.LastAction == OriginalHook(Ninjutsu))
+                {
+                    CurrentMudra = MudraState.None;
+                    return false;
+                }
+                //Finish the Mudra
+                switch (ActionWatching.LastAction)
+                {
+                    case Ten or TenCombo:
+                        actionID = OriginalHook(Chi);
+                        return true;
+                    case Chi or ChiCombo: //Chi == Bailout Hyoten
+                        actionID = OriginalHook(Jin);
+                        return true;
+                    case Jin or JinCombo: //Jin == Bailout Fuma
+                        actionID = OriginalHook(Ninjutsu);
+                        return true;
+                }
+                // Start the Mudra
+                actionID = OriginalHook(Ten);
+                CurrentMudra = MudraState.CastingSuiton;
+                return true;
+            }
+            CurrentMudra = MudraState.None;
+            return false;
+        }
+        #endregion
+
+        #region Hyosho Ranryu 
+        public bool CastHyoshoRanryu(ref uint actionID) // Ten Jin
+        {
+            if (HyoshoRanryu.LevelChecked() && CurrentMudra is MudraState.None or MudraState.CastingHyoshoRanryu)
+            {
+                // Reset State
+                if (!CanCast() || !HasStatusEffect(Buffs.Kassatsu) || ActionWatching.LastAction == OriginalHook(Ninjutsu))
+                {
+                    CurrentMudra = MudraState.None;
+                    return false;
+                }
+                //Finish the Mudra
+                switch (ActionWatching.LastAction)
+                {
+                    case Ten or TenCombo or Chi or ChiCombo:
+                        actionID = JinCombo;
+                        return true;
+                    case Jin or JinCombo: //Jin == Bailout to Fuma
+                        actionID = OriginalHook(Ninjutsu);
+                        return true;
+                }
+                // Start the Mudra
+                actionID = TenCombo;
+                CurrentMudra = MudraState.CastingHyoshoRanryu;
+                return true;
+            }
+            CurrentMudra = MudraState.None;
+            return false;
+        }
+        #endregion
+        
+        #region Katon
+        public bool CastKaton(ref uint actionID) // Jin Ten
+        {
+            if (Katon.LevelChecked() && CurrentMudra is MudraState.None or MudraState.CastingKaton)
+            {
+                // Reset State
+                if (!CanCast() || ActionWatching.LastAction == OriginalHook(Ninjutsu))
+                {
+                    CurrentMudra = MudraState.None;
+                    return false;
+                }
+                //Finish the Mudra
+                switch (ActionWatching.LastAction)
+                {
+                    case Jin or JinCombo or Chi or ChiCombo:
+                        actionID = OriginalHook(Ten);
+                        return true;
+                    case Ten or TenCombo: //Ten == Bailout to Fuma
+                        actionID = OriginalHook(Ninjutsu);
+                        return true;
+                }
+                // Start the Mudra
+                actionID = OriginalHook(Jin);
+                CurrentMudra = MudraState.CastingKaton;
+                return true;
+            }
+            CurrentMudra = MudraState.None;
+            return false;
+        }
+        #endregion
+        
+        #region Doton
+        public bool CastDoton(ref uint actionID) // Jin Ten Chi
+        {
+            if (Doton.LevelChecked() && CurrentMudra is MudraState.None or MudraState.CastingDoton)
+            {
+                // Reset State
+                if (!CanCast() || ActionWatching.LastAction == OriginalHook(Ninjutsu))
+                {
+                    CurrentMudra = MudraState.None;
+
+                    return false;
+                }
+                //Finish the Mudra
+                switch (ActionWatching.LastAction)
+                {
+                    case Jin or JinCombo: 
+                        actionID = OriginalHook(Ten);
+                        return true;
+                    case Ten or TenCombo: // Ten == Bailout to Raiton
+                        actionID = OriginalHook(Chi);
+                        return true;
+                    case Chi or ChiCombo: //Chi == Bailout Fuma
+                        actionID = OriginalHook(Ninjutsu);
+                        return true;
+                }
+                // Start the Mudra
+                actionID = OriginalHook(Jin);
+                CurrentMudra = MudraState.CastingDoton;
+                return true;
+            }
+            CurrentMudra = MudraState.None;
+            return false;
+        }
+        #endregion
+        
+        #region Huton
+        public bool CastHuton(ref uint actionID) // Jin Chi Ten
+        {
+            if (Huton.LevelChecked() && CurrentMudra is MudraState.None or MudraState.CastingHuton)
+            {
+                // Reset State
+                if (!CanCast() || ActionWatching.LastAction == OriginalHook(Ninjutsu))
+                {
+                    CurrentMudra = MudraState.None;
+                    return false;
+                }
+                //Finish the Mudra
+                switch (ActionWatching.LastAction)
+                {
+                    case Jin or JinCombo:
+                        actionID = OriginalHook(Chi);
+                        return true;
+                    case Chi or ChiCombo: //Chi == Bailout katon
+                        actionID = OriginalHook(Ten);
+                        return true;
+                    case Ten or TenCombo: // Ten == Bailout to Fuma
+                        actionID = OriginalHook(Ninjutsu);
+                        return true;
+                }
+                // Start the Mudra
+                actionID = OriginalHook(Jin);
+                CurrentMudra = MudraState.CastingHuton;
+                return true;
+            }
+            CurrentMudra = MudraState.None;
+            return false;
+        }
+        #endregion
+        
+        #region Goka Mekkyaku
+        public bool CastGokaMekkyaku(ref uint actionID) // Jin Ten
+        {
+            if (GokaMekkyaku.LevelChecked() && CurrentMudra is MudraState.None or MudraState.CastingGokaMekkyaku)
+            {
+                // Reset State
+                if (!CanCast() || !HasStatusEffect(Buffs.Kassatsu) || ActionWatching.LastAction == OriginalHook(Ninjutsu))
+                {
+                    CurrentMudra = MudraState.None;
+
+                    return false;
+                }
+                //Finish the Mudra
+                switch (ActionWatching.LastAction)
+                {
+                    case Jin or JinCombo or Chi or ChiCombo:
+                        actionID = OriginalHook(Ten);
+                        return true;
+                    case Ten or TenCombo: // Ten == Bailout to Fuma
+                        actionID = OriginalHook(Ninjutsu);
+                        return true;
+                }
+                // Start the Mudra
+                actionID = OriginalHook(Jin);
+                CurrentMudra = MudraState.CastingGokaMekkyaku;
+                return true;
+            }
+            CurrentMudra = MudraState.None;
+            return false;
+        }
+        #endregion
     }
-    #endregion
-    
     #endregion
     
     #region Opener

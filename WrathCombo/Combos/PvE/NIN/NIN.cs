@@ -13,6 +13,7 @@ internal partial class NIN : Melee
     #region Simple 
     internal class NIN_ST_SimpleMode : CustomCombo
     {
+        protected internal MudraCasting MudraState = new();
         protected internal override Preset Preset => Preset.NIN_ST_SimpleMode;
 
         protected override uint Invoke(uint actionID)
@@ -23,8 +24,11 @@ internal partial class NIN : Melee
             
             NINGauge gauge = GetJobGauge<NINGauge>();
             
-            if (OriginalHook(Ninjutsu) is Rabbit or Huton or Doton or Suiton)
+            if (OriginalHook(Ninjutsu) is Rabbit or Huton or Suiton or Doton or GokaMekkyaku or HyoshoRanryu)
                 return OriginalHook(Ninjutsu);
+            
+            if (InMudra && MudraState.ContinueCurrentMudra(ref actionID))
+                return actionID;
             
             if (HasStatusEffect(Buffs.TenChiJin))
                 return STTenChiJin(actionID);
@@ -77,14 +81,11 @@ internal partial class NIN : Melee
             #endregion
             
             #region Ninjutsu
-            
-            if (CanUseHyoshoRanryu)
-                return UseHyoshoRanryu(actionID);
-            if (CanUseSuiton && TrickCD <= 18)
-                return UseSuiton(actionID);
-            if (CanUseRaiton)
-                return LevelChecked(Raiton) ? UseRaiton(actionID) : UseFumaShuriken(actionID);
-            
+            if (CanUseHyoshoRanryu && MudraState.CastHyoshoRanryu(ref actionID) || 
+                CanUseSuiton && TrickCD <= 18 && MudraState.CastSuiton(ref actionID) || 
+                CanUseRaiton && MudraState.CastRaiton(ref actionID) ||
+                CanUseFumaShuriken && !LevelChecked(Raiton) && MudraState.CastFumaShuriken(ref actionID))
+                return actionID;
             #endregion
             
             #region Selfcare
@@ -139,6 +140,7 @@ internal partial class NIN : Melee
     
     internal class NIN_AoE_SimpleMode : CustomCombo
     {
+        protected internal MudraCasting MudraState = new();
         protected internal override Preset Preset => Preset.NIN_AoE_SimpleMode;
 
         protected override uint Invoke(uint actionID)
@@ -147,11 +149,16 @@ internal partial class NIN : Melee
             if (actionID is not DeathBlossom)
                 return actionID;
             
-            if (OriginalHook(Ninjutsu) is Rabbit or Huton or Doton or Suiton)
+            if (OriginalHook(Ninjutsu) is Rabbit or Huton or Suiton or Doton or GokaMekkyaku or HyoshoRanryu)
                 return OriginalHook(Ninjutsu);
             
+            if (InMudra && MudraState.ContinueCurrentMudra(ref actionID))
+                return actionID;
+
             if (HasStatusEffect(Buffs.TenChiJin))
-                return AoETenChiJin(actionID);
+                return DotonRemaining < 3
+                    ? AoETenChiJinDoton(actionID) 
+                    : AoETenChiJinSuiton(actionID);
             
             #region Special Content
             if (OccultCrescent.ShouldUsePhantomActions() && !MudraPhase)
@@ -197,19 +204,12 @@ internal partial class NIN : Melee
             #endregion
             
             #region Ninjutsu
-            
-            if (CanUseGokaMekkyaku)
-                return UseGokaMekkyaku(actionID);
-
-            if (CanUseHuton)
-                return UseHuton(actionID);
-
-            if (CanUseDoton && GetTargetHPPercent() >= 30 && (!HasDoton || DotonRemaining <= 2))
-                return UseDoton(actionID);
-
-            if (CanUseKaton)
-                return LevelChecked(Katon) ? UseKaton(actionID) : UseFumaShuriken(actionID);
-            
+            if (CanUseGokaMekkyaku && MudraState.CastGokaMekkyaku(ref actionID) || 
+                CanUseHuton && TrickCD <= 18 && MudraState.CastHuton(ref actionID) || 
+                CanUseDoton && MudraState.CastDoton(ref actionID) ||
+                CanUseKaton && MudraState.CastKaton(ref actionID) ||
+                CanUseFumaShuriken && !LevelChecked(Katon) && MudraState.CastFumaShuriken(ref actionID))
+                return actionID;
             #endregion
             
             #region Selfcare
@@ -257,6 +257,7 @@ internal partial class NIN : Melee
     #region Advanced
     internal class NIN_ST_AdvancedMode : CustomCombo
     {
+        protected internal MudraCasting MudraState = new();
         protected internal override Preset Preset => Preset.NIN_ST_AdvancedMode;
 
         protected override uint Invoke(uint actionID)
@@ -268,8 +269,11 @@ internal partial class NIN : Melee
             NINGauge gauge = GetJobGauge<NINGauge>();
             
             if (IsEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus) &&
-                OriginalHook(Ninjutsu) is Rabbit or Huton or Doton or Suiton)
+                OriginalHook(Ninjutsu) is Rabbit or Huton or Suiton or Doton or GokaMekkyaku or HyoshoRanryu)
                 return OriginalHook(Ninjutsu);
+            
+            if (InMudra && MudraState.ContinueCurrentMudra(ref actionID))
+                return actionID;
             
             if (NIN_ST_AdvancedMode_TenChiJin_Options[0] &&
                 HasStatusEffect(Buffs.TenChiJin))
@@ -319,19 +323,20 @@ internal partial class NIN : Melee
                 if (IsEnabled(Preset.NIN_ST_AdvancedMode_TrickAttack) && CanTrick && CombatEngageDuration().TotalSeconds > 5)
                     return OriginalHook(TrickAttack);
             }
-            
             #endregion
             
             #region Ninjutsu
             if (IsEnabled(Preset.NIN_ST_AdvancedMode_Ninjitsus))
             {
-                if (NIN_ST_AdvancedMode_Ninjitsus_Options[2] && CanUseHyoshoRanryu)
-                    return UseHyoshoRanryu(actionID);
-                if (NIN_ST_AdvancedMode_Ninjitsus_Options[1] && CanUseSuiton &&
-                    TrickCD <= NIN_ST_AdvancedMode_SuitonSetup)
-                    return UseSuiton(actionID);
-                if (NIN_ST_AdvancedMode_Ninjitsus_Options[0] && CanUseRaiton)
-                    return LevelChecked(Raiton) ? UseRaiton(actionID) : UseFumaShuriken(actionID);
+                if (NIN_ST_AdvancedMode_Ninjitsus_Options[2] && 
+                    CanUseHyoshoRanryu && MudraState.CastHyoshoRanryu(ref actionID) || 
+                    NIN_ST_AdvancedMode_Ninjitsus_Options[1] && 
+                    CanUseSuiton && TrickCD <= NIN_ST_AdvancedMode_SuitonSetup && MudraState.CastSuiton(ref actionID) || 
+                    NIN_ST_AdvancedMode_Ninjitsus_Options[0] && 
+                    CanUseRaiton && MudraState.CastRaiton(ref actionID) ||
+                    NIN_ST_AdvancedMode_Ninjitsus_Options[0] &&
+                    CanUseFumaShuriken && !LevelChecked(Raiton) && MudraState.CastFumaShuriken(ref actionID))
+                    return actionID;
             }
             #endregion
             
