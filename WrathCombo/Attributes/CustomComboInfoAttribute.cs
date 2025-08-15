@@ -17,15 +17,6 @@ internal class CustomComboInfoAttribute : Attribute
     /// <param name="order"> Display order. </param>
     //// <param name="memeName"> Display meme name </param>
     //// <param name="memeDescription"> Meme description. </param>
-    internal CustomComboInfoAttribute(string name, string description, byte jobID, [CallerLineNumber] int order = 0)
-    {
-        Name = name;
-        Description = description;
-        //JobID = (Job)jobID;
-        JobID = Enum.IsDefined(typeof(Job), jobID) ? (Job)jobID : Job.ADV; //Safety rails....thanks DOL...
-        Order = order;
-    }
-
     internal CustomComboInfoAttribute(string name, string description, Job job, [CallerLineNumber] int order = 0)
     {
         Name = name;

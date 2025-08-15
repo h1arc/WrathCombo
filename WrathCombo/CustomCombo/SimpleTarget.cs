@@ -586,14 +586,14 @@ internal static class SimpleTarget
         GetPartyMembers()
             .Where(x => x.BattleChara.IsNotThePlayer())
             .FirstOrDefault(x => x.GetRole() is CombatRole.Healer ||
-                                 x.RealJob?.RowId is SMN.JobID or RDM.JobID)
+                                 x.RealJob?.GetJob() is Job.SMN or Job.RDM)
             ?.BattleChara;
 
     /// Gets any Raiser DPS that is not the player.
     public static IGameObject? AnyRaiserDPS =>
         GetPartyMembers()
             .Where(x => x.BattleChara.IsNotThePlayer())
-            .FirstOrDefault(x => x.RealJob?.RowId is SMN.JobID or RDM.JobID)
+            .FirstOrDefault(x => x.RealJob?.GetJob() is Job.SMN or Job.RDM)
             ?.BattleChara;
 
     /// Gets any Melee DPS that is not the player.
@@ -679,7 +679,7 @@ internal static class SimpleTarget
             var raisers = GetPartyMembers()
                 .Where(x => x.BattleChara.IsNotThePlayer() &&
                             (x.GetRole() is CombatRole.Healer ||
-                             x.RealJob?.RowId is SMN.JobID or RDM.JobID))
+                             x.RealJob?.GetJob() is Job.SMN or Job.RDM))
                 .ToArray();
             var deadRaisers =
                 raisers.Where(x => x.BattleChara.IsDead()).ToArray();
@@ -700,7 +700,7 @@ internal static class SimpleTarget
         {
             var raisers = GetPartyMembers()
                 .Where(x => x.BattleChara.IsNotThePlayer() &&
-                            x.RealJob?.RowId is SMN.JobID or RDM.JobID)
+                            (x.RealJob?.GetJob()) is Job.SMN or Job.RDM)
                 .ToArray();
             var deadRaisers =
                 raisers.Where(x => x.BattleChara.IsDead()).ToArray();

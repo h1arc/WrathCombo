@@ -41,6 +41,7 @@ internal class ConfigWindow : Dalamud.Interface.Windowing.Window
             .ThenByDescending(tpl => tpl.Info.Role is JobRole.Healer)
             .ThenByDescending(tpl => tpl.Info.Role is JobRole.MeleeDPS)
             .ThenByDescending(tpl => tpl.Info.Role is JobRole.RangedDPS)
+            .ThenByDescending(tpl => tpl.Info.Role is JobRole.MagicalDPS)
             .ThenByDescending(tpl => tpl.Info.JobID is Job.ADV)
             .ThenByDescending(tpl => tpl.Info.JobID is Job.MIN)
             //.ThenBy(tpl => tpl.Info.ClassJobCategory)

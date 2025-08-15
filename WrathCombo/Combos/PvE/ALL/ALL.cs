@@ -1,4 +1,6 @@
 ﻿using ECommons.DalamudServices;
+using ECommons.ExcelServices;
+using ECommons.GameHelpers;
 using System.Collections.Generic;
 using System.Linq;
 using WrathCombo.Core;
@@ -121,7 +123,7 @@ internal partial class All
             if (!replacedActions.Contains(actionID))
                 return actionID;
             if (actionID is SCH.Resurrection &&
-                LocalPlayer.ClassJob.RowId is not SCH.JobID)
+                Player.Job is not Job.SCH)
                 return actionID;
 
             if (ActionReady(RoleActions.Magic.Swiftcast))
@@ -214,7 +216,7 @@ internal partial class All
             if (!replacedActions.Contains(actionID))
                 return actionID;
             if (actionID is SMN.Resurrection &&
-                LocalPlayer.ClassJob.RowId is not SMN.JobID)
+                Player.Job is not Job.SMN)
                 return actionID;
 
             if (HasStatusEffect(RoleActions.Magic.Buffs.Swiftcast) ||
@@ -228,7 +230,7 @@ internal partial class All
             if (IsOffCooldown(RoleActions.Magic.Swiftcast))
                 return RoleActions.Magic.Swiftcast;
 
-            if (LocalPlayer.ClassJob.RowId is RDM.JobID &&
+            if (Player.Job is Job.RDM &&
                 ActionReady(RDM.Vercure))
                 return RDM.Vercure;
 
