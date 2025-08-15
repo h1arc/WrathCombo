@@ -85,6 +85,10 @@ internal partial class NIN
     
     #region OGCD Logic
     // Buffs
+    internal static int STMugThreshold => NIN_ST_AdvancedMode_Mug_SubOption == 1 || !InBossEncounter() ? NIN_ST_AdvancedMode_Mug_Threshold : 0;
+    internal static int AoEMugThreshold => NIN_AoE_AdvancedMode_Mug_SubOption == 1 || !InBossEncounter() ? NIN_AoE_AdvancedMode_Mug_Threshold : 0;
+    internal static int STTrickThreshold => NIN_ST_AdvancedMode_TrickAttack_SubOption == 1 || !InBossEncounter() ? NIN_ST_AdvancedMode_TrickAttack_Threshold : 0;
+    internal static int AoETrickThreshold => NIN_AoE_AdvancedMode_TrickAttack_SubOption == 1 || !InBossEncounter() ? NIN_AoE_AdvancedMode_TrickAttack_Threshold : 0;
     internal static bool BuffWindow => TrickDebuff || MugDebuff && TrickCD >= 30;
     internal static float TrickCD => GetCooldownRemainingTime(OriginalHook(TrickAttack));
     internal static float MugCD => GetCooldownRemainingTime(OriginalHook(Mug));

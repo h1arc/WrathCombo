@@ -334,10 +334,12 @@ internal partial class NIN : Melee
                     (BhavacakraPooling || !NIN_ST_AdvancedMode_Bhavacakra_Pooling))
                     return LevelChecked(Bhavacakra) ? OriginalHook(Bhavacakra) : OriginalHook(HellfrogMedium);
                 
-                if (IsEnabled(Preset.NIN_ST_AdvancedMode_Mug) && CanMug && CombatEngageDuration().TotalSeconds > 5)
+                if (IsEnabled(Preset.NIN_ST_AdvancedMode_Mug) && CanMug && CombatEngageDuration().TotalSeconds > 5 &&
+                    GetTargetHPPercent() > STMugThreshold)
                     return OriginalHook(Mug);
 
-                if (IsEnabled(Preset.NIN_ST_AdvancedMode_TrickAttack) && CanTrick && CombatEngageDuration().TotalSeconds > 5)
+                if (IsEnabled(Preset.NIN_ST_AdvancedMode_TrickAttack) && CanTrick && CombatEngageDuration().TotalSeconds > 5 &&
+                    GetTargetHPPercent() > STTrickThreshold)
                     return OriginalHook(TrickAttack);
             }
             #endregion
@@ -476,10 +478,12 @@ internal partial class NIN : Melee
                     (HellfrogMediumPooling || !NIN_AoE_AdvancedMode_HellfrogMedium_Pooling))
                     return OriginalHook(HellfrogMedium);
                 
-                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_Mug) && CanMug && CombatEngageDuration().TotalSeconds > 5)
+                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_Mug) && CanMug && CombatEngageDuration().TotalSeconds > 5 &&
+                    GetTargetHPPercent() > AoEMugThreshold)
                     return OriginalHook(Mug);
 
-                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_TrickAttack) && CanTrick && CombatEngageDuration().TotalSeconds > 5)
+                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_TrickAttack) && CanTrick && CombatEngageDuration().TotalSeconds > 5 &&
+                    GetTargetHPPercent() > AoETrickThreshold)
                     return OriginalHook(TrickAttack);
             }
             #endregion

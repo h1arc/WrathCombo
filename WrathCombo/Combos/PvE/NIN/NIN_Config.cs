@@ -1,3 +1,4 @@
+using Dalamud.Interface.Colors;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
 using static WrathCombo.Window.Functions.UserConfig;
@@ -13,13 +14,19 @@ internal partial class NIN
             NIN_ST_AdvancedMode_SecondWindThreshold = new("NIN_ST_AdvancedMode_SecondWindThreshold", 40),
             NIN_ST_AdvancedMode_ShadeShiftThreshold = new("NIN_ST_AdvancedMode_ShadeShiftThreshold", 20),
             NIN_ST_AdvancedMode_BloodbathThreshold = new("NIN_ST_AdvancedMode_BloodbathThreshold", 40),
-            
+            NIN_ST_AdvancedMode_Mug_Threshold = new("NIN_ST_AdvancedMode_Mug_Threshold", 40),
+            NIN_ST_AdvancedMode_Mug_SubOption = new("NIN_ST_AdvancedMode_Mug_SubOption", 0),
+            NIN_ST_AdvancedMode_TrickAttack_Threshold = new("NIN_ST_AdvancedMode_TrickAttack_Threshold", 40),
+            NIN_ST_AdvancedMode_TrickAttack_SubOption = new("NIN_ST_AdvancedMode_TrickAttack_SubOption", 0),
             NIN_AoE_AdvancedMode_SecondWindThreshold = new("NIN_AoE_AdvancedMode_SecondWindThreshold", 40),
             NIN_AoE_AdvancedMode_ShadeShiftThreshold = new("NIN_AoE_AdvancedMode_ShadeShiftThreshold", 20),
             NIN_AoE_AdvancedMode_BloodbathThreshold = new("NIN_AoE_AdvancedMode_BloodbathThreshold", 40),
             NIN_AoE_AdvancedMode_HutonSetup = new("NIN_AoE_AdvancedMode_HutonSetup", 18),
             NIN_AoE_AdvancedMode_Doton_Threshold = new("NIN_AoE_AdvancedMode_Doton_Threshold", 20),
-            
+            NIN_AoE_AdvancedMode_Mug_Threshold = new("NIN_AoE_AdvancedMode_Mug_Threshold", 40),
+            NIN_AoE_AdvancedMode_Mug_SubOption = new("NIN_AoE_AdvancedMode_Mug_SubOption", 0),
+            NIN_AoE_AdvancedMode_TrickAttack_Threshold = new("NIN_AoE_AdvancedMode_TrickAttack_Threshold", 40),
+            NIN_AoE_AdvancedMode_TrickAttack_SubOption = new("NIN_AoE_AdvancedMode_TrickAttack_SubOption", 0),
             NIN_VariantCure = new("NIN_VariantCure"),
             NIN_Adv_Opener_Selection = new("NIN_Adv_Opener_Selection", 0),
             NIN_Balance_Content = new("NIN_Balance_Content", 1),
@@ -59,6 +66,31 @@ internal partial class NIN
 
                     DrawBossOnlyChoice(NIN_Balance_Content);
                     break;
+                
+                case Preset.NIN_ST_AdvancedMode_Mug:
+                    DrawSliderInt(0, 100, NIN_ST_AdvancedMode_Mug_Threshold,
+                        $"Stop using on targets below this HP % (0% = always use, 100% = never use).");
+                    ImGui.Indent();
+                    ImGui.TextColored(ImGuiColors.DalamudYellow, "Select what kind of enemies the HP check should be applied to:");
+                    DrawHorizontalRadioButton(NIN_ST_AdvancedMode_Mug_SubOption,
+                        "Non-boss Encounters Only", $"Applies HP check to Non-Boss Encounters only", 0);
+                    DrawHorizontalRadioButton(NIN_ST_AdvancedMode_Mug_SubOption,
+                        "All Content", $"Applies HP Check to All Content", 1);
+                    ImGui.Unindent();
+                    break;
+                
+                case Preset.NIN_ST_AdvancedMode_TrickAttack:
+                    DrawSliderInt(0, 100, NIN_ST_AdvancedMode_TrickAttack_Threshold,
+                        $"Stop using on targets below this HP % (0% = always use, 100% = never use).");
+                    ImGui.Indent();
+                    ImGui.TextColored(ImGuiColors.DalamudYellow, "Select what kind of enemies the HP check should be applied to:");
+                    DrawHorizontalRadioButton(NIN_ST_AdvancedMode_TrickAttack_SubOption,
+                        "Non-boss Encounters Only", $"Applies HP check to Non-Boss Encounters only", 0);
+                    DrawHorizontalRadioButton(NIN_ST_AdvancedMode_TrickAttack_SubOption,
+                        "All Content", $"Applies HP Check to All Content", 1);
+                    ImGui.Unindent();
+                    break;
+                    
 
                 case Preset.NIN_ST_AdvancedMode_Ninjitsus:
                     DrawHorizontalMultiChoice(NIN_ST_AdvancedMode_Ninjitsus_Options, "Raiton/Fuma Shuriken",
@@ -143,6 +175,30 @@ internal partial class NIN
                         DrawSliderInt(0, 100, NIN_AoE_AdvancedMode_Doton_Threshold,
                             "Sets the max remaining HP percentage of the current target to cast Doton.");
                     }
+                    break;
+                
+                case Preset.NIN_AoE_AdvancedMode_Mug:
+                    DrawSliderInt(0, 100, NIN_AoE_AdvancedMode_Mug_Threshold,
+                        $"Stop using on targets below this HP % (0% = always use, 100% = never use).");
+                    ImGui.Indent();
+                    ImGui.TextColored(ImGuiColors.DalamudYellow, "Select what kind of enemies the HP check should be applied to:");
+                    DrawHorizontalRadioButton(NIN_AoE_AdvancedMode_Mug_SubOption,
+                        "Non-boss Encounters Only", $"Applies HP check to Non-Boss Encounters only", 0);
+                    DrawHorizontalRadioButton(NIN_AoE_AdvancedMode_Mug_SubOption,
+                        "All Content", $"Applies HP Check to All Content", 1);
+                    ImGui.Unindent();
+                    break;
+                
+                case Preset.NIN_AoE_AdvancedMode_TrickAttack:
+                    DrawSliderInt(0, 100, NIN_AoE_AdvancedMode_TrickAttack_Threshold,
+                        $"Stop using on targets below this HP % (0% = always use, 100% = never use).");
+                    ImGui.Indent();
+                    ImGui.TextColored(ImGuiColors.DalamudYellow, "Select what kind of enemies the HP check should be applied to:");
+                    DrawHorizontalRadioButton(NIN_AoE_AdvancedMode_TrickAttack_SubOption,
+                        "Non-boss Encounters Only", $"Applies HP check to Non-Boss Encounters only", 0);
+                    DrawHorizontalRadioButton(NIN_AoE_AdvancedMode_TrickAttack_SubOption,
+                        "All Content", $"Applies HP Check to All Content", 1);
+                    ImGui.Unindent();
                     break;
                 
                 
