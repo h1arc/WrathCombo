@@ -88,7 +88,7 @@ internal partial class MCH
                     break;
 
                 case Preset.MCH_ST_Adv_SecondWind:
-                    DrawSliderInt(0, 100, MCH_ST_SecondWindThreshold,
+                    DrawSliderInt(0, 100, MCH_ST_SecondWindHPThreshold,
                         $"{Role.SecondWind.ActionName()} HP percentage threshold");
                     break;
 
@@ -109,7 +109,7 @@ internal partial class MCH
                     break;
 
                 case Preset.MCH_AoE_Adv_SecondWind:
-                    DrawSliderInt(0, 100, MCH_AoE_SecondWindThreshold,
+                    DrawSliderInt(0, 100, MCH_AoE_SecondWindHPThreshold,
                         $"{Role.SecondWind.ActionName()} HP percentage threshold");
                     break;
 
@@ -170,12 +170,12 @@ internal partial class MCH
             MCH_ST_ReassemblePool = new("MCH_ST_ReassemblePool", 0),
             MCH_ST_GaussRicoPool = new("MCH_ST_GaussRicoPool", 0),
             MCH_AoE_QueenOverDrive = new("MCH_AoE_QueenOverDrive", 20),
-            MCH_ST_SecondWindThreshold = new("MCH_ST_SecondWindThreshold", 40),
+            MCH_ST_SecondWindHPThreshold = new("MCH_ST_SecondWindThreshold", 40),
             MCH_AoE_ReassemblePool = new("MCH_AoE_ReassemblePool", 0),
             MCH_AoE_TurretUsage = new("MCH_AoE_TurretUsage", 100),
             MCH_AoE_FlamethrowerMovement = new("MCH_AoE_FlamethrowerMovement", 0),
             MCH_AoE_FlamethrowerHPOption = new("MCH_AoE_FlamethrowerHPOption", 50),
-            MCH_AoE_SecondWindThreshold = new("MCH_AoE_SecondWindThreshold", 40),
+            MCH_AoE_SecondWindHPThreshold = new("MCH_AoE_SecondWindThreshold", 40),
             MCH_GaussRico = new("MCHGaussRico", 0),
             MCH_VariantCure = new("MCH_VariantCure", 50);
 

@@ -282,7 +282,7 @@ internal partial class MCH : PhysicalRanged
 
                     // Healing
                     if (IsEnabled(Preset.MCH_ST_Adv_SecondWind) &&
-                        Role.CanSecondWind(MCH_ST_SecondWindThreshold))
+                        Role.CanSecondWind(MCH_ST_SecondWindHPThreshold))
                         return Role.SecondWind;
                 }
 
@@ -554,7 +554,7 @@ internal partial class MCH : PhysicalRanged
                     }
 
                     if (IsEnabled(Preset.MCH_AoE_Adv_SecondWind) &&
-                        Role.CanSecondWind(MCH_AoE_SecondWindThreshold))
+                        Role.CanSecondWind(MCH_AoE_SecondWindHPThreshold))
                         return Role.SecondWind;
                 }
 
