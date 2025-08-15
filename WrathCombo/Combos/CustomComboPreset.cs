@@ -5487,6 +5487,14 @@ public enum Preset
     [ReplaceSkill(RDM.Verthunder, RDM.Verthunder3)]
     [CustomComboInfo("Spell Combo on Verthunder", "Replaces Verthunder with options.", RDM.JobID)]
     RDM_VerThunder = 13418,
+    
+    [ReplaceSkill(RDM.Veraero2)]
+    [CustomComboInfo("Spell Combo on Veraero 2", "Replaces Veraero 2 with options.", RDM.JobID)]
+    RDM_VerAero2 = 13432,
+    
+    [ReplaceSkill(RDM.Verthunder2)]
+    [CustomComboInfo("Spell Combo on Verthunder 2", "Replaces Verthunder 2 with options.", RDM.JobID)]
+    RDM_VerThunder2 = 13433,
 
     [ReplaceSkill(RDM.Riposte)]
     [CustomComboInfo("Riposte Melee Combo", "Replaces Riposte with the basic melee combo.", RDM.JobID)]
@@ -5494,7 +5502,7 @@ public enum Preset
     
     [ParentCombo(RDM_Riposte)]
     [CustomComboInfo("Riposte OGCD Weave Options", "Weave the following OGCDS in the melee combo", RDM.JobID)]
-    RDM_Riposte_Weaves = 134230,
+    RDM_Riposte_Weaves = 13434,
     
     [ParentCombo(RDM_Riposte)]
     [CustomComboInfo("Gap-Close with Corps-a-corps Option",
@@ -5594,7 +5602,7 @@ public enum Preset
     [CustomComboInfo("Cure on Vercure Option", "Replaces Vercure with Variant Cure.", RDM.JobID)]
     RDM_Variant_Cure2 = 13417,
     
-    //Last Used 13431
+    //Last Used 13434
     #endregion
 
     #endregion

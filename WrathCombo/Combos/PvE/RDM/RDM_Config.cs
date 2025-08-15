@@ -36,7 +36,10 @@ internal partial class RDM
             RDM_Riposte_Weaves_Options = new("RDM_Riposte_Weaves_Options"),
             RDM_Moulinet_Weaves_Options = new("RDM_Moulinet_Weaves_Options"),
             RDM_VerAero_Options = new("RDM_VerAero_Options"),
-            RDM_VerThunder_Options = new("RDM_VerThunder_Options");
+            RDM_VerThunder_Options = new("RDM_VerThunder_Options"),
+            RDM_VerAero2_Options = new("RDM_VerAero2_Options"),
+            RDM_VerThunder2_Options = new("RDM_VerThunder2_Options");
+                
         #endregion
 
         internal static void Draw(Preset preset)
@@ -174,6 +177,18 @@ internal partial class RDM
                     DrawHorizontalMultiChoice(RDM_VerThunder_Options,"VerFire", "Adds VerFire", 4, 1);
                     DrawHorizontalMultiChoice(RDM_VerThunder_Options,"Scorch Combo", "Adds Scorch/Resolution Finishers", 4, 2);
                     DrawHorizontalMultiChoice(RDM_VerThunder_Options,"Jolt", "Adds Jolt", 4, 3);
+                    break;
+                
+                case Preset.RDM_VerAero2:
+                    DrawHorizontalMultiChoice(RDM_VerAero2_Options,"Holy Flare Combo", "Adds smart Holy/Flare", 3, 0);
+                    DrawHorizontalMultiChoice(RDM_VerAero2_Options,"Scorch Combo", "Adds Scorch/Resolution Finishers", 3, 1);
+                    DrawHorizontalMultiChoice(RDM_VerAero2_Options,"Impact", "Adds Impact", 3, 2);
+                    break;
+                
+                case Preset.RDM_VerThunder2:
+                    DrawHorizontalMultiChoice(RDM_VerThunder2_Options,"Holy Flare Combo", "Adds smart Holy/Flare", 3, 0);
+                    DrawHorizontalMultiChoice(RDM_VerThunder2_Options,"Scorch Combo", "Adds Scorch/Resolution Finishers", 3, 1);
+                    DrawHorizontalMultiChoice(RDM_VerThunder2_Options,"Impact", "Adds Impact", 3, 2);
                     break;
                     #endregion
             }
