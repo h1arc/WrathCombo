@@ -869,7 +869,8 @@ internal partial class BLM : Caster
             if (actionID is not Xenoglossy)
                 return actionID;
 
-            return ThunderDebuffST.RemainingTime <= 3
+            return ThunderDebuffST is null && ThunderDebuffAoE is null ||
+                   ThunderDebuffST?.RemainingTime < 3
                 ? OriginalHook(Thunder)
                 : actionID;
         }
@@ -883,7 +884,8 @@ internal partial class BLM : Caster
             if (actionID is not Foul)
                 return actionID;
 
-            return ThunderDebuffAoE.RemainingTime <= 3
+            return ThunderDebuffST is null && ThunderDebuffAoE is null ||
+                   ThunderDebuffAoE?.RemainingTime < 3
                 ? OriginalHook(Thunder2)
                 : actionID;
         }
