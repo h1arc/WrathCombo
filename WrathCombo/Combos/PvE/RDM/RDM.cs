@@ -500,16 +500,17 @@ internal partial class RDM : Caster
             if (actionID is not (Veraero or Veraero3))
                 return actionID;
 
-            if (ComboAction is Scorch or Verholy or Verflare)
+            if (RDM_VerAero_Options[2] && ComboAction is Scorch or Verholy or Verflare)
                 return OriginalHook(Jolt);
 
-            if (HasManaStacks)
+            if (RDM_VerAero_Options[0] && HasManaStacks)
                 return UseHolyFlare(actionID);
 
-            if (IsEnabled(Preset.RDM_VerAero_Stone) && CanVerStone)
+            if (RDM_VerAero_Options[1] && CanVerStone)
                 return Verstone;
 
-            if (!HasDualcast && !HasSwiftcast)
+            if (RDM_VerAero_Options[3] && !HasDualcast && !HasSwiftcast && !HasManaStacks &&
+                ComboAction is not (Scorch or Verholy or Verflare))
                 return OriginalHook(Jolt);
 
             return actionID;
@@ -525,16 +526,17 @@ internal partial class RDM : Caster
             if (actionID is not (Verthunder or Verthunder3))
                 return actionID;
 
-            if (ComboAction is Scorch or Verholy or Verflare) 
+            if (RDM_VerThunder_Options[2] && ComboAction is Scorch or Verholy or Verflare) 
                 return OriginalHook(Jolt);
 
-            if (HasManaStacks) 
+            if (RDM_VerThunder_Options[0] && HasManaStacks) 
                 return UseHolyFlare(actionID);
 
-            if (IsEnabled(Preset.RDM_VerThunder_Fire) && CanVerFire) 
+            if (RDM_VerThunder_Options[1] && CanVerFire) 
                 return Verfire;
         
-            if (!HasDualcast && !HasSwiftcast)
+            if (RDM_VerThunder_Options[3] && !HasDualcast && !HasSwiftcast && !HasManaStacks &&
+                ComboAction is not (Scorch or Verholy or Verflare))
                 return OriginalHook(Jolt);
         
             return actionID;

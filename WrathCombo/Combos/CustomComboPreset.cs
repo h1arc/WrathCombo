@@ -5481,20 +5481,12 @@ public enum Preset
     #region Stand Alone Features
 
     [ReplaceSkill(RDM.Veraero, RDM.Veraero3)]
-    [CustomComboInfo("Spell Combo on Veraero", "Replaces Veraero with Jolt.", RDM.JobID)]
+    [CustomComboInfo("Spell Combo on Veraero", "Replaces Veraero with options.", RDM.JobID)]
     RDM_VerAero = 13400,
-
-    [ParentCombo(RDM_VerAero)]
-    [CustomComboInfo("Add Verstone", "Replaces Veraero with Verstone.", RDM.JobID)]
-    RDM_VerAero_Stone = 13401,
     
     [ReplaceSkill(RDM.Verthunder, RDM.Verthunder3)]
-    [CustomComboInfo("Spell Combo on Verthunder", "Replaces Verthunder with Jolt.", RDM.JobID)]
+    [CustomComboInfo("Spell Combo on Verthunder", "Replaces Verthunder with options.", RDM.JobID)]
     RDM_VerThunder = 13418,
-
-    [ParentCombo(RDM_VerThunder)]
-    [CustomComboInfo("Add Verfire", "Replaces Verthunder With Verfire.", RDM.JobID)]
-    RDM_VerThunder_Fire = 13419,
 
     [ReplaceSkill(RDM.Riposte)]
     [CustomComboInfo("Riposte Melee Combo", "Replaces Riposte with the basic melee combo.", RDM.JobID)]
