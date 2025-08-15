@@ -506,7 +506,7 @@ internal partial class RDM : Caster
             if (RDM_VerAero_Options[0] && HasManaStacks)
                 return UseHolyFlare(actionID);
 
-            if (RDM_VerAero_Options[1] && CanVerStone)
+            if (RDM_VerAero_Options[1] && CanVerStone && !HasDualcast && !HasSwiftcast)
                 return Verstone;
 
             if (RDM_VerAero_Options[3] && !HasDualcast && !HasSwiftcast && !HasManaStacks &&
@@ -532,7 +532,7 @@ internal partial class RDM : Caster
             if (RDM_VerThunder_Options[0] && HasManaStacks) 
                 return UseHolyFlare(actionID);
 
-            if (RDM_VerThunder_Options[1] && CanVerFire) 
+            if (RDM_VerThunder_Options[1] && CanVerFire && !HasDualcast && !HasSwiftcast) 
                 return Verfire;
         
             if (RDM_VerThunder_Options[3] && !HasDualcast && !HasSwiftcast && !HasManaStacks &&
