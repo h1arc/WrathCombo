@@ -37,7 +37,7 @@ internal partial class BLM : Caster
 
                 if (EndOfFirePhase)
                 {
-                    if (ActionReady(Manafont) && EndOfFirePhase)
+                    if (ActionReady(Manafont))
                         return Manafont;
 
                     if (ActionReady(Role.Swiftcast) && JustUsed(Despair) &&
@@ -235,7 +235,7 @@ internal partial class BLM : Caster
                 if (EndOfFirePhase)
                 {
                     if (IsEnabled(Preset.BLM_ST_Manafont) &&
-                        ActionReady(Manafont) && EndOfFirePhase)
+                        ActionReady(Manafont))
                         return Manafont;
 
                     if (IsEnabled(Preset.BLM_ST_Swiftcast) &&
