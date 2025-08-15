@@ -30,6 +30,11 @@ internal partial class NIN : Melee
             if (InMudra && MudraState.ContinueCurrentMudra(ref actionID))
                 return actionID;
             
+            if (IsNotEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus) || 
+                ActionWatching.TimeSinceLastAction.TotalSeconds >= 5 && !InCombat() ||
+                ActionWatching.LastAction == OriginalHook(Ninjutsu))
+                MudraState.CurrentMudra = MudraCasting.MudraState.None;
+            
             if (HasStatusEffect(Buffs.TenChiJin))
                 return STTenChiJin(actionID);
             
@@ -154,6 +159,11 @@ internal partial class NIN : Melee
             
             if (InMudra && MudraState.ContinueCurrentMudra(ref actionID))
                 return actionID;
+            
+            if (IsNotEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus) || 
+                ActionWatching.TimeSinceLastAction.TotalSeconds >= 5 && !InCombat() ||
+                ActionWatching.LastAction == OriginalHook(Ninjutsu))
+                MudraState.CurrentMudra = MudraCasting.MudraState.None;
 
             if (HasStatusEffect(Buffs.TenChiJin))
                 return DotonRemaining < 3
@@ -275,6 +285,11 @@ internal partial class NIN : Melee
             if (OriginalHook(Ninjutsu) != Ninjutsu && InMudra && MudraState.ContinueCurrentMudra(ref actionID))
                 return actionID;
             
+            if (IsNotEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus) || 
+                ActionWatching.TimeSinceLastAction.TotalSeconds >= 5 && !InCombat() ||
+                ActionWatching.LastAction == OriginalHook(Ninjutsu))
+                MudraState.CurrentMudra = MudraCasting.MudraState.None;
+            
             if (NIN_ST_AdvancedMode_TenChiJin_Options[0] &&
                 HasStatusEffect(Buffs.TenChiJin))
                 return STTenChiJin(actionID);
@@ -355,7 +370,7 @@ internal partial class NIN : Melee
            
             #region GCDS
             
-            if (IsEnabled(Preset.NIN_ST_AdvancedMode_ThrowingDaggers) && CanThrowingDaggers)
+            if (IsEnabled(Preset.NIN_ST_AdvancedMode_ThrowingDaggers) && CanThrowingDaggers && !MudraPhase)
                 return OriginalHook(ThrowingDaggers);
             
             if (IsEnabled(Preset.NIN_ST_AdvancedMode_Raiju) && CanRaiju)
@@ -387,7 +402,7 @@ internal partial class NIN : Melee
                         return TNAeolianEdge ? Role.TrueNorth : AeolianEdge;
                 }
             }
-            return OriginalHook(SpinningEdge);
+            return actionID;
             #endregion
         }
     }

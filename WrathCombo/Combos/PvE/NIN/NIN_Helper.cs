@@ -1,7 +1,6 @@
 ﻿using System.Collections.Frozen;
 using System.Collections.Generic;
 using Dalamud.Game.ClientState.JobGauge.Types;
-using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
@@ -67,16 +66,16 @@ internal partial class NIN
     #endregion
     
     #region GCD Logic
-    internal static bool TNArmorCrush => !OnTargetsFlank() && TargetNeedsPositionals() && Role.CanTrueNorth();
-    internal static bool TNAeolianEdge => !OnTargetsRear() && TargetNeedsPositionals() && Role.CanTrueNorth();
-    internal static bool CanPhantomKamaitachi => HasStatusEffect(Buffs.PhantomReady) &&
+    internal static bool TNArmorCrush => !MudraPhase && !OnTargetsFlank() && TargetNeedsPositionals() && Role.CanTrueNorth();
+    internal static bool TNAeolianEdge => !MudraPhase && !OnTargetsRear() && TargetNeedsPositionals() && Role.CanTrueNorth();
+    internal static bool CanPhantomKamaitachi => !MudraPhase && HasStatusEffect(Buffs.PhantomReady) &&
                                                  (TrickDebuff && ComboAction != GustSlash ||
                                                   !TrickDebuff);
-    internal static bool CanThrowingDaggers => ActionReady(ThrowingDaggers) && HasTarget() && !InMeleeRange() &&
+    internal static bool CanThrowingDaggers => !MudraPhase && ActionReady(ThrowingDaggers) && HasTarget() && !InMeleeRange() &&
                                                !HasStatusEffect(Buffs.RaijuReady);
-    internal static bool CanThrowingDaggersAoE => ActionReady(ThrowingDaggers) && HasTarget() && GetTargetDistance() >= 4.5 &&
+    internal static bool CanThrowingDaggersAoE => !MudraPhase && ActionReady(ThrowingDaggers) && HasTarget() && GetTargetDistance() >= 4.5 &&
                                                   !HasStatusEffect(Buffs.RaijuReady);
-    internal static bool CanRaiju => HasStatusEffect(Buffs.RaijuReady);
+    internal static bool CanRaiju => !MudraPhase && HasStatusEffect(Buffs.RaijuReady);
     #endregion
     
     #region OGCD Logic
@@ -109,6 +108,7 @@ internal partial class NIN
     internal static bool CanBhavacakra => NinjaWeave && !MudraPhase && gauge.Ninki >= 50 &&
                                           (BunshinCD < 20 && gauge.Ninki >= NinkiPool() || //Pooling for Bunshin
                                            BunshinCD > 20 ||
+                                           MugCD < 5 && gauge.Ninki >= 50 ||
                                            IsNotEnabled(Preset.NIN_ST_AdvancedMode_Bunshin) && !STSimpleMode); //Bunshin not enabled to pool for
     
     internal static bool BhavacakraPooling => gauge.Ninki >= NinkiPool() || 
@@ -199,7 +199,7 @@ internal partial class NIN
         
         public bool ContinueCurrentMudra(ref uint actionID)
         {
-            if (ActionWatching.TimeSinceLastAction.TotalSeconds >= 1 && CurrentNinjutsu == Ninjutsu)
+            if (ActionWatching.TimeSinceLastAction.TotalSeconds >= 2 && CurrentNinjutsu == Ninjutsu)
             {
                 InMudra = false;
                 ActionWatching.LastAction = 0;
@@ -270,8 +270,8 @@ internal partial class NIN
                     return true;
                 }
                 // Start the Mudra
-                actionID = OriginalHook(Ten);
                 CurrentMudra = MudraState.CastingFumaShuriken;
+                actionID = OriginalHook(Ten);
                 return true;
             }
             CurrentMudra = MudraState.None;
@@ -284,12 +284,6 @@ internal partial class NIN
         {
             if (Raiton.LevelChecked() && CurrentMudra is MudraState.None or MudraState.CastingRaiton)
             {
-                // Reset State
-                if (!CanCast() || ActionWatching.LastAction == OriginalHook(Ninjutsu))
-                {
-                    CurrentMudra = MudraState.None;
-                    return false;
-                }
                 // Finish the Mudra
                 switch (ActionWatching.LastAction)
                 {
@@ -301,8 +295,8 @@ internal partial class NIN
                         return true;
                 }
                 // Start the Mudra
-                actionID = OriginalHook(Ten);
                 CurrentMudra = MudraState.CastingRaiton;
+                actionID = OriginalHook(Ten);
                 return true;
             }
             CurrentMudra = MudraState.None;
@@ -315,12 +309,6 @@ internal partial class NIN
         {
             if (Suiton.LevelChecked() && CurrentMudra is MudraState.None or MudraState.CastingSuiton)
             {
-                // Reset State
-                if (!CanCast() || ActionWatching.LastAction == OriginalHook(Ninjutsu))
-                {
-                    CurrentMudra = MudraState.None;
-                    return false;
-                }
                 //Finish the Mudra
                 switch (ActionWatching.LastAction)
                 {
@@ -335,8 +323,8 @@ internal partial class NIN
                         return true;
                 }
                 // Start the Mudra
-                actionID = OriginalHook(Ten);
                 CurrentMudra = MudraState.CastingSuiton;
+                actionID = OriginalHook(Ten);
                 return true;
             }
             CurrentMudra = MudraState.None;
@@ -349,12 +337,6 @@ internal partial class NIN
         {
             if (HyoshoRanryu.LevelChecked() && CurrentMudra is MudraState.None or MudraState.CastingHyoshoRanryu)
             {
-                // Reset State
-                if (!CanCast() || !HasStatusEffect(Buffs.Kassatsu) || ActionWatching.LastAction == OriginalHook(Ninjutsu))
-                {
-                    CurrentMudra = MudraState.None;
-                    return false;
-                }
                 //Finish the Mudra
                 switch (ActionWatching.LastAction)
                 {
@@ -366,8 +348,8 @@ internal partial class NIN
                         return true;
                 }
                 // Start the Mudra
-                actionID = TenCombo;
                 CurrentMudra = MudraState.CastingHyoshoRanryu;
+                actionID = OriginalHook(Ten);
                 return true;
             }
             CurrentMudra = MudraState.None;
@@ -380,12 +362,6 @@ internal partial class NIN
         {
             if (Katon.LevelChecked() && CurrentMudra is MudraState.None or MudraState.CastingKaton)
             {
-                // Reset State
-                if (!CanCast() || ActionWatching.LastAction == OriginalHook(Ninjutsu))
-                {
-                    CurrentMudra = MudraState.None;
-                    return false;
-                }
                 //Finish the Mudra
                 switch (ActionWatching.LastAction)
                 {
@@ -397,8 +373,8 @@ internal partial class NIN
                         return true;
                 }
                 // Start the Mudra
-                actionID = OriginalHook(Jin);
                 CurrentMudra = MudraState.CastingKaton;
+                actionID = OriginalHook(Jin);
                 return true;
             }
             CurrentMudra = MudraState.None;
@@ -411,13 +387,6 @@ internal partial class NIN
         {
             if (Doton.LevelChecked() && CurrentMudra is MudraState.None or MudraState.CastingDoton)
             {
-                // Reset State
-                if (!CanCast() || ActionWatching.LastAction == OriginalHook(Ninjutsu))
-                {
-                    CurrentMudra = MudraState.None;
-
-                    return false;
-                }
                 //Finish the Mudra
                 switch (ActionWatching.LastAction)
                 {
@@ -432,8 +401,8 @@ internal partial class NIN
                         return true;
                 }
                 // Start the Mudra
-                actionID = OriginalHook(Jin);
                 CurrentMudra = MudraState.CastingDoton;
+                actionID = OriginalHook(Jin);
                 return true;
             }
             CurrentMudra = MudraState.None;
@@ -446,12 +415,6 @@ internal partial class NIN
         {
             if (Huton.LevelChecked() && CurrentMudra is MudraState.None or MudraState.CastingHuton)
             {
-                // Reset State
-                if (!CanCast() || ActionWatching.LastAction == OriginalHook(Ninjutsu))
-                {
-                    CurrentMudra = MudraState.None;
-                    return false;
-                }
                 //Finish the Mudra
                 switch (ActionWatching.LastAction)
                 {
@@ -466,8 +429,8 @@ internal partial class NIN
                         return true;
                 }
                 // Start the Mudra
-                actionID = OriginalHook(Jin);
                 CurrentMudra = MudraState.CastingHuton;
+                actionID = OriginalHook(Jin);
                 return true;
             }
             CurrentMudra = MudraState.None;
@@ -480,13 +443,6 @@ internal partial class NIN
         {
             if (GokaMekkyaku.LevelChecked() && CurrentMudra is MudraState.None or MudraState.CastingGokaMekkyaku)
             {
-                // Reset State
-                if (!CanCast() || !HasStatusEffect(Buffs.Kassatsu) || ActionWatching.LastAction == OriginalHook(Ninjutsu))
-                {
-                    CurrentMudra = MudraState.None;
-
-                    return false;
-                }
                 //Finish the Mudra
                 switch (ActionWatching.LastAction)
                 {
@@ -498,8 +454,8 @@ internal partial class NIN
                         return true;
                 }
                 // Start the Mudra
-                actionID = OriginalHook(Jin);
                 CurrentMudra = MudraState.CastingGokaMekkyaku;
+                actionID = OriginalHook(Jin);
                 return true;
             }
             CurrentMudra = MudraState.None;
