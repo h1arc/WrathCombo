@@ -118,6 +118,28 @@ internal partial class MCH
                         "Battery threshold", sliderIncrement: 5);
                     break;
 
+                case Preset.MCH_AoE_Adv_FlameThrower:
+
+                    DrawHorizontalRadioButton(MCH_AoE_FlamethrowerMovement,
+                        "Stationary Only", $"Uses {Flamethrower.ActionName()} only while stationary", 0);
+
+                    DrawHorizontalRadioButton(MCH_AoE_FlamethrowerMovement,
+                        "Any Movement", $"Uses {Flamethrower.ActionName()} regardless of any movement conditions.", 1);
+
+                    ImGui.Spacing();
+                    if (MCH_AoE_FlamethrowerMovement == 0)
+                    {
+                        ImGui.SetCursorPosX(48);
+                        DrawSliderFloat(0, 3, MCH_AoE_FlamehrowerTimeStill,
+                            " Stationary Delay Check (in seconds):", decimals: 1);
+                    }
+
+                    DrawSliderInt(0, 50, MCH_AoE_FlamethrowerHPOption,
+                        "Stop using at Enemy HP %. Set to Zero to disable this check.");
+                    ImGui.Indent();
+                    break;
+
+
                 case Preset.MCH_GaussRoundRicochet:
                     DrawHorizontalRadioButton(MCH_GaussRico,
                         $"Change {GaussRound.ActionName()} / {DoubleCheck.ActionName()}", $"Changes to {Ricochet.ActionName()} / {CheckMate.ActionName()} depending on charges and what was used last", 0);
@@ -151,9 +173,14 @@ internal partial class MCH
             MCH_ST_SecondWindThreshold = new("MCH_ST_SecondWindThreshold", 40),
             MCH_AoE_ReassemblePool = new("MCH_AoE_ReassemblePool", 0),
             MCH_AoE_TurretUsage = new("MCH_AoE_TurretUsage", 100),
+            MCH_AoE_FlamethrowerMovement = new("MCH_AoE_FlamethrowerMovement", 0),
+            MCH_AoE_FlamethrowerHPOption = new("MCH_AoE_FlamethrowerHPOption", 50),
             MCH_AoE_SecondWindThreshold = new("MCH_AoE_SecondWindThreshold", 40),
             MCH_GaussRico = new("MCHGaussRico", 0),
             MCH_VariantCure = new("MCH_VariantCure", 50);
+
+        public static UserFloat
+            MCH_AoE_FlamehrowerTimeStill = new("MCH_AoE_FlamehrowerTimeStill", 2.5f);
 
         public static UserBoolArray
             MCH_ST_Reassembled = new("MCH_ST_Reassembled"),

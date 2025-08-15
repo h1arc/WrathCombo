@@ -1,4 +1,5 @@
 using Dalamud.Game.ClientState.Statuses;
+using System;
 using WrathCombo.CustomComboNS;
 using static WrathCombo.Combos.PvE.MCH.Config;
 namespace WrathCombo.Combos.PvE;
@@ -426,7 +427,10 @@ internal partial class MCH : PhysicalRanged
                     CanApplyStatus(CurrentTarget, Debuffs.Bioblaster))
                     return OriginalHook(BioBlaster);
 
-                if (ActionReady(Flamethrower) && !IsMoving())
+                if (ActionReady(Flamethrower) &&
+                    !HasStatusEffect(Buffs.Reassembled) &&
+                    !IsMoving() && TimeStoodStill > TimeSpan.FromSeconds(2.5f) &&
+                    GetTargetHPPercent() > 50)
                     return OriginalHook(Flamethrower);
 
                 if (LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady))
@@ -583,7 +587,11 @@ internal partial class MCH : PhysicalRanged
                     return OriginalHook(BioBlaster);
 
                 if (IsEnabled(Preset.MCH_AoE_Adv_FlameThrower) &&
-                    ActionReady(Flamethrower) && !IsMoving())
+                    ActionReady(Flamethrower) &&
+                    !HasStatusEffect(Buffs.Reassembled) &&
+                    (MCH_AoE_FlamethrowerMovement == 1 ||
+                     MCH_AoE_FlamethrowerMovement == 0 && !IsMoving() && TimeStoodStill > TimeSpan.FromSeconds(MCH_AoE_FlamehrowerTimeStill)) &&
+                    GetTargetHPPercent() > MCH_AoE_FlamethrowerHPOption)
                     return OriginalHook(Flamethrower);
 
                 if (IsEnabled(Preset.MCH_AoE_Adv_Excavator) &&
