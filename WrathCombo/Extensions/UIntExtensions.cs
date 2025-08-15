@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using ECommons.ExcelServices;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
@@ -13,8 +12,6 @@ internal static class UIntExtensions
     internal static bool TraitLevelChecked(this uint value) => CustomComboFunctions.TraitLevelChecked(value);
 
     internal static string ActionName(this uint value) => CustomComboFunctions.GetActionName(value);
-
-    //internal static int Role(this Job value) => CustomComboFunctions.JobIDs.JobIDToRole(value);
 
     internal static ActionAttackType ActionAttackType(this uint value) => (ActionAttackType)ActionSheet[value].ActionCategory.RowId;
     

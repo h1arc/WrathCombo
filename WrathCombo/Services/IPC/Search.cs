@@ -424,7 +424,7 @@ public class Search(Leasing leasing)
                 {
                     new
                     {
-                        Job = (Job)preset.Value.Info.JobID,
+                        Job = preset.Value.Info.JobID,
                         Combo = preset.Key,
                         preset.Value.Info,
                         preset.Value.ComboType,

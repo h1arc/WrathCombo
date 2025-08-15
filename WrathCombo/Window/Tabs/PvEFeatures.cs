@@ -316,7 +316,7 @@ internal class PvEFeatures : ConfigWindow
         }
 
         var job = Player.Job.GetUpgradedJob();
-        if (groupedPresets.TryGetValue(job, out var foundJob))
-            OpenJob = foundJob.First().Info.JobID;
+        if (groupedPresets.ContainsKey(job))
+            OpenJob = job;
     }
 }

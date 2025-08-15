@@ -51,7 +51,7 @@ internal class CustomComboInfoAttribute : Attribute
     public int Order { get; }
 
     /// <summary> Gets the job role. </summary>
-    public int Role => JobID.GetData().Role;
+    public JobRole Role => RoleAttribute.GetRoleFromJob(JobID);
 
     /// <summary> Gets the job category. </summary>
     //public uint ClassJobCategory => CustomComboFunctions.JobIDs.JobIDToClassJobCategory(JobID);

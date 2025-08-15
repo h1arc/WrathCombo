@@ -360,13 +360,13 @@ internal partial class DNC
                     orderedFilter = orderedFilter
                         .ThenBy(x =>
                             PartnerPriority.Job090Prio.GetValueOrDefault(
-                                x.ClassJob.RowId, int.MaxValue));
+                                (Job)x.ClassJob.RowId, int.MaxValue));
                     break;
                 case >= 100:
                     orderedFilter = orderedFilter
                         .ThenBy(x =>
                             PartnerPriority.Job100Prio.GetValueOrDefault(
-                                x.ClassJob.RowId, int.MaxValue));
+                                (Job)x.ClassJob.RowId, int.MaxValue));
                     break;
             }
 
@@ -402,38 +402,38 @@ internal partial class DNC
             { (int)Role.Healer, 3 },
         };
 
-        internal static readonly Dictionary<uint, int> Job100Prio = new()
+        internal static readonly Dictionary<Job, int> Job100Prio = new()
         {
-            { SAM.JobID, 1 },
-            { PCT.JobID, 2 },
-            { RPR.JobID, 2 },
-            { VPR.JobID, 2 },
-            { MNK.JobID, 2 },
-            { NIN.JobID, 2 },
-            { DRG.JobID, 3 },
-            { BLM.JobID, 3 },
-            { RDM.JobID, 4 },
-            { SMN.JobID, 5 },
-            { MCH.JobID, 6 },
-            { BRD.JobID, 7 },
-            { JobID, 8 },
+            { Job.SAM, 1 },
+            { Job.PCT, 2 },
+            { Job.RPR, 2 },
+            { Job.VPR, 2 },
+            { Job.MNK, 2 },
+            { Job.NIN, 2 },
+            { Job.DRG, 3 },
+            { Job.BLM, 3 },
+            { Job.RDM, 4 },
+            { Job.SMN, 5 },
+            { Job.MCH, 6 },
+            { Job.BRD, 7 },
+            { Job.DNC, 8 },
         };
 
-        internal static readonly Dictionary<uint, int> Job090Prio = new()
+        internal static readonly Dictionary<Job, int> Job090Prio = new()
         {
-            { PCT.JobID, 1 },
-            { SAM.JobID, 1 },
-            { NIN.JobID, 2 },
-            { MNK.JobID, 3 },
-            { RPR.JobID, 4 },
-            { BLM.JobID, 5 },
-            { DRG.JobID, 6 },
-            { VPR.JobID, 7 },
-            { SMN.JobID, 8 },
-            { RDM.JobID, 9 },
-            { MCH.JobID, 10 },
-            { BRD.JobID, 11 },
-            { JobID, 12 },
+            { Job.PCT, 1 },
+            { Job.SAM, 1 },
+            { Job.NIN, 2 },
+            { Job.MNK, 3 },
+            { Job.RPR, 4 },
+            { Job.BLM, 5 },
+            { Job.DRG, 6 },
+            { Job.VPR, 7 },
+            { Job.SMN, 8 },
+            { Job.RDM, 9 },
+            { Job.MCH, 10 },
+            { Job.BRD, 11 },
+            { Job.DNC, 12 },
         };
 
         internal static readonly Restrictions[] RestrictionSteps =
@@ -1028,8 +1028,6 @@ internal partial class DNC
     #endregion
 
     #region IDs
-
-    public const byte JobID = 38;
 
     #region Actions
 
