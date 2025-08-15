@@ -4092,68 +4092,54 @@ public enum Preset
         NIN.JobID)]
     [AdvancedCombo]
     NIN_AoE_AdvancedMode = 10035,
+    
+    [ParentCombo(NIN_AoE_AdvancedMode)]
+    [CustomComboInfo("Ninjitsu Option", "Adds Ninjitsu to Advanced Mode.", NIN.JobID)]
+        NIN_AoE_AdvancedMode_Ninjitsus = 10037,
 
     [ParentCombo(NIN_AoE_AdvancedMode)]
-    [CustomComboInfo("Kunai's Bane Option", "Adds Kunai's Bane to Advanced Mode. (Does not add Trick Attack)",
+    [CustomComboInfo("Trick Attack Option", "Adds TrickAttack/Kunai's Bane to Advanced Mode.",
         NIN.JobID)]
-    NIN_AoE_AdvancedMode_KunaisBane = 10073,
+    NIN_AoE_AdvancedMode_TrickAttack = 10073,
+    
+    [ParentCombo(NIN_AoE_AdvancedMode)]
+    [CustomComboInfo("Mug Option", "Adds Mug/Dokumori to Advanced Mode.",
+        NIN.JobID)]
+    NIN_AoE_AdvancedMode_Mug = 10038,
+    
+    [ParentCombo(NIN_AoE_AdvancedMode)]
+    [CustomComboInfo("Bunshin Option", "Adds Bunshin to Advanced Mode.", NIN.JobID)]
+    NIN_AoE_AdvancedMode_Bunshin = 10048,
+    
+    [ParentCombo(NIN_AoE_AdvancedMode)]
+    [CustomComboInfo("Hellfrog Medium Option", "Adds Hellfrog Medium to Advanced Mode.", NIN.JobID)]
+    NIN_AoE_AdvancedMode_HellfrogMedium = 10045,
+    
+    [ParentCombo(NIN_AoE_AdvancedMode)]
+    [CustomComboInfo("Kassatsu Option", "Adds Kassatsu to Advanced Mode.", NIN.JobID)]
+    NIN_AoE_AdvancedMode_Kassatsu = 10042,
+    
+    [ParentCombo(NIN_AoE_AdvancedMode)]
+    [CustomComboInfo("Ten Chi Jin Option", "Adds Ten Chi Jin (the cooldown) to Advanced Mode.", NIN.JobID)]
+    NIN_AoE_AdvancedMode_TenChiJin = 10046,
 
     [ParentCombo(NIN_AoE_AdvancedMode)]
     [CustomComboInfo("Assassinate/Dream Within a Dream Option",
         "Adds Assassinate/Dream Within a Dream to Advanced Mode.", NIN.JobID)]
-    NIN_AoE_AdvancedMode_AssassinateDWAD = 10036,
-
-    [ParentCombo(NIN_AoE_AdvancedMode)]
-    [CustomComboInfo("Ninjitsu Option", "Adds Ninjitsu to Advanced Mode.", NIN.JobID)]
-    NIN_AoE_AdvancedMode_Ninjitsus = 10037,
-
-    [ParentCombo(NIN_AoE_AdvancedMode_Ninjitsus)]
-    [CustomComboInfo("Hold 1 Charge", "Prevent using both charges of Mudra.", NIN.JobID)]
-    NIN_AoE_AdvancedMode_Ninjitsus_ChargeHold = 10038,
-
-    [ParentCombo(NIN_AoE_AdvancedMode_Ninjitsus)]
-    [CustomComboInfo("Use Katon", "Spends Mudra charges on Katon.", NIN.JobID)]
-    NIN_AoE_AdvancedMode_Ninjitsus_Katon = 10039,
-
-    [ParentCombo(NIN_AoE_AdvancedMode_Ninjitsus)]
-    [CustomComboInfo("Use Doton", "Spends Mudra charges on Doton.", NIN.JobID)]
-    NIN_AoE_AdvancedMode_Ninjitsus_Doton = 10040,
-
-    [ParentCombo(NIN_AoE_AdvancedMode_Ninjitsus)]
-    [CustomComboInfo("Use Huton", "Spends Mudra charges on Huton.", NIN.JobID)]
-    NIN_AoE_AdvancedMode_Ninjitsus_Huton = 10041,
-
-    [ParentCombo(NIN_AoE_AdvancedMode)]
-    [CustomComboInfo("Kassatsu Option", "Adds Kassatsu to Advanced Mode.", NIN.JobID)]
-    NIN_AoE_AdvancedMode_Kassatsu = 10042,
-
-    [ParentCombo(NIN_AoE_AdvancedMode_Kassatsu)]
-    [CustomComboInfo("Goka Mekkyaku Option", "Adds Goka Mekkyaku to Advanced Mode.", NIN.JobID)]
-    NIN_AoE_AdvancedMode_GokaMekkyaku = 10043,
-
-    [ParentCombo(NIN_AoE_AdvancedMode)]
-    [CustomComboInfo("Hellfrog Medium Option", "Adds Hellfrog Medium to Advanced Mode.", NIN.JobID)]
-    NIN_AoE_AdvancedMode_HellfrogMedium = 10045,
-
-    [ParentCombo(NIN_AoE_AdvancedMode)]
-    [CustomComboInfo("Ten Chi Jin Option", "Adds Ten Chi Jin (the cooldown) to Advanced Mode.", NIN.JobID)]
-    NIN_AoE_AdvancedMode_TCJ = 10046,
-
-    [ParentCombo(NIN_AoE_AdvancedMode)]
-    [CustomComboInfo("Tenri Jindo Option", "Adds Tenri Jindo to Advanced Mode.", NIN.JobID)]
-    NIN_AoE_AdvancedMode_TenriJindo = 10072,
+    NIN_AoE_AdvancedMode_Assassinate = 10036,
 
     [ParentCombo(NIN_AoE_AdvancedMode)]
     [CustomComboInfo("Meisui Option", "Adds Meisui to Advanced Mode.", NIN.JobID)]
     NIN_AoE_AdvancedMode_Meisui = 10047,
-
+    
     [ParentCombo(NIN_AoE_AdvancedMode)]
-    [CustomComboInfo("Bunshin Option", "Adds Bunshin to Advanced Mode.", NIN.JobID)]
-    NIN_AoE_AdvancedMode_Bunshin = 10048,
-
-    [ParentCombo(NIN_AoE_AdvancedMode_Bunshin)]
     [CustomComboInfo("Phantom Kamaitachi Option", "Adds Phantom Kamaitachi to Advanced Mode.", NIN.JobID)]
-    NIN_AoE_AdvancedMode_Bunshin_Phantom = 10049,
+    NIN_AoE_AdvancedMode_PhantomKamaitachi = 10049,
+    
+    [ParentCombo(NIN_AoE_AdvancedMode)]
+    [CustomComboInfo("Throwing Dagger Uptime Option", "Adds Throwing Dagger to Advanced Mode if out of melee range.",
+        NIN.JobID)]
+    NIN_AoE_AdvancedMode_ThrowingDaggers = 10044,
 
     [ParentCombo(NIN_AoE_AdvancedMode)]
     [CustomComboInfo("Second Wind Option", "Adds Second Wind to Advanced Mode.", NIN.JobID)]

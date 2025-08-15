@@ -43,13 +43,18 @@ internal partial class NIN
                                            GetCooldownChargeRemainingTime(Ten) <= TrickCD - 10); //Uptime option
     
     internal static bool CanUseKaton =>  LevelChecked(Katon) && MudraReady &&
+                                         (!HasKassatsu || !NIN_AoE_AdvancedMode_Ninjitsus_Options[2] && !STSimpleMode) &&
                                          (TrickDebuff || //Buff Window
                                           !LevelChecked(Huton) || //Dont Pool because of Huton not learned yet
-                                          GetCooldownChargeRemainingTime(Ten) < 3); // Use if you have Kassatsu before you get Hosho Ranryu
+                                          GetCooldownChargeRemainingTime(Ten) < 3 || // Spend to avoid cap
+                                          !NIN_AoE_AdvancedMode_Katon_Options[0] && !AoESimpleMode || //Dont Pool because of Raiton Option
+                                          NIN_AoE_AdvancedMode_Katon_Options[1] && !InMeleeRange() && 
+                                          GetCooldownChargeRemainingTime(Ten) <= TrickCD - 10); //Uptime option
     
     internal static bool HasDoton => HasStatusEffect(Buffs.Doton);
     internal static float DotonRemaining => GetStatusEffectRemainingTime(Buffs.Doton);
-    internal static bool CanUseDoton => LevelChecked(Doton) && MudraReady && GetTargetHPPercent() >= 30 && (!HasDoton || DotonRemaining <= 2) &&
+    internal static bool CanUseDoton => LevelChecked(Doton) && MudraReady && 
+                                        (!HasDoton || DotonRemaining <= 2) &&
                                         (TrickDebuff || //Buff Window
                                          GetCooldownChargeRemainingTime(Ten) < 3); // Use if you have Kassatsu before you get Hosho Ranryu
                                         
@@ -136,14 +141,25 @@ internal partial class NIN
                                          BuffWindow || 
                                          IsNotEnabled(Preset.NIN_ST_AdvancedMode_TrickAttack) && !STSimpleMode);
     
+    internal static bool CanKassatsuAoE => !MudraPhase && ActionReady(Kassatsu) && NinjaWeave &&  
+                                        (TrickCD < 10 && HasStatusEffect(Buffs.ShadowWalker) ||
+                                         BuffWindow || 
+                                         IsNotEnabled(Preset.NIN_AoE_AdvancedMode_TrickAttack) && !AoESimpleMode);
+    
     internal static bool CanMeisui => !MudraPhase && ActionReady(Meisui) && NinjaWeave && HasStatusEffect(Buffs.ShadowWalker) && 
                                       (BuffWindow || IsNotEnabled(Preset.NIN_ST_AdvancedMode_TrickAttack) && !STSimpleMode);
+    internal static bool CanMeisuiAoE => !MudraPhase && ActionReady(Meisui) && NinjaWeave && HasStatusEffect(Buffs.ShadowWalker) && 
+                                      (BuffWindow || IsNotEnabled(Preset.NIN_AoE_AdvancedMode_TrickAttack) && !AoESimpleMode);
 
     internal static bool CanAssassinate => !MudraPhase && ActionReady(OriginalHook(Assassinate)) && NinjaWeave && 
                                            (BuffWindow || IsNotEnabled(Preset.NIN_ST_AdvancedMode_TrickAttack) && !STSimpleMode);
+    internal static bool CanAssassinateAoE => !MudraPhase && ActionReady(OriginalHook(Assassinate)) && NinjaWeave && 
+                                           (BuffWindow || IsNotEnabled(Preset.NIN_AoE_AdvancedMode_TrickAttack) && !AoESimpleMode);
 
     internal static bool CanTenChiJin => !MudraPhase && !MudraAlmostReady && IsOffCooldown(TenChiJin) && LevelChecked(TenChiJin) && NinjaWeave &&
                                          (BuffWindow || IsNotEnabled(Preset.NIN_ST_AdvancedMode_TrickAttack) && !STSimpleMode);
+    internal static bool CanTenChiJinAoE => !MudraPhase && !MudraAlmostReady && IsOffCooldown(TenChiJin) && LevelChecked(TenChiJin) && NinjaWeave &&
+                                            (BuffWindow || IsNotEnabled(Preset.NIN_AoE_AdvancedMode_TrickAttack) && !AoESimpleMode);
 
     internal static bool CanTenriJindo => NinjaWeave && HasStatusEffect(Buffs.TenriJendoReady);
     #endregion
@@ -173,7 +189,7 @@ internal partial class NIN
             return OriginalHook(Chi);
         if (OriginalHook(Ten) == TCJKaton)
             return OriginalHook(Ten);
-        return OriginalHook(Jin) == TCJDoton ? OriginalHook(Jin) : actionId;
+        return OriginalHook(Jin) == TCJSuiton ? OriginalHook(Jin) : actionId;
     }
     #endregion
     

@@ -184,22 +184,22 @@ internal partial class NIN : Melee
             #region OGCDS
             if (InCombat() && HasBattleTarget())
             {
-                if (CanKassatsu)
+                if (CanKassatsuAoE)
                     return Kassatsu;
 
                 if (CanBunshin)
                     return Bunshin;
 
-                if (CanTenChiJin)
+                if (CanTenChiJinAoE)
                     return TenChiJin;
                 
                 if (CanTenriJindo)
                     return TenriJendo;
                 
-                if (CanAssassinate)
+                if (CanAssassinateAoE)
                     return OriginalHook(Assassinate);
 
-                if (CanMeisui)
+                if (CanMeisuiAoE)
                     return NinkiWillOvercap ? OriginalHook(HellfrogMedium) : OriginalHook(Meisui);
 
                 if (CanHellfrogMedium && HellfrogMediumPooling)
@@ -216,7 +216,7 @@ internal partial class NIN : Melee
             #region Ninjutsu
             if (CanUseGokaMekkyaku && MudraState.CastGokaMekkyaku(ref actionID) || 
                 CanUseHuton && TrickCD <= 18 && MudraState.CastHuton(ref actionID) || 
-                CanUseDoton && MudraState.CastDoton(ref actionID) ||
+                CanUseDoton && GetTargetHPPercent() >= 30 && MudraState.CastDoton(ref actionID) ||
                 CanUseKaton && MudraState.CastKaton(ref actionID) ||
                 CanUseFumaShuriken && !LevelChecked(Katon) && MudraState.CastFumaShuriken(ref actionID))
                 return actionID;
@@ -269,7 +269,6 @@ internal partial class NIN : Melee
     {
         protected internal MudraCasting MudraState = new();
         protected internal override Preset Preset => Preset.NIN_ST_AdvancedMode;
-
         protected override uint Invoke(uint actionID)
         
         {
@@ -278,14 +277,17 @@ internal partial class NIN : Melee
             
             NINGauge gauge = GetJobGauge<NINGauge>();
             
-            if (IsEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus) &&
+            if (IsEnabled(Preset.NIN_ST_AdvancedMode_BalanceOpener) && 
+                Opener().FullOpener(ref actionID))
+            
+            if (IsEnabled(Preset.NIN_ST_AdvancedMode_Ninjitsus) &&
                 OriginalHook(Ninjutsu) is Rabbit or Huton or Suiton or Doton or GokaMekkyaku or HyoshoRanryu)
                 return OriginalHook(Ninjutsu);
             
             if (OriginalHook(Ninjutsu) != Ninjutsu && InMudra && MudraState.ContinueCurrentMudra(ref actionID))
                 return actionID;
             
-            if (IsNotEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus) || 
+            if (IsNotEnabled(Preset.NIN_ST_AdvancedMode_Ninjitsus) || 
                 ActionWatching.TimeSinceLastAction.TotalSeconds >= 5 && !InCombat() ||
                 ActionWatching.LastAction == OriginalHook(Ninjutsu))
                 MudraState.CurrentMudra = MudraCasting.MudraState.None;
@@ -413,169 +415,126 @@ internal partial class NIN : Melee
         protected internal override Preset Preset => Preset.NIN_AoE_AdvancedMode;
 
         protected override uint Invoke(uint actionID)
+        
         {
             if (actionID is not DeathBlossom)
                 return actionID;
-
-            Status? dotonBuff = GetStatusEffect(Buffs.Doton);
-            NINGauge gauge = GetJobGauge<NINGauge>();
-            bool canWeave = CanWeave();
-            bool chargeCheck = IsNotEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus_ChargeHold) || IsEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus_ChargeHold) && GetRemainingCharges(Ten) == 2;
-            bool inMudraState = InMudra;
-            int hellfrogPool = Ninki_HellfrogPooling;
-            int dotonTimer = Advanced_DotonTimer;
-            int dotonThreshold = Advanced_DotonHP;
-            int tcjPath = Advanced_TCJEnderAoE;
-            int bunshingPool = Ninki_BunshinPoolingAoE;
-            int secondWindThreshold = SecondWindThresholdAoE;
-            int shadeShiftThreshold = ShadeShiftThresholdAoE;
-            int bloodbathThreshold = BloodbathThresholdAoE;
-            double playerHP = PlayerHealthPercentageHp();
-
-            if (IsNotEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus) || ActionWatching.TimeSinceLastAction.TotalSeconds >= 5 && !InCombat())
-                MudraState.CurrentMudra = MudraCasting.MudraState.None;
-
-            if (OriginalHook(Ninjutsu) is Rabbit)
+            
+            if (IsEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus) &&
+                OriginalHook(Ninjutsu) is Rabbit or Huton or Suiton or Doton or GokaMekkyaku or HyoshoRanryu)
                 return OriginalHook(Ninjutsu);
-
-            if (InMudra)
-            {
-                if (MudraState.ContinueCurrentMudra(ref actionID))
-                    return actionID;
-            }
-
-            if (HasStatusEffect(Buffs.TenChiJin))
-            {
-                if (tcjPath == 0)
-                {
-                    if (OriginalHook(Chi) == TCJFumaShurikenChi)
-                        return OriginalHook(Chi);
-                    if (OriginalHook(Ten) == TCJKaton)
-                        return OriginalHook(Ten);
-                    if (OriginalHook(Jin) == TCJSuiton)
-                        return OriginalHook(Jin);
-                }
-                else
-                {
-                    if (OriginalHook(Jin) == TCJFumaShurikenJin)
-                        return OriginalHook(Jin);
-                    if (OriginalHook(Ten) == TCJKaton)
-                        return OriginalHook(Ten);
-                    if (OriginalHook(Chi) == TCJDoton)
-                        return OriginalHook(Chi);
-                }
-            }
-
-            if (IsEnabled(Preset.NIN_AoE_AdvancedMode_GokaMekkyaku) && HasStatusEffect(Buffs.Kassatsu))
-                MudraState.CurrentMudra = MudraCasting.MudraState.CastingGokaMekkyaku;
-
-            if (Variant.CanCure(Preset.NIN_Variant_Cure, NIN_VariantCure))
-                return Variant.Cure;
-
-            if (OccultCrescent.ShouldUsePhantomActions())
+            
+            if (OriginalHook(Ninjutsu) != Ninjutsu && InMudra && MudraState.ContinueCurrentMudra(ref actionID))
+                return actionID;
+            
+            if (IsNotEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus) || 
+                ActionWatching.TimeSinceLastAction.TotalSeconds >= 5 && !InCombat() ||
+                ActionWatching.LastAction == OriginalHook(Ninjutsu))
+                MudraState.CurrentMudra = MudraCasting.MudraState.None;
+            
+            if (NIN_AoE_AdvancedMode_TenChiJin_Options[0] &&
+                HasStatusEffect(Buffs.TenChiJin))
+                return DotonRemaining < 3
+                ? AoETenChiJinDoton(actionID) 
+                : AoETenChiJinSuiton(actionID);
+            
+            #region Special Content
+            if (OccultCrescent.ShouldUsePhantomActions() && !MudraPhase)
                 return OccultCrescent.BestPhantomAction();
-
-            if (IsEnabled(Preset.NIN_AoE_AdvancedMode_KunaisBane))
+            
+            if (Variant.CanRampart(Preset.NIN_Variant_Rampart) && !MudraPhase)
+                return Variant.Rampart;
+            
+            if (Variant.CanCure(Preset.NIN_Variant_Cure, NIN_VariantCure) && !MudraPhase)
+                return Variant.Cure;
+            #endregion
+            
+            #region OGCDS
+            if (InCombat() && HasBattleTarget())
             {
-                if (!HasStatusEffect(Buffs.ShadowWalker) && KunaisBane.LevelChecked() && GetCooldownRemainingTime(KunaisBane) < 5 && MudraState.CastHuton(ref actionID))
-                    return actionID;
+                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_Kassatsu) && CanKassatsuAoE)
+                    return Kassatsu;
 
-                if (HasStatusEffect(Buffs.ShadowWalker) && KunaisBane.LevelChecked() && IsOffCooldown(KunaisBane) && canWeave)
-                    return KunaisBane;
-            }
+                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_Bunshin) && CanBunshin)
+                    return Bunshin;
 
-            if (canWeave && !inMudraState)
-            {
-                if (Variant.CanRampart(Preset.NIN_Variant_Rampart))
-                    return Variant.Rampart;
+                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_TenChiJin) && CanTenChiJinAoE)
+                    return TenChiJin;
 
-                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_TenriJindo) && HasStatusEffect(Buffs.TenriJendoReady))
-                    return OriginalHook(TenriJendo);
-
-                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_Bunshin) && Bunshin.LevelChecked() && IsOffCooldown(Bunshin) && gauge.Ninki >= bunshingPool)
-                    return OriginalHook(Bunshin);
-
-                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_HellfrogMedium) && gauge.Ninki >= hellfrogPool && HellfrogMedium.LevelChecked())
-                {
-                    if (HasStatusEffect(Buffs.Meisui) && TraitLevelChecked(440))
-                        return OriginalHook(Bhavacakra);
-
-                    return OriginalHook(HellfrogMedium);
-                }
-
-                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_HellfrogMedium) && gauge.Ninki >= hellfrogPool && !HellfrogMedium.LevelChecked() && Bhavacakra.LevelChecked())
-                {
-                    return OriginalHook(Bhavacakra);
-                }
-
-                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_Kassatsu) &&
-                    IsOffCooldown(Kassatsu) &&
-                    Kassatsu.LevelChecked() &&
-                    (IsEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus_Doton) && (dotonBuff != null || GetTargetHPPercent() < dotonThreshold) ||
-                     IsNotEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus_Doton)))
-                    return OriginalHook(Kassatsu);
-
-                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_Meisui) && HasStatusEffect(Buffs.ShadowWalker) && gauge.Ninki <= 50 && IsOffCooldown(Meisui) && Meisui.LevelChecked())
-                    return OriginalHook(Meisui);
-
-                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_AssassinateDWAD) && IsOffCooldown(OriginalHook(Assassinate)) && Assassinate.LevelChecked())
+                if (NIN_AoE_AdvancedMode_TenChiJin_Options[0] && CanTenriJindo)
+                    return TenriJendo;
+                
+                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_Assassinate) && CanAssassinateAoE)
                     return OriginalHook(Assassinate);
 
-                // healing - please move if not appropriate priority
-                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_SecondWind) && Role.CanSecondWind(secondWindThreshold))
-                    return Role.SecondWind;
+                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_Meisui) && CanMeisuiAoE)
+                    return NinkiWillOvercap && IsEnabled(Preset.NIN_AoE_AdvancedMode_HellfrogMedium) 
+                        ? OriginalHook(HellfrogMedium) 
+                        : OriginalHook(Meisui);
 
-                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_ShadeShift) && ShadeShift.LevelChecked() && playerHP <= shadeShiftThreshold && IsOffCooldown(ShadeShift))
-                    return ShadeShift;
+                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_HellfrogMedium) && CanHellfrogMedium && 
+                    (HellfrogMediumPooling || !NIN_AoE_AdvancedMode_HellfrogMedium_Pooling))
+                    return OriginalHook(HellfrogMedium);
+                
+                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_Mug) && CanMug && CombatEngageDuration().TotalSeconds > 5)
+                    return OriginalHook(Mug);
 
-                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_Bloodbath) && Role.CanBloodBath(bloodbathThreshold))
-                    return Role.Bloodbath;
-
-                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_TCJ) &&
-                    IsOffCooldown(TenChiJin) &&
-                    TenChiJin.LevelChecked())
-                {
-                    if (IsEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus_Doton) && tcjPath == 1 &&
-                        (dotonBuff?.RemainingTime <= dotonTimer || dotonBuff is null) &&
-                        GetTargetHPPercent() >= dotonThreshold &&
-                        !WasLastAction(Doton) ||
-                        tcjPath == 0)
-                        return OriginalHook(TenChiJin);
-                }
+                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_TrickAttack) && CanTrick && CombatEngageDuration().TotalSeconds > 5)
+                    return OriginalHook(TrickAttack);
             }
-
-            if (IsEnabled(Preset.NIN_AoE_AdvancedMode_GokaMekkyaku) &&
-                MudraState.CastGokaMekkyaku(ref actionID))
-                return actionID;
-
+            #endregion
+            
+            #region Ninjutsu
             if (IsEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus))
             {
-                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus_Doton) &&
-                    (dotonBuff?.RemainingTime <= dotonTimer || dotonBuff is null) &&
-                    GetTargetHPPercent() >= dotonThreshold &&
-                    chargeCheck &&
-                    !(WasLastAction(Doton) || WasLastAction(TCJDoton) || dotonBuff is not null) &&
-                    MudraState.CastDoton(ref actionID))
-                    return actionID;
-
-                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus_Katon) &&
-                    chargeCheck &&
-                    (IsEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus_Doton) && (dotonBuff != null || GetTargetHPPercent() < dotonThreshold) ||
-                     IsNotEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus_Doton)) &&
-                    MudraState.CastKaton(ref actionID))
+                if (NIN_AoE_AdvancedMode_Ninjitsus_Options[3] && 
+                    CanUseGokaMekkyaku && MudraState.CastGokaMekkyaku(ref actionID) || 
+                    NIN_AoE_AdvancedMode_Ninjitsus_Options[2] && 
+                    CanUseDoton && GetTargetHPPercent() >= NIN_AoE_AdvancedMode_Doton_Threshold && MudraState.CastDoton(ref actionID) || 
+                    NIN_AoE_AdvancedMode_Ninjitsus_Options[1] && 
+                    CanUseHuton && TrickCD <= NIN_ST_AdvancedMode_SuitonSetup && MudraState.CastHuton(ref actionID) || 
+                    NIN_AoE_AdvancedMode_Ninjitsus_Options[0] && 
+                    CanUseKaton && MudraState.CastKaton(ref actionID) ||
+                    NIN_AoE_AdvancedMode_Ninjitsus_Options[0] &&
+                    CanUseFumaShuriken && !LevelChecked(Raiton) && MudraState.CastFumaShuriken(ref actionID))
                     return actionID;
             }
+            #endregion
+            
+            #region Selfcare
+            if (IsEnabled(Preset.NIN_AoE_AdvancedMode_SecondWind) && Role.CanSecondWind(NIN_AoE_AdvancedMode_SecondWindThreshold))
+                return Role.SecondWind;
+            
+            if (IsEnabled(Preset.NIN_AoE_AdvancedMode_ShadeShift) && ActionReady(ShadeShift) && 
+                (PlayerHealthPercentageHp() < NIN_AoE_AdvancedMode_ShadeShiftThreshold || 
+                 NIN_AoE_AdvancedMode_ShadeShiftRaidwide && RaidWideCasting()))
+                return ShadeShift;
+            
+            if (IsEnabled(Preset.NIN_AoE_AdvancedMode_Bloodbath) && Role.CanBloodBath(NIN_AoE_AdvancedMode_BloodbathThreshold))
+                return Role.Bloodbath;
+            #endregion
+           
+            #region GCDS
+            if (IsEnabled(Preset.NIN_AoE_AdvancedMode_ThrowingDaggers) && CanThrowingDaggersAoE && !MudraPhase)
+                return OriginalHook(ThrowingDaggers);
 
-            if (IsEnabled(Preset.NIN_AoE_AdvancedMode_Bunshin_Phantom) && HasStatusEffect(Buffs.PhantomReady) && PhantomKamaitachi.LevelChecked())
-                return OriginalHook(PhantomKamaitachi);
-
+            if (IsEnabled(Preset.NIN_AoE_AdvancedMode_PhantomKamaitachi) && CanPhantomKamaitachi)
+                return PhantomKamaitachi;
+            
             if (ComboTimer > 1f)
             {
-                if (ComboAction is DeathBlossom && HakkeMujinsatsu.LevelChecked())
-                    return OriginalHook(HakkeMujinsatsu);
+                switch (ComboAction)
+                {
+                    case SpinningEdge when GustSlash.LevelChecked():
+                        return OriginalHook(GustSlash);
+                    case GustSlash when !ArmorCrush.LevelChecked() && AeolianEdge.LevelChecked():
+                        return TNAeolianEdge ? Role.TrueNorth : AeolianEdge;
+                    case DeathBlossom when LevelChecked(HakkeMujinsatsu):
+                        return HakkeMujinsatsu;
+                }
             }
-
-            return OriginalHook(DeathBlossom);
+            return LevelChecked(DeathBlossom) ? DeathBlossom : SpinningEdge;
+            #endregion
         }
     }
     #endregion
