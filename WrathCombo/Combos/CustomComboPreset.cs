@@ -4188,8 +4188,8 @@ public enum Preset
     NIN_KassatsuChiJin = 10056,
 
     [ReplaceSkill(NIN.Hide)]
-    [CustomComboInfo("Hide to Mug/Trick Attack/Kunai's Bane Feature",
-        "Replaces Hide with Mug while in combat and Trick Attack/Kunai's Bane whilst Hidden.", NIN.JobID)]
+    [CustomComboInfo("Hide to Mug",
+        "Replaces Hide with Mug while in combat.", NIN.JobID)]
     NIN_HideMug = 10057,
 
     [ReplaceSkill(NIN.Ten, NIN.Chi, NIN.Jin)]

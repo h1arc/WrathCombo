@@ -1,6 +1,7 @@
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Statuses;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
 using WrathCombo.Extensions;
@@ -599,18 +600,19 @@ internal partial class NIN : Melee
         {
             if (actionID is not Hide)
                 return actionID;
+            
+            if (NIN_HideMug_Toggle && HasStatusEffect(Buffs.Hidden) &&
+                (LevelChecked(Suiton) || !NIN_HideMug_ToggleLevelCheck)) //Check level to get ShadowWalker buff. 
+                StatusManager.ExecuteStatusOff(Buffs.Hidden);
 
-            if (HasCondition(ConditionFlag.InCombat))
-            {
-                return OriginalHook(Mug);
-            }
-
-            if (HasStatusEffect(Buffs.Hidden))
-            {
+            if (NIN_HideMug_Trick && 
+                (!NIN_HideMug_TrickAfterMug || IsOnCooldown(OriginalHook(Mug))) && //Check mug if you want mug to have priority
+                (HasStatusEffect(Buffs.Hidden) || HasStatusEffect(Buffs.ShadowWalker))) //Check for ability to use trick
                 return OriginalHook(TrickAttack);
-            }
-
-            return actionID;
+            
+            return InCombat()
+                ? OriginalHook(Mug)
+                : actionID;
         }
     }
 
@@ -798,6 +800,8 @@ internal partial class NIN : Melee
             return actionID;
         }
     }
+    
+    
     
     #endregion
 }

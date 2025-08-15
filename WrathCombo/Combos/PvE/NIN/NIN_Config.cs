@@ -38,7 +38,11 @@ internal partial class NIN
             NIN_ST_AdvancedMode_ShadeShiftRaidwide = new("NIN_ST_AdvancedMode_ShadeShiftRaidwide"),
             NIN_ST_AdvancedMode_ForkedRaiju = new("NIN_ST_AdvancedMode_ForkedRaiju"),
             NIN_AoE_AdvancedMode_HellfrogMedium_Pooling = new("Ninki_HellfrogPooling"),
-            NIN_AoE_AdvancedMode_ShadeShiftRaidwide = new("NIN_AoE_AdvancedMode_ShadeShiftRaidwide");
+            NIN_AoE_AdvancedMode_ShadeShiftRaidwide = new("NIN_AoE_AdvancedMode_ShadeShiftRaidwide"),
+            NIN_HideMug_TrickAfterMug = new("NIN_HideMug_TrickAfterMug"),
+            NIN_HideMug_ToggleLevelCheck = new("NIN_HideMug_ToggleLevelCheck"),
+            NIN_HideMug_Toggle = new("NIN_HideMug_Toggle"),
+            NIN_HideMug_Trick = new("NIN_HideMug_Trick");
 
         internal static UserBoolArray
             NIN_ST_AdvancedMode_Ninjitsus_Options = new("NIN_ST_AdvancedMode_Ninjitsus_Options"),
@@ -244,6 +248,23 @@ internal partial class NIN
                 
                 case Preset.NIN_Variant_Cure:
                     DrawSliderInt(1, 100, NIN_VariantCure, "HP% to be at or under", 200);
+                    break;
+                
+                case Preset.NIN_HideMug:
+                    DrawAdditionalBoolChoice(NIN_HideMug_Toggle, "Hide Quick Toggle", "Instantly toggles off hidden so you can use it to reset mudra cooldown.");
+                    ImGui.Indent();
+                    if (NIN_HideMug_Toggle)
+                    {
+                        DrawAdditionalBoolChoice(NIN_HideMug_ToggleLevelCheck, "Level Check", "Will only toggle hidden if you above level 45 and can Suiton for Shadowwalker.");
+                    }
+                    ImGui.Unindent();
+                    DrawAdditionalBoolChoice(NIN_HideMug_Trick, "Add Trick Attack", "Adds Trick Attack when hidden or has Shadowwalker buff.");
+                    ImGui.Indent();
+                    if (NIN_HideMug_Trick)
+                    {
+                        DrawAdditionalBoolChoice(NIN_HideMug_TrickAfterMug, "Mug First", "Will only show Trick Attack if Mug is on cooldown.");
+                    }
+                    ImGui.Unindent();
                     break;
                 
                 #endregion
