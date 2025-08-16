@@ -171,29 +171,29 @@ internal partial class NIN
     #endregion
 
     #region TCJ Methods
-    internal static uint STTenChiJin(uint actionId)
+    internal static uint STTenChiJin(uint actionID)
     {
         if (OriginalHook(Ten) == TCJFumaShurikenTen)
             return OriginalHook(Ten);
         if (OriginalHook(Chi) == TCJRaiton)
             return OriginalHook(Chi);
-        return OriginalHook(Jin) == TCJSuiton ? OriginalHook(Jin) : actionId;
+        return OriginalHook(Jin) == TCJSuiton ? OriginalHook(Jin) : actionID;
     }
-    internal static uint AoETenChiJinDoton(uint actionId)
+    internal static uint AoETenChiJinDoton(uint actionID)
     {
         if (OriginalHook(Jin) == TCJFumaShurikenJin)
             return OriginalHook(Jin);
         if (OriginalHook(Ten) == TCJKaton)
             return OriginalHook(Ten);
-        return OriginalHook(Chi) == TCJDoton ? OriginalHook(Chi) : actionId;
+        return OriginalHook(Chi) == TCJDoton ? OriginalHook(Chi) : actionID;
     }
-    internal static uint AoETenChiJinSuiton(uint actionId)
+    internal static uint AoETenChiJinSuiton(uint actionID)
     {
         if (OriginalHook(Chi) == TCJFumaShurikenChi)
             return OriginalHook(Chi);
         if (OriginalHook(Ten) == TCJKaton)
             return OriginalHook(Ten);
-        return OriginalHook(Jin) == TCJSuiton ? OriginalHook(Jin) : actionId;
+        return OriginalHook(Jin) == TCJSuiton ? OriginalHook(Jin) : actionID;
     }
     #endregion
     

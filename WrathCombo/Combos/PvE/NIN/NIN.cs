@@ -563,7 +563,6 @@ internal partial class NIN : Melee
                 if (ComboAction is GustSlash && LevelChecked(AeolianEdge))
                     return AeolianEdge;
             }
-
             return SpinningEdge;
         }
     }
@@ -576,17 +575,14 @@ internal partial class NIN : Melee
         {
             if (actionID is not ArmorCrush)
                 return actionID;
-            if (ComboTimer > 0f)
+            
+            if (ComboTimer > 0)
             {
-                if (ComboAction == SpinningEdge && GustSlash.LevelChecked())
-                {
+                if (ComboAction == SpinningEdge && LevelChecked(GustSlash))
                     return GustSlash;
-                }
 
-                if (ComboAction == GustSlash && ArmorCrush.LevelChecked())
-                {
+                if (ComboAction == GustSlash && LevelChecked(ArmorCrush))
                     return ArmorCrush;
-                }
             }
             return SpinningEdge;
         }
@@ -622,14 +618,15 @@ internal partial class NIN : Melee
 
         protected override uint Invoke(uint actionID)
         {
-            if (actionID == Chi && TraitLevelChecked(250) && HasStatusEffect(Buffs.Kassatsu))
-            {
-                return Jin;
-            }
-            return actionID;
+            if (actionID is not Chi)
+                return actionID;
+                
+            return TraitLevelChecked(250) && HasStatusEffect(Buffs.Kassatsu)
+                ? Jin
+                :actionID;
         }
     }
-
+    
     internal class NIN_KassatsuTrick : CustomCombo
     {
         protected internal override Preset Preset => Preset.NIN_KassatsuTrick;
@@ -638,11 +635,10 @@ internal partial class NIN : Melee
         {
             if (actionID is not Kassatsu)
                 return actionID;
-            if (HasStatusEffect(Buffs.ShadowWalker) || HasStatusEffect(Buffs.Hidden))
-            {
-                return OriginalHook(TrickAttack);
-            }
-            return OriginalHook(Kassatsu);
+            
+            return HasStatusEffect(Buffs.ShadowWalker) || HasStatusEffect(Buffs.Hidden) 
+                ? OriginalHook(TrickAttack)
+                :actionID;
         }
     }
 
@@ -655,23 +651,12 @@ internal partial class NIN : Melee
             if (actionID is not TenChiJin)
                 return actionID;
 
-            if (HasStatusEffect(Buffs.ShadowWalker))
-                return Meisui;
-
             if (HasStatusEffect(Buffs.TenChiJin) && IsEnabled(Preset.NIN_TCJ))
-            {
-                float tcjTimer = GetStatusEffectRemainingTime(Buffs.TenChiJin, anyOwner: true);
-
-                if (tcjTimer > 5)
-                    return OriginalHook(Ten);
-
-                if (tcjTimer > 4)
-                    return OriginalHook(Chi);
-
-                if (tcjTimer > 3)
-                    return OriginalHook(Jin);
-            }
-            return actionID;
+                return STTenChiJin(actionID);
+            
+            return HasStatusEffect(Buffs.ShadowWalker)
+                ? Meisui
+                : actionID;
         }
     }
 
@@ -800,8 +785,6 @@ internal partial class NIN : Melee
             return actionID;
         }
     }
-    
-    
     
     #endregion
 }
