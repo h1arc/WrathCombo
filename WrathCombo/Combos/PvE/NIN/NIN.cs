@@ -87,14 +87,17 @@ internal partial class NIN : Melee
             #endregion
             
             #region Selfcare
-            if (Role.CanSecondWind(40))
-                return Role.SecondWind;
+            if (!MudraPhase || HasKassatsu && TrickCD > 5)
+            {
+                if (Role.CanSecondWind(40))
+                    return Role.SecondWind;
 
-            if (ActionReady(ShadeShift) && (PlayerHealthPercentageHp() < 60 || RaidWideCasting()))
-                return ShadeShift;
+                if (ActionReady(ShadeShift) && (PlayerHealthPercentageHp() < 60 || RaidWideCasting()))
+                    return ShadeShift;
 
-            if (Role.CanBloodBath(40))
-                return Role.Bloodbath;
+                if (Role.CanBloodBath(40))
+                    return Role.Bloodbath;
+            }
             #endregion
            
             #region GCDS
@@ -212,14 +215,17 @@ internal partial class NIN : Melee
             #endregion
             
             #region Selfcare
-            if (Role.CanSecondWind(40))
-                return Role.SecondWind;
+            if (!MudraPhase || HasKassatsu && TrickCD > 5)
+            {
+                if (Role.CanSecondWind(40))
+                    return Role.SecondWind;
 
-            if (ActionReady(ShadeShift) && (PlayerHealthPercentageHp() < 60 || RaidWideCasting()))
-                return ShadeShift;
+                if (ActionReady(ShadeShift) && (PlayerHealthPercentageHp() < 60 || RaidWideCasting()))
+                    return ShadeShift;
 
-            if (Role.CanBloodBath(40))
-                return Role.Bloodbath;
+                if (Role.CanBloodBath(40))
+                    return Role.Bloodbath;
+            }
             #endregion
            
             #region GCDS
@@ -349,16 +355,25 @@ internal partial class NIN : Melee
             #endregion
             
             #region Selfcare
-            if (IsEnabled(Preset.NIN_ST_AdvancedMode_SecondWind) && Role.CanSecondWind(NIN_ST_AdvancedMode_SecondWindThreshold))
-                return Role.SecondWind;
-            
-            if (IsEnabled(Preset.NIN_ST_AdvancedMode_ShadeShift) && ActionReady(ShadeShift) && 
-                (PlayerHealthPercentageHp() < NIN_ST_AdvancedMode_ShadeShiftThreshold || 
-                 NIN_ST_AdvancedMode_ShadeShiftRaidwide && RaidWideCasting()))
-                return ShadeShift;
-            
-            if (IsEnabled(Preset.NIN_ST_AdvancedMode_Bloodbath) && Role.CanBloodBath(NIN_ST_AdvancedMode_BloodbathThreshold))
-                return Role.Bloodbath;
+            if (!MudraPhase || HasKassatsu && TrickCD > 5)
+            {
+                if (IsEnabled(Preset.NIN_ST_AdvancedMode_Feint) && ActionReady(Role.Feint) &&
+                    RaidWideCasting())
+                    return Role.Feint;
+
+                if (IsEnabled(Preset.NIN_ST_AdvancedMode_SecondWind) &&
+                    Role.CanSecondWind(NIN_ST_AdvancedMode_SecondWindThreshold))
+                    return Role.SecondWind;
+
+                if (IsEnabled(Preset.NIN_ST_AdvancedMode_ShadeShift) && ActionReady(ShadeShift) &&
+                    (PlayerHealthPercentageHp() < NIN_ST_AdvancedMode_ShadeShiftThreshold ||
+                     NIN_ST_AdvancedMode_ShadeShiftRaidwide && RaidWideCasting()))
+                    return ShadeShift;
+
+                if (IsEnabled(Preset.NIN_ST_AdvancedMode_Bloodbath) &&
+                    Role.CanBloodBath(NIN_ST_AdvancedMode_BloodbathThreshold))
+                    return Role.Bloodbath;
+            }
             #endregion
            
             #region GCDS
@@ -492,16 +507,21 @@ internal partial class NIN : Melee
             #endregion
             
             #region Selfcare
-            if (IsEnabled(Preset.NIN_AoE_AdvancedMode_SecondWind) && Role.CanSecondWind(NIN_AoE_AdvancedMode_SecondWindThreshold))
-                return Role.SecondWind;
-            
-            if (IsEnabled(Preset.NIN_AoE_AdvancedMode_ShadeShift) && ActionReady(ShadeShift) && 
-                (PlayerHealthPercentageHp() < NIN_AoE_AdvancedMode_ShadeShiftThreshold || 
-                 NIN_AoE_AdvancedMode_ShadeShiftRaidwide && RaidWideCasting()))
-                return ShadeShift;
-            
-            if (IsEnabled(Preset.NIN_AoE_AdvancedMode_Bloodbath) && Role.CanBloodBath(NIN_AoE_AdvancedMode_BloodbathThreshold))
-                return Role.Bloodbath;
+            if (!MudraPhase || HasKassatsu && TrickCD > 5)
+            {
+                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_SecondWind) &&
+                    Role.CanSecondWind(NIN_AoE_AdvancedMode_SecondWindThreshold))
+                    return Role.SecondWind;
+
+                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_ShadeShift) && ActionReady(ShadeShift) &&
+                    (PlayerHealthPercentageHp() < NIN_AoE_AdvancedMode_ShadeShiftThreshold ||
+                     NIN_AoE_AdvancedMode_ShadeShiftRaidwide && RaidWideCasting()))
+                    return ShadeShift;
+
+                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_Bloodbath) &&
+                    Role.CanBloodBath(NIN_AoE_AdvancedMode_BloodbathThreshold))
+                    return Role.Bloodbath;
+            }
             #endregion
            
             #region GCDS

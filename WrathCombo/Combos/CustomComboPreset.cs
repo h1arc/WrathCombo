@@ -3999,7 +3999,7 @@ public enum Preset
         "Replaces Death Blossom with a full one-button AoE rotation.\nThis is the ideal option for newcomers to the job.",
         NIN.JobID)]
     [SimpleCombo]
-    NIN_AoE_SimpleMode = 10002,
+    NIN_AoE_SimpleMode = 10001,
 
     #endregion
 
@@ -4011,75 +4011,79 @@ public enum Preset
         "Replaces Spinning Edge with a full one-button single target rotation.\nThese features are ideal if you want to customize the rotation.",
         NIN.JobID)]
     [AdvancedCombo]
-    NIN_ST_AdvancedMode = 10003,
+    NIN_ST_AdvancedMode = 10002,
 
     [ParentCombo(NIN_ST_AdvancedMode)]
     [CustomComboInfo("Balance Opener (Level 100)",
         "Adds the Balance opener at level 100.\nRequirements:\n- 2 mudra charges ready\n- Dokumori off cooldown.\n- Kunai's Bane off cooldown.\n- TenChiJin off cooldown.\n- Phantom Kamaitachi off cooldown.\n- Bunshin off cooldown.\n- Dream Within a Dream off cooldown.\n- Kassatsu off cooldown.",
         NIN.JobID)]
-    NIN_ST_AdvancedMode_BalanceOpener = 10029,
+    NIN_ST_AdvancedMode_BalanceOpener = 10004,
 
     [ParentCombo(NIN_ST_AdvancedMode)]
     [CustomComboInfo("Ninjitsu Option", "Adds Ninjitsu to Advanced Mode.", NIN.JobID)]
-    NIN_ST_AdvancedMode_Ninjitsus = 10011,
+    NIN_ST_AdvancedMode_Ninjitsus = 10005,
     
     [ParentCombo(NIN_ST_AdvancedMode)]
     [CustomComboInfo("Trick Attack/Kunai's Bane Option", "Adds Trick Attack/Kunai's Bane to Advanced Mode.", NIN.JobID)]
-    NIN_ST_AdvancedMode_TrickAttack = 10008,
+    NIN_ST_AdvancedMode_TrickAttack = 10006,
     
     [ParentCombo(NIN_ST_AdvancedMode)]
     [CustomComboInfo("Mug/Dokumori Option", "Adds Mug/Dokumori to Advanced Mode.", NIN.JobID)]
-    NIN_ST_AdvancedMode_Mug = 10005,
+    NIN_ST_AdvancedMode_Mug = 10007,
     
     [ParentCombo(NIN_ST_AdvancedMode)]
     [CustomComboInfo("Bunshin Option", "Adds Bunshin to Advanced Mode.", NIN.JobID)]
-    NIN_ST_AdvancedMode_Bunshin = 10025,
+    NIN_ST_AdvancedMode_Bunshin = 10008,
     
     [ParentCombo(NIN_ST_AdvancedMode)]
     [CustomComboInfo("Bhavacakra Option", "Adds Bhavacakra to Advanced Mode.", NIN.JobID)]
-    NIN_ST_AdvancedMode_Bhavacakra = 10022,
+    NIN_ST_AdvancedMode_Bhavacakra = 10009,
     
     [ParentCombo(NIN_ST_AdvancedMode)]
     [CustomComboInfo("Kassatsu Option", "Adds Kassatsu to Advanced Mode.", NIN.JobID)]
-    NIN_ST_AdvancedMode_Kassatsu = 10018,
+    NIN_ST_AdvancedMode_Kassatsu = 10010,
 
     [ParentCombo(NIN_ST_AdvancedMode)]
     [CustomComboInfo("Ten Chi Jin Option", "Adds Ten Chi Jin (the cooldown) to Advanced Mode.", NIN.JobID)]
-    NIN_ST_AdvancedMode_TenChiJin = 10023,
+    NIN_ST_AdvancedMode_TenChiJin = 10011,
     
     [ParentCombo(NIN_ST_AdvancedMode)]
     [CustomComboInfo("Assassinate/Dream Within a Dream Option",
         "Adds Assassinate and Dream Within a Dream to Advanced Mode.", NIN.JobID)]
-    NIN_ST_AdvancedMode_Assassinate = 10017,
+    NIN_ST_AdvancedMode_Assassinate = 10012,
     
     [ParentCombo(NIN_ST_AdvancedMode)]
     [CustomComboInfo("Meisui Option", "Adds Meisui to Advanced Mode.", NIN.JobID)]
-    NIN_ST_AdvancedMode_Meisui = 10024,
+    NIN_ST_AdvancedMode_Meisui = 10013,
 
     [ParentCombo(NIN_ST_AdvancedMode)]
     [CustomComboInfo("Phantom Kamaitachi Option", "Adds Phantom Kamaitachi to Advanced Mode.", NIN.JobID)]
-    NIN_ST_AdvancedMode_PhantomKamaitachi = 10026,
+    NIN_ST_AdvancedMode_PhantomKamaitachi = 10014,
 
     [ParentCombo(NIN_ST_AdvancedMode)]
     [CustomComboInfo("Raiju Option", "Adds Fleeting Raiju to Advanced Mode.", NIN.JobID)]
-    NIN_ST_AdvancedMode_Raiju = 10027,
+    NIN_ST_AdvancedMode_Raiju = 10015,
     
     [ParentCombo(NIN_ST_AdvancedMode)]
     [CustomComboInfo("Throwing Dagger Uptime Option", "Adds Throwing Dagger to Advanced Mode if out of melee range.",
         NIN.JobID)]
-    NIN_ST_AdvancedMode_ThrowingDaggers = 10004,
+    NIN_ST_AdvancedMode_ThrowingDaggers = 10016,
 
     [ParentCombo(NIN_ST_AdvancedMode)]
     [CustomComboInfo("Second Wind Option", "Adds Second Wind to Advanced Mode.", NIN.JobID)]
-    NIN_ST_AdvancedMode_SecondWind = 10032,
+    NIN_ST_AdvancedMode_SecondWind = 10017,
 
     [ParentCombo(NIN_ST_AdvancedMode)]
     [CustomComboInfo("Shade Shift Option", "Adds Shade Shift to Advanced Mode.", NIN.JobID)]
-    NIN_ST_AdvancedMode_ShadeShift = 10033,
+    NIN_ST_AdvancedMode_ShadeShift = 10018,
 
     [ParentCombo(NIN_ST_AdvancedMode)]
     [CustomComboInfo("Bloodbath Option", "Adds Bloodbath to Advanced Mode.", NIN.JobID)]
-    NIN_ST_AdvancedMode_Bloodbath = 10034,
+    NIN_ST_AdvancedMode_Bloodbath = 10019,
+    
+    [ParentCombo(NIN_ST_AdvancedMode)]
+    [CustomComboInfo("Feint Raidwide Option", "Adds Feint when Raidwide is detected casting and not in a Mudra.", NIN.JobID)]
+    NIN_ST_AdvancedMode_Feint = 10020,
     
     #endregion
     
@@ -4091,67 +4095,67 @@ public enum Preset
         "Replaces Death Blossom with a full one-button AoE rotation.\nThese features are ideal if you want to customize the rotation.",
         NIN.JobID)]
     [AdvancedCombo]
-    NIN_AoE_AdvancedMode = 10035,
+    NIN_AoE_AdvancedMode = 10003,
     
     [ParentCombo(NIN_AoE_AdvancedMode)]
     [CustomComboInfo("Ninjitsu Option", "Adds Ninjitsu to Advanced Mode.", NIN.JobID)]
-        NIN_AoE_AdvancedMode_Ninjitsus = 10037,
+        NIN_AoE_AdvancedMode_Ninjitsus = 10021,
 
     [ParentCombo(NIN_AoE_AdvancedMode)]
     [CustomComboInfo("Trick Attack Option", "Adds TrickAttack/Kunai's Bane to Advanced Mode.",
         NIN.JobID)]
-    NIN_AoE_AdvancedMode_TrickAttack = 10073,
+    NIN_AoE_AdvancedMode_TrickAttack = 10022,
     
     [ParentCombo(NIN_AoE_AdvancedMode)]
     [CustomComboInfo("Mug Option", "Adds Mug/Dokumori to Advanced Mode.",
         NIN.JobID)]
-    NIN_AoE_AdvancedMode_Mug = 10038,
+    NIN_AoE_AdvancedMode_Mug = 10023,
     
     [ParentCombo(NIN_AoE_AdvancedMode)]
     [CustomComboInfo("Bunshin Option", "Adds Bunshin to Advanced Mode.", NIN.JobID)]
-    NIN_AoE_AdvancedMode_Bunshin = 10048,
+    NIN_AoE_AdvancedMode_Bunshin = 10024,
     
     [ParentCombo(NIN_AoE_AdvancedMode)]
     [CustomComboInfo("Hellfrog Medium Option", "Adds Hellfrog Medium to Advanced Mode.", NIN.JobID)]
-    NIN_AoE_AdvancedMode_HellfrogMedium = 10045,
+    NIN_AoE_AdvancedMode_HellfrogMedium = 10025,
     
     [ParentCombo(NIN_AoE_AdvancedMode)]
     [CustomComboInfo("Kassatsu Option", "Adds Kassatsu to Advanced Mode.", NIN.JobID)]
-    NIN_AoE_AdvancedMode_Kassatsu = 10042,
+    NIN_AoE_AdvancedMode_Kassatsu = 10026,
     
     [ParentCombo(NIN_AoE_AdvancedMode)]
     [CustomComboInfo("Ten Chi Jin Option", "Adds Ten Chi Jin (the cooldown) to Advanced Mode.", NIN.JobID)]
-    NIN_AoE_AdvancedMode_TenChiJin = 10046,
+    NIN_AoE_AdvancedMode_TenChiJin = 10027,
 
     [ParentCombo(NIN_AoE_AdvancedMode)]
     [CustomComboInfo("Assassinate/Dream Within a Dream Option",
         "Adds Assassinate/Dream Within a Dream to Advanced Mode.", NIN.JobID)]
-    NIN_AoE_AdvancedMode_Assassinate = 10036,
+    NIN_AoE_AdvancedMode_Assassinate = 10028,
 
     [ParentCombo(NIN_AoE_AdvancedMode)]
     [CustomComboInfo("Meisui Option", "Adds Meisui to Advanced Mode.", NIN.JobID)]
-    NIN_AoE_AdvancedMode_Meisui = 10047,
+    NIN_AoE_AdvancedMode_Meisui = 10029,
     
     [ParentCombo(NIN_AoE_AdvancedMode)]
     [CustomComboInfo("Phantom Kamaitachi Option", "Adds Phantom Kamaitachi to Advanced Mode.", NIN.JobID)]
-    NIN_AoE_AdvancedMode_PhantomKamaitachi = 10049,
+    NIN_AoE_AdvancedMode_PhantomKamaitachi = 10030,
     
     [ParentCombo(NIN_AoE_AdvancedMode)]
     [CustomComboInfo("Throwing Dagger Uptime Option", "Adds Throwing Dagger to Advanced Mode if out of melee range.",
         NIN.JobID)]
-    NIN_AoE_AdvancedMode_ThrowingDaggers = 10044,
+    NIN_AoE_AdvancedMode_ThrowingDaggers = 10031,
 
     [ParentCombo(NIN_AoE_AdvancedMode)]
     [CustomComboInfo("Second Wind Option", "Adds Second Wind to Advanced Mode.", NIN.JobID)]
-    NIN_AoE_AdvancedMode_SecondWind = 10050,
+    NIN_AoE_AdvancedMode_SecondWind = 10032,
 
     [ParentCombo(NIN_AoE_AdvancedMode)]
     [CustomComboInfo("Shade Shift Option", "Adds Shade Shift to Advanced Mode.", NIN.JobID)]
-    NIN_AoE_AdvancedMode_ShadeShift = 10051,
+    NIN_AoE_AdvancedMode_ShadeShift = 10033,
 
     [ParentCombo(NIN_AoE_AdvancedMode)]
     [CustomComboInfo("Bloodbath Option", "Adds Bloodbath to Advanced Mode.", NIN.JobID)]
-    NIN_AoE_AdvancedMode_Bloodbath = 10052,
+    NIN_AoE_AdvancedMode_Bloodbath = 10034,
     
     #endregion
     
@@ -4162,11 +4166,11 @@ public enum Preset
     [ReplaceSkill(NIN.AeolianEdge)]
     [CustomComboInfo("Aeolian Edge Combo", "Replace Aeolian Edge with its combo chain.", NIN.JobID)]
     [BasicCombo]
-    NIN_ST_AeolianEdgeCombo = 10074,
+    NIN_ST_AeolianEdgeCombo = 10042,
 
     [ReplaceSkill(NIN.ArmorCrush)]
     [CustomComboInfo("Armor Crush Combo Feature", "Replace Armor Crush with its combo chain.", NIN.JobID)]
-    NIN_ArmorCrushCombo = 10053,
+    NIN_ArmorCrushCombo = 10041,
 
     #endregion
     
@@ -4174,32 +4178,32 @@ public enum Preset
     [CustomComboInfo("Kassatsu to Trick Feature",
         "Replaces Kassatsu with Trick Attack/Kunai's Bane while Suiton or Hidden is up.\nCooldown tracking plugin recommended.",
         NIN.JobID)]
-    NIN_KassatsuTrick = 10054,
+    NIN_KassatsuTrick = 10035,
 
     [ReplaceSkill(NIN.TenChiJin)]
     [CustomComboInfo("Ten Chi Jin to Meisui Feature",
         "Replaces Ten Chi Jin (the move) with Meisui while Suiton is up.\nCooldown tracking plugin recommended.",
         NIN.JobID)]
-    NIN_TCJMeisui = 10055,
+    NIN_TCJMeisui = 10036,
 
     [ReplaceSkill(NIN.Chi)]
     [CustomComboInfo("Kassatsu Chi/Jin Feature",
         "Replaces Chi with Jin while Kassatsu is up if you have Enhanced Kassatsu.", NIN.JobID)]
-    NIN_KassatsuChiJin = 10056,
+    NIN_KassatsuChiJin = 10037,
 
     [ReplaceSkill(NIN.Hide)]
     [CustomComboInfo("Hide to Mug",
         "Replaces Hide with selected Options", NIN.JobID)]
-    NIN_HideMug = 10057,
+    NIN_HideMug = 10038,
 
     [ReplaceSkill(NIN.Ten, NIN.Chi, NIN.Jin)]
     [CustomComboInfo("Simple Mudras Feature", "Simplify the mudra casting to avoid failing.", NIN.JobID)]
-    NIN_Simple_Mudras = 10062,
+    NIN_Simple_Mudras = 10039,
 
     [ReplaceSkill(NIN.TenChiJin)]
     [ParentCombo(NIN_TCJMeisui)]
     [CustomComboInfo("Ten Chi Jin Feature", "Turns Ten Chi Jin (the move) into Ten, Chi, and Jin.", NIN.JobID)]
-    NIN_TCJ = 10063,
+    NIN_TCJ = 10040,
     
     #endregion
 
@@ -4215,7 +4219,7 @@ public enum Preset
     NIN_Variant_Rampart = 10070,
     #endregion
 
-    // Last value = 10075
+    // Last value = 10042
 
     #endregion
 
