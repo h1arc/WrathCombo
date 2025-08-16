@@ -493,57 +493,52 @@ internal partial class NIN
         {
             if (NIN_Adv_Opener_Selection == 0 && Opener1.LevelChecked)
                 return Opener1;
-
             if (NIN_Adv_Opener_Selection == 1 && Opener2.LevelChecked)
                 return Opener2;
-
             if (NIN_Adv_Opener_Selection == 2 && Opener3.LevelChecked)
                 return Opener3;
         }
 
-        if (Opener1.LevelChecked)
-            return Opener1;
-
-        return WrathOpener.Dummy;
+        return Opener1.LevelChecked ? Opener1 : WrathOpener.Dummy;
     }
      internal class NINOpenerMaxLevel4thGCDKunai : WrathOpener
     {
         //4th GCD Kunai
         public override List<uint> OpenerActions { get; set; } =
         [
-            Ten,
-            ChiCombo,
-            JinCombo,
-            Suiton,
-            Kassatsu,
-            SpinningEdge,
-            GustSlash,
-            Dokumori,
-            Bunshin,
-            PhantomKamaitachi,
-            ArmorCrush,
-            KunaisBane,
-            ChiCombo,
-            JinCombo,
-            HyoshoRanryu,
-            DreamWithinADream,
-            Ten,
-            ChiCombo,
-            Raiton,
-            TenChiJin,
-            TCJFumaShurikenTen,
-            TCJRaiton,
-            TCJSuiton,
-            Meisui,
-            FleetingRaiju,
-            ZeshoMeppo,
-            TenriJendo,
-            FleetingRaiju,
-            Bhavacakra,
-            Ten,
-            ChiCombo,
-            Raiton,
-            FleetingRaiju,
+            Chi, //1
+            TenCombo, //2
+            JinCombo, //3
+            Suiton, //4
+            Kassatsu, //5
+            SpinningEdge, //6
+            GustSlash, //7
+            Dokumori, //8
+            Bunshin, //9
+            PhantomKamaitachi, //10
+            ArmorCrush, //11
+            KunaisBane, //12
+            ChiCombo, //13
+            JinCombo, //14
+            HyoshoRanryu, //15
+            DreamWithinADream, //16
+            Ten, //17
+            ChiCombo, //18
+            Raiton, //19
+            TenChiJin, //20
+            TCJFumaShurikenTen, //21
+            TCJRaiton, //22
+            TCJSuiton, //23
+            Meisui, //24
+            FleetingRaiju, //25
+            ZeshoMeppo, //26
+            TenriJendo, //27
+            FleetingRaiju, //28
+            Bhavacakra, //29
+            Ten, //30
+            ChiCombo, //31
+            Raiton, //32
+            FleetingRaiju, //33
         ];
 
         public override List<int> DelayedWeaveSteps { get; set; } =
@@ -553,7 +548,6 @@ internal partial class NIN
 
         public override int MinOpenerLevel => 100;
         public override int MaxOpenerLevel => 109;
-
         internal override UserData? ContentCheckConfig => NIN_Balance_Content;
 
         public override bool HasCooldowns()
@@ -576,52 +570,49 @@ internal partial class NIN
         //3rd GCD Dokumori
         public override List<uint> OpenerActions { get; set; } =
         [
-            Ten,
-            ChiCombo,
-            JinCombo,
-            Suiton,
-            Kassatsu,
-            SpinningEdge,
-            GustSlash,
-            ArmorCrush,
-            Dokumori,
-            Bunshin,
-            PhantomKamaitachi,
-            KunaisBane,
-            ChiCombo,
-            JinCombo,
-            HyoshoRanryu,
-            DreamWithinADream,
-            Ten,
-            ChiCombo,
-            Raiton,
-            TenChiJin,
-            TCJFumaShurikenTen,
-            TCJRaiton,
-            TCJSuiton,
-            Meisui,
-            FleetingRaiju,
-            ZeshoMeppo,
-            TenriJendo,
-            FleetingRaiju,
-            Ten,
-            ChiCombo,
-            Raiton,
-            FleetingRaiju,
-            Bhavacakra,
-            SpinningEdge
+            Chi, //1
+            TenCombo, //2
+            JinCombo, //3
+            Suiton, //4
+            Kassatsu, //5
+            SpinningEdge, //6
+            GustSlash, //7
+            ArmorCrush, //8
+            Dokumori, //9
+            Bunshin, //10
+            PhantomKamaitachi, //11
+            KunaisBane, //12
+            ChiCombo, //13
+            JinCombo, //14
+            HyoshoRanryu, //15
+            DreamWithinADream, //16
+            Ten, //17
+            ChiCombo, //18
+            Raiton, //19
+            TenChiJin, //20
+            TCJFumaShurikenTen, //21
+            TCJRaiton, //22
+            TCJSuiton, //23
+            Meisui, //24
+            FleetingRaiju, //25
+            ZeshoMeppo, //26
+            TenriJendo, //27
+            FleetingRaiju, //28
+            Ten, //29
+            ChiCombo, //30
+            Raiton, //31
+            FleetingRaiju, //32
+            Bhavacakra, //33
+            SpinningEdge //34
         ];
 
         public override List<int> DelayedWeaveSteps { get; set; } =
         [
             12
         ];
-
         public override int MinOpenerLevel => 100;
         public override int MaxOpenerLevel => 109;
-
         internal override UserData? ContentCheckConfig => NIN_Balance_Content;
-
         public override bool HasCooldowns()
         {
             if (GetRemainingCharges(Ten) < 1) return false;
@@ -642,50 +633,48 @@ internal partial class NIN
         //3rd GCD Kunai
         public override List<uint> OpenerActions { get; set; } =
         [
-            Ten,
-            ChiCombo,
-            JinCombo,
-            Suiton,
-            Kassatsu,
-            SpinningEdge,
-            GustSlash,
-            Dokumori,
-            Bunshin,
-            PhantomKamaitachi,
-            KunaisBane,
-            ChiCombo,
-            JinCombo,
-            HyoshoRanryu,
-            DreamWithinADream,
-            Ten,
-            ChiCombo,
-            Raiton,
-            TenChiJin,
-            TCJFumaShurikenTen,
-            TCJRaiton,
-            TCJSuiton,
-            Meisui,
-            FleetingRaiju,
-            ZeshoMeppo,
-            TenriJendo,
-            FleetingRaiju,
-            ArmorCrush,
-            Bhavacakra,
-            Ten,
-            ChiCombo,
-            Raiton,
-            FleetingRaiju,
+            Chi, //1
+            TenCombo, //2
+            JinCombo, //3
+            Suiton, //4
+            Kassatsu, //5
+            SpinningEdge, //6
+            GustSlash, //7
+            Dokumori, //8
+            Bunshin, //9
+            PhantomKamaitachi, //10
+            KunaisBane, //11
+            ChiCombo, //12
+            JinCombo, //13
+            HyoshoRanryu, //14
+            DreamWithinADream, //15
+            Ten, //16
+            ChiCombo, //17
+            Raiton, //18
+            TenChiJin, //19
+            TCJFumaShurikenTen, //20
+            TCJRaiton, //21
+            TCJSuiton, //22
+            Meisui, //23
+            FleetingRaiju, //24
+            ZeshoMeppo, //25
+            TenriJendo, //26
+            FleetingRaiju, //27
+            ArmorCrush, //28
+            Bhavacakra, //29
+            Ten, //30
+            ChiCombo, //31
+            Raiton, //32
+            FleetingRaiju, //33
         ];
 
         public override List<int> DelayedWeaveSteps { get; set; } =
         [
             11
         ];
-
         internal override UserData? ContentCheckConfig => NIN_Balance_Content;
         public override int MinOpenerLevel => 100;
         public override int MaxOpenerLevel => 109;
-
         public override bool HasCooldowns()
         {
             if (GetRemainingCharges(Ten) < 1) return false;

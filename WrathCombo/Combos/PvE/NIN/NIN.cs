@@ -437,7 +437,7 @@ internal partial class NIN : Melee
             
             if (NIN_AoE_AdvancedMode_TenChiJin_Options[0] &&
                 HasStatusEffect(Buffs.TenChiJin))
-                return DotonRemaining < 3
+                return NIN_AoE_AdvancedMode_Ninjitsus_Options[2] && DotonRemaining < 3
                 ? AoETenChiJinDoton(actionID) 
                 : AoETenChiJinSuiton(actionID);
             
