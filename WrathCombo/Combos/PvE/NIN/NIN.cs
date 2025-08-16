@@ -606,11 +606,11 @@ internal partial class NIN : Melee
                 StatusManager.ExecuteStatusOff(Buffs.Hidden);
 
             if (NIN_HideMug_Trick && 
-                (!NIN_HideMug_TrickAfterMug || IsOnCooldown(OriginalHook(Mug))) && //Check mug if you want mug to have priority
+                (!NIN_HideMug_Mug || !NIN_HideMug_TrickAfterMug || IsOnCooldown(OriginalHook(Mug))) && //Check mug if you want mug to have priority
                 (HasStatusEffect(Buffs.Hidden) || HasStatusEffect(Buffs.ShadowWalker))) //Check for ability to use trick
                 return OriginalHook(TrickAttack);
             
-            return InCombat()
+            return InCombat() && NIN_HideMug_Mug
                 ? OriginalHook(Mug)
                 : actionID;
         }

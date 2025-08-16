@@ -4189,7 +4189,7 @@ public enum Preset
 
     [ReplaceSkill(NIN.Hide)]
     [CustomComboInfo("Hide to Mug",
-        "Replaces Hide with Mug while in combat.", NIN.JobID)]
+        "Replaces Hide with selected Options", NIN.JobID)]
     NIN_HideMug = 10057,
 
     [ReplaceSkill(NIN.Ten, NIN.Chi, NIN.Jin)]

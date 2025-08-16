@@ -42,7 +42,8 @@ internal partial class NIN
             NIN_HideMug_TrickAfterMug = new("NIN_HideMug_TrickAfterMug"),
             NIN_HideMug_ToggleLevelCheck = new("NIN_HideMug_ToggleLevelCheck"),
             NIN_HideMug_Toggle = new("NIN_HideMug_Toggle"),
-            NIN_HideMug_Trick = new("NIN_HideMug_Trick");
+            NIN_HideMug_Trick = new("NIN_HideMug_Trick"),
+            NIN_HideMug_Mug = new("NIN_HideMug_Mug");
 
         internal static UserBoolArray
             NIN_ST_AdvancedMode_Ninjitsus_Options = new("NIN_ST_AdvancedMode_Ninjitsus_Options"),
@@ -251,6 +252,7 @@ internal partial class NIN
                     break;
                 
                 case Preset.NIN_HideMug:
+                    DrawAdditionalBoolChoice(NIN_HideMug_Mug, "Mug", "Adds Mug when in Combat");
                     DrawAdditionalBoolChoice(NIN_HideMug_Toggle, "Hide Quick Toggle", "Instantly toggles off hidden so you can use it to reset mudra cooldown.");
                     ImGui.Indent();
                     if (NIN_HideMug_Toggle)
@@ -260,7 +262,7 @@ internal partial class NIN
                     ImGui.Unindent();
                     DrawAdditionalBoolChoice(NIN_HideMug_Trick, "Add Trick Attack", "Adds Trick Attack when hidden or has Shadowwalker buff.");
                     ImGui.Indent();
-                    if (NIN_HideMug_Trick)
+                    if (NIN_HideMug_Trick && NIN_HideMug_Mug)
                     {
                         DrawAdditionalBoolChoice(NIN_HideMug_TrickAfterMug, "Mug First", "Will only show Trick Attack if Mug is on cooldown.");
                     }
