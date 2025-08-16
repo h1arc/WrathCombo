@@ -6,10 +6,10 @@ using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using System.Collections.Generic;
 using WrathCombo.Attributes;
-using WrathCombo.Combos;
 using WrathCombo.Combos.PvE;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Services;
+using ECommonsJob = ECommons.ExcelServices.Job;
 
 namespace WrathCombo.CustomComboNS;
 
@@ -20,8 +20,7 @@ internal abstract partial class CustomCombo : CustomComboFunctions
     protected CustomCombo()
     {
         CustomComboInfoAttribute? presetInfo = Preset.GetAttribute<CustomComboInfoAttribute>();
-        JobID = presetInfo.JobID;
-        //ClassID = JobIDs.JobToClass(JobID);
+        Job = presetInfo.Job;
     }
 
     protected IGameObject? OptionalTarget;
@@ -29,8 +28,8 @@ internal abstract partial class CustomCombo : CustomComboFunctions
     /// <summary> Gets the preset associated with this combo. </summary>
     protected internal abstract Preset Preset { get; }
 
-    /// <summary> Gets the job ID associated with this combo. </summary>
-    protected Job JobID { get; }
+    /// <summary> Gets the job associated with this combo. </summary>
+    protected ECommonsJob Job { get; }
 
     /// <summary>
     ///     This is a list of presets and their actions that are exceptions to
@@ -77,7 +76,7 @@ internal abstract partial class CustomCombo : CustomComboFunctions
         if (classJobID is Job.MIN or Job.BTN or Job.FSH)
             classJobID = Job.MIN;
 
-        if (JobID != Job.ADV && JobID != classJobID )
+        if (Job != Job.ADV && Job != classJobID )
             return false;
 
         OptionalTarget = targetOverride;

@@ -584,31 +584,31 @@ public partial class WrathCombo
                     return;
                 }
 
-                var jobName = argument[1].ToUpperInvariant();
+                var jobAbbr = argument[1].ToUpperInvariant();
                 try
                 {
                     // Look up the entered job
-                    if (TryGetJobByName(jobName, out ClassJob jobSearch))
+                    if (TryGetJobByAbbreviation(jobAbbr, out ClassJob jobSearch))
                     {
                         //ClassJob -> enum,
                         //Check if Class and change to Job
                         //Retrieve final ClassJob
                         job = jobSearch.GetJob().GetUpgradedJob().GetData();
 
-                        if (job.Value.RowId != Player.Object.ClassJob.Value.RowId)
-                            DuoLog.Warning($"You are not on {job.Value.Name}");
+                        if (job.Value.RowId != Player.JobId)
+                            DuoLog.Warning($"You are not on {job.Value.Name()}");
                     }
                 }
                 // the .first() failed
                 catch (InvalidOperationException)
                 {
-                    DuoLog.Error($"Invalid job abbreviation, '{jobName}'");
+                    DuoLog.Error($"Invalid job abbreviation, '{jobAbbr}'");
                     throw;
                 }
                 // unknown
                 catch (Exception ex)
                 {
-                    DuoLog.Error($"Error looking up job abbreviation, '{jobName}'");
+                    DuoLog.Error($"Error looking up job abbreviation, '{jobAbbr}'");
                     Svc.Log.Error(ex, "Debug Log");
                     throw;
                 }
@@ -715,18 +715,18 @@ public partial class WrathCombo
         // Open to specified job
         var jobAbbrev = argument[0];
 
-        var rowId = Svc.Data.GetExcelSheet<ClassJob>()?
-            .FirstOrDefault(cj => cj.Abbreviation.ToString().Equals(jobAbbrev, StringComparison.OrdinalIgnoreCase))
-            .RowId;
-
-        if (!rowId.HasValue)
+        if (TryGetJobByAbbreviation(jobAbbrev, out var job))
+        {
+            ConfigWindow.IsOpen = true;
+            ConfigWindow.OpenWindow = OpenWindow.PvE;
+            PvEFeatures.OpenJob = job.GetJob();
+        } 
+        else
         {
             DuoLog.Error($"{argument[0]} is not a correct job abbreviation.");
             return;
         }
 
-        ConfigWindow.IsOpen = true;
-        ConfigWindow.OpenWindow = OpenWindow.PvE;
-        PvEFeatures.OpenJob = (Job)rowId.Value;
+        
     }
 }

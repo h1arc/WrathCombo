@@ -253,7 +253,7 @@ internal partial class AST
         get
         {
             if (Player.Object is null ||
-                Player.Job != JobID ||
+                Player.Job != WrathCombo.JobID ||
                 Svc.Condition[ConditionFlag.BetweenAreas] ||
                 Svc.Condition[ConditionFlag.Unconscious] ||
                 Gauge.DrawnCards[0] == CardType.None ||

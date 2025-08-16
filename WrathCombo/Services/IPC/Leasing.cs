@@ -399,13 +399,13 @@ public partial class Leasing
             locking = true;
             stringKeys = [];
             combos = P.IPCSearch.EnabledActions
-                .Where(a => a.Attributes().CustomComboInfo.JobID
+                .Where(a => a.Attributes().CustomComboInfo.Job
                            == job)
                 .Where(a => a.Attributes().Parent is null)
                 .Select(a => a.ToString())
                 .ToList();
             options = P.IPCSearch.EnabledActions
-                .Where(a => a.Attributes().CustomComboInfo.JobID
+                .Where(a => a.Attributes().CustomComboInfo.Job
                            == job)
                 .Where(a => a.Attributes().Parent is not null)
                 .Select(a => a.ToString())

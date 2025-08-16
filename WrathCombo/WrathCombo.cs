@@ -10,6 +10,7 @@ using Dalamud.Utility;
 using ECommons;
 using ECommons.Automation.LegacyTaskManager;
 using ECommons.DalamudServices;
+using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using ECommons.Logging;
 using Newtonsoft.Json.Linq;
@@ -33,7 +34,6 @@ using WrathCombo.Services.IPC_Subscriber;
 using WrathCombo.Services.IPC;
 using WrathCombo.Window;
 using WrathCombo.Window.Tabs;
-using ECommons.ExcelServices;
 namespace WrathCombo;
 
 /// <summary> Main plugin implementation. </summary>

@@ -1,8 +1,8 @@
 using ECommons.ExcelServices;
 using System;
 using System.Runtime.CompilerServices;
-using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
+using ECommonsJob = ECommons.ExcelServices.Job;
 
 namespace WrathCombo.Attributes;
 
@@ -13,7 +13,7 @@ internal class CustomComboInfoAttribute : Attribute
     /// <summary> Initializes a new instance of the <see cref="CustomComboInfoAttribute"/> class. </summary>
     /// <param name="name"> Display name. </param>
     /// <param name="description"> Combo description. </param>
-    /// <param name="jobID"> Associated job ID. </param>
+    /// <param name="job"> Associated job ID. </param>
     /// <param name="order"> Display order. </param>
     //// <param name="memeName"> Display meme name </param>
     //// <param name="memeDescription"> Meme description. </param>
@@ -21,7 +21,7 @@ internal class CustomComboInfoAttribute : Attribute
     {
         Name = name;
         Description = description;
-        JobID = job switch
+        Job = job switch
         {
             Job.BTN or Job.MIN or Job.FSH => Job.MIN,
             _ => job
@@ -35,21 +35,18 @@ internal class CustomComboInfoAttribute : Attribute
     /// <summary> Gets the description. </summary>
     public string Description { get; }
 
-    /// <summary> Gets the job ID. </summary>
-    public Job JobID { get; }
+    /// <summary> Gets the job enum. </summary>
+    public ECommonsJob Job { get; }
 
     /// <summary> Gets the display order. </summary>
     public int Order { get; }
 
     /// <summary> Gets the job role. </summary>
-    public JobRole Role => RoleAttribute.GetRoleFromJob(JobID);
-
-    /// <summary> Gets the job category. </summary>
-    //public uint ClassJobCategory => CustomComboFunctions.JobIDs.JobIDToClassJobCategory(JobID);
+    public JobRole Role => RoleAttribute.GetRoleFromJob(Job);
 
     /// <summary> Gets the job name. </summary>
-    public string JobName => JobID.Name();
+    public string JobName => Job.Name();
 
     /// <summary> Gets the job shorthand. </summary>
-    public string JobShorthand => JobID.Shorthand();
+    public string JobShorthand => Job.Shorthand();
 }

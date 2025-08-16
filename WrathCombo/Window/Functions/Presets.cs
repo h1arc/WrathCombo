@@ -127,7 +127,7 @@ internal class Presets : ConfigWindow
     }
 
     internal static Dictionary<Preset, bool> GetJobAutorots => P
-        .IPCSearch.AutoActions.Where(x => x.Key.Attributes().IsPvP == CustomComboFunctions.InPvP() && (Player.Job == x.Key.Attributes().CustomComboInfo.JobID || Player.Job.GetUpgradedJob() == x.Key.Attributes().CustomComboInfo.JobID) && x.Value && CustomComboFunctions.IsEnabled(x.Key) && x.Key.Attributes().Parent == null).ToDictionary();
+        .IPCSearch.AutoActions.Where(x => x.Key.Attributes().IsPvP == CustomComboFunctions.InPvP() && (Player.Job == x.Key.Attributes().CustomComboInfo.Job || Player.Job.GetUpgradedJob() == x.Key.Attributes().CustomComboInfo.Job) && x.Value && CustomComboFunctions.IsEnabled(x.Key) && x.Key.Attributes().Parent == null).ToDictionary();
 
     internal static void DrawPreset(Preset preset, CustomComboInfoAttribute info)
     {
@@ -361,7 +361,7 @@ internal class Presets : ConfigWindow
         {
             if (!pvp)
             {
-                switch (info.JobID)
+                switch (info.Job)
                 {
                     case Job.ADV:
                     {
@@ -398,7 +398,7 @@ internal class Presets : ConfigWindow
             }
             else
             {
-                switch (info.JobID)
+                switch (info.Job)
                 {
                     case Job.ADV: PvPCommon.Config.Draw(preset); break;
                     case Job.AST: ASTPvP.Config.Draw(preset); break;

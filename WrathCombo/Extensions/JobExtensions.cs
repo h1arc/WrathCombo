@@ -1,4 +1,5 @@
 ﻿using ECommons.ExcelServices;
+using Lumina.Excel.Sheets;
 using static WrathCombo.Window.Text;
 
 namespace WrathCombo.Extensions
@@ -26,5 +27,19 @@ namespace WrathCombo.Extensions
 
             return GetTextInfo().ToTitleCase(jobName);
         }
+
+        public static string Name(this ClassJob job)
+        {
+            string jobName = (Job)job.RowId switch
+            {
+                Job.ADV => "Roles and Content",
+                Job.MIN or Job.BTN or Job.FSH
+                    => job.ClassJobCategory.Value.Name.ToString(),
+                _ => job.Name.ToString()
+            };
+
+            return GetTextInfo().ToTitleCase(jobName);
+        }
+
     }
 }

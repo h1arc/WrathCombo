@@ -63,7 +63,7 @@ internal class PvPFeatures : ConfigWindow
                         string jobName = groupedPresets[job].First().Info.JobName;
                         string abbreviation = groupedPresets[job].First().Info.JobShorthand;
                         string header = string.IsNullOrEmpty(abbreviation) ? jobName : $"{jobName} - {abbreviation}";
-                        var id = groupedPresets[job].First().Info.JobID;
+                        var id = groupedPresets[job].First().Info.Job;
                         IDalamudTextureWrap? icon = Icons.GetJobIcon(id);
                         using (var disabled = ImRaii.Disabled(DisabledJobsPVP.Any(x => x == id)))
                         {
@@ -87,7 +87,7 @@ internal class PvPFeatures : ConfigWindow
             }
             else
             {
-                var id = groupedPresets[OpenJob.Value].First().Info.JobID;
+                var id = groupedPresets[OpenJob.Value].First().Info.Job;
                 IDalamudTextureWrap? icon = Icons.GetJobIcon(id);
 
                 using (var headingTab = ImRaii.Child("PvPHeadingTab", new Vector2(ImGui.GetContentRegionAvail().X, icon is null ? 24f.Scale() : (icon.Size.Y / 2f).Scale() + 4f)))

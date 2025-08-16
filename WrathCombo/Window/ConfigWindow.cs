@@ -42,12 +42,12 @@ internal class ConfigWindow : Dalamud.Interface.Windowing.Window
             .ThenByDescending(tpl => tpl.Info.Role is JobRole.MeleeDPS)
             .ThenByDescending(tpl => tpl.Info.Role is JobRole.RangedDPS)
             .ThenByDescending(tpl => tpl.Info.Role is JobRole.MagicalDPS)
-            .ThenByDescending(tpl => tpl.Info.JobID is Job.ADV)
-            .ThenByDescending(tpl => tpl.Info.JobID is Job.MIN)
+            .ThenByDescending(tpl => tpl.Info.Job is Job.ADV)
+            .ThenByDescending(tpl => tpl.Info.Job is Job.MIN)
             //.ThenBy(tpl => tpl.Info.ClassJobCategory)
-            .ThenBy(tpl => tpl.Info.JobID)
+            .ThenBy(tpl => tpl.Info.Job)
             .ThenBy(tpl => tpl.Info.Order)
-            .GroupBy(tpl => tpl.Info.JobID)
+            .GroupBy(tpl => tpl.Info.Job)
             .ToDictionary(
                 tpl => tpl.Key,
                 tpl => tpl.ToList())!;
