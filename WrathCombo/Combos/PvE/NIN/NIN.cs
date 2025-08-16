@@ -1,6 +1,4 @@
-using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.JobGauge.Types;
-using Dalamud.Game.ClientState.Statuses;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
@@ -16,9 +14,7 @@ internal partial class NIN : Melee
     {
         protected internal MudraCasting MudraState = new();
         protected internal override Preset Preset => Preset.NIN_ST_SimpleMode;
-
         protected override uint Invoke(uint actionID)
-        
         {
             if (actionID is not SpinningEdge)
                 return actionID;
@@ -40,7 +36,6 @@ internal partial class NIN : Melee
                 return STTenChiJin(actionID);
             
             #region Special Content
-            
             if (OccultCrescent.ShouldUsePhantomActions() && !MudraPhase)
                 return OccultCrescent.BestPhantomAction();
             
@@ -49,11 +44,9 @@ internal partial class NIN : Melee
             
             if (Variant.CanCure(Preset.NIN_Variant_Cure, NIN_VariantCure) && !MudraPhase)
                 return Variant.Cure;
-            
             #endregion
             
             #region OGCDS
-            
             if (InCombat() && HasBattleTarget())
             {
                 if (CanKassatsu)
@@ -83,7 +76,6 @@ internal partial class NIN : Melee
                 if (CanTrick && CombatEngageDuration().TotalSeconds > 5)
                     return OriginalHook(TrickAttack);
             }
-            
             #endregion
             
             #region Ninjutsu
@@ -95,7 +87,6 @@ internal partial class NIN : Melee
             #endregion
             
             #region Selfcare
-            
             if (Role.CanSecondWind(40))
                 return Role.SecondWind;
 
@@ -104,11 +95,9 @@ internal partial class NIN : Melee
 
             if (Role.CanBloodBath(40))
                 return Role.Bloodbath;
-            
             #endregion
            
             #region GCDS
-            
             if (CanThrowingDaggers)
                 return OriginalHook(ThrowingDaggers);
             
@@ -122,20 +111,20 @@ internal partial class NIN : Melee
             {
                 switch (ComboAction)
                 {
-                    case SpinningEdge when GustSlash.LevelChecked():
+                    case SpinningEdge when LevelChecked(GustSlash):
                         return OriginalHook(GustSlash);
                     
                     case GustSlash when GetTargetHPPercent() <= 10 && gauge.Kazematoi > 0: //Kazematoi Dump Below 10%
                         return TNAeolianEdge ? Role.TrueNorth : AeolianEdge;
                     
-                    case GustSlash when ArmorCrush.LevelChecked():
+                    case GustSlash when LevelChecked(ArmorCrush):
                         return gauge.Kazematoi switch
                         {
                             0 => TNArmorCrush ? Role.TrueNorth : ArmorCrush,
                             >= 4 => TNAeolianEdge ? Role.TrueNorth : AeolianEdge,
                             _ => OnTargetsFlank() || !TargetNeedsPositionals() ? ArmorCrush: AeolianEdge
                         };
-                    case GustSlash when !ArmorCrush.LevelChecked() && AeolianEdge.LevelChecked():
+                    case GustSlash when !LevelChecked(ArmorCrush) && LevelChecked(AeolianEdge):
                         return TNAeolianEdge ? Role.TrueNorth : AeolianEdge;
                 }
             }
@@ -148,7 +137,6 @@ internal partial class NIN : Melee
     {
         protected internal MudraCasting MudraState = new();
         protected internal override Preset Preset => Preset.NIN_AoE_SimpleMode;
-
         protected override uint Invoke(uint actionID)
         
         {
@@ -248,9 +236,9 @@ internal partial class NIN : Melee
             {
                 switch (ComboAction)
                 {
-                    case SpinningEdge when GustSlash.LevelChecked():
+                    case SpinningEdge when LevelChecked(GustSlash):
                         return OriginalHook(GustSlash);
-                    case GustSlash when !ArmorCrush.LevelChecked() && AeolianEdge.LevelChecked():
+                    case GustSlash when !LevelChecked(ArmorCrush) && LevelChecked(AeolianEdge):
                         return TNAeolianEdge ? Role.TrueNorth : AeolianEdge;
                     case DeathBlossom when LevelChecked(HakkeMujinsatsu):
                         return HakkeMujinsatsu;
@@ -271,7 +259,6 @@ internal partial class NIN : Melee
         protected internal MudraCasting MudraState = new();
         protected internal override Preset Preset => Preset.NIN_ST_AdvancedMode;
         protected override uint Invoke(uint actionID)
-        
         {
             if (actionID is not SpinningEdge)
                 return actionID;
@@ -280,7 +267,8 @@ internal partial class NIN : Melee
             
             if (IsEnabled(Preset.NIN_ST_AdvancedMode_BalanceOpener) && 
                 Opener().FullOpener(ref actionID))
-            
+                return actionID;
+                
             if (IsEnabled(Preset.NIN_ST_AdvancedMode_Ninjitsus) &&
                 OriginalHook(Ninjutsu) is Rabbit or Huton or Suiton or Doton or GokaMekkyaku or HyoshoRanryu)
                 return OriginalHook(Ninjutsu);
@@ -374,7 +362,6 @@ internal partial class NIN : Melee
             #endregion
            
             #region GCDS
-            
             if (IsEnabled(Preset.NIN_ST_AdvancedMode_ThrowingDaggers) && CanThrowingDaggers && !MudraPhase)
                 return OriginalHook(ThrowingDaggers);
             
@@ -390,20 +377,20 @@ internal partial class NIN : Melee
             {
                 switch (ComboAction)
                 {
-                    case SpinningEdge when GustSlash.LevelChecked():
+                    case SpinningEdge when LevelChecked(GustSlash):
                         return OriginalHook(GustSlash);
                     
                     case GustSlash when GetTargetHPPercent() <= NIN_ST_AdvancedMode_BurnKazematoi && gauge.Kazematoi > 0: //Kazematoi Dump Below 10%
                         return TNAeolianEdge && NIN_ST_AdvancedMode_TrueNorth ? Role.TrueNorth : AeolianEdge;
                     
-                    case GustSlash when ArmorCrush.LevelChecked():
+                    case GustSlash when LevelChecked(ArmorCrush):
                         return gauge.Kazematoi switch
                         {
                             0 => TNArmorCrush && NIN_ST_AdvancedMode_TrueNorth ? Role.TrueNorth : ArmorCrush,
                             >= 4 => TNAeolianEdge && NIN_ST_AdvancedMode_TrueNorth ? Role.TrueNorth : AeolianEdge,
                             _ => OnTargetsFlank() || !TargetNeedsPositionals() ? ArmorCrush: AeolianEdge
                         };
-                    case GustSlash when !ArmorCrush.LevelChecked() && AeolianEdge.LevelChecked():
+                    case GustSlash when !LevelChecked(ArmorCrush) && LevelChecked(AeolianEdge):
                         return TNAeolianEdge ? Role.TrueNorth : AeolianEdge;
                 }
             }
@@ -416,9 +403,7 @@ internal partial class NIN : Melee
     {
         protected internal MudraCasting MudraState = new();
         protected internal override Preset Preset => Preset.NIN_AoE_AdvancedMode;
-
         protected override uint Invoke(uint actionID)
-        
         {
             if (actionID is not DeathBlossom)
                 return actionID;
@@ -530,9 +515,9 @@ internal partial class NIN : Melee
             {
                 switch (ComboAction)
                 {
-                    case SpinningEdge when GustSlash.LevelChecked():
+                    case SpinningEdge when LevelChecked(GustSlash):
                         return OriginalHook(GustSlash);
-                    case GustSlash when !ArmorCrush.LevelChecked() && AeolianEdge.LevelChecked():
+                    case GustSlash when !LevelChecked(ArmorCrush) && LevelChecked(AeolianEdge):
                         return TNAeolianEdge ? Role.TrueNorth : AeolianEdge;
                     case DeathBlossom when LevelChecked(HakkeMujinsatsu):
                         return HakkeMujinsatsu;

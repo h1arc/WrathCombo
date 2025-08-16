@@ -12,12 +12,9 @@ namespace WrathCombo.Combos.PvE;
 internal partial class NIN
 {
     #region Variables
-
     static NINGauge gauge = GetJobGauge<NINGauge>();
-    
     public static FrozenSet<uint> MudraSigns = [Ten, Chi, Jin, TenCombo, ChiCombo, JinCombo];
     public static uint CurrentNinjutsu => OriginalHook(Ninjutsu);
-    
     internal static bool InMudra = false;
     internal static bool STSimpleMode => IsEnabled(Preset.NIN_ST_SimpleMode);
     internal static bool AoESimpleMode => IsEnabled(Preset.NIN_AoE_SimpleMode);
@@ -764,7 +761,7 @@ internal partial class NIN
         GokaMekkyaku = 16491,
         HyoshoRanryu = 16492,
 
-        //TCJ Jutsus (why they have another ID I will never know)
+        //TCJ Jutsus
         TCJFumaShurikenTen = 18873,
         TCJFumaShurikenChi = 18874,
         TCJFumaShurikenJin = 18875,
@@ -780,7 +777,6 @@ internal partial class NIN
         public const ushort
             Mudra = 496,
             Kassatsu = 497,
-            //Suiton = 507,
             Higi = 3850,
             TenriJendoReady = 3851,
             ShadowWalker = 3848,

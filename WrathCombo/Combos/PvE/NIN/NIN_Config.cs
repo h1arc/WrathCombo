@@ -8,6 +8,7 @@ internal partial class NIN
 {
     internal static class Config
     {
+        #region Options
         internal static UserInt
             NIN_ST_AdvancedMode_BurnKazematoi = new("NIN_ST_AdvancedMode_BurnKazematoi", 10),
             NIN_ST_AdvancedMode_SuitonSetup = new("NIN_ST_AdvancedMode_SuitonSetup", 18),
@@ -52,7 +53,8 @@ internal partial class NIN
             NIN_AoE_AdvancedMode_Ninjitsus_Options = new("NIN_AoE_AdvancedMode_Ninjitsus_Options"),
             NIN_AoE_AdvancedMode_Katon_Options = new("NIN_AoE_AdvancedMode_Katon_Options"),
             NIN_AoE_AdvancedMode_TenChiJin_Options = new("NIN_AoE_AdvancedMode_TenChiJin_Options");
-
+        #endregion
+        
         internal static void Draw(Preset preset)
         {
             switch (preset)
@@ -152,7 +154,6 @@ internal partial class NIN
                 #endregion
                 
                 #region AoE
-                
                 case Preset.NIN_AoE_AdvancedMode_Ninjitsus:
                     DrawHorizontalMultiChoice(NIN_AoE_AdvancedMode_Ninjitsus_Options, "Katon/Fuma Shuriken",
                         "Adds Katon to the rotation, will use Fuma Shuriken if below level", 4, 0);
@@ -268,9 +269,7 @@ internal partial class NIN
                     }
                     ImGui.Unindent();
                     break;
-                
                 #endregion
-                                   
             }
         }
     }
