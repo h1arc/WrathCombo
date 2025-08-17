@@ -11,33 +11,35 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class NIN
 {
-    #region Variables
+    #region Variables And Logic
     static NINGauge gauge = GetJobGauge<NINGauge>();
     public static FrozenSet<uint> MudraSigns = [Ten, Chi, Jin, TenCombo, ChiCombo, JinCombo];
-    public static uint CurrentNinjutsu => OriginalHook(Ninjutsu);
-    internal static bool InMudra = false;
     internal static bool STSimpleMode => IsEnabled(Preset.NIN_ST_SimpleMode);
     internal static bool AoESimpleMode => IsEnabled(Preset.NIN_AoE_SimpleMode);
     internal static bool NinjaWeave => CanWeave(.6f, 10);
     
     #region Mudra Logic
-    internal static bool MudraPhase => OriginalHook(Ten) != Ten || OriginalHook(Chi) != Chi || OriginalHook(Jin) != Jin;
+    public static uint CurrentNinjutsu => OriginalHook(Ninjutsu);
+    internal static bool InMudra = false;
+    internal static bool MudraPhase => WasLastAction(Ten) || WasLastAction(Chi) || WasLastAction(Jin) || WasLastAction(TenCombo) || WasLastAction(ChiCombo) || WasLastAction(JinCombo);
     internal static bool MudraReady => MudraCasting.CanCast();
     internal static uint MudraCharges => GetRemainingCharges(Ten);
     internal static bool MudraAlmostReady => MudraCharges == 1 && GetCooldownChargeRemainingTime(Ten) < 3;
     #endregion
     
     #region Ninjutsu Logic
+    internal static bool HasDoton => HasStatusEffect(Buffs.Doton);
+    internal static float DotonRemaining => GetStatusEffectRemainingTime(Buffs.Doton);
+    
     internal static bool CanUseFumaShuriken => LevelChecked(FumaShuriken) && MudraReady;
      
     internal static bool CanUseRaiton =>  LevelChecked(Raiton) && MudraReady && 
-                                          (!HasKassatsu || !NIN_ST_AdvancedMode_Ninjitsus_Options[2] && !STSimpleMode) &&
+                                          (!HasKassatsu || !NIN_ST_AdvancedMode_Ninjitsus_Options[2] && !STSimpleMode || !LevelChecked(HyoshoRanryu)) && //Use kassatsu on it if Hyosho isn't selected. 
                                            (TrickDebuff || // Buff Window
                                            !LevelChecked(Suiton) || //Dont Pool because of Suiton not learned yet
-                                           GetCooldownChargeRemainingTime(Ten) < 3 || // Spend to avoid cap
+                                           GetCooldownChargeRemainingTime(Ten) < 1 || // Spend to avoid cap
                                            !NIN_ST_AdvancedMode_Raiton_Options[0] && !STSimpleMode || //Dont Pool because of Raiton Option
-                                           NIN_ST_AdvancedMode_Raiton_Options[1] && !InMeleeRange() && 
-                                           GetCooldownChargeRemainingTime(Ten) <= TrickCD - 10); //Uptime option
+                                           NIN_ST_AdvancedMode_Raiton_Options[1] && !InMeleeRange() && GetCooldownChargeRemainingTime(Ten) <= TrickCD - 10); //Uptime option
     
     internal static bool CanUseKaton =>  LevelChecked(Katon) && MudraReady &&
                                          (!HasKassatsu || !NIN_AoE_AdvancedMode_Ninjitsus_Options[2] && !STSimpleMode) &&
@@ -48,13 +50,10 @@ internal partial class NIN
                                           NIN_AoE_AdvancedMode_Katon_Options[1] && !InMeleeRange() && 
                                           GetCooldownChargeRemainingTime(Ten) <= TrickCD - 10); //Uptime option
     
-    internal static bool HasDoton => HasStatusEffect(Buffs.Doton);
-    internal static float DotonRemaining => GetStatusEffectRemainingTime(Buffs.Doton);
     internal static bool CanUseDoton => LevelChecked(Doton) && MudraReady && 
                                         (!HasDoton || DotonRemaining <= 2) &&
                                         (TrickDebuff || //Buff Window
                                          GetCooldownChargeRemainingTime(Ten) < 3); // Use if you have Kassatsu before you get Hosho Ranryu
-                                        
     
     internal static bool CanUseSuiton => LevelChecked(Suiton) && MudraReady && !HasStatusEffect(Buffs.ShadowWalker);
     
@@ -80,8 +79,11 @@ internal partial class NIN
     internal static bool CanRaiju => !MudraPhase && HasStatusEffect(Buffs.RaijuReady);
     #endregion
     
-    #region OGCD Logic
-    // Buffs
+    #region Buff Window Logic
+    internal static bool TrickDisabledST => IsNotEnabled(Preset.NIN_ST_AdvancedMode_TrickAttack) && !STSimpleMode;
+    internal static bool TrickDisabledAoE => IsNotEnabled(Preset.NIN_AoE_AdvancedMode_TrickAttack) && !AoESimpleMode;
+    internal static bool MugDisabledST => IsNotEnabled(Preset.NIN_ST_AdvancedMode_Mug) && !STSimpleMode;
+    internal static bool MugDisabledAoE => IsNotEnabled(Preset.NIN_AoE_AdvancedMode_Mug) && !AoESimpleMode;
     internal static int STMugThreshold => NIN_ST_AdvancedMode_Mug_SubOption == 1 || !InBossEncounter() ? NIN_ST_AdvancedMode_Mug_Threshold : 0;
     internal static int AoEMugThreshold => NIN_AoE_AdvancedMode_Mug_SubOption == 1 || !InBossEncounter() ? NIN_AoE_AdvancedMode_Mug_Threshold : 0;
     internal static int STTrickThreshold => NIN_ST_AdvancedMode_TrickAttack_SubOption == 1 || !InBossEncounter() ? NIN_ST_AdvancedMode_TrickAttack_Threshold : 0;
@@ -90,77 +92,72 @@ internal partial class NIN
     internal static float TrickCD => GetCooldownRemainingTime(OriginalHook(TrickAttack));
     internal static float MugCD => GetCooldownRemainingTime(OriginalHook(Mug));
     
-    internal static bool CanTrick => ActionReady(OriginalHook(TrickAttack)) && NinjaWeave && HasStatusEffect(Buffs.ShadowWalker) && 
-                                     (!MudraPhase || HasKassatsu) &&
-                                     (MugDebuff || MugCD >= 50 || IsNotEnabled(Preset.NIN_ST_AdvancedMode_Mug) && !STSimpleMode);
+    internal static bool CanTrickST => ActionReady(OriginalHook(TrickAttack)) && NinjaWeave && HasStatusEffect(Buffs.ShadowWalker) && !MudraPhase &&
+                                     (MugDebuff || MugCD >= 45 || MugDisabledST);
+    internal static bool CanTrickAoE => ActionReady(OriginalHook(TrickAttack)) && NinjaWeave && HasStatusEffect(Buffs.ShadowWalker) && !MudraPhase &&
+                                     (MugDebuff || MugCD >= 45 || MugDisabledAoE);
     
-    internal static bool CanMug => ActionReady(OriginalHook(Mug)) && CanDelayedWeave(1.25f, .6f, 10) && 
-                                   (!MudraPhase || HasKassatsu) &&
-                                   (TrickCD <= 6 || IsNotEnabled(Preset.NIN_ST_AdvancedMode_TrickAttack) && !STSimpleMode) &&
-                                   (LevelChecked(Dokumori) && GetTargetDistance() <= 8 || InMeleeRange());
+    internal static bool CanMugST => ActionReady(OriginalHook(Mug)) && CanDelayedWeave(1.25f, .6f, 10) && !MudraPhase &&
+                                   (TrickCD <= 6 || TrickDisabledST) && 
+                                   (LevelChecked(Dokumori) && GetTargetDistance() <= 8 ||InMeleeRange());
+    internal static bool CanMugAoE => ActionReady(OriginalHook(Mug)) && CanDelayedWeave(1.25f, .6f, 10) && !MudraPhase &&
+                                   (TrickCD <= 6 || TrickDisabledAoE) && 
+                                   (LevelChecked(Dokumori) && GetTargetDistance() <= 8 ||InMeleeRange());
     
-    internal static bool TrickDebuff => HasStatusEffect(Debuffs.TrickAttack, CurrentTarget) || 
-                                        HasStatusEffect(Debuffs.KunaisBane, CurrentTarget) || 
-                                        JustUsed(OriginalHook(TrickAttack));
-    internal static bool MugDebuff => HasStatusEffect(Debuffs.Mug, CurrentTarget) || 
-                                      HasStatusEffect(Debuffs.Dokumori, CurrentTarget) ||
-                                      JustUsed(OriginalHook(Mug));
-   
-    // Ninki Usage
+    internal static bool TrickDebuff => HasStatusEffect(Debuffs.TrickAttack, CurrentTarget) || HasStatusEffect(Debuffs.KunaisBane, CurrentTarget) || JustUsed(OriginalHook(TrickAttack));
+    internal static bool MugDebuff => HasStatusEffect(Debuffs.Mug, CurrentTarget) || HasStatusEffect(Debuffs.Dokumori, CurrentTarget) || JustUsed(OriginalHook(Mug));
+    #endregion
+    
+    #region Ninki Use Logic
     internal static bool NinkiWillOvercap => gauge.Ninki > 50;
-    internal static float BunshinCD => GetCooldownRemainingTime(Bunshin);
-    internal static bool CanBunshin => LevelChecked(Bunshin) && IsOffCooldown(Bunshin) && gauge.Ninki >= 50 && NinjaWeave && !MudraPhase;
+    internal static bool CanBunshin => NinjaWeave && !MudraPhase && LevelChecked(Bunshin) && IsOffCooldown(Bunshin) && gauge.Ninki >= 50 ;
+    internal static bool CanBhavacakra => NinjaWeave && gauge.Ninki >= 50 && !MudraPhase && 
+                                          (!HasStatusEffect(Buffs.Higi) || BuffWindow || TrickDisabledST);
+    internal static bool CanHellfrogMedium => NinjaWeave && gauge.Ninki >= 50 && LevelChecked(HellfrogMedium) && !MudraPhase &&
+                                              (!HasStatusEffect(Buffs.Higi) || BuffWindow || TrickDisabledAoE);
     
-    internal static bool CanBhavacakra => NinjaWeave && !MudraPhase && gauge.Ninki >= 50 &&
-                                          (BunshinCD < 20 && gauge.Ninki >= NinkiPool() || //Pooling for Bunshin
-                                           BunshinCD > 20 ||
-                                           MugCD < 5 && gauge.Ninki >= 50 ||
-                                           IsNotEnabled(Preset.NIN_ST_AdvancedMode_Bunshin) && !STSimpleMode); //Bunshin not enabled to pool for
-    
-    internal static bool BhavacakraPooling => gauge.Ninki >= NinkiPool() || 
-                                              TrickDebuff && gauge.Ninki >= 50 ||
-                                              MugCD < 5 && gauge.Ninki >= 50;
-    
-    internal static bool CanHellfrogMedium => NinjaWeave && !MudraPhase && 
-                                              LevelChecked(HellfrogMedium) && gauge.Ninki >= 50;
-    
-    internal static bool HellfrogMediumPooling => gauge.Ninki >= NinkiPool() || 
-                                                  TrickDebuff && gauge.Ninki >= 50 ||
-                                                  MugCD < 5 && gauge.Ninki >= 50;
+    internal static bool NinkiPooling => gauge.Ninki >= NinkiPool();
     internal static int NinkiPool()
     {
+        if (MugCD < 5) 
+            return 60;
+        if (GetCooldownRemainingTime(Bunshin) < 15)
+            return 85;
+        if  (TrickDebuff)
+            return 50;
         if (HasStatusEffect(Buffs.Bunshin))
-            return ComboAction == GustSlash ? 75: 95;
-        return ComboAction == GustSlash ? 90 : 100;
+            return ComboAction == GustSlash ? 65: 85;
+        return ComboAction == GustSlash ? 80 : 90;
     }
+    #endregion
     
-    // Other OGCDs
+    #region Kassatsu, Meisui, Assassinate, TenChiJin Logic
     internal static bool HasKassatsu => HasStatusEffect(Buffs.Kassatsu);
     internal static float KassatsuRemaining => GetStatusEffectRemainingTime(Buffs.Kassatsu);
     internal static bool CanKassatsu => !MudraPhase && ActionReady(Kassatsu) && NinjaWeave &&  
                                         (TrickCD < 10 && HasStatusEffect(Buffs.ShadowWalker) ||
                                          BuffWindow || 
-                                         IsNotEnabled(Preset.NIN_ST_AdvancedMode_TrickAttack) && !STSimpleMode);
+                                         TrickDisabledST);
     
     internal static bool CanKassatsuAoE => !MudraPhase && ActionReady(Kassatsu) && NinjaWeave &&  
                                         (TrickCD < 10 && HasStatusEffect(Buffs.ShadowWalker) ||
                                          BuffWindow || 
-                                         IsNotEnabled(Preset.NIN_AoE_AdvancedMode_TrickAttack) && !AoESimpleMode);
+                                         TrickDisabledAoE);
     
     internal static bool CanMeisui => !MudraPhase && ActionReady(Meisui) && NinjaWeave && HasStatusEffect(Buffs.ShadowWalker) && 
-                                      (BuffWindow || IsNotEnabled(Preset.NIN_ST_AdvancedMode_TrickAttack) && !STSimpleMode);
+                                      (BuffWindow || TrickDisabledST);
     internal static bool CanMeisuiAoE => !MudraPhase && ActionReady(Meisui) && NinjaWeave && HasStatusEffect(Buffs.ShadowWalker) && 
-                                      (BuffWindow || IsNotEnabled(Preset.NIN_AoE_AdvancedMode_TrickAttack) && !AoESimpleMode);
+                                      (BuffWindow || TrickDisabledAoE);
 
     internal static bool CanAssassinate => !MudraPhase && ActionReady(OriginalHook(Assassinate)) && NinjaWeave && 
-                                           (BuffWindow || IsNotEnabled(Preset.NIN_ST_AdvancedMode_TrickAttack) && !STSimpleMode);
+                                           (BuffWindow || TrickDisabledST);
     internal static bool CanAssassinateAoE => !MudraPhase && ActionReady(OriginalHook(Assassinate)) && NinjaWeave && 
-                                           (BuffWindow || IsNotEnabled(Preset.NIN_AoE_AdvancedMode_TrickAttack) && !AoESimpleMode);
+                                           (BuffWindow || TrickDisabledAoE);
 
     internal static bool CanTenChiJin => !MudraPhase && !MudraAlmostReady && IsOffCooldown(TenChiJin) && LevelChecked(TenChiJin) && NinjaWeave &&
-                                         (BuffWindow || IsNotEnabled(Preset.NIN_ST_AdvancedMode_TrickAttack) && !STSimpleMode);
+                                         (BuffWindow || TrickDisabledST);
     internal static bool CanTenChiJinAoE => !MudraPhase && !MudraAlmostReady && IsOffCooldown(TenChiJin) && LevelChecked(TenChiJin) && NinjaWeave &&
-                                            (BuffWindow || IsNotEnabled(Preset.NIN_AoE_AdvancedMode_TrickAttack) && !AoESimpleMode);
+                                            (BuffWindow || TrickDisabledAoE);
 
     internal static bool CanTenriJindo => NinjaWeave && HasStatusEffect(Buffs.TenriJendoReady);
     #endregion
@@ -791,7 +788,8 @@ internal partial class NIN
     public static class Traits
     {
         public const uint
-            EnhancedKasatsu = 250;
+            EnhancedKasatsu = 250,
+            MugMastery = 585;
     }
 
     #endregion

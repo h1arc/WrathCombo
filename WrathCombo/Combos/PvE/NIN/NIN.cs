@@ -67,13 +67,13 @@ internal partial class NIN : Melee
                 if (CanMeisui)
                     return NinkiWillOvercap ? OriginalHook(Bhavacakra) : OriginalHook(Meisui);
 
-                if (CanBhavacakra && BhavacakraPooling)
+                if (CanBhavacakra && NinkiPooling)
                     return LevelChecked(Bhavacakra) ? OriginalHook(Bhavacakra) : OriginalHook(HellfrogMedium);
                 
-                if (CanMug && CombatEngageDuration().TotalSeconds > 5)
-                    return OriginalHook(Mug);
+                if (CanMugST && CombatEngageDuration().TotalSeconds > 5)
+                    return NinkiWillOvercap && TraitLevelChecked(Traits.MugMastery) ? OriginalHook(Bhavacakra) : OriginalHook(Mug);
 
-                if (CanTrick && CombatEngageDuration().TotalSeconds > 5)
+                if (CanTrickST && CombatEngageDuration().TotalSeconds > 5)
                     return OriginalHook(TrickAttack);
             }
             #endregion
@@ -87,7 +87,7 @@ internal partial class NIN : Melee
             #endregion
             
             #region Selfcare
-            if (!MudraPhase || HasKassatsu && TrickCD > 5)
+            if ((!MudraPhase || HasKassatsu && TrickCD > 5) && CanWeave())
             {
                 if (Role.CanSecondWind(40))
                     return Role.SecondWind;
@@ -194,13 +194,13 @@ internal partial class NIN : Melee
                 if (CanMeisuiAoE)
                     return NinkiWillOvercap ? OriginalHook(HellfrogMedium) : OriginalHook(Meisui);
 
-                if (CanHellfrogMedium && HellfrogMediumPooling)
+                if (CanHellfrogMedium && NinkiPooling)
                     return OriginalHook(HellfrogMedium);
                 
-                if (CanMug && CombatEngageDuration().TotalSeconds > 5)
-                    return OriginalHook(Mug);
+                if (CanMugAoE && CombatEngageDuration().TotalSeconds > 5)
+                    return NinkiWillOvercap && TraitLevelChecked(Traits.MugMastery) ? OriginalHook(HellfrogMedium) : OriginalHook(Mug);
 
-                if (CanTrick && CombatEngageDuration().TotalSeconds > 5)
+                if (CanTrickAoE && CombatEngageDuration().TotalSeconds > 5)
                     return OriginalHook(TrickAttack);
             }
             #endregion
@@ -215,7 +215,7 @@ internal partial class NIN : Melee
             #endregion
             
             #region Selfcare
-            if (!MudraPhase || HasKassatsu && TrickCD > 5)
+            if ((!MudraPhase || HasKassatsu && TrickCD > 5) && CanWeave())
             {
                 if (Role.CanSecondWind(40))
                     return Role.SecondWind;
@@ -326,14 +326,17 @@ internal partial class NIN : Melee
                         : OriginalHook(Meisui);
 
                 if (IsEnabled(Preset.NIN_ST_AdvancedMode_Bhavacakra) && CanBhavacakra && 
-                    (BhavacakraPooling || !NIN_ST_AdvancedMode_Bhavacakra_Pooling))
+                    (NinkiPooling || !NIN_ST_AdvancedMode_Bhavacakra_Pooling))
                     return LevelChecked(Bhavacakra) ? OriginalHook(Bhavacakra) : OriginalHook(HellfrogMedium);
                 
-                if (IsEnabled(Preset.NIN_ST_AdvancedMode_Mug) && CanMug && CombatEngageDuration().TotalSeconds > 5 &&
+                if (IsEnabled(Preset.NIN_ST_AdvancedMode_Mug) && CanMugST && CombatEngageDuration().TotalSeconds > 5 &&
                     GetTargetHPPercent() > STMugThreshold)
-                    return OriginalHook(Mug);
+                    return NinkiWillOvercap && 
+                           TraitLevelChecked(Traits.MugMastery) &&
+                           IsEnabled(Preset.NIN_ST_AdvancedMode_Bhavacakra)
+                        ? OriginalHook(Bhavacakra) : OriginalHook(Mug);
 
-                if (IsEnabled(Preset.NIN_ST_AdvancedMode_TrickAttack) && CanTrick && CombatEngageDuration().TotalSeconds > 5 &&
+                if (IsEnabled(Preset.NIN_ST_AdvancedMode_TrickAttack) && CanTrickST && CombatEngageDuration().TotalSeconds > 5 &&
                     GetTargetHPPercent() > STTrickThreshold)
                     return OriginalHook(TrickAttack);
             }
@@ -355,7 +358,7 @@ internal partial class NIN : Melee
             #endregion
             
             #region Selfcare
-            if (!MudraPhase || HasKassatsu && TrickCD > 5)
+            if ((!MudraPhase || HasKassatsu && TrickCD > 5) && CanWeave())
             {
                 if (IsEnabled(Preset.NIN_ST_AdvancedMode_Feint) && ActionReady(Role.Feint) &&
                     RaidWideCasting())
@@ -476,14 +479,18 @@ internal partial class NIN : Melee
                         : OriginalHook(Meisui);
 
                 if (IsEnabled(Preset.NIN_AoE_AdvancedMode_HellfrogMedium) && CanHellfrogMedium && 
-                    (HellfrogMediumPooling || !NIN_AoE_AdvancedMode_HellfrogMedium_Pooling))
+                    (NinkiPooling || !NIN_AoE_AdvancedMode_HellfrogMedium_Pooling))
                     return OriginalHook(HellfrogMedium);
                 
-                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_Mug) && CanMug && CombatEngageDuration().TotalSeconds > 5 &&
+                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_Mug) && CanMugAoE && CombatEngageDuration().TotalSeconds > 5 &&
                     GetTargetHPPercent() > AoEMugThreshold)
-                    return OriginalHook(Mug);
+                    return NinkiWillOvercap && 
+                           TraitLevelChecked(Traits.MugMastery) && 
+                           IsEnabled(Preset.NIN_AoE_AdvancedMode_HellfrogMedium) 
+                        ? OriginalHook(HellfrogMedium) 
+                        : OriginalHook(Mug);
 
-                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_TrickAttack) && CanTrick && CombatEngageDuration().TotalSeconds > 5 &&
+                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_TrickAttack) && CanTrickAoE && CombatEngageDuration().TotalSeconds > 5 &&
                     GetTargetHPPercent() > AoETrickThreshold)
                     return OriginalHook(TrickAttack);
             }
@@ -507,7 +514,7 @@ internal partial class NIN : Melee
             #endregion
             
             #region Selfcare
-            if (!MudraPhase || HasKassatsu && TrickCD > 5)
+            if ((!MudraPhase || HasKassatsu && TrickCD > 5) && CanWeave())
             {
                 if (IsEnabled(Preset.NIN_AoE_AdvancedMode_SecondWind) &&
                     Role.CanSecondWind(NIN_AoE_AdvancedMode_SecondWindThreshold))
