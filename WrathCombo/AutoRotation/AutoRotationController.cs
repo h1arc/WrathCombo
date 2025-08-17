@@ -86,7 +86,8 @@ namespace WrathCombo.AutoRotation
                 || Player.Object.IsDead
                 || IsOccupied()
                 || Player.Mounted
-                || !EzThrottler.Throttle("Autorot", cfg.Throttler);
+                || !EzThrottler.Throttle("Autorot", cfg.Throttler)
+                || (cfg.DPSSettings.UnTargetAndDisableForPenalty && PlayerHasActionPenalty());
         }
 
         private static bool IsOccupied()
