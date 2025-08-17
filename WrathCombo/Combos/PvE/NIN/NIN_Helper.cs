@@ -44,7 +44,7 @@ internal partial class NIN
                                          (!HasKassatsu || !NIN_AoE_AdvancedMode_Ninjitsus_Options[2] && !STSimpleMode) &&
                                          (TrickDebuff || //Buff Window
                                           !LevelChecked(Huton) || //Dont Pool because of Huton not learned yet
-                                          GetCooldownChargeRemainingTime(Ten) < 3 || // Spend to avoid cap
+                                          GetCooldownChargeRemainingTime(Ten) < 1 || // Spend to avoid cap
                                           !NIN_AoE_AdvancedMode_Katon_Options[0] && !AoESimpleMode || //Dont Pool because of Raiton Option
                                           NIN_AoE_AdvancedMode_Katon_Options[1] && !InMeleeRange() && 
                                           GetCooldownChargeRemainingTime(Ten) <= TrickCD - 10); //Uptime option
