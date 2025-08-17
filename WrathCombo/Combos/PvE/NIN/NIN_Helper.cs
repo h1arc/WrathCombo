@@ -11,7 +11,6 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class NIN
 {
-    #region Variables And Logic
     static NINGauge gauge = GetJobGauge<NINGauge>();
     public static FrozenSet<uint> MudraSigns = [Ten, Chi, Jin, TenCombo, ChiCombo, JinCombo];
     internal static bool STSimpleMode => IsEnabled(Preset.NIN_ST_SimpleMode);
@@ -162,8 +161,6 @@ internal partial class NIN
     internal static bool CanTenriJindo => NinjaWeave && HasStatusEffect(Buffs.TenriJendoReady);
     #endregion
     
-    #endregion
-
     #region TCJ Methods
     internal static uint STTenChiJin(uint actionID)
     {
