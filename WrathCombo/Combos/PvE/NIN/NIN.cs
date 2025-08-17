@@ -619,10 +619,11 @@ internal partial class NIN : Melee
                 (!NIN_HideMug_Mug || !NIN_HideMug_TrickAfterMug || IsOnCooldown(OriginalHook(Mug))) && //Check mug if you want mug to have priority
                 (HasStatusEffect(Buffs.Hidden) || HasStatusEffect(Buffs.ShadowWalker))) //Check for ability to use trick
                 return OriginalHook(TrickAttack);
+
+            if (InCombat() && NIN_HideMug_Mug)
+                return OriginalHook(Mug);
             
-            return InCombat() && NIN_HideMug_Mug
-                ? OriginalHook(Mug)
-                : actionID;
+            return InCombat() && NIN_HideMug_Trick ? OriginalHook(TrickAttack) : actionID;
         }
     }
 
