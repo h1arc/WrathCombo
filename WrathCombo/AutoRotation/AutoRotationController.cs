@@ -897,8 +897,8 @@ internal unsafe static class AutoRotationController
             if (target is null) return false;
             return JobID switch
             {
-                AST.JobID => HasStatusEffect(AST.Buffs.AspectedBenefic, target, true),
-                WHM.JobID => HasStatusEffect(WHM.Buffs.Regen, target, true),
+                Job.AST => HasStatusEffect(AST.Buffs.AspectedBenefic, target, true),
+                Job.WHM => HasStatusEffect(WHM.Buffs.Regen, target, true),
                 _ => false,
             };
         }
@@ -907,7 +907,7 @@ internal unsafe static class AutoRotationController
             if (target is null) return false;
             return JobID switch
             {
-                SCH.JobID => HasStatusEffect(SCH.Buffs.Excogitation, target, true),
+                Job.SCH => HasStatusEffect(SCH.Buffs.Excogitation, target, true),
                 _ => false,
             };
         }
