@@ -28,6 +28,7 @@
         public bool AlwaysSelectTarget = true;
         public float MaxDistance = 25;
         public bool AoEIgnoreManual = false;
+        public bool UnTargetAndDisableForPenalty = false;
     }
 
     public class HealerSettings
