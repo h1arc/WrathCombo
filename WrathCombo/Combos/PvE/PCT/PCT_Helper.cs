@@ -4,10 +4,9 @@ using System;
 using System.Collections.Generic;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
-using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using WrathCombo.Extensions;
-using Preset = WrathCombo.Combos.CustomComboPreset;
 using static WrathCombo.Combos.PvE.PCT.Config;
+using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 #endregion
 
 namespace WrathCombo.Combos.PvE;

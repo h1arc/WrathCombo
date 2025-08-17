@@ -1,4 +1,3 @@
-using Dalamud.Bindings.ImGui;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
 using static WrathCombo.Window.Functions.UserConfig;
@@ -8,11 +7,11 @@ internal partial class RPR
 {
     internal static class Config
     {
-        internal static void Draw(CustomComboPreset preset)
+        internal static void Draw(Preset preset)
         {
             switch (preset)
             {
-                case CustomComboPreset.RPR_ST_Opener:
+                case Preset.RPR_ST_Opener:
 
                     if (DrawHorizontalRadioButton(RPR_Opener_StartChoice,
                         "Normal Opener", $"Starts opener with {Harpe.ActionName()}", 0))
@@ -29,7 +28,7 @@ internal partial class RPR
                     DrawBossOnlyChoice(RPR_Balance_Content);
                     break;
 
-                case CustomComboPreset.RPR_ST_ArcaneCircle:
+                case Preset.RPR_ST_ArcaneCircle:
                     DrawHorizontalRadioButton(RPR_ST_ArcaneCircle_SubOption,
                         "All content", $"Uses {ArcaneCircle.ActionName()} regardless of content.", 0);
 
@@ -37,7 +36,7 @@ internal partial class RPR
                         "Boss encounters Only", $"Only uses {ArcaneCircle.ActionName()} when in Boss encounters.", 1);
                     break;
 
-                case CustomComboPreset.RPR_ST_AdvancedMode:
+                case Preset.RPR_ST_AdvancedMode:
                     DrawHorizontalRadioButton(RPR_Positional, "Rear First",
                         $"First positional: {Gallows.ActionName()}.", 0);
 
@@ -45,7 +44,7 @@ internal partial class RPR
                         $"First positional: {Gibbet.ActionName()}.", 1);
                     break;
 
-                case CustomComboPreset.RPR_ST_SoD:
+                case Preset.RPR_ST_SoD:
                     DrawSliderInt(0, 10, RPR_SoDRefreshRange,
                         $"Seconds remaining before refreshing {ShadowOfDeath.ActionName()}.\nRecommended is 6.");
 
@@ -53,22 +52,22 @@ internal partial class RPR
                         $"Set a HP% Threshold for when {ShadowOfDeath.ActionName()} will not be automatically applied to the target.");
                     break;
 
-                case CustomComboPreset.RPR_ST_TrueNorthDynamic:
+                case Preset.RPR_ST_TrueNorthDynamic:
                     DrawAdditionalBoolChoice(RPR_ST_TrueNorthDynamic_HoldCharge,
                         "Hold True North for Gluttony Option", "Will hold the last charge of True North for use with Gluttony, even when out of position for Gibbet/Gallows.");
                     break;
 
-                case CustomComboPreset.RPR_ST_RangedFiller:
+                case Preset.RPR_ST_RangedFiller:
                     DrawAdditionalBoolChoice(RPR_ST_RangedFillerHarvestMoon,
                         "Add Harvest Moon", "Adds Harvest Moon if available, when outside of melee range. Will not override Communio.");
                     break;
 
-                case CustomComboPreset.RPR_AoE_WoD:
+                case Preset.RPR_AoE_WoD:
                     DrawSliderInt(0, 100, RPR_WoDThreshold,
                         $"Set a HP% Threshold for when {WhorlOfDeath.ActionName()} will not be automatically applied to the target.");
                     break;
 
-                case CustomComboPreset.RPR_ST_ComboHeals:
+                case Preset.RPR_ST_ComboHeals:
                     DrawSliderInt(0, 100, RPR_STSecondWindThreshold,
                         $"{Role.SecondWind.ActionName()} HP percentage threshold");
 
@@ -76,7 +75,7 @@ internal partial class RPR
                         $"{Role.Bloodbath.ActionName()} HP percentage threshold");
                     break;
 
-                case CustomComboPreset.RPR_AoE_ComboHeals:
+                case Preset.RPR_AoE_ComboHeals:
                     DrawSliderInt(0, 100, RPR_AoESecondWindThreshold,
                         $"{Role.SecondWind.ActionName()} HP percentage threshold");
 
@@ -84,7 +83,7 @@ internal partial class RPR
                         $"{Role.Bloodbath.ActionName()} HP percentage threshold");
                     break;
 
-                case CustomComboPreset.RPR_Soulsow:
+                case Preset.RPR_Soulsow:
                     DrawHorizontalMultiChoice(RPR_SoulsowOptions,
                         $"{Harpe.ActionName()}", $"Adds {Soulsow.ActionName()} to {Harpe.ActionName()}.",
                         5, 0);
@@ -103,7 +102,7 @@ internal partial class RPR
                         $"{BloodStalk.ActionName()}", $"Adds {Soulsow.ActionName()} to {BloodStalk.ActionName()}.", 5, 4);
                     break;
 
-                case CustomComboPreset.RPR_Variant_Cure:
+                case Preset.RPR_Variant_Cure:
                     DrawSliderInt(1, 100, RPR_VariantCure,
                         "HP% to be at or under", 200);
                     break;

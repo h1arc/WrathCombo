@@ -5,8 +5,8 @@ using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 using WrathCombo.Extensions;
+using static WrathCombo.Combos.PvE.NIN.Config;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
-
 namespace WrathCombo.Combos.PvE;
 
 internal partial class NIN
@@ -126,15 +126,15 @@ internal partial class NIN
 
     internal static WrathOpener Opener()
     {
-        if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode))
+        if (IsEnabled(Preset.NIN_ST_AdvancedMode))
         {
-            if (Config.NIN_Adv_Opener_Selection == 0 && Opener1.LevelChecked)
+            if (NIN_Adv_Opener_Selection == 0 && Opener1.LevelChecked)
                 return Opener1;
 
-            if (Config.NIN_Adv_Opener_Selection == 1 && Opener2.LevelChecked)
+            if (NIN_Adv_Opener_Selection == 1 && Opener2.LevelChecked)
                 return Opener2;
 
-            if (Config.NIN_Adv_Opener_Selection == 2 && Opener3.LevelChecked)
+            if (NIN_Adv_Opener_Selection == 2 && Opener3.LevelChecked)
                 return Opener3;
         }
 
@@ -657,7 +657,7 @@ internal partial class NIN
         public override int MinOpenerLevel => 100;
         public override int MaxOpenerLevel => 109;
 
-        internal override UserData? ContentCheckConfig => Config.NIN_Balance_Content;
+        internal override UserData? ContentCheckConfig => NIN_Balance_Content;
 
         public override bool HasCooldowns()
         {
@@ -723,7 +723,7 @@ internal partial class NIN
         public override int MinOpenerLevel => 100;
         public override int MaxOpenerLevel => 109;
 
-        internal override UserData? ContentCheckConfig => Config.NIN_Balance_Content;
+        internal override UserData? ContentCheckConfig => NIN_Balance_Content;
 
         public override bool HasCooldowns()
         {
@@ -785,7 +785,7 @@ internal partial class NIN
             11
         ];
 
-        internal override UserData? ContentCheckConfig => Config.NIN_Balance_Content;
+        internal override UserData? ContentCheckConfig => NIN_Balance_Content;
         public override int MinOpenerLevel => 100;
         public override int MaxOpenerLevel => 109;
 

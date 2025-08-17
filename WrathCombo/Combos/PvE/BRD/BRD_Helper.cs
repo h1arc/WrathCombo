@@ -4,6 +4,7 @@ using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.ClientState.Statuses;
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using WrathCombo.Core;
@@ -18,6 +19,20 @@ namespace WrathCombo.Combos.PvE;
 internal partial class BRD
 {
     #region Variables
+    internal static readonly FrozenDictionary<uint, ushort> PurpleList = new Dictionary<uint, ushort>
+    {
+        { VenomousBite, Debuffs.VenomousBite },
+        { CausticBite, Debuffs.CausticBite }
+    }.ToFrozenDictionary();
+    
+    internal static readonly FrozenDictionary<uint, ushort> BlueList = new Dictionary<uint, ushort>
+    {
+        { Windbite, Debuffs.Windbite },
+        { Stormbite, Debuffs.Stormbite }
+    }.ToFrozenDictionary();
+    
+    
+    
     // Gauge Stuff
     internal static BRDGauge? gauge = GetJobGauge<BRDGauge>();
     internal static int SongTimerInSeconds => gauge.SongTimer / 1000;
@@ -290,7 +305,7 @@ internal partial class BRD
     public static BRDComfy Opener3 = new();
     internal static WrathOpener Opener()
     {
-        if (IsEnabled(CustomComboPreset.BRD_ST_AdvMode))
+        if (IsEnabled(Preset.BRD_ST_AdvMode))
         {
             if (BRD_Adv_Opener_Selection == 0 && Opener1.LevelChecked) return Opener1;
             if (BRD_Adv_Opener_Selection == 1 && Opener2.LevelChecked) return Opener2;

@@ -1,13 +1,14 @@
 #region
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using ECommons;
 using ECommons.DalamudServices;
 using ECommons.GameFunctions;
 using ECommons.Logging;
 using Lumina.Excel.Sheets;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using WrathCombo.AutoRotation;
 using WrathCombo.Combos;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS.Functions;
@@ -16,7 +17,6 @@ using WrathCombo.Extensions;
 using WrathCombo.Services;
 using WrathCombo.Window;
 using WrathCombo.Window.Tabs;
-using WrathCombo.AutoRotation;
 
 #endregion
 
@@ -143,7 +143,7 @@ public partial class WrathCombo
         string? action;
         string? target = null;
 
-        CustomComboPreset? preset = null;
+        Preset? preset = null;
 
         #endregion
 
@@ -196,8 +196,8 @@ public partial class WrathCombo
             try
             {
                 preset = presetCanNumber
-                    ? (CustomComboPreset)targetNumber
-                    : Enum.Parse<CustomComboPreset>(target, true);
+                    ? (Preset)targetNumber
+                    : Enum.Parse<Preset>(target, true);
             }
             catch
             {
@@ -207,7 +207,7 @@ public partial class WrathCombo
         }
 
         // Give the correct method for the action
-        Func<CustomComboPreset, bool, bool> method = action switch
+        Func<Preset, bool, bool> method = action switch
         {
             toggle => PresetStorage.TogglePreset,
             set => PresetStorage.EnablePreset,
@@ -224,7 +224,7 @@ public partial class WrathCombo
         }
         else
         {
-            var usablePreset = (CustomComboPreset)preset!;
+            var usablePreset = (Preset)preset!;
             method(usablePreset, false);
 
             if (action == toggle)
@@ -260,7 +260,7 @@ public partial class WrathCombo
     /// </param>
     private void HandleListCommands(string[] argument)
     {
-        IEnumerable<CustomComboPreset> presets = Enum.GetValues<CustomComboPreset>()
+        IEnumerable<Preset> presets = Enum.GetValues<Preset>()
             .Where(x => x.Attributes().Hidden is null);
         const StringComparison lower = StringComparison.InvariantCultureIgnoreCase;
         var filter =
@@ -338,8 +338,8 @@ public partial class WrathCombo
 
         return;
 
-        CustomComboPreset[] FilterPresetsToJob
-            (IEnumerable<CustomComboPreset> presetsList, string? jobShort)
+        Preset[] FilterPresetsToJob
+            (IEnumerable<Preset> presetsList, string? jobShort)
         {
             if (jobShort is not null)
             {

@@ -16,7 +16,7 @@ internal partial class MNK
         GetCooldown(OriginalHook(Bootshine)).CooldownTotal;
 
     internal static bool M6SReady =>
-        !HiddenFeaturesData.IsEnabledWith(CustomComboPreset.MNK_Hid_M6SHoldSquirrelBurst, () =>
+        !HiddenFeaturesData.IsEnabledWith(Preset.MNK_Hid_M6SHoldSquirrelBurst, () =>
             HiddenFeaturesData.Targeting.R6SSquirrel && CombatEngageDuration().TotalSeconds < 300);
 
     #region 1-2-3

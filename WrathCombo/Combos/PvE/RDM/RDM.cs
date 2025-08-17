@@ -1,9 +1,7 @@
 using System;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
-using Preset = WrathCombo.Combos.CustomComboPreset;
 using static WrathCombo.Combos.PvE.RDM.Config;
-
 namespace WrathCombo.Combos.PvE;
 
 internal partial class RDM : Caster

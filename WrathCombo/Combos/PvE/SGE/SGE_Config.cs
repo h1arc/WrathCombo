@@ -1,10 +1,8 @@
 ﻿using Dalamud.Interface.Colors;
-using Dalamud.Bindings.ImGui;
 using WrathCombo.CustomComboNS.Functions;
 using static WrathCombo.Extensions.UIntExtensions;
 using static WrathCombo.Window.Functions.SliderIncrements;
 using static WrathCombo.Window.Functions.UserConfig;
-using Preset = WrathCombo.Combos.CustomComboPreset;
 namespace WrathCombo.Combos.PvE;
 
 internal partial class SGE
@@ -34,16 +32,16 @@ internal partial class SGE
                     break;
 
                 case Preset.SGE_ST_DPS_EDosis:
-                    DrawSliderInt(0, 50, SGE_ST_DPS_EDosisOption,
+                    DrawSliderInt(0, 50, SGE_ST_DPS_EDosisHPOption,
                         "Stop using at Enemy HP %. Set to Zero to disable this check.");
 
                     ImGui.Indent();
                     ImGui.TextColored(ImGuiColors.DalamudYellow, "Select what kind of enemies the HP check should be applied to:");
 
-                    DrawHorizontalRadioButton(SGE_ST_DPS_EDosisSubOption,
+                    DrawHorizontalRadioButton(SGE_ST_DPS_EDosisBossOption,
                         "Non-Bosses", "Only applies the HP check above to non-bosses.\nAllows you to only stop DoTing early when it's not a boss.", 0);
 
-                    DrawHorizontalRadioButton(SGE_ST_DPS_EDosisSubOption,
+                    DrawHorizontalRadioButton(SGE_ST_DPS_EDosisBossOption,
                         "All Enemies", "Applies the HP check above to all enemies.", 1);
 
                     DrawRoundedSliderFloat(0, 5, SGE_ST_DPS_EDosisRefresh,
@@ -402,8 +400,8 @@ internal partial class SGE
             SGE_ST_DPS_Lucid = new("SGE_ST_DPS_Lucid", 6500),
             SGE_ST_DPS_Rhizo = new("SGE_ST_DPS_Rhizo", 1),
             SGE_ST_DPS_Phlegma = new("SGE_ST_DPS_Phlegma", 0),
-            SGE_ST_DPS_EDosisSubOption = new("SGE_ST_DPS_EDosisSubOption", 0),
-            SGE_ST_DPS_EDosisOption = new("SGE_ST_DPS_EDosisOption", 10),
+            SGE_ST_DPS_EDosisBossOption = new("SGE_ST_DPS_EDosisSubOption", 0),
+            SGE_ST_DPS_EDosisHPOption = new("SGE_ST_DPS_EDosisOption", 10),
             SGE_ST_DPS_AddersgallProtect = new("SGE_ST_DPS_AddersgallProtect", 3),
             SGE_AoE_DPS_Lucid = new("SGE_AoE_Phlegma_Lucid", 6500),
             SGE_AoE_DPS_Rhizo = new("SGE_AoE_DPS_Rhizo", 1),

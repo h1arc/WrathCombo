@@ -55,8 +55,8 @@ internal partial class VPR
         {
             //Use whenever
             if (SerpentOffering >= 50 && TargetIsBoss() &&
-                (IsEnabled(CustomComboPreset.VPR_ST_SimpleMode) && GetTargetHPPercent() < 5 ||
-                 IsEnabled(CustomComboPreset.VPR_ST_AdvancedMode) && GetTargetHPPercent() < VPR_ST_ReAwaken_Threshold))
+                (IsEnabled(Preset.VPR_ST_SimpleMode) && GetTargetHPPercent() < 5 ||
+                 IsEnabled(Preset.VPR_ST_AdvancedMode) && GetTargetHPPercent() < VPR_ST_ReAwaken_Threshold))
                 return true;
 
             //2min burst
@@ -74,8 +74,8 @@ internal partial class VPR
                 return true;
 
             //non boss encounters
-            if ((IsEnabled(CustomComboPreset.VPR_ST_SimpleMode) && !InBossEncounter() ||
-                 IsEnabled(CustomComboPreset.VPR_ST_AdvancedMode) && VPR_ST_SerpentsIre_SubOption == 1 && !InBossEncounter()) &&
+            if ((IsEnabled(Preset.VPR_ST_SimpleMode) && !InBossEncounter() ||
+                 IsEnabled(Preset.VPR_ST_AdvancedMode) && VPR_ST_SerpentsIre_SubOption == 1 && !InBossEncounter()) &&
                 SerpentOffering >= 50)
                 return true;
 

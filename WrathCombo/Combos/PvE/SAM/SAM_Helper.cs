@@ -33,7 +33,7 @@ internal partial class SAM
          HasStatusEffect(Buffs.TsubameReady) && (SenCount is 3 || GetCooldownRemainingTime(Senei) > 33));
 
     internal static bool M6SReady =>
-        !HiddenFeaturesData.IsEnabledWith(CustomComboPreset.SAM_Hid_M6SHoldSquirrelBurst, () =>
+        !HiddenFeaturesData.IsEnabledWith(Preset.SAM_Hid_M6SHoldSquirrelBurst, () =>
             HiddenFeaturesData.Targeting.R6SSquirrel && CombatEngageDuration().TotalSeconds < 275);
 
     #region Meikyo
@@ -47,13 +47,13 @@ internal partial class SAM
             (JustUsed(Gekko) || JustUsed(Kasha) || JustUsed(Yukikaze)))
         {
             if ((SAM_ST_Meikyo_Suboption == 0 || InBossEncounter() ||
-                 IsEnabled(CustomComboPreset.SAM_ST_SimpleMode) && InBossEncounter()))
+                 IsEnabled(Preset.SAM_ST_SimpleMode) && InBossEncounter()))
             {
                 if (EnhancedSenei)
                 {
                     //if no opener
-                    if ((IsEnabled(CustomComboPreset.SAM_ST_Opener) && SAM_Balance_Content == 1 && !InBossEncounter() ||
-                         IsNotEnabled(CustomComboPreset.SAM_ST_Opener)) &&
+                    if ((IsEnabled(Preset.SAM_ST_Opener) && SAM_Balance_Content == 1 && !InBossEncounter() ||
+                         IsNotEnabled(Preset.SAM_ST_Opener)) &&
                         meikyoUsed < 1 && !HasStatusEffect(Buffs.TsubameReady))
                         return true;
 
@@ -82,7 +82,7 @@ internal partial class SAM
                     return true;
             }
 
-            if (IsEnabled(CustomComboPreset.SAM_ST_SimpleMode) && !InBossEncounter() ||
+            if (IsEnabled(Preset.SAM_ST_SimpleMode) && !InBossEncounter() ||
                 SAM_ST_Meikyo_Suboption == 1 && !InBossEncounter())
                 return true;
         }
@@ -101,7 +101,7 @@ internal partial class SAM
 
         if (LevelChecked(Iaijutsu))
         {
-            if (IsEnabled(CustomComboPreset.SAM_ST_AdvancedMode) &&
+            if (IsEnabled(Preset.SAM_ST_AdvancedMode) &&
 
                 //Higanbana
                 (SAM_ST_CDs_IaijutsuOption[0] &&
@@ -120,7 +120,7 @@ internal partial class SAM
                  LevelChecked(MidareSetsugekka) && !HasStatusEffect(Buffs.TsubameReady)))
                 return true;
 
-            if (IsEnabled(CustomComboPreset.SAM_ST_SimpleMode) &&
+            if (IsEnabled(Preset.SAM_ST_SimpleMode) &&
 
                 //Higanbana
                 (SenCount is 1 && GetTargetHPPercent() > 1 && TargetIsBoss() &&

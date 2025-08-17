@@ -5,13 +5,12 @@ using System.Globalization;
 using WrathCombo.Combos;
 using WrathCombo.Combos.PvE;
 using WrathCombo.Core;
-
 namespace WrathCombo.CustomComboNS.Functions;
 
 internal abstract partial class CustomComboFunctions
 {
     /// <summary> Checks if the given preset is enabled. </summary>
-    public static bool IsEnabled(CustomComboPreset preset)
+    public static bool IsEnabled(Preset preset)
     {
         if ((int)preset < 100)
             return true;
@@ -34,7 +33,7 @@ internal abstract partial class CustomComboFunctions
     }
 
     /// <summary> Checks if the given preset is not enabled. </summary>
-    public static bool IsNotEnabled(CustomComboPreset preset) => !IsEnabled(preset);
+    public static bool IsNotEnabled(Preset preset) => !IsEnabled(preset);
 
     public class JobIDs
     {
@@ -61,7 +60,6 @@ internal abstract partial class CustomComboFunctions
             // Override DoH/DoL
             jobId = jobId switch
             {
-                DOH.JobID   => 8, // Carpenter
                 DOL.JobID   => 16, // Miner
                 _           => jobId
             };
@@ -140,7 +138,6 @@ internal abstract partial class CustomComboFunctions
         {
             return jobId switch
             {
-                ADV.JobID => ADV.ClassID,
                 BLM.JobID => BLM.ClassID,
                 BRD.JobID => BRD.ClassID,
                 DRG.JobID => DRG.ClassID,
@@ -159,7 +156,6 @@ internal abstract partial class CustomComboFunctions
         {
             return classId switch
             {
-                ADV.ClassID => ADV.JobID,
                 BLM.ClassID => BLM.JobID,
                 BRD.ClassID => BRD.JobID,
                 DRG.ClassID => DRG.JobID,

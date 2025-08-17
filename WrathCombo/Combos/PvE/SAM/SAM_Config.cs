@@ -1,4 +1,3 @@
-using Dalamud.Bindings.ImGui;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
 using WrathCombo.Window.Functions;
@@ -9,18 +8,18 @@ internal partial class SAM
 {
     internal static class Config
     {
-        internal static void Draw(CustomComboPreset preset)
+        internal static void Draw(Preset preset)
         {
             switch (preset)
             {
-                case CustomComboPreset.SAM_ST_Opener:
+                case Preset.SAM_ST_Opener:
                     DrawBossOnlyChoice(SAM_Balance_Content);
                     ImGui.NewLine();
                     DrawSliderInt(0, 13, SAM_Opener_PrePullDelay,
                         $"Delay from first {MeikyoShisui.ActionName()} to next step. (seconds)\nDelay is enforced by replacing your button with Savage Blade.");
                     break;
 
-                case CustomComboPreset.SAM_ST_CDs_Iaijutsu:
+                case Preset.SAM_ST_CDs_Iaijutsu:
                     DrawHorizontalMultiChoice(SAM_ST_CDs_IaijutsuOption, $"Add {Higanbana.ActionName()}", "Will use Higanbana depending on suboptions.", 4, 0);
                     DrawHorizontalMultiChoice(SAM_ST_CDs_IaijutsuOption, $"Add {TenkaGoken.ActionName()}", "Will Use Tenka Goken when lvlsynched below lvl 50.", 4, 1);
                     DrawHorizontalMultiChoice(SAM_ST_CDs_IaijutsuOption, $"Use {MidareSetsugekka.ActionName()}", "Will use Midare Setsugekka and Tendo Setsugekka.", 4, 2);
@@ -44,7 +43,7 @@ internal partial class SAM
                     }
                     break;
 
-                case CustomComboPreset.SAM_ST_CDs_MeikyoShisui:
+                case Preset.SAM_ST_CDs_MeikyoShisui:
                     DrawHorizontalRadioButton(SAM_ST_Meikyo_Suboption,
                         "Use The Balance Logic in all content", $"Uses {MeikyoShisui.ActionName()} logic regardless of content.", 0);
 
@@ -53,7 +52,7 @@ internal partial class SAM
                                                                          $"\nWill use Meikyo every minute regardless of sen count outside of boss encounters.", 1);
                     break;
 
-                case CustomComboPreset.SAM_ST_ComboHeals:
+                case Preset.SAM_ST_ComboHeals:
                     DrawSliderInt(0, 100, SAM_STSecondWindThreshold,
                         $"{Role.SecondWind.ActionName()} HP percentage threshold");
 
@@ -61,7 +60,7 @@ internal partial class SAM
                         $"{Role.Bloodbath.ActionName()} HP percentage threshold");
                     break;
 
-                case CustomComboPreset.SAM_AoE_ComboHeals:
+                case Preset.SAM_AoE_ComboHeals:
                     DrawSliderInt(0, 100, SAM_AoESecondWindThreshold,
                         $"{Role.SecondWind.ActionName()} HP percentage threshold");
 
@@ -69,17 +68,17 @@ internal partial class SAM
                         $"{Role.Bloodbath.ActionName()} HP percentage threshold");
                     break;
 
-                case CustomComboPreset.SAM_ST_CDs_Senei:
+                case Preset.SAM_ST_CDs_Senei:
                     DrawAdditionalBoolChoice(SAM_ST_CDs_Guren,
                         "Guren Option", "Adds Guren to the rotation if Senei is not unlocked.");
                     break;
 
-                case CustomComboPreset.SAM_ST_CDs_OgiNamikiri:
+                case Preset.SAM_ST_CDs_OgiNamikiri:
                     DrawAdditionalBoolChoice(SAM_ST_CDs_OgiNamikiri_Movement,
                         "Movement Option", "Adds Ogi Namikiri and Kaeshi: Namikiri when you're not moving.");
                     break;
 
-                case CustomComboPreset.SAM_ST_Shinten:
+                case Preset.SAM_ST_Shinten:
                     DrawSliderInt(25, 85, SAM_ST_KenkiOvercapAmount,
                         "Set the Kenki overcap amount for ST combos.");
 
@@ -87,12 +86,12 @@ internal partial class SAM
                         "HP percent threshold to not save Kenki");
                     break;
 
-                case CustomComboPreset.SAM_AoE_Kyuten:
+                case Preset.SAM_AoE_Kyuten:
                     DrawSliderInt(25, 85, SAM_AoE_KenkiOvercapAmount,
                         "Set the Kenki overcap amount for AOE combos.");
                     break;
 
-                case CustomComboPreset.SAM_ST_GekkoCombo:
+                case Preset.SAM_ST_GekkoCombo:
                     DrawAdditionalBoolChoice(SAM_Gekko_KenkiOvercap,
                         "Kenki Overcap Protection", "Spends Kenki when at the set value or above.");
 
@@ -101,7 +100,7 @@ internal partial class SAM
                             "Kenki Amount", sliderIncrement: SliderIncrements.Fives);
                     break;
 
-                case CustomComboPreset.SAM_ST_KashaCombo:
+                case Preset.SAM_ST_KashaCombo:
                     DrawAdditionalBoolChoice(SAM_Kasha_KenkiOvercap,
                         "Kenki Overcap Protection", "Spends Kenki when at the set value or above.");
 
@@ -110,7 +109,7 @@ internal partial class SAM
                             "Kenki Amount", sliderIncrement: SliderIncrements.Fives);
                     break;
 
-                case CustomComboPreset.SAM_ST_YukikazeCombo:
+                case Preset.SAM_ST_YukikazeCombo:
                     DrawAdditionalBoolChoice(SAM_Yukaze_KenkiOvercap,
                         "Kenki Overcap Protection", "Spends Kenki when at the set value or above.");
 
@@ -119,7 +118,7 @@ internal partial class SAM
                             "Kenki Amount", sliderIncrement: SliderIncrements.Fives);
                     break;
 
-                case CustomComboPreset.SAM_AoE_OkaCombo:
+                case Preset.SAM_AoE_OkaCombo:
                     DrawAdditionalBoolChoice(SAM_Oka_KenkiOvercap,
                         "Kenki Overcap Protection", "Spends Kenki when at the set value or above.");
 
@@ -128,7 +127,7 @@ internal partial class SAM
                             "Kenki Amount", sliderIncrement: SliderIncrements.Fives);
                     break;
 
-                case CustomComboPreset.SAM_AoE_MangetsuCombo:
+                case Preset.SAM_AoE_MangetsuCombo:
                     DrawAdditionalBoolChoice(SAM_Mangetsu_KenkiOvercap,
                         "Kenki Overcap Protection", "Spends Kenki when at the set value or above.");
 
@@ -137,7 +136,7 @@ internal partial class SAM
                             "Kenki Amount", sliderIncrement: SliderIncrements.Fives);
                     break;
 
-                case CustomComboPreset.SAM_Variant_Cure:
+                case Preset.SAM_Variant_Cure:
                     DrawSliderInt(1, 100, SAM_VariantCure,
                         "HP% to be at or under", 200);
                     break;

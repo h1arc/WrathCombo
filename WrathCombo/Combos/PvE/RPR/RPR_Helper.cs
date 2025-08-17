@@ -62,7 +62,7 @@ internal partial class RPR
             CanApplyStatus(CurrentTarget, Debuffs.DeathsDesign) &&
             !JustUsed(ShadowOfDeath))
         {
-            if (IsEnabled(CustomComboPreset.RPR_ST_SimpleMode))
+            if (IsEnabled(Preset.RPR_ST_SimpleMode))
             {
                 if (!InBossEncounter() && LevelChecked(PlentifulHarvest) && !HasStatusEffect(Buffs.Enshrouded) &&
                     GetStatusEffectRemainingTime(Debuffs.DeathsDesign, CurrentTarget) <= 8)
@@ -89,7 +89,7 @@ internal partial class RPR
                 }
             }
 
-            if (IsEnabled(CustomComboPreset.RPR_ST_AdvancedMode))
+            if (IsEnabled(Preset.RPR_ST_AdvancedMode))
             {
                 if (RPR_ST_ArcaneCircle_SubOption == 1 && !InBossEncounter() &&
                     !HasStatusEffect(Buffs.Enshrouded) &&
@@ -97,7 +97,7 @@ internal partial class RPR
                     return true;
 
                 if (RPR_ST_ArcaneCircle_SubOption == 0 || InBossEncounter() ||
-                    IsNotEnabled(CustomComboPreset.RPR_ST_ArcaneCircle))
+                    IsNotEnabled(Preset.RPR_ST_ArcaneCircle))
                 {
                     //Double enshroud
                     if (LevelChecked(PlentifulHarvest) && HasStatusEffect(Buffs.Enshrouded) &&

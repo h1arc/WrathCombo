@@ -1,7 +1,7 @@
 #region
 
-using System;
 using ECommons.Logging;
+using System;
 using WrathCombo.Combos;
 using WrathCombo.Combos.PvE;
 using WrathCombo.Core;
@@ -125,74 +125,74 @@ internal class PossiblyRetargetedAttribute : RetargetedAttributeBase
             case Condition.RetargetHealingActionsEnabled:
                 return Service.Configuration.RetargetHealingActionsToStack;
             case Condition.ASTQuickTargetCardsFeatureEnabled:
-                return IsEnabled(CustomComboPreset.AST_Cards_QuickTargetCards);
+                return IsEnabled(Preset.AST_Cards_QuickTargetCards);
             case Condition.ASTRetargetingFeaturesEnabledForBenefic:
-                return IsEnabled(CustomComboPreset.AST_Retargets_Benefic);
+                return IsEnabled(Preset.AST_Retargets_Benefic);
             case Condition.ASTRetargetingFeaturesEnabledForSTMit:
-                return IsEnabled(CustomComboPreset.AST_Retargets) &&
-                       IsEnabled(CustomComboPreset.AST_Retargets_Exaltation) &&
+                return IsEnabled(Preset.AST_Retargets) &&
+                       IsEnabled(Preset.AST_Retargets_Exaltation) &&
                        (AST.Config.AST_Mit_ST_Options[0] != true ||
-                        IsEnabled(CustomComboPreset.AST_Retargets_CelestialIntersection)) &&
+                        IsEnabled(Preset.AST_Retargets_CelestialIntersection)) &&
                        (AST.Config.AST_Mit_ST_Options[1] != true ||
-                        IsEnabled(CustomComboPreset.AST_Retargets_EssentialDignity));
+                        IsEnabled(Preset.AST_Retargets_EssentialDignity));
             case Condition.WHMRetargetingFeaturesEnabledForSTMit:
-                return IsEnabled(CustomComboPreset.WHM_Retargets) &&
-                       IsEnabled(CustomComboPreset.WHM_Re_Aquaveil) &&
+                return IsEnabled(Preset.WHM_Retargets) &&
+                       IsEnabled(Preset.WHM_Re_Aquaveil) &&
                        (WHM.Config.WHM_AquaveilOptions[0] != true ||
-                        IsEnabled(CustomComboPreset.WHM_Re_DivineBenison)) &&
+                        IsEnabled(Preset.WHM_Re_DivineBenison)) &&
                        (WHM.Config.WHM_AquaveilOptions[1] != true ||
-                        IsEnabled(CustomComboPreset.WHM_Re_Tetragrammaton));
+                        IsEnabled(Preset.WHM_Re_Tetragrammaton));
             case Condition.WHMRetargetingFeaturesEnabledForAoEMit:
-                return IsEnabled(CustomComboPreset.WHM_Retargets) &&
-                       IsEnabled(CustomComboPreset.WHM_Re_Asylum);
+                return IsEnabled(Preset.WHM_Retargets) &&
+                       IsEnabled(Preset.WHM_Re_Asylum);
             case Condition.WHMRetargetingFeaturesEnabledForSolace:
-                return IsEnabled(CustomComboPreset.WHM_Retargets) &&
-                       IsEnabled(CustomComboPreset.WHM_Re_Solace);
+                return IsEnabled(Preset.WHM_Retargets) &&
+                       IsEnabled(Preset.WHM_Re_Solace);
             case Condition.WHMRetargetingFeaturesEnabledForCure:
-                return IsEnabled(CustomComboPreset.WHM_Retargets) &&
-                       IsEnabled(CustomComboPreset.WHM_Re_Cure);
+                return IsEnabled(Preset.WHM_Retargets) &&
+                       IsEnabled(Preset.WHM_Re_Cure);
             case Condition.SGERetargetingFeaturesEnabledForKardia:
-                return IsEnabled(CustomComboPreset.SGE_Retarget) &&
-                       IsEnabled(CustomComboPreset.SGE_Retarget_Kardia);
+                return IsEnabled(Preset.SGE_Retarget) &&
+                       IsEnabled(Preset.SGE_Retarget_Kardia);
             case Condition.SGERetargetingFeaturesEnabledForEDiagnosis:
-                return IsEnabled(CustomComboPreset.SGE_Retarget) &&
+                return IsEnabled(Preset.SGE_Retarget) &&
                        SGE.Config.SGE_Eukrasia_Mode == 1 &&
-                       IsEnabled(CustomComboPreset.SGE_Retarget_EukrasianDiagnosis);
+                       IsEnabled(Preset.SGE_Retarget_EukrasianDiagnosis);
             case Condition.SGERetargetingFeaturesEnabledForTauroDruo:
-                return IsEnabled(CustomComboPreset.SGE_Retarget) &&
-                       IsEnabled(CustomComboPreset.SGE_Retarget_Druochole) &&
-                       IsEnabled(CustomComboPreset.SGE_Retarget_Taurochole);
+                return IsEnabled(Preset.SGE_Retarget) &&
+                       IsEnabled(Preset.SGE_Retarget_Druochole) &&
+                       IsEnabled(Preset.SGE_Retarget_Taurochole);
             case Condition.SGERetargetingFeaturesEnabledForSTMit:
-                return IsEnabled(CustomComboPreset.SGE_Retarget) &&
-                       IsEnabled(CustomComboPreset.SGE_Retarget_Krasis) &&
-                       IsEnabled(CustomComboPreset.SGE_Retarget_EukrasianDiagnosis) &&
+                return IsEnabled(Preset.SGE_Retarget) &&
+                       IsEnabled(Preset.SGE_Retarget_Krasis) &&
+                       IsEnabled(Preset.SGE_Retarget_EukrasianDiagnosis) &&
                        (SGE.Config.SGE_Mit_ST_Options[1] != true ||
-                       IsEnabled(CustomComboPreset.SGE_Retarget_Taurochole)) &&
+                       IsEnabled(Preset.SGE_Retarget_Taurochole)) &&
                        (SGE.Config.SGE_Mit_ST_Options[0] != true ||
-                       IsEnabled(CustomComboPreset.SGE_Retarget_Haima));
+                       IsEnabled(Preset.SGE_Retarget_Haima));
             case Condition.SCHRetargetingFeaturesEnabledForLustcog:
-                return IsEnabled(CustomComboPreset.SCH_Retarget) &&
-                       IsEnabled(CustomComboPreset.SCH_Retarget_Excogitation) &&
-                       IsEnabled(CustomComboPreset.SCH_Retarget_Lustrate);
+                return IsEnabled(Preset.SCH_Retarget) &&
+                       IsEnabled(Preset.SCH_Retarget_Excogitation) &&
+                       IsEnabled(Preset.SCH_Retarget_Lustrate);
             case Condition.SCHRetargetingFeaturesEnabledForAdlocog:
-                return IsEnabled(CustomComboPreset.SCH_Retarget) &&
+                return IsEnabled(Preset.SCH_Retarget) &&
                        (SCH.Config.SCH_Recitation_Mode == 3 &&
-                       IsEnabled(CustomComboPreset.SCH_Retarget_Excogitation) ||
+                       IsEnabled(Preset.SCH_Retarget_Excogitation) ||
                        SCH.Config.SCH_Recitation_Mode == 0 &&
-                       IsEnabled(CustomComboPreset.SCH_Retarget_Adloquium));
+                       IsEnabled(Preset.SCH_Retarget_Adloquium));
             case Condition.SCHRetargetingFeaturesEnabledForAdloDeployment:
-                return IsEnabled(CustomComboPreset.SCH_Retarget) &&
-                       IsEnabled(CustomComboPreset.SCH_Retarget_Adloquium) &&
-                       IsEnabled(CustomComboPreset.SCH_Retarget_DeploymentTactics);
+                return IsEnabled(Preset.SCH_Retarget) &&
+                       IsEnabled(Preset.SCH_Retarget_Adloquium) &&
+                       IsEnabled(Preset.SCH_Retarget_DeploymentTactics);
             case Condition.SCHRetargetingFeaturesEnabledForSTMit:
-                return IsEnabled(CustomComboPreset.SCH_Retarget) &&
-                       IsEnabled(CustomComboPreset.SCH_Retarget_Adloquium) &&
-                       IsEnabled(CustomComboPreset.SCH_Retarget_Protraction) &&
-                       IsEnabled(CustomComboPreset.SCH_Retarget_DeploymentTactics) &&
-                       IsEnabled(CustomComboPreset.SCH_Retarget_Excogitation);
+                return IsEnabled(Preset.SCH_Retarget) &&
+                       IsEnabled(Preset.SCH_Retarget_Adloquium) &&
+                       IsEnabled(Preset.SCH_Retarget_Protraction) &&
+                       IsEnabled(Preset.SCH_Retarget_DeploymentTactics) &&
+                       IsEnabled(Preset.SCH_Retarget_Excogitation);
             case Condition.SCHRetargetingFeaturesEnabledForAoEMit:
-                return IsEnabled(CustomComboPreset.SCH_Retarget) &&
-                       IsEnabled(CustomComboPreset.SCH_Retarget_SacredSoil);
+                return IsEnabled(Preset.SCH_Retarget) &&
+                       IsEnabled(Preset.SCH_Retarget_SacredSoil);
             
             default:
                 PluginLog.Error($"Unknown PossiblyRetargeted Condition: {condition}");

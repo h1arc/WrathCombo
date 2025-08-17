@@ -1,20 +1,21 @@
 ﻿#region
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
 using WrathCombo.Services;
+using static WrathCombo.Combos.PvE.DNC.Config;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
-using Options = WrathCombo.Combos.CustomComboPreset;
 using EZ = ECommons.Throttlers.EzThrottler;
+using Options = WrathCombo.Combos.Preset;
 using TS = System.TimeSpan;
 
 // ReSharper disable ReturnTypeCanBeNotNullable
@@ -66,28 +67,28 @@ internal partial class DNC
     /// <returns>The chosen Opener.</returns>
     internal static WrathOpener Opener()
     {
-        if (Config.DNC_ST_OpenerSelection ==
-            (int)Config.Openers.FifteenSecond &&
+        if (DNC_ST_OpenerSelection ==
+            (int)Openers.FifteenSecond &&
             Opener15S.LevelChecked)
             return Opener15S;
 
-        if (Config.DNC_ST_OpenerSelection ==
-            (int)Config.Openers.SevenSecond &&
+        if (DNC_ST_OpenerSelection ==
+            (int)Openers.SevenSecond &&
             Opener07S.LevelChecked)
             return Opener07S;
 
-        if (Config.DNC_ST_OpenerSelection ==
-            (int)Config.Openers.ThirtySecondTech &&
+        if (DNC_ST_OpenerSelection ==
+            (int)Openers.ThirtySecondTech &&
             Opener30STech.LevelChecked)
             return Opener30STech;
 
-        if (Config.DNC_ST_OpenerSelection ==
-            (int)Config.Openers.SevenPlusSecondTech &&
+        if (DNC_ST_OpenerSelection ==
+            (int)Openers.SevenPlusSecondTech &&
             Opener07PlusSTech.LevelChecked)
             return Opener07PlusSTech;
 
-        if (Config.DNC_ST_OpenerSelection ==
-            (int)Config.Openers.SevenSecondTech &&
+        if (DNC_ST_OpenerSelection ==
+            (int)Openers.SevenSecondTech &&
             Opener07STech.LevelChecked)
             return Opener07STech;
 
@@ -131,7 +132,7 @@ internal partial class DNC
     /// </param>
     /// <returns>
     ///     The Finisher to use, or if
-    ///     <see cref="CustomComboPreset.DNC_ST_BlockFinishes" /> is enabled and
+    ///     <see cref="Preset.DNC_ST_BlockFinishes" /> is enabled and
     ///     there is no enemy in range: <see cref="All.SavageBlade" />.
     /// </returns>
     private static uint FinishOrHold(uint desiredFinish)
@@ -245,7 +246,7 @@ internal partial class DNC
 
         // Check if we have a target overriding any searching
         var focusTarget = SimpleTarget.FocusTarget;
-        if (Config.DNC_Partner_FocusOverride &&
+        if (DNC_Partner_FocusOverride &&
             focusTarget is IBattleChara &&
             !focusTarget.IsDead &&
             focusTarget.IsInParty() &&
@@ -585,7 +586,7 @@ internal partial class DNC
         } =
         [
             ([4], () => 7),
-            ([5], () => (!Config.DNC_ST_OpenerOption_Peloton ? 12 : 5)),
+            ([5], () => (!DNC_ST_OpenerOption_Peloton ? 12 : 5)),
         ];
 
         public override List<(int[], uint, Func<bool>)> SubstitutionSteps
@@ -613,11 +614,11 @@ internal partial class DNC
             set;
         } =
         [
-            ([4], () => !Config.DNC_ST_OpenerOption_Peloton),
+            ([4], () => !DNC_ST_OpenerOption_Peloton),
         ];
 
         internal override UserData? ContentCheckConfig =>
-            Config.DNC_ST_OpenerDifficulty;
+            DNC_ST_OpenerDifficulty;
 
         public override bool HasCooldowns()
         {
@@ -685,7 +686,7 @@ internal partial class DNC
         } =
         [
             ([4], () => 2),
-            ([5], () => (!Config.DNC_ST_OpenerOption_Peloton ? 4 : 2)),
+            ([5], () => (!DNC_ST_OpenerOption_Peloton ? 4 : 2)),
         ];
 
         public override List<(int[], uint, Func<bool>)> SubstitutionSteps
@@ -713,11 +714,11 @@ internal partial class DNC
             set;
         } =
         [
-            ([4], () => !Config.DNC_ST_OpenerOption_Peloton),
+            ([4], () => !DNC_ST_OpenerOption_Peloton),
         ];
 
         internal override UserData? ContentCheckConfig =>
-            Config.DNC_ST_OpenerDifficulty;
+            DNC_ST_OpenerDifficulty;
 
         public override bool HasCooldowns()
         {
@@ -789,7 +790,7 @@ internal partial class DNC
         } =
         [
             ([5], () => 1),
-            ([6], () => (!Config.DNC_ST_OpenerOption_Peloton ? 7 : 6)),
+            ([6], () => (!DNC_ST_OpenerOption_Peloton ? 7 : 6)),
         ];
 
         public override List<(int[], uint, Func<bool>)> SubstitutionSteps
@@ -817,11 +818,11 @@ internal partial class DNC
             set;
         } =
         [
-            ([5], () => !Config.DNC_ST_OpenerOption_Peloton),
+            ([5], () => !DNC_ST_OpenerOption_Peloton),
         ];
 
         internal override UserData? ContentCheckConfig =>
-            Config.DNC_ST_OpenerDifficulty;
+            DNC_ST_OpenerDifficulty;
 
         public override bool HasCooldowns()
         {
@@ -903,7 +904,7 @@ internal partial class DNC
         ];
 
         internal override UserData? ContentCheckConfig =>
-            Config.DNC_ST_OpenerDifficulty;
+            DNC_ST_OpenerDifficulty;
 
         public override bool HasCooldowns()
         {
@@ -993,11 +994,11 @@ internal partial class DNC
             set;
         } =
         [
-            ([6], () => !Config.DNC_ST_OpenerOption_Peloton),
+            ([6], () => !DNC_ST_OpenerOption_Peloton),
         ];
 
         internal override UserData? ContentCheckConfig =>
-            Config.DNC_ST_OpenerDifficulty;
+            DNC_ST_OpenerDifficulty;
 
         public override bool HasCooldowns()
         {

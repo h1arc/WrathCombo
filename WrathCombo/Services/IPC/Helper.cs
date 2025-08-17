@@ -1,17 +1,17 @@
 ﻿#region
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using Dalamud.Networking.Http;
 using ECommons;
 using ECommons.ExcelServices;
 using ECommons.EzIpcManager;
 using ECommons.GameHelpers;
 using ECommons.Logging;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
 using WrathCombo.Attributes;
 using WrathCombo.Combos;
 using WrathCombo.CustomComboNS.Functions;
@@ -76,7 +76,7 @@ public partial class Helper(ref Leasing leasing)
     /// </summary>
     /// <param name="preset">The preset to search for the opposite of.</param>
     /// <returns>The Opposite-mode preset.</returns>
-    internal static CustomComboPreset? GetOppositeModeCombo(CustomComboPreset preset)
+    internal static Preset? GetOppositeModeCombo(Preset preset)
     {
         const StringComparison lower = StringComparison.CurrentCultureIgnoreCase;
         var attr = preset.Attributes();
@@ -118,8 +118,8 @@ public partial class Helper(ref Leasing leasing)
 
             // Return the opposite mode, as a proper preset
             var oppositeMode = categorizedPreset.FirstOrDefault().Key;
-            var oppositeModePreset = (CustomComboPreset)
-                Enum.Parse(typeof(CustomComboPreset), oppositeMode, true);
+            var oppositeModePreset = (Preset)
+                Enum.Parse(typeof(Preset), oppositeMode, true);
             return oppositeModePreset;
         }
         catch (Exception ex)
@@ -183,17 +183,17 @@ public partial class Helper(ref Leasing leasing)
 
         #region Override the Values with any IPC-control
 
-        CustomComboPreset? simpleComboPreset = simpleHigher is null
+        Preset? simpleComboPreset = simpleHigher is null
             ? null
-            : (CustomComboPreset)
-            Enum.Parse(typeof(CustomComboPreset), simpleHigher.Value.Key, true);
+            : (Preset)
+            Enum.Parse(typeof(Preset), simpleHigher.Value.Key, true);
         if (simpleComboPreset is not null)
         {
             simple[ComboStateKeys.AutoMode] =
-                P.IPCSearch.AutoActions[(CustomComboPreset)simpleComboPreset];
+                P.IPCSearch.AutoActions[(Preset)simpleComboPreset];
             simple[ComboStateKeys.Enabled] =
                 P.IPCSearch.EnabledActions.Contains(
-                    (CustomComboPreset)simpleComboPreset);
+                    (Preset)simpleComboPreset);
         }
 
         #endregion
@@ -204,8 +204,8 @@ public partial class Helper(ref Leasing leasing)
 
         #region Override the Values with any IPC-control
 
-        var advancedComboPreset = (CustomComboPreset)
-            Enum.Parse(typeof(CustomComboPreset), advancedKey, true);
+        var advancedComboPreset = (Preset)
+            Enum.Parse(typeof(Preset), advancedKey, true);
         advancedValue[ComboStateKeys.AutoMode] =
             P.IPCSearch.AutoActions[advancedComboPreset];
         advancedValue[ComboStateKeys.Enabled] =

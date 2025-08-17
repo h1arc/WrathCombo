@@ -1,9 +1,5 @@
 #region
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Hooking;
 using ECommons;
@@ -12,6 +8,10 @@ using ECommons.GameHelpers;
 using ECommons.Throttlers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using WrathCombo.Combos.PvE;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;

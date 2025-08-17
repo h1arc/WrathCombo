@@ -1,7 +1,6 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Extensions;
-using Preset = WrathCombo.Combos.CustomComboPreset;
 using static WrathCombo.Combos.PvE.PCT.Config;
 namespace WrathCombo.Combos.PvE;
 
