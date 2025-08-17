@@ -1202,13 +1202,13 @@ public enum Preset
     BLM_Blizzard1to3 = 2052,
 
     [ReplaceSkill(BLM.Fire4)]
-    [ConflictingCombos(BLM_FireandIce)]
+    [ConflictingCombos(BLM_FireandIce, BLM_FireFlarestar)]
     [CustomComboInfo("Fire 4 to 3", "Replaces Fire 4 with Fire 3 when not in Astral Fire III or not in combat.", Job.BLM)]
     BLM_Fire4to3 = 2059,
 
     [ReplaceSkill(BLM.Fire)]
-    [ConflictingCombos(BLM_FireandIce, BLM_ST_AdvancedMode, BLM_ST_SimpleMode, BLM_Fire1to3)]
-    [CustomComboInfo("Fire to Despair", "Replaces Fire  with Despair when in Astral Fire and below 2400 MP.", Job.BLM)]
+    [ConflictingCombos(BLM_ST_AdvancedMode, BLM_ST_SimpleMode, BLM_Fire1to3)]
+    [CustomComboInfo("Fire to Despair", "Replaces Fire with Despair when in Astral Fire and below 2400 MP.", Job.BLM)]
     BLM_Fire1Despair = 2065,
 
     [ReplaceSkill(BLM.Blizzard4, BLM.Blizzard3)]
@@ -1217,7 +1217,7 @@ public enum Preset
     BLM_Blizzard4toDespair = 2060,
     
     [ReplaceSkill(BLM.Fire4, BLM.Flare)]
-    [ConflictingCombos(BLM_Fire4to3)]
+    [ConflictingCombos(BLM_Fire4to3, BLM_FireFlarestar)]
     [CustomComboInfo("Fire & Ice", "Replaces Fire4 with Blizzard4 when in Umbral Ice.\nReplaces Flare with Freeze when in Umbral Ice.", Job.BLM)]
     BLM_FireandIce = 2057,
 
@@ -1285,8 +1285,9 @@ public enum Preset
         BLU.MatraMagic, BLU.PhantomFlurry, BLU.Bristle)]
     [ConflictingCombos(BLU_Opener)]
     [CustomComboInfo("BLU Moon Flute Opener (Level 80)",
-        "Turns Moon Flute into a full opener.\nUse the remaining 2 charges of Winged Reprobation before starting the opener again!\nCan be done with 2.50 spell speed",
+        "Turns Moon Flute into a full opener.\nUse the remaining 2 charges of Winged Reprobation before starting the opener again!\nCan be done with 2.50 spell speed.\nFeather Rain is Retargeted to your target, so you don't have to place it.",
         Job.BLU)]
+    [Retargeted(BLU.FeatherRain)]
     BLU_NewMoonFluteOpener = 70021,
 
     [BlueInactive(BLU.BreathOfMagic, BLU.MortalFlame)]
@@ -1302,19 +1303,22 @@ public enum Preset
     [ReplaceSkill(BLU.MoonFlute)]
     [ConflictingCombos(BLU_NewMoonFluteOpener)]
     [CustomComboInfo("BLU Moon Flute Opener (Level 70)",
-        "Turns Moon Flute into a full opener. Here for historical value; level 80 opener is more potent.", Job.BLU)]
+        "Turns Moon Flute into a full opener. Here for historical value; level 80 opener is more potent.\nFeather Rain is Retargeted to your target, so you don't have to place it.", Job.BLU)]
+    [Retargeted(BLU.FeatherRain)]
     BLU_Opener = 70001,
 
     [BlueInactive(BLU.MoonFlute, BLU.Tingle, BLU.ShockStrike, BLU.Whistle, BLU.FinalSting)]
     [ReplaceSkill(BLU.FinalSting)]
     [CustomComboInfo("Final Sting Combo",
-        "Turns Final Sting into the buff combo of: Moon Flute > Tingle > Whistle > Final Sting.", Job.BLU)]
+        "Turns Final Sting into the buff combo of: Moon Flute > Tingle > Whistle > Final Sting.\nFeather Rain is Retargeted to your target, so you don't have to place it.", Job.BLU)]
+    [Retargeted(BLU.FeatherRain)]
     BLU_FinalSting = 70002,
 
     [BlueInactive(BLU.RoseOfDestruction, BLU.FeatherRain, BLU.GlassDance, BLU.JKick)]
     [ParentCombo(BLU_FinalSting)]
     [CustomComboInfo("Off-cooldown Primal Additions",
-        "Adds Rose of Destruction, Feather Rain, Glass Dance, and J Kick to the combo.", Job.BLU)]
+        "Adds Rose of Destruction, Feather Rain, Glass Dance, and J Kick to the combo.\nFeather Rain is Retargeted to your target, so you don't have to place it.", Job.BLU)]
+    [Retargeted(BLU.FeatherRain)]
     BLU_Primals = 70003,
 
     [BlueInactive(BLU.BasicInstinct)]
@@ -1337,8 +1341,9 @@ public enum Preset
     [BlueInactive(BLU.FeatherRain, BLU.ShockStrike, BLU.RoseOfDestruction, BLU.GlassDance)]
     [ReplaceSkill(BLU.FeatherRain)]
     [CustomComboInfo("Primal Feature",
-        "Turns Feather Rain into Shock Strike, Rose of Destruction, and Glass Dance.\nWill cause primals to desync from Moon Flute burst phases if used on cooldown.",
+        "Turns Feather Rain into Shock Strike, Rose of Destruction, and Glass Dance.\nWill cause primals to desync from Moon Flute burst phases if used on cooldown.\nFeather Rain is Retargeted to your target, so you don't have to place it.",
         Job.BLU)]
+    [Retargeted(BLU.FeatherRain)]
     BLU_PrimalCombo = 70008,
 
     [BlueInactive(BLU.FeatherRain, BLU.ShockStrike, BLU.RoseOfDestruction, BLU.GlassDance)]
@@ -2869,9 +2874,14 @@ public enum Preset
     #region Basic Combo
 
     [ReplaceSkill(DRG.FullThrust, DRG.HeavensThrust)]
-    [CustomComboInfo("Basic Combo", "Replace Full Thrust/Heavens' Thrust with the basic combo chain.", Job.DRG)]
+    [CustomComboInfo("Full / Heavens Thrust Combo", "Replace Full Thrust/Heavens' Thrust with the basic combo chain.", Job.DRG)]
     [BasicCombo]
-    DRG_BasicCombo = 6304,
+    DRG_HeavensThrust = 6304,
+
+    [ReplaceSkill(DRG.ChaosThrust, DRG.ChaoticSpring)]
+    [CustomComboInfo("Chaos / Chaotic Combo", "Replace Chaos Thrust / Chaotic Spring with the basic combo chain.", Job.DRG)]
+    [BasicCombo]
+    DRG_ChaoticSpring = 6305,
     
     #endregion
 
@@ -3761,7 +3771,7 @@ public enum Preset
     [CustomComboInfo("Overdrive Feature", "Replace Rook Autoturret and Automaton Queen with Overdrive while active.", Job.MCH)]
     MCH_Overdrive = 8002,
 
-    [ReplaceSkill(MCH.Drill, MCH.AirAnchor, MCH.HotShot, MCH.Chainsaw)]
+    [ReplaceSkill(MCH.HotShot)]
     [CustomComboInfo("Big Hitter Feature", "Replace Hot Shot, Drill, Air Anchor, Chainsaw and Excavator depending on which is on cooldown.", Job.MCH)]
     MCH_HotShotDrillChainsawExcavator = 8004,
 
@@ -3934,22 +3944,7 @@ public enum Preset
     [ConflictingCombos(MNK_ST_AdvancedMode, MNK_ST_SimpleMode)]
     [CustomComboInfo("Beast Chakra Handlers", "Merge single target GCDs which share the same beast chakra", Job.MNK)]
     MNK_ST_BeastChakras = 9019,
-
-    [ReplaceSkill(MNK.Bootshine)]
-    [CustomComboInfo("Opo-opo Option", "Replace Bootshine/Leaping Opo with Dragon Kick.", Job.MNK)]
-    [ParentCombo(MNK_ST_BeastChakras)]
-    MNK_BC_OPOOPO = 9020,
-
-    [ReplaceSkill(MNK.TrueStrike)]
-    [CustomComboInfo("Raptor Option", "Replace True Strike/Rising Raptor with Twin Snakes.", Job.MNK)]
-    [ParentCombo(MNK_ST_BeastChakras)]
-    MNK_BC_RAPTOR = 9021,
-
-    [ReplaceSkill(MNK.SnapPunch)]
-    [CustomComboInfo("Coeurl Option", "Replace Snap Punch/Pouncing Coeurl with Demolish.", Job.MNK)]
-    [ParentCombo(MNK_ST_BeastChakras)]
-    MNK_BC_COEURL = 9022,
-
+    
     #endregion
     
     #region Misc
@@ -4021,10 +4016,11 @@ public enum Preset
         "Replaces Death Blossom with a full one-button AoE rotation.\nThis is the ideal option for newcomers to the job.",
         Job.NIN)]
     [SimpleCombo]
-    NIN_AoE_SimpleMode = 10002,
+    NIN_AoE_SimpleMode = 10001,
 
     #endregion
 
+    #region ST Advanced
     [AutoAction(false, false)]
     [ReplaceSkill(NIN.SpinningEdge)]
     [ConflictingCombos(NIN_ST_SimpleMode)]
@@ -4032,133 +4028,83 @@ public enum Preset
         "Replaces Spinning Edge with a full one-button single target rotation.\nThese features are ideal if you want to customize the rotation.",
         Job.NIN)]
     [AdvancedCombo]
-    NIN_ST_AdvancedMode = 10003,
+    NIN_ST_AdvancedMode = 10002,
 
     [ParentCombo(NIN_ST_AdvancedMode)]
     [CustomComboInfo("Balance Opener (Level 100)",
         "Adds the Balance opener at level 100.\nRequirements:\n- 2 mudra charges ready\n- Dokumori off cooldown.\n- Kunai's Bane off cooldown.\n- TenChiJin off cooldown.\n- Phantom Kamaitachi off cooldown.\n- Bunshin off cooldown.\n- Dream Within a Dream off cooldown.\n- Kassatsu off cooldown.",
         Job.NIN)]
-    NIN_ST_AdvancedMode_BalanceOpener = 10029,
-
-    [ParentCombo(NIN_ST_AdvancedMode)]
-    [CustomComboInfo("Throwing Dagger Uptime Option", "Adds Throwing Dagger to Advanced Mode if out of melee range.",
-        Job.NIN)]
-    NIN_ST_AdvancedMode_RangedUptime = 10004,
-
-    [ParentCombo(NIN_ST_AdvancedMode)]
-    [CustomComboInfo("Mug/Dokumori Option", "Adds Mug/Dokumori to Advanced Mode.", Job.NIN)]
-    NIN_ST_AdvancedMode_Mug = 10005,
-
-    [ConflictingCombos(NIN_ST_AdvancedMode_Mug_AlignBefore)]
-    [ParentCombo(NIN_ST_AdvancedMode_Mug)]
-    [CustomComboInfo("Align Mug with Trick Attack/Kunai's Bane Option",
-        "Only uses Mug whilst the target has Trick Attack/Kunai's Bane, otherwise will use on cooldown.", Job.NIN)]
-    NIN_ST_AdvancedMode_Mug_AlignAfter = 10006,
-
-    [ConflictingCombos(NIN_ST_AdvancedMode_Mug_AlignAfter)]
-    [ParentCombo(NIN_ST_AdvancedMode_Mug)]
-    [CustomComboInfo("Use Mug before Trick Attack/Kunai's Bane Option",
-        "Aligns Mug with Trick Attack/Kunai's Bane but weaves it at least 1 GCD before Trick Attack/Kunai's Bane.",
-        Job.NIN)]
-    NIN_ST_AdvancedMode_Mug_AlignBefore = 10007,
-
-    [ParentCombo(NIN_ST_AdvancedMode)]
-    [CustomComboInfo("Trick Attack/Kunai's Bane Option", "Adds Trick Attack/Kunai's Bane to Advanced Mode.", Job.NIN)]
-    NIN_ST_AdvancedMode_TrickAttack = 10008,
-
-    [ParentCombo(NIN_ST_AdvancedMode_TrickAttack)]
-    [CustomComboInfo("Save Cooldowns Before Trick Attack/Kunai's Bane Option",
-        "Stops using abilities with longer cooldowns up to 15 seconds before Trick Attack/Kunai's Bane comes off cooldown.",
-        Job.NIN)]
-    NIN_ST_AdvancedMode_TrickAttack_Cooldowns = 10009,
-
-    [ParentCombo(NIN_ST_AdvancedMode_TrickAttack)]
-    [CustomComboInfo("Delayed Trick Attack/Kunai's Bane Option",
-        "Waits at least 8 seconds into combat before using Trick Attack/Kunai's Bane.", Job.NIN)]
-    NIN_ST_AdvancedMode_TrickAttack_Delayed = 10010,
+    NIN_ST_AdvancedMode_BalanceOpener = 10004,
 
     [ParentCombo(NIN_ST_AdvancedMode)]
     [CustomComboInfo("Ninjitsu Option", "Adds Ninjitsu to Advanced Mode.", Job.NIN)]
-    NIN_ST_AdvancedMode_Ninjitsus = 10011,
-
-    [ParentCombo(NIN_ST_AdvancedMode_Ninjitsus)]
-    [CustomComboInfo("Hold 1 Charge", "Prevent using both charges of Mudra.", Job.NIN)]
-    NIN_ST_AdvancedMode_Ninjitsus_ChargeHold = 10012,
-
-    [ParentCombo(NIN_ST_AdvancedMode_Ninjitsus)]
-    [CustomComboInfo("Use Fuma Shuriken", "Spends Mudra charges on Fuma Shuriken (only before Raiton is available).",
-        Job.NIN)]
-    NIN_ST_AdvancedMode_Ninjitsus_FumaShuriken = 10013,
-
-    [ParentCombo(NIN_ST_AdvancedMode_Ninjitsus)]
-    [CustomComboInfo("Use Raiton", "Spends Mudra charges on Raiton.", Job.NIN)]
-    NIN_ST_AdvancedMode_Ninjitsus_Raiton = 10014,
-
-    [ParentCombo(NIN_ST_AdvancedMode_Ninjitsus)]
-    [CustomComboInfo("Use Suiton", "Spends Mudra charges on Suiton.", Job.NIN)]
-    NIN_ST_AdvancedMode_Ninjitsus_Suiton = 10015,
-
+    NIN_ST_AdvancedMode_Ninjitsus = 10005,
+    
     [ParentCombo(NIN_ST_AdvancedMode)]
-    [CustomComboInfo("Assassinate/Dream Within a Dream Option",
-        "Adds Assassinate and Dream Within a Dream to Advanced Mode.", Job.NIN)]
-    NIN_ST_AdvancedMode_AssassinateDWAD = 10017,
-
+    [CustomComboInfo("Trick Attack/Kunai's Bane Option", "Adds Trick Attack/Kunai's Bane to Advanced Mode.", Job.NIN)]
+    NIN_ST_AdvancedMode_TrickAttack = 10006,
+    
     [ParentCombo(NIN_ST_AdvancedMode)]
-    [CustomComboInfo("Kassatsu Option", "Adds Kassatsu to Advanced Mode.", Job.NIN)]
-    NIN_ST_AdvancedMode_Kassatsu = 10018,
-
-    [ParentCombo(NIN_ST_AdvancedMode_Kassatsu)]
-    [CustomComboInfo("Use Hyosho Ranryu Option", "Spends Kassatsu on Hyosho Ranryu.", Job.NIN)]
-    NIN_ST_AdvancedMode_Kassatsu_HyoshoRaynryu = 10019,
-
+    [CustomComboInfo("Mug/Dokumori Option", "Adds Mug/Dokumori to Advanced Mode.", Job.NIN)]
+    NIN_ST_AdvancedMode_Mug = 10007,
+    
+    [ParentCombo(NIN_ST_AdvancedMode)]
+    [CustomComboInfo("Bunshin Option", "Adds Bunshin to Advanced Mode.", Job.NIN)]
+    NIN_ST_AdvancedMode_Bunshin = 10008,
+    
     [ParentCombo(NIN_ST_AdvancedMode)]
     [CustomComboInfo("Bhavacakra Option", "Adds Bhavacakra to Advanced Mode.", Job.NIN)]
-    NIN_ST_AdvancedMode_Bhavacakra = 10022,
+    NIN_ST_AdvancedMode_Bhavacakra = 10009,
+    
+    [ParentCombo(NIN_ST_AdvancedMode)]
+    [CustomComboInfo("Kassatsu Option", "Adds Kassatsu to Advanced Mode.", Job.NIN)]
+    NIN_ST_AdvancedMode_Kassatsu = 10010,
 
     [ParentCombo(NIN_ST_AdvancedMode)]
     [CustomComboInfo("Ten Chi Jin Option", "Adds Ten Chi Jin (the cooldown) to Advanced Mode.", Job.NIN)]
-    NIN_ST_AdvancedMode_TCJ = 10023,
-
+    NIN_ST_AdvancedMode_TenChiJin = 10011,
+    
     [ParentCombo(NIN_ST_AdvancedMode)]
-    [CustomComboInfo("Tenri Jindo Option", "Adds Tenri Jindo to Advanced Mode.", Job.NIN)]
-    NIN_ST_AdvancedMode_TenriJindo = 10071,
-
+    [CustomComboInfo("Assassinate/Dream Within a Dream Option",
+        "Adds Assassinate and Dream Within a Dream to Advanced Mode.", Job.NIN)]
+    NIN_ST_AdvancedMode_Assassinate = 10012,
+    
     [ParentCombo(NIN_ST_AdvancedMode)]
     [CustomComboInfo("Meisui Option", "Adds Meisui to Advanced Mode.", Job.NIN)]
-    NIN_ST_AdvancedMode_Meisui = 10024,
+    NIN_ST_AdvancedMode_Meisui = 10013,
 
     [ParentCombo(NIN_ST_AdvancedMode)]
-    [CustomComboInfo("Bunshin Option", "Adds Bunshin to Advanced Mode.", Job.NIN)]
-    NIN_ST_AdvancedMode_Bunshin = 10025,
-
-    [ParentCombo(NIN_ST_AdvancedMode_Bunshin)]
     [CustomComboInfo("Phantom Kamaitachi Option", "Adds Phantom Kamaitachi to Advanced Mode.", Job.NIN)]
-    NIN_ST_AdvancedMode_Bunshin_Phantom = 10026,
+    NIN_ST_AdvancedMode_PhantomKamaitachi = 10014,
 
     [ParentCombo(NIN_ST_AdvancedMode)]
-    [CustomComboInfo("Raiju Option", "Adds Fleeting/Forked Raiju to Advanced Mode.", Job.NIN)]
-    NIN_ST_AdvancedMode_Raiju = 10027,
-
-    [ParentCombo(NIN_ST_AdvancedMode_Raiju)]
-    [CustomComboInfo("Forked Raiju Gap-Closer Option", "Uses Forked Raiju when out of range.", Job.NIN)]
-    NIN_ST_AdvancedMode_Raiju_Forked = 10028,
-
+    [CustomComboInfo("Raiju Option", "Adds Fleeting Raiju to Advanced Mode.", Job.NIN)]
+    NIN_ST_AdvancedMode_Raiju = 10015,
+    
     [ParentCombo(NIN_ST_AdvancedMode)]
-    [CustomComboInfo("True North Option", "Adds True North to Advanced Mode.", Job.NIN)]
-    NIN_ST_AdvancedMode_TrueNorth = 10030,
+    [CustomComboInfo("Throwing Dagger Uptime Option", "Adds Throwing Dagger to Advanced Mode if out of melee range.",
+        Job.NIN)]
+    NIN_ST_AdvancedMode_ThrowingDaggers = 10016,
 
     [ParentCombo(NIN_ST_AdvancedMode)]
     [CustomComboInfo("Second Wind Option", "Adds Second Wind to Advanced Mode.", Job.NIN)]
-    NIN_ST_AdvancedMode_SecondWind = 10032,
+    NIN_ST_AdvancedMode_SecondWind = 10017,
 
     [ParentCombo(NIN_ST_AdvancedMode)]
     [CustomComboInfo("Shade Shift Option", "Adds Shade Shift to Advanced Mode.", Job.NIN)]
-    NIN_ST_AdvancedMode_ShadeShift = 10033,
+    NIN_ST_AdvancedMode_ShadeShift = 10018,
 
     [ParentCombo(NIN_ST_AdvancedMode)]
     [CustomComboInfo("Bloodbath Option", "Adds Bloodbath to Advanced Mode.", Job.NIN)]
-    NIN_ST_AdvancedMode_Bloodbath = 10034,
-
+    NIN_ST_AdvancedMode_Bloodbath = 10019,
+    
+    [ParentCombo(NIN_ST_AdvancedMode)]
+    [CustomComboInfo("Feint Raidwide Option", "Adds Feint when Raidwide is detected casting and not in a Mudra.", Job.NIN)]
+    NIN_ST_AdvancedMode_Feint = 10020,
+    
+    #endregion
+    
+    #region AoE Advanced
     [AutoAction(true, false)]
     [ReplaceSkill(NIN.DeathBlossom)]
     [ConflictingCombos(NIN_AoE_SimpleMode)]
@@ -4166,92 +4112,82 @@ public enum Preset
         "Replaces Death Blossom with a full one-button AoE rotation.\nThese features are ideal if you want to customize the rotation.",
         Job.NIN)]
     [AdvancedCombo]
-    NIN_AoE_AdvancedMode = 10035,
+    NIN_AoE_AdvancedMode = 10003,
+    
+    [ParentCombo(NIN_AoE_AdvancedMode)]
+    [CustomComboInfo("Ninjitsu Option", "Adds Ninjitsu to Advanced Mode.", Job.NIN)]
+        NIN_AoE_AdvancedMode_Ninjitsus = 10021,
 
     [ParentCombo(NIN_AoE_AdvancedMode)]
-    [CustomComboInfo("Kunai's Bane Option", "Adds Kunai's Bane to Advanced Mode. (Does not add Trick Attack)",
+    [CustomComboInfo("Trick Attack Option", "Adds TrickAttack/Kunai's Bane to Advanced Mode.",
         Job.NIN)]
-    NIN_AoE_AdvancedMode_KunaisBane = 10073,
+    NIN_AoE_AdvancedMode_TrickAttack = 10022,
+    
+    [ParentCombo(NIN_AoE_AdvancedMode)]
+    [CustomComboInfo("Mug Option", "Adds Mug/Dokumori to Advanced Mode.",
+        Job.NIN)]
+    NIN_AoE_AdvancedMode_Mug = 10023,
+    
+    [ParentCombo(NIN_AoE_AdvancedMode)]
+    [CustomComboInfo("Bunshin Option", "Adds Bunshin to Advanced Mode.", Job.NIN)]
+    NIN_AoE_AdvancedMode_Bunshin = 10024,
+    
+    [ParentCombo(NIN_AoE_AdvancedMode)]
+    [CustomComboInfo("Hellfrog Medium Option", "Adds Hellfrog Medium to Advanced Mode.", Job.NIN)]
+    NIN_AoE_AdvancedMode_HellfrogMedium = 10025,
+    
+    [ParentCombo(NIN_AoE_AdvancedMode)]
+    [CustomComboInfo("Kassatsu Option", "Adds Kassatsu to Advanced Mode.", Job.NIN)]
+    NIN_AoE_AdvancedMode_Kassatsu = 10026,
+    
+    [ParentCombo(NIN_AoE_AdvancedMode)]
+    [CustomComboInfo("Ten Chi Jin Option", "Adds Ten Chi Jin (the cooldown) to Advanced Mode.", Job.NIN)]
+    NIN_AoE_AdvancedMode_TenChiJin = 10027,
 
     [ParentCombo(NIN_AoE_AdvancedMode)]
     [CustomComboInfo("Assassinate/Dream Within a Dream Option",
         "Adds Assassinate/Dream Within a Dream to Advanced Mode.", Job.NIN)]
-    NIN_AoE_AdvancedMode_AssassinateDWAD = 10036,
-
-    [ParentCombo(NIN_AoE_AdvancedMode)]
-    [CustomComboInfo("Ninjitsu Option", "Adds Ninjitsu to Advanced Mode.", Job.NIN)]
-    NIN_AoE_AdvancedMode_Ninjitsus = 10037,
-
-    [ParentCombo(NIN_AoE_AdvancedMode_Ninjitsus)]
-    [CustomComboInfo("Hold 1 Charge", "Prevent using both charges of Mudra.", Job.NIN)]
-    NIN_AoE_AdvancedMode_Ninjitsus_ChargeHold = 10038,
-
-    [ParentCombo(NIN_AoE_AdvancedMode_Ninjitsus)]
-    [CustomComboInfo("Use Katon", "Spends Mudra charges on Katon.", Job.NIN)]
-    NIN_AoE_AdvancedMode_Ninjitsus_Katon = 10039,
-
-    [ParentCombo(NIN_AoE_AdvancedMode_Ninjitsus)]
-    [CustomComboInfo("Use Doton", "Spends Mudra charges on Doton.", Job.NIN)]
-    NIN_AoE_AdvancedMode_Ninjitsus_Doton = 10040,
-
-    [ParentCombo(NIN_AoE_AdvancedMode_Ninjitsus)]
-    [CustomComboInfo("Use Huton", "Spends Mudra charges on Huton.", Job.NIN)]
-    NIN_AoE_AdvancedMode_Ninjitsus_Huton = 10041,
-
-    [ParentCombo(NIN_AoE_AdvancedMode)]
-    [CustomComboInfo("Kassatsu Option", "Adds Kassatsu to Advanced Mode.", Job.NIN)]
-    NIN_AoE_AdvancedMode_Kassatsu = 10042,
-
-    [ParentCombo(NIN_AoE_AdvancedMode_Kassatsu)]
-    [CustomComboInfo("Goka Mekkyaku Option", "Adds Goka Mekkyaku to Advanced Mode.", Job.NIN)]
-    NIN_AoE_AdvancedMode_GokaMekkyaku = 10043,
-
-    [ParentCombo(NIN_AoE_AdvancedMode)]
-    [CustomComboInfo("Hellfrog Medium Option", "Adds Hellfrog Medium to Advanced Mode.", Job.NIN)]
-    NIN_AoE_AdvancedMode_HellfrogMedium = 10045,
-
-    [ParentCombo(NIN_AoE_AdvancedMode)]
-    [CustomComboInfo("Ten Chi Jin Option", "Adds Ten Chi Jin (the cooldown) to Advanced Mode.", Job.NIN)]
-    NIN_AoE_AdvancedMode_TCJ = 10046,
-
-    [ParentCombo(NIN_AoE_AdvancedMode)]
-    [CustomComboInfo("Tenri Jindo Option", "Adds Tenri Jindo to Advanced Mode.", Job.NIN)]
-    NIN_AoE_AdvancedMode_TenriJindo = 10072,
+    NIN_AoE_AdvancedMode_Assassinate = 10028,
 
     [ParentCombo(NIN_AoE_AdvancedMode)]
     [CustomComboInfo("Meisui Option", "Adds Meisui to Advanced Mode.", Job.NIN)]
-    NIN_AoE_AdvancedMode_Meisui = 10047,
-
+    NIN_AoE_AdvancedMode_Meisui = 10029,
+    
     [ParentCombo(NIN_AoE_AdvancedMode)]
-    [CustomComboInfo("Bunshin Option", "Adds Bunshin to Advanced Mode.", Job.NIN)]
-    NIN_AoE_AdvancedMode_Bunshin = 10048,
-
-    [ParentCombo(NIN_AoE_AdvancedMode_Bunshin)]
     [CustomComboInfo("Phantom Kamaitachi Option", "Adds Phantom Kamaitachi to Advanced Mode.", Job.NIN)]
-    NIN_AoE_AdvancedMode_Bunshin_Phantom = 10049,
+    NIN_AoE_AdvancedMode_PhantomKamaitachi = 10030,
+    
+    [ParentCombo(NIN_AoE_AdvancedMode)]
+    [CustomComboInfo("Throwing Dagger Uptime Option", "Adds Throwing Dagger to Advanced Mode if out of melee range.",
+        Job.NIN)]
+    NIN_AoE_AdvancedMode_ThrowingDaggers = 10031,
 
     [ParentCombo(NIN_AoE_AdvancedMode)]
     [CustomComboInfo("Second Wind Option", "Adds Second Wind to Advanced Mode.", Job.NIN)]
-    NIN_AoE_AdvancedMode_SecondWind = 10050,
+    NIN_AoE_AdvancedMode_SecondWind = 10032,
 
     [ParentCombo(NIN_AoE_AdvancedMode)]
     [CustomComboInfo("Shade Shift Option", "Adds Shade Shift to Advanced Mode.", Job.NIN)]
-    NIN_AoE_AdvancedMode_ShadeShift = 10051,
+    NIN_AoE_AdvancedMode_ShadeShift = 10033,
 
     [ParentCombo(NIN_AoE_AdvancedMode)]
     [CustomComboInfo("Bloodbath Option", "Adds Bloodbath to Advanced Mode.", Job.NIN)]
-    NIN_AoE_AdvancedMode_Bloodbath = 10052,
+    NIN_AoE_AdvancedMode_Bloodbath = 10034,
+    
+    #endregion
+    
+    #region Standalones
         
     #region Basic Combo
 
     [ReplaceSkill(NIN.AeolianEdge)]
     [CustomComboInfo("Aeolian Edge Combo", "Replace Aeolian Edge with its combo chain.", Job.NIN)]
     [BasicCombo]
-    NIN_ST_AeolianEdgeCombo = 10074,
+    NIN_ST_AeolianEdgeCombo = 10042,
 
     [ReplaceSkill(NIN.ArmorCrush)]
     [CustomComboInfo("Armor Crush Combo Feature", "Replace Armor Crush with its combo chain.", Job.NIN)]
-    NIN_ArmorCrushCombo = 10053,
+    NIN_ArmorCrushCombo = 10041,
 
     #endregion
     
@@ -4259,45 +4195,36 @@ public enum Preset
     [CustomComboInfo("Kassatsu to Trick Feature",
         "Replaces Kassatsu with Trick Attack/Kunai's Bane while Suiton or Hidden is up.\nCooldown tracking plugin recommended.",
         Job.NIN)]
-    NIN_KassatsuTrick = 10054,
+    NIN_KassatsuTrick = 10035,
 
     [ReplaceSkill(NIN.TenChiJin)]
     [CustomComboInfo("Ten Chi Jin to Meisui Feature",
         "Replaces Ten Chi Jin (the move) with Meisui while Suiton is up.\nCooldown tracking plugin recommended.",
         Job.NIN)]
-    NIN_TCJMeisui = 10055,
+    NIN_TCJMeisui = 10036,
 
     [ReplaceSkill(NIN.Chi)]
     [CustomComboInfo("Kassatsu Chi/Jin Feature",
         "Replaces Chi with Jin while Kassatsu is up if you have Enhanced Kassatsu.", Job.NIN)]
-    NIN_KassatsuChiJin = 10056,
+    NIN_KassatsuChiJin = 10037,
 
     [ReplaceSkill(NIN.Hide)]
-    [CustomComboInfo("Hide to Mug/Trick Attack/Kunai's Bane Feature",
-        "Replaces Hide with Mug while in combat and Trick Attack/Kunai's Bane whilst Hidden.", Job.NIN)]
-    NIN_HideMug = 10057,
+    [CustomComboInfo("Hide to Mug",
+        "Replaces Hide with selected Options", Job.NIN)]
+    NIN_HideMug = 10038,
 
     [ReplaceSkill(NIN.Ten, NIN.Chi, NIN.Jin)]
     [CustomComboInfo("Simple Mudras Feature", "Simplify the mudra casting to avoid failing.", Job.NIN)]
-    NIN_Simple_Mudras = 10062,
+    NIN_Simple_Mudras = 10039,
 
     [ReplaceSkill(NIN.TenChiJin)]
     [ParentCombo(NIN_TCJMeisui)]
     [CustomComboInfo("Ten Chi Jin Feature", "Turns Ten Chi Jin (the move) into Ten, Chi, and Jin.", Job.NIN)]
-    NIN_TCJ = 10063,
+    NIN_TCJ = 10040,
+    
+    #endregion
 
-    [ParentCombo(NIN_ST_AdvancedMode_Ninjitsus_Raiton)]
-    [CustomComboInfo("Raiton Uptime Option", "Adds Raiton as an uptime feature.", Job.NIN)]
-    NIN_ST_AdvancedMode_Raiton_Uptime = 10065,
-
-    [ParentCombo(NIN_ST_AdvancedMode_Bunshin_Phantom)]
-    [CustomComboInfo("Phantom Kamaitachi Uptime Option", "Adds Phantom Kamaitachi as an uptime feature.", Job.NIN)]
-    NIN_ST_AdvancedMode_Phantom_Uptime = 10066,
-
-    [ParentCombo(NIN_ST_AdvancedMode_Ninjitsus_Suiton)]
-    [CustomComboInfo("Suiton Uptime Option", "Adds Suiton as an uptime feature.", Job.NIN)]
-    NIN_ST_AdvancedMode_Suiton_Uptime = 10067,
-
+    #region Variant
     [Variant]
     [VariantParent(NIN_ST_SimpleMode, NIN_ST_AdvancedMode, NIN_AoE_SimpleMode, NIN_AoE_AdvancedMode)]
     [CustomComboInfo("Cure Option", "Use Variant Cure when HP is below set threshold.", Job.NIN)]
@@ -4307,8 +4234,9 @@ public enum Preset
     [VariantParent(NIN_ST_SimpleMode, NIN_ST_AdvancedMode, NIN_AoE_SimpleMode, NIN_AoE_AdvancedMode)]
     [CustomComboInfo("Rampart Option", "Use Variant Rampart on cooldown.", Job.NIN)]
     NIN_Variant_Rampart = 10070,
+    #endregion
 
-    // Last value = 10075
+    // Last value = 10042
 
     #endregion
 
@@ -5503,20 +5431,20 @@ public enum Preset
     #region Stand Alone Features
 
     [ReplaceSkill(RDM.Veraero, RDM.Veraero3)]
-    [CustomComboInfo("Spell Combo on Veraero", "Replaces Veraero with Jolt.", Job.RDM)]
+    [CustomComboInfo("Spell Combo on Veraero", "Replaces Veraero with options.", Job.RDM)]
     RDM_VerAero = 13400,
-
-    [ParentCombo(RDM_VerAero)]
-    [CustomComboInfo("Add Verstone", "Replaces Veraero with Verstone.", Job.RDM)]
-    RDM_VerAero_Stone = 13401,
     
     [ReplaceSkill(RDM.Verthunder, RDM.Verthunder3)]
-    [CustomComboInfo("Spell Combo on Verthunder", "Replaces Verthunder with Jolt.", Job.RDM)]
+    [CustomComboInfo("Spell Combo on Verthunder", "Replaces Verthunder with options.", Job.RDM)]
     RDM_VerThunder = 13418,
-
-    [ParentCombo(RDM_VerThunder)]
-    [CustomComboInfo("Add Verfire", "Replaces Verthunder With Verfire.", Job.RDM)]
-    RDM_VerThunder_Fire = 13419,
+    
+    [ReplaceSkill(RDM.Veraero2)]
+    [CustomComboInfo("Spell Combo on Veraero 2", "Replaces Veraero 2 with options.", Job.RDM)]
+    RDM_VerAero2 = 13432,
+    
+    [ReplaceSkill(RDM.Verthunder2)]
+    [CustomComboInfo("Spell Combo on Verthunder 2", "Replaces Verthunder 2 with options.", Job.RDM)]
+    RDM_VerThunder2 = 13433,
 
     [ReplaceSkill(RDM.Riposte)]
     [CustomComboInfo("Riposte Melee Combo", "Replaces Riposte with the basic melee combo.", Job.RDM)]
@@ -5524,7 +5452,7 @@ public enum Preset
     
     [ParentCombo(RDM_Riposte)]
     [CustomComboInfo("Riposte OGCD Weave Options", "Weave the following OGCDS in the melee combo", Job.RDM)]
-    RDM_Riposte_Weaves = 134230,
+    RDM_Riposte_Weaves = 13434,
     
     [ParentCombo(RDM_Riposte)]
     [CustomComboInfo("Gap-Close with Corps-a-corps Option",
@@ -5624,7 +5552,7 @@ public enum Preset
     [CustomComboInfo("Cure on Vercure Option", "Replaces Vercure with Variant Cure.", Job.RDM)]
     RDM_Variant_Cure2 = 13417,
     
-    //Last Used 13431
+    //Last Used 13434
     #endregion
 
     #endregion
@@ -8195,13 +8123,13 @@ public enum Preset
     WHM_Retargets = 19037,
     
     [ParentCombo(WHM_Retargets)]
-    [ReplaceSkill(WHM.Aquaveil)]
+    [ReplaceSkill(WHM.Cure, WHM.Cure2)]
     [CustomComboInfo("Cure Option", "Retargets Cure and Cure II to the heal stack (even from the Cure II Sync Feature above).", Job.WHM)]
     [Retargeted(WHM.Cure, WHM.Cure2)]
     WHM_Re_Cure = 19038,
     
     [ParentCombo(WHM_Retargets)]
-    [ReplaceSkill(WHM.Aquaveil)]
+    [ReplaceSkill(WHM.AfflatusSolace)]
     [CustomComboInfo("Afflatus Solace Option", "Retargets Afflatus Solace to the heal stack (even from the Solace into Misery Feature above).", Job.WHM)]
     [Retargeted(WHM.AfflatusSolace)]
     WHM_Re_Solace = 19039,

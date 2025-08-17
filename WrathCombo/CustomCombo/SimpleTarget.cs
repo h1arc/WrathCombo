@@ -390,7 +390,11 @@ internal static class SimpleTarget
         var range = dotAction.ActionRange();
         var nearbyEnemies = Svc.Objects
             .OfType<IBattleChara>()
-            .Where(x => x.IsHostile() && x.IsTargetable && x.IsWithinRange(range))
+            .Where(x => x.IsHostile() && 
+                        x.IsTargetable && 
+                        x.IsInCombat() &&
+                        x.IsNotInvincible() &&
+                        x.IsWithinRange(range))
             .ToArray();
 
         if (nearbyEnemies.Length > maxNumberOfEnemiesInRange)
@@ -400,6 +404,7 @@ internal static class SimpleTarget
             .Where(x => x.CanUseOn(dotAction) &&
                         (float)x.CurrentHp / x.MaxHp * 100f > minHPPercent &&
                         !JustUsedOn(dotAction, x) &&
+                        IsInLineOfSight(x) &&
                         GetStatusEffectRemainingTime
                             (dotDebuff, x) <= reapplyThreshold &&
                         CanApplyStatus(x, dotDebuff))
@@ -419,7 +424,11 @@ internal static class SimpleTarget
         var range = refreshAction.ActionRange();
         var nearbyEnemies = Svc.Objects
             .OfType<IBattleChara>()
-            .Where(x => x.IsHostile() && x.IsTargetable && x.IsWithinRange(range))
+            .Where(x => x.IsHostile() && 
+                        x.IsTargetable && 
+                        x.IsInCombat() &&
+                        x.IsNotInvincible() &&
+                        x.IsWithinRange(range))
             .ToArray();
 
         if (nearbyEnemies.Length > maxNumberOfEnemiesInRange)
@@ -428,6 +437,7 @@ internal static class SimpleTarget
         return nearbyEnemies
             .Where(x => x.CanUseOn(refreshAction) &&
                         (float)x.CurrentHp / x.MaxHp * 100f > minHPPercent &&
+                        IsInLineOfSight(x) &&
                         !JustUsedOn(refreshAction, x) &&
                         HasStatusEffect(dotDebuff1, x) &&
                         HasStatusEffect(dotDebuff2, x) &&
