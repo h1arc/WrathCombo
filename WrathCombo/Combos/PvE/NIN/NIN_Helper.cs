@@ -1,4 +1,5 @@
-﻿using System.Collections.Frozen;
+﻿using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using Dalamud.Game.ClientState.JobGauge.Types;
 using WrathCombo.CustomComboNS;
@@ -29,6 +30,8 @@ internal partial class NIN
     #region Ninjutsu Logic
     internal static bool HasDoton => HasStatusEffect(Buffs.Doton);
     internal static float DotonRemaining => GetStatusEffectRemainingTime(Buffs.Doton);
+    internal static bool StoppedMoving => TimeStoodStill >= TimeSpan.FromSeconds(DotonTimeStill);
+    internal static float DotonTimeStill => AoESimpleMode ? 1.5f : NIN_AoE_AdvancedMode_Doton_TimeStill;
     
     internal static bool CanUseFumaShuriken => LevelChecked(FumaShuriken) && MudraReady;
      
@@ -49,7 +52,7 @@ internal partial class NIN
                                           NIN_AoE_AdvancedMode_Katon_Options[1] && !InMeleeRange() && 
                                           GetCooldownChargeRemainingTime(Ten) <= TrickCD - 10); //Uptime option
     
-    internal static bool CanUseDoton => LevelChecked(Doton) && MudraReady && 
+    internal static bool CanUseDoton => LevelChecked(Doton) && MudraReady && StoppedMoving &&
                                         (!HasDoton || DotonRemaining <= 2) &&
                                         (TrickDebuff || //Buff Window
                                          GetCooldownChargeRemainingTime(Ten) < 3); // Use if you have Kassatsu before you get Hosho Ranryu
