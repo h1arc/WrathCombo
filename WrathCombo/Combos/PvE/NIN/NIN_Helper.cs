@@ -94,15 +94,15 @@ internal partial class NIN
     internal static float TrickCD => GetCooldownRemainingTime(OriginalHook(TrickAttack));
     internal static float MugCD => GetCooldownRemainingTime(OriginalHook(Mug));
     
-    internal static bool CanTrickST => ActionReady(OriginalHook(TrickAttack)) && NinjaWeave && HasStatusEffect(Buffs.ShadowWalker) && !MudraPhase &&
+    internal static bool CanTrickST => ActionReady(OriginalHook(TrickAttack)) && NinjaWeave && CanApplyStatus(CurrentTarget, [Debuffs.TrickAttack, Debuffs.KunaisBane]) && HasStatusEffect(Buffs.ShadowWalker) && !MudraPhase &&
                                      (MugDebuff || MugCD >= 45 || MugDisabledST);
-    internal static bool CanTrickAoE => ActionReady(OriginalHook(TrickAttack)) && NinjaWeave && HasStatusEffect(Buffs.ShadowWalker) && !MudraPhase &&
+    internal static bool CanTrickAoE => ActionReady(OriginalHook(TrickAttack)) && NinjaWeave && CanApplyStatus(CurrentTarget, [Debuffs.TrickAttack, Debuffs.KunaisBane])&& HasStatusEffect(Buffs.ShadowWalker) && !MudraPhase &&
                                      (MugDebuff || MugCD >= 45 || MugDisabledAoE);
     
-    internal static bool CanMugST => ActionReady(OriginalHook(Mug)) && CanDelayedWeave(1.25f, .6f, 10) && !MudraPhase &&
+    internal static bool CanMugST => ActionReady(OriginalHook(Mug)) && CanApplyStatus(CurrentTarget, [Debuffs.Mug, Debuffs.Dokumori])&& CanDelayedWeave(1.25f, .6f, 10) && !MudraPhase &&
                                    (TrickCD <= 6 || TrickDisabledST) && 
                                    (LevelChecked(Dokumori) && GetTargetDistance() <= 8 ||InMeleeRange());
-    internal static bool CanMugAoE => ActionReady(OriginalHook(Mug)) && CanDelayedWeave(1.25f, .6f, 10) && !MudraPhase &&
+    internal static bool CanMugAoE => ActionReady(OriginalHook(Mug)) && CanApplyStatus(CurrentTarget, [Debuffs.Mug, Debuffs.Dokumori])&& CanDelayedWeave(1.25f, .6f, 10) && !MudraPhase &&
                                    (TrickCD <= 6 || TrickDisabledAoE) && 
                                    (LevelChecked(Dokumori) && GetTargetDistance() <= 8 ||InMeleeRange());
     

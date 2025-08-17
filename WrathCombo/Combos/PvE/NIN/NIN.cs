@@ -360,7 +360,9 @@ internal partial class NIN : Melee
             #region Selfcare
             if ((!MudraPhase || HasKassatsu && TrickCD > 5) && CanWeave())
             {
-                if (IsEnabled(Preset.NIN_ST_AdvancedMode_Feint) && ActionReady(Role.Feint) &&
+                if (IsEnabled(Preset.NIN_ST_AdvancedMode_Feint) && ActionReady(Role.Feint) && 
+                    !HasStatusEffect(RoleActions.Melee.Debuffs.Feint, CurrentTarget, true) &&
+                    CanApplyStatus(CurrentTarget, RoleActions.Melee.Debuffs.Feint) &&
                     RaidWideCasting())
                     return Role.Feint;
 
