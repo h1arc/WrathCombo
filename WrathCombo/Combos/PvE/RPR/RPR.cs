@@ -229,6 +229,12 @@ internal partial class RPR : Melee
             //All Weaves
             if (CanWeave())
             {
+                if (IsEnabled(Preset.RPR_ST_Feint) &&
+                    RoleActions.Melee.CanFeint() &&
+                    CanApplyStatus(CurrentTarget, RoleActions.Melee.Debuffs.Feint) &&
+                    RaidWideCasting())
+                    return Role.Feint;
+
                 //Arcane Cirlce
                 if (IsEnabled(Preset.RPR_ST_ArcaneCircle) &&
                     ActionReady(ArcaneCircle) &&
@@ -296,6 +302,11 @@ internal partial class RPR : Melee
                     if (Role.CanBloodBath(RPR_STBloodbathHPThreshold))
                         return Role.Bloodbath;
                 }
+
+                if (IsEnabled(Preset.RPR_ST_StunInterupt) &&
+                    RoleActions.Melee.CanLegSweep() &&
+                    !TargetIsBoss() && TargetIsCasting())
+                    return Role.LegSweep;
             }
 
             //Ranged Attacks
@@ -581,6 +592,11 @@ internal partial class RPR : Melee
                     if (Role.CanBloodBath(RPR_AoEBloodbathHPThreshold))
                         return Role.Bloodbath;
                 }
+
+                if (IsEnabled(Preset.RPR_AoE_StunInterupt) &&
+                    RoleActions.Melee.CanLegSweep() &&
+                    !TargetIsBoss() && TargetIsCasting())
+                    return Role.LegSweep;
             }
 
             if (IsEnabled(Preset.RPR_AoE_WoD) &&

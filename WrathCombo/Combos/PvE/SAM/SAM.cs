@@ -284,6 +284,12 @@ internal partial class SAM : Melee
             //oGCDs
             if (CanWeave() && M6SReady)
             {
+                if (IsEnabled(Preset.SAM_ST_Feint) &&
+                    RoleActions.Melee.CanFeint() &&
+                    CanApplyStatus(CurrentTarget, RoleActions.Melee.Debuffs.Feint) &&
+                    RaidWideCasting())
+
+                    return Role.Feint;
                 if (IsEnabled(Preset.SAM_ST_CDs))
                 {
                     //Meikyo Features
@@ -354,6 +360,11 @@ internal partial class SAM : Melee
                     if (Role.CanBloodBath(SAM_STBloodbathHPThreshold))
                         return Role.Bloodbath;
                 }
+
+                if (IsEnabled(Preset.SAM_ST_StunInterupt) &&
+                    RoleActions.Melee.CanLegSweep() &&
+                    !TargetIsBoss() && TargetIsCasting())
+                    return Role.LegSweep;
             }
 
             //Ranged
@@ -676,6 +687,11 @@ internal partial class SAM : Melee
                     if (Role.CanBloodBath(SAM_AoEBloodbathHPThreshold))
                         return Role.Bloodbath;
                 }
+
+                if (IsEnabled(Preset.SAM_AoE_StunInterupt) &&
+                    RoleActions.Melee.CanLegSweep() &&
+                    !TargetIsBoss() && TargetIsCasting())
+                    return Role.LegSweep;
             }
 
             if (IsEnabled(Preset.SAM_AoE_Damage))

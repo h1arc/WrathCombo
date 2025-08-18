@@ -136,6 +136,12 @@ internal partial class DRG : Melee
                         HasStatusEffect(Buffs.NastrondReady) &&
                         LoTDActive)
                         return Nastrond;
+
+                    if (Role.CanSecondWind(25))
+                        return Role.SecondWind;
+
+                    if (Role.CanBloodBath(40))
+                        return Role.Bloodbath;
                 }
 
                 if (CanDRGWeave(0.8f))
@@ -166,12 +172,6 @@ internal partial class DRG : Melee
                     LoTDActive && InMeleeRange())
                     return Stardiver;
             }
-
-            if (Role.CanSecondWind(25))
-                return Role.SecondWind;
-
-            if (Role.CanBloodBath(40))
-                return Role.Bloodbath;
 
             //1-2-3 Combo
             if (ComboTimer > 0)
@@ -244,6 +244,12 @@ internal partial class DRG : Melee
             {
                 if (CanDRGWeave())
                 {
+                    if (IsEnabled(Preset.DRG_ST_Feint) &&
+                        RoleActions.Melee.CanFeint() &&
+                        CanApplyStatus(CurrentTarget, RoleActions.Melee.Debuffs.Feint) &&
+                        RaidWideCasting())
+                        return Role.Feint;
+
                     if (IsEnabled(Preset.DRG_ST_Buffs))
                     {
                         //Battle Litany Feature
@@ -310,6 +316,21 @@ internal partial class DRG : Melee
                             LoTDActive)
                             return Nastrond;
                     }
+
+                    // healing
+                    if (IsEnabled(Preset.DRG_ST_ComboHeals))
+                    {
+                        if (Role.CanSecondWind(DRG_ST_SecondWindHPThreshold))
+                            return Role.SecondWind;
+
+                        if (Role.CanBloodBath(DRG_ST_BloodbathHPThreshold))
+                            return Role.Bloodbath;
+                    }
+
+                    if (IsEnabled(Preset.DRG_ST_StunInterupt) &&
+                        RoleActions.Melee.CanLegSweep() &&
+                        !TargetIsBoss() && TargetIsCasting())
+                        return Role.LegSweep;
                 }
 
                 if (IsEnabled(Preset.DRG_ST_CDs))
@@ -358,16 +379,6 @@ internal partial class DRG : Melee
                         !HasStatusEffect(Buffs.StarcrossReady))
                         return Stardiver;
                 }
-            }
-
-            // healing
-            if (IsEnabled(Preset.DRG_ST_ComboHeals))
-            {
-                if (Role.CanSecondWind(DRG_ST_SecondWindHPThreshold))
-                    return Role.SecondWind;
-
-                if (Role.CanBloodBath(DRG_ST_BloodbathHPThreshold))
-                    return Role.Bloodbath;
             }
 
             //1-2-3 Combo
@@ -488,6 +499,12 @@ internal partial class DRG : Melee
                         HasStatusEffect(Buffs.NastrondReady) &&
                         LoTDActive)
                         return Nastrond;
+
+                    if (Role.CanSecondWind(25))
+                        return Role.SecondWind;
+
+                    if (Role.CanBloodBath(40))
+                        return Role.Bloodbath;
                 }
 
                 if (CanDRGWeave(0.8f))
@@ -512,12 +529,6 @@ internal partial class DRG : Melee
                     LoTDActive && InMeleeRange())
                     return Stardiver;
             }
-
-            if (Role.CanSecondWind(25))
-                return Role.SecondWind;
-
-            if (Role.CanBloodBath(40))
-                return Role.Bloodbath;
 
             if (ComboTimer > 0)
             {
@@ -642,6 +653,21 @@ internal partial class DRG : Melee
                             LoTDActive)
                             return Nastrond;
                     }
+
+                    // healing
+                    if (IsEnabled(Preset.DRG_AoE_ComboHeals))
+                    {
+                        if (Role.CanSecondWind(DRG_AoE_SecondWindHPThreshold))
+                            return Role.SecondWind;
+
+                        if (Role.CanBloodBath(DRG_AoE_BloodbathHPThreshold))
+                            return Role.Bloodbath;
+                    }
+
+                    if (IsEnabled(Preset.DRG_AoE_StunInterupt) &&
+                        RoleActions.Melee.CanLegSweep() &&
+                        !TargetIsBoss() && TargetIsCasting())
+                        return Role.LegSweep;
                 }
 
                 if (IsEnabled(Preset.DRG_AoE_CDs))
@@ -683,16 +709,6 @@ internal partial class DRG : Melee
                         !HasStatusEffect(Buffs.StarcrossReady))
                         return Stardiver;
                 }
-            }
-
-            // healing
-            if (IsEnabled(Preset.DRG_AoE_ComboHeals))
-            {
-                if (Role.CanSecondWind(DRG_AoE_SecondWindHPThreshold))
-                    return Role.SecondWind;
-
-                if (Role.CanBloodBath(DRG_AoE_BloodbathHPThreshold))
-                    return Role.Bloodbath;
             }
 
             if (ComboTimer > 0)

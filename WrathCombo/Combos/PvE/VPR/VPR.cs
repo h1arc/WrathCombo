@@ -244,6 +244,12 @@ internal partial class VPR : Melee
             //oGCDs
             if (CanWeave())
             {
+                if (IsEnabled(Preset.VPR_ST_Feint) &&
+                    RoleActions.Melee.CanFeint() &&
+                    CanApplyStatus(CurrentTarget, RoleActions.Melee.Debuffs.Feint) &&
+                    RaidWideCasting())
+                    return Role.Feint;
+
                 //Serpents Ire
                 if (IsEnabled(Preset.VPR_ST_SerpentsIre) && InCombat() &&
                     !CappedOnCoils() && ActionReady(SerpentsIre) &&
@@ -277,6 +283,11 @@ internal partial class VPR : Melee
                     if (HasStatusEffect(Buffs.SwiftskinsVenom))
                         return OriginalHook(Twinblood);
                 }
+
+                if (IsEnabled(Preset.VPR_ST_StunInterupt) &&
+                    RoleActions.Melee.CanLegSweep() &&
+                    !TargetIsBoss() && TargetIsCasting())
+                    return Role.LegSweep;
             }
 
             //Ranged
@@ -609,6 +620,11 @@ internal partial class VPR : Melee
                         !CappedOnCoils() && ActionReady(SerpentsIre))
                         return SerpentsIre;
                 }
+
+                if (IsEnabled(Preset.VPR_AoE_StunInterupt) &&
+                    RoleActions.Melee.CanLegSweep() &&
+                    !TargetIsBoss() && TargetIsCasting())
+                    return Role.LegSweep;
             }
 
             //Vicepit combo

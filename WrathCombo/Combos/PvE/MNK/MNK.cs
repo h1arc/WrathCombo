@@ -155,6 +155,12 @@ internal partial class MNK : Melee
             // OGCDs
             if (CanWeave() && M6SReady)
             {
+                if (IsEnabled(Preset.MNK_ST_Feint) &&
+                    RoleActions.Melee.CanFeint() &&
+                    CanApplyStatus(CurrentTarget, RoleActions.Melee.Debuffs.Feint) &&
+                    RaidWideCasting())
+                    return Role.Feint;
+
                 if (IsEnabled(Preset.MNK_STUsePerfectBalance) &&
                     UsePerfectBalanceST())
                     return PerfectBalance;
@@ -192,6 +198,11 @@ internal partial class MNK : Melee
                     !JustUsed(Brotherhood) && !JustUsed(RiddleOfFire) &&
                     InActionRange(OriginalHook(SteeledMeditation)))
                     return OriginalHook(SteeledMeditation);
+
+                if (IsEnabled(Preset.MNK_ST_StunInterupt) &&
+                    RoleActions.Melee.CanLegSweep() &&
+                    !TargetIsBoss() && TargetIsCasting())
+                    return Role.LegSweep;
             }
 
             // GCDs
@@ -424,6 +435,11 @@ internal partial class MNK : Melee
                     !JustUsed(Brotherhood) && !JustUsed(RiddleOfFire) &&
                     InActionRange(OriginalHook(InspiritedMeditation)))
                     return OriginalHook(InspiritedMeditation);
+
+                if (IsEnabled(Preset.MNK_AoE_StunInterupt) &&
+                    RoleActions.Melee.CanLegSweep() &&
+                    !TargetIsBoss() && TargetIsCasting())
+                    return Role.LegSweep;
             }
 
             // Masterful Blitz
