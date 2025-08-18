@@ -4159,7 +4159,7 @@ public enum Preset
     
     [ParentCombo(NIN_AoE_AdvancedMode)]
     [CustomComboInfo("Leg Sweep Option", "Adds Leg Sweep when target non-boss is casting.", Job.NIN)]
-    NIN_AoE_AdvancedMode_StunInterupt =10043,
+    NIN_AoE_AdvancedMode_StunInterupt =10044,
     
     [ParentCombo(NIN_AoE_AdvancedMode)]
     [CustomComboInfo("Phantom Kamaitachi Option", "Adds Phantom Kamaitachi to Advanced Mode.", Job.NIN)]
@@ -4251,7 +4251,7 @@ public enum Preset
     NIN_Variant_Rampart = 10070,
     #endregion
 
-    // Last value = 10042
+    // Last value = 10044
 
     #endregion
 
