@@ -853,6 +853,7 @@ internal partial class BRD : PhysicalRanged
             return actionID;
         }
     }
+    
     internal class BRD_ST_oGCD : CustomCombo
     {
         protected internal override Preset Preset => Preset.BRD_ST_oGCD;
@@ -888,6 +889,7 @@ internal partial class BRD : PhysicalRanged
             return actionID;
         }
     }
+    
     internal class BRD_AoE_Combo : CustomCombo
     {
         protected internal override Preset Preset => Preset.BRD_WideVolleyUpgrade;
@@ -930,6 +932,7 @@ internal partial class BRD : PhysicalRanged
 
         }
     }
+    
     internal class BRD_Buffs : CustomCombo
     {
         protected internal override Preset Preset => Preset.BRD_Buffs;
@@ -950,6 +953,7 @@ internal partial class BRD : PhysicalRanged
             return actionID;
         }
     }
+    
     internal class BRD_OneButtonSongs : CustomCombo
     {
         protected internal override Preset Preset => Preset.BRD_OneButtonSongs;
