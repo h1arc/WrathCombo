@@ -479,6 +479,7 @@ internal partial class NIN
     }
     #endregion
     
+    #region Mudra Standalone Logic
      // Single Target
     internal static uint UseFumaShuriken(uint actionId)
     {
@@ -546,6 +547,7 @@ internal partial class NIN
             return JinCombo;
         return ActionWatching.LastAction is JinCombo ? TenCombo : Huton;
     }
+    #endregion
 
     #region Opener
     internal static NINOpenerMaxLevel4thGCDKunai Opener1 = new();
