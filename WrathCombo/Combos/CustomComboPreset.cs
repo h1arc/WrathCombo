@@ -4072,6 +4072,10 @@ public enum Preset
     [ParentCombo(NIN_ST_AdvancedMode)]
     [CustomComboInfo("Meisui Option", "Adds Meisui to Advanced Mode.", Job.NIN)]
     NIN_ST_AdvancedMode_Meisui = 10013,
+    
+    [ParentCombo(NIN_ST_AdvancedMode)]
+    [CustomComboInfo("Leg Sweep Option", "Adds Leg Sweep when target non-boss is casting.", Job.NIN)]
+    NIN_ST_AdvancedMode_StunInterupt =10043,
 
     [ParentCombo(NIN_ST_AdvancedMode)]
     [CustomComboInfo("Phantom Kamaitachi Option", "Adds Phantom Kamaitachi to Advanced Mode.", Job.NIN)]
@@ -4152,6 +4156,10 @@ public enum Preset
     [ParentCombo(NIN_AoE_AdvancedMode)]
     [CustomComboInfo("Meisui Option", "Adds Meisui to Advanced Mode.", Job.NIN)]
     NIN_AoE_AdvancedMode_Meisui = 10029,
+    
+    [ParentCombo(NIN_AoE_AdvancedMode)]
+    [CustomComboInfo("Leg Sweep Option", "Adds Leg Sweep when target non-boss is casting.", Job.NIN)]
+    NIN_AoE_AdvancedMode_StunInterupt =10043,
     
     [ParentCombo(NIN_AoE_AdvancedMode)]
     [CustomComboInfo("Phantom Kamaitachi Option", "Adds Phantom Kamaitachi to Advanced Mode.", Job.NIN)]
