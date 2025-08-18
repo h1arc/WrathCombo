@@ -86,7 +86,7 @@ internal static class PvPCommon
                     break;
 
                 case Preset.PvP_QuickPurify:
-                    DrawSliderInt(0, 10000, PurifyMPThreshold, "Do not use Purify below set MP", sliderIncrement:100);
+                    DrawSliderInt(2500, 10000, PurifyMPThreshold, "Do not use Purify below set MP", sliderIncrement:100);
                     DrawPvPStatusMultiChoice(QuickPurifyStatuses);
                     break;
             }
