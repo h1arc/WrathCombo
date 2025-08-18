@@ -720,59 +720,49 @@ internal partial class BLM : Caster
             };
         }
     }
-
-    internal class BLM_Fire4to3 : CustomCombo
+    
+    internal class BLM_Fire4 : CustomCombo
     {
-        protected internal override Preset Preset => Preset.BLM_Fire4to3;
+        protected internal override Preset Preset => Preset.BLM_Fire4;
         protected override uint Invoke(uint actionID)
         {
             if (actionID is not Fire4)
                 return actionID;
-
-            return LevelChecked(Fire4) &&
-                   (IcePhase ||
-                    AstralFireStacks is 1 ||
-                    AstralFireStacks is 2 ||
-                    !InCombat())
-                ? Fire3
-                : actionID;
-        }
-    }
-
-    internal class BLM_FireandIce : CustomCombo
-    {
-        protected internal override Preset Preset => Preset.BLM_FireandIce;
-
-        protected override uint Invoke(uint actionID)
-        {
-            if (actionID is not (Fire4 or Flare))
-                return actionID;
-
-            return actionID switch
+            
+            if (!InCombat())
             {
-                Fire4 when FirePhase && LevelChecked(Fire4) => Fire4,
-                Fire4 when IcePhase && LevelChecked(Blizzard4) => Blizzard4,
-                Flare when FirePhase && LevelChecked(Flare) => Flare,
-                Flare when IcePhase && LevelChecked(Freeze) => Freeze,
-                var _ => actionID
-            };
-        }
-    }
-
-    internal class BLM_FireFlarestar : CustomCombo
-    {
-        protected internal override Preset Preset => Preset.BLM_FireFlarestar;
-
-        protected override uint Invoke(uint actionID)
-        {
-            if (actionID is not (Fire4 or Flare))
+                if (BLM_Fire4_Fire3)
+                    return LevelChecked(Fire3) ? Fire3 : Fire;
                 return actionID;
-
-            return FirePhase && FlarestarReady && LevelChecked(FlareStar)
-                ? FlareStar
-                : actionID;
+            }
+            switch (IcePhase)
+            {
+                case false when BLM_Fire4_FlareStar && FlarestarReady && LevelChecked(FlareStar):
+                    return FlareStar;
+                case false when BLM_Fire4_Fire3 && AstralFireStacks < 3:
+                    return LevelChecked(Fire3)
+                        ? Fire3
+                        : Fire;
+                case false:
+                    return actionID;
+                //Ice Phase
+                case true when BLM_Fire4_FireAndIce == 0 &&UmbralIceStacks < 3:
+                    return LevelChecked(Blizzard3)
+                        ? Blizzard3
+                        : Blizzard;
+                case true when BLM_Fire4_FireAndIce == 0 && UmbralIceStacks == 3 && LevelChecked(Blizzard4):
+                    return Blizzard4;
+                case true when BLM_Fire4_FireAndIce == 1:
+                    return BLM_Fire4_Fire3 && LevelChecked(Fire3)
+                        ? Fire3
+                        : Fire;
+                case true:
+                    return actionID;
+            }
         }
     }
+
+
 
     internal class BLM_Blizzard4toDespair : CustomCombo
     {

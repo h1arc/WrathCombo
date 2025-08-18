@@ -205,6 +205,13 @@ internal partial class BLM
                     DrawAdditionalBoolChoice(BLM_AmplifierXenoCD,
                         "Show Xenoglossy when Amplifier is on cooldown", "Makes it so that Xenoglossy also shows when Amplifier is on cooldown.");
                     break;
+                
+                case Preset.BLM_Fire4:
+                    DrawAdditionalBoolChoice(BLM_Fire4_FlareStar, "Flarestar", "Adds Flarestar in Fire Phase when ready.");
+                    DrawAdditionalBoolChoice(BLM_Fire4_Fire3, "Fire3/1", "Adds Fire 3/1 when in Astral Fire and stack is less than 3");
+                    DrawRadioButton(BLM_Fire4_FireAndIce, "Use Ice in Ice", "Adds Blizzard 1/3/4 in Ice Phase depending on stacks and level", 0);
+                    DrawRadioButton(BLM_Fire4_FireAndIce, "Use Fire in Ice", "Leaves Fire in Ice Phase \nWill Use Fire 3/1 if selected above.", 1);
+                    break;
             }
         }
 
@@ -233,7 +240,8 @@ internal partial class BLM
             BLM_VariantCure = new("BLM_VariantCure", 50),
             BLM_B1to3 = new("BLM_B1to3", 0),
             BLM_B4toDespair = new("BLM_B4toDespair", 0),
-            BLM_F1to3 = new("BLM_F1to3", 0);
+            BLM_F1to3 = new("BLM_F1to3", 0),
+            BLM_Fire4_FireAndIce = new("BLM_Fire4_FireAndIce", 0);
 
         public static UserFloat
             BLM_ST_LeyLinesTimeStill = new("BLM_ST_LeyLinesTimeStill", 2.5f),
@@ -241,7 +249,9 @@ internal partial class BLM
 
         public static UserBool
             BLM_AM_FieldMouseover = new("BLM_AM_FieldMouseover"),
-            BLM_AmplifierXenoCD = new("BLM_AmplifierXenoCD");
+            BLM_AmplifierXenoCD = new("BLM_AmplifierXenoCD"),
+            BLM_Fire4_FlareStar = new("BLM_Fire4_FlareStar"),
+            BLM_Fire4_Fire3 = new("BLM_Fire4_Fire3");
 
         public static UserBoolArray
             BLM_ST_MovementOption = new("BLM_ST_MovementOption");
