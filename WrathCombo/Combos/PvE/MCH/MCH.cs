@@ -209,6 +209,13 @@ internal partial class MCH : PhysicalRanged
             // All weaves
             if (CanWeave())
             {
+                if (IsEnabled(Preset.MCH_ST_Dismantle) &&
+                    ActionReady(Dismantle) &&
+                    !HasStatusEffect(Debuffs.Dismantled, CurrentTarget, true) &&
+                    CanApplyStatus(CurrentTarget, Debuffs.Dismantled) &&
+                    RaidWideCasting())
+                    return Dismantle;
+
                 if (IsEnabled(Preset.MCH_ST_Adv_QueenOverdrive) &&
                     RobotActive && ActionReady(RookOverdrive) &&
                     GetTargetHPPercent() <= MCH_ST_QueenOverDrive)

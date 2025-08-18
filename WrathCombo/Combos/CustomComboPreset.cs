@@ -1114,6 +1114,10 @@ public enum Preset
     [CustomComboInfo("Manaward Option", "Adds Manaward to the rotation.", Job.BLM)]
     BLM_ST_Manaward = 2199,
 
+    [ParentCombo(BLM_ST_AdvancedMode)]
+    [CustomComboInfo("Addle Raidwide Option", "Adds Addle when Raidwide is detected casting.", Job.BLM)]
+    BLM_ST_Addle = 2195,
+
     #endregion
 
     #region AoE - Advanced
@@ -3640,6 +3644,10 @@ public enum Preset
     [ParentCombo(MCH_ST_AdvancedMode)]
     [CustomComboInfo("Second Wind Option", "Use Second Wind when below the set HP percentage.", Job.MCH)]
     MCH_ST_Adv_SecondWind = 8114,
+
+    [ParentCombo(MCH_ST_AdvancedMode)]
+    [CustomComboInfo("Dismantle Raidwide Option", "Adds Dismantle when Raidwide is detected casting.", Job.MCH)]
+    MCH_ST_Dismantle = 8195,
 
     #endregion
 
