@@ -745,35 +745,40 @@ internal partial class BRD : PhysicalRanged
         protected internal override Preset Preset => Preset.BRD_StraightShotUpgrade;
         protected override uint Invoke(uint actionID)
         {
-            if (actionID is not (HeavyShot or BurstShot))
+            if (actionID is not (StraightShot or RefulgentArrow))
                 return actionID;
+            
+            if (CanBardWeave && IsEnabled(Preset.BRD_StraightShotUpgrade_OGCDs))
+            {
+                if (ActionReady(EmpyrealArrow) && BRD_StraightShotUpgrade_OGCDs_Options[0])
+                    return EmpyrealArrow;
+                
+                if (PitchPerfected() && BRD_StraightShotUpgrade_OGCDs_Options[1])
+                    return OriginalHook(PitchPerfect);
+                
+                if (ActionReady(Sidewinder) && BRD_StraightShotUpgrade_OGCDs_Options[3])
+                    return Sidewinder;
+
+                if (ActionReady(Bloodletter) && BRD_StraightShotUpgrade_OGCDs_Options[2] && 
+                    (BloodletterCharges == 3 && TraitLevelChecked(Traits.EnhancedBloodletter) || 
+                    BloodletterCharges == 2 && !TraitLevelChecked(Traits.EnhancedBloodletter)))
+                    return OriginalHook(Bloodletter);
+            }
 
             if (IsEnabled(Preset.BRD_DoTMaintainance) &&
                 InCombat())
             {
                 if (UseIronJaws())
                     return IronJaws;
-
                 if (ApplyBlueDot())
                     return OriginalHook(Windbite);
-
                 if (ApplyPurpleDot())
                     return OriginalHook(VenomousBite);
             }
 
-            if (IsEnabled(Preset.BRD_ApexST))
-            {
-                if (gauge.SoulVoice == 100)
-                    return ApexArrow;
-
-                if (HasStatusEffect(Buffs.BlastArrowReady))
-                    return BlastArrow;
-            }
-
-            if (HasStatusEffect(Buffs.HawksEye) || HasStatusEffect(Buffs.Barrage))
-                return OriginalHook(StraightShot);
-
-            return actionID;
+            return HasStatusEffect(Buffs.HawksEye) || HasStatusEffect(Buffs.Barrage)
+                ? actionID
+                : OriginalHook(HeavyShot);
         }
     }
     internal class BRD_IronJaws : CustomCombo

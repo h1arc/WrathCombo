@@ -31,7 +31,8 @@ internal partial class BRD
         public static UserBoolArray
             BRD_AoE_Adv_Buffs_Options = new("BRD_AoE_Adv_Buffs_Options"),
             BRD_Adv_Buffs_Options = new("BRD_Adv_Buffs_Options"),
-            BRD_Adv_DoT_Options = new("BRD_Adv_DoT_Options");
+            BRD_Adv_DoT_Options = new("BRD_Adv_DoT_Options"),
+            BRD_StraightShotUpgrade_OGCDs_Options = new("BRD_StraightShotUpgrade_OGCDs_Options");
         #endregion
         
         internal static void Draw(Preset preset)
@@ -129,6 +130,13 @@ internal partial class BRD
                 #region Standalone
                 case Preset.BRD_Variant_Cure:
                     DrawSliderInt(1, 100, BRD_VariantCure, "HP% to be at or under", 200);
+                    break;
+                
+                case Preset.BRD_StraightShotUpgrade_OGCDs:
+                    DrawHorizontalMultiChoice(BRD_StraightShotUpgrade_OGCDs_Options, "Empyreal Arrow", "Adds Empyreal Arrow", 4, 0);
+                    DrawHorizontalMultiChoice(BRD_StraightShotUpgrade_OGCDs_Options, "Pitch Perfect", "Adds Pitch Perfect", 4, 1);
+                    DrawHorizontalMultiChoice(BRD_StraightShotUpgrade_OGCDs_Options, "Bloodletter", "Adds Bloodletter when at max charges", 4, 2);
+                    DrawHorizontalMultiChoice(BRD_StraightShotUpgrade_OGCDs_Options, "Sidewinder", "Adds Sidewinder", 4, 3);
                     break;
                 #endregion
             }

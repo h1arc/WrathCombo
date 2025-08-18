@@ -1442,7 +1442,7 @@ public enum Preset
 
     [AutoAction(false, false)]
     [ReplaceSkill(BRD.HeavyShot, BRD.BurstShot)]
-    [ConflictingCombos(BRD_ST_AdvMode, BRD_StraightShotUpgrade)]
+    [ConflictingCombos(BRD_ST_AdvMode)]
     [CustomComboInfo("Simple Mode - Single Target",
         "Replaces Heavy Shot with a full one-button single target rotation.\nThis is the ideal option for newcomers to the job.",
         Job.BRD)]
@@ -1464,7 +1464,7 @@ public enum Preset
 
     [AutoAction(false, false)]
     [ReplaceSkill(BRD.HeavyShot, BRD.BurstShot)]
-    [ConflictingCombos(BRD_ST_SimpleMode, BRD_StraightShotUpgrade)]
+    [ConflictingCombos(BRD_ST_SimpleMode)]
     [CustomComboInfo("Advanced Mode - Single Target",
         "Replaces Heavy Shot with a full one-button single target rotation.\nThese features are ideal if you want to customize the rotation.",
         Job.BRD)]
@@ -1587,23 +1587,18 @@ public enum Preset
 
     #region Smaller Features
 
-    [ReplaceSkill(BRD.HeavyShot, BRD.BurstShot)]
-    [ConflictingCombos(BRD_ST_AdvMode, BRD_ST_SimpleMode)]
-    [CustomComboInfo("Heavy Shot into Straight Shot Feature",
-        "Replaces Heavy Shot/Burst Shot with Straight Shot/Refulgent Arrow when procced.", Job.BRD)]
+    [ReplaceSkill(BRD.StraightShot, BRD.RefulgentArrow)]
+    [CustomComboInfo("Straight Shot Feature",
+        "Straight Shot/Refulgent Arrow with Heavy Shot when not procced.", Job.BRD)]
     BRD_StraightShotUpgrade = 3001,
+    
+    [ParentCombo(BRD_StraightShotUpgrade)]
+    [CustomComboInfo("OGCDs option", "Will use the following OGCDs to prevent overcap", Job.BRD)]
+    BRD_StraightShotUpgrade_OGCDs = 3002,
 
     [ParentCombo(BRD_StraightShotUpgrade)]
-    [CustomComboInfo("DoT Maintenance Option",
-        "Enabling this option will make Heavy Shot into Straight Shot refresh your DoTs on your current.", Job.BRD
-    )]
-    BRD_DoTMaintainance = 3002,
-
-    [ParentCombo(BRD_StraightShotUpgrade)]
-    [CustomComboInfo("Apex Arrow Option",
-        "Replaces Burst Shot with Apex Arrow when gauge is full and Blast Arrow when you are Blast Arrow ready.",
-        Job.BRD)]
-    BRD_ApexST = 3034,
+    [CustomComboInfo("DoT Option", "Will apply and refresh your dots.", Job.BRD)]
+    BRD_DoTMaintainance = 3067,
 
     [ReplaceSkill(BRD.IronJaws)]
     [ConflictingCombos(BRD_IronJaws_Alternate)]
@@ -1676,7 +1671,7 @@ public enum Preset
 
     #endregion
 
-    // Last value = 3066
+    // Last value = 3067
 
     #endregion
 
