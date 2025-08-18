@@ -799,7 +799,7 @@ internal partial class BRD : PhysicalRanged
                 return OriginalHook(VenomousBite);
 
             // Apex Option
-            if (IsEnabled(Preset.BRD_IronJawsApex))
+            if (BRD_IronJaws_Apex)
             {
                 if (LevelChecked(BlastArrow) && HasStatusEffect(Buffs.BlastArrowReady))
                     return BlastArrow;
@@ -807,25 +807,16 @@ internal partial class BRD : PhysicalRanged
                 if (gauge.SoulVoice == 100)
                     return ApexArrow;
             }
+            
+            if (BRD_IronJaws_Alternate)
+                return LevelChecked(Windbite) && BlueRemaining <= PurpleRemaining ?
+                    OriginalHook(Windbite) :
+                    OriginalHook(VenomousBite);
+            
             return actionID;
         }
     }
-    internal class BRD_IronJaws_Alternate : CustomCombo
-    {
-        protected internal override Preset Preset => Preset.BRD_IronJaws_Alternate;
-        protected override uint Invoke(uint actionID)
-        {
-            if (actionID is not IronJaws)
-                return actionID;
-
-            if (UseIronJaws())
-                return IronJaws;
-
-            return LevelChecked(Windbite) && BlueRemaining <= PurpleRemaining ?
-                OriginalHook(Windbite) :
-                OriginalHook(VenomousBite);
-        }
-    }
+    
     internal class BRD_AoE_oGCD : CustomCombo
     {
         protected internal override Preset Preset => Preset.BRD_AoE_oGCD;

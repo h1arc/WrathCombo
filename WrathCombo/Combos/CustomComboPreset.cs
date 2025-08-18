@@ -1601,22 +1601,10 @@ public enum Preset
     BRD_DoTMaintainance = 3067,
 
     [ReplaceSkill(BRD.IronJaws)]
-    [ConflictingCombos(BRD_IronJaws_Alternate)]
     [CustomComboInfo("Iron Jaws Feature",
         "Iron Jaws is replaced with Caustic Bite/Stormbite if one or both are not up.\nAlternates between the two if Iron Jaws isn't available.",
         Job.BRD)]
     BRD_IronJaws = 3003,
-
-    [ParentCombo(BRD_IronJaws)]
-    [CustomComboInfo("Iron Jaws Apex Option", "Adds Apex and Blast Arrow to Iron Jaws when available.", Job.BRD)]
-    BRD_IronJawsApex = 3024,
-
-    [ReplaceSkill(BRD.IronJaws)]
-    [ConflictingCombos(BRD_IronJaws)]
-    [CustomComboInfo("Iron Jaws Alternate Feature",
-        "Iron Jaws is replaced with Caustic Bite/Stormbite if one or both are not up.\nIron Jaws will only show up when debuffs are about to expire.",
-        Job.BRD)]
-    BRD_IronJaws_Alternate = 3004,
 
     [ReplaceSkill(BRD.QuickNock, BRD.Ladonsbite)]
     [ConflictingCombos(BRD_AoE_AdvMode, BRD_AoE_SimpleMode)]
