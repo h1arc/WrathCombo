@@ -410,9 +410,9 @@ internal partial class DRG : Melee
         }
     }
 
-    internal class DRG_AOE_SimpleMode : CustomCombo
+    internal class DRG_AoE_SimpleMode : CustomCombo
     {
-        protected internal override Preset Preset => Preset.DRG_AOE_SimpleMode;
+        protected internal override Preset Preset => Preset.DRG_AoE_SimpleMode;
 
         protected override uint Invoke(uint actionID)
         {
@@ -546,9 +546,9 @@ internal partial class DRG : Melee
         }
     }
 
-    internal class DRG_AOE_AdvancedMode : CustomCombo
+    internal class DRG_AoE_AdvancedMode : CustomCombo
     {
-        protected internal override Preset Preset => Preset.DRG_AOE_AdvancedMode;
+        protected internal override Preset Preset => Preset.DRG_AoE_AdvancedMode;
 
         protected override uint Invoke(uint actionID)
         {
