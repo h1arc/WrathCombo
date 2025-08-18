@@ -7173,7 +7173,7 @@ public enum Preset
 
     [ParentCombo(VPR_ST_AdvancedMode)]
     [CustomComboInfo("Feint Raidwide Option", "Adds Feint when Raidwide is detected casting.", Job.VPR)]
-    VPR_ST_Feint = 30095,
+    VPR_ST_Feint = 30094,
 
     #endregion
 
