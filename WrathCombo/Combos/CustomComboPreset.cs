@@ -1450,7 +1450,7 @@ public enum Preset
     BRD_ST_SimpleMode = 3036,
 
     [AutoAction(true, false)]
-    [ConflictingCombos(BRD_AoE_Combo, BRD_AoE_AdvMode)]
+    [ConflictingCombos(BRD_AoE_AdvMode)]
     [ReplaceSkill(BRD.QuickNock, BRD.Ladonsbite)]
     [CustomComboInfo("Simple Mode - AoE",
         "Replaces Quick Nock with a full one-button AoE rotation.\nThis is the ideal option for newcomers to the job.",
@@ -1526,7 +1526,7 @@ public enum Preset
     BRD_ST_Wardens = 3047,
 
     [AutoAction(true, false)]
-    [ConflictingCombos(BRD_AoE_Combo, BRD_AoE_SimpleMode)]
+    [ConflictingCombos(BRD_AoE_SimpleMode)]
     [ReplaceSkill(BRD.QuickNock, BRD.Ladonsbite)]
     [CustomComboInfo("Advanced Mode - AoE",
         "Replaces Quick Nock with a full one-button AoE rotation.\nThese features are ideal if you want to customize the rotation.",
@@ -1607,15 +1607,18 @@ public enum Preset
     BRD_IronJaws = 3003,
 
     [ReplaceSkill(BRD.QuickNock, BRD.Ladonsbite)]
-    [ConflictingCombos(BRD_AoE_AdvMode, BRD_AoE_SimpleMode)]
-    [CustomComboInfo("Quick Nock Feature", "Replaces Quick Nock/Ladonsbite with Shadowbite when ready.", Job.BRD)]
-    BRD_AoE_Combo = 3008,
+    [CustomComboInfo("Wide Volley Feature", "Replaces WideVolley/Shadowbite with Quicknock/LadonsBite when not procced or below level.", Job.BRD)]
+    BRD_WideVolleyUpgrade = 3008,
+    
+    [ParentCombo(BRD_WideVolleyUpgrade)]
+    [CustomComboInfo("OGCDs option", "Will use the following OGCDs to prevent overcap", Job.BRD)]
+    BRD_WideVolleyUpgrade_OGCDs = 3068,
 
-    [ParentCombo(BRD_AoE_Combo)]
+    [ParentCombo(BRD_WideVolleyUpgrade)]
     [CustomComboInfo("Apex Arrow Option",
-        "Replaces Ladonsbite and Quick Nock with Apex Arrow when gauge is full and Blast Arrow when you are Blast Arrow ready.",
+        "Replaces WideVolley/Shadowbite with Apex Arrow when gauge is full and Blast Arrow when you are Blast Arrow ready.",
         Job.BRD)]
-    BRD_Apex = 3005,
+    BRD_WideVolleyUpgrade_Apex = 3005,
 
     [ReplaceSkill(BRD.Bloodletter)]
     [CustomComboInfo("Single Target oGCD Feature", "All oGCD's on Bloodletter/Heartbreakshot", Job.BRD)]
@@ -1659,7 +1662,7 @@ public enum Preset
 
     #endregion
 
-    // Last value = 3067
+    // Last value = 3068
 
     #endregion
 

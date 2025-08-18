@@ -781,6 +781,7 @@ internal partial class BRD : PhysicalRanged
                 : OriginalHook(HeavyShot);
         }
     }
+    
     internal class BRD_IronJaws : CustomCombo
     {
         protected internal override Preset Preset => Preset.BRD_IronJaws;
@@ -889,13 +890,32 @@ internal partial class BRD : PhysicalRanged
     }
     internal class BRD_AoE_Combo : CustomCombo
     {
-        protected internal override Preset Preset => Preset.BRD_AoE_Combo;
+        protected internal override Preset Preset => Preset.BRD_WideVolleyUpgrade;
         protected override uint Invoke(uint actionID)
         {
-            if (actionID is not (QuickNock or Ladonsbite))
+            if (actionID is not (WideVolley or Shadowbite))
                 return actionID;
+            
+            if (CanBardWeave && IsEnabled(Preset.BRD_WideVolleyUpgrade_OGCDs))
+            {
+                if (ActionReady(EmpyrealArrow) && BRD_WideVolleyUpgrade_OGCDs_Options[0])
+                    return EmpyrealArrow;
+                
+                if (PitchPerfected() && BRD_WideVolleyUpgrade_OGCDs_Options[1])
+                    return OriginalHook(PitchPerfect);
+                
+                if (ActionReady(Sidewinder) && BRD_WideVolleyUpgrade_OGCDs_Options[3])
+                    return Sidewinder;
 
-            if (IsEnabled(Preset.BRD_Apex))
+                if (ActionReady(Bloodletter) && BRD_WideVolleyUpgrade_OGCDs_Options[2] && 
+                    (BloodletterCharges == 3 && TraitLevelChecked(Traits.EnhancedBloodletter) || 
+                     BloodletterCharges == 2 && !TraitLevelChecked(Traits.EnhancedBloodletter)))
+                    return LevelChecked(RainOfDeath)
+                        ? RainOfDeath
+                        : OriginalHook(Bloodletter);
+            }
+
+            if (IsEnabled(Preset.BRD_WideVolleyUpgrade_Apex))
             {
                 if (gauge.SoulVoice == 100)
                     return ApexArrow;
@@ -903,11 +923,11 @@ internal partial class BRD : PhysicalRanged
                 if (HasStatusEffect(Buffs.BlastArrowReady))
                     return BlastArrow;
             }
+            
+            return LevelChecked(WideVolley) && (HasStatusEffect(Buffs.HawksEye) || HasStatusEffect(Buffs.Barrage))
+                ? actionID
+                : OriginalHook(QuickNock);
 
-            if (IsEnabled(Preset.BRD_AoE_Combo) && ActionReady(WideVolley) && HasStatusEffect(Buffs.HawksEye))
-                return OriginalHook(WideVolley);
-
-            return actionID;
         }
     }
     internal class BRD_Buffs : CustomCombo

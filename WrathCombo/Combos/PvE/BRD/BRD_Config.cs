@@ -34,7 +34,8 @@ internal partial class BRD
             BRD_AoE_Adv_Buffs_Options = new("BRD_AoE_Adv_Buffs_Options"),
             BRD_Adv_Buffs_Options = new("BRD_Adv_Buffs_Options"),
             BRD_Adv_DoT_Options = new("BRD_Adv_DoT_Options"),
-            BRD_StraightShotUpgrade_OGCDs_Options = new("BRD_StraightShotUpgrade_OGCDs_Options");
+            BRD_StraightShotUpgrade_OGCDs_Options = new("BRD_StraightShotUpgrade_OGCDs_Options"),
+            BRD_WideVolleyUpgrade_OGCDs_Options = new("BRD_WideVolleyUpgrade_OGCDs_Options");
         #endregion
         
         internal static void Draw(Preset preset)
@@ -139,6 +140,13 @@ internal partial class BRD
                     DrawHorizontalMultiChoice(BRD_StraightShotUpgrade_OGCDs_Options, "Pitch Perfect", "Adds Pitch Perfect", 4, 1);
                     DrawHorizontalMultiChoice(BRD_StraightShotUpgrade_OGCDs_Options, "Bloodletter", "Adds Bloodletter when at max charges", 4, 2);
                     DrawHorizontalMultiChoice(BRD_StraightShotUpgrade_OGCDs_Options, "Sidewinder", "Adds Sidewinder", 4, 3);
+                    break;
+                
+                case Preset.BRD_WideVolleyUpgrade_OGCDs:
+                    DrawHorizontalMultiChoice(BRD_WideVolleyUpgrade_OGCDs_Options, "Empyreal Arrow", "Adds Empyreal Arrow", 4, 0);
+                    DrawHorizontalMultiChoice(BRD_WideVolleyUpgrade_OGCDs_Options, "Pitch Perfect", "Adds Pitch Perfect", 4, 1);
+                    DrawHorizontalMultiChoice(BRD_WideVolleyUpgrade_OGCDs_Options, "Rain Of Death", "Adds Rain of Death when at max charges, or bloodletter below level.", 4, 2);
+                    DrawHorizontalMultiChoice(BRD_WideVolleyUpgrade_OGCDs_Options, "Sidewinder", "Adds Sidewinder", 4, 3);
                     break;
                 
                 case Preset.BRD_IronJaws:
