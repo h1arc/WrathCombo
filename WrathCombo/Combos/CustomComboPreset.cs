@@ -8376,7 +8376,7 @@ public enum Preset
 
     [PvPCustomCombo]
     [ReplaceSkill(ASTPvP.AspectedBenefic)]
-    [CustomComboInfo("Double Cast Heal Feature", "Adds Double Cast to Aspected Benefic.", Job.AST)]
+    [CustomComboInfo("Aspected Benefic Heal Feature", "Adds options to Aspected Benefic", Job.AST)]
     ASTPvP_Heal = 111004,
 
     [PvPCustomCombo]
