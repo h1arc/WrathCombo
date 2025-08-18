@@ -4216,6 +4216,11 @@ public enum Preset
     [ReplaceSkill(NIN.Ten, NIN.Chi, NIN.Jin)]
     [CustomComboInfo("Simple Mudras Feature", "Simplify the mudra casting to avoid failing.", Job.NIN)]
     NIN_Simple_Mudras = 10039,
+    
+    [ReplaceSkill(NIN.Ten, NIN.Chi, NIN.Jin)]
+    [CustomComboInfo("Simpler Mudras Alternate Feature", "Puts mudras on to a single button following basic logic and finishes them with Ninjutsu." +
+                                                        "\nTen = Hyosho Ranryu > Suiton if trick cd less than 20s > Raiton. \nChi = Goka Mekkyaku > Huton if trick cd less than 20s > Katon. \nJin = Doton ", Job.NIN)]
+    NIN_Simple_Mudras_Alt = 10043,
 
     [ReplaceSkill(NIN.TenChiJin)]
     [ParentCombo(NIN_TCJMeisui)]

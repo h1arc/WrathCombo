@@ -479,6 +479,74 @@ internal partial class NIN
     }
     #endregion
     
+     // Single Target
+    internal static uint UseFumaShuriken(uint actionId)
+    {
+        return OriginalHook(Ninjutsu) == FumaShuriken ? OriginalHook(Ninjutsu) : Ten;
+    }
+    internal static uint UseRaiton(uint actionId) // Ten Chi
+    {
+        if (OriginalHook(Ninjutsu) == Ninjutsu) 
+            return HasKassatsu ? TenCombo : Ten;
+        return OriginalHook(Ninjutsu) == FumaShuriken &&
+               ActionWatching.LastAction is TenCombo or Ten or JinCombo or Jin 
+            ? ChiCombo 
+            : OriginalHook(Ninjutsu);
+    }
+    internal static uint UseHyoshoRanryu(uint actionId) // Ten Jin
+    {
+        if (OriginalHook(Ninjutsu) == Ninjutsu)
+            return TenCombo;
+        return OriginalHook(Ninjutsu) == FumaShuriken &&
+               ActionWatching.LastAction is TenCombo 
+            ? JinCombo 
+            : OriginalHook(Ninjutsu);
+    }
+    internal static uint UseSuiton(uint actionId) // Ten Chi Jin
+    {
+        if (OriginalHook(Ninjutsu) == Ninjutsu)
+            return Ten;
+        if (ActionWatching.LastAction is Ten)
+            return ChiCombo;
+        return ActionWatching.LastAction is ChiCombo ? JinCombo : OriginalHook(Ninjutsu);
+    }
+    //Multi Target
+    internal static uint UseGokaMekkyaku(uint actionId) // Chi Ten
+    {
+        if (OriginalHook(Ninjutsu) == Ninjutsu)
+            return HasKassatsu ? ChiCombo : Chi;
+        return OriginalHook(Ninjutsu) == FumaShuriken && 
+               ActionWatching.LastAction is Chi or ChiCombo 
+            ? TenCombo 
+            : OriginalHook(Ninjutsu);
+    }
+    internal static uint UseKaton(uint actionId) // Chi Ten
+    {
+        if (OriginalHook(Ninjutsu) == Ninjutsu)
+            return HasKassatsu ? ChiCombo : Chi;
+        return OriginalHook(Ninjutsu) == FumaShuriken && 
+               ActionWatching.LastAction is Jin or JinCombo or ChiCombo or Chi
+            ? TenCombo 
+            : OriginalHook(Ninjutsu);
+    }
+    internal static uint UseDoton(uint actionId)  //Jin Ten Chi
+    {
+        if (OriginalHook(Ninjutsu) == Ninjutsu)
+            return HasKassatsu ? JinCombo : Jin;
+        if (ActionWatching.LastAction is Jin or JinCombo)
+            return TenCombo;
+        return ActionWatching.LastAction is TenCombo ? ChiCombo : OriginalHook(Ninjutsu);
+    }
+
+    internal static uint UseHuton(uint actionId) // Jin Chi Ten
+    {
+        if (OriginalHook(Ninjutsu) == Ninjutsu)
+            return Chi;
+        if (ActionWatching.LastAction is Chi or ChiCombo)
+            return JinCombo;
+        return ActionWatching.LastAction is JinCombo ? TenCombo : Huton;
+    }
+
     #region Opener
     internal static NINOpenerMaxLevel4thGCDKunai Opener1 = new();
     internal static NINOpenerMaxLevel3rdGCDDokumori Opener2 = new();

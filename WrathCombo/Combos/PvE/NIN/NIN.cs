@@ -611,12 +611,13 @@ internal partial class NIN : Melee
             if (actionID is not Hide)
                 return actionID;
             
+            
             if (NIN_HideMug_Toggle && HasStatusEffect(Buffs.Hidden) &&
                 (LevelChecked(Suiton) || !NIN_HideMug_ToggleLevelCheck)) //Check level to get ShadowWalker buff. 
                 StatusManager.ExecuteStatusOff(Buffs.Hidden);
 
             if (NIN_HideMug_Trick && 
-                (!NIN_HideMug_Mug || !NIN_HideMug_TrickAfterMug || IsOnCooldown(OriginalHook(Mug))) && //Check mug if you want mug to have priority
+                (!NIN_HideMug_Mug || !NIN_HideMug_TrickAfterMug || IsOnCooldown(OriginalHook(Mug)) || !InCombat()) && //Check mug if you want mug to have priority
                 (HasStatusEffect(Buffs.Hidden) || HasStatusEffect(Buffs.ShadowWalker))) //Check for ability to use trick
                 return OriginalHook(TrickAttack);
 
@@ -798,6 +799,43 @@ internal partial class NIN : Melee
             }
 
             return actionID;
+        }
+    }
+    
+    internal class NIN_Simple_MudrasAlt : CustomCombo
+    {
+        protected internal override Preset Preset => Preset.NIN_Simple_Mudras_Alt;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not (Ten or Chi or Jin) || !HasStatusEffect(Buffs.Mudra))
+                return actionID;
+            
+            switch (actionID)
+            {
+                case Ten when LevelChecked(HyoshoRanryu) && MudraReady && HasKassatsu:
+                    return UseHyoshoRanryu(actionID);
+                case Ten when LevelChecked(Suiton) && MudraReady && !HasStatusEffect(Buffs.ShadowWalker) && TrickCD <= 20:
+                    return UseSuiton(actionID);
+                case Ten when MudraReady:
+                    return LevelChecked(Raiton)
+                        ? UseRaiton(actionID)
+                        : UseFumaShuriken(actionID);
+                case Chi when LevelChecked(GokaMekkyaku) && MudraReady && HasKassatsu:
+                    return UseGokaMekkyaku(actionID);
+                case Chi when LevelChecked(Huton) && MudraReady && !HasStatusEffect(Buffs.ShadowWalker) && TrickCD <= 20:
+                    return UseHuton(actionID);
+                case Chi when MudraReady:
+                    return LevelChecked(Katon)
+                        ? UseKaton(actionID)
+                        : UseFumaShuriken(actionID);
+                case Jin:
+                    return LevelChecked(Doton)
+                        ? UseDoton(actionID)
+                        : UseFumaShuriken(actionID);
+                default:
+                    return actionID;
+            }
         }
     }
     
