@@ -226,7 +226,7 @@ internal partial class WAR
                     DrawHorizontalRadioButton(WAR_AoE_Onslaught_Movement,
                             "Any Movement", "Uses Onslaught regardless of any movement conditions.\nNOTE: This could possibly get you killed", 1);
                     ImGui.Spacing();
-                    if (WAR_AoE_Onslaught_Movement == 0) 
+                    if (WAR_AoE_Onslaught_Movement == 0)
                     {
                         ImGui.SetCursorPosX(48);
                         DrawSliderFloat(0, 3, WAR_AoE_Onslaught_TimeStill,

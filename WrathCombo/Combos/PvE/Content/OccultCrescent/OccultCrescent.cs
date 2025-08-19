@@ -2,8 +2,8 @@
 using Lumina.Excel.Sheets;
 using System;
 using WrathCombo.Data;
-using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using static WrathCombo.Combos.PvE.OccultCrescent.Config;
+using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using ContentHelper = ECommons.GameHelpers;
 using IntendedUse = ECommons.ExcelServices.TerritoryIntendedUseEnum;
 namespace WrathCombo.Combos.PvE;
@@ -85,7 +85,7 @@ internal partial class OccultCrescent
                 //if (IsEnabledAndUsable(Preset.Phantom_Cannoneer_HolyCannon, HolyCannon) && TargetIsUndead())
                 //    return HolyCannon; //better on Undead targets____ they dont share a cooldown you fire all the cannons so doesnt really matter if undead. 
 
-                foreach((Preset preset, uint action) in new[]
+                foreach ((Preset preset, uint action) in new[]
                 {
                     (Preset.Phantom_Cannoneer_PhantomFire, PhantomFire),
                     (Preset.Phantom_Cannoneer_HolyCannon, HolyCannon),

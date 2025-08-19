@@ -180,7 +180,7 @@ internal partial class DNC : PhysicalRanged
             if (IsEnabled(Preset.DNC_ST_Adv_Devilment) &&
                 CanWeave() &&
                 LevelChecked(Devilment) &&
-                GetCooldownRemainingTime(Devilment) < GCD/2 &&
+                GetCooldownRemainingTime(Devilment) < GCD / 2 &&
                 (HasStatusEffect(Buffs.TechnicalFinish) ||
                  WasLastAction(TechnicalFinish4) ||
                  !LevelChecked(TechnicalStep)))
@@ -1093,7 +1093,7 @@ internal partial class DNC : PhysicalRanged
                 return Variant.Cure;
 
             // AoE Interrupt
-            if (Role.CanHeadGraze(Preset.DNC_AoE_SimpleMode, WeaveTypes.Weave)&&
+            if (Role.CanHeadGraze(Preset.DNC_AoE_SimpleMode, WeaveTypes.Weave) &&
                 !HasStatusEffect(Buffs.TechnicalFinish))
                 return Role.HeadGraze;
 

@@ -209,7 +209,7 @@ internal partial class SGE : Healer
     }
 
     #endregion
-    
+
     #region Advanced ST
 
     internal class SGE_ST_DPS_AdvancedMode : CustomCombo
@@ -332,7 +332,7 @@ internal partial class SGE : Healer
                 if (IsEnabled(Preset.SGE_ST_DPS_Movement) &&
                     InCombat() && IsMoving())
                 {
-                    foreach(int priority in SGE_ST_DPS_Movement_Priority.Items.OrderBy(x => x))
+                    foreach (int priority in SGE_ST_DPS_Movement_Priority.Items.OrderBy(x => x))
                     {
                         int index = SGE_ST_DPS_Movement_Priority.IndexOf(priority);
                         if (CheckMovementConfigMeetsRequirements(index, out uint action))
@@ -511,7 +511,7 @@ internal partial class SGE : Healer
                 Role.CanLucidDream(SGE_ST_Heal_LucidOption))
                 return Role.LucidDreaming;
 
-            for(int i = 0; i < SGE_ST_Heals_Priority.Count; i++)
+            for (int i = 0; i < SGE_ST_Heals_Priority.Count; i++)
             {
                 int index = SGE_ST_Heals_Priority.IndexOf(i + 1);
                 int config = GetMatchingConfigST(index, OptionalTarget, out uint spell, out bool enabled);
@@ -574,7 +574,7 @@ internal partial class SGE : Healer
                 return Role.LucidDreaming;
 
             float averagePartyHP = GetPartyAvgHPPercent();
-            for(int i = 0; i < SGE_AoE_Heals_Priority.Count; i++)
+            for (int i = 0; i < SGE_AoE_Heals_Priority.Count; i++)
             {
                 int index = SGE_AoE_Heals_Priority.IndexOf(i + 1);
                 int config = GetMatchingConfigAoE(index, out uint spell, out bool enabled);
@@ -588,7 +588,7 @@ internal partial class SGE : Healer
     }
 
     #endregion
-    
+
     #region Standalones
 
     internal class SGE_OverProtect : CustomCombo

@@ -18,34 +18,34 @@ internal partial class NIN : Melee
         {
             if (actionID is not SpinningEdge)
                 return actionID;
-            
+
             NINGauge gauge = GetJobGauge<NINGauge>();
-            
+
             if (OriginalHook(Ninjutsu) is Rabbit or Huton or Suiton or Doton or GokaMekkyaku or HyoshoRanryu)
                 return OriginalHook(Ninjutsu);
-            
+
             if (InMudra && MudraState.ContinueCurrentMudra(ref actionID))
                 return actionID;
-            
-            if (IsNotEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus) || 
+
+            if (IsNotEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus) ||
                 ActionWatching.TimeSinceLastAction.TotalSeconds >= 5 && !InCombat() ||
                 ActionWatching.LastAction == OriginalHook(Ninjutsu))
                 MudraState.CurrentMudra = MudraCasting.MudraState.None;
-            
+
             if (HasStatusEffect(Buffs.TenChiJin))
                 return STTenChiJin(actionID);
-            
+
             #region Special Content
             if (OccultCrescent.ShouldUsePhantomActions() && !MudraPhase)
                 return OccultCrescent.BestPhantomAction();
-            
+
             if (Variant.CanRampart() && !MudraPhase)
                 return Variant.Rampart;
-            
+
             if (Variant.CanCure() && !MudraPhase)
                 return Variant.Cure;
             #endregion
-            
+
             #region OGCDS
             if (InCombat() && HasBattleTarget())
             {
@@ -57,10 +57,10 @@ internal partial class NIN : Melee
 
                 if (CanTenChiJin)
                     return TenChiJin;
-                
+
                 if (CanTenriJindo)
                     return TenriJendo;
-                
+
                 if (CanAssassinate)
                     return OriginalHook(Assassinate);
 
@@ -69,7 +69,7 @@ internal partial class NIN : Melee
 
                 if (CanBhavacakra && NinkiPooling)
                     return LevelChecked(Bhavacakra) ? OriginalHook(Bhavacakra) : OriginalHook(HellfrogMedium);
-                
+
                 if (CanMugST && CombatEngageDuration().TotalSeconds > 5)
                     return NinkiWillOvercap && TraitLevelChecked(Traits.MugMastery) ? OriginalHook(Bhavacakra) : OriginalHook(Mug);
 
@@ -77,15 +77,15 @@ internal partial class NIN : Melee
                     return OriginalHook(TrickAttack);
             }
             #endregion
-            
+
             #region Ninjutsu
-            if (CanUseHyoshoRanryu && MudraState.CastHyoshoRanryu(ref actionID) || 
-                CanUseSuiton && TrickCD <= 18 && MudraState.CastSuiton(ref actionID) || 
+            if (CanUseHyoshoRanryu && MudraState.CastHyoshoRanryu(ref actionID) ||
+                CanUseSuiton && TrickCD <= 18 && MudraState.CastSuiton(ref actionID) ||
                 CanUseRaiton && MudraState.CastRaiton(ref actionID) ||
                 CanUseFumaShuriken && !LevelChecked(Raiton) && MudraState.CastFumaShuriken(ref actionID))
                 return actionID;
             #endregion
-            
+
             #region Selfcare
             if ((!MudraPhase || HasKassatsu && TrickCD > 5) && CanWeave())
             {
@@ -99,33 +99,33 @@ internal partial class NIN : Melee
                     return Role.Bloodbath;
             }
             #endregion
-           
+
             #region GCDS
             if (CanThrowingDaggers)
                 return OriginalHook(ThrowingDaggers);
-            
+
             if (CanRaiju)
                 return FleetingRaiju;
 
             if (CanPhantomKamaitachi)
                 return PhantomKamaitachi;
-            
+
             if (ComboTimer > 1f)
             {
                 switch (ComboAction)
                 {
                     case SpinningEdge when LevelChecked(GustSlash):
                         return OriginalHook(GustSlash);
-                    
+
                     case GustSlash when GetTargetHPPercent() <= 10 && gauge.Kazematoi > 0: //Kazematoi Dump Below 10%
                         return TNAeolianEdge ? Role.TrueNorth : AeolianEdge;
-                    
+
                     case GustSlash when LevelChecked(ArmorCrush):
                         return gauge.Kazematoi switch
                         {
                             0 => TNArmorCrush ? Role.TrueNorth : ArmorCrush,
                             >= 4 => TNAeolianEdge ? Role.TrueNorth : AeolianEdge,
-                            _ => OnTargetsFlank() || !TargetNeedsPositionals() ? ArmorCrush: AeolianEdge
+                            _ => OnTargetsFlank() || !TargetNeedsPositionals() ? ArmorCrush : AeolianEdge
                         };
                     case GustSlash when !LevelChecked(ArmorCrush) && LevelChecked(AeolianEdge):
                         return TNAeolianEdge ? Role.TrueNorth : AeolianEdge;
@@ -135,44 +135,44 @@ internal partial class NIN : Melee
             #endregion
         }
     }
-    
+
     internal class NIN_AoE_SimpleMode : CustomCombo
     {
         protected internal MudraCasting MudraState = new();
         protected internal override Preset Preset => Preset.NIN_AoE_SimpleMode;
         protected override uint Invoke(uint actionID)
-        
+
         {
             if (actionID is not DeathBlossom)
                 return actionID;
-            
+
             if (OriginalHook(Ninjutsu) is Rabbit or Huton or Suiton or Doton or GokaMekkyaku or HyoshoRanryu)
                 return OriginalHook(Ninjutsu);
-            
+
             if (InMudra && MudraState.ContinueCurrentMudra(ref actionID))
                 return actionID;
-            
-            if (IsNotEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus) || 
+
+            if (IsNotEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus) ||
                 ActionWatching.TimeSinceLastAction.TotalSeconds >= 5 && !InCombat() ||
                 ActionWatching.LastAction == OriginalHook(Ninjutsu))
                 MudraState.CurrentMudra = MudraCasting.MudraState.None;
 
             if (HasStatusEffect(Buffs.TenChiJin))
                 return DotonRemaining < 3
-                    ? AoETenChiJinDoton(actionID) 
+                    ? AoETenChiJinDoton(actionID)
                     : AoETenChiJinSuiton(actionID);
-            
+
             #region Special Content
             if (OccultCrescent.ShouldUsePhantomActions() && !MudraPhase)
                 return OccultCrescent.BestPhantomAction();
-            
+
             if (Variant.CanRampart() && !MudraPhase)
                 return Variant.Rampart;
-            
+
             if (Variant.CanCure() && !MudraPhase)
                 return Variant.Cure;
             #endregion
-            
+
             #region OGCDS
             if (InCombat() && HasBattleTarget())
             {
@@ -184,10 +184,10 @@ internal partial class NIN : Melee
 
                 if (CanTenChiJinAoE)
                     return TenChiJin;
-                
+
                 if (CanTenriJindo)
                     return TenriJendo;
-                
+
                 if (CanAssassinateAoE)
                     return OriginalHook(Assassinate);
 
@@ -196,7 +196,7 @@ internal partial class NIN : Melee
 
                 if (CanHellfrogMedium && NinkiPooling)
                     return OriginalHook(HellfrogMedium);
-                
+
                 if (CanMugAoE && CombatEngageDuration().TotalSeconds > 5)
                     return NinkiWillOvercap && TraitLevelChecked(Traits.MugMastery) ? OriginalHook(HellfrogMedium) : OriginalHook(Mug);
 
@@ -204,16 +204,16 @@ internal partial class NIN : Melee
                     return OriginalHook(TrickAttack);
             }
             #endregion
-            
+
             #region Ninjutsu
-            if (CanUseGokaMekkyaku && MudraState.CastGokaMekkyaku(ref actionID) || 
-                CanUseHuton && TrickCD <= 18 && MudraState.CastHuton(ref actionID) || 
+            if (CanUseGokaMekkyaku && MudraState.CastGokaMekkyaku(ref actionID) ||
+                CanUseHuton && TrickCD <= 18 && MudraState.CastHuton(ref actionID) ||
                 CanUseDoton && GetTargetHPPercent() >= 30 && MudraState.CastDoton(ref actionID) ||
                 CanUseKaton && MudraState.CastKaton(ref actionID) ||
                 CanUseFumaShuriken && !LevelChecked(Katon) && MudraState.CastFumaShuriken(ref actionID))
                 return actionID;
             #endregion
-            
+
             #region Selfcare
             if ((!MudraPhase || HasKassatsu && TrickCD > 5) && CanWeave())
             {
@@ -227,17 +227,17 @@ internal partial class NIN : Melee
                     return Role.Bloodbath;
             }
             #endregion
-           
+
             #region GCDS
             if (CanThrowingDaggersAoE)
                 return OriginalHook(ThrowingDaggers);
-            
+
             if (CanRaiju)
                 return FleetingRaiju;
 
             if (CanPhantomKamaitachi)
                 return PhantomKamaitachi;
-            
+
             if (ComboTimer > 1f)
             {
                 switch (ComboAction)
@@ -256,9 +256,9 @@ internal partial class NIN : Melee
             #endregion
         }
     }
-    
+
     #endregion
-    
+
     #region Advanced
     internal class NIN_ST_AdvancedMode : CustomCombo
     {
@@ -268,40 +268,40 @@ internal partial class NIN : Melee
         {
             if (actionID is not SpinningEdge)
                 return actionID;
-            
+
             NINGauge gauge = GetJobGauge<NINGauge>();
-            
-            if (IsEnabled(Preset.NIN_ST_AdvancedMode_BalanceOpener) && 
+
+            if (IsEnabled(Preset.NIN_ST_AdvancedMode_BalanceOpener) &&
                 Opener().FullOpener(ref actionID))
                 return actionID;
-                
+
             if (IsEnabled(Preset.NIN_ST_AdvancedMode_Ninjitsus) &&
                 OriginalHook(Ninjutsu) is Rabbit or Huton or Suiton or Doton or GokaMekkyaku or HyoshoRanryu)
                 return OriginalHook(Ninjutsu);
-            
+
             if (OriginalHook(Ninjutsu) != Ninjutsu && InMudra && MudraState.ContinueCurrentMudra(ref actionID))
                 return actionID;
-            
-            if (IsNotEnabled(Preset.NIN_ST_AdvancedMode_Ninjitsus) || 
+
+            if (IsNotEnabled(Preset.NIN_ST_AdvancedMode_Ninjitsus) ||
                 ActionWatching.TimeSinceLastAction.TotalSeconds >= 5 && !InCombat() ||
                 ActionWatching.LastAction == OriginalHook(Ninjutsu))
                 MudraState.CurrentMudra = MudraCasting.MudraState.None;
-            
+
             if (NIN_ST_AdvancedMode_TenChiJin_Options[0] &&
                 HasStatusEffect(Buffs.TenChiJin))
                 return STTenChiJin(actionID);
-            
+
             #region Special Content
             if (OccultCrescent.ShouldUsePhantomActions() && !MudraPhase)
                 return OccultCrescent.BestPhantomAction();
-            
+
             if (Variant.CanRampart() && !MudraPhase)
                 return Variant.Rampart;
-            
+
             if (Variant.CanCure() && !MudraPhase)
                 return Variant.Cure;
             #endregion
-            
+
             #region OGCDS
             if (InCombat() && HasBattleTarget())
             {
@@ -316,22 +316,22 @@ internal partial class NIN : Melee
 
                 if (NIN_ST_AdvancedMode_TenChiJin_Options[0] && CanTenriJindo)
                     return TenriJendo;
-                
+
                 if (IsEnabled(Preset.NIN_ST_AdvancedMode_Assassinate) && CanAssassinate)
                     return OriginalHook(Assassinate);
 
                 if (IsEnabled(Preset.NIN_ST_AdvancedMode_Meisui) && CanMeisui)
-                    return NinkiWillOvercap && IsEnabled(Preset.NIN_ST_AdvancedMode_Bhavacakra) 
-                        ? OriginalHook(Bhavacakra) 
+                    return NinkiWillOvercap && IsEnabled(Preset.NIN_ST_AdvancedMode_Bhavacakra)
+                        ? OriginalHook(Bhavacakra)
                         : OriginalHook(Meisui);
 
-                if (IsEnabled(Preset.NIN_ST_AdvancedMode_Bhavacakra) && CanBhavacakra && 
+                if (IsEnabled(Preset.NIN_ST_AdvancedMode_Bhavacakra) && CanBhavacakra &&
                     (NinkiPooling || !NIN_ST_AdvancedMode_Bhavacakra_Pooling))
                     return LevelChecked(Bhavacakra) ? OriginalHook(Bhavacakra) : OriginalHook(HellfrogMedium);
-                
+
                 if (IsEnabled(Preset.NIN_ST_AdvancedMode_Mug) && CanMugST && CombatEngageDuration().TotalSeconds > 5 &&
                     GetTargetHPPercent() > STMugThreshold)
-                    return NinkiWillOvercap && 
+                    return NinkiWillOvercap &&
                            TraitLevelChecked(Traits.MugMastery) &&
                            IsEnabled(Preset.NIN_ST_AdvancedMode_Bhavacakra)
                         ? OriginalHook(Bhavacakra) : OriginalHook(Mug);
@@ -341,22 +341,22 @@ internal partial class NIN : Melee
                     return OriginalHook(TrickAttack);
             }
             #endregion
-            
+
             #region Ninjutsu
             if (IsEnabled(Preset.NIN_ST_AdvancedMode_Ninjitsus))
             {
-                if (NIN_ST_AdvancedMode_Ninjitsus_Options[2] && 
-                    CanUseHyoshoRanryu && MudraState.CastHyoshoRanryu(ref actionID) || 
-                    NIN_ST_AdvancedMode_Ninjitsus_Options[1] && 
-                    CanUseSuiton && TrickCD <= NIN_ST_AdvancedMode_SuitonSetup && MudraState.CastSuiton(ref actionID) || 
-                    NIN_ST_AdvancedMode_Ninjitsus_Options[0] && 
+                if (NIN_ST_AdvancedMode_Ninjitsus_Options[2] &&
+                    CanUseHyoshoRanryu && MudraState.CastHyoshoRanryu(ref actionID) ||
+                    NIN_ST_AdvancedMode_Ninjitsus_Options[1] &&
+                    CanUseSuiton && TrickCD <= NIN_ST_AdvancedMode_SuitonSetup && MudraState.CastSuiton(ref actionID) ||
+                    NIN_ST_AdvancedMode_Ninjitsus_Options[0] &&
                     CanUseRaiton && MudraState.CastRaiton(ref actionID) ||
                     NIN_ST_AdvancedMode_Ninjitsus_Options[0] &&
                     CanUseFumaShuriken && !LevelChecked(Raiton) && MudraState.CastFumaShuriken(ref actionID))
                     return actionID;
             }
             #endregion
-            
+
             #region Selfcare
             if ((!MudraPhase || HasKassatsu && TrickCD > 5) && CanWeave())
             {
@@ -378,35 +378,35 @@ internal partial class NIN : Melee
                     return Role.Bloodbath;
             }
             #endregion
-           
+
             #region GCDS
             if (IsEnabled(Preset.NIN_ST_AdvancedMode_ThrowingDaggers) && CanThrowingDaggers && !MudraPhase)
                 return OriginalHook(ThrowingDaggers);
-            
+
             if (IsEnabled(Preset.NIN_ST_AdvancedMode_Raiju) && CanRaiju)
-                return NIN_ST_AdvancedMode_ForkedRaiju && !InMeleeRange() 
+                return NIN_ST_AdvancedMode_ForkedRaiju && !InMeleeRange()
                     ? ForkedRaiju
                     : FleetingRaiju;
 
             if (IsEnabled(Preset.NIN_ST_AdvancedMode_PhantomKamaitachi) && CanPhantomKamaitachi)
                 return PhantomKamaitachi;
-            
+
             if (ComboTimer > 1f)
             {
                 switch (ComboAction)
                 {
                     case SpinningEdge when LevelChecked(GustSlash):
                         return OriginalHook(GustSlash);
-                    
+
                     case GustSlash when GetTargetHPPercent() <= NIN_ST_AdvancedMode_BurnKazematoi && gauge.Kazematoi > 0: //Kazematoi Dump Below 10%
                         return TNAeolianEdge && NIN_ST_AdvancedMode_TrueNorth ? Role.TrueNorth : AeolianEdge;
-                    
+
                     case GustSlash when LevelChecked(ArmorCrush):
                         return gauge.Kazematoi switch
                         {
                             0 => TNArmorCrush && NIN_ST_AdvancedMode_TrueNorth ? Role.TrueNorth : ArmorCrush,
                             >= 4 => TNAeolianEdge && NIN_ST_AdvancedMode_TrueNorth ? Role.TrueNorth : AeolianEdge,
-                            _ => OnTargetsFlank() || !TargetNeedsPositionals() ? ArmorCrush: AeolianEdge
+                            _ => OnTargetsFlank() || !TargetNeedsPositionals() ? ArmorCrush : AeolianEdge
                         };
                     case GustSlash when !LevelChecked(ArmorCrush) && LevelChecked(AeolianEdge):
                         return TNAeolianEdge ? Role.TrueNorth : AeolianEdge;
@@ -416,7 +416,7 @@ internal partial class NIN : Melee
             #endregion
         }
     }
-    
+
     internal class NIN_AoE_AdvancedMode : CustomCombo
     {
         protected internal MudraCasting MudraState = new();
@@ -425,36 +425,36 @@ internal partial class NIN : Melee
         {
             if (actionID is not DeathBlossom)
                 return actionID;
-            
+
             if (IsEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus) &&
                 OriginalHook(Ninjutsu) is Rabbit or Huton or Suiton or Doton or GokaMekkyaku or HyoshoRanryu)
                 return OriginalHook(Ninjutsu);
-            
+
             if (OriginalHook(Ninjutsu) != Ninjutsu && InMudra && MudraState.ContinueCurrentMudra(ref actionID))
                 return actionID;
-            
-            if (IsNotEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus) || 
+
+            if (IsNotEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus) ||
                 ActionWatching.TimeSinceLastAction.TotalSeconds >= 5 && !InCombat() ||
                 ActionWatching.LastAction == OriginalHook(Ninjutsu))
                 MudraState.CurrentMudra = MudraCasting.MudraState.None;
-            
+
             if (NIN_AoE_AdvancedMode_TenChiJin_Options[0] &&
                 HasStatusEffect(Buffs.TenChiJin))
                 return NIN_AoE_AdvancedMode_Ninjitsus_Options[2] && DotonRemaining < 3
-                ? AoETenChiJinDoton(actionID) 
+                ? AoETenChiJinDoton(actionID)
                 : AoETenChiJinSuiton(actionID);
-            
+
             #region Special Content
             if (OccultCrescent.ShouldUsePhantomActions() && !MudraPhase)
                 return OccultCrescent.BestPhantomAction();
-            
+
             if (Variant.CanRampart() && !MudraPhase)
                 return Variant.Rampart;
-            
+
             if (Variant.CanCure() && !MudraPhase)
                 return Variant.Cure;
             #endregion
-            
+
             #region OGCDS
             if (InCombat() && HasBattleTarget())
             {
@@ -469,25 +469,25 @@ internal partial class NIN : Melee
 
                 if (NIN_AoE_AdvancedMode_TenChiJin_Options[0] && CanTenriJindo)
                     return TenriJendo;
-                
+
                 if (IsEnabled(Preset.NIN_AoE_AdvancedMode_Assassinate) && CanAssassinateAoE)
                     return OriginalHook(Assassinate);
 
                 if (IsEnabled(Preset.NIN_AoE_AdvancedMode_Meisui) && CanMeisuiAoE)
-                    return NinkiWillOvercap && IsEnabled(Preset.NIN_AoE_AdvancedMode_HellfrogMedium) 
-                        ? OriginalHook(HellfrogMedium) 
+                    return NinkiWillOvercap && IsEnabled(Preset.NIN_AoE_AdvancedMode_HellfrogMedium)
+                        ? OriginalHook(HellfrogMedium)
                         : OriginalHook(Meisui);
 
-                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_HellfrogMedium) && CanHellfrogMedium && 
+                if (IsEnabled(Preset.NIN_AoE_AdvancedMode_HellfrogMedium) && CanHellfrogMedium &&
                     (NinkiPooling || !NIN_AoE_AdvancedMode_HellfrogMedium_Pooling))
                     return OriginalHook(HellfrogMedium);
-                
+
                 if (IsEnabled(Preset.NIN_AoE_AdvancedMode_Mug) && CanMugAoE && CombatEngageDuration().TotalSeconds > 5 &&
                     GetTargetHPPercent() > AoEMugThreshold)
-                    return NinkiWillOvercap && 
-                           TraitLevelChecked(Traits.MugMastery) && 
-                           IsEnabled(Preset.NIN_AoE_AdvancedMode_HellfrogMedium) 
-                        ? OriginalHook(HellfrogMedium) 
+                    return NinkiWillOvercap &&
+                           TraitLevelChecked(Traits.MugMastery) &&
+                           IsEnabled(Preset.NIN_AoE_AdvancedMode_HellfrogMedium)
+                        ? OriginalHook(HellfrogMedium)
                         : OriginalHook(Mug);
 
                 if (IsEnabled(Preset.NIN_AoE_AdvancedMode_TrickAttack) && CanTrickAoE && CombatEngageDuration().TotalSeconds > 5 &&
@@ -495,24 +495,24 @@ internal partial class NIN : Melee
                     return OriginalHook(TrickAttack);
             }
             #endregion
-            
+
             #region Ninjutsu
             if (IsEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus))
             {
-                if (NIN_AoE_AdvancedMode_Ninjitsus_Options[3] && 
-                    CanUseGokaMekkyaku && MudraState.CastGokaMekkyaku(ref actionID) || 
-                    NIN_AoE_AdvancedMode_Ninjitsus_Options[2] && 
-                    CanUseDoton && GetTargetHPPercent() >= NIN_AoE_AdvancedMode_Doton_Threshold && MudraState.CastDoton(ref actionID) || 
-                    NIN_AoE_AdvancedMode_Ninjitsus_Options[1] && 
-                    CanUseHuton && TrickCD <= NIN_ST_AdvancedMode_SuitonSetup && MudraState.CastHuton(ref actionID) || 
-                    NIN_AoE_AdvancedMode_Ninjitsus_Options[0] && 
+                if (NIN_AoE_AdvancedMode_Ninjitsus_Options[3] &&
+                    CanUseGokaMekkyaku && MudraState.CastGokaMekkyaku(ref actionID) ||
+                    NIN_AoE_AdvancedMode_Ninjitsus_Options[2] &&
+                    CanUseDoton && GetTargetHPPercent() >= NIN_AoE_AdvancedMode_Doton_Threshold && MudraState.CastDoton(ref actionID) ||
+                    NIN_AoE_AdvancedMode_Ninjitsus_Options[1] &&
+                    CanUseHuton && TrickCD <= NIN_ST_AdvancedMode_SuitonSetup && MudraState.CastHuton(ref actionID) ||
+                    NIN_AoE_AdvancedMode_Ninjitsus_Options[0] &&
                     CanUseKaton && MudraState.CastKaton(ref actionID) ||
                     NIN_AoE_AdvancedMode_Ninjitsus_Options[0] &&
                     CanUseFumaShuriken && !LevelChecked(Raiton) && MudraState.CastFumaShuriken(ref actionID))
                     return actionID;
             }
             #endregion
-            
+
             #region Selfcare
             if ((!MudraPhase || HasKassatsu && TrickCD > 5) && CanWeave())
             {
@@ -530,14 +530,14 @@ internal partial class NIN : Melee
                     return Role.Bloodbath;
             }
             #endregion
-           
+
             #region GCDS
             if (IsEnabled(Preset.NIN_AoE_AdvancedMode_ThrowingDaggers) && CanThrowingDaggersAoE && !MudraPhase)
                 return OriginalHook(ThrowingDaggers);
 
             if (IsEnabled(Preset.NIN_AoE_AdvancedMode_PhantomKamaitachi) && CanPhantomKamaitachi)
                 return PhantomKamaitachi;
-            
+
             if (ComboTimer > 1f)
             {
                 switch (ComboAction)
@@ -555,9 +555,9 @@ internal partial class NIN : Melee
         }
     }
     #endregion
-    
+
     #region Standalone
-    
+
     internal class NIN_ST_AeolianEdgeCombo : CustomCombo
     {
         protected internal override Preset Preset => Preset.NIN_ST_AeolianEdgeCombo;
@@ -587,7 +587,7 @@ internal partial class NIN : Melee
         {
             if (actionID is not ArmorCrush)
                 return actionID;
-            
+
             if (ComboTimer > 0)
             {
                 if (ComboAction == SpinningEdge && LevelChecked(GustSlash))
@@ -608,16 +608,16 @@ internal partial class NIN : Melee
         {
             if (actionID is not Hide)
                 return actionID;
-            
+
             if (NIN_HideMug_Toggle && HasStatusEffect(Buffs.Hidden) &&
                 (LevelChecked(Suiton) || !NIN_HideMug_ToggleLevelCheck)) //Check level to get ShadowWalker buff. 
                 StatusManager.ExecuteStatusOff(Buffs.Hidden);
 
-            if (NIN_HideMug_Trick && 
+            if (NIN_HideMug_Trick &&
                 (!NIN_HideMug_Mug || !NIN_HideMug_TrickAfterMug || IsOnCooldown(OriginalHook(Mug))) && //Check mug if you want mug to have priority
                 (HasStatusEffect(Buffs.Hidden) || HasStatusEffect(Buffs.ShadowWalker))) //Check for ability to use trick
                 return OriginalHook(TrickAttack);
-            
+
             return InCombat() && NIN_HideMug_Mug
                 ? OriginalHook(Mug)
                 : actionID;
@@ -632,13 +632,13 @@ internal partial class NIN : Melee
         {
             if (actionID is not Chi)
                 return actionID;
-                
+
             return TraitLevelChecked(250) && HasStatusEffect(Buffs.Kassatsu)
                 ? Jin
-                :actionID;
+                : actionID;
         }
     }
-    
+
     internal class NIN_KassatsuTrick : CustomCombo
     {
         protected internal override Preset Preset => Preset.NIN_KassatsuTrick;
@@ -647,10 +647,10 @@ internal partial class NIN : Melee
         {
             if (actionID is not Kassatsu)
                 return actionID;
-            
-            return HasStatusEffect(Buffs.ShadowWalker) || HasStatusEffect(Buffs.Hidden) 
+
+            return HasStatusEffect(Buffs.ShadowWalker) || HasStatusEffect(Buffs.Hidden)
                 ? OriginalHook(TrickAttack)
-                :actionID;
+                : actionID;
         }
     }
 
@@ -665,7 +665,7 @@ internal partial class NIN : Melee
 
             if (HasStatusEffect(Buffs.TenChiJin) && IsEnabled(Preset.NIN_TCJ))
                 return STTenChiJin(actionID);
-            
+
             return HasStatusEffect(Buffs.ShadowWalker)
                 ? Meisui
                 : actionID;
@@ -797,6 +797,6 @@ internal partial class NIN : Melee
             return actionID;
         }
     }
-    
+
     #endregion
 }

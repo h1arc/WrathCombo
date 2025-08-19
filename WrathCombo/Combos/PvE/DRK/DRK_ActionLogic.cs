@@ -40,7 +40,7 @@ internal partial class DRK
             #region Heal
 
             if (flags.HasFlag(Combo.Simple) ||
-                 (flags.HasFlag(Combo.Adv) && 
+                 (flags.HasFlag(Combo.Adv) &&
                  Variant.CanCure()))
                 return (action = Variant.Cure) != 0;
 
@@ -52,7 +52,7 @@ internal partial class DRK
             #region Aggro + Stun
 
             if (flags.HasFlag(Combo.Simple) ||
-                 (flags.HasFlag(Combo.Adv) && 
+                 (flags.HasFlag(Combo.Adv) &&
                  Variant.CanUltimatum()))
                 return (action = Variant.Ultimatum) != 0;
 
@@ -61,7 +61,7 @@ internal partial class DRK
             #region Damage over Time
 
             if (flags.HasFlag(Combo.Simple) ||
-                 (flags.HasFlag(Combo.Adv) && 
+                 (flags.HasFlag(Combo.Adv) &&
                 Variant.CanSpiritDart()))
                 return (action = Variant.SpiritDart) != 0;
 

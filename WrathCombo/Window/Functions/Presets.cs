@@ -16,9 +16,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using WrathCombo.Attributes;
-using WrathCombo.Combos;
 using WrathCombo.Combos.PvE;
-using WrathCombo.Combos.PvE.Content;
 using WrathCombo.Combos.PvP;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS.Functions;
@@ -43,7 +41,7 @@ internal class Presets : ConfigWindow
         public VariantAttribute? Variant;
         public PossiblyRetargetedAttribute? PossiblyRetargeted;
         public RetargetedAttribute? RetargetedAttribute;
-        public uint[] RetargetedActions => 
+        public uint[] RetargetedActions =>
             GetRetargetedActions(Preset, RetargetedAttribute, PossiblyRetargeted, Parent);
         public BozjaParentAttribute? BozjaParent;
         public EurekaParentAttribute? EurekaParent;
@@ -78,7 +76,7 @@ internal class Presets : ConfigWindow
             ComboType = PresetStorage.GetComboType(preset);
         }
     }
-        
+
     private static uint[] GetRetargetedActions
     (Preset preset,
         RetargetedAttribute? retargetedAttribute,
@@ -91,12 +89,13 @@ internal class Presets : ConfigWindow
             retargetAttribute = retargetedAttribute;
         else if (possiblyRetargeted != null)
             retargetAttribute = possiblyRetargeted;
-            
+
         // Bail if the Preset is not Retargeted
         if (retargetAttribute == null)
             return [];
-            
-        try {
+
+        try
+        {
             // Bail if not actually enabled
             if (!Service.Configuration.EnabledActions.Contains(preset))
                 return [];
@@ -109,7 +108,7 @@ internal class Presets : ConfigWindow
                 !Service.Configuration.EnabledActions
                     .Contains(grandParent))
                 return [];
-            
+
             // Bail if the Condition for PossiblyRetargeted is not satisfied
             if (retargetAttribute is PossiblyRetargetedAttribute attribute
                 && IsConditionSatisfied(attribute.PossibleCondition) != true)
@@ -120,7 +119,7 @@ internal class Presets : ConfigWindow
             PluginLog.Error($"Failed to check if Preset {preset} is enabled: {e.ToStringFull()}");
             return [];
         }
-            
+
         // Set the Retargeted Actions if all bails are passed
         return retargetAttribute.RetargetedActions;
     }
@@ -336,12 +335,12 @@ internal class Presets : ConfigWindow
                 switch (info.Job)
                 {
                     case Job.ADV:
-                    {
-                        All.Config.Draw(preset);
-                        Variant.Config.Draw(preset);
-                        OccultCrescent.Config.Draw(preset);
-                        break;
-                    }
+                        {
+                            All.Config.Draw(preset);
+                            Variant.Config.Draw(preset);
+                            OccultCrescent.Config.Draw(preset);
+                            break;
+                        }
                     case Job.AST: AST.Config.Draw(preset); break;
                     case Job.BLM: BLM.Config.Draw(preset); break;
                     case Job.BLU: BLU.Config.Draw(preset); break;

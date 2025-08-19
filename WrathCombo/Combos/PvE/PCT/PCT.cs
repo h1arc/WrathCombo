@@ -31,7 +31,7 @@ internal partial class PCT : Caster
             if (HasStatusEffect(Buffs.StarryMuse))
                 return BurstWindowStandard(actionID);
             #endregion
-            
+
             #region Special Content
             // Variant Cure
             if (Variant.CanCure())
@@ -40,24 +40,24 @@ internal partial class PCT : Caster
             // Variant Rampart
             if (Variant.CanRampart(WeaveTypes.Weave))
                 return Variant.Rampart;
-            
+
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
             #endregion
 
             #region OGCD
-            
+
             if (InCombat())
             {
                 // SubtractivePalette
                 if (PaletteReady && CanWeave())
                     return SubtractivePalette;
-                
+
                 if (ScenicMuseReady && CanDelayedWeave())
                     return OriginalHook(ScenicMuse);
 
                 // LivingMuse
-                if (LivingMuseReady  && CanWeave() &&
+                if (LivingMuseReady && CanWeave() &&
                     (!PortraitReady || GetRemainingCharges(LivingMuse) == GetMaxCharges(LivingMuse)) &&
                     (!LevelChecked(ScenicMuse) || ScenicCD > GetCooldownChargeRemainingTime(LivingMuse)))
                     return OriginalHook(LivingMuse);
@@ -150,7 +150,7 @@ internal partial class PCT : Caster
                 return OriginalHook(HammerStamp);
 
             // LandscapeMotif
-            if ( LandscapeMotifReady && GetTargetHPPercent() > 10 &&
+            if (LandscapeMotifReady && GetTargetHPPercent() > 10 &&
                 GetCooldownRemainingTime(ScenicMuse) <= 20)
                 return OriginalHook(LandscapeMotif);
 
@@ -171,7 +171,7 @@ internal partial class PCT : Caster
             return actionID;
             #endregion
         }
-    }   
+    }
     internal class PCT_ST_AdvancedMode : CustomCombo
     {
         protected internal override Preset Preset => Preset.PCT_ST_AdvancedMode;
@@ -231,7 +231,7 @@ internal partial class PCT : Caster
             if (burstPhaseEnabled && HasStatusEffect(Buffs.StarryMuse))
                 return BurstWindowStandard(actionID);
             #endregion
-            
+
             #region Special Content
             // Variant Cure
             if (Variant.CanCure())
@@ -240,7 +240,7 @@ internal partial class PCT : Caster
             // Variant Rampart
             if (Variant.CanRampart(WeaveTypes.Weave))
                 return Variant.Rampart;
-            
+
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
             #endregion
@@ -252,29 +252,29 @@ internal partial class PCT : Caster
                 // SubtractivePalette
                 if (paletteEnabled && CanWeave() && PaletteReady)
                     return SubtractivePalette;
-                
+
                 // ScenicMuse
                 if (scenicMuseEnabled && ScenicMuseReady && CanDelayedWeave())
                     return OriginalHook(ScenicMuse);
-                    
+
                 // LivingMuse
                 if (livingMuseEnabled && LivingMuseReady && CanWeave() &&
                     (!PortraitReady || GetRemainingCharges(LivingMuse) == GetMaxCharges(LivingMuse)) &&
                     (!LevelChecked(ScenicMuse) || ScenicCD > GetCooldownChargeRemainingTime(LivingMuse)))
                     return OriginalHook(LivingMuse);
-                        
+
                 // SteelMuse
                 if (steelMuseEnabled && SteelMuseReady && CanWeave() &&
                     (SteelCD < ScenicCD || GetRemainingCharges(SteelMuse) == GetMaxCharges(SteelMuse) ||
                     !LevelChecked(ScenicMuse)))
                     return OriginalHook(SteelMuse);
-                    
+
                 // Portrait Mog or Madeen
                 if (portraitEnabled && PortraitReady && CanWeave() &&
-                    IsOffCooldown(OriginalHook(MogoftheAges)) && 
+                    IsOffCooldown(OriginalHook(MogoftheAges)) &&
                     (ScenicCD >= 60 || !LevelChecked(ScenicMuse)))
                     return OriginalHook(MogoftheAges);
-                        
+
                 //LucidDreaming
                 if (lucidDreamingEnabled && Role.CanLucidDream(PCT_ST_AdvancedMode_LucidOption))
                     return Role.LucidDreaming;
@@ -349,21 +349,21 @@ internal partial class PCT : Caster
             //Hammer Stamp Combo
             if (hammerEnabled && ActionReady(OriginalHook(HammerStamp)) && ScenicCD > 10)
                 return OriginalHook(HammerStamp);
-            
+
             // LandscapeMotif
-            if (landscapeMotifEnabled && LandscapeMotifReady && GetTargetHPPercent() > landscapeStop && 
+            if (landscapeMotifEnabled && LandscapeMotifReady && GetTargetHPPercent() > landscapeStop &&
                 GetCooldownRemainingTime(ScenicMuse) <= 20)
                 return OriginalHook(LandscapeMotif);
 
             // CreatureMotif
-            if (creatureMotifEnabled && CreatureMotifReady &&  GetTargetHPPercent() > creatureStop &&
+            if (creatureMotifEnabled && CreatureMotifReady && GetTargetHPPercent() > creatureStop &&
                 (HasCharges(LivingMuse) || GetCooldownChargeRemainingTime(LivingMuse) <= 8))
-                return OriginalHook(CreatureMotif);                  
+                return OriginalHook(CreatureMotif);
 
             // WeaponMotif
-            if (weaponMotifEnabled && WeaponMotifReady && GetTargetHPPercent() > weaponStop && 
+            if (weaponMotifEnabled && WeaponMotifReady && GetTargetHPPercent() > weaponStop &&
                 (HasCharges(SteelMuse) || GetCooldownChargeRemainingTime(SteelMuse) <= 8))
-                return OriginalHook(WeaponMotif);            
+                return OriginalHook(WeaponMotif);
 
             //Subtractive Combo
             if (blizzardComboEnabled && BlizzardIIinCyan.LevelChecked() && HasStatusEffect(Buffs.SubtractivePalette))
@@ -412,7 +412,7 @@ internal partial class PCT : Caster
             // Variant Rampart
             if (Variant.CanRampart(WeaveTypes.Weave))
                 return Variant.Rampart;
-            
+
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
             #endregion
@@ -607,7 +607,7 @@ internal partial class PCT : Caster
             // Variant Rampart
             if (Variant.CanRampart(WeaveTypes.Weave))
                 return Variant.Rampart;
-            
+
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
             #endregion

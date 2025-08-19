@@ -71,7 +71,7 @@ internal partial class PLD : Tank
                               JustUsed(HallowedGround, 9f);
 
             #endregion
-            
+
             // Interrupt
             if (Role.CanInterject())
                 return Role.Interject;
@@ -273,7 +273,7 @@ internal partial class PLD : Tank
                               JustUsed(HallowedGround, 9f);
 
             #endregion
-            
+
             // Interrupt
             if (Role.CanInterject())
                 return Role.Interject;
@@ -454,7 +454,7 @@ internal partial class PLD : Tank
             // Variant Cure
             if (Variant.CanCure())
                 return Variant.Cure;
-            
+
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
 
@@ -643,7 +643,7 @@ internal partial class PLD : Tank
                                     IsEnabled(Preset.PLD_AoE_AdvancedMode_MP_Reserve) && playerMP >= GetResourceCost(HolySpirit) + PLD_AoE_MP_Reserve;
 
             #endregion
-            
+
             // Interrupt
             if (IsEnabled(Preset.PLD_AoE_Interrupt)
                 && Role.CanInterject())
@@ -877,7 +877,7 @@ internal partial class PLD : Tank
 
                 //Hard target retarget
                 SimpleTarget.HardTarget.IfNotThePlayer().IfInParty() ??
-                
+
                 //Targets target retarget option
                 (IsEnabled(Preset.PLD_RetargetSheltron_TT)
                     && !PlayerHasAggro

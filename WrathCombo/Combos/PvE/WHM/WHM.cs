@@ -72,7 +72,7 @@ internal partial class WHM : Healer
             // Glare IV
             if (HasStatusEffect(Buffs.SacredSight))
                 return Glare4;
-            
+
             // Blood Lily Spend
             if (BloodLilyReady)
                 return AfflatusMisery;
@@ -81,7 +81,7 @@ internal partial class WHM : Healer
             if (ActionReady(AfflatusRapture) &&
                 (FullLily || AlmostFullLily))
                 return AfflatusRapture;
-            
+
             #region Movement Options
 
             if (IsMoving())
@@ -144,7 +144,7 @@ internal partial class WHM : Healer
             // Glare IV
             if (HasStatusEffect(Buffs.SacredSight))
                 return OriginalHook(Glare4);
-            
+
             if (BloodLilyReady &&
                 HasBattleTarget())
                 return AfflatusMisery;
@@ -178,7 +178,7 @@ internal partial class WHM : Healer
         protected override uint Invoke(uint actionID)
         {
             #region Button Selection
-            
+
             var replacedAction = (int)WHM_ST_MainCombo_Actions switch
             {
                 1 => AeroList.Keys.ToArray(),
@@ -257,13 +257,13 @@ internal partial class WHM : Healer
             if (IsEnabled(Preset.WHM_ST_MainCombo_Misery_oGCD) &&
                 BloodLilyReady)
                 return AfflatusMisery;
-            
+
             // Lily Heal Overcap
             if (IsEnabled(Preset.WHM_ST_MainCombo_LilyOvercap) &&
                 ActionReady(AfflatusRapture) &&
                 (FullLily || AlmostFullLily))
                 return AfflatusRapture;
-            
+
             #region Movement Options
 
             if (IsMoving())
@@ -358,7 +358,7 @@ internal partial class WHM : Healer
             if (IsEnabled(Preset.WHM_AoE_DPS_GlareIV) &&
                 HasStatusEffect(Buffs.SacredSight))
                 return OriginalHook(Glare4);
-            
+
             if (IsEnabled(Preset.WHM_AoE_DPS_Misery) &&
                 BloodLilyReady &&
                 HasBattleTarget())
@@ -681,7 +681,7 @@ internal partial class WHM : Healer
         protected override uint Invoke(uint actionID)
         {
             var healStack = SimpleTarget.Stack.AllyToHeal;
-            
+
             if (!EZ.Throttle("WHMRetargetingFeature", TS.FromSeconds(.1)))
                 return actionID;
 
@@ -722,7 +722,7 @@ internal partial class WHM : Healer
                     SimpleTarget.Self;
                 LiturgyOfTheBell.Retarget(bellTarget, dontCull: true);
             }
-            
+
             if (IsEnabled(Preset.WHM_Re_Cure3))
                 Cure3.Retarget(healStack, dontCull: true);
 

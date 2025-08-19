@@ -42,7 +42,7 @@ internal partial class WAR : Tank
     {
         if (Opener1.LevelChecked)
             return Opener1;
-        
+
         return WrathOpener.Dummy;
     }
 
@@ -185,7 +185,7 @@ internal partial class WAR : Tank
     internal static bool ShouldUseDecimate(int gauge = 90) => CanSpendBeastGauge(gauge, AoEBurstPooling) && HasST && InMeleeRange() && Minimal;
 
     internal static bool ShouldUseTomahawk => LevelChecked(Tomahawk) && !InMeleeRange() && HasBattleTarget();
-    internal static uint STCombo 
+    internal static uint STCombo
         => ComboTimer > 0 ? LevelChecked(Maim) && ComboAction == HeavySwing ? Maim
         : LevelChecked(StormsPath) && ComboAction == Maim
         ? (LevelChecked(StormsEye) && ((IsEnabled(Preset.WAR_ST_Simple) && GetStatusEffectRemainingTime(Buffs.SurgingTempest) <= 29) || (IsEnabled(Preset.WAR_ST_Advanced) && IsEnabled(Preset.WAR_ST_StormsEye) && GetStatusEffectRemainingTime(Buffs.SurgingTempest) <= WAR_SurgingRefreshRange))
