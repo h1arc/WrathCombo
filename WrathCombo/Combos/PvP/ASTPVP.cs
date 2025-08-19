@@ -1,4 +1,5 @@
-﻿using WrathCombo.Core;
+﻿using Dalamud.Game.ClientState.Objects.Types;
+using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using static WrathCombo.Window.Functions.UserConfig;
@@ -29,6 +30,7 @@ internal static class ASTPvP
     internal class Buffs
     {
         internal const ushort
+            DiurnalBenefic = 3099, 
             LadyOfCrowns = 4328,
             LordOfCrowns = 4329,
             RetrogradeReady = 4331;
@@ -40,9 +42,11 @@ internal static class ASTPvP
     {
         internal static UserBool
             ASTPvP_Heal_DoubleCast = new("ASTPvP_Heal_DoubleCast"),
+            ASTPvP_BurstHealRetarget = new("ASTPvP_BurstHealRetarget"),
             ASTPvP_Heal_Retarget = new("ASTPvP_Heal_Retarget");
         internal static UserInt
             ASTPvP_Burst_PlayCardOption = new("ASTPvP_Burst_PlayCardOption"),
+            ASTPvP_Burst_HealThreshold = new("ASTPvP_Burst_HealThreshold"),
             ASTPvP_DiabrosisThreshold = new("ASTPvP_DiabrosisThreshold");
 
         internal static void Draw(Preset preset)
@@ -62,6 +66,12 @@ internal static class ASTPvP
                 case Preset.ASTPvP_Diabrosis:
                     DrawSliderInt(0, 100, ASTPvP_DiabrosisThreshold, "Target HP% to use Diabrosis");
                     break;
+                
+                case Preset.ASTPvP_Burst_Heal:
+                    DrawAdditionalBoolChoice(ASTPvP_BurstHealRetarget, "Retarget", "Retargets Aspected Benefic to the Heal Stack(In Wrath Settings)");
+                    DrawSliderInt(1, 100, ASTPvP_Burst_HealThreshold, "HP% to use Aspected Benefic");
+                    break;
+                    
                 
                 case Preset.ASTPvP_Heal:
                     DrawAdditionalBoolChoice(ASTPvP_Heal_DoubleCast, "Double Cast", "Adds Doublecast to Aspected Benefic");
@@ -123,8 +133,17 @@ internal static class ASTPvP
                 if (IsEnabled(Preset.ASTPvP_Burst_DoubleMalefic) && ComboAction == Malefic &&
                     (GetRemainingCharges(DoubleCast) > 1 || GetCooldownRemainingTime(Gravity) > 7.5f) && CanWeave())
                     return DoubleMalefic;
+                
+                if (IsEnabled(Preset.ASTPvP_Burst_Heal))
+                {
+                    IGameObject? healTarget = ASTPvP_BurstHealRetarget ? SimpleTarget.Stack.AllyToHeal : SimpleTarget.Stack.Allies;
+                
+                    if (!HasStatusEffect(Buffs.DiurnalBenefic, healTarget) && GetTargetHPPercent(healTarget) <= ASTPvP_Burst_HealThreshold)
+                        return ASTPvP_BurstHealRetarget
+                            ? AspectedBenefic.Retarget(Malefic, healTarget, true)
+                            : AspectedBenefic;
+                }
             }
-
             return actionID;
         }
     }

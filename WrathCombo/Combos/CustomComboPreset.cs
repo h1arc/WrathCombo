@@ -8375,11 +8375,6 @@ public enum Preset
     ASTPvP_Burst_PlayCard = 111003,
 
     [PvPCustomCombo]
-    [ReplaceSkill(ASTPvP.AspectedBenefic)]
-    [CustomComboInfo("Aspected Benefic Heal Feature", "Adds options to Aspected Benefic", Job.AST)]
-    ASTPvP_Heal = 111004,
-
-    [PvPCustomCombo]
     [ParentCombo(ASTPvP_Burst)]
     [CustomComboInfo("Double Malefic Cast Option", "Adds Double Malefic Cast to Burst Mode.", Job.AST)]
     ASTPvP_Burst_DoubleMalefic = 111005,
@@ -8407,11 +8402,23 @@ public enum Preset
         "Adds Role Action Diabrosis to Burst Mode below selected health",
         Job.AST)]
     ASTPvP_Diabrosis = 111010,
+    
+    [PvPCustomCombo]
+    [ParentCombo(ASTPvP_Burst)]
+    [CustomComboInfo("Aspected Benefic Option", "Adds Aspected Benefic when target is below set health", Job.AST)]
+    [PossiblyRetargeted]
+    ASTPvP_Burst_Heal = 111011,
 
     [PvPCustomCombo]
     [ReplaceSkill(ASTPvP.Epicycle)]
     [CustomComboInfo("Epicycle Burst Feature", "Turns Epicycle into burst combo.", Job.AST)]
     ASTPvP_Epicycle = 111008,
+    
+    [PvPCustomCombo]
+    [ReplaceSkill(ASTPvP.AspectedBenefic)]
+    [CustomComboInfo("Aspected Benefic Heal Feature", "Adds options to Aspected Benefic", Job.AST)]
+    [PossiblyRetargeted]
+    ASTPvP_Heal = 111004,
 
     // Last value = 111010
 
@@ -9344,10 +9351,15 @@ public enum Preset
 
     [PvPCustomCombo]
     [ParentCombo(SCHPvP_Burst)]
-    [CustomComboInfo("Self Adlo Option",
-       "Adds Adloquium to self when at or beneath selected heath threshold. \n Will Not Overwrite Catalyze",
-       Job.SCH)]
-    SCHPvP_Selfcare = 126006,
+    [CustomComboInfo("Adlo Option", "Adds Adloquium when target is below set health", Job.SCH)]
+    [PossiblyRetargeted]
+    SCHPvP_Adlo = 126006,
+    
+    [PvPCustomCombo]
+    [ReplaceSkill(SCHPvP.Broil)]
+    [CustomComboInfo("Adlo Retarget", "Retargets Adlo to the heal stack (In Wrath Settings) outside of the Burst Feature", Job.SCH)]
+    [Retargeted]
+    SCHPvP_RetargetAdlo = 126007,
 
     // Last value = 126006
 
