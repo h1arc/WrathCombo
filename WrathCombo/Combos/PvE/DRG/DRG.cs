@@ -70,10 +70,10 @@ internal partial class DRG : Melee
             if (actionID is not TrueThrust)
                 return actionID;
 
-            if (Variant.CanCure(Preset.DRG_Variant_Cure, DRG_Variant_Cure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
-            if (Variant.CanRampart(Preset.DRG_Variant_Rampart) &&
+            if (Variant.CanRampart() &&
                 CanDRGWeave())
                 return Variant.Rampart;
 
@@ -224,10 +224,10 @@ internal partial class DRG : Melee
                 Opener().FullOpener(ref actionID))
                 return actionID;
 
-            if (Variant.CanCure(Preset.DRG_Variant_Cure, DRG_Variant_Cure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
-            if (Variant.CanRampart(Preset.DRG_Variant_Rampart) &&
+            if (Variant.CanRampart() &&
                 CanDRGWeave())
                 return Variant.Rampart;
 
@@ -419,10 +419,10 @@ internal partial class DRG : Melee
             if (actionID is not DoomSpike)
                 return actionID;
 
-            if (Variant.CanCure(Preset.DRG_Variant_Cure, DRG_Variant_Cure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
-            if (Variant.CanRampart(Preset.DRG_Variant_Rampart) &&
+            if (Variant.CanRampart() &&
                 CanDRGWeave())
                 return Variant.Rampart;
 
@@ -555,10 +555,10 @@ internal partial class DRG : Melee
             if (actionID is not DoomSpike)
                 return actionID;
 
-            if (Variant.CanCure(Preset.DRG_Variant_Cure, DRG_Variant_Cure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
-            if (Variant.CanRampart(Preset.DRG_Variant_Rampart) &&
+            if (Variant.CanRampart() &&
                 CanDRGWeave())
                 return Variant.Rampart;
 

@@ -32,11 +32,11 @@ internal partial class MNK : Melee
                 return FormShift;
 
             //Variant Cure
-            if (Variant.CanCure(Preset.MNK_Variant_Cure, MNK_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
             //Variant Rampart
-            if (Variant.CanRampart(Preset.MNK_Variant_Rampart))
+            if (Variant.CanRampart())
                 return Variant.Rampart;
 
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -142,11 +142,11 @@ internal partial class MNK : Melee
                 return FormShift;
 
             //Variant Cure
-            if (Variant.CanCure(Preset.MNK_Variant_Cure, MNK_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
             //Variant Rampart
-            if (Variant.CanRampart(Preset.MNK_Variant_Rampart))
+            if (Variant.CanRampart())
                 return Variant.Rampart;
 
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -263,11 +263,11 @@ internal partial class MNK : Melee
                 return FormShift;
 
             //Variant Cure
-            if (Variant.CanCure(Preset.MNK_Variant_Cure, MNK_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
             //Variant Rampart
-            if (Variant.CanRampart(Preset.MNK_Variant_Rampart))
+            if (Variant.CanRampart())
                 return Variant.Rampart;
 
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -374,11 +374,11 @@ internal partial class MNK : Melee
                 return FormShift;
 
             //Variant Cure
-            if (Variant.CanCure(Preset.MNK_Variant_Cure, MNK_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
             //Variant Rampart
-            if (Variant.CanRampart(Preset.MNK_Variant_Rampart))
+            if (Variant.CanRampart())
                 return Variant.Rampart;
 
             if (OccultCrescent.ShouldUsePhantomActions())

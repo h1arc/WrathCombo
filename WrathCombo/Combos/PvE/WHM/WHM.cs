@@ -43,7 +43,7 @@ internal partial class WHM : Healer
 
             if (CanWeave())
             {
-                if (Variant.CanRampart(Preset.WHM_DPS_Variant_Rampart))
+                if (Variant.CanRampart())
                     return Variant.Rampart;
 
                 if (ActionReady(PresenceOfMind) &&
@@ -130,7 +130,7 @@ internal partial class WHM : Healer
                 if (Role.CanLucidDream(7500))
                     return Role.LucidDreaming;
 
-                if (Variant.CanRampart(Preset.WHM_DPS_Variant_Rampart))
+                if (Variant.CanRampart())
                     return Variant.Rampart;
 
                 if (Variant.CanSpiritDart())
@@ -219,7 +219,7 @@ internal partial class WHM : Healer
 
             if (CanWeave())
             {
-                if (Variant.CanRampart(Preset.WHM_DPS_Variant_Rampart))
+                if (Variant.CanRampart())
                     return Variant.Rampart;
 
                 if (IsEnabled(Preset.WHM_ST_MainCombo_PresenceOfMind) &&
@@ -343,7 +343,7 @@ internal partial class WHM : Healer
                     Role.CanLucidDream(WHM_AoEDPS_Lucid))
                     return Role.LucidDreaming;
 
-                if (Variant.CanRampart(Preset.WHM_DPS_Variant_Rampart))
+                if (Variant.CanRampart())
                     return Variant.Rampart;
 
                 if (Variant.CanSpiritDart())

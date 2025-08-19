@@ -50,10 +50,10 @@ internal partial class MCH : PhysicalRanged
             if (Role.CanHeadGraze(Preset.MCH_ST_SimpleMode, WeaveTypes.DelayWeave))
                 return Role.HeadGraze;
 
-            if (Variant.CanCure(Preset.MCH_Variant_Cure, MCH_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
-            if (Variant.CanRampart(Preset.MCH_Variant_Rampart))
+            if (Variant.CanRampart())
                 return Variant.Rampart;
 
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -197,10 +197,10 @@ internal partial class MCH : PhysicalRanged
             if (Role.CanHeadGraze(Preset.MCH_ST_Adv_Interrupt, WeaveTypes.DelayWeave))
                 return Role.HeadGraze;
 
-            if (Variant.CanCure(Preset.MCH_Variant_Cure, MCH_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
-            if (Variant.CanRampart(Preset.MCH_Variant_Rampart))
+            if (Variant.CanRampart())
                 return Variant.Rampart;
 
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -356,10 +356,10 @@ internal partial class MCH : PhysicalRanged
             if (Role.CanHeadGraze(Preset.MCH_AoE_SimpleMode, WeaveTypes.DelayWeave))
                 return Role.HeadGraze;
 
-            if (Variant.CanCure(Preset.MCH_Variant_Cure, MCH_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
-            if (Variant.CanRampart(Preset.MCH_Variant_Rampart))
+            if (Variant.CanRampart())
                 return Variant.Rampart;
 
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -492,10 +492,10 @@ internal partial class MCH : PhysicalRanged
             if (Role.CanHeadGraze(Preset.MCH_AoE_Adv_Interrupt, WeaveTypes.DelayWeave))
                 return Role.HeadGraze;
 
-            if (Variant.CanCure(Preset.MCH_Variant_Cure, MCH_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
-            if (Variant.CanRampart(Preset.MCH_Variant_Rampart))
+            if (Variant.CanRampart())
                 return Variant.Rampart;
 
             if (OccultCrescent.ShouldUsePhantomActions())

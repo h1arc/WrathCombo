@@ -24,7 +24,7 @@ internal partial class SCH : Healer
                 return SummonEos;
             
             #region Special Content
-            if (Variant.CanRampart(Preset.SCH_DPS_Variant_Rampart))
+            if (Variant.CanRampart())
                 return Variant.Rampart;
             
             if (Variant.CanSpiritDart())
@@ -84,7 +84,7 @@ internal partial class SCH : Healer
                 return SummonEos;
             
             #region Special Content
-            if (Variant.CanRampart(Preset.SCH_DPS_Variant_Rampart))
+            if (Variant.CanRampart())
                 return Variant.Rampart;
 
             if (Variant.CanSpiritDart())
@@ -157,7 +157,7 @@ internal partial class SCH : Healer
                 return actionID;
             
             #region Special Content
-            if (Variant.CanRampart(Preset.SCH_DPS_Variant_Rampart))
+            if (Variant.CanRampart())
                 return Variant.Rampart;
             
             if (Variant.CanSpiritDart())
@@ -233,7 +233,7 @@ internal partial class SCH : Healer
                 return SummonEos;
             
             #region Special Content
-            if (Variant.CanRampart(Preset.SCH_DPS_Variant_Rampart))
+            if (Variant.CanRampart())
                 return Variant.Rampart;
 
             if (Variant.CanSpiritDart())

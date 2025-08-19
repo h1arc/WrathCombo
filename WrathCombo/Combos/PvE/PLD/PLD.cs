@@ -85,7 +85,7 @@ internal partial class PLD : Tank
                     return Role.LowBlow;
 
             // Variant Cure
-            if (Variant.CanCure(Preset.PLD_Variant_Cure, PLD_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -167,7 +167,7 @@ internal partial class PLD : Tank
                         }
 
                         // Variant Ultimatum
-                        if (Variant.CanUltimatum(Preset.PLD_Variant_Ultimatum))
+                        if (Variant.CanUltimatum())
                             return Variant.Ultimatum;
 
                         // Circle of Scorn / Spirits Within
@@ -284,7 +284,7 @@ internal partial class PLD : Tank
                     return Role.LowBlow;
 
             // Variant Cure
-            if (Variant.CanCure(Preset.PLD_Variant_Cure, PLD_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -350,7 +350,7 @@ internal partial class PLD : Tank
                         }
 
                         // Variant Ultimatum
-                        if (Variant.CanUltimatum(Preset.PLD_Variant_Ultimatum))
+                        if (Variant.CanUltimatum())
                             return Variant.Ultimatum;
 
                         // Circle of Scorn / Spirits Within
@@ -452,7 +452,7 @@ internal partial class PLD : Tank
                     return Role.LowBlow;
 
             // Variant Cure
-            if (Variant.CanCure(Preset.PLD_Variant_Cure, PLD_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
             
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -492,7 +492,7 @@ internal partial class PLD : Tank
                         }
 
                         // Variant Ultimatum
-                        if (Variant.CanUltimatum(Preset.PLD_Variant_Ultimatum))
+                        if (Variant.CanUltimatum())
                             return Variant.Ultimatum;
 
                         // Circle of Scorn / Spirits Within
@@ -657,7 +657,7 @@ internal partial class PLD : Tank
                     return Role.LowBlow;
 
             // Variant Cure
-            if (Variant.CanCure(Preset.PLD_Variant_Cure, PLD_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -685,7 +685,7 @@ internal partial class PLD : Tank
                         }
 
                         // Variant Ultimatum
-                        if (Variant.CanUltimatum(Preset.PLD_Variant_Ultimatum))
+                        if (Variant.CanUltimatum())
                             return Variant.Ultimatum;
 
                         // Circle of Scorn / Spirits Within

@@ -87,11 +87,11 @@ internal partial class WAR : Tank
     #region Helpers
     internal static uint GetVariantAction()
     {
-        if (Variant.CanCure(Preset.WAR_Variant_Cure, WAR_VariantCure))
+        if (Variant.CanCure())
             return Variant.Cure;
         if (Variant.CanSpiritDart() && CanWeave())
             return Variant.SpiritDart;
-        if (Variant.CanUltimatum(Preset.WAR_Variant_Ultimatum) && CanWeave())
+        if (Variant.CanUltimatum() && CanWeave())
             return Variant.Ultimatum;
 
         return 0; //No conditions met

@@ -20,7 +20,6 @@ internal partial class SMN
             SMN_AoE_CrimsonCycloneMeleeDistance = new("SMN_AoE_CrimsonCycloneMeleeDistance", 25),
             SMN_AoE_SwiftcastPhase = new("SMN_AoE_SwiftcastPhase", 1),
             
-            SMN_VariantCure = new("SMN_VariantCure"),
             SMN_Balance_Content = new("SMN_Balance_Content", 1);
 
         public static UserBoolArray
@@ -132,9 +131,6 @@ internal partial class SMN
                 #endregion
                 
                 #region Standalones
-                case Preset.SMN_Variant_Cure:
-                    DrawSliderInt(1, 100, SMN_VariantCure, "HP% to be at or under", 200);
-                    break;
                 #endregion
             }
         }

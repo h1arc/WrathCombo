@@ -10,7 +10,6 @@ internal partial class RDM
     {
         #region Options
         public static UserInt
-            RDM_VariantCure = new("RDM_VariantCure"),
             RDM_ST_Lucid_Threshold = new("RDM_LucidDreaming_Threshold", 6500),
             RDM_AoE_Lucid_Threshold = new("RDM_AoE_Lucid_Threshold", 6500),
             RDM_BalanceOpener_Content = new("RDM_BalanceOpener_Content", 1),
@@ -56,10 +55,6 @@ internal partial class RDM
                     ImGui.Unindent();
                     break;
                 
-                case Preset.RDM_Variant_Cure:
-                    DrawSliderInt(1, 100, RDM_VariantCure, "HP% to be at or under", 200);
-                    break;
-
                 case Preset.RDM_ST_MeleeCombo:
                     if (P.IPCSearch.AutoActions[Preset.RDM_ST_DPS] == true && 
                         CustomComboFunctions.IsNotEnabled(Preset.RDM_ST_MeleeCombo_IncludeRiposte))

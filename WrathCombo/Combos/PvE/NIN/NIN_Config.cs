@@ -28,7 +28,6 @@ internal partial class NIN
             NIN_AoE_AdvancedMode_Mug_SubOption = new("NIN_AoE_AdvancedMode_Mug_SubOption", 0),
             NIN_AoE_AdvancedMode_TrickAttack_Threshold = new("NIN_AoE_AdvancedMode_TrickAttack_Threshold", 40),
             NIN_AoE_AdvancedMode_TrickAttack_SubOption = new("NIN_AoE_AdvancedMode_TrickAttack_SubOption", 0),
-            NIN_VariantCure = new("NIN_VariantCure"),
             NIN_Adv_Opener_Selection = new("NIN_Adv_Opener_Selection", 0),
             NIN_Balance_Content = new("NIN_Balance_Content", 1),
             NIN_SimpleMudra_Choice = new("NIN_SimpleMudra_Choice", 1);
@@ -247,10 +246,6 @@ internal partial class NIN
                                         2);
                                     break;
                 
-                
-                case Preset.NIN_Variant_Cure:
-                    DrawSliderInt(1, 100, NIN_VariantCure, "HP% to be at or under", 200);
-                    break;
                 
                 case Preset.NIN_HideMug:
                     DrawAdditionalBoolChoice(NIN_HideMug_Mug, "Mug", "Adds Mug when in Combat");

@@ -300,11 +300,11 @@ internal partial class GNB : Tank
     internal static int MaxCartridges() => TraitLevelChecked(Traits.CartridgeChargeII) ? 3 : TraitLevelChecked(Traits.CartridgeCharge) ? 2 : 0;
     internal static uint GetVariantAction()
     {
-        if (Variant.CanCure(Preset.GNB_Variant_Cure, GNB_VariantCure))
+        if (Variant.CanCure())
             return Variant.Cure;
         if (Variant.CanSpiritDart() && CanWeave())
             return Variant.SpiritDart;
-        if (Variant.CanUltimatum(Preset.GNB_Variant_Ultimatum) && CanWeave())
+        if (Variant.CanUltimatum() && CanWeave())
             return Variant.Ultimatum;
 
         return 0; //No conditions met

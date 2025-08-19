@@ -17,10 +17,10 @@ internal partial class BRD : PhysicalRanged
                 return actionID;
 
             #region Special Content
-            if (Variant.CanCure(Preset.BRD_Variant_Cure, BRD_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
-            if (Variant.CanRampart(Preset.BRD_Variant_Rampart, WeaveTypes.Weave))
+            if (Variant.CanRampart(WeaveTypes.Weave))
                 return Variant.Rampart;
             
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -176,10 +176,10 @@ internal partial class BRD : PhysicalRanged
                 return actionID;
 
             #region Special Content
-            if (Variant.CanCure(Preset.BRD_Variant_Cure, BRD_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
-            if (Variant.CanRampart(Preset.BRD_Variant_Rampart, WeaveTypes.Weave))
+            if (Variant.CanRampart(WeaveTypes.Weave))
                 return Variant.Rampart;
             
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -355,10 +355,10 @@ internal partial class BRD : PhysicalRanged
             #endregion
 
             #region Special Content
-            if (Variant.CanCure(Preset.BRD_Variant_Cure, BRD_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
-            if (Variant.CanRampart(Preset.BRD_Variant_Rampart, WeaveTypes.Weave))
+            if (Variant.CanRampart(WeaveTypes.Weave))
                 return Variant.Rampart;
                 
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -559,10 +559,10 @@ internal partial class BRD : PhysicalRanged
             #endregion
 
             #region Special Content
-            if (Variant.CanCure(Preset.BRD_Variant_Cure, BRD_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
-            if (Variant.CanRampart(Preset.BRD_Variant_Rampart, WeaveTypes.Weave))
+            if (Variant.CanRampart(WeaveTypes.Weave))
                 return Variant.Rampart;
             
             if (OccultCrescent.ShouldUsePhantomActions())

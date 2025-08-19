@@ -39,10 +39,10 @@ internal partial class NIN : Melee
             if (OccultCrescent.ShouldUsePhantomActions() && !MudraPhase)
                 return OccultCrescent.BestPhantomAction();
             
-            if (Variant.CanRampart(Preset.NIN_Variant_Rampart) && !MudraPhase)
+            if (Variant.CanRampart() && !MudraPhase)
                 return Variant.Rampart;
             
-            if (Variant.CanCure(Preset.NIN_Variant_Cure, NIN_VariantCure) && !MudraPhase)
+            if (Variant.CanCure() && !MudraPhase)
                 return Variant.Cure;
             #endregion
             
@@ -166,10 +166,10 @@ internal partial class NIN : Melee
             if (OccultCrescent.ShouldUsePhantomActions() && !MudraPhase)
                 return OccultCrescent.BestPhantomAction();
             
-            if (Variant.CanRampart(Preset.NIN_Variant_Rampart) && !MudraPhase)
+            if (Variant.CanRampart() && !MudraPhase)
                 return Variant.Rampart;
             
-            if (Variant.CanCure(Preset.NIN_Variant_Cure, NIN_VariantCure) && !MudraPhase)
+            if (Variant.CanCure() && !MudraPhase)
                 return Variant.Cure;
             #endregion
             
@@ -295,10 +295,10 @@ internal partial class NIN : Melee
             if (OccultCrescent.ShouldUsePhantomActions() && !MudraPhase)
                 return OccultCrescent.BestPhantomAction();
             
-            if (Variant.CanRampart(Preset.NIN_Variant_Rampart) && !MudraPhase)
+            if (Variant.CanRampart() && !MudraPhase)
                 return Variant.Rampart;
             
-            if (Variant.CanCure(Preset.NIN_Variant_Cure, NIN_VariantCure) && !MudraPhase)
+            if (Variant.CanCure() && !MudraPhase)
                 return Variant.Cure;
             #endregion
             
@@ -448,10 +448,10 @@ internal partial class NIN : Melee
             if (OccultCrescent.ShouldUsePhantomActions() && !MudraPhase)
                 return OccultCrescent.BestPhantomAction();
             
-            if (Variant.CanRampart(Preset.NIN_Variant_Rampart) && !MudraPhase)
+            if (Variant.CanRampart() && !MudraPhase)
                 return Variant.Rampart;
             
-            if (Variant.CanCure(Preset.NIN_Variant_Cure, NIN_VariantCure) && !MudraPhase)
+            if (Variant.CanCure() && !MudraPhase)
                 return Variant.Cure;
             #endregion
             

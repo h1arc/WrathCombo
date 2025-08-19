@@ -99,10 +99,10 @@ internal partial class SAM : Melee
                 !InCombat() && HasBattleTarget())
                 return MeikyoShisui;
 
-            if (Variant.CanCure(Preset.SAM_Variant_Cure, SAM_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
-            if (Variant.CanRampart(Preset.SAM_Variant_Rampart))
+            if (Variant.CanRampart())
                 return Variant.Rampart;
 
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -272,10 +272,10 @@ internal partial class SAM : Melee
                 !InCombat() && HasBattleTarget())
                 return MeikyoShisui;
 
-            if (Variant.CanCure(Preset.SAM_Variant_Cure, SAM_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
-            if (Variant.CanRampart(Preset.SAM_Variant_Rampart))
+            if (Variant.CanRampart())
                 return Variant.Rampart;
 
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -504,10 +504,10 @@ internal partial class SAM : Melee
             if (actionID is not (Fuga or Fuko))
                 return actionID;
 
-            if (Variant.CanCure(Preset.SAM_Variant_Cure, SAM_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
-            if (Variant.CanRampart(Preset.SAM_Variant_Rampart))
+            if (Variant.CanRampart())
                 return Variant.Rampart;
 
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -613,10 +613,10 @@ internal partial class SAM : Melee
 
             float kenkiOvercapAoE = SAM_AoE_KenkiOvercapAmount;
 
-            if (Variant.CanCure(Preset.SAM_Variant_Cure, SAM_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
-            if (Variant.CanRampart(Preset.SAM_Variant_Rampart))
+            if (Variant.CanRampart())
                 return Variant.Rampart;
 
             if (OccultCrescent.ShouldUsePhantomActions())

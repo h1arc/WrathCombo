@@ -315,8 +315,7 @@ internal static class PresetStorage
         var mitigation = preset.GetAttribute<MitigationCombo>();
         var parent = (object?)preset.GetAttribute<ParentComboAttribute>() ??
                      (object?)preset.GetAttribute<BozjaParentAttribute>() ??
-                     (object?)preset.GetAttribute<EurekaParentAttribute>() ??
-                     preset.GetAttribute<VariantParentAttribute>();
+                     (object?)preset.GetAttribute<EurekaParentAttribute>();
             
         if (simple != null)
             return ComboType.Simple;

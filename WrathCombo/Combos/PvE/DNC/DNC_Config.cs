@@ -462,13 +462,6 @@ internal partial class DNC
 
                     break;
 
-                case Preset.DNC_Variant_Cure:
-                    DrawSliderInt(1, 80, DNCVariantCurePercent,
-                        "HP% to be at or under",
-                        itemWidth: 200f, sliderIncrement: SliderIncrements.Fives);
-
-                    break;
-
             }
         }
 
@@ -803,17 +796,6 @@ internal partial class DNC
             new("DNC_Partner_ActionToShow", (int)PartnerShowAction.Default);
 
         #endregion
-
-        /// <summary>
-        ///     HP% threshold for Variant Cure.
-        /// </summary>
-        /// <value>
-        ///     <b>Default</b>: 1 <br />
-        ///     <b>Range</b>: 1 - 80
-        /// </value>
-        /// <seealso cref="Preset.DNC_Variant_Cure" />
-        public static readonly UserInt DNCVariantCurePercent =
-            new("DNCVariantCurePercent", 20);
 
         #endregion
     }

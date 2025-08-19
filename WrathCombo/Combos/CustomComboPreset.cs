@@ -202,29 +202,168 @@ public enum Preset
 
     #region VARIANT ACTIONS
     [Variant]
-    [Hidden] // To Implement in future PR
-    [CustomComboInfo("Variant Tank", "Enable this to add Variant Actions in Variant Dungeons.", Job.ADV)]
+    [Role(JobRole.Tank)]
+    [CustomComboInfo("Variant Tank",
+        "Enable this to add Variant Actions in Variant Dungeons.\n " +
+        "Variant Actions will be used by Single Target and AoE DPS Combos, in both Simple & Advanced",
+        Job.ADV)]
     Variant_Tank = 200000,
 
     [Variant]
-    [Hidden] // To Implement in future PR
-    [CustomComboInfo("Variant Healer", "Enable this to add Variant Actions in Variant Dungeons.", Job.ADV)]
-    Variant_Healer = 200003,
+    [Role(JobRole.Tank)]
+    [ParentCombo(Variant_Tank)]
+    [CustomComboInfo("Variant Cure", "Use Variant Cure when HP is below set threshold.", Job.ADV)]
+    Variant_Tank_Cure = 200001,
 
     [Variant]
-    [Hidden] // To Implement in future PR
-    [CustomComboInfo("Variant Melee", "Enable this to add Variant Actions in Variant Dungeons.", Job.ADV)]
-    Variant_Melee = 200006,
+    [Role(JobRole.Tank)]
+    [ParentCombo(Variant_Tank)]
+    [CustomComboInfo("Variant Ultimatum", "Use Variant Ultimatum on cooldown.", Job.ADV)]
+    Variant_Tank_Ultimatum = 200002,
 
     [Variant]
-    [Hidden] // To Implement in future PR
-    [CustomComboInfo("Variant Physical Ranged", "Enable this to add Variant Actions in Variant Dungeons.", Job.ADV)]
-    Variant_PhysRanged = 200009,
+    [Role(JobRole.Tank)]
+    [Hidden] // Not Wired Up
+    [ParentCombo(Variant_Tank)]
+    [CustomComboInfo("Variant Raise", "Not Wired Up", Job.ADV)]
+    Variant_Tank_Raise = 200003,
 
     [Variant]
-    [Hidden] // To Implement in future PR
-    [CustomComboInfo("Variant Magic", "Enable this to add Variant Actions in Variant Dungeons.", Job.ADV)]
-    Variant_Magic = 200012,
+    [Role(JobRole.Tank)]
+    [ParentCombo(Variant_Tank)]
+    [CustomComboInfo("Variant Spirit Dart", "Use Variant Spirit Dart whenever the debuff is not present or less than 3s", Job.ADV)]
+    Variant_Tank_SpiritDart = 200004,
+
+
+    [Variant]
+    [Role(JobRole.Healer)]
+    [CustomComboInfo("Variant Healer", "Enable this to add Variant Actions in Variant Dungeons.\n" +
+        "Variant Actions will be used by Single Target and AoE DPS Combos, in both Simple & Advanced",
+        Job.ADV)]
+    Variant_Healer = 200005,
+
+    [Variant]
+    [Role(JobRole.Healer)]
+    [Hidden] //Not wired up
+    [ParentCombo(Variant_Healer)]
+    [CustomComboInfo("Variant Ultimatum", "Use Variant Ultimatum on cooldown.", Job.ADV)]
+    Variant_Healer_Ultimatum = 200006,
+
+    [Variant]
+    [Role(JobRole.Healer)]
+    [ParentCombo(Variant_Healer)]
+    [CustomComboInfo("Variant Spirit Dart", "Use Variant Spirit Dart whenever the debuff is not present or less than 3s", Job.ADV)]
+    Variant_Healer_SpiritDart = 200007,
+
+    [Variant]
+    [Role(JobRole.Healer)]
+    [ParentCombo(Variant_Healer)]
+    [CustomComboInfo("Variant Rampart", "Use Variant Rampart on cooldown.", Job.ADV)]
+    Variant_Healer_Rampart = 200008,
+
+
+    [Variant]
+    [Role(JobRole.MeleeDPS)]
+    [CustomComboInfo("Variant Melee",
+        "Enable this to add Variant Actions in Variant Dungeons.\n" +
+        "Variant Actions will be used by Single Target and AoE DPS Combos, in both Simple & Advanced",
+        Job.ADV)]
+    Variant_Melee = 200009,
+
+    [Variant]
+    [Role(JobRole.MeleeDPS)]
+    [ParentCombo(Variant_Melee)]
+    [CustomComboInfo("Variant Cure", "Use Variant Cure when HP is below set threshold.", Job.ADV)]
+    Variant_Melee_Cure = 200010,
+
+    [Variant]
+    [Role(JobRole.MeleeDPS)]
+    [Hidden] //Not wired up
+    [ParentCombo(Variant_Melee)]
+    [CustomComboInfo("Variant Ultimatum", "Use Variant Ultimatum on cooldown.", Job.ADV)]
+    Variant_Melee_Ultimatum = 200011,
+
+    [Variant]
+    [Role(JobRole.MeleeDPS)]
+    [Hidden] // Not wired up
+    [ParentCombo(Variant_Melee)]
+    [CustomComboInfo("Variant Raise", "Not Wired Up", Job.ADV)]
+    Variant_Melee_Raise = 200012,
+
+    [Variant]
+    [Role(JobRole.MeleeDPS)]
+    [ParentCombo(Variant_Melee)]
+    [CustomComboInfo("Variant Rampart", "Use Variant Rampart on cooldown.", Job.ADV)]
+    Variant_Melee_Rampart = 200013,
+
+
+    [Variant]
+    [Role(JobRole.RangedDPS)]
+    [CustomComboInfo("Variant Physical Ranged",
+        "Enable this to add Variant Actions in Variant Dungeons.\n" +
+        "Variant Actions will be used by Single Target and AoE DPS Combos, in both Simple & Advanced",
+        Job.ADV)]
+    Variant_PhysRanged = 200014,
+
+    [Variant]
+    [Role(JobRole.RangedDPS)]
+    [ParentCombo(Variant_PhysRanged)]
+    [CustomComboInfo("Variant Cure", "Use Variant Cure when HP is below set threshold.", Job.ADV)]
+    Variant_PhysRanged_Cure = 200015,
+
+    [Variant]
+    [Role(JobRole.RangedDPS)]
+    [Hidden] //Not wired up
+    [ParentCombo(Variant_PhysRanged)]
+    [CustomComboInfo("Variant Ultimatum", "Use Variant Ultimatum on cooldown.", Job.ADV)]
+    Variant_PhysRanged_Ultimatum = 200016,
+
+    [Variant]
+    [Role(JobRole.RangedDPS)]
+    [Hidden] // Not wired up
+    [ParentCombo(Variant_PhysRanged)]
+    [CustomComboInfo("Variant Raise", "Not Wired Up", Job.ADV)]
+    Variant_PhysRanged_Raise = 200017,
+
+    [Variant]
+    [Role(JobRole.RangedDPS)]
+    [ParentCombo(Variant_PhysRanged)]
+    [CustomComboInfo("Variant Rampart", "Use Variant Rampart on cooldown.", Job.ADV)]
+    Variant_PhysRanged_Rampart = 200018,
+
+
+    [Variant]
+    [Role(JobRole.MagicalDPS)]
+    [CustomComboInfo("Variant Magic",
+        "Enable this to add Variant Actions in Variant Dungeons.\n" +
+        "Variant Actions will be used by Single Target and AoE DPS Features, in both Simple & Advanced selections",
+        Job.ADV)]
+    Variant_Magic = 200019,
+
+    [Variant]
+    [Role(JobRole.MagicalDPS)]
+    [ParentCombo(Variant_Magic)]
+    [CustomComboInfo("Variant Cure", "Use Variant Cure when HP is below set threshold.", Job.ADV)]
+    Variant_Magic_Cure = 200020,
+
+    [Variant]
+    [Role(JobRole.MagicalDPS)]
+    [Hidden] //Not wired up
+    [ParentCombo(Variant_Magic)]
+    [CustomComboInfo("Variant Ultimatum", "Use Variant Ultimatum on cooldown.", Job.ADV)]
+    Variant_Magic_Ultimatum = 200021,
+
+    [Variant]
+    [Role(JobRole.MagicalDPS)]
+    [ParentCombo(Variant_Magic)]
+    [CustomComboInfo("Variant Raise", "Turn Swiftcast into Variant Raise whenever you have the Swiftcast buff.", Job.ADV)]
+    Variant_Magic_Raise = 200022,
+
+    [Variant]
+    [Role(JobRole.MagicalDPS)]
+    [ParentCombo(Variant_Magic)]
+    [CustomComboInfo("Variant Rampart", "Use Variant Rampart on cooldown.", Job.ADV)]
+    Variant_Magic_Rampart = 200023,
 
     #endregion
 
@@ -1003,19 +1142,6 @@ public enum Preset
     AST_Retargets_EarthlyStar = 1093,
     #endregion
     
-    #region Variants
-    [Variant]
-    [VariantParent(AST_ST_DPS_CombustUptime)]
-    [CustomComboInfo("Spirit Dart Option",
-        "Use Variant Spirit Dart whenever the debuff is not present or less than 3s.", Job.AST)]
-    AST_Variant_SpiritDart = 1035,
-
-    [Variant]
-    [VariantParent(AST_ST_DPS)]
-    [CustomComboInfo("Rampart Option", "Use Variant Rampart on cooldown.", Job.AST)]
-    AST_Variant_Rampart = 1036,
-    #endregion
-
     // Last value = 1095
 
     #endregion
@@ -1164,24 +1290,6 @@ public enum Preset
     [ParentCombo(BLM_AoE_AdvancedMode)]
     [CustomComboInfo("Blizzard IV on 2 Targets Option", "Substitutes Freeze for Blizzard 4 whenever it would hit 2 targets.", Job.BLM)]
     BLM_AoE_Blizzard4Sub = 2211,
-
-    #endregion
-
-    #region Variant
-
-    [Variant]
-    [VariantParent(BLM_ST_SimpleMode, BLM_AoE_SimpleMode)]
-    [CustomComboInfo("Rampart Option", "Use Variant Rampart on cooldown.", Job.BLM)]
-    BLM_Variant_Rampart = 2032,
-
-    [Variant]
-    [CustomComboInfo("Raise Option", "Turn Swiftcast into Variant Raise whenever you have the Swiftcast buff.", Job.BLM)]
-    BLM_Variant_Raise = 2033,
-
-    [Variant]
-    [VariantParent(BLM_ST_SimpleMode, BLM_AoE_SimpleMode)]
-    [CustomComboInfo("Cure Option", "Use Variant Cure when HP is below set threshold.", Job.BLM)]
-    BLM_Variant_Cure = 2034,
 
     #endregion
 
@@ -1663,19 +1771,6 @@ public enum Preset
 
     #endregion
 
-    #region Variants
-    [Variant]
-    [VariantParent(BRD_ST_AdvMode, BRD_AoE_AdvMode)]
-    [CustomComboInfo("Rampart Option", "Use Variant Rampart on cooldown.", Job.BRD)]
-    BRD_Variant_Rampart = 3030,
-
-    [Variant]
-    [VariantParent(BRD_ST_AdvMode, BRD_AoE_AdvMode)]
-    [CustomComboInfo("Cure Option", "Use Variant Cure when HP is below set threshold.", Job.BRD)]
-    BRD_Variant_Cure = 3031,
-
-    #endregion
-
     // Last value = 3066
 
     #endregion
@@ -2112,21 +2207,6 @@ public enum Preset
 
     #endregion
     // Last value = 4176
-
-    #endregion
-    // Last value = 4176
-
-    #region Variant
-
-    [Variant]
-    [VariantParent(DNC_ST_AdvancedMode, DNC_AoE_AdvancedMode)]
-    [CustomComboInfo("Rampart Option", "Use Variant Rampart on cooldown.", Job.DNC)]
-    DNC_Variant_Rampart = 4190,
-
-    [Variant]
-    [VariantParent(DNC_ST_AdvancedMode, DNC_AoE_AdvancedMode)]
-    [CustomComboInfo("Cure Option", "Use Variant Cure when HP is below set threshold.", Job.DNC)]
-    DNC_Variant_Cure = 4195,
 
     #endregion
     // Last value = 4195
@@ -2618,27 +2698,6 @@ public enum Preset
     #endregion
     // Last value = 5134
 
-    #region Variant
-
-    [Variant]
-    [VariantParent(DRK_ST_Adv, DRK_AoE_Adv, DRK_ST_Simple, DRK_AoE_Simple)]
-    [CustomComboInfo("Spirit Dart Option",
-        "Use Variant Spirit Dart whenever the debuff is not present or less than 3s.", Job.DRK)]
-    DRK_Var_Dart = 5140,
-
-    [Variant]
-    [VariantParent(DRK_ST_Adv, DRK_AoE_Adv, DRK_ST_Simple, DRK_AoE_Simple)]
-    [CustomComboInfo("Cure Option", "Use Variant Cure when HP is below set threshold.", Job.DRK)]
-    DRK_Var_Cure = 5141,
-
-    [Variant]
-    [VariantParent(DRK_ST_Adv, DRK_AoE_Adv, DRK_ST_Simple, DRK_AoE_Simple)]
-    [CustomComboInfo("Ultimatum Option", "Use Variant Ultimatum on cooldown.", Job.DRK)]
-    DRK_Var_Ulti = 5142,
-
-    #endregion
-    // Last value = 5142
-
     #region Hidden Features
 
     [CustomComboInfo("Hidden Options", "Collection of cheeky or encounter-specific extra options only available to those in the know.\nDo not expect these options to be maintained, or even kept, after they are no longer Current.", Job.DRK)]
@@ -2885,20 +2944,6 @@ public enum Preset
     
     #endregion
 
-    #region Variant
-
-    [Variant]
-    [VariantParent(DRG_ST_AdvancedMode, DRG_AOE_AdvancedMode)]
-    [CustomComboInfo("Cure Option", "Use Variant Cure when HP is below set threshold.", Job.DRG)]
-    DRG_Variant_Cure = 6302,
-
-    [Variant]
-    [VariantParent(DRG_ST_AdvancedMode, DRG_AOE_AdvancedMode)]
-    [CustomComboInfo("Rampart Option", "Use Variant Rampart on cooldown.", Job.DRG)]
-    DRG_Variant_Rampart = 6303,
-
-    #endregion
-    
     [ReplaceSkill(DRG.LanceCharge)]
     [CustomComboInfo("Lance Charge to Battle Litany Feature", "Turns Lance Charge into Battle Litany when the former is on cooldown.", Job.DRG)]
     DRG_BurstCDFeature = 6301,
@@ -3349,26 +3394,6 @@ public enum Preset
     GNB_RetargetHeartofStone_TT = 7090,
     #endregion
 
-    #region Variant Skills
-
-    [Variant]
-    [VariantParent(GNB_ST_Advanced, GNB_AoE_Advanced)]
-    [CustomComboInfo("Spirit Dart Option",
-        "Use Variant Spirit Dart whenever the debuff is not present or less than 3s.", Job.GNB)]
-    GNB_Variant_SpiritDart = 7033,
-
-    [Variant]
-    [VariantParent(GNB_ST_Advanced, GNB_AoE_Advanced)]
-    [CustomComboInfo("Cure Option", "Use Variant Cure when HP is below set threshold.", Job.GNB)]
-    GNB_Variant_Cure = 7034,
-
-    [Variant]
-    [VariantParent(GNB_ST_Advanced, GNB_AoE_Advanced)]
-    [CustomComboInfo("Ultimatum Option", "Use Variant Ultimatum on cooldown.", Job.GNB)]
-    GNB_Variant_Ultimatum = 7035,
-
-    #endregion
-
     #region Bozja
 
     [Bozja]
@@ -3707,20 +3732,6 @@ public enum Preset
 
     #endregion
 
-    #region Variant
-
-    [Variant]
-    [VariantParent(MCH_ST_AdvancedMode, MCH_AoE_AdvancedMode)]
-    [CustomComboInfo("Rampart Option", "Use Variant Rampart on cooldown.", Job.MCH)]
-    MCH_Variant_Rampart = 8039,
-
-    [Variant]
-    [VariantParent(MCH_ST_AdvancedMode, MCH_AoE_AdvancedMode)]
-    [CustomComboInfo("Cure Option", "Use Variant Cure when HP is below set threshold.", Job.MCH)]
-    MCH_Variant_Cure = 8040,
-
-    #endregion
-
     [ReplaceSkill(MCH.Dismantle)]
     [ConflictingCombos(MCH_DismantleTactician)]
     [CustomComboInfo("Double Dismantle Protection", "Prevents the use of Dismantle when target already has the effect by replacing it with Savage Blade.", Job.MCH)]
@@ -3963,20 +3974,6 @@ public enum Preset
     [CustomComboInfo("Perfect Balance Protection", "Replaces Perfect Balance with Savage Blade when you already have Perfect Balance active.", Job.MNK)]
     MNK_PerfectBalanceProtection = 9042,
     
-    #endregion
-
-    #region Variant
-
-    [Variant]
-    [VariantParent(MNK_ST_SimpleMode, MNK_ST_AdvancedMode, MNK_AOE_SimpleMode, MNK_AOE_AdvancedMode)]
-    [CustomComboInfo("Rampart Option", "Use Variant Rampart on cooldown.", Job.MNK)]
-    MNK_Variant_Rampart = 9025,
-
-    [Variant]
-    [VariantParent(MNK_ST_SimpleMode, MNK_ST_AdvancedMode, MNK_AOE_SimpleMode, MNK_AOE_AdvancedMode)]
-    [CustomComboInfo("Cure Option", "Use Variant Cure when HP is below set threshold.", Job.MNK)]
-    MNK_Variant_Cure = 9026,
-
     #endregion
 
     #region Hidden Features
@@ -4222,18 +4219,6 @@ public enum Preset
     [CustomComboInfo("Ten Chi Jin Feature", "Turns Ten Chi Jin (the move) into Ten, Chi, and Jin.", Job.NIN)]
     NIN_TCJ = 10040,
     
-    #endregion
-
-    #region Variant
-    [Variant]
-    [VariantParent(NIN_ST_SimpleMode, NIN_ST_AdvancedMode, NIN_AoE_SimpleMode, NIN_AoE_AdvancedMode)]
-    [CustomComboInfo("Cure Option", "Use Variant Cure when HP is below set threshold.", Job.NIN)]
-    NIN_Variant_Cure = 10069,
-
-    [Variant]
-    [VariantParent(NIN_ST_SimpleMode, NIN_ST_AdvancedMode, NIN_AoE_SimpleMode, NIN_AoE_AdvancedMode)]
-    [CustomComboInfo("Rampart Option", "Use Variant Rampart on cooldown.", Job.NIN)]
-    NIN_Variant_Rampart = 10070,
     #endregion
 
     // Last value = 10042
@@ -4505,20 +4490,6 @@ public enum Preset
     [ReplaceSkill(PCT.HolyInWhite)]
     [CustomComboInfo("One Button Paint", "Consolidates paint-consuming actions into one button.", Job.PCT)]
     CombinedPaint = 20004,
-
-    #endregion
-
-    #region Variant
-
-    [Variant]
-    [VariantParent(PCT_ST_SimpleMode, PCT_AoE_SimpleMode, PCT_ST_AdvancedMode, PCT_AoE_AdvancedMode)]
-    [CustomComboInfo("Cure Option", "Use Variant Cure when HP is below set threshold.", Job.PCT)]
-    PCT_Variant_Cure = 20100,
-
-    [Variant]
-    [VariantParent(PCT_ST_SimpleMode, PCT_AoE_SimpleMode, PCT_ST_AdvancedMode, PCT_AoE_AdvancedMode)]
-    [CustomComboInfo("Rampart Option", "Use Variant Rampart on cooldown.", Job.PCT)]
-    PCT_Variant_Rampart = 20101,
 
     #endregion
 
@@ -4901,26 +4872,6 @@ public enum Preset
     [CustomComboInfo("Retarget Shield Bash", "Redirects your Shield Bash to a stunnable enemy if your current target cannot be stunned.", Job.PLD)]
     PLD_RetargetShieldBash = 11073,
 
-    // Variant Features
-
-    [Variant]
-    [VariantParent(PLD_ST_SimpleMode, PLD_ST_AdvancedMode, PLD_AoE_SimpleMode, PLD_AoE_AdvancedMode)]
-    [CustomComboInfo("Spirit Dart Feature",
-        "Uses Variant Spirit Dart whenever the debuff is not present on the target or about to expire.", Job.PLD)]
-    PLD_Variant_SpiritDart = 11030,
-
-    [Variant]
-    [VariantParent(PLD_ST_SimpleMode, PLD_ST_AdvancedMode, PLD_AoE_SimpleMode, PLD_AoE_AdvancedMode)]
-    [CustomComboInfo("Cure Feature", "Uses Variant Cure when the player's HP falls below the set threshold.",
-        Job.PLD)]
-    PLD_Variant_Cure = 11031,
-
-    [Variant]
-    [VariantParent(PLD_ST_SimpleMode, PLD_ST_AdvancedMode, PLD_AoE_SimpleMode, PLD_AoE_AdvancedMode)]
-    [CustomComboInfo("Ultimatum Feature", "Uses Variant Ultimatum on cooldown as long as the target is within range.",
-        Job.PLD)]
-    PLD_Variant_Ultimatum = 11032,
-
     #endregion
 
     //// Last value = 11072
@@ -5141,20 +5092,6 @@ public enum Preset
     RPR_TrueNorthGluttony = 12310,
 
     // Last value = 12204
-
-    #endregion
-
-    #region Variant
-
-    [Variant]
-    [VariantParent(RPR_ST_AdvancedMode, RPR_AoE_AdvancedMode)]
-    [CustomComboInfo("Cure Option", "Use Variant Cure when HP is below set threshold.", Job.RPR)]
-    RPR_Variant_Cure = 12311,
-
-    [Variant]
-    [VariantParent(RPR_ST_AdvancedMode, RPR_AoE_AdvancedMode)]
-    [CustomComboInfo("Rampart Option", "Use Variant Rampart on cooldown.", Job.RPR)]
-    RPR_Variant_Rampart = 12312,
 
     #endregion
 
@@ -5532,26 +5469,6 @@ public enum Preset
         "Replaces Fleche with Contre Sixte, Vice of Thorns, Prefulgence, Engagement, and 1 charge of Corps-a-corps.", Job.RDM)]
     RDM_OGCDs = 13420,
 
-    [Variant]
-    [VariantParent(RDM_ST_DPS, RDM_ST_SimpleMode, RDM_AoE_DPS, RDM_AoE_SimpleMode)]
-    [CustomComboInfo("Rampart Option", "Use Variant Rampart on cooldown. Replaces Jolts.", Job.RDM)]
-    RDM_Variant_Rampart = 13414,
-
-    [Variant]
-    [VariantParent(RDM_Raise)]
-    [CustomComboInfo("Raise Option",
-        "Turn Swiftcast into Variant Raise whenever you have the Swiftcast or Dualcast buffs.", Job.RDM)]
-    RDM_Variant_Raise = 13415,
-
-    [Variant]
-    [VariantParent(RDM_ST_DPS, RDM_ST_SimpleMode, RDM_AoE_DPS, RDM_AoE_SimpleMode)]
-    [CustomComboInfo("Cure Option", "Use Variant Cure when HP is below set threshold. Replaces Jolts.", Job.RDM)]
-    RDM_Variant_Cure = 13416,
-
-    [Variant]
-    [CustomComboInfo("Cure on Vercure Option", "Replaces Vercure with Variant Cure.", Job.RDM)]
-    RDM_Variant_Cure2 = 13417,
-    
     //Last Used 13434
     #endregion
 
@@ -5957,18 +5874,6 @@ public enum Preset
     [CustomComboInfo("Holos Option", "Will try to cast Holos when a raidwide casting is detected. \nWill be used in all 4 main combos.", Job.SGE)]
     SGE_Raidwide_Holos = 14072,
     #endregion
-    
-    #region Variant
-    [Variant]
-    [VariantParent(SGE_ST_DPS_EDosis, SGE_AoE_DPS)]
-    [CustomComboInfo("Spirit Dart Option", "Use Variant Spirit Dart whenever the debuff is not present or less than 3s.", Job.SGE)]
-    SGE_DPS_Variant_SpiritDart = 14048,
-
-    [Variant]
-    [VariantParent(SGE_ST_DPS, SGE_AoE_DPS)]
-    [CustomComboInfo("Rampart Option", "Use Variant Rampart on cooldown.", Job.SGE)]
-    SGE_DPS_Variant_Rampart = 14049,
-    #endregion
 
     #endregion
 
@@ -6269,20 +6174,6 @@ public enum Preset
     [ParentCombo(SAM_Ikishoten)]
     [CustomComboInfo("Ikishoten to Shoha", "Replace Ikishoten with Shoha when Meditation is full before Ogi Namikiri.", Job.SAM)]
     SAM_Ikishoten_Shoha = 15213,
-
-    #endregion
-
-    #region variant
-
-    [Variant]
-    [VariantParent(SAM_ST_AdvancedMode, SAM_AoE_AdvancedMode)]
-    [CustomComboInfo("Cure Option", "Use Variant Cure when HP is below set threshold.", Job.SAM)]
-    SAM_Variant_Cure = 15254,
-
-    [Variant]
-    [VariantParent(SAM_ST_AdvancedMode, SAM_AoE_AdvancedMode)]
-    [CustomComboInfo("Rampart Option", "Use Variant Rampart on cooldown.", Job.SAM)]
-    SAM_Variant_Rampart = 15255,
 
     #endregion
 
@@ -6615,17 +6506,6 @@ public enum Preset
     [CustomComboInfo("Retarget Raise", "Will Retarget the Raise affected here to your Heal Stack.", Job.SCH)]
     [Retargeted(SCH.Resurrection)]
     SCH_Raise_Retarget = 16050,
-    
-    [Variant]
-    [VariantParent(SCH_ST_ADV_DPS, SCH_AoE_ADV_DPS)]
-    [CustomComboInfo("Spirit Dart Option",
-        "Use Variant Spirit Dart whenever the debuff is not present or less than 3s.", Job.SCH)]
-    SCH_DPS_Variant_SpiritDart = 16036,
-
-    [Variant]
-    [VariantParent(SCH_ST_ADV_DPS, SCH_AoE_ADV_DPS)]
-    [CustomComboInfo("Rampart Option", "Use Variant Rampart on cooldown.", Job.SCH)]
-    SCH_DPS_Variant_Rampart = 16037,
 
     #endregion
     
@@ -7003,25 +6883,6 @@ public enum Preset
     SMN_Searing = 17072,
     #endregion
 
-    #region Variant
-    [Variant]
-    [VariantParent(SMN_ST_Simple_Combo, SMN_ST_Advanced_Combo, SMN_AoE_Simple_Combo, SMN_AoE_Advanced_Combo)]
-    [CustomComboInfo("Rampart Option", "Use Variant Rampart on cooldown.", Job.SMN)]
-    SMN_Variant_Rampart = 17045,
-
-    [Variant]
-    [VariantParent(SMN_Raise)]
-    [CustomComboInfo("Raise Option", "Turn Swiftcast into Variant Raise whenever you have the Swiftcast buff.",
-        Job.SMN)]
-    SMN_Variant_Raise = 17046,
-
-    [Variant]
-    [VariantParent(SMN_ST_Simple_Combo, SMN_ST_Advanced_Combo, SMN_AoE_Simple_Combo, SMN_AoE_Advanced_Combo)]
-    [CustomComboInfo("Cure Option", "Use Variant Cure when HP is below set threshold.", Job.SMN)]
-    SMN_Variant_Cure = 17047,
-
-    #endregion
-
     // Last Used 17078
 
     #endregion
@@ -7179,20 +7040,6 @@ public enum Preset
     [CustomComboInfo("Basic Combo", "Replace Reaving Fangs with its combo chain.", Job.VPR)]
     [BasicCombo]
     VPR_ST_BasicCombo = 30015,
-
-    #endregion
-
-    #region Variant
-
-    [Variant]
-    [VariantParent(VPR_ST_SimpleMode, VPR_AoE_SimpleMode, VPR_ST_AdvancedMode, VPR_AoE_AdvancedMode)]
-    [CustomComboInfo("Cure Option", "Use Variant Cure when HP is below set threshold.", Job.VPR)]
-    VPR_Variant_Cure = 30300,
-
-    [Variant]
-    [VariantParent(VPR_ST_SimpleMode, VPR_AoE_SimpleMode, VPR_ST_AdvancedMode, VPR_AoE_AdvancedMode)]
-    [CustomComboInfo("Rampart Option", "Use Variant Rampart on cooldown.", Job.VPR)]
-    VPR_Variant_Rampart = 30301,
 
     #endregion
 
@@ -7573,21 +7420,6 @@ public enum Preset
     [ReplaceSkill(WAR.Berserk, WAR.InnerRelease)]
     [CustomComboInfo("Primal Combo Feature", "Turns Berserk / Inner Release into the Primal combo (Primal Rend -> Primal Ruination) on use.", Job.WAR)]
     WAR_PrimalCombo_InnerRelease = 18026,
-
-    [Variant]
-    [VariantParent(WAR_ST_Advanced, WAR_AoE_Advanced)]
-    [CustomComboInfo("Spirit Dart Option", "Use Variant Spirit Dart whenever the debuff is not present or less than 3s.", Job.WAR)]
-    WAR_Variant_SpiritDart = 18028,
-
-    [Variant]
-    [VariantParent(WAR_ST_Advanced, WAR_AoE_Advanced)]
-    [CustomComboInfo("Cure Option", "Use Variant Cure when HP is below set threshold.", Job.WAR)]
-    WAR_Variant_Cure = 18029,
-
-    [Variant]
-    [VariantParent(WAR_ST_Advanced, WAR_AoE_Advanced)]
-    [CustomComboInfo("Ultimatum Option", "Use Variant Ultimatum on cooldown.", Job.WAR)]
-    WAR_Variant_Ultimatum = 18030,
 
     [ReplaceSkill(WAR.Equilibrium)]
     [CustomComboInfo("Equilibirum to Thrill of Battle Feature", "Replaces Equilibirum with Thrill of Battle when ready.", Job.WAR)]
@@ -8207,21 +8039,6 @@ public enum Preset
         "\nWill be used in all 4 main combos.", Job.WHM)]
     WHM_Raidwide_LiturgyOfTheBell = 19223,
     
-    #endregion
-
-    #region Variants
-
-    [Variant]
-    [VariantParent(WHM_ST_MainCombo_DoT, WHM_AoE_DPS)]
-    [CustomComboInfo("Spirit Dart Option",
-        "Use Variant Spirit Dart whenever the debuff is not present or less than 3s.", Job.WHM)]
-    WHM_DPS_Variant_SpiritDart = 19025,
-
-    [Variant]
-    [VariantParent(WHM_ST_MainCombo, WHM_AoE_DPS)]
-    [CustomComboInfo("Rampart Option", "Use Variant Rampart on cooldown.", Job.WHM)]
-    WHM_DPS_Variant_Rampart = 19026,
-
     #endregion
 
     // Last value = 19051 (then skips to next last used: 19210)

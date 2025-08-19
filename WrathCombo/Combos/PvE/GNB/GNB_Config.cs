@@ -67,7 +67,6 @@ internal partial class GNB
             GNB_Mit_ArmsLength_Boss = new("GNB_Mit_ArmsLength_Boss", (int)BossAvoidance.On),
             GNB_Mit_ArmsLength_EnemyCount = new("GNB_Mit_ArmsLength_EnemyCount", 0),
             GNB_Mit_Nebula_Health = new("GNB_Mit_Nebula_Health", 50),
-            GNB_VariantCure = new("GNB_VariantCure"),
             GNB_Bozja_LostCure_Health = new("GNB_Bozja_LostCure_Health", 50),
             GNB_Bozja_LostCure2_Health = new("GNB_Bozja_LostCure2_Health", 50),
             GNB_Bozja_LostCure3_Health = new("GNB_Bozja_LostCure3_Health", 50),
@@ -428,10 +427,6 @@ internal partial class GNB
                         "Player HP% to be \nless than or equal to:", 200);
                     break;
 
-                case Preset.GNB_Variant_Cure:
-                    DrawSliderInt(1, 100, GNB_VariantCure,
-                        "Player HP% to be \nless than or equal to:", 200);
-                    break;
                     #endregion
             }
         }

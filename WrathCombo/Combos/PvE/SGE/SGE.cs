@@ -30,7 +30,7 @@ internal partial class SGE : Healer
                     .Retarget(actionID, Target);
 
             // Variant
-            if (Variant.CanRampart(Preset.SGE_DPS_Variant_Rampart))
+            if (Variant.CanRampart())
                 return Variant.Rampart;
 
             //Occult skills
@@ -126,7 +126,7 @@ internal partial class SGE : Healer
                 return actionID;
 
             // Variant Rampart
-            if (Variant.CanRampart(Preset.SGE_DPS_Variant_Rampart))
+            if (Variant.CanRampart())
                 return Variant.Rampart;
 
             //Occult skills
@@ -239,7 +239,7 @@ internal partial class SGE : Healer
                 return actionID;
 
             // Variant
-            if (Variant.CanRampart(Preset.SGE_DPS_Variant_Rampart))
+            if (Variant.CanRampart())
                 return Variant.Rampart;
 
             //Occult skills
@@ -360,7 +360,7 @@ internal partial class SGE : Healer
                 return actionID;
 
             // Variant Rampart
-            if (Variant.CanRampart(Preset.SGE_DPS_Variant_Rampart))
+            if (Variant.CanRampart())
                 return Variant.Rampart;
 
             //Occult skills

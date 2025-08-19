@@ -17,7 +17,6 @@ internal partial class BRD
             BRD_RagingJawsRenewTime = new("ragingJawsRenewTime", 5),
             BRD_STSecondWindThreshold = new("BRD_STSecondWindThreshold", 40),
             BRD_AoESecondWindThreshold = new("BRD_AoESecondWindThreshold", 40),
-            BRD_VariantCure = new("BRD_VariantCure"),
             BRD_Adv_Opener_Selection = new("BRD_Adv_Opener_Selection", 0),
             BRD_Balance_Content = new("BRD_Balance_Content", 1),
             BRD_Adv_DoT_Threshold = new("BRD_Adv_DoT_Threshold", 30),
@@ -127,9 +126,6 @@ internal partial class BRD
                 #endregion
                 
                 #region Standalone
-                case Preset.BRD_Variant_Cure:
-                    DrawSliderInt(1, 100, BRD_VariantCure, "HP% to be at or under", 200);
-                    break;
                 #endregion
             }
         }

@@ -18,6 +18,7 @@ using System.Text;
 using WrathCombo.Attributes;
 using WrathCombo.Combos;
 using WrathCombo.Combos.PvE;
+using WrathCombo.Combos.PvE.Content;
 using WrathCombo.Combos.PvP;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS.Functions;
@@ -40,7 +41,6 @@ internal class Presets : ConfigWindow
         public Preset? Parent;
         public BlueInactiveAttribute? BlueInactive;
         public VariantAttribute? Variant;
-        public VariantParentAttribute? VariantParent;
         public PossiblyRetargetedAttribute? PossiblyRetargeted;
         public RetargetedAttribute? RetargetedAttribute;
         public uint[] RetargetedActions => 
@@ -64,7 +64,6 @@ internal class Presets : ConfigWindow
             Parent = PresetStorage.GetParent(preset);
             BlueInactive = preset.GetAttribute<BlueInactiveAttribute>();
             Variant = preset.GetAttribute<VariantAttribute>();
-            VariantParent = preset.GetAttribute<VariantParentAttribute>();
             PossiblyRetargeted = preset.GetAttribute<PossiblyRetargetedAttribute>();
             RetargetedAttribute = preset.GetAttribute<RetargetedAttribute>();
             BozjaParent = preset.GetAttribute<BozjaParentAttribute>();
@@ -141,7 +140,6 @@ internal class Presets : ConfigWindow
         var conflicts = Attributes[preset].Conflicts;
         var parent = Attributes[preset].Parent;
         var blueAttr = Attributes[preset].BlueInactive;
-        var variantParents = Attributes[preset].VariantParent;
         var bozjaParents = Attributes[preset].BozjaParent;
         var eurekaParents = Attributes[preset].EurekaParent;
         var auto = Attributes[preset].AutoAction;
@@ -281,32 +279,6 @@ internal class Presets : ConfigWindow
             }
         }
 
-        if (variantParents is not null)
-        {
-            ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.HealerGreen);
-            ImGui.TextWrapped($"Part of normal combo{(variantParents.ParentPresets.Length > 1 ? "s" : "")}:");
-            StringBuilder builder = new();
-            foreach (var par in variantParents.ParentPresets)
-            {
-                builder.Insert(0, $"{(Attributes.ContainsKey(par) ? Attributes[par].CustomComboInfo.Name : par.GetAttribute<CustomComboInfoAttribute>().Name)}");
-                var par2 = par;
-                while (PresetStorage.GetParent(par2) != null)
-                {
-                    var subpar = PresetStorage.GetParent(par2);
-                    if (subpar != null)
-                    {
-                        builder.Insert(0, $"{(Attributes.ContainsKey(subpar.Value) ? Attributes[subpar.Value].CustomComboInfo.Name : subpar?.GetAttribute<CustomComboInfoAttribute>().Name)} -> ");
-                        par2 = subpar!.Value;
-                    }
-
-                }
-
-                ImGui.TextWrapped($"- {builder}");
-                builder.Clear();
-            }
-            ImGui.PopStyleColor();
-        }
-
         if (bozjaParents is not null)
         {
             ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.HealerGreen);
@@ -335,7 +307,7 @@ internal class Presets : ConfigWindow
         if (eurekaParents is not null)
         {
             ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.HealerGreen);
-            ImGui.TextWrapped($"Part of normal combo{(variantParents.ParentPresets.Length > 1 ? "s" : "")}:");
+            ImGui.TextWrapped($"Part of normal combo{(eurekaParents.ParentPresets.Length > 1 ? "s" : "")}:");
             StringBuilder builder = new();
             foreach (var par in eurekaParents.ParentPresets)
             {
@@ -366,6 +338,7 @@ internal class Presets : ConfigWindow
                     case Job.ADV:
                     {
                         All.Config.Draw(preset);
+                        Variant.Config.Draw(preset);
                         OccultCrescent.Config.Draw(preset);
                         break;
                     }

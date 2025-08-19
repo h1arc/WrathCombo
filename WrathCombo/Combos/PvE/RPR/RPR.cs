@@ -42,11 +42,11 @@ internal partial class RPR : Melee
                 return Soulsow;
 
             //Variant Cure
-            if (Variant.CanCure(Preset.RPR_Variant_Cure, RPR_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
             //Variant Rampart
-            if (Variant.CanRampart(Preset.RPR_Variant_Rampart))
+            if (Variant.CanRampart())
                 return Variant.Rampart;
 
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -216,11 +216,11 @@ internal partial class RPR : Melee
                 return Soulsow;
 
             //Variant Cure
-            if (Variant.CanCure(Preset.RPR_Variant_Cure, RPR_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
             //Variant Rampart
-            if (Variant.CanRampart(Preset.RPR_Variant_Rampart))
+            if (Variant.CanRampart())
                 return Variant.Rampart;
 
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -421,10 +421,10 @@ internal partial class RPR : Melee
                 !HasStatusEffect(Buffs.Soulsow) && !PartyInCombat())
                 return Soulsow;
 
-            if (Variant.CanCure(Preset.RPR_Variant_Cure, RPR_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
-            if (Variant.CanRampart(Preset.RPR_Variant_Rampart))
+            if (Variant.CanRampart())
                 return Variant.Rampart;
 
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -525,10 +525,10 @@ internal partial class RPR : Melee
                 !HasStatusEffect(Buffs.Soulsow) && !PartyInCombat())
                 return Soulsow;
 
-            if (Variant.CanCure(Preset.RPR_Variant_Cure, RPR_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
-            if (Variant.CanRampart(Preset.RPR_Variant_Rampart))
+            if (Variant.CanRampart())
                 return Variant.Rampart;
 
             if (OccultCrescent.ShouldUsePhantomActions())

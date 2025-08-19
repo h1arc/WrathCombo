@@ -20,10 +20,10 @@ internal partial class RDM : Caster
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
                 
-            if (Variant.CanCure(Preset.RDM_Variant_Cure, RDM_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
-            if (Variant.CanRampart(Preset.RDM_Variant_Rampart))
+            if (Variant.CanRampart())
                 return Variant.Rampart;
 
             #endregion
@@ -122,10 +122,10 @@ internal partial class RDM : Caster
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
                 
-            if (Variant.CanCure(Preset.RDM_Variant_Cure, RDM_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
-            if (Variant.CanRampart(Preset.RDM_Variant_Rampart))
+            if (Variant.CanRampart())
                 return Variant.Rampart;
             #endregion
             
@@ -229,10 +229,10 @@ internal partial class RDM : Caster
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
                 
-            if (Variant.CanCure(Preset.RDM_Variant_Cure, RDM_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
-            if (Variant.CanRampart(Preset.RDM_Variant_Rampart))
+            if (Variant.CanRampart())
                 return Variant.Rampart;
             #endregion
 
@@ -340,10 +340,10 @@ internal partial class RDM : Caster
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
                 
-            if (Variant.CanCure(Preset.RDM_Variant_Cure, RDM_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
-            if (Variant.CanRampart(Preset.RDM_Variant_Rampart))
+            if (Variant.CanRampart())
                 return Variant.Rampart;
             #endregion
 
@@ -434,16 +434,7 @@ internal partial class RDM : Caster
     #endregion
     
     #region Standalone Features
-    internal class RDM_VariantVerCure : CustomCombo
-    {
-        protected internal override Preset Preset => Preset.RDM_Variant_Cure2;
 
-        protected override uint Invoke(uint actionID) =>
-            actionID is Vercure && Variant.CanCure(Preset, 100)
-                ? Variant.Cure
-                : actionID;
-    }
-    
     internal class RDM_Verraise : CustomCombo
     {
         protected internal override Preset Preset => Preset.RDM_Raise;
@@ -462,7 +453,7 @@ internal partial class RDM : Caster
             if (actionID != Role.Swiftcast)
                 return actionID;
 
-            if (Variant.CanRaise(Preset.RDM_Variant_Raise))
+            if (Variant.CanRaise())
                 return IsEnabled(Preset.RDM_Raise_Retarget)
                     ? Variant.Raise.Retarget(Role.Swiftcast,
                         SimpleTarget.Stack.AllyToRaise)

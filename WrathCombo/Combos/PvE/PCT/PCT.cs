@@ -34,11 +34,11 @@ internal partial class PCT : Caster
             
             #region Special Content
             // Variant Cure
-            if (Variant.CanCure(Preset.PCT_Variant_Cure, PCT_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
             // Variant Rampart
-            if (Variant.CanRampart(Preset.PCT_Variant_Rampart, WeaveTypes.Weave))
+            if (Variant.CanRampart(WeaveTypes.Weave))
                 return Variant.Rampart;
             
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -234,11 +234,11 @@ internal partial class PCT : Caster
             
             #region Special Content
             // Variant Cure
-            if (Variant.CanCure(Preset.PCT_Variant_Cure, PCT_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
             // Variant Rampart
-            if (Variant.CanRampart(Preset.PCT_Variant_Rampart, WeaveTypes.Weave))
+            if (Variant.CanRampart(WeaveTypes.Weave))
                 return Variant.Rampart;
             
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -406,11 +406,11 @@ internal partial class PCT : Caster
 
             #region Special Content
             // Variant Cure
-            if (Variant.CanCure(Preset.PCT_Variant_Cure, PCT_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
             // Variant Rampart
-            if (Variant.CanRampart(Preset.PCT_Variant_Rampart, WeaveTypes.Weave))
+            if (Variant.CanRampart(WeaveTypes.Weave))
                 return Variant.Rampart;
             
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -601,11 +601,11 @@ internal partial class PCT : Caster
 
             #region Special Content
             // Variant Cure
-            if (Variant.CanCure(Preset.PCT_Variant_Cure, PCT_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
             // Variant Rampart
-            if (Variant.CanRampart(Preset.PCT_Variant_Rampart, WeaveTypes.Weave))
+            if (Variant.CanRampart(WeaveTypes.Weave))
                 return Variant.Rampart;
             
             if (OccultCrescent.ShouldUsePhantomActions())

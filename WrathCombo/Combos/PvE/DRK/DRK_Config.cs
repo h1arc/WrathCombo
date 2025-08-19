@@ -342,14 +342,7 @@ internal partial class DRK
 
                     break;
 
-                #endregion
-
-                case Preset.DRK_Var_Cure:
-                    DrawSliderInt(5, 70, DRK_VariantCure,
-                        startUsingAtDescription,
-                        itemWidth: biggest, sliderIncrement: SliderIncrements.Fives);
-
-                    break;               
+                #endregion             
 
                 #region One-Button Mitigation
 
@@ -1121,18 +1114,6 @@ internal partial class DRK
             new("DRK_AoE_LivingDeadTargetThreshold", 15);
 
         #endregion
-
-        /// <summary>
-        ///     Variant Cure.
-        /// </summary>
-        /// <value>
-        ///     <b>Default</b>: 30 <br />
-        ///     <b>Range</b>: 5 - 70 <br />
-        ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
-        /// </value>
-        /// <seealso cref="Preset.DRK_Var_Cure" />
-        public static readonly UserInt DRK_VariantCure =
-            new("DRKVariantCure", 30);
 
         #region One-Button Mitigation
 

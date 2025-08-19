@@ -62,11 +62,11 @@ internal partial class VPR : Melee
                 return actionID;
 
             // Variant Cure
-            if (Variant.CanCure(Preset.VPR_Variant_Cure, VPR_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
             // Variant Rampart
-            if (Variant.CanRampart(Preset.VPR_Variant_Rampart))
+            if (Variant.CanRampart())
                 return Variant.Rampart;
 
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -231,11 +231,11 @@ internal partial class VPR : Melee
                 return actionID;
 
             // Variant Cure
-            if (Variant.CanCure(Preset.VPR_Variant_Cure, VPR_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
             // Variant Rampart
-            if (Variant.CanRampart(Preset.VPR_Variant_Rampart))
+            if (Variant.CanRampart())
                 return Variant.Rampart;
 
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -417,11 +417,11 @@ internal partial class VPR : Melee
                 return actionID;
 
             // Variant Cure
-            if (Variant.CanCure(Preset.VPR_Variant_Cure, VPR_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
             // Variant Rampart
-            if (Variant.CanRampart(Preset.VPR_Variant_Rampart))
+            if (Variant.CanRampart())
                 return Variant.Rampart;
 
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -562,11 +562,11 @@ internal partial class VPR : Melee
                 return actionID;
 
             // Variant Cure
-            if (Variant.CanCure(Preset.VPR_Variant_Cure, VPR_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
             // Variant Rampart
-            if (Variant.CanRampart(Preset.VPR_Variant_Rampart))
+            if (Variant.CanRampart())
                 return Variant.Rampart;
 
             if (OccultCrescent.ShouldUsePhantomActions())

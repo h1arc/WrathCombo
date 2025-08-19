@@ -17,7 +17,7 @@ internal partial class SMN : Caster
             if (actionID != Role.Swiftcast)
                 return actionID;
 
-            if (Variant.CanRaise(Preset.SMN_Variant_Raise))
+            if (Variant.CanRaise())
                 return IsEnabled(Preset.SMN_Raise_Retarget)
                     ? Variant.Raise.Retarget(Role.Swiftcast,
                         SimpleTarget.Stack.AllyToRaise)
@@ -175,10 +175,10 @@ internal partial class SMN : Caster
             #endregion
 
             #region Special Content
-            if (Variant.CanCure(Preset.SMN_Variant_Cure, SMN_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
-            if (Variant.CanRampart(Preset.SMN_Variant_Rampart, WeaveTypes.Weave))
+            if (Variant.CanRampart(WeaveTypes.Weave))
                 return Variant.Rampart;
             
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -351,10 +351,10 @@ internal partial class SMN : Caster
             #endregion
 
             #region Special Content
-            if (Variant.CanCure(Preset.SMN_Variant_Cure, SMN_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
-            if (Variant.CanRampart(Preset.SMN_Variant_Rampart, WeaveTypes.Weave))
+            if (Variant.CanRampart(WeaveTypes.Weave))
                 return Variant.Rampart;
             
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -545,9 +545,9 @@ internal partial class SMN : Caster
             #endregion
 
             #region Special Content
-            if (Variant.CanCure(Preset.SMN_Variant_Cure, SMN_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
-            if (Variant.CanRampart(Preset.SMN_Variant_Rampart, WeaveTypes.Weave))
+            if (Variant.CanRampart(WeaveTypes.Weave))
                 return Variant.Rampart;
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
@@ -758,10 +758,10 @@ internal partial class SMN : Caster
             #endregion
 
             #region Special Content
-            if (Variant.CanCure(Preset.SMN_Variant_Cure, SMN_VariantCure))
+            if (Variant.CanCure())
                 return Variant.Cure;
 
-            if (Variant.CanRampart(Preset.SMN_Variant_Rampart, WeaveTypes.Weave))
+            if (Variant.CanRampart(WeaveTypes.Weave))
                 return Variant.Rampart;
             
             if (OccultCrescent.ShouldUsePhantomActions())
