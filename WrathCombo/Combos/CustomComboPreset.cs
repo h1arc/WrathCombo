@@ -9567,12 +9567,14 @@ public enum Preset
 
     [PvPCustomCombo]
     [ParentCombo(WHMPvP_Burst)]
-    [CustomComboInfo("Cure 3 Waste Prevention", "Adds Cure 3 to Burst combo when the Cure 3 Ready buff is under 6 seconds", Job.WHM)]
-    WHMPvP_NoWasteCure = 129010,
+    [CustomComboInfo("Heals in the Burst Mode", "Adds Cure 2/3 and Aquaveil to Burst combo below all damage options.", Job.WHM)]
+    [Retargeted]
+    WHMPvP_Burst_Heals = 129010,
 
     [PvPCustomCombo]
     [ReplaceSkill(WHMPvP.Cure2)]
     [CustomComboInfo("Heal Feature", "Adds the below options onto Cure II.", Job.WHM)]
+    [Retargeted]
     WHMPvP_Heals = 129004,
 
     [PvPCustomCombo]
