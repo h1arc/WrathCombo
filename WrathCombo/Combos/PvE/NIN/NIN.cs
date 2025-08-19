@@ -24,13 +24,12 @@ internal partial class NIN : Melee
             if (OriginalHook(Ninjutsu) is Rabbit or Huton or Suiton or Doton or GokaMekkyaku or HyoshoRanryu)
                 return OriginalHook(Ninjutsu);
             
-            if (InMudra && MudraState.ContinueCurrentMudra(ref actionID))
-                return actionID;
-            
-            if (IsNotEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus) || 
-                ActionWatching.TimeSinceLastAction.TotalSeconds >= 5 && !InCombat() ||
+            if (ActionWatching.TimeSinceLastAction.TotalSeconds >= 5 && !InCombat() ||
                 ActionWatching.LastAction == OriginalHook(Ninjutsu))
                 MudraState.CurrentMudra = MudraCasting.MudraState.None;
+            
+            if (InMudra && MudraState.ContinueCurrentMudra(ref actionID))
+                return actionID;
             
             if (HasStatusEffect(Buffs.TenChiJin))
                 return STTenChiJin(actionID);
@@ -149,13 +148,12 @@ internal partial class NIN : Melee
             if (OriginalHook(Ninjutsu) is Rabbit or Huton or Suiton or Doton or GokaMekkyaku or HyoshoRanryu)
                 return OriginalHook(Ninjutsu);
             
-            if (InMudra && MudraState.ContinueCurrentMudra(ref actionID))
-                return actionID;
-            
-            if (IsNotEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus) || 
-                ActionWatching.TimeSinceLastAction.TotalSeconds >= 5 && !InCombat() ||
+            if (ActionWatching.TimeSinceLastAction.TotalSeconds >= 5 && !InCombat() ||
                 ActionWatching.LastAction == OriginalHook(Ninjutsu))
                 MudraState.CurrentMudra = MudraCasting.MudraState.None;
+            
+            if (InMudra && MudraState.ContinueCurrentMudra(ref actionID))
+                return actionID;
 
             if (HasStatusEffect(Buffs.TenChiJin))
                 return DotonRemaining < 3
@@ -279,13 +277,12 @@ internal partial class NIN : Melee
                 OriginalHook(Ninjutsu) is Rabbit or Huton or Suiton or Doton or GokaMekkyaku or HyoshoRanryu)
                 return OriginalHook(Ninjutsu);
             
-            if (OriginalHook(Ninjutsu) != Ninjutsu && InMudra && MudraState.ContinueCurrentMudra(ref actionID))
-                return actionID;
-            
-            if (IsNotEnabled(Preset.NIN_ST_AdvancedMode_Ninjitsus) || 
-                ActionWatching.TimeSinceLastAction.TotalSeconds >= 5 && !InCombat() ||
+            if (ActionWatching.TimeSinceLastAction.TotalSeconds >= 5 && !InCombat() ||
                 ActionWatching.LastAction == OriginalHook(Ninjutsu))
                 MudraState.CurrentMudra = MudraCasting.MudraState.None;
+            
+            if (IsEnabled(Preset.NIN_ST_AdvancedMode_Ninjitsus) && InMudra && MudraState.ContinueCurrentMudra(ref actionID))
+                return actionID;
             
             if (NIN_ST_AdvancedMode_TenChiJin_Options[0] &&
                 HasStatusEffect(Buffs.TenChiJin))
@@ -436,14 +433,13 @@ internal partial class NIN : Melee
                 OriginalHook(Ninjutsu) is Rabbit or Huton or Suiton or Doton or GokaMekkyaku or HyoshoRanryu)
                 return OriginalHook(Ninjutsu);
             
-            if (OriginalHook(Ninjutsu) != Ninjutsu && InMudra && MudraState.ContinueCurrentMudra(ref actionID))
-                return actionID;
-            
-            if (IsNotEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus) || 
-                ActionWatching.TimeSinceLastAction.TotalSeconds >= 5 && !InCombat() ||
+            if (ActionWatching.TimeSinceLastAction.TotalSeconds >= 5 && !InCombat() ||
                 ActionWatching.LastAction == OriginalHook(Ninjutsu))
                 MudraState.CurrentMudra = MudraCasting.MudraState.None;
             
+            if (IsEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus) && InMudra && MudraState.ContinueCurrentMudra(ref actionID))
+                return actionID;
+           
             if (NIN_AoE_AdvancedMode_TenChiJin_Options[0] &&
                 HasStatusEffect(Buffs.TenChiJin))
                 return NIN_AoE_AdvancedMode_Ninjitsus_Options[2] && DotonRemaining < 3
