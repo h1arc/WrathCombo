@@ -9247,7 +9247,7 @@ public enum Preset
 
     [PvPCustomCombo]
     [ParentCombo(SGEPvP_BurstMode)]
-    [CustomComboInfo("Kardia Reminder Option", "Adds Kardia to Burst Mode.", Job.SGE)]
+    [CustomComboInfo("Kardia Reminder Option", "Adds Kardia Reminder to Burst Mode if buff is missing", Job.SGE)]
     SGEPvP_BurstMode_KardiaReminder = 124007,
 
     [PvPCustomCombo]
@@ -9256,8 +9256,14 @@ public enum Preset
        "Adds Role Action Diabrosis to Burst Mode below selected health",
        Job.SGE)]
     SGEPvP_Diabrosis = 124008,
+    
+    [PvPCustomCombo]
+    [ReplaceSkill(SGEPvP.Kardia)]
+    [CustomComboInfo("Kardia Retarget", "Retargets Kardia to the heal stack (In Wrath Settings) outside of the Burst Feature", Job.SGE)]
+    [Retargeted]
+    SGEPvP_RetargetKardia = 124009,
 
-    // Last value = 124008
+    // Last value = 124009
 
     #endregion
 
@@ -9356,7 +9362,7 @@ public enum Preset
     SCHPvP_Adlo = 126006,
     
     [PvPCustomCombo]
-    [ReplaceSkill(SCHPvP.Broil)]
+    [ReplaceSkill(SCHPvP.Adloquilum)]
     [CustomComboInfo("Adlo Retarget", "Retargets Adlo to the heal stack (In Wrath Settings) outside of the Burst Feature", Job.SCH)]
     [Retargeted]
     SCHPvP_RetargetAdlo = 126007,
