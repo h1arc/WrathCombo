@@ -242,9 +242,9 @@ internal partial class NIN : Melee
             {
                 switch (ComboAction)
                 {
-                    case SpinningEdge when LevelChecked(GustSlash):
+                    case SpinningEdge when LevelChecked(GustSlash) && !LevelChecked(DeathBlossom):
                         return OriginalHook(GustSlash);
-                    case GustSlash when !LevelChecked(ArmorCrush) && LevelChecked(AeolianEdge):
+                    case GustSlash when !LevelChecked(ArmorCrush) && LevelChecked(AeolianEdge) && !LevelChecked(DeathBlossom):
                         return TNAeolianEdge ? Role.TrueNorth : AeolianEdge;
                     case DeathBlossom when LevelChecked(HakkeMujinsatsu):
                         return HakkeMujinsatsu;
@@ -552,9 +552,9 @@ internal partial class NIN : Melee
             {
                 switch (ComboAction)
                 {
-                    case SpinningEdge when LevelChecked(GustSlash):
+                    case SpinningEdge when LevelChecked(GustSlash) && !LevelChecked(DeathBlossom):
                         return OriginalHook(GustSlash);
-                    case GustSlash when !LevelChecked(ArmorCrush) && LevelChecked(AeolianEdge):
+                    case GustSlash when !LevelChecked(ArmorCrush) && LevelChecked(AeolianEdge) && !LevelChecked(DeathBlossom):
                         return TNAeolianEdge ? Role.TrueNorth : AeolianEdge;
                     case DeathBlossom when LevelChecked(HakkeMujinsatsu):
                         return HakkeMujinsatsu;
