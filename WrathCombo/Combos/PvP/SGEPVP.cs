@@ -113,7 +113,7 @@ internal static class SGEPvP
             }
             if (IsEnabled(Preset.SGEPvP_BurstMode_KardiaReminder))
             {
-                IGameObject? healTarget = SimpleTarget.Stack.AllyToHeal;
+                IGameObject? healTarget = SimpleTarget.Stack.AllyToHealPVP;
                 
                 if (SGEPvP_BurstMode_KardiaReminder_Retarget && CanWeave() && GetTargetHPPercent(healTarget) <= SGEPvP_KardiaThreshold)
                     return Kardia.Retarget(Dosis, healTarget, true);
@@ -129,7 +129,7 @@ internal static class SGEPvP
         {
             return actionID is not Kardia 
                 ? actionID 
-                : Kardia.Retarget(SimpleTarget.Stack.AllyToHeal);
+                : Kardia.Retarget(SimpleTarget.Stack.AllyToHealPVP);
         }
     }
 }

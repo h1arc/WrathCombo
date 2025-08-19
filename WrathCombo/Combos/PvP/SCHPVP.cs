@@ -96,7 +96,7 @@ internal static class SCHPvP
             // Adds Adloquium when at or below threshold, will not Overwrite the 10% damage reduction buff to prevent waste
             if (IsEnabled(Preset.SCHPvP_Adlo))
             {
-                IGameObject? healTarget = SCHPvP_Adlo_Retarget ? SimpleTarget.Stack.AllyToHeal : SimpleTarget.Stack.Allies;
+                IGameObject? healTarget = SCHPvP_Adlo_Retarget ? SimpleTarget.Stack.AllyToHealPVP : SimpleTarget.Stack.Allies;
                 
                 if (!HasStatusEffect(Buffs.Catalyze, healTarget) && GetTargetHPPercent(healTarget) <= SCHPvP_AdloThreshold)
                     return SCHPvP_Adlo_Retarget
@@ -115,7 +115,7 @@ internal static class SCHPvP
         {
             return actionID is not Adloquilum 
                 ? actionID 
-                : Adloquilum.Retarget(SimpleTarget.Stack.AllyToHeal);
+                : Adloquilum.Retarget(SimpleTarget.Stack.AllyToHealPVP);
         }
     }
 }

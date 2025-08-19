@@ -111,7 +111,7 @@ internal static class WHMPvP
             }
             if (IsEnabled(Preset.WHMPvP_Burst_Heals) && !HasStatusEffect(Buffs.SacredSight))
             {
-                IGameObject? healTarget = WHMPvP_Burst_HealsRetarget ? SimpleTarget.Stack.AllyToHeal : SimpleTarget.Stack.Allies;
+                IGameObject? healTarget = WHMPvP_Burst_HealsRetarget ? SimpleTarget.Stack.AllyToHealPVP : SimpleTarget.Stack.Allies;
                 
                 if (WHMPvP_Burst_Heals_Options[1] && HasStatusEffect(Buffs.Cure3Ready) && GetTargetHPPercent(healTarget) <= WHMPvP_Burst_HealsThreshold)
                     return WHMPvP_Burst_HealsRetarget
@@ -143,16 +143,16 @@ internal static class WHMPvP
             
             if (IsEnabled(Preset.WHMPvP_Cure3) && HasStatusEffect(Buffs.Cure3Ready))
                 return WHMPvP_Heals_Options[1]
-                    ? Cure3.Retarget(Cure2, SimpleTarget.Stack.AllyToHeal, true)
+                    ? Cure3.Retarget(Cure2, SimpleTarget.Stack.AllyToHealPVP, true)
                     : Cure3;
 
             if (IsEnabled(Preset.WHMPvP_Aquaveil) && IsOffCooldown(Aquaveil))
                 return WHMPvP_Heals_Options[2]
-                    ? Aquaveil.Retarget(Cure2, SimpleTarget.Stack.AllyToHeal, true)
+                    ? Aquaveil.Retarget(Cure2, SimpleTarget.Stack.AllyToHealPVP, true)
                     : Aquaveil;
 
             return WHMPvP_Heals_Options[2]
-                ? actionID.Retarget(Cure2, SimpleTarget.Stack.AllyToHeal, true)
+                ? actionID.Retarget(Cure2, SimpleTarget.Stack.AllyToHealPVP, true)
                 : actionID;
         }
     }

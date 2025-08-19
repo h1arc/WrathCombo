@@ -136,7 +136,7 @@ internal static class ASTPvP
                 
                 if (IsEnabled(Preset.ASTPvP_Burst_Heal))
                 {
-                    IGameObject? healTarget = ASTPvP_BurstHealRetarget ? SimpleTarget.Stack.AllyToHeal : SimpleTarget.Stack.Allies;
+                    IGameObject? healTarget = ASTPvP_BurstHealRetarget ? SimpleTarget.Stack.AllyToHealPVP : SimpleTarget.Stack.Allies;
                 
                     if (!HasStatusEffect(Buffs.DiurnalBenefic, healTarget) && GetTargetHPPercent(healTarget) <= ASTPvP_Burst_HealThreshold)
                         return ASTPvP_BurstHealRetarget
@@ -184,7 +184,7 @@ internal static class ASTPvP
                 return OriginalHook(DoubleCast);
             
             return ASTPvP_Heal_Retarget
-                ? actionID.Retarget(SimpleTarget.Stack.AllyToHeal)
+                ? actionID.Retarget(SimpleTarget.Stack.AllyToHealPVP)
                 : actionID;
         }
     }
