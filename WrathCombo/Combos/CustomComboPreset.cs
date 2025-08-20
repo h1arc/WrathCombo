@@ -1043,7 +1043,7 @@ public enum Preset
     #region Movement
     
     [ConflictingCombos(BLM_Aetherial_Manipulation)]
-    [CustomComboInfo("Aetherial Manipulation Movement option", "Retargets Aetherial Manipulation to UI/Field Mouseover", Job.BLM)]
+    [CustomComboInfo("Aetherial Manipulation Movement option", "Retargets Aetherial Manipulation to UI Mouseover", Job.BLM)]
     [Retargeted(BLM.AetherialManipulation)]
     BLM_Retargetting_Aetherial_Manipulation = 2066,
 
@@ -3827,7 +3827,7 @@ public enum Preset
     
     #region Movement
 
-    [CustomComboInfo("Thunderclap Movement Option", "Retargets Thunderclap to UI/Field Mouseover", Job.MNK)]
+    [CustomComboInfo("Thunderclap Movement Option", "Retargets Thunderclap to UI Mouseover", Job.MNK)]
     [Retargeted(MNK.Thunderclap)]
     MNK_Retarget_Thunderclap = 9043,
     
@@ -5978,7 +5978,7 @@ public enum Preset
     SGE_Retarget_Kardia = 14078,
     
     [ParentCombo(SGE_Retarget)]
-    [CustomComboInfo("Icarus Movement Option", "Retargets Icarus to UI/Field Mouseover", Job.SGE)]
+    [CustomComboInfo("Icarus Movement Option", "Retargets Icarus to UI Mouseover", Job.SGE)]
     [Retargeted(SGE.Icarus)]
     SGE_Retarget_Icarus = 14083,
     
@@ -7104,7 +7104,7 @@ public enum Preset
     
     #region Movement
     
-    [CustomComboInfo("Slither Movement option", "Retargets Slither to UI/Field Mouseover", Job.VPR)]
+    [CustomComboInfo("Slither Movement option", "Retargets Slither to UI Mouseover", Job.VPR)]
     [Retargeted(VPR.Slither)]
     VPR_Retarget_Slither = 30211,
     

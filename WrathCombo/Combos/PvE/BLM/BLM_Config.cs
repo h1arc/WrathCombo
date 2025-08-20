@@ -198,7 +198,7 @@ internal partial class BLM
 
                 case Preset.BLM_Retargetting_Aetherial_Manipulation:
                     DrawAdditionalBoolChoice(BLM_AM_FieldMouseover,
-                        "Add Field Mouseover", "Adds Field mouseover targetting.");
+                        "Add Field Mouseover", "Add Field Mouseover targetting.");
                     break;
 
                 case Preset.BLM_AmplifierXeno:
