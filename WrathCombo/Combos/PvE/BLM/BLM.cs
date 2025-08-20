@@ -671,31 +671,9 @@ internal partial class BLM : Caster
         }
     }
 
-    internal class BLM_Blizzard1to3 : CustomCombo
+    internal class BLM_Fire1and3 : CustomCombo
     {
-        protected internal override Preset Preset => Preset.BLM_Blizzard1to3;
-
-        protected override uint Invoke(uint actionID)
-        {
-            if (actionID is not (Blizzard or Blizzard3))
-                return actionID;
-
-            return actionID switch
-            {
-                Blizzard when BLM_B1to3 == 0 && LevelChecked(Blizzard3) &&
-                              (FirePhase ||
-                               UmbralIceStacks is 1 ||
-                               UmbralIceStacks is 2) => Blizzard3,
-
-                Blizzard3 when BLM_B1to3 == 1 && LevelChecked(Blizzard3) && IcePhase && UmbralIceStacks is 3 => OriginalHook(Blizzard),
-                var _ => actionID
-            };
-        }
-    }
-
-    internal class BLM_Fire1to3 : CustomCombo
-    {
-        protected internal override Preset Preset => Preset.BLM_Fire1to3;
+        protected internal override Preset Preset => Preset.BLM_Fire1and3;
 
         protected override uint Invoke(uint actionID)
         {
@@ -712,15 +690,18 @@ internal partial class BLM : Caster
                            !LevelChecked(Fire4) &&
                            HasStatusEffect(Buffs.Firestarter)) && !JustUsed(Fire3) => Fire3,
 
+                Fire when BLM_Fire1_Despair && FirePhase && CurMp < 2400 && LevelChecked(Despair) => Despair,
+
                 Fire3 when BLM_F1to3 == 1 && LevelChecked(Fire3) && FirePhase &&
                            (LevelChecked(Paradox) && ActiveParadox && AstralFireStacks is 3 ||
                             !LevelChecked(Fire4) && !HasStatusEffect(Buffs.Firestarter)) &&
                            !JustUsed(OriginalHook(Fire)) => OriginalHook(Fire),
+
                 var _ => actionID
             };
         }
     }
-    
+
     internal class BLM_Fire4 : CustomCombo
     {
         protected internal override Preset Preset => Preset.BLM_Fire4;
@@ -728,87 +709,86 @@ internal partial class BLM : Caster
         {
             if (actionID is not Fire4)
                 return actionID;
-            
+
             if (!InCombat())
             {
-                if (BLM_Fire4_Fire3)
-                    return LevelChecked(Fire3) ? Fire3 : Fire;
-                return actionID;
+                return BLM_Fire4_Fire3
+                    ? LevelChecked(Fire3)
+                        ? Fire3
+                        : Fire
+                    : actionID;
             }
-            switch (IcePhase)
+
+            return IcePhase switch
             {
-                case false when BLM_Fire4_FlareStar && FlarestarReady && LevelChecked(FlareStar):
-                    return FlareStar;
-                case false when BLM_Fire4_Fire3 && AstralFireStacks < 3:
-                    return LevelChecked(Fire3)
-                        ? Fire3
-                        : Fire;
-                case false:
-                    return actionID;
+                false when BLM_Fire4_FlareStar && FlarestarReady && LevelChecked(FlareStar) => FlareStar,
+                false when BLM_Fire4_Fire3 && AstralFireStacks < 3 => LevelChecked(Fire3) ? Fire3 : Fire,
+                false => actionID,
+
                 //Ice Phase
-                case true when BLM_Fire4_FireAndIce == 0 &&UmbralIceStacks < 3:
-                    return LevelChecked(Blizzard3)
-                        ? Blizzard3
-                        : Blizzard;
-                case true when BLM_Fire4_FireAndIce == 0 && UmbralIceStacks == 3 && LevelChecked(Blizzard4):
-                    return Blizzard4;
-                case true when BLM_Fire4_FireAndIce == 1:
-                    return BLM_Fire4_Fire3 && LevelChecked(Fire3)
-                        ? Fire3
-                        : Fire;
-                case true:
-                    return actionID;
-            }
+                true when BLM_Fire4_FireAndIce == 0 && UmbralIceStacks < 3 => LevelChecked(Blizzard3) ? Blizzard3 : Blizzard,
+                true when BLM_Fire4_FireAndIce == 0 && UmbralIceStacks == 3 && LevelChecked(Blizzard4) => Blizzard4,
+                true when BLM_Fire4_FireAndIce == 1 => BLM_Fire4_Fire3 && LevelChecked(Fire3) ? Fire3 : Fire,
+                true => actionID
+            };
         }
     }
 
+    internal class BLM_Blizzard1and3 : CustomCombo
+    {
+        protected internal override Preset Preset => Preset.BLM_Blizzard1and3;
 
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not (Blizzard or Blizzard3))
+                return actionID;
+
+            return actionID switch
+            {
+                Blizzard when BLM_B1to3 == 0 && LevelChecked(Blizzard3) &&
+                              (FirePhase ||
+                               UmbralIceStacks is 1 ||
+                               UmbralIceStacks is 2) => Blizzard3,
+
+                Blizzard3 when BLM_B1to3 == 1 && LevelChecked(Blizzard3) && IcePhase && UmbralIceStacks is 3 => OriginalHook(Blizzard),
+                Blizzard3 when BLM_Blizzard3_Despair && FirePhase && LevelChecked(Despair) && CurMp >= 800 => Despair,
+
+                var _ => actionID
+            };
+        }
+    }
 
     internal class BLM_Blizzard4toDespair : CustomCombo
     {
         protected internal override Preset Preset => Preset.BLM_Blizzard4toDespair;
         protected override uint Invoke(uint actionID)
         {
-            if (actionID is not (Blizzard3 or Blizzard4))
+            if (actionID is not Blizzard4)
                 return actionID;
 
-            return actionID switch
-            {
-                Blizzard4 when BLM_B4toDespair == 0 && FirePhase && LevelChecked(Despair) && CurMp >= 800 => Despair,
-                Blizzard3 when BLM_B4toDespair == 1 && FirePhase && LevelChecked(Despair) && CurMp >= 800 => Despair,
-                var _ => actionID
-            };
-        }
-    }
-
-    internal class BLM_Fire1Despair : CustomCombo
-    {
-        protected internal override Preset Preset => Preset.BLM_Fire1Despair;
-        protected override uint Invoke(uint actionID)
-        {
-            if (actionID is not Fire)
-                return actionID;
-
-            return FirePhase && CurMp < 2400
+            return FirePhase && LevelChecked(Despair) && CurMp >= 800
                 ? Despair
-                : OriginalHook(Fire);
+                : actionID;
         }
     }
 
-    internal class BLM_FreezeParadox : CustomCombo
+    internal class BLM_Freeze : CustomCombo
     {
-        protected internal override Preset Preset => Preset.BLM_FreezeParadox;
+        protected internal override Preset Preset => Preset.BLM_Freeze;
         protected override uint Invoke(uint actionID)
         {
             if (actionID is not Freeze)
                 return actionID;
 
-            return HasMaxUmbralHeartStacks && LevelChecked(Paradox) && ActiveParadox && IcePhase
-                ? OriginalHook(Blizzard)
-                : actionID;
+            return actionID switch
+            {
+                Freeze when HasMaxUmbralHeartStacks && LevelChecked(Paradox) && ActiveParadox && IcePhase => OriginalHook(Blizzard),
+                Freeze when !LevelChecked(Freeze) => Blizzard2,
+                var _ => actionID
+            };
         }
     }
-
+    
     internal class BLM_FlareParadox : CustomCombo
     {
         protected internal override Preset Preset => Preset.BLM_FlareParadox;
@@ -819,20 +799,6 @@ internal partial class BLM : Caster
 
             return FirePhase && LevelChecked(FlareStar) && ActiveParadox && AstralSoulStacks < 6
                 ? OriginalHook(Fire)
-                : actionID;
-        }
-    }
-
-    internal class BLM_FreezeBlizzard2 : CustomCombo
-    {
-        protected internal override Preset Preset => Preset.BLM_FreezeBlizzard2;
-        protected override uint Invoke(uint actionID)
-        {
-            if (actionID is not Freeze)
-                return actionID;
-
-            return !LevelChecked(Freeze)
-                ? Blizzard2
                 : actionID;
         }
     }

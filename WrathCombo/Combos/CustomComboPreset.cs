@@ -1026,7 +1026,7 @@ public enum Preset
 
     [AutoAction(false, false)]
     [ReplaceSkill(BLM.Fire)]
-    [ConflictingCombos(BLM_ST_AdvancedMode, BLM_Fire1to3, BLM_Fire1Despair)]
+    [ConflictingCombos(BLM_ST_AdvancedMode, BLM_Fire1and3)]
     [CustomComboInfo("Simple Mode - Single Target", "Replaces Fire with a full one-button single target rotation.\nThis is the ideal option for newcomers to the job.", Job.BLM)]
     [SimpleCombo]
     BLM_ST_SimpleMode = 2001,
@@ -1053,7 +1053,7 @@ public enum Preset
 
     [AutoAction(false, false)]
     [ReplaceSkill(BLM.Fire)]
-    [ConflictingCombos(BLM_ST_SimpleMode, BLM_Fire1to3, BLM_Fire1Despair)]
+    [ConflictingCombos(BLM_ST_SimpleMode, BLM_Fire1and3)]
     [CustomComboInfo("Advanced Mode - Single Target", "Replaces Fire with a full one-button single target rotation.\nThese features are ideal if you want to customize the rotation.", Job.BLM)]
     [AdvancedCombo]
     BLM_ST_AdvancedMode = 2100,
@@ -1192,38 +1192,25 @@ public enum Preset
     BLM_TriplecastProtection = 2056,
     
     [ReplaceSkill(BLM.Fire, BLM.Fire3)]
-    [ConflictingCombos(BLM_ST_AdvancedMode, BLM_ST_SimpleMode, BLM_Fire1Despair)]
-    [CustomComboInfo("Fire I/III Feature", "Replaces Fire I or Fire III.", Job.BLM)]
-    BLM_Fire1to3 = 2054,
-
-    [ReplaceSkill(BLM.Blizzard, BLM.Blizzard3)]
-    [ConflictingCombos(BLM_FreezeBlizzard2, BLM_Blizzard4toDespair)]
-    [CustomComboInfo("Blizzard I/III Feature", "Replaces Blizzard I or Blizzard III.\nReplaces Freeze with Blizzard II when synced below Lv.40.", Job.BLM)]
-    BLM_Blizzard1to3 = 2052,
+    [ConflictingCombos(BLM_ST_AdvancedMode, BLM_ST_SimpleMode)]
+    [CustomComboInfo("Fire I/III Feature", "Replaces Fire I or Fire III with the options below.", Job.BLM)]
+    BLM_Fire1and3 = 2054,
 
     [ReplaceSkill(BLM.Fire4)]
-    [CustomComboInfo("Fire 4 Feature", "Replaces Fire 4 with the options below.", Job.BLM)]
+    [CustomComboInfo("Fire IV Feature", "Replaces Fire IV with the options below.", Job.BLM)]
     BLM_Fire4 = 2059,
 
-    [ReplaceSkill(BLM.Fire)]
-    [ConflictingCombos(BLM_ST_AdvancedMode, BLM_ST_SimpleMode, BLM_Fire1to3)]
-    [CustomComboInfo("Fire to Despair", "Replaces Fire with Despair when in Astral Fire and below 2400 MP.", Job.BLM)]
-    BLM_Fire1Despair = 2065,
-
-    [ReplaceSkill(BLM.Blizzard4, BLM.Blizzard3)]
-    [ConflictingCombos(BLM_Blizzard1to3, BLM_FreezeBlizzard2)]
-    [CustomComboInfo("Blizzard 3/4 to Despair", "Replaces Blizzard 3/4 with Despair when in Astral Fire.", Job.BLM)]
-    BLM_Blizzard4toDespair = 2060,
-
     [ReplaceSkill(BLM.Blizzard, BLM.Blizzard3)]
-    [ConflictingCombos(BLM_FreezeParadox, BLM_Blizzard1to3, BLM_Blizzard4toDespair)]
-    [CustomComboInfo("Freeze to Blizzard II", "Replaces Freeze with Blizzard II when synced below Lv.40.", Job.BLM)]
-    BLM_FreezeBlizzard2 = 2064,
-
+    [CustomComboInfo("Blizzard I/III Feature", "Replaces Blizzard I or Blizzard III with the options below.", Job.BLM)]
+    BLM_Blizzard1and3 = 2052,
+    
+    [ReplaceSkill(BLM.Blizzard4)]
+    [CustomComboInfo("Blizzard IV to Despair", "Replaces Blizzard IV with Despair when in Astral Fire.", Job.BLM)]
+    BLM_Blizzard4toDespair = 2060,
+    
     [ReplaceSkill(BLM.Freeze)]
-    [ConflictingCombos(BLM_FreezeBlizzard2)]
-    [CustomComboInfo("Freeze to Paradox", "Replaces Freeze with Ice Paradox when you have 3 Umbral Heart stacks.", Job.BLM)]
-    BLM_FreezeParadox = 2062,
+    [CustomComboInfo("Freeze feature", "Replaces Freeze with Ice Paradox when you have 3 Umbral Heart stacks.\nChanges Freeze to Blizzard II when synched down.", Job.BLM)]
+    BLM_Freeze = 2062,
 
     [ReplaceSkill(BLM.FlareStar)]
     [CustomComboInfo("Flarestar to Paradox", "Replaces Flarestar with Fire Paradox when not at max Flarestar stacks.", Job.BLM)]
