@@ -138,7 +138,7 @@ internal static class ASTPvP
                 {
                     IGameObject? healTarget = ASTPvP_BurstHealRetarget ? SimpleTarget.Stack.AllyToHealPVP : SimpleTarget.Stack.Allies;
                 
-                    if (!HasStatusEffect(Buffs.DiurnalBenefic, healTarget) && GetTargetHPPercent(healTarget) <= ASTPvP_Burst_HealThreshold)
+                    if (!HasStatusEffect(Buffs.DiurnalBenefic, healTarget) && GetTargetHPPercent(healTarget) <= ASTPvP_Burst_HealThreshold && ActionReady(AspectedBenefic))
                         return ASTPvP_BurstHealRetarget
                             ? AspectedBenefic.Retarget(Malefic, healTarget, true)
                             : AspectedBenefic;

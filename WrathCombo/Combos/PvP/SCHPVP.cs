@@ -98,7 +98,7 @@ internal static class SCHPvP
             {
                 IGameObject? healTarget = SCHPvP_Adlo_Retarget ? SimpleTarget.Stack.AllyToHealPVP : SimpleTarget.Stack.Allies;
                 
-                if (!HasStatusEffect(Buffs.Catalyze, healTarget) && GetTargetHPPercent(healTarget) <= SCHPvP_AdloThreshold)
+                if (!HasStatusEffect(Buffs.Catalyze, healTarget) && GetTargetHPPercent(healTarget) <= SCHPvP_AdloThreshold && ActionReady(Adloquilum))
                     return SCHPvP_Adlo_Retarget
                         ? Adloquilum.Retarget(Broil, healTarget, true)
                         : Adloquilum;
