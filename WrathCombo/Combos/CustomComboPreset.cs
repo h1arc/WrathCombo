@@ -1524,6 +1524,14 @@ public enum Preset
     [ParentCombo(BRD_ST_AdvMode)]
     [CustomComboInfo("Self Cleanse Option", "Uses Wardens Paeon when you have a cleansable debuff.", Job.BRD)]
     BRD_ST_Wardens = 3047,
+    
+    [ParentCombo(BRD_ST_AdvMode)]
+    [CustomComboInfo("Troubadour Raidwide Option", "Adds Troubador when Raidwide is detected casting.", Job.BRD)]
+    BRD_Adv_Troubadour = 3069,
+    
+    [ParentCombo(BRD_ST_AdvMode)]
+    [CustomComboInfo("Nature's Minne Raidwide Option", "Adds Nature's Minne when Raidwide is detected casting and you don't already have Troubadour up.", Job.BRD)]
+    BRD_Adv_NaturesMinne = 3070,
 
     [AutoAction(true, false)]
     [ConflictingCombos(BRD_AoE_SimpleMode)]
@@ -1662,7 +1670,7 @@ public enum Preset
 
     #endregion
 
-    // Last value = 3068
+    // Last value = 3069
 
     #endregion
 
@@ -1827,9 +1835,13 @@ public enum Preset
         "Includes Curing Waltz and Second Wind in the rotation when available and your HP is below the set percentages.",
         Job.DNC)]
     DNC_ST_Adv_PanicHeals = 4027,
+    
+    [ParentCombo(DNC_ST_AdvancedMode)]
+    [CustomComboInfo("Shield Samba Raidwide Option", "Adds Shield Samba when Raidwide is detected casting.", Job.MCH)]
+    DNC_ST_Adv_ShieldSamba = 4034,
 
     #endregion
-    // Last value = 4033
+    // Last value = 4034
 
     #region Advanced Dancer (AoE)
 
@@ -3606,6 +3618,10 @@ public enum Preset
     [ParentCombo(MCH_ST_AdvancedMode)]
     [CustomComboInfo("Excavator Option", "Adds Excavator to the rotation.", Job.MCH)]
     MCH_ST_Adv_Excavator = 8116,
+    
+    [ParentCombo(MCH_ST_AdvancedMode)]
+    [CustomComboInfo("Tactician Raidwide Option", "Adds Tactician when Raidwide is detected casting.", Job.MCH)]
+    MCH_ST_Adv_Tactician = 8118,
 
     [ParentCombo(MCH_ST_AdvancedMode)]
     [CustomComboInfo("Head Graze Option", "Uses Head Graze to interrupt during the rotation, where applicable.", Job.MCH)]

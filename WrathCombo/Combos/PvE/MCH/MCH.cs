@@ -279,6 +279,12 @@ internal partial class MCH : PhysicalRanged
                             !JustUsed(OriginalHook(Ricochet), 2f))
                             return OriginalHook(Ricochet);
                     }
+                    
+                    if (ActionReady(Tactician) &&
+                        IsEnabled(Preset.MCH_ST_Adv_Tactician) && RaidWideCasting() && 
+                        NumberOfAlliesInRange(Tactician) >= GetPartyMembers().Count * .75 &&
+                        !HasAnyStatusEffects ([BRD.Buffs.Troubadour, DNC.Buffs.ShieldSamba, Buffs.Tactician], anyOwner: true))
+                        return Tactician;
 
                     // Healing
                     if (IsEnabled(Preset.MCH_ST_Adv_SecondWind) &&
