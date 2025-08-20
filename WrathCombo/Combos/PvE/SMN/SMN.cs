@@ -644,6 +644,12 @@ internal partial class SMN : Caster
                 // Lucid Dreaming
                 if (IsEnabled(Preset.SMN_ST_Advanced_Combo_Lucid) && Role.CanLucidDream(lucidThreshold))
                     return Role.LucidDreaming;
+                
+                if (IsEnabled(Preset.SMN_ST_Advanced_Combo_Addle) && 
+                    RoleActions.Caster.CanAddle() &&
+                    CanApplyStatus(CurrentTarget, RoleActions.Caster.Debuffs.Addle) &&
+                    RaidWideCasting())
+                    return Role.Addle;
             }
             #endregion
 

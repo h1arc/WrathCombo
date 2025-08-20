@@ -278,6 +278,12 @@ internal partial class PCT : Caster
                 //LucidDreaming
                 if (lucidDreamingEnabled && Role.CanLucidDream(PCT_ST_AdvancedMode_LucidOption))
                     return Role.LucidDreaming;
+                
+                if (IsEnabled(Preset.PCT_ST_AdvancedMode_Addle) && 
+                    RoleActions.Caster.CanAddle() &&
+                    CanApplyStatus(CurrentTarget, RoleActions.Caster.Debuffs.Addle) &&
+                    RaidWideCasting())
+                    return Role.Addle;
             }
             #endregion
 
