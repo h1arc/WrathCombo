@@ -241,7 +241,7 @@ internal static class RDMPvP
                                    HasStatusEffect(PvPCommon.Debuffs.Bind, anyOwner: true) || HasStatusEffect(PvPCommon.Debuffs.Silence, anyOwner: true) ||
                                    HasStatusEffect(PvPCommon.Debuffs.MiracleOfNature, anyOwner: true);
             
-            if (HasCharges(CorpsACorps) && IsOffCooldown(PvPCommon.Purify) && !hasCrowdControl && LocalPlayer.CurrentMp >= RDMPvP_Dash_Feature_PurifyMPThreshold)
+            if (HasCharges(CorpsACorps) && IsOffCooldown(PvPCommon.Purify) && hasCrowdControl && LocalPlayer.CurrentMp >= RDMPvP_Dash_Feature_PurifyMPThreshold)
                 return OriginalHook(PvPCommon.Purify);
            
             return actionID;
