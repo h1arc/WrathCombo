@@ -7827,6 +7827,23 @@ public enum Preset
         Job.WHM)]
     [SimpleCombo]
     WHM_AoE_Simple_DPS = 19051,
+    
+    [AutoAction(false, true)]
+    [ReplaceSkill(WHM.Cure)]
+    [ConflictingCombos(WHM_STHeals)]
+    [CustomComboInfo("Simple Healing Mode - Single Target", "Replaces Cure with a full one-button single target healing utility." +
+                                                            "\nThis is the ideal option for newcomers to the job. Particularly with autorotation.", Job.WHM)]
+    [SimpleCombo]
+    WHM_SimpleSTHeals = 19052,
+    
+    
+    [AutoAction(true, true)]
+    [ReplaceSkill(WHM.Medica1)]
+    [ConflictingCombos(WHM_AoEHeals)]
+    [CustomComboInfo("Simple Healing Mode - Single Target", "Replaces Medica with a full one-button single target healing utility." +
+                                                            "\nThis is the ideal option for newcomers to the job. Particularly with autorotation.", Job.WHM)]
+    [SimpleCombo]
+    WHM_Simple_AoEHeals = 19054,
 
     #endregion
 
