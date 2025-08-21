@@ -72,13 +72,13 @@ internal static class VPRPvP
             {
                 // Bloodcoil
                 case Preset.VPRPvP_Bloodcoil:
-                    DrawSliderInt(10, 100, VPRPvP_Bloodcoil_TargetHP, "Target HP%", 10);
-                    DrawSliderInt(10, 100, VPRPvP_Bloodcoil_PlayerHP, "Player HP%", 10);
+                    DrawSliderInt(10, 100, VPRPvP_Bloodcoil_TargetHP, "Target HP%");
+                    DrawSliderInt(10, 100, VPRPvP_Bloodcoil_PlayerHP, "Player HP%");
                     break;
 
                 // Uncoiled Fury
                 case Preset.VPRPvP_UncoiledFury:
-                    DrawSliderInt(10, 100, VPRPvP_UncoiledFury_TargetHP, "Target HP%", 10);
+                    DrawSliderInt(10, 100, VPRPvP_UncoiledFury_TargetHP, "Target HP%");
                     break;
 
                 // Backlash
@@ -97,8 +97,8 @@ internal static class VPRPvP
 
                 // Slither
                 case Preset.VPRPvP_Slither:
-                    DrawSliderInt(0, 1, VPRPvP_Slither_Charges, "Charges to Keep", 1);
-                    DrawSliderInt(6, 10, VPRPvP_Slither_Range, "Maximum Range", 6);
+                    DrawSliderInt(0, 1, VPRPvP_Slither_Charges, "Charges to Keep");
+                    DrawSliderInt(6, 10, VPRPvP_Slither_Range, "Maximum Range");
                     break;
 
                 // Smite

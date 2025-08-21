@@ -66,19 +66,19 @@ internal static class SAMPvP
             {
                 // Chiten
                 case Preset.SAMPvP_Chiten:
-                    DrawSliderInt(10, 100, SAMPvP_Chiten_PlayerHP, "Player HP%", 10);
+                    DrawSliderInt(10, 100, SAMPvP_Chiten_PlayerHP, "Player HP%");
                     break;
 
                 // Mineuchi
                 case Preset.SAMPvP_Mineuchi:
-                    DrawSliderInt(10, 100, SAMPvP_Mineuchi_TargetHP, "Target HP%", 10);
+                    DrawSliderInt(10, 100, SAMPvP_Mineuchi_TargetHP, "Target HP%");
                     DrawAdditionalBoolChoice(SAMPvP_Mineuchi_SubOption, "Burst Preparation", "Also uses Mineuchi before Tendo Setsugekka.");
                     break;
 
                 // Soten
                 case Preset.SAMPvP_Soten:
-                    DrawSliderInt(0, 2, SAMPvP_Soten_Charges, "Charges to Keep", 1);
-                    DrawSliderInt(1, 10, SAMPvP_Soten_Range, "Maximum Range", 10);
+                    DrawSliderInt(0, 2, SAMPvP_Soten_Charges, "Charges to Keep");
+                    DrawSliderInt(1, 10, SAMPvP_Soten_Range, "Maximum Range");
                     DrawAdditionalBoolChoice(SAMPvP_Soten_SubOption, "Yukikaze Only", "Also requires next weaponskill to be Yukikaze.");
                     break;
 

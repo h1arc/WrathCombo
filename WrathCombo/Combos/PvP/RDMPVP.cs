@@ -72,7 +72,7 @@ internal static class RDMPvP
             {
                 // Resolution
                 case Preset.RDMPvP_Resolution:
-                    DrawSliderInt(10, 100, RDMPvP_Resolution_TargetHP, "Target HP%", 210);
+                    DrawSliderInt(10, 100, RDMPvP_Resolution_TargetHP, "Target HP%");
                     break;
 
                 // Embolden / Prefulgence
@@ -83,22 +83,19 @@ internal static class RDMPvP
 
                 // Corps-a-Corps
                 case Preset.RDMPvP_Corps:
-                    DrawSliderInt(0, 1, RDMPvP_Corps_Charges, "Charges to Keep", 1);
-                    DrawSliderInt(5, 10, RDMPvP_Corps_Range, "Maximum Range", 5);
+                    DrawSliderInt(0, 1, RDMPvP_Corps_Charges, "Charges to Keep");
+                    DrawSliderInt(5, 10, RDMPvP_Corps_Range, "Maximum Range");
                     break;
 
                 // Displacement
                 case Preset.RDMPvP_Displacement:
-                    DrawSliderInt(0, 1, RDMPvP_Displacement_Charges, "Charges to Keep", 1);
-                    ImGui.Spacing();
+                    DrawSliderInt(0, 1, RDMPvP_Displacement_Charges, "Charges to Keep");
                     DrawAdditionalBoolChoice(RDMPvP_Displacement_SubOption, "No Movement Option", "Uses Displacement only when not moving.");
-
                     break;
 
                 // Forte / Vice of Thorns
                 case Preset.RDMPvP_Forte:
-                    DrawSliderInt(10, 100, RDMPvP_Forte_PlayerHP, "Player HP%", 10);
-                    ImGui.Spacing();
+                    DrawSliderInt(10, 100, RDMPvP_Forte_PlayerHP, "Player HP%");
                     DrawAdditionalBoolChoice(RDMPvP_Forte_SubOption, "Vice of Thorns Option", "Uses Vice of Thorns when available.");
                     break;
 
