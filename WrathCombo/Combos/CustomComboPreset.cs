@@ -617,6 +617,25 @@ public enum Preset
     [CustomComboInfo("Simple DPS Mode - AoE", "Replaces Gravity with a full one-button AoE rotation, including automatic dps card assignment.\nThis is the ideal option for newcomers to the job.", Job.AST)]
     [SimpleCombo]
     AST_AOE_Simple_DPS = 1180,
+    
+    [AutoAction(false, true)]
+    [ReplaceSkill(AST.Benefic)]
+    [ConflictingCombos(AST_ST_Heals)]
+    [CustomComboInfo("Simple Healing Mode - Single Target", "Replaces Benefic with a full one-button single target healing utility." +
+                                                            "\nThis is the ideal option for newcomers to the job. Particularly with autorotation.", Job.AST)]
+    [SimpleCombo]
+    [PossiblyRetargeted]
+    AST_Simple_ST_Heals = 1196,
+    
+    
+    [AutoAction(true, true)]
+    [ReplaceSkill(AST.Helios)]
+    [ConflictingCombos(AST_AoE_Heals)]
+    [CustomComboInfo("Simple Healing Mode - Single Target", "Replaces Helios with a full one-button single target healing utility." +
+                                                            "\nThis is the ideal option for newcomers to the job. Particularly with autorotation.", Job.AST)]
+    [SimpleCombo]
+    [PossiblyRetargeted]
+    AST_Simple_AoE_Heals = 1197,
         
     #endregion
     
@@ -780,7 +799,7 @@ public enum Preset
     #region Healing
 
     [AutoAction(false, true)]
-    [ReplaceSkill(AST.Benefic2)]
+    [ReplaceSkill(AST.Benefic)]
     [CustomComboInfo("Advanced Healing Mode - Single Target", "Replaces Benefic II with a one button healing replacement.",
         Job.AST)]
     [PossiblyRetargeted(AST.Benefic2)]
@@ -5583,6 +5602,7 @@ public enum Preset
     [CustomComboInfo("Simple Healing Mode - Single Target", "Replaces Diagnosis with a full one-button single target healing utility." +
                                                             "\nThis is the ideal option for newcomers to the job. Particularly with autorotation.", Job.SGE)]
     [SimpleCombo]
+    [PossiblyRetargeted]
     SGE_Simple_ST_Heal = 14087,
     
     
@@ -5592,6 +5612,7 @@ public enum Preset
     [CustomComboInfo("Simple Healing Mode - Single Target", "Replaces Prognosis with a full one-button single target healing utility." +
                                                             "\nThis is the ideal option for newcomers to the job. Particularly with autorotation.", Job.SGE)]
     [SimpleCombo]
+    [PossiblyRetargeted]
     SGE_Simple_AoE_Heal = 14086,
 
     #endregion
@@ -6360,6 +6381,7 @@ public enum Preset
     [CustomComboInfo("Simple Healing Mode - Single Target", "Replaces Physick with a full one-button single target healing utility." +
                                                             "\nThis is the ideal option for newcomers to the job. Particularly with autorotation.", Job.SCH)]
     [SimpleCombo]
+    [PossiblyRetargeted]
     SCH_Simple_ST_Heal = 16085,
     
     
@@ -6369,6 +6391,7 @@ public enum Preset
     [CustomComboInfo("Simple Healing Mode - Single Target", "Replaces Succor with a full one-button single target healing utility." +
                                                             "\nThis is the ideal option for newcomers to the job. Particularly with autorotation.", Job.SCH)]
     [SimpleCombo]
+    [PossiblyRetargeted]
     SCH_Simple_AoE_Heal = 16084,
     
     #endregion
@@ -7868,6 +7891,7 @@ public enum Preset
     [CustomComboInfo("Simple Healing Mode - Single Target", "Replaces Cure with a full one-button single target healing utility." +
                                                             "\nThis is the ideal option for newcomers to the job. Particularly with autorotation.", Job.WHM)]
     [SimpleCombo]
+    [PossiblyRetargeted]
     WHM_SimpleSTHeals = 19052,
     
     
@@ -7877,6 +7901,7 @@ public enum Preset
     [CustomComboInfo("Simple Healing Mode - Single Target", "Replaces Medica with a full one-button single target healing utility." +
                                                             "\nThis is the ideal option for newcomers to the job. Particularly with autorotation.", Job.WHM)]
     [SimpleCombo]
+    [PossiblyRetargeted]
     WHM_Simple_AoEHeals = 19054,
 
     #endregion
