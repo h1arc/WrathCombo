@@ -599,6 +599,9 @@ internal partial class AST : Healer
             
             if (ActionReady(OriginalHook(AstralDraw)) && HasNoDPSCard)
                 return OriginalHook(AstralDraw);
+            
+            if (OriginalHook(Macrocosmos) == MicroCosmos && GetPartyAvgHPPercent() < 50)
+                return MicroCosmos;
 
             if (HasStatusEffect(Buffs.GiantDominance))
                 return StellarDetonation;
@@ -617,6 +620,9 @@ internal partial class AST : Healer
 
             if (ActionReady(OriginalHook(NeutralSect)))
                 return OriginalHook(NeutralSect);
+            
+            if (LevelChecked(Macrocosmos) && IsOffCooldown(Macrocosmos))
+                return Macrocosmos;
 
             if (ActionReady(OriginalHook(AspectedHelios)) &&
                 GetPartyBuffPercent(Buffs.AspectedHelios) <= 50 && 
