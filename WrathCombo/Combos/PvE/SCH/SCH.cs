@@ -12,7 +12,7 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class SCH : Healer
 {
-    #region Simple ST DPS
+    #region Simple DPS
     internal class SCH_ST_Simple_DPS : CustomCombo
     {
         protected internal override Preset Preset => Preset.SCH_ST_Simple_DPS;
@@ -70,9 +70,7 @@ internal partial class SCH : Healer
             return actionID;
         }
     }
-    #endregion
     
-    #region Simple AoE DPS
     internal class SCH_AoE_Simple_DPS : CustomCombo
     {
         protected internal override Preset Preset => Preset.SCH_AoE_Simple_DPS;
@@ -131,7 +129,7 @@ internal partial class SCH : Healer
 
     #endregion
     
-    #region Simple ST Heal
+    #region Simple Heals
     internal class SCH_Simple_ST_Heal : CustomCombo
     {
         protected internal override Preset Preset => Preset.SCH_Simple_ST_Heal;
@@ -174,7 +172,8 @@ internal partial class SCH : Healer
                 GetTargetHPPercent(healTarget) <= 50)
                 return Lustrate.RetargetIfEnabled(healTarget, Physick);
             
-            if (ActionReady(SacredSoil) && !InBossEncounter())
+            if (ActionReady(SacredSoil) && !InBossEncounter() &&
+                TimeStoodStill >= TS.FromSeconds(5))
                 return SacredSoil.Retarget(Physick, SimpleTarget.Self);
             
             if (ActionReady(Protraction) && healTarget.GetRole() is CombatRole.Tank) 
@@ -212,9 +211,7 @@ internal partial class SCH : Healer
             return actionID.RetargetIfEnabled(healTarget);
         }
     }
-    #endregion
     
-    #region Simple AoE Heal 
     internal class SCH_Simple_AoE_Heal : CustomCombo
     {
         protected internal override Preset Preset => Preset.SCH_Simple_AoE_Heal;
@@ -273,7 +270,7 @@ internal partial class SCH : Healer
     }
     #endregion
     
-    #region Advanced ST DPS
+    #region Advanced DPS
     internal class SCH_ST_ADV_DPS : CustomCombo
     {
         protected internal override Preset Preset => Preset.SCH_ST_ADV_DPS;
@@ -356,9 +353,7 @@ internal partial class SCH : Healer
             return actionID;
         }
     }
-    #endregion
     
-    #region Advanced AoE DPS
     internal class SCH_AoE_ADV_DPS : CustomCombo
     {
         protected internal override Preset Preset => Preset.SCH_AoE_ADV_DPS;
@@ -436,7 +431,7 @@ internal partial class SCH : Healer
 
     #endregion
     
-    #region ST Heal
+    #region Advanced Heals
     internal class SCH_ST_Heal : CustomCombo
     {
         protected internal override Preset Preset => Preset.SCH_ST_Heal;
@@ -513,9 +508,7 @@ internal partial class SCH : Healer
                 .RetargetIfEnabled(OptionalTarget, Physick);
         }
     }
-    #endregion
     
-    #region Aoe Heal 
     internal class SCH_AoE_Heal : CustomCombo
     {
         protected internal override Preset Preset => Preset.SCH_AoE_Heal;
