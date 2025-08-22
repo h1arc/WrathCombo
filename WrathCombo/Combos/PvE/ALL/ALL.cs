@@ -13,12 +13,6 @@ internal partial class All
     /// Used to block user input.
     public const uint SavageBlade = 11;
 
-    public const uint
-        Sprint = 3;
-
-    private const uint
-        IsleSprint = 31314;
-
     public static class Buffs
     {
         public const ushort
@@ -160,7 +154,7 @@ internal partial class All
             return target is null ? SavageBlade : RoleActions.Healer.Esuna.Retarget(target, dontCull: true);
         }
     }
-    
+
     internal class ALL_Healer_RescueRetargeting : CustomCombo
     {
         protected internal override Preset Preset => Preset.ALL_Healer_RescueRetargeting;
@@ -172,7 +166,7 @@ internal partial class All
 
             var target =
                 SimpleTarget.UIMouseOverTarget.IfNotThePlayer().IfInParty() ??
-                
+
                 //Field Mouseover
                 (Config.ALL_Healer_RescueRetargetingOptions[0]
                     ? SimpleTarget.ModelMouseOverTarget.IfNotThePlayer().IfInParty()
@@ -182,12 +176,12 @@ internal partial class All
                 (Config.ALL_Healer_RescueRetargetingOptions[1]
                     ? SimpleTarget.FocusTarget.IfNotThePlayer().IfInParty()
                     : null) ??
-                
+
                 //Focus target retarget
                 (Config.ALL_Healer_RescueRetargetingOptions[2]
                     ? SimpleTarget.SoftTarget.IfNotThePlayer().IfInParty()
                     : null) ??
-                
+
                 SimpleTarget.HardTarget.IfNotThePlayer().IfInParty();
 
             return actionID.Retarget(target);
