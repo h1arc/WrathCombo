@@ -1,5 +1,6 @@
 #region
 using System.Linq;
+using ECommons.GameFunctions;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
@@ -434,7 +435,7 @@ internal partial class WHM : Healer
                 GetStatusEffect(Buffs.DivineBenison, healTarget) == null)
                 return DivineBenison.RetargetIfEnabled(healTarget, Cure);
 
-            if (ActionReady(Aquaveil) && IsOffCooldown(Aquaveil))
+            if (ActionReady(Aquaveil) && IsOffCooldown(Aquaveil) && healTarget.GetRole() is CombatRole.Tank)
                 return Aquaveil.RetargetIfEnabled(healTarget, Cure);
 
             if (ActionReady(OriginalHook(Temperance)) && 
@@ -646,8 +647,6 @@ internal partial class WHM : Healer
                         ? ThinAir
                         : spell.RetargetIfEnabled(OptionalTarget, Medica1);
             }
-
-
             return actionID;
         }
     }

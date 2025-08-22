@@ -285,6 +285,16 @@ public static class GameObjectExtensions
 
     #endregion
 
+    public static CombatRole GetRole(this IGameObject? obj)
+    {
+        if (obj is not IBattleChara battleChara ||
+            battleChara.ClassJob.ValueNullable is null)
+            return CombatRole.NonCombat;
+
+        var role = battleChara.ClassJob.Value.Role;
+        return (CombatRole)role;
+    }
+
     /// <summary>
     ///     Checks if the object is dead, and should be raised.<br />
     ///     Checks for them being dead but targetable, not having Transcendence or

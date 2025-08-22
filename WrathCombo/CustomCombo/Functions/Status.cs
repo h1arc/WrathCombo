@@ -264,6 +264,10 @@ internal abstract partial class CustomComboFunctions
                 }
                 return false;
             
+            case 1267: //Sunken Temple of Qarn Temple Guardian
+                if (targetID is 18300 && HasStatusEffect(350, tar, true)) return true;
+                return false;
+            
             case 1292: //Meso Terminal 
                 // Bloody Headsman = 18576 a
                 // Pale Headsman = 18577 b
