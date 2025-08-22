@@ -176,7 +176,7 @@ internal partial class SCH : Healer
                 TimeStoodStill >= TS.FromSeconds(5))
                 return SacredSoil.Retarget(Physick, SimpleTarget.Self);
             
-            if (ActionReady(Protraction) && healTarget.GetRole() is CombatRole.Tank) 
+            if (ActionReady(Protraction) && (healTarget.GetRole() is CombatRole.Tank || !IsInParty())) 
                 return Protraction.RetargetIfEnabled(healTarget, Physick);
             
             if (Gauge.FairyGauge >= 50 && IsOriginal(Aetherpact) && !FairyBusy)

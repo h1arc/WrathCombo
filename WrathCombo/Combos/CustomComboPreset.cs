@@ -5576,6 +5576,23 @@ public enum Preset
         Job.SGE)]
     [SimpleCombo]
     SGE_AoE_Simple_DPS = 14085,
+    
+    [AutoAction(false, true)]
+    [ReplaceSkill(SGE.Diagnosis)]
+    [ConflictingCombos(SGE_ST_Heal)]
+    [CustomComboInfo("Simple Healing Mode - Single Target", "Replaces Diagnosis with a full one-button single target healing utility." +
+                                                            "\nThis is the ideal option for newcomers to the job. Particularly with autorotation.", Job.SGE)]
+    [SimpleCombo]
+    SGE_Simple_ST_Heal = 14087,
+    
+    
+    [AutoAction(true, true)]
+    [ReplaceSkill(SGE.Prognosis)]
+    [ConflictingCombos(SGE_AoE_Heal)]
+    [CustomComboInfo("Simple Healing Mode - Single Target", "Replaces Prognosis with a full one-button single target healing utility." +
+                                                            "\nThis is the ideal option for newcomers to the job. Particularly with autorotation.", Job.SGE)]
+    [SimpleCombo]
+    SGE_Simple_AoE_Heal = 14086,
 
     #endregion
 
@@ -5972,7 +5989,7 @@ public enum Preset
 
     #endregion
 
-    // Last used number = 140835
+    // Last used number = 14087
 
     #endregion
 
@@ -6349,7 +6366,7 @@ public enum Preset
     [AutoAction(true, true)]
     [ReplaceSkill(SCH.Succor)]
     [ConflictingCombos(SCH_AoE_Heal)]
-    [CustomComboInfo("Simple Healing Mode - Single Target", "Replaces Medica with a full one-button single target healing utility." +
+    [CustomComboInfo("Simple Healing Mode - Single Target", "Replaces Succor with a full one-button single target healing utility." +
                                                             "\nThis is the ideal option for newcomers to the job. Particularly with autorotation.", Job.SCH)]
     [SimpleCombo]
     SCH_Simple_AoE_Heal = 16084,

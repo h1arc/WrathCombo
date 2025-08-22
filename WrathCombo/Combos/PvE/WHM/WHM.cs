@@ -407,16 +407,15 @@ internal partial class WHM : Healer
             
             if (ActionReady(Benediction) && 
                 GetTargetHPPercent(healTarget) <= 20)
-                return Benediction.RetargetIfEnabled(OptionalTarget, Cure);
+                return Benediction.RetargetIfEnabled(healTarget, Cure);
             
             if (ActionReady(Tetragrammaton) && 
                 GetTargetHPPercent(healTarget) <= 50)
-                return Tetragrammaton.RetargetIfEnabled(OptionalTarget, Cure);
+                return Tetragrammaton.RetargetIfEnabled(healTarget, Cure);
             
-            if (ActionReady(Role.Esuna) &&
-                GetTargetHPPercent(healTarget) >= 40 &&
+            if (ActionReady(Role.Esuna) && GetTargetHPPercent(healTarget) >= 40 &&
                 HasCleansableDebuff(healTarget))
-                return Role.Esuna.RetargetIfEnabled(OptionalTarget, Cure);
+                return Role.Esuna.RetargetIfEnabled(healTarget, Cure);
             
             if (CanWeave() && Role.CanLucidDream(6500))
                 return Role.LucidDreaming;
@@ -435,7 +434,7 @@ internal partial class WHM : Healer
                 GetStatusEffect(Buffs.DivineBenison, healTarget) == null)
                 return DivineBenison.RetargetIfEnabled(healTarget, Cure);
 
-            if (ActionReady(Aquaveil) && IsOffCooldown(Aquaveil) && healTarget.GetRole() is CombatRole.Tank)
+            if (ActionReady(Aquaveil) && IsOffCooldown(Aquaveil) && (healTarget.GetRole() is CombatRole.Tank || !IsInParty()))
                 return Aquaveil.RetargetIfEnabled(healTarget, Cure);
 
             if (ActionReady(OriginalHook(Temperance)) && 
