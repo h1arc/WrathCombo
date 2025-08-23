@@ -624,7 +624,7 @@ internal unsafe static class AutoRotationController
         {
             if (_ninjaLockedAoE) return false;
             var target = GetSingleTarget(mode);
-
+            
             var outAct = OriginalHook(InvokeCombo(preset, attributes, ref gameAct, target));
             if (!CanQueue(outAct))
             {
@@ -638,8 +638,8 @@ internal unsafe static class AutoRotationController
                 : ActionManager.CanUseActionOnTarget(outAct, Player.GameObject);
 
             var blockedSelfBuffs = GetCooldown(outAct).CooldownTotal >= 5;
-
-            if (cfg.InCombatOnly && NotInCombat && !(canUseSelf && cfg.BypassBuffs && !blockedSelfBuffs))
+            
+            if (cfg.InCombatOnly && NotInCombat && !CombatBypass && !(canUseSelf && cfg.BypassBuffs && !blockedSelfBuffs))
                 return false;
 
             if (target is null && !canUseSelf)
@@ -658,7 +658,7 @@ internal unsafe static class AutoRotationController
             
             if (canUse || cfg.DPSSettings.AlwaysSelectTarget)
                 Svc.Targets.Target = target;
-
+            
             var castTime = ActionManager.GetAdjustedCastTime(ActionType.Action, outAct);
             bool orbwalking = cfg.OrbwalkerIntegration && OrbwalkerIPC.CanOrbwalk;
             if (TimeMoving.TotalMilliseconds > 0 && castTime > 0 && !orbwalking)
