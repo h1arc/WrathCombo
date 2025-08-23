@@ -105,8 +105,8 @@ internal partial class SAM : Melee
             if (Variant.CanRampart(Preset.SAM_Variant_Rampart))
                 return Variant.Rampart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             //oGCDs
             if (CanWeave() && M6SReady)
@@ -278,8 +278,8 @@ internal partial class SAM : Melee
             if (Variant.CanRampart(Preset.SAM_Variant_Rampart))
                 return Variant.Rampart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             //oGCDs
             if (CanWeave() && M6SReady)
@@ -510,8 +510,8 @@ internal partial class SAM : Melee
             if (Variant.CanRampart(Preset.SAM_Variant_Rampart))
                 return Variant.Rampart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             //oGCD Features
             if (CanWeave() && M6SReady)
@@ -619,8 +619,8 @@ internal partial class SAM : Melee
             if (Variant.CanRampart(Preset.SAM_Variant_Rampart))
                 return Variant.Rampart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             //oGCD Features
             if (CanWeave() && M6SReady)

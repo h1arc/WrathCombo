@@ -77,8 +77,8 @@ internal partial class DRG : Melee
                 CanDRGWeave())
                 return Variant.Rampart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             // Piercing Talon Uptime Option
             if (ActionReady(PiercingTalon) &&
@@ -231,8 +231,8 @@ internal partial class DRG : Melee
                 CanDRGWeave())
                 return Variant.Rampart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             // Piercing Talon Uptime Option
             if (IsEnabled(Preset.DRG_ST_RangedUptime) &&
@@ -426,8 +426,8 @@ internal partial class DRG : Melee
                 CanDRGWeave())
                 return Variant.Rampart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             // Piercing Talon Uptime Option
             if (LevelChecked(PiercingTalon) &&
@@ -562,8 +562,8 @@ internal partial class DRG : Melee
                 CanDRGWeave())
                 return Variant.Rampart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             // Piercing Talon Uptime Option
             if (IsEnabled(Preset.DRG_AoE_RangedUptime) &&

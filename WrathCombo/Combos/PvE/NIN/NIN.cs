@@ -36,8 +36,8 @@ internal partial class NIN : Melee
                 return STTenChiJin(actionID);
             
             #region Special Content
-            if (OccultCrescent.ShouldUsePhantomActions() && !MudraPhase)
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction) && !MudraPhase)
+                return contentAction;
             
             if (Variant.CanRampart(Preset.NIN_Variant_Rampart) && !MudraPhase)
                 return Variant.Rampart;
@@ -163,8 +163,8 @@ internal partial class NIN : Melee
                     : AoETenChiJinSuiton(actionID);
             
             #region Special Content
-            if (OccultCrescent.ShouldUsePhantomActions() && !MudraPhase)
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction) && !MudraPhase)
+                return contentAction;
             
             if (Variant.CanRampart(Preset.NIN_Variant_Rampart) && !MudraPhase)
                 return Variant.Rampart;
@@ -292,8 +292,8 @@ internal partial class NIN : Melee
                 return STTenChiJin(actionID);
             
             #region Special Content
-            if (OccultCrescent.ShouldUsePhantomActions() && !MudraPhase)
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction) && !MudraPhase)
+                return contentAction;
             
             if (Variant.CanRampart(Preset.NIN_Variant_Rampart) && !MudraPhase)
                 return Variant.Rampart;
@@ -445,8 +445,8 @@ internal partial class NIN : Melee
                 : AoETenChiJinSuiton(actionID);
             
             #region Special Content
-            if (OccultCrescent.ShouldUsePhantomActions() && !MudraPhase)
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction) && !MudraPhase)
+                return contentAction;
             
             if (Variant.CanRampart(Preset.NIN_Variant_Rampart) && !MudraPhase)
                 return Variant.Rampart;
