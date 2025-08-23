@@ -475,7 +475,7 @@ internal partial class WHM : Healer
                 return Role.LucidDreaming;
             
             if (ActionReady(OriginalHook(Temperance)) && 
-                (GetPartyAvgHPPercent() <= 50 ||
+                (GetPartyAvgHPPercent() <= 70 ||
                  RaidWideCasting() ||
                  HasStatusEffect(Buffs.DivineGrace)))
                 return OriginalHook(Temperance);
@@ -487,7 +487,7 @@ internal partial class WHM : Healer
                 return LiturgyOfTheBell;
 
             if (ActionReady(PlenaryIndulgence) &&
-                (GetPartyAvgHPPercent() <= 50 ||
+                (GetPartyAvgHPPercent() <= 70 ||
                  RaidWideCasting()))
                 return PlenaryIndulgence;
 
