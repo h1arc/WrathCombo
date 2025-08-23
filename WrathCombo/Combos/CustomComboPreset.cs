@@ -1039,16 +1039,7 @@ public enum Preset
     BLM_AoE_SimpleMode = 2002,
 
     #endregion
-
-    #region Movement
     
-    [ConflictingCombos(BLM_Aetherial_Manipulation)]
-    [CustomComboInfo("Aetherial Manipulation Movement option", "Retargets Aetherial Manipulation to UI/Field Mouseover", Job.BLM)]
-    [Retargeted(BLM.AetherialManipulation)]
-    BLM_Retargetting_Aetherial_Manipulation = 2066,
-
-    #endregion
-
     #region Single Target - Advanced
 
     [AutoAction(false, false)]
@@ -1111,7 +1102,7 @@ public enum Preset
     BLM_ST_UseScathe = 2116,
 
     [ParentCombo(BLM_ST_AdvancedMode)]
-    [CustomComboInfo("Manaward Option", "Adds Manaward to the rotation.", Job.BLM)]
+    [CustomComboInfo("Manaward Option", "Adds Manaward to the rotation when below HP Treshold or when raidwide is casting.", Job.BLM)]
     BLM_ST_Manaward = 2199,
 
     #endregion
@@ -1164,6 +1155,15 @@ public enum Preset
     [ParentCombo(BLM_AoE_AdvancedMode)]
     [CustomComboInfo("Blizzard IV on 2 Targets Option", "Substitutes Freeze for Blizzard 4 whenever it would hit 2 targets.", Job.BLM)]
     BLM_AoE_Blizzard4Sub = 2211,
+
+    #endregion
+    
+    #region Movement
+
+    [ConflictingCombos(BLM_Aetherial_Manipulation)]
+    [CustomComboInfo("Aetherial Manipulation Movement option", "Retargets Aetherial Manipulation to UI/Field Mouseover", Job.BLM)]
+    [Retargeted(BLM.AetherialManipulation)]
+    BLM_Retargetting_Aetherial_Manipulation = 2066,
 
     #endregion
 

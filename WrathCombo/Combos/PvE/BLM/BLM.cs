@@ -27,9 +27,9 @@ internal partial class BLM : Caster
 
             if (CanWeave())
             {
-                if (ActionReady(Manaward) && PlayerHealthPercentageHp() < 40)
+                if (ActionReady(Manaward) && (PlayerHealthPercentageHp() < 40 || RaidWideCasting()))
                     return Manaward;
-                
+
                 if (ActionReady(Amplifier) && !HasMaxPolyglotStacks)
                     return Amplifier;
 
@@ -220,11 +220,11 @@ internal partial class BLM : Caster
 
             if (CanWeave())
             {
-
                 if (IsEnabled(Preset.BLM_ST_Manaward) &&
-                    ActionReady(Manaward) && PlayerHealthPercentageHp() < BLM_ST_Manaward_Threshold)
+                    ActionReady(Manaward) &&
+                    (PlayerHealthPercentageHp() < BLM_ST_Manaward_Threshold) || RaidWideCasting())
                     return Manaward;
-                
+
                 if (IsEnabled(Preset.BLM_ST_Amplifier) &&
                     ActionReady(Amplifier) && !HasMaxPolyglotStacks)
                     return Amplifier;
@@ -789,7 +789,7 @@ internal partial class BLM : Caster
             };
         }
     }
-    
+
     internal class BLM_FlareParadox : CustomCombo
     {
         protected internal override Preset Preset => Preset.BLM_FlareParadox;
