@@ -75,7 +75,7 @@ internal unsafe static class AutoRotationController
 
     private static bool _ninjaLockedAoE;
 
-    static bool CombatBypass => (cfg.BypassQuest && DPSTargeting.BaseSelection.Any(x => IsQuestMob(x))) || (cfg.BypassFATE && InFATE());
+    static bool CombatBypass =>  DPSTargeting.BaseSelection.Any(x => (cfg.BypassQuest && IsQuestMob(x)) || (cfg.BypassFATE && x.Struct()->FateId != 0 && InFATE()));
     static bool NotInCombat => !GetPartyMembers().Any(x => x.BattleChara is not null && x.BattleChara.Struct()->InCombat) || PartyEngageDuration().TotalSeconds < cfg.CombatDelay;
 
     private static bool ShouldSkipAutorotation()
@@ -638,7 +638,7 @@ internal unsafe static class AutoRotationController
                 : ActionManager.CanUseActionOnTarget(outAct, Player.GameObject);
 
             var blockedSelfBuffs = GetCooldown(outAct).CooldownTotal >= 5;
-            
+
             if (cfg.InCombatOnly && NotInCombat && !CombatBypass && !(canUseSelf && cfg.BypassBuffs && !blockedSelfBuffs))
                 return false;
 
