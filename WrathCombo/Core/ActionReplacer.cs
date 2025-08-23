@@ -101,7 +101,7 @@ internal sealed class ActionReplacer : IDisposable
                 return OriginalHook(actionID);
 
             //This is for the low level Archer quest where you have to use Heavy Shot on an action. Best to just not run any combos here so things can run as planned.
-            if (Svc.Objects.Any(x => x.DataId == 2000926 && x.IsTargetable)) 
+            if (Svc.Objects.Any(x => x.DataId is >= 2000925 and <= 2000931 && x.IsTargetable)) 
                 return OriginalHook(actionID);
             // Only refresh every so often
             if (!EzThrottler.Throttle("Actions" + actionID,
