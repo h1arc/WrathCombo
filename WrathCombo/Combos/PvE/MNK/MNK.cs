@@ -39,8 +39,8 @@ internal partial class MNK : Melee
             if (Variant.CanRampart())
                 return Variant.Rampart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             // OGCDs
             if (CanWeave())
@@ -149,8 +149,8 @@ internal partial class MNK : Melee
             if (Variant.CanRampart())
                 return Variant.Rampart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             // OGCDs
             if (CanWeave() && M6SReady)
@@ -270,8 +270,8 @@ internal partial class MNK : Melee
             if (Variant.CanRampart())
                 return Variant.Rampart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             // OGCD's
             if (CanWeave())
@@ -381,8 +381,8 @@ internal partial class MNK : Melee
             if (Variant.CanRampart())
                 return Variant.Rampart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             // OGCD's 
             if (CanWeave() && M6SReady)

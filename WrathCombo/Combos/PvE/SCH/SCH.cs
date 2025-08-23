@@ -30,8 +30,8 @@ internal partial class SCH : Healer
             if (Variant.CanSpiritDart())
                 return Variant.SpiritDart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
             #endregion
 
             #region Dissolve Union
@@ -90,8 +90,8 @@ internal partial class SCH : Healer
             if (Variant.CanSpiritDart())
                 return Variant.SpiritDart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
             #endregion
 
             #region Dissolve Union
@@ -163,8 +163,8 @@ internal partial class SCH : Healer
             if (Variant.CanSpiritDart())
                 return Variant.SpiritDart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
             #endregion
 
             #region Healing Helpers
@@ -239,8 +239,8 @@ internal partial class SCH : Healer
             if (Variant.CanSpiritDart())
                 return Variant.SpiritDart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
             #endregion
 
             #region Healing Helpers

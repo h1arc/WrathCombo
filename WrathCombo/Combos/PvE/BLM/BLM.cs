@@ -22,8 +22,8 @@ internal partial class BLM : Caster
             if (Variant.CanRampart())
                 return Variant.Rampart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             if (CanWeave())
             {
@@ -215,8 +215,8 @@ internal partial class BLM : Caster
             if (Variant.CanRampart())
                 return Variant.Rampart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             if (CanWeave())
             {
@@ -425,8 +425,8 @@ internal partial class BLM : Caster
             if (Variant.CanRampart())
                 return Variant.Rampart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             if (CanWeave())
             {
@@ -520,8 +520,8 @@ internal partial class BLM : Caster
             if (Variant.CanRampart())
                 return Variant.Rampart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             if (CanWeave())
             {

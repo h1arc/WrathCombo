@@ -34,8 +34,8 @@ internal partial class WHM : Healer
             if (!actionFound)
                 return actionID;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             if (!InCombat()) return actionID;
 
@@ -112,8 +112,8 @@ internal partial class WHM : Healer
             if (actionID is not (Holy or Holy3))
                 return actionID;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             #region Weaves
 
@@ -199,8 +199,8 @@ internal partial class WHM : Healer
 
             #endregion
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             if (!InCombat()) return actionID;
 
@@ -297,8 +297,8 @@ internal partial class WHM : Healer
             if (actionID is not (Holy or Holy3))
                 return actionID;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
 
             #region Swiftcast Opener

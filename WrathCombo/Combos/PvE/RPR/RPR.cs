@@ -49,8 +49,8 @@ internal partial class RPR : Melee
             if (Variant.CanRampart())
                 return Variant.Rampart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             //All Weaves
             if (CanWeave())
@@ -223,8 +223,8 @@ internal partial class RPR : Melee
             if (Variant.CanRampart())
                 return Variant.Rampart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             //All Weaves
             if (CanWeave())
@@ -427,8 +427,8 @@ internal partial class RPR : Melee
             if (Variant.CanRampart())
                 return Variant.Rampart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             if (CanWeave())
             {
@@ -531,8 +531,8 @@ internal partial class RPR : Melee
             if (Variant.CanRampart())
                 return Variant.Rampart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             if (CanWeave())
             {

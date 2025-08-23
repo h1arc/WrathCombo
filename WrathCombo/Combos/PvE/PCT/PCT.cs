@@ -40,9 +40,9 @@ internal partial class PCT : Caster
             // Variant Rampart
             if (Variant.CanRampart(WeaveTypes.Weave))
                 return Variant.Rampart;
-
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+ 
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
             #endregion
 
             #region OGCD
@@ -241,8 +241,8 @@ internal partial class PCT : Caster
             if (Variant.CanRampart(WeaveTypes.Weave))
                 return Variant.Rampart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
             #endregion
 
             #region OGCD
@@ -412,9 +412,9 @@ internal partial class PCT : Caster
             // Variant Rampart
             if (Variant.CanRampart(WeaveTypes.Weave))
                 return Variant.Rampart;
-
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
             #endregion
 
             #region OGCD
@@ -608,8 +608,8 @@ internal partial class PCT : Caster
             if (Variant.CanRampart(WeaveTypes.Weave))
                 return Variant.Rampart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
             #endregion
 
             #region OGCD

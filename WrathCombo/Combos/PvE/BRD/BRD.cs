@@ -23,8 +23,8 @@ internal partial class BRD : PhysicalRanged
             if (Variant.CanRampart(WeaveTypes.Weave))
                 return Variant.Rampart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
             #endregion
 
             #region Songs
@@ -182,8 +182,8 @@ internal partial class BRD : PhysicalRanged
             if (Variant.CanRampart(WeaveTypes.Weave))
                 return Variant.Rampart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
             #endregion
 
             #region Songs
@@ -360,9 +360,9 @@ internal partial class BRD : PhysicalRanged
 
             if (Variant.CanRampart(WeaveTypes.Weave))
                 return Variant.Rampart;
-
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+    
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
             #endregion
 
             #region Songs
@@ -564,9 +564,9 @@ internal partial class BRD : PhysicalRanged
 
             if (Variant.CanRampart(WeaveTypes.Weave))
                 return Variant.Rampart;
-
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+ 
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
             #endregion
 
             #region Songs
