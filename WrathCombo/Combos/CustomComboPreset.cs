@@ -4381,6 +4381,10 @@ public enum Preset
     [ParentCombo(PCT_ST_AdvancedMode)]
     [CustomComboInfo("Addle Raidwide Option", "Adds Addle when Raidwide is detected casting.", Job.PCT)]
     PCT_ST_AdvancedMode_Addle = 20070,
+    
+    [ParentCombo(PCT_ST_AdvancedMode)]
+    [CustomComboInfo("Tempura Raidwide Option", "Adds Tempura Coat when Raidwide is detected casting. \nSpreads it with Tempura Grassa if enough party members are in range. More than 75%", Job.PCT)]
+    PCT_ST_AdvancedMode_Tempura = 20071,
 
     #endregion
 
@@ -4526,7 +4530,7 @@ public enum Preset
 
     #endregion
     
-    // Last used 20070
+    // Last used 20071
 
     #endregion
 
@@ -5342,8 +5346,12 @@ public enum Preset
     [ParentCombo(RDM_ST_DPS)]
     [CustomComboInfo("Addle Raidwide Option", "Adds Addle when Raidwide is detected casting.", Job.RDM)]
     RDM_ST_Addle = 13024,
+    
+    [ParentCombo(RDM_ST_DPS)]
+    [CustomComboInfo("Magick Barrier Raidwide Option", "Adds Magick Barrier when Raidwide is detected casting.", Job.RDM)]
+    RDM_ST_MagickBarrier = 13025,
 
-    //Last Used 13024
+    //Last Used 13025
     #endregion
 
     #region AoE DPS

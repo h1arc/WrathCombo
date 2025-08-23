@@ -279,6 +279,13 @@ internal partial class RDM : Caster
                     CanApplyStatus(CurrentTarget, RoleActions.Caster.Debuffs.Addle) &&
                     RaidWideCasting())
                     return Role.Addle;
+                
+                if (IsEnabled(Preset.RDM_ST_MagickBarrier) && 
+                    NumberOfAlliesInRange(MagickBarrier) >= GetPartyMembers().Count * .75 &&
+                    !HasStatusEffect(Buffs.MagickBarrier, anyOwner:true) &&
+                    !JustUsed(Role.Addle, 6) &&
+                    ActionReady(MagickBarrier) && RaidWideCasting())
+                    return MagickBarrier;
             }
             #endregion
             
