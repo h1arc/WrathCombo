@@ -31,10 +31,6 @@ internal partial class RDM : Caster
             #region OGCDs
             if (CanWeave())
             {
-                //Gap Closer
-                if (ActionReady(Corpsacorps) && (HasEnoughManaToStart || CanMagickedSwordplay) && !InMeleeRange() && TimeStoodStill >= TimeSpan.FromSeconds(3)) 
-                    return Corpsacorps;
-                 
                 if (ActionReady(Manafication) && (EmboldenCD <= 5 || HasEmbolden) && !CanPrefulgence) 
                     return Manafication;
                 
@@ -132,10 +128,6 @@ internal partial class RDM : Caster
             #region OGCDs
             if (CanWeave())
             {
-                //Gap Closer Option
-                if (ActionReady(Corpsacorps) && (HasEnoughManaToStart || CanMagickedSwordplay) && !InMeleeRange() && TimeStoodStill >= TimeSpan.FromSeconds(3)) 
-                    return Corpsacorps;
-                 
                 if (ActionReady(Manafication) && (EmboldenCD <= 5 || HasEmbolden) && !CanPrefulgence) 
                     return Manafication;
                 
