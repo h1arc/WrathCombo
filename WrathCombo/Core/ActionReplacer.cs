@@ -9,6 +9,7 @@ using ECommons.GameHelpers;
 using ECommons.Throttlers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
+using Lumina.Excel.Sheets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -100,8 +101,8 @@ internal sealed class ActionReplacer : IDisposable
             if (Svc.ClientState.LocalPlayer == null)
                 return OriginalHook(actionID);
 
-            //This is for the low level Archer quest where you have to use Heavy Shot on an action. Best to just not run any combos here so things can run as planned.
-            if (Svc.Objects.Any(x => x.DataId is >= 2000925 and <= 2000931 && x.IsTargetable)) 
+            //This is for the low level Archer quest(s) where you have to use Heavy Shot on an action. Best to just not run any combos here so things can run as planned.
+            if (Svc.Objects.Any(x => x.Name.TextValue.Equals(Svc.Data.GetExcelSheet<EObjName>()[2000925].Singular.ToString(), StringComparison.InvariantCultureIgnoreCase) && x.IsTargetable)) 
                 return OriginalHook(actionID);
             // Only refresh every so often
             if (!EzThrottler.Throttle("Actions" + actionID,
