@@ -3825,14 +3825,6 @@ public enum Preset
 
     #endregion
     
-    #region Movement
-
-    [CustomComboInfo("Thunderclap Movement Option", "Retargets Thunderclap to UI Mouseover", Job.MNK)]
-    [Retargeted(MNK.Thunderclap)]
-    MNK_Retarget_Thunderclap = 9043,
-    
-    #endregion
-
     #region Monk Advanced ST
 
     [AutoAction(false, false)]
@@ -3977,6 +3969,14 @@ public enum Preset
     [CustomComboInfo("Beast Chakra Handlers", "Merge single target GCDs which share the same beast chakra", Job.MNK)]
     MNK_ST_BeastChakras = 9019,
     
+    #endregion
+
+    #region Movement
+
+    [CustomComboInfo("Thunderclap Movement Option", "Retargets Thunderclap to UI Mouseover", Job.MNK)]
+    [Retargeted(MNK.Thunderclap)]
+    MNK_Retarget_Thunderclap = 9043,
+
     #endregion
     
     #region Misc
@@ -7102,14 +7102,6 @@ public enum Preset
 
     #endregion
     
-    #region Movement
-    
-    [CustomComboInfo("Slither Movement option", "Retargets Slither to UI Mouseover", Job.VPR)]
-    [Retargeted(VPR.Slither)]
-    VPR_Retarget_Slither = 30211,
-    
-    #endregion
-
     #region Advanced ST Viper
 
     [AutoAction(false, false)]
@@ -7247,6 +7239,14 @@ public enum Preset
     [CustomComboInfo("Basic Combo", "Replace Reaving Fangs with its combo chain.", Job.VPR)]
     [BasicCombo]
     VPR_ST_BasicCombo = 30015,
+
+    #endregion
+
+    #region Movement
+
+    [CustomComboInfo("Slither Movement option", "Retargets Slither to UI Mouseover", Job.VPR)]
+    [Retargeted(VPR.Slither)]
+    VPR_Retarget_Slither = 30211,
 
     #endregion
 

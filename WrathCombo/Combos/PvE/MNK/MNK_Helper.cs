@@ -105,7 +105,7 @@ internal partial class MNK
     internal static bool UsePerfectBalanceST()
     {
         if (ActionReady(PerfectBalance) && !HasStatusEffect(Buffs.PerfectBalance) &&
-            !HasStatusEffect(Buffs.FormlessFist) && IsOriginal(MasterfulBlitz) && 
+            !HasStatusEffect(Buffs.FormlessFist) && IsOriginal(MasterfulBlitz) &&
             HasBattleTarget())
         {
             // Odd window
