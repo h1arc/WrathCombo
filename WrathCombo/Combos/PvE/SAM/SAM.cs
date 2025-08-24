@@ -882,7 +882,7 @@ internal partial class SAM : Melee
             if (IsEnabled(Preset.SAM_Shinten_Zanshin) &&
                 HasStatusEffect(Buffs.ZanshinReady))
                 return Zanshin;
-            
+
             return actionID;
         }
     }
