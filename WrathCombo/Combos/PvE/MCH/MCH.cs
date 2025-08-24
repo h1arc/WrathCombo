@@ -23,11 +23,7 @@ internal partial class MCH : PhysicalRanged
                  LevelChecked(AirAnchor) && IsOffCooldown(AirAnchor) ||
                  ActionReady(Drill)))
                 return Reassemble;
-
-            // Interrupt
-            if (Role.CanHeadGraze(Preset.MCH_ST_SimpleMode, WeaveTypes.DelayWeave))
-                return Role.HeadGraze;
-
+            
             if (Variant.CanCure(Preset.MCH_Variant_Cure, MCH_VariantCure))
                 return Variant.Cure;
 
@@ -97,12 +93,15 @@ internal partial class MCH : PhysicalRanged
                             return OriginalHook(Ricochet);
                     }
 
+                    // Interrupt
+                    if (Role.CanHeadGraze(Preset.MCH_ST_SimpleMode, WeaveTypes.DelayWeave))
+                        return Role.HeadGraze;
+
                     // Healing
                     if (Role.CanSecondWind(5))
                         return Role.SecondWind;
                 }
-
-
+                
                 // Gauss Round and Ricochet during HC
                 if (JustUsed(OriginalHook(Heatblast), 1f) && HasNotWeaved)
                 {
@@ -157,10 +156,7 @@ internal partial class MCH : PhysicalRanged
 
             if (HasStatusEffect(Buffs.Flamethrower) || JustUsed(Flamethrower, GCD))
                 return All.SavageBlade;
-
-            // Interrupt
-            if (Role.CanHeadGraze(Preset.MCH_AoE_SimpleMode, WeaveTypes.DelayWeave))
-                return Role.HeadGraze;
+            
 
             if (Variant.CanCure(Preset.MCH_Variant_Cure, MCH_VariantCure))
                 return Variant.Cure;
@@ -202,6 +198,10 @@ internal partial class MCH : PhysicalRanged
                          GetCooldownRemainingTime(AirAnchor) < 1 && LevelChecked(AirAnchor) ||
                          LevelChecked(Scattergun)))
                         return Reassemble;
+
+                    // Interrupt
+                    if (Role.CanHeadGraze(Preset.MCH_AoE_SimpleMode, WeaveTypes.DelayWeave))
+                        return Role.HeadGraze;
 
                     if (Role.CanSecondWind(25))
                         return Role.SecondWind;
@@ -285,11 +285,7 @@ internal partial class MCH : PhysicalRanged
                  LevelChecked(AirAnchor) && IsOffCooldown(AirAnchor) && MCH_ST_Reassembled[2] ||
                  ActionReady(Drill) && MCH_ST_Reassembled[3]))
                 return Reassemble;
-
-            // Interrupt
-            if (Role.CanHeadGraze(Preset.MCH_ST_Adv_Interrupt, WeaveTypes.DelayWeave))
-                return Role.HeadGraze;
-
+            
             if (Variant.CanCure(Preset.MCH_Variant_Cure, MCH_VariantCure))
                 return Variant.Cure;
 
@@ -373,13 +369,17 @@ internal partial class MCH : PhysicalRanged
                             return OriginalHook(Ricochet);
                     }
 
+                    // Interrupt
+                    if (Role.CanHeadGraze(Preset.MCH_ST_Adv_Interrupt, WeaveTypes.DelayWeave))
+                        return Role.HeadGraze;
+                    
                     if (IsEnabled(Preset.MCH_ST_Dismantle) &&
                         ActionReady(Dismantle) &&
                         !HasStatusEffect(Debuffs.Dismantled, CurrentTarget, true) &&
                         CanApplyStatus(CurrentTarget, Debuffs.Dismantled) &&
                         RaidWideCasting())
                         return Dismantle;
-
+                    
                     // Healing
                     if (IsEnabled(Preset.MCH_ST_Adv_SecondWind) &&
                         Role.CanSecondWind(MCH_ST_SecondWindHPThreshold))
@@ -471,11 +471,7 @@ internal partial class MCH : PhysicalRanged
 
             if (HasStatusEffect(Buffs.Flamethrower) || JustUsed(Flamethrower, GCD))
                 return All.SavageBlade;
-
-            // Interrupt
-            if (Role.CanHeadGraze(Preset.MCH_AoE_Adv_Interrupt, WeaveTypes.DelayWeave))
-                return Role.HeadGraze;
-
+            
             if (Variant.CanCure(Preset.MCH_Variant_Cure, MCH_VariantCure))
                 return Variant.Cure;
 
@@ -536,6 +532,10 @@ internal partial class MCH : PhysicalRanged
                             !JustUsed(OriginalHook(Ricochet), 2.5f))
                             return OriginalHook(Ricochet);
                     }
+
+                    // Interrupt
+                    if (Role.CanHeadGraze(Preset.MCH_AoE_Adv_Interrupt, WeaveTypes.DelayWeave))
+                        return Role.HeadGraze;
 
                     if (IsEnabled(Preset.MCH_AoE_Adv_SecondWind) &&
                         Role.CanSecondWind(MCH_AoE_SecondWindHPThreshold))
