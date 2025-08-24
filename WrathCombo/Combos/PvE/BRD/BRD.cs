@@ -17,12 +17,6 @@ internal partial class BRD : PhysicalRanged
                 return actionID;
 
             #region Special Content
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            if (Variant.CanRampart(WeaveTypes.Weave))
-                return Variant.Rampart;
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
             #endregion
@@ -176,12 +170,6 @@ internal partial class BRD : PhysicalRanged
                 return actionID;
 
             #region Special Content
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            if (Variant.CanRampart(WeaveTypes.Weave))
-                return Variant.Rampart;
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
             #endregion
@@ -355,12 +343,6 @@ internal partial class BRD : PhysicalRanged
             #endregion
 
             #region Special Content
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            if (Variant.CanRampart(WeaveTypes.Weave))
-                return Variant.Rampart;
-    
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
             #endregion
@@ -559,12 +541,6 @@ internal partial class BRD : PhysicalRanged
             #endregion
 
             #region Special Content
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            if (Variant.CanRampart(WeaveTypes.Weave))
-                return Variant.Rampart;
- 
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
             #endregion

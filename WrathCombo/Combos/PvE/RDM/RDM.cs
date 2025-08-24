@@ -19,13 +19,6 @@ internal partial class RDM : Caster
             #region Special Content
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
-
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            if (Variant.CanRampart())
-                return Variant.Rampart;
-
             #endregion
 
             #region OGCDs
@@ -121,12 +114,6 @@ internal partial class RDM : Caster
             #region Special Content
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
-
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            if (Variant.CanRampart())
-                return Variant.Rampart;
             #endregion
 
             #region OGCDs
@@ -228,12 +215,6 @@ internal partial class RDM : Caster
             #region Special Content
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
-
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            if (Variant.CanRampart())
-                return Variant.Rampart;
             #endregion
 
             #region OGCDs
@@ -339,12 +320,6 @@ internal partial class RDM : Caster
             #region Special Content
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
-
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            if (Variant.CanRampart())
-                return Variant.Rampart;
             #endregion
 
             #region OGCDs

@@ -230,18 +230,10 @@ internal partial class DNC : PhysicalRanged
                     ? Ending
                     : ClosedPosition.Retarget(Cascade, DancePartnerResolver);
 
-            // Variant Cure
-            if (Variant.CanCure())
-                return Variant.Cure;
-
             // ST Interrupt
             if (Role.CanHeadGraze(Preset.DNC_ST_Adv_Interrupt, WeaveTypes.Weave) &&
                 !HasStatusEffect(Buffs.TechnicalFinish))
                 return Role.HeadGraze;
-
-            // Variant Rampart
-            if (Variant.CanRampart(WeaveTypes.Weave))
-                return Variant.Rampart;
 
             if (CanWeave() && !WasLastWeaponskill(TechnicalFinish4))
             {
@@ -559,18 +551,10 @@ internal partial class DNC : PhysicalRanged
                     ? Ending
                     : ClosedPosition.Retarget(Cascade, DancePartnerResolver);
 
-            // Variant Cure
-            if (Variant.CanCure())
-                return Variant.Cure;
-
             // ST Interrupt
             if (Role.CanHeadGraze(Preset.DNC_ST_SimpleMode, WeaveTypes.Weave) &&
                 !HasStatusEffect(Buffs.TechnicalFinish))
                 return Role.HeadGraze;
-
-            // Variant Rampart
-            if (Variant.CanRampart(WeaveTypes.Weave))
-                return Variant.Rampart;
 
             if (CanWeave() && !WasLastWeaponskill(TechnicalFinish4))
             {
@@ -810,16 +794,10 @@ internal partial class DNC : PhysicalRanged
                 !HasStatusEffect(Buffs.FinishingMoveReady))
                 return Flourish;
 
-            if (Variant.CanCure())
-                return Variant.Cure;
-
             // AoE Interrupt
             if (Role.CanHeadGraze(Preset.DNC_AoE_Adv_Interrupt, WeaveTypes.Weave) &&
                 !HasStatusEffect(Buffs.TechnicalFinish))
                 return Role.HeadGraze;
-
-            if (Variant.CanRampart(WeaveTypes.Weave))
-                return Variant.Rampart;
 
             if (CanWeave() && !WasLastWeaponskill(TechnicalFinish4))
             {
@@ -1089,16 +1067,10 @@ internal partial class DNC : PhysicalRanged
                 !HasStatusEffect(Buffs.FinishingMoveReady))
                 return Flourish;
 
-            if (Variant.CanCure())
-                return Variant.Cure;
-
             // AoE Interrupt
             if (Role.CanHeadGraze(Preset.DNC_AoE_SimpleMode, WeaveTypes.Weave) &&
                 !HasStatusEffect(Buffs.TechnicalFinish))
                 return Role.HeadGraze;
-
-            if (Variant.CanRampart(WeaveTypes.Weave))
-                return Variant.Rampart;
 
             if (CanWeave() && !WasLastWeaponskill(TechnicalFinish4))
             {

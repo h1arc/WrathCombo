@@ -24,12 +24,6 @@ internal partial class SCH : Healer
                 return SummonEos;
 
             #region Special Content
-            if (Variant.CanRampart())
-                return Variant.Rampart;
-
-            if (Variant.CanSpiritDart())
-                return Variant.SpiritDart;
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
             #endregion
@@ -84,12 +78,6 @@ internal partial class SCH : Healer
                 return SummonEos;
 
             #region Special Content
-            if (Variant.CanRampart())
-                return Variant.Rampart;
-
-            if (Variant.CanSpiritDart())
-                return Variant.SpiritDart;
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
             #endregion
@@ -157,12 +145,6 @@ internal partial class SCH : Healer
                 return actionID;
 
             #region Special Content
-            if (Variant.CanRampart())
-                return Variant.Rampart;
-
-            if (Variant.CanSpiritDart())
-                return Variant.SpiritDart;
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
             #endregion
@@ -233,12 +215,6 @@ internal partial class SCH : Healer
                 return SummonEos;
 
             #region Special Content
-            if (Variant.CanRampart())
-                return Variant.Rampart;
-
-            if (Variant.CanSpiritDart())
-                return Variant.SpiritDart;
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
             #endregion

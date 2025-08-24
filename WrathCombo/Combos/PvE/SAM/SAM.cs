@@ -99,12 +99,6 @@ internal partial class SAM : Melee
                 !InCombat() && HasBattleTarget())
                 return MeikyoShisui;
 
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            if (Variant.CanRampart())
-                return Variant.Rampart;
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
@@ -271,12 +265,6 @@ internal partial class SAM : Melee
                 !HasStatusEffect(Buffs.MeikyoShisui) &&
                 !InCombat() && HasBattleTarget())
                 return MeikyoShisui;
-
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            if (Variant.CanRampart())
-                return Variant.Rampart;
 
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
@@ -504,12 +492,6 @@ internal partial class SAM : Melee
             if (actionID is not (Fuga or Fuko))
                 return actionID;
 
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            if (Variant.CanRampart())
-                return Variant.Rampart;
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
@@ -612,12 +594,6 @@ internal partial class SAM : Melee
                 return actionID;
 
             float kenkiOvercapAoE = SAM_AoE_KenkiOvercapAmount;
-
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            if (Variant.CanRampart())
-                return Variant.Rampart;
 
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;

@@ -50,12 +50,6 @@ internal partial class MCH : PhysicalRanged
             if (Role.CanHeadGraze(Preset.MCH_ST_SimpleMode, WeaveTypes.DelayWeave))
                 return Role.HeadGraze;
 
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            if (Variant.CanRampart())
-                return Variant.Rampart;
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
@@ -196,12 +190,6 @@ internal partial class MCH : PhysicalRanged
             // Interrupt
             if (Role.CanHeadGraze(Preset.MCH_ST_Adv_Interrupt, WeaveTypes.DelayWeave))
                 return Role.HeadGraze;
-
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            if (Variant.CanRampart())
-                return Variant.Rampart;
 
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
@@ -356,12 +344,6 @@ internal partial class MCH : PhysicalRanged
             if (Role.CanHeadGraze(Preset.MCH_AoE_SimpleMode, WeaveTypes.DelayWeave))
                 return Role.HeadGraze;
 
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            if (Variant.CanRampart())
-                return Variant.Rampart;
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
@@ -491,12 +473,6 @@ internal partial class MCH : PhysicalRanged
             // Interrupt
             if (Role.CanHeadGraze(Preset.MCH_AoE_Adv_Interrupt, WeaveTypes.DelayWeave))
                 return Role.HeadGraze;
-
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            if (Variant.CanRampart())
-                return Variant.Rampart;
 
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;

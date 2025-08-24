@@ -16,12 +16,6 @@ internal partial class BLM : Caster
             if (actionID is not Fire)
                 return actionID;
 
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            if (Variant.CanRampart())
-                return Variant.Rampart;
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
@@ -208,12 +202,6 @@ internal partial class BLM : Caster
             if (IsEnabled(Preset.BLM_ST_Opener) &&
                 Opener().FullOpener(ref actionID))
                 return actionID;
-
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            if (Variant.CanRampart())
-                return Variant.Rampart;
 
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
@@ -419,12 +407,6 @@ internal partial class BLM : Caster
             if (actionID is not (Blizzard2 or HighBlizzard2))
                 return actionID;
 
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            if (Variant.CanRampart())
-                return Variant.Rampart;
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
@@ -513,12 +495,6 @@ internal partial class BLM : Caster
         {
             if (actionID is not (Blizzard2 or HighBlizzard2))
                 return actionID;
-
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            if (Variant.CanRampart())
-                return Variant.Rampart;
 
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;

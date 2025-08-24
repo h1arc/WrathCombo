@@ -9,7 +9,7 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class NIN : Melee
 {
-    #region Simple 
+    #region Simple
     internal class NIN_ST_SimpleMode : CustomCombo
     {
         protected internal MudraCasting MudraState = new();
@@ -38,12 +38,6 @@ internal partial class NIN : Melee
             #region Special Content
             if (ContentSpecificActions.TryGet(out var contentAction) && !MudraPhase)
                 return contentAction;
-            
-            if (Variant.CanRampart() && !MudraPhase)
-                return Variant.Rampart;
-
-            if (Variant.CanCure() && !MudraPhase)
-                return Variant.Cure;
             #endregion
 
             #region OGCDS
@@ -165,12 +159,6 @@ internal partial class NIN : Melee
             #region Special Content
             if (ContentSpecificActions.TryGet(out var contentAction) && !MudraPhase)
                 return contentAction;
-            
-            if (Variant.CanRampart() && !MudraPhase)
-                return Variant.Rampart;
-
-            if (Variant.CanCure() && !MudraPhase)
-                return Variant.Cure;
             #endregion
 
             #region OGCDS
@@ -294,12 +282,6 @@ internal partial class NIN : Melee
             #region Special Content
             if (ContentSpecificActions.TryGet(out var contentAction) && !MudraPhase)
                 return contentAction;
-            
-            if (Variant.CanRampart() && !MudraPhase)
-                return Variant.Rampart;
-
-            if (Variant.CanCure() && !MudraPhase)
-                return Variant.Cure;
             #endregion
 
             #region OGCDS
@@ -447,12 +429,6 @@ internal partial class NIN : Melee
             #region Special Content
             if (ContentSpecificActions.TryGet(out var contentAction) && !MudraPhase)
                 return contentAction;
-            
-            if (Variant.CanRampart() && !MudraPhase)
-                return Variant.Rampart;
-
-            if (Variant.CanCure() && !MudraPhase)
-                return Variant.Cure;
             #endregion
 
             #region OGCDS
@@ -610,7 +586,7 @@ internal partial class NIN : Melee
                 return actionID;
 
             if (NIN_HideMug_Toggle && HasStatusEffect(Buffs.Hidden) &&
-                (LevelChecked(Suiton) || !NIN_HideMug_ToggleLevelCheck)) //Check level to get ShadowWalker buff. 
+                (LevelChecked(Suiton) || !NIN_HideMug_ToggleLevelCheck)) //Check level to get ShadowWalker buff.
                 StatusManager.ExecuteStatusOff(Buffs.Hidden);
 
             if (NIN_HideMug_Trick &&

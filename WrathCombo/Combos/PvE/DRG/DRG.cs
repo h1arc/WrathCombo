@@ -70,13 +70,6 @@ internal partial class DRG : Melee
             if (actionID is not TrueThrust)
                 return actionID;
 
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            if (Variant.CanRampart() &&
-                CanDRGWeave())
-                return Variant.Rampart;
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
@@ -223,13 +216,6 @@ internal partial class DRG : Melee
             if (IsEnabled(Preset.DRG_ST_Opener) &&
                 Opener().FullOpener(ref actionID))
                 return actionID;
-
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            if (Variant.CanRampart() &&
-                CanDRGWeave())
-                return Variant.Rampart;
 
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
@@ -419,13 +405,6 @@ internal partial class DRG : Melee
             if (actionID is not DoomSpike)
                 return actionID;
 
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            if (Variant.CanRampart() &&
-                CanDRGWeave())
-                return Variant.Rampart;
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
@@ -554,13 +533,6 @@ internal partial class DRG : Melee
         {
             if (actionID is not DoomSpike)
                 return actionID;
-
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            if (Variant.CanRampart() &&
-                CanDRGWeave())
-                return Variant.Rampart;
 
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;

@@ -175,12 +175,6 @@ internal partial class SMN : Caster
             #endregion
 
             #region Special Content
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            if (Variant.CanRampart(WeaveTypes.Weave))
-                return Variant.Rampart;
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
             #endregion
@@ -351,12 +345,6 @@ internal partial class SMN : Caster
             #endregion
 
             #region Special Content
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            if (Variant.CanRampart(WeaveTypes.Weave))
-                return Variant.Rampart;
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
             #endregion
@@ -545,10 +533,6 @@ internal partial class SMN : Caster
             #endregion
 
             #region Special Content
-            if (Variant.CanCure())
-                return Variant.Cure;
-            if (Variant.CanRampart(WeaveTypes.Weave))
-                return Variant.Rampart;
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
             #endregion
@@ -758,12 +742,6 @@ internal partial class SMN : Caster
             #endregion
 
             #region Special Content
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            if (Variant.CanRampart(WeaveTypes.Weave))
-                return Variant.Rampart;
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
             #endregion

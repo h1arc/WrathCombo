@@ -1,78 +1,177 @@
 ﻿using ECommons.DalamudServices;
+using ECommons.ExcelServices;
+using ECommons.GameHelpers;
+using WrathCombo.Attributes;
+using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using static WrathCombo.Combos.PvE.RoleActions;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 
 
+
 namespace WrathCombo.Combos.PvE;
 
-#region Variant Actions and Functions
+// 1069 = The Sil'dihn Subterrane
+// 1137 = Mount Rokkon
+// 1176 = Aloalo Island
+
+
+
 // Static utility class for shared logic
 internal static partial class Variant
 {
-    public const uint
-        Ultimatum = 29730,
-        Raise = 29731,
-        Raise2 = 29734;
+    public static bool IsInVariantDungeon => Svc.ClientState.TerritoryType is (1069 or 1137 or 1176);
 
-    // 1069 = The Sil'dihn Subterrane
-    // 1137 = Mount Rokkon
-    // 1176 = Aloalo Island
-    public static uint Cure => Svc.ClientState.TerritoryType switch
+    public static bool TryGetVariantAction(ref uint actionID)
     {
-        1069 => 29729,
-        1137 or 1176 => 33862,
-        var _ => 0
-    };
+        if (!IsInVariantDungeon) return false;
 
-    public static uint SpiritDart => Svc.ClientState.TerritoryType switch
-    {
-        1069 => 29732,
-        1137 or 1176 => 33863,
-        var _ => 0
-    };
+        switch (RoleAttribute.GetRoleFromJob(Player.Job))
+        {
+            case JobRole.Tank:
+                if (IsEnabled(Preset.Variant_Tank))
+                {
+                    if (CheckCure(Preset.Variant_Tank_Cure, Config.Variant_Tank_Cure))
+                    {
+                        actionID = Cure;
+                        return true;
+                    }
+                    if (CheckUltimatum(Preset.Variant_Tank_Ultimatum))
+                    {
+                        actionID = Ultimatum;
+                        return true;
+                    }
+                    //if (CheckRaise(Preset.Variant_Tank_Raise))
+                    //{
+                    //    actionID = Raise;
+                    //    return true;
+                    //}
+                    if (CheckSpiritDart(Preset.Variant_Tank_SpiritDart))
+                    {
+                        actionID = SpiritDart;
+                        return true;
+                    }
+                }
+                break;
 
-    public static uint Rampart => Svc.ClientState.TerritoryType switch
-    {
-        1069 => 29733,
-        1137 or 1176 => 33864,
-        var _ => 0
-    };
+            case JobRole.Healer:
+                if (IsEnabled(Preset.Variant_Healer))
+                {
+                    if (CheckUltimatum(Preset.Variant_Healer_Ultimatum))
+                    {
+                        actionID = Ultimatum;
+                        return true;
+                    }
+                    if (CheckSpiritDart(Preset.Variant_Healer_SpiritDart))
+                    {
+                        actionID = SpiritDart;
+                        return true;
+                    }
+                    if (CheckRampart(Preset.Variant_Healer_Rampart))
+                    {
+                        actionID = Rampart;
+                        return true;
+                    }
+                }
+                break;
 
-    public static class Buffs
-    {
-        internal const ushort
-            EmnityUp = 3358,
-            VulnDown = 3360,
-            Rehabilitation = 3367,
-            DamageBarrier = 3405;
+            case JobRole.RangedDPS:
+                if (IsEnabled(Preset.Variant_PhysRanged))
+                {
+                    if (CheckCure(Preset.Variant_PhysRanged_Cure, Config.Variant_PhysRanged_Cure))
+                    {
+                        actionID = Cure;
+                        return true;
+                    }
+                    if (CheckUltimatum(Preset.Variant_PhysRanged_Ultimatum))
+                    {
+                        actionID = Ultimatum;
+                        return true;
+                    }
+                    //if (CheckRaise(Preset.Variant_PhysRanged_Raise))
+                    //{
+                    //    actionID = Raise;
+                    //    return true;
+                    //}
+                    if (CheckRampart(Preset.Variant_PhysRanged_Rampart))
+                    {
+                        actionID = Rampart;
+                        return true;
+                    }
+                }
+                break;
+
+            case JobRole.MeleeDPS:
+                if (IsEnabled(Preset.Variant_Melee))
+                {
+                    if (CheckCure(Preset.Variant_Melee_Cure, Config.Variant_Melee_Cure))
+                    {
+                        actionID = Cure;
+                        return true;
+                    }
+                    if (CheckUltimatum(Preset.Variant_Melee_Ultimatum))
+                    {
+                        actionID = Ultimatum;
+                        return true;
+                    }
+                    //if (CheckRaise(Preset.Variant_Melee_Raise))
+                    //{
+                    //    actionID = Raise;
+                    //    return true;
+                    //}
+                    if (CheckRampart(Preset.Variant_Melee_Rampart))
+                    {
+                        actionID = Rampart;
+                        return true;
+                    }
+                }
+                break;
+
+            case JobRole.MagicalDPS:
+                if (IsEnabled(Preset.Variant_Magic))
+                {
+                    if (CheckCure(Preset.Variant_Magic_Cure, Config.Variant_Magic_Cure))
+                    {
+                        actionID = Cure;
+                        return true;
+                    }
+                    if (CheckUltimatum(Preset.Variant_Magic_Ultimatum))
+                    {
+                        actionID = Ultimatum;
+                        return true;
+                    }
+                    //if (CheckRaise(Preset.Variant_Magic_Raise))
+                    //{
+                    //    actionID = Raise;
+                    //    return true;
+                    //}
+                    if (CheckRampart(Preset.Variant_Magic_Rampart))
+                    {
+                        actionID = Rampart;
+                        return true;
+                    }
+                }
+                break;
+        }
+
+        return false;
     }
 
-    public static class Debuffs
+    public static bool CanRaise()
     {
-        internal const ushort
-            SustainedDamage = 3359;
+        if (!IsInVariantDungeon) return false;
+        return RoleAttribute.GetRoleFromJob(Player.Job) switch
+        {
+            JobRole.Tank => IsEnabled(Preset.Variant_Tank) && CheckRaise(Preset.Variant_Tank_Raise),
+            JobRole.RangedDPS => IsEnabled(Preset.Variant_PhysRanged) && CheckRaise(Preset.Variant_PhysRanged_Raise),
+            JobRole.MeleeDPS => IsEnabled(Preset.Variant_Melee) && CheckRaise(Preset.Variant_Melee_Raise),
+            JobRole.MagicalDPS => IsEnabled(Preset.Variant_Magic) && CheckRaise(Preset.Variant_Magic_Raise),
+            _ => false
+        };
     }
 
-    private static bool CheckRampart(Preset preset, WeaveTypes weave = WeaveTypes.None) =>
-        IsEnabled(preset) && ActionReady(Rampart) &&
-        CheckWeave(weave);
 
-    private static bool CheckSpiritDart(Preset preset) =>
-        IsEnabled(preset) && ActionReady(SpiritDart) &&
-        HasBattleTarget() && GetStatusEffectRemainingTime(Debuffs.SustainedDamage, CurrentTarget) <= 3;
-
-    private static bool CheckCure(Preset preset, int healthpercent) =>
-        IsEnabled(preset) && ActionReady(Cure) &&
-        PlayerHealthPercentageHp() <= healthpercent;
-
-    private static bool CheckRaise(Preset preset) =>
-        IsEnabled(preset) && ActionReady(Raise)
-        && HasStatusEffect(Magic.Buffs.Swiftcast);
-
-    private static bool CheckUltimatum(Preset preset) =>
-        IsEnabled(preset) && ActionReady(Ultimatum)
-        && NumberOfEnemiesInRange(Ultimatum) > 0;
+    #region Variant Combos
 
     internal class Variant_Magic_Raise : CustomCombo
     {
@@ -83,8 +182,13 @@ internal static partial class Variant
             if (actionID is not Magic.Swiftcast)
                 return actionID;
 
+            // RDM and SMN handle their own.
+            if (Player.Job is not (Job.RDM or Job.SMN))
+                return actionID;
+
             if (CheckRaise(Preset.Variant_Magic_Raise) && HasStatusEffect(Magic.Buffs.Swiftcast))
             {
+                // To Do: Retargeting
                 return Raise;
             }
             else
@@ -93,5 +197,5 @@ internal static partial class Variant
             }
         }
     }
+    #endregion
 }
-#endregion

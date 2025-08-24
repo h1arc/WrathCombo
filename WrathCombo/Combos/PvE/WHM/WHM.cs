@@ -43,9 +43,6 @@ internal partial class WHM : Healer
 
             if (CanWeave())
             {
-                if (Variant.CanRampart())
-                    return Variant.Rampart;
-
                 if (ActionReady(PresenceOfMind) &&
                     ActionWatching.NumberOfGcdsUsed >= 3 &&
                     !HasStatusEffect(Buffs.SacredSight))
@@ -56,9 +53,6 @@ internal partial class WHM : Healer
 
                 if (Role.CanLucidDream(7500))
                     return Role.LucidDreaming;
-
-                if (Variant.CanSpiritDart())
-                    return Variant.SpiritDart;
             }
 
             #endregion
@@ -129,12 +123,6 @@ internal partial class WHM : Healer
 
                 if (Role.CanLucidDream(7500))
                     return Role.LucidDreaming;
-
-                if (Variant.CanRampart())
-                    return Variant.Rampart;
-
-                if (Variant.CanSpiritDart())
-                    return Variant.SpiritDart;
             }
 
             #endregion
@@ -219,9 +207,6 @@ internal partial class WHM : Healer
 
             if (CanWeave())
             {
-                if (Variant.CanRampart())
-                    return Variant.Rampart;
-
                 if (IsEnabled(Preset.WHM_ST_MainCombo_PresenceOfMind) &&
                     ActionReady(PresenceOfMind) &&
                     ActionWatching.NumberOfGcdsUsed >= 3 &&
@@ -235,9 +220,6 @@ internal partial class WHM : Healer
                 if (IsEnabled(Preset.WHM_ST_MainCombo_Lucid) &&
                     Role.CanLucidDream(WHM_STDPS_Lucid))
                     return Role.LucidDreaming;
-
-                if (Variant.CanSpiritDart())
-                    return Variant.SpiritDart;
             }
 
             #endregion
@@ -338,16 +320,6 @@ internal partial class WHM : Healer
                     ActionWatching.NumberOfGcdsUsed >= 4 &&
                     !HasStatusEffect(Buffs.SacredSight))
                     return PresenceOfMind;
-
-                if (IsEnabled(Preset.WHM_AoE_DPS_Lucid) &&
-                    Role.CanLucidDream(WHM_AoEDPS_Lucid))
-                    return Role.LucidDreaming;
-
-                if (Variant.CanRampart())
-                    return Variant.Rampart;
-
-                if (Variant.CanSpiritDart())
-                    return Variant.SpiritDart;
             }
 
             #endregion

@@ -33,14 +33,6 @@ internal partial class PCT : Caster
             #endregion
 
             #region Special Content
-            // Variant Cure
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            // Variant Rampart
-            if (Variant.CanRampart(WeaveTypes.Weave))
-                return Variant.Rampart;
- 
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
             #endregion
@@ -233,14 +225,6 @@ internal partial class PCT : Caster
             #endregion
 
             #region Special Content
-            // Variant Cure
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            // Variant Rampart
-            if (Variant.CanRampart(WeaveTypes.Weave))
-                return Variant.Rampart;
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
             #endregion
@@ -405,14 +389,6 @@ internal partial class PCT : Caster
             #endregion
 
             #region Special Content
-            // Variant Cure
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            // Variant Rampart
-            if (Variant.CanRampart(WeaveTypes.Weave))
-                return Variant.Rampart;
-            
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
             #endregion
@@ -600,14 +576,6 @@ internal partial class PCT : Caster
             #endregion
 
             #region Special Content
-            // Variant Cure
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            // Variant Rampart
-            if (Variant.CanRampart(WeaveTypes.Weave))
-                return Variant.Rampart;
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
             #endregion

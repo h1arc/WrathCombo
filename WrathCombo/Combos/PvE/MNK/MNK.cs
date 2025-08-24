@@ -31,14 +31,6 @@ internal partial class MNK : Melee
                 !HasStatusEffect(Buffs.CoeurlForm))
                 return FormShift;
 
-            //Variant Cure
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            //Variant Rampart
-            if (Variant.CanRampart())
-                return Variant.Rampart;
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
@@ -140,14 +132,6 @@ internal partial class MNK : Melee
                 !HasStatusEffect(Buffs.RaptorForm) &&
                 !HasStatusEffect(Buffs.CoeurlForm))
                 return FormShift;
-
-            //Variant Cure
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            //Variant Rampart
-            if (Variant.CanRampart())
-                return Variant.Rampart;
 
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
@@ -262,14 +246,6 @@ internal partial class MNK : Melee
                 !HasStatusEffect(Buffs.CoeurlForm))
                 return FormShift;
 
-            //Variant Cure
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            //Variant Rampart
-            if (Variant.CanRampart())
-                return Variant.Rampart;
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
@@ -373,18 +349,10 @@ internal partial class MNK : Melee
                 !HasStatusEffect(Buffs.CoeurlForm))
                 return FormShift;
 
-            //Variant Cure
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            //Variant Rampart
-            if (Variant.CanRampart())
-                return Variant.Rampart;
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
-            // OGCD's 
+            // OGCD's
             if (CanWeave() && M6SReady)
             {
                 if (IsEnabled(Preset.MNK_AoEUsePerfectBalance) &&

@@ -85,17 +85,6 @@ internal partial class WAR : Tank
     #endregion
 
     #region Helpers
-    internal static uint GetVariantAction()
-    {
-        if (Variant.CanCure())
-            return Variant.Cure;
-        if (Variant.CanSpiritDart() && CanWeave())
-            return Variant.SpiritDart;
-        if (Variant.CanUltimatum() && CanWeave())
-            return Variant.Ultimatum;
-
-        return 0; //No conditions met
-    }
     internal static uint GetBozjaAction()
     {
         if (!Bozja.IsInBozja)
@@ -163,8 +152,6 @@ internal partial class WAR : Tank
     {
         get
         {
-            if (GetVariantAction() is uint va && va != 0)
-                return va;
             if (Bozja.IsInBozja && GetBozjaAction() is uint ba && ba != 0)
                 return ba;
             return 0;

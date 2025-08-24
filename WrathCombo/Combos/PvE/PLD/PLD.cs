@@ -84,10 +84,6 @@ internal partial class PLD : Tank
                 if (Role.CanLowBlow())
                     return Role.LowBlow;
 
-            // Variant Cure
-            if (Variant.CanCure())
-                return Variant.Cure;
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
@@ -166,10 +162,6 @@ internal partial class PLD : Tank
                                 return OriginalHook(FightOrFlight);
                         }
 
-                        // Variant Ultimatum
-                        if (Variant.CanUltimatum())
-                            return Variant.Ultimatum;
-
                         // Circle of Scorn / Spirits Within
                         if (cooldownFightOrFlight > 15)
                         {
@@ -180,10 +172,6 @@ internal partial class PLD : Tank
                                 return OriginalHook(SpiritsWithin);
                         }
                     }
-
-                    // Variant Spirit Dart
-                    if (Variant.CanSpiritDart())
-                        return Variant.SpiritDart;
 
                     // Blade of Honor
                     if (LevelChecked(BladeOfHonor) && OriginalHook(Requiescat) == BladeOfHonor)
@@ -283,10 +271,6 @@ internal partial class PLD : Tank
                 if (Role.CanLowBlow())
                     return Role.LowBlow;
 
-            // Variant Cure
-            if (Variant.CanCure())
-                return Variant.Cure;
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
@@ -349,11 +333,6 @@ internal partial class PLD : Tank
                                 return OriginalHook(FightOrFlight);
                         }
 
-                        // Variant Ultimatum
-                        if (Variant.CanUltimatum())
-                            return Variant.Ultimatum;
-
-                        // Circle of Scorn / Spirits Within
                         if (cooldownFightOrFlight > 15)
                         {
                             if (ActionReady(CircleOfScorn))
@@ -363,10 +342,6 @@ internal partial class PLD : Tank
                                 return OriginalHook(SpiritsWithin);
                         }
                     }
-
-                    // Variant Spirit Dart
-                    if (Variant.CanSpiritDart())
-                        return Variant.SpiritDart;
 
                     // Blade of Honor
                     if (LevelChecked(BladeOfHonor) && OriginalHook(Requiescat) == BladeOfHonor)
@@ -451,10 +426,6 @@ internal partial class PLD : Tank
                 else if (IsEnabled(Preset.PLD_ST_LowBlow) && Role.CanLowBlow() && !JustUsed(ShieldBash))
                     return Role.LowBlow;
 
-            // Variant Cure
-            if (Variant.CanCure())
-                return Variant.Cure;
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
@@ -491,10 +462,6 @@ internal partial class PLD : Tank
                                 return OriginalHook(FightOrFlight);
                         }
 
-                        // Variant Ultimatum
-                        if (Variant.CanUltimatum())
-                            return Variant.Ultimatum;
-
                         // Circle of Scorn / Spirits Within
                         if (cooldownFightOrFlight > 15)
                         {
@@ -505,10 +472,6 @@ internal partial class PLD : Tank
                                 return OriginalHook(SpiritsWithin);
                         }
                     }
-
-                    // Variant Spirit Dart
-                    if (Variant.CanSpiritDart())
-                        return Variant.SpiritDart;
 
                     // Intervene
                     if (IsEnabled(Preset.PLD_ST_AdvancedMode_Intervene) && LevelChecked(Intervene) && TimeMoving.Ticks == 0 &&
@@ -656,10 +619,6 @@ internal partial class PLD : Tank
                 else if (IsEnabled(Preset.PLD_AoE_LowBlow) && Role.CanLowBlow() && !JustUsed(ShieldBash))
                     return Role.LowBlow;
 
-            // Variant Cure
-            if (Variant.CanCure())
-                return Variant.Cure;
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
@@ -684,10 +643,6 @@ internal partial class PLD : Tank
                                 return OriginalHook(FightOrFlight);
                         }
 
-                        // Variant Ultimatum
-                        if (Variant.CanUltimatum())
-                            return Variant.Ultimatum;
-
                         // Circle of Scorn / Spirits Within
                         if (cooldownFightOrFlight > 15)
                         {
@@ -698,10 +653,6 @@ internal partial class PLD : Tank
                                 return OriginalHook(SpiritsWithin);
                         }
                     }
-
-                    // Variant Spirit Dart
-                    if (Variant.CanSpiritDart())
-                        return Variant.SpiritDart;
 
                     // Intervene
                     if (IsEnabled(Preset.PLD_AoE_AdvancedMode_Intervene) && LevelChecked(Intervene) && TimeMoving.Ticks == 0 &&

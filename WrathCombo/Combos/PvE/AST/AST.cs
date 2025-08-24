@@ -37,12 +37,6 @@ internal partial class AST : Healer
             #region Special Content
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
-            
-            if (Variant.CanRampart())
-                return Variant.Rampart;
-
-            if (Variant.CanSpiritDart() && HasBattleTarget())
-                return Variant.SpiritDart;
             #endregion
 
             #region OGCDs
@@ -124,12 +118,6 @@ internal partial class AST : Healer
                 return actionID;
 
             #region Special Content
-
-            if (Variant.CanRampart())
-                return Variant.Rampart;
-
-            if (Variant.CanSpiritDart())
-                return Variant.SpiritDart;
 
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
@@ -249,12 +237,6 @@ internal partial class AST : Healer
             #region Special Content
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
-            
-            if (Variant.CanRampart())
-                return Variant.Rampart;
-
-            if (Variant.CanSpiritDart() && HasBattleTarget())
-                return Variant.SpiritDart;
             #endregion
 
             #region Healing Helper
@@ -398,12 +380,6 @@ internal partial class AST : Healer
             #endregion
 
             #region Special Content
-            if (Variant.CanRampart())
-                return Variant.Rampart;
-
-            if (Variant.CanSpiritDart())
-                return Variant.SpiritDart;
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
             #endregion

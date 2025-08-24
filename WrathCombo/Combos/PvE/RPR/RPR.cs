@@ -41,14 +41,6 @@ internal partial class RPR : Melee
                 !PartyInCombat())
                 return Soulsow;
 
-            //Variant Cure
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            //Variant Rampart
-            if (Variant.CanRampart())
-                return Variant.Rampart;
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
@@ -214,14 +206,6 @@ internal partial class RPR : Melee
                 LevelChecked(Soulsow) &&
                 !HasStatusEffect(Buffs.Soulsow) && !PartyInCombat())
                 return Soulsow;
-
-            //Variant Cure
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            //Variant Rampart
-            if (Variant.CanRampart())
-                return Variant.Rampart;
 
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
@@ -421,12 +405,6 @@ internal partial class RPR : Melee
                 !HasStatusEffect(Buffs.Soulsow) && !PartyInCombat())
                 return Soulsow;
 
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            if (Variant.CanRampart())
-                return Variant.Rampart;
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
@@ -524,12 +502,6 @@ internal partial class RPR : Melee
                 LevelChecked(Soulsow) &&
                 !HasStatusEffect(Buffs.Soulsow) && !PartyInCombat())
                 return Soulsow;
-
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            if (Variant.CanRampart())
-                return Variant.Rampart;
 
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;

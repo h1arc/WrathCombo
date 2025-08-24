@@ -29,19 +29,12 @@ internal partial class SGE : Healer
                 return Kardia
                     .Retarget(actionID, Target);
 
-            // Variant
-            if (Variant.CanRampart())
-                return Variant.Rampart;
-
-            //Occult skills
+            //Content skills
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
             if (CanWeave() && !HasStatusEffect(Buffs.Eukrasia))
             {
-                if (Variant.CanSpiritDart())
-                    return Variant.SpiritDart;
-
                 // Lucid Dreaming
                 if (Role.CanLucidDream(7500))
                     return Role.LucidDreaming;
@@ -125,10 +118,6 @@ internal partial class SGE : Healer
                 HasStatusEffect(Buffs.Eukrasia))
                 return actionID;
 
-            // Variant Rampart
-            if (Variant.CanRampart())
-                return Variant.Rampart;
-
             //Occult skills
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
@@ -148,10 +137,6 @@ internal partial class SGE : Healer
 
             if (CanWeave())
             {
-                // Variant Spirit Dart
-                if (Variant.CanSpiritDart())
-                    return Variant.SpiritDart;
-
                 // Lucid Dreaming
                 if (Role.CanLucidDream(7500))
                     return Role.LucidDreaming;
@@ -238,11 +223,7 @@ internal partial class SGE : Healer
                 Opener().FullOpener(ref actionID))
                 return actionID;
 
-            // Variant
-            if (Variant.CanRampart())
-                return Variant.Rampart;
-
-            //Occult skills
+            //Content Actions
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
@@ -263,9 +244,6 @@ internal partial class SGE : Healer
 
             if (CanWeave() && !HasStatusEffect(Buffs.Eukrasia))
             {
-                if (Variant.CanSpiritDart())
-                    return Variant.SpiritDart;
-
                 // Lucid Dreaming
                 if (IsEnabled(Preset.SGE_ST_DPS_Lucid) &&
                     Role.CanLucidDream(SGE_ST_DPS_Lucid))
@@ -359,10 +337,6 @@ internal partial class SGE : Healer
                 HasStatusEffect(Buffs.Eukrasia))
                 return actionID;
 
-            // Variant Rampart
-            if (Variant.CanRampart())
-                return Variant.Rampart;
-
             //Occult skills
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
@@ -384,10 +358,6 @@ internal partial class SGE : Healer
 
             if (CanWeave())
             {
-                // Variant Spirit Dart
-                if (Variant.CanSpiritDart())
-                    return Variant.SpiritDart;
-
                 // Lucid Dreaming
                 if (IsEnabled(Preset.SGE_AoE_DPS_Lucid) &&
                     Role.CanLucidDream(SGE_AoE_DPS_Lucid))

@@ -61,14 +61,6 @@ internal partial class VPR : Melee
             if (actionID is not SteelFangs)
                 return actionID;
 
-            // Variant Cure
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            // Variant Rampart
-            if (Variant.CanRampart())
-                return Variant.Rampart;
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
@@ -229,14 +221,6 @@ internal partial class VPR : Melee
             if (IsEnabled(Preset.VPR_ST_Opener) &&
                 Opener().FullOpener(ref actionID))
                 return actionID;
-
-            // Variant Cure
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            // Variant Rampart
-            if (Variant.CanRampart())
-                return Variant.Rampart;
 
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
@@ -416,14 +400,6 @@ internal partial class VPR : Melee
             if (actionID is not SteelMaw)
                 return actionID;
 
-            // Variant Cure
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            // Variant Rampart
-            if (Variant.CanRampart())
-                return Variant.Rampart;
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
@@ -560,14 +536,6 @@ internal partial class VPR : Melee
         {
             if (actionID is not SteelMaw)
                 return actionID;
-
-            // Variant Cure
-            if (Variant.CanCure())
-                return Variant.Cure;
-
-            // Variant Rampart
-            if (Variant.CanRampart())
-                return Variant.Rampart;
 
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
