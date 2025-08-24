@@ -23,7 +23,7 @@ internal partial class MCH : PhysicalRanged
                  LevelChecked(AirAnchor) && IsOffCooldown(AirAnchor) ||
                  ActionReady(Drill)))
                 return Reassemble;
-            
+
             if (Variant.CanCure(Preset.MCH_Variant_Cure, MCH_VariantCure))
                 return Variant.Cure;
 
@@ -101,7 +101,7 @@ internal partial class MCH : PhysicalRanged
                     if (Role.CanSecondWind(5))
                         return Role.SecondWind;
                 }
-                
+
                 // Gauss Round and Ricochet during HC
                 if (JustUsed(OriginalHook(Heatblast), 1f) && HasNotWeaved)
                 {
@@ -156,7 +156,7 @@ internal partial class MCH : PhysicalRanged
 
             if (HasStatusEffect(Buffs.Flamethrower) || JustUsed(Flamethrower, GCD))
                 return All.SavageBlade;
-            
+
 
             if (Variant.CanCure(Preset.MCH_Variant_Cure, MCH_VariantCure))
                 return Variant.Cure;
@@ -285,7 +285,7 @@ internal partial class MCH : PhysicalRanged
                  LevelChecked(AirAnchor) && IsOffCooldown(AirAnchor) && MCH_ST_Reassembled[2] ||
                  ActionReady(Drill) && MCH_ST_Reassembled[3]))
                 return Reassemble;
-            
+
             if (Variant.CanCure(Preset.MCH_Variant_Cure, MCH_VariantCure))
                 return Variant.Cure;
 
@@ -372,14 +372,14 @@ internal partial class MCH : PhysicalRanged
                     // Interrupt
                     if (Role.CanHeadGraze(Preset.MCH_ST_Adv_Interrupt, WeaveTypes.DelayWeave))
                         return Role.HeadGraze;
-                    
+
                     if (IsEnabled(Preset.MCH_ST_Dismantle) &&
                         ActionReady(Dismantle) &&
                         !HasStatusEffect(Debuffs.Dismantled, CurrentTarget, true) &&
                         CanApplyStatus(CurrentTarget, Debuffs.Dismantled) &&
                         RaidWideCasting())
                         return Dismantle;
-                    
+
                     // Healing
                     if (IsEnabled(Preset.MCH_ST_Adv_SecondWind) &&
                         Role.CanSecondWind(MCH_ST_SecondWindHPThreshold))
@@ -471,7 +471,7 @@ internal partial class MCH : PhysicalRanged
 
             if (HasStatusEffect(Buffs.Flamethrower) || JustUsed(Flamethrower, GCD))
                 return All.SavageBlade;
-            
+
             if (Variant.CanCure(Preset.MCH_Variant_Cure, MCH_VariantCure))
                 return Variant.Cure;
 
