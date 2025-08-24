@@ -17,12 +17,6 @@ internal partial class SMN : Caster
             if (actionID != Role.Swiftcast)
                 return actionID;
 
-            if (Variant.CanRaise())
-                return IsEnabled(Preset.SMN_Raise_Retarget)
-                    ? Variant.Raise.Retarget(Role.Swiftcast,
-                        SimpleTarget.Stack.AllyToRaise)
-                    : Variant.Raise;
-
             if (IsOnCooldown(Role.Swiftcast))
                 return IsEnabled(Preset.SMN_Raise_Retarget)
                     ? Resurrection.Retarget(Role.Swiftcast,
@@ -478,7 +472,7 @@ internal partial class SMN : Caster
             }
             #endregion
 
-            // Egi Order 
+            // Egi Order
             if (!ActionReady(OriginalHook(Aethercharge)) && Gauge.SummonTimerRemaining == 0 && Gauge.AttunementTimerRemaining == 0)
             {
                 if (Gauge.IsTitanReady)

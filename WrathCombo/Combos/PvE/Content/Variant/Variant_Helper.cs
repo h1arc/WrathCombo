@@ -64,8 +64,8 @@ namespace WrathCombo.Combos.PvE
             PlayerHealthPercentageHp() <= healthpercent;
 
         private static bool CheckRaise(Preset preset) =>
-            IsEnabled(preset) && ActionReady(Raise)
-            && HasStatusEffect(Magic.Buffs.Swiftcast);
+            IsEnabled(preset) && ActionReady(Raise) &&
+            TargetIsFriendly() && TargetIsDead();
 
         private static bool CheckUltimatum(Preset preset) =>
             IsEnabled(preset) && ActionReady(Ultimatum)

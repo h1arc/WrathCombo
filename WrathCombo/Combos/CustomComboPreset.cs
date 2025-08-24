@@ -223,9 +223,8 @@ public enum Preset
 
     [Variant]
     [Role(JobRole.Tank)]
-    [Hidden] // Not Wired Up
     [ParentCombo(Variant_Tank)]
-    [CustomComboInfo("Variant Raise", "Not Wired Up", Job.ADV)]
+    [CustomComboInfo("Variant Raise", "Use Variant Raise on incapacitated party members.", Job.ADV)]
     Variant_Tank_Raise = 200003,
 
     [Variant]
@@ -244,7 +243,6 @@ public enum Preset
 
     [Variant]
     [Role(JobRole.Healer)]
-    [Hidden] //Not wired up
     [ParentCombo(Variant_Healer)]
     [CustomComboInfo("Variant Ultimatum", "Use Variant Ultimatum on cooldown.", Job.ADV)]
     Variant_Healer_Ultimatum = 200006,
@@ -278,16 +276,14 @@ public enum Preset
 
     [Variant]
     [Role(JobRole.MeleeDPS)]
-    [Hidden] //Not wired up
     [ParentCombo(Variant_Melee)]
     [CustomComboInfo("Variant Ultimatum", "Use Variant Ultimatum on cooldown.", Job.ADV)]
     Variant_Melee_Ultimatum = 200011,
 
     [Variant]
     [Role(JobRole.MeleeDPS)]
-    [Hidden] // Not wired up
     [ParentCombo(Variant_Melee)]
-    [CustomComboInfo("Variant Raise", "Not Wired Up", Job.ADV)]
+    [CustomComboInfo("Variant Raise", "Use Variant Raise on incapacitated party members.", Job.ADV)]
     Variant_Melee_Raise = 200012,
 
     [Variant]
@@ -313,16 +309,14 @@ public enum Preset
 
     [Variant]
     [Role(JobRole.RangedDPS)]
-    [Hidden] //Not wired up
     [ParentCombo(Variant_PhysRanged)]
     [CustomComboInfo("Variant Ultimatum", "Use Variant Ultimatum on cooldown.", Job.ADV)]
     Variant_PhysRanged_Ultimatum = 200016,
 
     [Variant]
     [Role(JobRole.RangedDPS)]
-    [Hidden] // Not wired up
     [ParentCombo(Variant_PhysRanged)]
-    [CustomComboInfo("Variant Raise", "Not Wired Up", Job.ADV)]
+    [CustomComboInfo("Variant Raise", "Use Variant Raise on incapacitated party members.", Job.ADV)]
     Variant_PhysRanged_Raise = 200017,
 
     [Variant]
@@ -348,7 +342,6 @@ public enum Preset
 
     [Variant]
     [Role(JobRole.MagicalDPS)]
-    [Hidden] //Not wired up
     [ParentCombo(Variant_Magic)]
     [CustomComboInfo("Variant Ultimatum", "Use Variant Ultimatum on cooldown.", Job.ADV)]
     Variant_Magic_Ultimatum = 200021,
@@ -356,7 +349,7 @@ public enum Preset
     [Variant]
     [Role(JobRole.MagicalDPS)]
     [ParentCombo(Variant_Magic)]
-    [CustomComboInfo("Variant Raise", "Turn Swiftcast into Variant Raise whenever you have the Swiftcast buff.", Job.ADV)]
+    [CustomComboInfo("Variant Raise", "Use Variant Raise on incapacitated party members.", Job.ADV)]
     Variant_Magic_Raise = 200022,
 
     [Variant]

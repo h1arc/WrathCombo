@@ -1,10 +1,6 @@
 ﻿using ECommons.DalamudServices;
-using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using WrathCombo.Attributes;
-using WrathCombo.Core;
-using WrathCombo.CustomComboNS;
-using static WrathCombo.Combos.PvE.RoleActions;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 
 
@@ -41,11 +37,11 @@ internal static partial class Variant
                         actionID = Ultimatum;
                         return true;
                     }
-                    //if (CheckRaise(Preset.Variant_Tank_Raise))
-                    //{
-                    //    actionID = Raise;
-                    //    return true;
-                    //}
+                    if (CheckRaise(Preset.Variant_Tank_Raise))
+                    {
+                        actionID = Raise;
+                        return true;
+                    }
                     if (CheckSpiritDart(Preset.Variant_Tank_SpiritDart))
                     {
                         actionID = SpiritDart;
@@ -88,11 +84,11 @@ internal static partial class Variant
                         actionID = Ultimatum;
                         return true;
                     }
-                    //if (CheckRaise(Preset.Variant_PhysRanged_Raise))
-                    //{
-                    //    actionID = Raise;
-                    //    return true;
-                    //}
+                    if (CheckRaise(Preset.Variant_PhysRanged_Raise))
+                    {
+                        actionID = Raise;
+                        return true;
+                    }
                     if (CheckRampart(Preset.Variant_PhysRanged_Rampart))
                     {
                         actionID = Rampart;
@@ -114,11 +110,11 @@ internal static partial class Variant
                         actionID = Ultimatum;
                         return true;
                     }
-                    //if (CheckRaise(Preset.Variant_Melee_Raise))
-                    //{
-                    //    actionID = Raise;
-                    //    return true;
-                    //}
+                    if (CheckRaise(Preset.Variant_Melee_Raise))
+                    {
+                        actionID = Raise;
+                        return true;
+                    }
                     if (CheckRampart(Preset.Variant_Melee_Rampart))
                     {
                         actionID = Rampart;
@@ -140,11 +136,11 @@ internal static partial class Variant
                         actionID = Ultimatum;
                         return true;
                     }
-                    //if (CheckRaise(Preset.Variant_Magic_Raise))
-                    //{
-                    //    actionID = Raise;
-                    //    return true;
-                    //}
+                    if (CheckRaise(Preset.Variant_Magic_Raise))
+                    {
+                        actionID = Raise;
+                        return true;
+                    }
                     if (CheckRampart(Preset.Variant_Magic_Rampart))
                     {
                         actionID = Rampart;
@@ -157,6 +153,7 @@ internal static partial class Variant
         return false;
     }
 
+    // Quick separate check for AutoRotation
     public static bool CanRaise()
     {
         if (!IsInVariantDungeon) return false;
@@ -169,33 +166,4 @@ internal static partial class Variant
             _ => false
         };
     }
-
-
-    #region Variant Combos
-
-    internal class Variant_Magic_Raise : CustomCombo
-    {
-        protected internal override Preset Preset => Preset.Variant_Magic_Raise;
-
-        protected override uint Invoke(uint actionID)
-        {
-            if (actionID is not Magic.Swiftcast)
-                return actionID;
-
-            // RDM and SMN handle their own.
-            if (Player.Job is not (Job.RDM or Job.SMN))
-                return actionID;
-
-            if (CheckRaise(Preset.Variant_Magic_Raise) && HasStatusEffect(Magic.Buffs.Swiftcast))
-            {
-                // To Do: Retargeting
-                return Raise;
-            }
-            else
-            {
-                return actionID;
-            }
-        }
-    }
-    #endregion
 }

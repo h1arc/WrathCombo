@@ -428,12 +428,6 @@ internal partial class RDM : Caster
             if (actionID != Role.Swiftcast)
                 return actionID;
 
-            if (Variant.CanRaise())
-                return IsEnabled(Preset.RDM_Raise_Retarget)
-                    ? Variant.Raise.Retarget(Role.Swiftcast,
-                        SimpleTarget.Stack.AllyToRaise)
-                    : Variant.Raise;
-
             if (LevelChecked(Verraise))
             {
                 bool schwifty = HasStatusEffect(Role.Buffs.Swiftcast);
