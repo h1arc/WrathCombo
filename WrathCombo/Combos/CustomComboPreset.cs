@@ -1102,7 +1102,7 @@ public enum Preset
     BLM_ST_UseScathe = 2116,
 
     [ParentCombo(BLM_ST_AdvancedMode)]
-    [CustomComboInfo("Manaward Option", "Adds Manaward to the rotation when below HP Treshold or when raidwide is casting.", Job.BLM)]
+    [CustomComboInfo("Manaward Option", "Adds Manaward to the rotation when below HP Treshold and when raidwide is casting.", Job.BLM)]
     BLM_ST_Manaward = 2199,
 
     #endregion

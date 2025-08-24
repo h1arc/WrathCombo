@@ -28,7 +28,7 @@ internal partial class BLM : Caster
             if (CanWeave())
             {
                 if (ActionReady(Manaward) &&
-                    (PlayerHealthPercentageHp() < 40 || RaidWideCasting()))
+                    (PlayerHealthPercentageHp() < 40 && RaidWideCasting()))
                     return Manaward;
 
                 if (ActionReady(Amplifier) && !HasMaxPolyglotStacks)
@@ -318,7 +318,7 @@ internal partial class BLM : Caster
             {
                 if (IsEnabled(Preset.BLM_ST_Manaward) &&
                     ActionReady(Manaward) &&
-                    (PlayerHealthPercentageHp() < BLM_ST_Manaward_Threshold || RaidWideCasting()))
+                    PlayerHealthPercentageHp() < BLM_ST_Manaward_Threshold && RaidWideCasting())
                     return Manaward;
 
                 if (IsEnabled(Preset.BLM_ST_Amplifier) &&
