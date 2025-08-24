@@ -75,11 +75,58 @@ internal partial class SAM : Melee
                 Kenki >= SAM_Yukaze_KenkiOvercapAmount && LevelChecked(Shinten))
                 return OriginalHook(Shinten);
 
-            if (HasStatusEffect(Buffs.MeikyoShisui) && LevelChecked(Yukikaze))
-                return OriginalHook(Yukikaze);
+            if (HasStatusEffect(Buffs.MeikyoShisui))
+            {
+                if (SAM_Yukaze_Gekko &&
+                    LevelChecked(Gekko) &&
+                    (!HasStatusEffect(Buffs.Fugetsu) ||
+                     !HasGetsu && HasStatusEffect(Buffs.Fuka)))
+                    return Gekko;
 
-            if (ComboTimer > 0 && ComboAction == OriginalHook(Hakaze) && LevelChecked(Yukikaze))
-                return OriginalHook(Yukikaze);
+                if (SAM_Yukaze_Kasha &&
+                    LevelChecked(Kasha) &&
+                    (!HasStatusEffect(Buffs.Fuka) ||
+                     !HasKa && HasStatusEffect(Buffs.Fugetsu)))
+                    return Kasha;
+
+                if (LevelChecked(Yukikaze) && !HasSetsu)
+                    return Yukikaze;
+            }
+
+            if (ComboTimer > 0)
+            {
+                if (ComboAction is Hakaze or Gyofu && LevelChecked(Jinpu))
+                {
+                    if (SAM_Yukaze_Gekko &&
+                        !LevelChecked(Kasha) &&
+                        (RefreshFugetsu || !HasStatusEffect(Buffs.Fugetsu)) ||
+                        LevelChecked(Kasha) &&
+                        (!HasStatusEffect(Buffs.Fugetsu) ||
+                         HasStatusEffect(Buffs.Fuka) && !HasGetsu ||
+                         SenCount is 3 && RefreshFugetsu))
+                        return Jinpu;
+
+                    if (SAM_Yukaze_Kasha &&
+                        LevelChecked(Shifu) &&
+                        (!LevelChecked(Kasha) &&
+                         (RefreshFuka || !HasStatusEffect(Buffs.Fuka)) ||
+                         LevelChecked(Kasha) &&
+                         (!HasStatusEffect(Buffs.Fuka) ||
+                          HasStatusEffect(Buffs.Fugetsu) && !HasKa ||
+                          SenCount is 3 && RefreshFuka)))
+                        return Shifu;
+
+                    if (LevelChecked(Yukikaze))
+                        return OriginalHook(Yukikaze);
+                }
+
+                if (ComboAction is Jinpu && LevelChecked(Gekko))
+                    return Gekko;
+
+                if (IsEnabled(Preset.SAM_ST_Kasha) &&
+                    ComboAction is Shifu && LevelChecked(Kasha))
+                    return Kasha;
+            }
 
             return OriginalHook(Hakaze);
         }
@@ -486,10 +533,33 @@ internal partial class SAM : Melee
                 LevelChecked(Kyuten) && CanWeave())
                 return Kyuten;
 
-            if (HasStatusEffect(Buffs.MeikyoShisui) ||
-                ComboTimer > 0 && LevelChecked(Mangetsu) &&
-                ComboAction == OriginalHook(Fuko))
-                return Mangetsu;
+            if (HasStatusEffect(Buffs.MeikyoShisui))
+            {
+                if (!HasGetsu && HasStatusEffect(Buffs.Fuka) ||
+                    !HasStatusEffect(Buffs.Fugetsu))
+                    return Mangetsu;
+
+                if (SAM_Mangetsu_Oka &&
+                    (!HasKa && HasStatusEffect(Buffs.Fugetsu) ||
+                     !HasStatusEffect(Buffs.Fuka)))
+                    return Oka;
+            }
+
+            if (ComboTimer > 0 &&
+                ComboAction is Fuko or Fuga && LevelChecked(Mangetsu))
+            {
+                if (!SAM_Mangetsu_Oka ||
+                    !HasGetsu || RefreshFugetsu ||
+                    !HasStatusEffect(Buffs.Fugetsu) ||
+                    !LevelChecked(Oka))
+                    return Mangetsu;
+
+                if (SAM_Mangetsu_Oka &&
+                    LevelChecked(Oka) &&
+                    (!HasKa || RefreshFuka ||
+                     !HasStatusEffect(Buffs.Fuka)))
+                    return Oka;
+            }
 
             return OriginalHook(Fuko);
         }
