@@ -76,8 +76,8 @@ internal unsafe static class AutoRotationController
 
     private static bool _ninjaLockedAoE;
 
-    static bool CombatBypass => (cfg.BypassQuest && DPSTargeting.BaseSelection.Any(x => IsQuestMob(x))) || (cfg.BypassFATE && InFATE());
-    static bool NotInCombat => !GetPartyMembers().Any(x => x.BattleChara is not null && x.BattleChara.Struct()->InCombat) || PartyEngageDuration().TotalSeconds < cfg.CombatDelay;
+    static bool CombatBypass =>  DPSTargeting.BaseSelection.Any(x => (cfg.BypassQuest && IsQuestMob(x)) || (cfg.BypassFATE && x.Struct()->FateId != 0 && InFATE()));
+    static bool NotInCombat => !GetPartyMembers().Any(x => x.BattleChara is not null && x.BattleChara.Struct()->InCombat && !x.IsOutOfPartyNPC) || PartyEngageDuration().TotalSeconds < cfg.CombatDelay;
 
     private static bool ShouldSkipAutorotation()
     {
@@ -660,7 +660,7 @@ internal unsafe static class AutoRotationController
         {
             if (_ninjaLockedAoE) return false;
             var target = GetSingleTarget(mode);
-
+            
             var outAct = OriginalHook(InvokeCombo(preset, attributes, ref gameAct, target));
             if (!CanQueue(outAct))
             {
@@ -675,7 +675,7 @@ internal unsafe static class AutoRotationController
 
             var blockedSelfBuffs = GetCooldown(outAct).CooldownTotal >= 5;
 
-            if (cfg.InCombatOnly && NotInCombat && !(canUseSelf && cfg.BypassBuffs && !blockedSelfBuffs))
+            if (cfg.InCombatOnly && NotInCombat && !CombatBypass && !(canUseSelf && cfg.BypassBuffs && !blockedSelfBuffs))
                 return false;
 
             if (target is null && !canUseSelf)
@@ -694,7 +694,7 @@ internal unsafe static class AutoRotationController
 
             if (canUse || cfg.DPSSettings.AlwaysSelectTarget)
                 Svc.Targets.Target = target;
-
+            
             var castTime = ActionManager.GetAdjustedCastTime(ActionType.Action, outAct);
             bool orbwalking = cfg.OrbwalkerIntegration && OrbwalkerIPC.CanOrbwalk;
             if (TimeMoving.TotalMilliseconds > 0 && castTime > 0 && !orbwalking)
