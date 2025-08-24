@@ -871,6 +871,10 @@ internal partial class SAM : Melee
             if (actionID is not Shinten)
                 return actionID;
 
+            if (IsEnabled(Preset.SAM_Shinten_Shoha) &&
+                ActionReady(Shoha) && MeditationStacks is 3)
+                return Shoha;
+
             if (IsEnabled(Preset.SAM_Shinten_Senei) &&
                 ActionReady(Senei))
                 return Senei;
@@ -878,11 +882,7 @@ internal partial class SAM : Melee
             if (IsEnabled(Preset.SAM_Shinten_Zanshin) &&
                 HasStatusEffect(Buffs.ZanshinReady))
                 return Zanshin;
-
-            if (IsEnabled(Preset.SAM_Shinten_Shoha) &&
-                ActionReady(Shoha) && MeditationStacks is 3)
-                return Shoha;
-
+            
             return actionID;
         }
     }
