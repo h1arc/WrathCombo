@@ -8460,11 +8460,6 @@ public enum Preset
     ASTPvP_Burst_PlayCard = 111003,
 
     [PvPCustomCombo]
-    [ReplaceSkill(ASTPvP.AspectedBenefic)]
-    [CustomComboInfo("Double Cast Heal Feature", "Adds Double Cast to Aspected Benefic.", Job.AST)]
-    ASTPvP_Heal = 111004,
-
-    [PvPCustomCombo]
     [ParentCombo(ASTPvP_Burst)]
     [CustomComboInfo("Double Malefic Cast Option", "Adds Double Malefic Cast to Burst Mode.", Job.AST)]
     ASTPvP_Burst_DoubleMalefic = 111005,
@@ -8492,11 +8487,23 @@ public enum Preset
         "Adds Role Action Diabrosis to Burst Mode below selected health",
         Job.AST)]
     ASTPvP_Diabrosis = 111010,
+    
+    [PvPCustomCombo]
+    [ParentCombo(ASTPvP_Burst)]
+    [CustomComboInfo("Aspected Benefic Option", "Adds Aspected Benefic when target is below set health", Job.AST)]
+    [PossiblyRetargeted]
+    ASTPvP_Burst_Heal = 111011,
 
     [PvPCustomCombo]
     [ReplaceSkill(ASTPvP.Epicycle)]
     [CustomComboInfo("Epicycle Burst Feature", "Turns Epicycle into burst combo.", Job.AST)]
     ASTPvP_Epicycle = 111008,
+    
+    [PvPCustomCombo]
+    [ReplaceSkill(ASTPvP.AspectedBenefic)]
+    [CustomComboInfo("Aspected Benefic Heal Feature", "Adds options to Aspected Benefic", Job.AST)]
+    [PossiblyRetargeted]
+    ASTPvP_Heal = 111004,
 
     // Last value = 111010
 
@@ -9325,7 +9332,7 @@ public enum Preset
 
     [PvPCustomCombo]
     [ParentCombo(SGEPvP_BurstMode)]
-    [CustomComboInfo("Kardia Reminder Option", "Adds Kardia to Burst Mode.", Job.SGE)]
+    [CustomComboInfo("Kardia Reminder Option", "Adds Kardia Reminder to Burst Mode if buff is missing", Job.SGE)]
     SGEPvP_BurstMode_KardiaReminder = 124007,
 
     [PvPCustomCombo]
@@ -9334,8 +9341,14 @@ public enum Preset
        "Adds Role Action Diabrosis to Burst Mode below selected health",
        Job.SGE)]
     SGEPvP_Diabrosis = 124008,
+    
+    [PvPCustomCombo]
+    [ReplaceSkill(SGEPvP.Kardia)]
+    [CustomComboInfo("Kardia Retarget", "Retargets Kardia to the heal stack (In Wrath Settings) outside of the Burst Feature", Job.SGE)]
+    [Retargeted]
+    SGEPvP_RetargetKardia = 124009,
 
-    // Last value = 124008
+    // Last value = 124009
 
     #endregion
 
@@ -9429,10 +9442,15 @@ public enum Preset
 
     [PvPCustomCombo]
     [ParentCombo(SCHPvP_Burst)]
-    [CustomComboInfo("Self Adlo Option",
-       "Adds Adloquium to self when at or beneath selected heath threshold. \n Will Not Overwrite Catalyze",
-       Job.SCH)]
-    SCHPvP_Selfcare = 126006,
+    [CustomComboInfo("Adlo Option", "Adds Adloquium when target is below set health", Job.SCH)]
+    [PossiblyRetargeted]
+    SCHPvP_Adlo = 126006,
+    
+    [PvPCustomCombo]
+    [ReplaceSkill(SCHPvP.Adloquilum)]
+    [CustomComboInfo("Adlo Retarget", "Retargets Adlo to the heal stack (In Wrath Settings) outside of the Burst Feature", Job.SCH)]
+    [Retargeted]
+    SCHPvP_RetargetAdlo = 126007,
 
     // Last value = 126006
 
@@ -9640,12 +9658,14 @@ public enum Preset
 
     [PvPCustomCombo]
     [ParentCombo(WHMPvP_Burst)]
-    [CustomComboInfo("Cure 3 Waste Prevention", "Adds Cure 3 to Burst combo when the Cure 3 Ready buff is under 6 seconds", Job.WHM)]
-    WHMPvP_NoWasteCure = 129010,
+    [CustomComboInfo("Heals in the Burst Mode", "Adds Cure 2/3 and Aquaveil to Burst combo below all damage options.", Job.WHM)]
+    [Retargeted]
+    WHMPvP_Burst_Heals = 129010,
 
     [PvPCustomCombo]
     [ReplaceSkill(WHMPvP.Cure2)]
     [CustomComboInfo("Heal Feature", "Adds the below options onto Cure II.", Job.WHM)]
+    [Retargeted]
     WHMPvP_Heals = 129004,
 
     [PvPCustomCombo]
