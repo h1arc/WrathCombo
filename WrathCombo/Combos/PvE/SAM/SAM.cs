@@ -372,8 +372,7 @@ internal partial class SAM : Melee
                     return Shinten;
 
                 if (IsEnabled(Preset.SAM_ST_Feint) &&
-                    RoleActions.Melee.CanFeint() &&
-                    CanApplyStatus(CurrentTarget, RoleActions.Melee.Debuffs.Feint) &&
+                    Role.CanFeint() &&
                     RaidWideCasting())
                     return Role.Feint;
 
