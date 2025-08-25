@@ -206,6 +206,11 @@ internal partial class BLM
                         "Use Fire in Umbral Ice", "Leaves Fire in Umbral Ice \nWill Use Fire I / III if selected above.", 1);
                     break;
 
+                case Preset.BLM_Flare:
+                    DrawAdditionalBoolChoice(BLM_Flare_FlareStar,
+                        "Flarestar", "Adds Flarestar in Astral Fire when ready.");
+                    break;
+
                 case Preset.BLM_Blizzard1and3:
                     DrawRadioButton(BLM_B1to3,
                         $"Replaces {Blizzard.ActionName()}",
@@ -264,6 +269,7 @@ internal partial class BLM
             BLM_AM_FieldMouseover = new("BLM_AM_FieldMouseover"),
             BLM_AmplifierXenoCD = new("BLM_AmplifierXenoCD"),
             BLM_Fire4_FlareStar = new("BLM_Fire4_FlareStar"),
+            BLM_Flare_FlareStar = new("BLM_Flare_FlareStar"),
             BLM_Fire1_Despair = new("BLM_Fire1_Despair"),
             BLM_Blizzard3_Despair = new("BLM_Blizzard3_Despair"),
             BLM_Fire4_Fire3 = new("BLM_Fire4_Fire3");
