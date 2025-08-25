@@ -6,28 +6,6 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class MCH : PhysicalRanged
 {
-    internal class MCH_ST_BasicCombo : CustomCombo
-    {
-        protected internal override Preset Preset => Preset.MCH_ST_BasicCombo;
-
-        protected override uint Invoke(uint actionID)
-        {
-            if (actionID is not (CleanShot or HeatedCleanShot))
-                return actionID;
-
-            if (ComboTimer > 0)
-            {
-                if (ComboAction is SplitShot && LevelChecked(SlugShot))
-                    return OriginalHook(SlugShot);
-
-                if (ComboAction is SlugShot && LevelChecked(CleanShot))
-                    return OriginalHook(CleanShot);
-            }
-
-            return OriginalHook(SplitShot);
-        }
-    }
-
     internal class MCH_ST_SimpleMode : CustomCombo
     {
         protected internal override Preset Preset => Preset.MCH_ST_SimpleMode;
@@ -45,10 +23,6 @@ internal partial class MCH : PhysicalRanged
                  LevelChecked(AirAnchor) && IsOffCooldown(AirAnchor) ||
                  ActionReady(Drill)))
                 return Reassemble;
-
-            // Interrupt
-            if (Role.CanHeadGraze(Preset.MCH_ST_SimpleMode, WeaveTypes.DelayWeave))
-                return Role.HeadGraze;
 
             if (Variant.CanCure(Preset.MCH_Variant_Cure, MCH_VariantCure))
                 return Variant.Cure;
@@ -119,11 +93,14 @@ internal partial class MCH : PhysicalRanged
                             return OriginalHook(Ricochet);
                     }
 
+                    // Interrupt
+                    if (Role.CanHeadGraze(Preset.MCH_ST_SimpleMode, WeaveTypes.DelayWeave))
+                        return Role.HeadGraze;
+
                     // Healing
                     if (Role.CanSecondWind(5))
                         return Role.SecondWind;
                 }
-
 
                 // Gauss Round and Ricochet during HC
                 if (JustUsed(OriginalHook(Heatblast), 1f) && HasNotWeaved)
@@ -168,6 +145,122 @@ internal partial class MCH : PhysicalRanged
         }
     }
 
+    internal class MCH_AoE_SimpleMode : CustomCombo
+    {
+        protected internal override Preset Preset => Preset.MCH_AoE_SimpleMode;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not (SpreadShot or Scattergun))
+                return actionID;
+
+            if (HasStatusEffect(Buffs.Flamethrower) || JustUsed(Flamethrower, GCD))
+                return All.SavageBlade;
+
+
+            if (Variant.CanCure(Preset.MCH_Variant_Cure, MCH_VariantCure))
+                return Variant.Cure;
+
+            if (Variant.CanRampart(Preset.MCH_Variant_Rampart))
+                return Variant.Rampart;
+
+            if (OccultCrescent.ShouldUsePhantomActions())
+                return OccultCrescent.BestPhantomAction();
+
+            // All weaves
+            if (CanWeave())
+            {
+                if (!IsOverheated)
+                {
+                    // BarrelStabilizer
+                    if (ActionReady(BarrelStabilizer) &&
+                        !HasStatusEffect(Buffs.FullMetalMachinist))
+                        return BarrelStabilizer;
+
+                    if (Battery is 100)
+                        return OriginalHook(RookAutoturret);
+
+                    // Hypercharge
+                    if ((Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) && LevelChecked(Hypercharge) &&
+                        LevelChecked(AutoCrossbow) &&
+                        (LevelChecked(BioBlaster) && GetCooldownRemainingTime(BioBlaster) > 10 ||
+                         !LevelChecked(BioBlaster)) &&
+                        (LevelChecked(Flamethrower) && GetCooldownRemainingTime(Flamethrower) > 10 ||
+                         !LevelChecked(Flamethrower)))
+                        return Hypercharge;
+
+                    if (ActionReady(Reassemble) &&
+                        !HasStatusEffect(Buffs.Wildfire) &&
+                        !HasStatusEffect(Buffs.Reassembled) &&
+                        !JustUsed(Flamethrower, 10f) &&
+                        (HasStatusEffect(Buffs.ExcavatorReady) && LevelChecked(Excavator) ||
+                         GetCooldownRemainingTime(Chainsaw) < 1 && LevelChecked(Chainsaw) ||
+                         GetCooldownRemainingTime(AirAnchor) < 1 && LevelChecked(AirAnchor) ||
+                         LevelChecked(Scattergun)))
+                        return Reassemble;
+
+                    // Interrupt
+                    if (Role.CanHeadGraze(Preset.MCH_AoE_SimpleMode, WeaveTypes.DelayWeave))
+                        return Role.HeadGraze;
+
+                    if (Role.CanSecondWind(25))
+                        return Role.SecondWind;
+                }
+
+                //AutoCrossbow, Gauss, Rico
+                if ((JustUsed(OriginalHook(AutoCrossbow), 1f) ||
+                     JustUsed(OriginalHook(Heatblast), 1f)) && HasNotWeaved)
+                {
+                    if (ActionReady(GaussRound) &&
+                        (UseGaussRound || !LevelChecked(Ricochet)))
+                        return OriginalHook(GaussRound);
+
+                    if (ActionReady(Ricochet) && UseRicochet)
+                        return OriginalHook(Ricochet);
+                }
+            }
+
+            if (!IsOverheated)
+            {
+                //Full Metal Field
+                if (HasStatusEffect(Buffs.FullMetalMachinist) &&
+                    LevelChecked(FullMetalField))
+                    return FullMetalField;
+
+                if (ActionReady(BioBlaster) &&
+                    !HasStatusEffect(Debuffs.Bioblaster, CurrentTarget) &&
+                    !IsOverheated && !HasStatusEffect(Buffs.Reassembled) &&
+                    CanApplyStatus(CurrentTarget, Debuffs.Bioblaster))
+                    return OriginalHook(BioBlaster);
+
+                if (ActionReady(Flamethrower) &&
+                    !HasStatusEffect(Buffs.Reassembled) &&
+                    !IsMoving() && TimeStoodStill > TimeSpan.FromSeconds(2.5f) &&
+                    GetTargetHPPercent() > 50)
+                    return OriginalHook(Flamethrower);
+
+                if (LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady))
+                    return Excavator;
+
+                if (ActionReady(Chainsaw) && !HasStatusEffect(Buffs.ExcavatorReady))
+                    return Chainsaw;
+
+                if (LevelChecked(AirAnchor) && IsOffCooldown(AirAnchor))
+                    return AirAnchor;
+            }
+
+            if (ActionReady(BlazingShot) && IsOverheated)
+                return HasBattleTarget() &&
+                       (!LevelChecked(CheckMate) ||
+                        LevelChecked(CheckMate) &&
+                        NumberOfEnemiesInRange(AutoCrossbow, CurrentTarget) >= 5)
+                    ? AutoCrossbow
+                    : BlazingShot;
+
+            return actionID;
+        }
+    }
+
     internal class MCH_ST_AdvancedMode : CustomCombo
     {
         protected internal override Preset Preset => Preset.MCH_ST_AdvancedMode;
@@ -192,10 +285,6 @@ internal partial class MCH : PhysicalRanged
                  LevelChecked(AirAnchor) && IsOffCooldown(AirAnchor) && MCH_ST_Reassembled[2] ||
                  ActionReady(Drill) && MCH_ST_Reassembled[3]))
                 return Reassemble;
-
-            // Interrupt
-            if (Role.CanHeadGraze(Preset.MCH_ST_Adv_Interrupt, WeaveTypes.DelayWeave))
-                return Role.HeadGraze;
 
             if (Variant.CanCure(Preset.MCH_Variant_Cure, MCH_VariantCure))
                 return Variant.Cure;
@@ -279,13 +368,29 @@ internal partial class MCH : PhysicalRanged
                             !JustUsed(OriginalHook(Ricochet), 2f))
                             return OriginalHook(Ricochet);
                     }
+                    
+                    if (ActionReady(Tactician) &&
+                        IsEnabled(Preset.MCH_ST_Adv_Tactician) && RaidWideCasting() && 
+                        NumberOfAlliesInRange(Tactician) >= GetPartyMembers().Count * .75 &&
+                        !HasAnyStatusEffects ([BRD.Buffs.Troubadour, DNC.Buffs.ShieldSamba, Buffs.Tactician], anyOwner: true))
+                        return Tactician;
+
+                    // Interrupt
+                    if (Role.CanHeadGraze(Preset.MCH_ST_Adv_Interrupt, WeaveTypes.DelayWeave))
+                        return Role.HeadGraze;
+
+                    if (IsEnabled(Preset.MCH_ST_Dismantle) &&
+                        ActionReady(Dismantle) &&
+                        !HasStatusEffect(Debuffs.Dismantled, CurrentTarget, true) &&
+                        CanApplyStatus(CurrentTarget, Debuffs.Dismantled) &&
+                        RaidWideCasting())
+                        return Dismantle;
 
                     // Healing
                     if (IsEnabled(Preset.MCH_ST_Adv_SecondWind) &&
                         Role.CanSecondWind(MCH_ST_SecondWindHPThreshold))
                         return Role.SecondWind;
                 }
-
 
                 // Gauss Round and Ricochet during HC
                 if (IsEnabled(Preset.MCH_ST_Adv_GaussRicochet) &&
@@ -340,121 +445,6 @@ internal partial class MCH : PhysicalRanged
         }
     }
 
-    internal class MCH_AoE_SimpleMode : CustomCombo
-    {
-        protected internal override Preset Preset => Preset.MCH_AoE_SimpleMode;
-
-        protected override uint Invoke(uint actionID)
-        {
-            if (actionID is not (SpreadShot or Scattergun))
-                return actionID;
-
-            if (HasStatusEffect(Buffs.Flamethrower) || JustUsed(Flamethrower, GCD))
-                return All.SavageBlade;
-
-            // Interrupt
-            if (Role.CanHeadGraze(Preset.MCH_AoE_SimpleMode, WeaveTypes.DelayWeave))
-                return Role.HeadGraze;
-
-            if (Variant.CanCure(Preset.MCH_Variant_Cure, MCH_VariantCure))
-                return Variant.Cure;
-
-            if (Variant.CanRampart(Preset.MCH_Variant_Rampart))
-                return Variant.Rampart;
-
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
-
-            // All weaves
-            if (CanWeave())
-            {
-                if (!IsOverheated)
-                {
-                    // BarrelStabilizer
-                    if (ActionReady(BarrelStabilizer) &&
-                        !HasStatusEffect(Buffs.FullMetalMachinist))
-                        return BarrelStabilizer;
-
-                    if (Battery is 100)
-                        return OriginalHook(RookAutoturret);
-
-                    // Hypercharge
-                    if ((Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) && LevelChecked(Hypercharge) &&
-                        LevelChecked(AutoCrossbow) &&
-                        (LevelChecked(BioBlaster) && GetCooldownRemainingTime(BioBlaster) > 10 ||
-                         !LevelChecked(BioBlaster)) &&
-                        (LevelChecked(Flamethrower) && GetCooldownRemainingTime(Flamethrower) > 10 ||
-                         !LevelChecked(Flamethrower)))
-                        return Hypercharge;
-
-                    if (ActionReady(Reassemble) &&
-                        !HasStatusEffect(Buffs.Wildfire) &&
-                        !HasStatusEffect(Buffs.Reassembled) &&
-                        !JustUsed(Flamethrower, 10f) &&
-                        (HasStatusEffect(Buffs.ExcavatorReady) && LevelChecked(Excavator) ||
-                         GetCooldownRemainingTime(Chainsaw) < 1 && LevelChecked(Chainsaw) ||
-                         GetCooldownRemainingTime(AirAnchor) < 1 && LevelChecked(AirAnchor) ||
-                         LevelChecked(Scattergun)))
-                        return Reassemble;
-
-                    if (Role.CanSecondWind(25))
-                        return Role.SecondWind;
-                }
-
-                //AutoCrossbow, Gauss, Rico
-                if ((JustUsed(OriginalHook(AutoCrossbow), 1f) ||
-                     JustUsed(OriginalHook(Heatblast), 1f)) && HasNotWeaved)
-                {
-                    if (ActionReady(GaussRound) &&
-                        (UseGaussRound || !LevelChecked(Ricochet)))
-                        return OriginalHook(GaussRound);
-
-                    if (ActionReady(Ricochet) && UseRicochet)
-                        return OriginalHook(Ricochet);
-                }
-            }
-
-            if (!IsOverheated)
-            {
-                //Full Metal Field
-                if (HasStatusEffect(Buffs.FullMetalMachinist) &&
-                    LevelChecked(FullMetalField))
-                    return FullMetalField;
-
-                if (ActionReady(BioBlaster) &&
-                    !HasStatusEffect(Debuffs.Bioblaster, CurrentTarget) &&
-                    !IsOverheated && !HasStatusEffect(Buffs.Reassembled) &&
-                    CanApplyStatus(CurrentTarget, Debuffs.Bioblaster))
-                    return OriginalHook(BioBlaster);
-
-                if (ActionReady(Flamethrower) &&
-                    !HasStatusEffect(Buffs.Reassembled) &&
-                    !IsMoving() && TimeStoodStill > TimeSpan.FromSeconds(2.5f) &&
-                    GetTargetHPPercent() > 50)
-                    return OriginalHook(Flamethrower);
-
-                if (LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady))
-                    return Excavator;
-
-                if (ActionReady(Chainsaw) && !HasStatusEffect(Buffs.ExcavatorReady))
-                    return Chainsaw;
-
-                if (LevelChecked(AirAnchor) && IsOffCooldown(AirAnchor))
-                    return AirAnchor;
-            }
-
-            if (ActionReady(BlazingShot) && IsOverheated)
-                return HasBattleTarget() &&
-                       (!LevelChecked(CheckMate) ||
-                        LevelChecked(CheckMate) &&
-                        NumberOfEnemiesInRange(AutoCrossbow, CurrentTarget) >= 5)
-                    ? AutoCrossbow
-                    : BlazingShot;
-
-            return actionID;
-        }
-    }
-
     internal class MCH_AoE_AdvancedMode : CustomCombo
     {
         protected internal override Preset Preset => Preset.MCH_AoE_AdvancedMode;
@@ -487,10 +477,6 @@ internal partial class MCH : PhysicalRanged
 
             if (HasStatusEffect(Buffs.Flamethrower) || JustUsed(Flamethrower, GCD))
                 return All.SavageBlade;
-
-            // Interrupt
-            if (Role.CanHeadGraze(Preset.MCH_AoE_Adv_Interrupt, WeaveTypes.DelayWeave))
-                return Role.HeadGraze;
 
             if (Variant.CanCure(Preset.MCH_Variant_Cure, MCH_VariantCure))
                 return Variant.Cure;
@@ -552,6 +538,10 @@ internal partial class MCH : PhysicalRanged
                             !JustUsed(OriginalHook(Ricochet), 2.5f))
                             return OriginalHook(Ricochet);
                     }
+
+                    // Interrupt
+                    if (Role.CanHeadGraze(Preset.MCH_AoE_Adv_Interrupt, WeaveTypes.DelayWeave))
+                        return Role.HeadGraze;
 
                     if (IsEnabled(Preset.MCH_AoE_Adv_SecondWind) &&
                         Role.CanSecondWind(MCH_AoE_SecondWindHPThreshold))
@@ -622,6 +612,28 @@ internal partial class MCH : PhysicalRanged
                     : BlazingShot;
 
             return actionID;
+        }
+    }
+
+    internal class MCH_ST_BasicCombo : CustomCombo
+    {
+        protected internal override Preset Preset => Preset.MCH_ST_BasicCombo;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not (CleanShot or HeatedCleanShot))
+                return actionID;
+
+            if (ComboTimer > 0)
+            {
+                if (ComboAction is SplitShot && LevelChecked(SlugShot))
+                    return OriginalHook(SlugShot);
+
+                if (ComboAction is SlugShot && LevelChecked(CleanShot))
+                    return OriginalHook(CleanShot);
+            }
+
+            return OriginalHook(SplitShot);
         }
     }
 
