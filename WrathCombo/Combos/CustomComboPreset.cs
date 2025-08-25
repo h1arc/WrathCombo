@@ -4072,6 +4072,10 @@ public enum Preset
     [ParentCombo(NIN_ST_AdvancedMode)]
     [CustomComboInfo("Meisui Option", "Adds Meisui to Advanced Mode.", Job.NIN)]
     NIN_ST_AdvancedMode_Meisui = 10013,
+    
+    [ParentCombo(NIN_ST_AdvancedMode)]
+    [CustomComboInfo("Leg Sweep Option", "Adds Leg Sweep when target non-boss is casting.", Job.NIN)]
+    NIN_ST_AdvancedMode_StunInterupt =10045,
 
     [ParentCombo(NIN_ST_AdvancedMode)]
     [CustomComboInfo("Phantom Kamaitachi Option", "Adds Phantom Kamaitachi to Advanced Mode.", Job.NIN)]
@@ -4154,6 +4158,10 @@ public enum Preset
     NIN_AoE_AdvancedMode_Meisui = 10029,
     
     [ParentCombo(NIN_AoE_AdvancedMode)]
+    [CustomComboInfo("Leg Sweep Option", "Adds Leg Sweep when target non-boss is casting.", Job.NIN)]
+    NIN_AoE_AdvancedMode_StunInterupt =10044,
+    
+    [ParentCombo(NIN_AoE_AdvancedMode)]
     [CustomComboInfo("Phantom Kamaitachi Option", "Adds Phantom Kamaitachi to Advanced Mode.", Job.NIN)]
     NIN_AoE_AdvancedMode_PhantomKamaitachi = 10030,
     
@@ -4214,8 +4222,15 @@ public enum Preset
     NIN_HideMug = 10038,
 
     [ReplaceSkill(NIN.Ten, NIN.Chi, NIN.Jin)]
+    [ConflictingCombos(Preset.NIN_Simple_Mudras_Alt)]
     [CustomComboInfo("Simple Mudras Feature", "Simplify the mudra casting to avoid failing.", Job.NIN)]
     NIN_Simple_Mudras = 10039,
+    
+    [ReplaceSkill(NIN.Ten, NIN.Chi, NIN.Jin)]
+    [ConflictingCombos(Preset.NIN_Simple_Mudras)]
+    [CustomComboInfo("Simpler Mudras Alternate Feature", "Puts mudras on to a single button following basic logic and finishes them with Ninjutsu." +
+                                                        "\nTen = Hyosho Ranryu > Suiton if trick cd less than 20s > Raiton. \nChi = Goka Mekkyaku > Huton if trick cd less than 20s > Katon. \nJin = Doton ", Job.NIN)]
+    NIN_Simple_Mudras_Alt = 10043,
 
     [ReplaceSkill(NIN.TenChiJin)]
     [ParentCombo(NIN_TCJMeisui)]
@@ -4236,7 +4251,7 @@ public enum Preset
     NIN_Variant_Rampart = 10070,
     #endregion
 
-    // Last value = 10042
+    // Last value = 10045
 
     #endregion
 
