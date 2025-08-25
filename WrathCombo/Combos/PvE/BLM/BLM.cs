@@ -225,6 +225,11 @@ internal partial class BLM : Caster
                     ActionReady(Manaward) &&
                     PlayerHealthPercentageHp() < BLM_ST_Manaward_Threshold && RaidWideCasting())
                     return Manaward;
+                
+                if (IsEnabled(Preset.BLM_ST_Addle) && 
+                    RoleActions.Caster.CanAddle() &&
+                    RaidWideCasting())
+                    return Role.Addle;
 
                 if (IsEnabled(Preset.BLM_ST_Amplifier) &&
                     ActionReady(Amplifier) && !HasMaxPolyglotStacks)

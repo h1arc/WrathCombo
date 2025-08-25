@@ -647,7 +647,6 @@ internal partial class SMN : Caster
                 
                 if (IsEnabled(Preset.SMN_ST_Advanced_Combo_Addle) && 
                     RoleActions.Caster.CanAddle() &&
-                    CanApplyStatus(CurrentTarget, RoleActions.Caster.Debuffs.Addle) &&
                     RaidWideCasting())
                     return Role.Addle;
             }

@@ -276,7 +276,6 @@ internal partial class RDM : Caster
                 
                 if (IsEnabled(Preset.RDM_ST_Addle) && 
                     RoleActions.Caster.CanAddle() &&
-                    CanApplyStatus(CurrentTarget, RoleActions.Caster.Debuffs.Addle) &&
                     RaidWideCasting())
                     return Role.Addle;
                 

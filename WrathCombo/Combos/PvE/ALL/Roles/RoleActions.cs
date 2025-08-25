@@ -46,7 +46,8 @@ internal static partial class RoleActions
         }
 
         public static bool CanAddle() =>
-            ActionReady(Addle) && !HasStatusEffect(Debuffs.Addle, CurrentTarget, true);
+            ActionReady(Addle) && !HasStatusEffect(Debuffs.Addle, CurrentTarget, true) &&
+            CanApplyStatus(CurrentTarget, Debuffs.Addle);
 
         public static bool CanSleep() =>
             ActionReady(Sleep);
