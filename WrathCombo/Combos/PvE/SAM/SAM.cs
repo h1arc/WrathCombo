@@ -268,7 +268,6 @@ internal partial class SAM : Melee
 
                 if (IsEnabled(Preset.SAM_ST_Feint) &&
                     RoleActions.Melee.CanFeint() &&
-                    CanApplyStatus(CurrentTarget, RoleActions.Melee.Debuffs.Feint) &&
                     RaidWideCasting())
                     return Role.Feint;
 

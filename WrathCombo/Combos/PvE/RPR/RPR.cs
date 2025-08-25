@@ -267,7 +267,6 @@ internal partial class RPR : Melee
 
                 if (IsEnabled(Preset.RPR_ST_Feint) &&
                     RoleActions.Melee.CanFeint() &&
-                    CanApplyStatus(CurrentTarget, RoleActions.Melee.Debuffs.Feint) &&
                     RaidWideCasting())
                     return Role.Feint;
 

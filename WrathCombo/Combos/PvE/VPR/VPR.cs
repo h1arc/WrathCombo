@@ -233,7 +233,6 @@ internal partial class VPR : Melee
 
                 if (IsEnabled(Preset.VPR_ST_Feint) &&
                     RoleActions.Melee.CanFeint() &&
-                    CanApplyStatus(CurrentTarget, RoleActions.Melee.Debuffs.Feint) &&
                     RaidWideCasting())
                     return Role.Feint;
 

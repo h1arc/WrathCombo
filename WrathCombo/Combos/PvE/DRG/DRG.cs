@@ -393,7 +393,6 @@ internal partial class DRG : Melee
 
                     if (IsEnabled(Preset.DRG_ST_Feint) &&
                         RoleActions.Melee.CanFeint() &&
-                        CanApplyStatus(CurrentTarget, RoleActions.Melee.Debuffs.Feint) &&
                         RaidWideCasting())
                         return Role.Feint;
                     

@@ -363,7 +363,6 @@ internal partial class NIN : Melee
             {
                 if (IsEnabled(Preset.NIN_ST_AdvancedMode_Feint) && 
                     RoleActions.Melee.CanFeint() &&
-                    CanApplyStatus(CurrentTarget, RoleActions.Melee.Debuffs.Feint) &&
                     RaidWideCasting())
                     return Role.Feint;
 

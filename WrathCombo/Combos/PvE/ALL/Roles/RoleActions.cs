@@ -153,7 +153,8 @@ internal static partial class RoleActions
             ActionReady(Bloodbath) && PlayerHealthPercentageHp() <= healthPercent;
 
         public static bool CanFeint() =>
-            ActionReady(Feint) && !HasStatusEffect(Debuffs.Feint, CurrentTarget, true);
+            ActionReady(Feint) && !HasStatusEffect(Debuffs.Feint, CurrentTarget, true) &&
+            CanApplyStatus(CurrentTarget, Debuffs.Feint);
 
         public static bool CanTrueNorth() =>
             ActionReady(TrueNorth) && TargetNeedsPositionals() && !HasStatusEffect(Buffs.TrueNorth) && CanDelayedWeave();
