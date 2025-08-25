@@ -105,7 +105,8 @@ internal partial class MNK
     internal static bool UsePerfectBalanceST()
     {
         if (ActionReady(PerfectBalance) && !HasStatusEffect(Buffs.PerfectBalance) &&
-            !HasStatusEffect(Buffs.FormlessFist) && IsOriginal(MasterfulBlitz))
+            !HasStatusEffect(Buffs.FormlessFist) && IsOriginal(MasterfulBlitz) &&
+            HasBattleTarget())
         {
             // Odd window
             if ((JustUsed(OriginalHook(Bootshine), GCD) || JustUsed(DragonKick, GCD)) &&
@@ -134,7 +135,8 @@ internal partial class MNK
 
     internal static bool UsePerfectBalanceAoE()
     {
-        if (ActionReady(PerfectBalance) && !HasStatusEffect(Buffs.PerfectBalance) && !HasStatusEffect(Buffs.FormlessFist))
+        if (ActionReady(PerfectBalance) && !HasStatusEffect(Buffs.PerfectBalance) &&
+            !HasStatusEffect(Buffs.FormlessFist) && HasBattleTarget())
         {
             //Initial/Failsafe
             if (GetRemainingCharges(PerfectBalance) == GetMaxCharges(PerfectBalance))

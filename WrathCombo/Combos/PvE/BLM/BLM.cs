@@ -220,6 +220,12 @@ internal partial class BLM : Caster
 
             if (CanWeave())
             {
+                if (IsEnabled(Preset.BLM_ST_Addle) &&
+                    RoleActions.Caster.CanAddle() &&
+                    CanApplyStatus(CurrentTarget, RoleActions.Caster.Debuffs.Addle) &&
+                    RaidWideCasting())
+                    return Role.Addle;
+
                 if (IsEnabled(Preset.BLM_ST_Amplifier) &&
                     ActionReady(Amplifier) && !HasMaxPolyglotStacks)
                     return Amplifier;

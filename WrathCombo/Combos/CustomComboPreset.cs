@@ -1043,7 +1043,7 @@ public enum Preset
     #region Movement
     
     [ConflictingCombos(BLM_Aetherial_Manipulation)]
-    [CustomComboInfo("Aetherial Manipulation Movement option", "Retargets Aetherial Manipulation to UI/Field Mouseover", Job.BLM)]
+    [CustomComboInfo("Aetherial Manipulation Movement option", "Retargets Aetherial Manipulation to UI Mouseover", Job.BLM)]
     [Retargeted(BLM.AetherialManipulation)]
     BLM_Retargetting_Aetherial_Manipulation = 2066,
 
@@ -1113,6 +1113,10 @@ public enum Preset
     [ParentCombo(BLM_ST_AdvancedMode)]
     [CustomComboInfo("Manaward Option", "Adds Manaward to the rotation.", Job.BLM)]
     BLM_ST_Manaward = 2199,
+
+    [ParentCombo(BLM_ST_AdvancedMode)]
+    [CustomComboInfo("Addle Raidwide Option", "Adds Addle when Raidwide is detected casting.", Job.BLM)]
+    BLM_ST_Addle = 2195,
 
     #endregion
 
@@ -2682,11 +2686,11 @@ public enum Preset
 
     [AutoAction(true, false)]
     [ReplaceSkill(DRG.DoomSpike)]
-    [ConflictingCombos(DRG_AOE_AdvancedMode)]
+    [ConflictingCombos(DRG_AoE_AdvancedMode)]
     [CustomComboInfo("Simple Mode - AoE",
         "Replaces Doom Spike with a full one-button AoE rotation.\nThis is the ideal option for newcomers to the job.", Job.DRG)]
     [SimpleCombo]
-    DRG_AOE_SimpleMode = 6200,
+    DRG_AoE_SimpleMode = 6200,
 
     #endregion
 
@@ -2772,6 +2776,10 @@ public enum Preset
     DRG_TrueNorthDynamic = 6199,
 
     [ParentCombo(DRG_ST_AdvancedMode)]
+    [CustomComboInfo("Leg Sweep Option", "Adds Leg Sweep when target non-boss is casting.", Job.DRG)]
+    DRG_ST_StunInterupt = 6196,
+
+    [ParentCombo(DRG_ST_AdvancedMode)]
     [CustomComboInfo("Ranged Uptime Option", "Adds Piercing Talon to the rotation when you are out of melee range.", Job.DRG)]
     DRG_ST_RangedUptime = 6197,
 
@@ -2779,20 +2787,24 @@ public enum Preset
     [CustomComboInfo("Combo Heals Option", "Adds Bloodbath and Second Wind to the rotation.", Job.DRG)]
     DRG_ST_ComboHeals = 6198,
 
+    [ParentCombo(DRG_ST_AdvancedMode)]
+    [CustomComboInfo("Feint Raidwide Option", "Adds Feint when Raidwide is detected casting.", Job.DRG)]
+    DRG_ST_Feint = 6195,
+
     #endregion
 
     #region Advanced AoE Dragoon
 
     [AutoAction(true, false)]
     [ReplaceSkill(DRG.DoomSpike)]
-    [ConflictingCombos(DRG_AOE_SimpleMode)]
+    [ConflictingCombos(DRG_AoE_SimpleMode)]
     [CustomComboInfo("Advanced Mode - AoE", "Replaces Doomspike with a full one-button AoE rotation.\nThese features are ideal if you want to customize the rotation.", Job.DRG)]
     [AdvancedCombo]
-    DRG_AOE_AdvancedMode = 6201,
+    DRG_AoE_AdvancedMode = 6201,
 
     #region Buffs AoE
 
-    [ParentCombo(DRG_AOE_AdvancedMode)]
+    [ParentCombo(DRG_AoE_AdvancedMode)]
     [CustomComboInfo("Buffs AoE Option", "Adds Lance Charge and Battle Litany to the rotation.", Job.DRG)]
     DRG_AoE_Buffs = 6202,
 
@@ -2808,7 +2820,7 @@ public enum Preset
 
     #region cooldowns AoE
 
-    [ParentCombo(DRG_AOE_AdvancedMode)]
+    [ParentCombo(DRG_AoE_AdvancedMode)]
     [CustomComboInfo("Cooldowns Option", "Adds various cooldowns to the rotation.", Job.DRG)]
     DRG_AoE_CDs = 6205,
 
@@ -2854,16 +2866,20 @@ public enum Preset
 
     #endregion
 
-    [ParentCombo(DRG_AOE_AdvancedMode)]
+    [ParentCombo(DRG_AoE_AdvancedMode)]
     [CustomComboInfo("Low Level Disembowel", "Adds Disembowel combo to the rotation when you are or synced below level 62.", Job.DRG)]
     DRG_AoE_Disembowel = 6297,
 
-    [ParentCombo(DRG_AOE_AdvancedMode)]
+    [ParentCombo(DRG_AoE_AdvancedMode)]
+    [CustomComboInfo("Leg Sweep Option", "Adds Leg Sweep when target non-boss is casting.", Job.DRG)]
+    DRG_AoE_StunInterupt = 6296,
+
+    [ParentCombo(DRG_AoE_AdvancedMode)]
     [CustomComboInfo("Ranged Uptime Option", "Adds Piercing Talon to the rotation when you are out of melee range.",
         Job.DRG)]
     DRG_AoE_RangedUptime = 6298,
 
-    [ParentCombo(DRG_AOE_AdvancedMode)]
+    [ParentCombo(DRG_AoE_AdvancedMode)]
     [CustomComboInfo("Combo Heals Option", "Adds Bloodbath and Second Wind to the rotation.", Job.DRG)]
     DRG_AoE_ComboHeals = 6299,
 
@@ -2886,12 +2902,12 @@ public enum Preset
     #region Variant
 
     [Variant]
-    [VariantParent(DRG_ST_AdvancedMode, DRG_AOE_AdvancedMode)]
+    [VariantParent(DRG_ST_AdvancedMode, DRG_AoE_AdvancedMode)]
     [CustomComboInfo("Cure Option", "Use Variant Cure when HP is below set threshold.", Job.DRG)]
     DRG_Variant_Cure = 6302,
 
     [Variant]
-    [VariantParent(DRG_ST_AdvancedMode, DRG_AOE_AdvancedMode)]
+    [VariantParent(DRG_ST_AdvancedMode, DRG_AoE_AdvancedMode)]
     [CustomComboInfo("Rampart Option", "Use Variant Rampart on cooldown.", Job.DRG)]
     DRG_Variant_Rampart = 6303,
 
@@ -3631,6 +3647,10 @@ public enum Preset
     [CustomComboInfo("Second Wind Option", "Use Second Wind when below the set HP percentage.", Job.MCH)]
     MCH_ST_Adv_SecondWind = 8114,
 
+    [ParentCombo(MCH_ST_AdvancedMode)]
+    [CustomComboInfo("Dismantle Raidwide Option", "Adds Dismantle when Raidwide is detected casting.", Job.MCH)]
+    MCH_ST_Dismantle = 8195,
+
     #endregion
 
     #region Advanced AoE
@@ -3807,14 +3827,6 @@ public enum Preset
 
     #endregion
     
-    #region Movement
-
-    [CustomComboInfo("Thunderclap Movement Option", "Retargets Thunderclap to UI/Field Mouseover", Job.MNK)]
-    [Retargeted(MNK.Thunderclap)]
-    MNK_Retarget_Thunderclap = 9043,
-    
-    #endregion
-
     #region Monk Advanced ST
 
     [AutoAction(false, false)]
@@ -3875,10 +3887,18 @@ public enum Preset
     [ParentCombo(MNK_ST_AdvancedMode)]
     [CustomComboInfo("True North Option", "Adds True North dynamically, when not in positional, to the rotation", Job.MNK)]
     MNK_STUseTrueNorth = 9014,
-
+    
+    [ParentCombo(MNK_ST_AdvancedMode)]
+    [CustomComboInfo("Leg Sweep Option", "Adds Leg Sweep when target non-boss is casting.", Job.MNK)]
+    MNK_ST_StunInterupt = 9044,
+    
     [ParentCombo(MNK_ST_AdvancedMode)]
     [CustomComboInfo("Combo Heals Option", "Adds Bloodbath and Second Wind to the rotation.", Job.MNK)]
     MNK_ST_ComboHeals = 9018,
+
+    [ParentCombo(MNK_ST_AdvancedMode)]
+    [CustomComboInfo("Feint Raidwide Option", "Adds Feint when Raidwide is detected casting.", Job.MNK)]
+    MNK_ST_Feint = 9095,
 
     #endregion
     
@@ -3936,6 +3956,10 @@ public enum Preset
     MNK_AoEUseMasterfulBlitz = 9040,
 
     [ParentCombo(MNK_AOE_AdvancedMode)]
+    [CustomComboInfo("Leg Sweep Option", "Adds Leg Sweep when target non-boss is casting.", Job.MNK)]
+    MNK_AoE_StunInterupt = 9045,
+
+    [ParentCombo(MNK_AOE_AdvancedMode)]
     [CustomComboInfo("Combo Heals Option", "Adds Bloodbath and Second Wind to the rotation.", Job.MNK)]
     MNK_AoE_ComboHeals = 9037,
 
@@ -3947,6 +3971,14 @@ public enum Preset
     [CustomComboInfo("Beast Chakra Handlers", "Merge single target GCDs which share the same beast chakra", Job.MNK)]
     MNK_ST_BeastChakras = 9019,
     
+    #endregion
+
+    #region Movement
+
+    [CustomComboInfo("Thunderclap Movement Option", "Retargets Thunderclap to UI Mouseover", Job.MNK)]
+    [Retargeted(MNK.Thunderclap)]
+    MNK_Retarget_Thunderclap = 9043,
+
     #endregion
     
     #region Misc
@@ -3994,7 +4026,7 @@ public enum Preset
 
     #endregion
 
-    // Last value = 9043
+    // Last value = 9045
 
     #endregion
 
@@ -5036,6 +5068,10 @@ public enum Preset
     [ParentCombo(RPR_ST_AdvancedMode)]
     [CustomComboInfo("Dynamic True North Feature", "Adds True North before Gibbet/Gallows when you are not in the correct position.", Job.RPR)]
     RPR_ST_TrueNorthDynamic = 12098,
+
+    [ParentCombo(RPR_ST_AdvancedMode)]
+    [CustomComboInfo("Leg Sweep Option", "Adds Leg Sweep when target non-boss is casting.", Job.RPR)]
+    RPR_ST_StunInterupt = 12096,
     
     [ParentCombo(RPR_ST_AdvancedMode)]
     [CustomComboInfo("Ranged Filler Option", "Replaces the combo chain with Harpe when outside of melee range. Will not override Communio.", Job.RPR)]
@@ -5044,6 +5080,10 @@ public enum Preset
     [ParentCombo(RPR_ST_AdvancedMode)]
     [CustomComboInfo("Combo Heals Option", "Adds Bloodbath and Second Wind to the combo, using them when below the HP Percentage threshold.", Job.RPR)]
     RPR_ST_ComboHeals = 12097,
+
+    [ParentCombo(RPR_ST_AdvancedMode)]
+    [CustomComboInfo("Feint Raidwide Option", "Adds Feint when Raidwide is detected casting.", Job.RPR)]
+    RPR_ST_Feint = 12095,
 
     //last value = 12021
 
@@ -5115,10 +5155,14 @@ public enum Preset
     RPR_AoE_Perfectio = 12114,
 
     [ParentCombo(RPR_AoE_AdvancedMode)]
+    [CustomComboInfo("Leg Sweep Option", "Adds Leg Sweep when target non-boss is casting.", Job.RPR)]
+    RPR_AoE_StunInterupt = 12118,
+
+    [ParentCombo(RPR_AoE_AdvancedMode)]
     [CustomComboInfo("Combo Heals Option", "Adds Bloodbath and Second Wind to the combo, using them when below the HP Percentage threshold.", Job.RPR)]
     RPR_AoE_ComboHeals = 12116,
 
-    // Last value = 12117
+    // Last value = 12118
 
     #endregion
     
@@ -5951,7 +5995,7 @@ public enum Preset
     SGE_Retarget_Kardia = 14078,
     
     [ParentCombo(SGE_Retarget)]
-    [CustomComboInfo("Icarus Movement Option", "Retargets Icarus to UI/Field Mouseover", Job.SGE)]
+    [CustomComboInfo("Icarus Movement Option", "Retargets Icarus to UI Mouseover", Job.SGE)]
     [Retargeted(SGE.Icarus)]
     SGE_Retarget_Icarus = 14083,
     
@@ -6095,12 +6139,20 @@ public enum Preset
     SAM_ST_TrueNorth = 15099,
 
     [ParentCombo(SAM_ST_AdvancedMode)]
+    [CustomComboInfo("Leg Sweep Option", "Adds Leg Sweep when target non-boss is casting.", Job.SAM)]
+    SAM_ST_StunInterupt = 15096,
+
+    [ParentCombo(SAM_ST_AdvancedMode)]
     [CustomComboInfo("Ranged Uptime Feature", "Adds Enpi to the rotation when you are out of range.", Job.SAM)]
     SAM_ST_RangedUptime = 15097,
 
     [ParentCombo(SAM_ST_AdvancedMode)]
     [CustomComboInfo("Combo Heals Option", "Adds Bloodbath and Second Wind to the combo, using them when below the HP Percentage threshold.", Job.SAM)]
     SAM_ST_ComboHeals = 15098,
+
+    [ParentCombo(SAM_ST_AdvancedMode)]
+    [CustomComboInfo("Feint Raidwide Option", "Adds Feint when Raidwide is detected casting.", Job.SAM)]
+    SAM_ST_Feint = 15095,
 
     #endregion
 
@@ -6168,6 +6220,10 @@ public enum Preset
     [ParentCombo(SAM_AoE_AdvancedMode)]
     [CustomComboInfo("Kyuten Option", "Adds Kyuten to the rotation.", Job.SAM)]
     SAM_AoE_Kyuten = 15105,
+
+    [ParentCombo(SAM_AoE_AdvancedMode)]
+    [CustomComboInfo("Leg Sweep Option", "Adds Leg Sweep when target non-boss is casting.", Job.SAM)]
+    SAM_AoE_StunInterupt = 15196,
 
     [ParentCombo(SAM_AoE_AdvancedMode)]
     [CustomComboInfo("Combo Heals Option", "Adds Bloodbath and Second Wind to the combo, using them when below the HP Percentage threshold.", Job.SAM)]
@@ -7063,14 +7119,6 @@ public enum Preset
 
     #endregion
     
-    #region Movement
-    
-    [CustomComboInfo("Slither Movement option", "Retargets Slither to UI/Field Mouseover", Job.VPR)]
-    [Retargeted(VPR.Slither)]
-    VPR_Retarget_Slither = 30211,
-    
-    #endregion
-
     #region Advanced ST Viper
 
     [AutoAction(false, false)]
@@ -7129,12 +7177,20 @@ public enum Preset
     VPR_TrueNorthDynamic = 30098,
 
     [ParentCombo(VPR_ST_AdvancedMode)]
+    [CustomComboInfo("Leg Sweep Option", "Adds Leg Sweep when target non-boss is casting.", Job.VPR)]
+    VPR_ST_StunInterupt = 30096,
+
+    [ParentCombo(VPR_ST_AdvancedMode)]
     [CustomComboInfo("Ranged Uptime Option", "Adds Writhing Snap to the rotation when you are out of melee range.", Job.VPR)]
     VPR_ST_RangedUptime = 30095,
     
     [ParentCombo(VPR_ST_AdvancedMode)]
     [CustomComboInfo("Combo Heals Option", "Adds Bloodbath and Second Wind to the rotation.", Job.VPR)]
     VPR_ST_ComboHeals = 30097,
+
+    [ParentCombo(VPR_ST_AdvancedMode)]
+    [CustomComboInfo("Feint Raidwide Option", "Adds Feint when Raidwide is detected casting.", Job.VPR)]
+    VPR_ST_Feint = 30094,
 
     #endregion
 
@@ -7184,6 +7240,10 @@ public enum Preset
     VPR_AoE_ReawakenCombo = 30112,
 
     [ParentCombo(VPR_AoE_AdvancedMode)]
+    [CustomComboInfo("Leg Sweep Option", "Adds Leg Sweep when target non-boss is casting.", Job.VPR)]
+    VPR_AoE_StunInterupt = 30196,
+
+    [ParentCombo(VPR_AoE_AdvancedMode)]
     [CustomComboInfo("Combo Heals Option", "Adds Bloodbath and Second Wind to the rotation.", Job.VPR)]
     VPR_AoE_ComboHeals = 30199,
 
@@ -7196,6 +7256,14 @@ public enum Preset
     [CustomComboInfo("Basic Combo", "Replace Reaving Fangs with its combo chain.", Job.VPR)]
     [BasicCombo]
     VPR_ST_BasicCombo = 30015,
+
+    #endregion
+
+    #region Movement
+
+    [CustomComboInfo("Slither Movement option", "Retargets Slither to UI Mouseover", Job.VPR)]
+    [Retargeted(VPR.Slither)]
+    VPR_Retarget_Slither = 30211,
 
     #endregion
 
