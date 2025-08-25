@@ -550,6 +550,7 @@ internal partial class AST
         HoroscopeHeal = 16558,
         Exaltation = 25873,
         Macrocosmos = 25874,
+        MicroCosmos = 25875,
         Synastry = 3612,
         NeutralSect = 16559,
         SunSign = 37031,
