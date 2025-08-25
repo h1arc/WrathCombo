@@ -122,7 +122,7 @@ internal partial class DRG
 
                 case Preset.DRG_HeavensThrust:
                     DrawAdditionalBoolChoice(DRG_Heavens_Basic,
-                        "Add Chaos Combo", "Adds Chaos combo when applicable.\nThis makes it a one button basic combo.");
+                        "Add Chaos Combo", "Adds Chaos combo when applicable.");
                     break;
 
                 case Preset.DRG_Variant_Cure:

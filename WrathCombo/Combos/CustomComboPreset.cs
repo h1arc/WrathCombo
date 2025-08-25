@@ -2883,7 +2883,7 @@ public enum Preset
     #region Basic Combo
 
     [ReplaceSkill(DRG.FullThrust, DRG.HeavensThrust)]
-    [CustomComboInfo("Full / Heavens Thrust Combo", "Replace Full Thrust/Heavens' Thrust with the basic combo chain.", Job.DRG)]
+    [CustomComboInfo("Full / Heavens Thrust Combo", "Replace Full Thrust/Heavens' Thrust with the basic combo chain.\nEnabling Chaos combo option makes this a one button basic combo.", Job.DRG)]
     [BasicCombo]
     DRG_HeavensThrust = 6304,
 
