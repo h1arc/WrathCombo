@@ -384,12 +384,6 @@ internal partial class BLM : Caster
                             return Triplecast;
                     }
                 }
-
-                if (IsEnabled(Preset.BLM_ST_Addle) &&
-                    RoleActions.Caster.CanAddle() &&
-                    CanApplyStatus(CurrentTarget, RoleActions.Caster.Debuffs.Addle) &&
-                    RaidWideCasting())
-                    return Role.Addle;
             }
 
             if (IsEnabled(Preset.BLM_ST_UseScathe) &&
