@@ -17,8 +17,8 @@ internal partial class RDM : Caster
                 return actionID;
             
             #region Special Content
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
                 
             if (Variant.CanCure(Preset.RDM_Variant_Cure, RDM_VariantCure))
                 return Variant.Cure;
@@ -115,8 +115,8 @@ internal partial class RDM : Caster
                 return actionID;
             
             #region Special Content
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
                 
             if (Variant.CanCure(Preset.RDM_Variant_Cure, RDM_VariantCure))
                 return Variant.Cure;
@@ -218,8 +218,8 @@ internal partial class RDM : Caster
             #endregion
             
             #region Special Content
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
                 
             if (Variant.CanCure(Preset.RDM_Variant_Cure, RDM_VariantCure))
                 return Variant.Cure;
@@ -343,8 +343,8 @@ internal partial class RDM : Caster
                 return actionID;
 
             #region Special Content
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
                 
             if (Variant.CanCure(Preset.RDM_Variant_Cure, RDM_VariantCure))
                 return Variant.Cure;

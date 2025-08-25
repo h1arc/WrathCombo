@@ -27,8 +27,8 @@ internal partial class RPR : Melee
             if (Variant.CanRampart(Preset.RPR_Variant_Rampart))
                 return Variant.Rampart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             //All Weaves
             if (CanWeave())
@@ -304,8 +304,8 @@ internal partial class RPR : Melee
             if (Variant.CanRampart(Preset.RPR_Variant_Rampart))
                 return Variant.Rampart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             //All Weaves
             if (CanWeave())
@@ -499,6 +499,109 @@ internal partial class RPR : Melee
         }
     }
 
+    internal class RPR_AoE_SimpleMode : CustomCombo
+    {
+        protected internal override Preset Preset => Preset.RPR_AoE_SimpleMode;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not SpinningScythe)
+                return actionID;
+
+            //Soulsow
+            if (LevelChecked(Soulsow) &&
+                !HasStatusEffect(Buffs.Soulsow) && !PartyInCombat())
+                return Soulsow;
+
+            if (Variant.CanCure(Preset.RPR_Variant_Cure, RPR_VariantCure))
+                return Variant.Cure;
+
+            if (Variant.CanRampart(Preset.RPR_Variant_Rampart))
+                return Variant.Rampart;
+
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
+
+            if (CanWeave())
+            {
+                if (ActionReady(ArcaneCircle))
+                    return ArcaneCircle;
+
+                if (!HasStatusEffect(Buffs.SoulReaver) &&
+                    !HasStatusEffect(Buffs.Enshrouded) &&
+                    !HasStatusEffect(Buffs.Executioner) &&
+                    ActionReady(Enshroud) &&
+                    !IsComboExpiring(6) &&
+                    (Shroud >= 50 || HasStatusEffect(Buffs.IdealHost)))
+                    return Enshroud;
+
+                if (LevelChecked(Gluttony) && Soul >= 50 && !HasStatusEffect(Buffs.Enshrouded) &&
+                    !HasStatusEffect(Buffs.SoulReaver) && !HasStatusEffect(Buffs.ImmortalSacrifice) &&
+                    GetCooldownRemainingTime(Gluttony) <= GCD)
+                    return Gluttony;
+
+                if (LevelChecked(GrimSwathe) && !HasStatusEffect(Buffs.Enshrouded) &&
+                    !HasStatusEffect(Buffs.SoulReaver) && !HasStatusEffect(Buffs.ImmortalSacrifice) &&
+                    !HasStatusEffect(Buffs.Executioner) && Soul >= 50 &&
+                    (!LevelChecked(Gluttony) || LevelChecked(Gluttony) &&
+                        (Soul is 100 || GetCooldownRemainingTime(Gluttony) > GCD * 5)))
+                    return GrimSwathe;
+
+                if (HasStatusEffect(Buffs.Enshrouded))
+                {
+                    if (Lemure is 2 && Void is 1 && HasStatusEffect(Buffs.Oblatio))
+                        return OriginalHook(Gluttony);
+
+                    if (Void >= 2 && LevelChecked(LemuresScythe))
+                        return OriginalHook(GrimSwathe);
+                }
+
+                if (Role.CanSecondWind(25))
+                    return Role.SecondWind;
+
+                if (Role.CanBloodBath(40))
+                    return Role.Bloodbath;
+            }
+
+            if (LevelChecked(WhorlOfDeath) &&
+                CanApplyStatus(CurrentTarget, Debuffs.DeathsDesign) &&
+                GetStatusEffectRemainingTime(Debuffs.DeathsDesign, CurrentTarget) < 6 &&
+                !HasStatusEffect(Buffs.SoulReaver) && !HasStatusEffect(Buffs.Executioner))
+                return WhorlOfDeath;
+
+            if (HasStatusEffect(Buffs.PerfectioParata))
+                return OriginalHook(Communio);
+
+            if (HasStatusEffect(Buffs.ImmortalSacrifice) && !HasStatusEffect(Buffs.SoulReaver) &&
+                !HasStatusEffect(Buffs.Enshrouded) && !HasStatusEffect(Buffs.Executioner) &&
+                (GetStatusEffectRemainingTime(Buffs.BloodsownCircle) <= 1 || JustUsed(Communio)))
+                return PlentifulHarvest;
+
+            if (HasStatusEffect(Buffs.SoulReaver) || HasStatusEffect(Buffs.Executioner) &&
+                !HasStatusEffect(Buffs.Enshrouded) && LevelChecked(Guillotine))
+                return OriginalHook(Guillotine);
+
+            if (HasStatusEffect(Buffs.Enshrouded))
+            {
+                if (LevelChecked(Communio) &&
+                    Lemure is 1 && Void is 0)
+                    return Communio;
+
+                if (Lemure > 0)
+                    return OriginalHook(Guillotine);
+            }
+
+            if (!HasStatusEffect(Buffs.Enshrouded) && !HasStatusEffect(Buffs.SoulReaver) &&
+                !HasStatusEffect(Buffs.Executioner) && !HasStatusEffect(Buffs.PerfectioParata) &&
+                ActionReady(SoulScythe) && Soul <= 50)
+                return SoulScythe;
+
+            return ComboAction == OriginalHook(SpinningScythe) && LevelChecked(NightmareScythe)
+                ? OriginalHook(NightmareScythe)
+                : actionID;
+        }
+    }
+
     internal class RPR_AoE_AdvancedMode : CustomCombo
     {
         protected internal override Preset Preset => Preset.RPR_AoE_AdvancedMode;
@@ -520,8 +623,8 @@ internal partial class RPR : Melee
             if (Variant.CanRampart(Preset.RPR_Variant_Rampart))
                 return Variant.Rampart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             if (CanWeave())
             {

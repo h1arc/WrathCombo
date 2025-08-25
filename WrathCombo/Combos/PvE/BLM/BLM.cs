@@ -22,8 +22,8 @@ internal partial class BLM : Caster
             if (Variant.CanRampart(Preset.BLM_Variant_Rampart))
                 return Variant.Rampart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             if (CanWeave())
             {
@@ -311,8 +311,8 @@ internal partial class BLM : Caster
             if (Variant.CanRampart(Preset.BLM_Variant_Rampart))
                 return Variant.Rampart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             if (CanWeave())
             {
@@ -507,6 +507,101 @@ internal partial class BLM : Caster
         }
     }
 
+    internal class BLM_AoE_SimpleMode : CustomCombo
+    {
+        protected internal override Preset Preset => Preset.BLM_AoE_SimpleMode;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not (Blizzard2 or HighBlizzard2))
+                return actionID;
+
+            if (Variant.CanCure(Preset.BLM_Variant_Cure, BLM_VariantCure))
+                return Variant.Cure;
+
+            if (Variant.CanRampart(Preset.BLM_Variant_Rampart))
+                return Variant.Rampart;
+
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
+
+            if (CanWeave())
+            {
+                if (IsMoving() && InCombat() && HasBattleTarget() &&
+                    ActionReady(Triplecast) && !HasStatusEffect(Buffs.Triplecast))
+                    return Triplecast;
+
+                if (ActionReady(Manafont) &&
+                    EndOfFirePhase)
+                    return Manafont;
+
+                if (ActionReady(Transpose) &&
+                    (EndOfFirePhase || EndOfIcePhaseAoEMaxLevel))
+                    return Transpose;
+
+                if (ActionReady(Amplifier) && PolyglotTimer >= 20000)
+                    return Amplifier;
+
+                if (ActionReady(LeyLines) && !HasStatusEffect(Buffs.LeyLines) &&
+                    !IsMoving() && TimeStoodStill > TimeSpan.FromSeconds(BLM_AoE_LeyLinesTimeStill) &&
+                    GetTargetHPPercent() > 40)
+                    return LeyLines;
+            }
+
+            if ((EndOfFirePhase || EndOfIcePhase || EndOfIcePhaseAoEMaxLevel) &&
+                HasPolyglotStacks())
+                return Foul;
+
+            if (HasStatusEffect(Buffs.Thunderhead) && LevelChecked(Thunder2) &&
+                CanApplyStatus(CurrentTarget, ThunderList[OriginalHook(Thunder2)]) &&
+                (ThunderDebuffAoE is null && ThunderDebuffST is null ||
+                 ThunderDebuffAoE?.RemainingTime <= 3 ||
+                 ThunderDebuffST?.RemainingTime <= 3) &&
+                (EndOfFirePhase || EndOfIcePhase || EndOfIcePhaseAoEMaxLevel))
+                return OriginalHook(Thunder2);
+
+            if (ActiveParadox && EndOfIcePhaseAoEMaxLevel)
+                return Paradox;
+
+            if (FirePhase)
+            {
+                if (FlarestarReady)
+                    return FlareStar;
+
+                if (ActionReady(Fire2) && !TraitLevelChecked(Traits.UmbralHeart))
+                    return OriginalHook(Fire2);
+
+                if (!HasStatusEffect(Buffs.Triplecast) && ActionReady(Triplecast) &&
+                    HasMaxUmbralHeartStacks && !ActionReady(Manafont))
+                    return Triplecast;
+
+                if (ActionReady(Flare))
+                    return Flare;
+
+                if (ActionReady(Transpose) && CurMp < MP.FireAoE)
+                    return Transpose;
+            }
+
+            if (IcePhase)
+            {
+                if ((HasMaxUmbralHeartStacks || CurMp is MP.MaxMP) &&
+                    ActionReady(Transpose))
+                    return Transpose;
+
+                if (LevelChecked(Freeze))
+                    return LevelChecked(Blizzard4) && HasBattleTarget() &&
+                           NumberOfEnemiesInRange(Freeze, CurrentTarget) == 2
+                        ? Blizzard4
+                        : Freeze;
+
+                if (!LevelChecked(Freeze) && LevelChecked(Blizzard2))
+                    return OriginalHook(Blizzard2);
+            }
+
+            return actionID;
+        }
+    }
+
     internal class BLM_AoE_AdvancedMode : CustomCombo
     {
         protected internal override Preset Preset => Preset.BLM_AoE_AdvancedMode;
@@ -522,8 +617,8 @@ internal partial class BLM : Caster
             if (Variant.CanRampart(Preset.BLM_Variant_Rampart))
                 return Variant.Rampart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             if (CanWeave())
             {

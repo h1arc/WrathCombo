@@ -36,8 +36,8 @@ internal partial class SGE : Healer
                 return Variant.Rampart;
 
             //Occult skills
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             if (CanWeave() && !HasStatusEffect(Buffs.Eukrasia))
             {
@@ -132,8 +132,8 @@ internal partial class SGE : Healer
                 return Variant.Rampart;
 
             //Occult skills
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             if (ActionReady(Kerachole) && HasAddersgall() &&
                 CanWeave() && RaidWideCasting())
@@ -245,8 +245,8 @@ internal partial class SGE : Healer
                 return Variant.Rampart;
 
             //Occult skills
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             #region Raidwide Feature
 
@@ -362,8 +362,8 @@ internal partial class SGE : Healer
                 return Variant.Rampart;
 
             //Occult skills
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             #region Raidwide Feature
 

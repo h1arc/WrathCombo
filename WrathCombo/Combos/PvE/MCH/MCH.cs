@@ -30,8 +30,8 @@ internal partial class MCH : PhysicalRanged
             if (Variant.CanRampart(Preset.MCH_Variant_Rampart))
                 return Variant.Rampart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             // All weaves
             if (CanWeave())
@@ -292,8 +292,8 @@ internal partial class MCH : PhysicalRanged
             if (Variant.CanRampart(Preset.MCH_Variant_Rampart))
                 return Variant.Rampart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             // All weaves
             if (CanWeave())
@@ -445,6 +445,121 @@ internal partial class MCH : PhysicalRanged
         }
     }
 
+    internal class MCH_AoE_SimpleMode : CustomCombo
+    {
+        protected internal override Preset Preset => Preset.MCH_AoE_SimpleMode;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not (SpreadShot or Scattergun))
+                return actionID;
+
+            if (HasStatusEffect(Buffs.Flamethrower) || JustUsed(Flamethrower, GCD))
+                return All.SavageBlade;
+
+            // Interrupt
+            if (Role.CanHeadGraze(Preset.MCH_AoE_SimpleMode, WeaveTypes.DelayWeave))
+                return Role.HeadGraze;
+
+            if (Variant.CanCure(Preset.MCH_Variant_Cure, MCH_VariantCure))
+                return Variant.Cure;
+
+            if (Variant.CanRampart(Preset.MCH_Variant_Rampart))
+                return Variant.Rampart;
+
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
+
+            // All weaves
+            if (CanWeave())
+            {
+                if (!IsOverheated)
+                {
+                    // BarrelStabilizer
+                    if (ActionReady(BarrelStabilizer) &&
+                        !HasStatusEffect(Buffs.FullMetalMachinist))
+                        return BarrelStabilizer;
+
+                    if (Battery is 100)
+                        return OriginalHook(RookAutoturret);
+
+                    // Hypercharge
+                    if ((Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) && LevelChecked(Hypercharge) &&
+                        LevelChecked(AutoCrossbow) &&
+                        (LevelChecked(BioBlaster) && GetCooldownRemainingTime(BioBlaster) > 10 ||
+                         !LevelChecked(BioBlaster)) &&
+                        (LevelChecked(Flamethrower) && GetCooldownRemainingTime(Flamethrower) > 10 ||
+                         !LevelChecked(Flamethrower)))
+                        return Hypercharge;
+
+                    if (ActionReady(Reassemble) &&
+                        !HasStatusEffect(Buffs.Wildfire) &&
+                        !HasStatusEffect(Buffs.Reassembled) &&
+                        !JustUsed(Flamethrower, 10f) &&
+                        (HasStatusEffect(Buffs.ExcavatorReady) && LevelChecked(Excavator) ||
+                         GetCooldownRemainingTime(Chainsaw) < 1 && LevelChecked(Chainsaw) ||
+                         GetCooldownRemainingTime(AirAnchor) < 1 && LevelChecked(AirAnchor) ||
+                         LevelChecked(Scattergun)))
+                        return Reassemble;
+
+                    if (Role.CanSecondWind(25))
+                        return Role.SecondWind;
+                }
+
+                //AutoCrossbow, Gauss, Rico
+                if ((JustUsed(OriginalHook(AutoCrossbow), 1f) ||
+                     JustUsed(OriginalHook(Heatblast), 1f)) && HasNotWeaved)
+                {
+                    if (ActionReady(GaussRound) &&
+                        (UseGaussRound || !LevelChecked(Ricochet)))
+                        return OriginalHook(GaussRound);
+
+                    if (ActionReady(Ricochet) && UseRicochet)
+                        return OriginalHook(Ricochet);
+                }
+            }
+
+            if (!IsOverheated)
+            {
+                //Full Metal Field
+                if (HasStatusEffect(Buffs.FullMetalMachinist) &&
+                    LevelChecked(FullMetalField))
+                    return FullMetalField;
+
+                if (ActionReady(BioBlaster) &&
+                    !HasStatusEffect(Debuffs.Bioblaster, CurrentTarget) &&
+                    !IsOverheated && !HasStatusEffect(Buffs.Reassembled) &&
+                    CanApplyStatus(CurrentTarget, Debuffs.Bioblaster))
+                    return OriginalHook(BioBlaster);
+
+                if (ActionReady(Flamethrower) &&
+                    !HasStatusEffect(Buffs.Reassembled) &&
+                    !IsMoving() && TimeStoodStill > TimeSpan.FromSeconds(2.5f) &&
+                    GetTargetHPPercent() > 50)
+                    return OriginalHook(Flamethrower);
+
+                if (LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady))
+                    return Excavator;
+
+                if (ActionReady(Chainsaw) && !HasStatusEffect(Buffs.ExcavatorReady))
+                    return Chainsaw;
+
+                if (LevelChecked(AirAnchor) && IsOffCooldown(AirAnchor))
+                    return AirAnchor;
+            }
+
+            if (ActionReady(BlazingShot) && IsOverheated)
+                return HasBattleTarget() &&
+                       (!LevelChecked(CheckMate) ||
+                        LevelChecked(CheckMate) &&
+                        NumberOfEnemiesInRange(AutoCrossbow, CurrentTarget) >= 5)
+                    ? AutoCrossbow
+                    : BlazingShot;
+
+            return actionID;
+        }
+    }
+
     internal class MCH_AoE_AdvancedMode : CustomCombo
     {
         protected internal override Preset Preset => Preset.MCH_AoE_AdvancedMode;
@@ -484,8 +599,8 @@ internal partial class MCH : PhysicalRanged
             if (Variant.CanRampart(Preset.MCH_Variant_Rampart))
                 return Variant.Rampart;
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
+            if (ContentSpecificActions.TryGet(out var contentAction))
+                return contentAction;
 
             // All weaves
             if (CanWeave())
