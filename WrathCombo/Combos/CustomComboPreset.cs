@@ -6270,7 +6270,7 @@ public enum Preset
     #region Basic Combo
 
     [ReplaceSkill(SAM.Yukikaze)]
-    [CustomComboInfo("Yukikaze Combo", "Replace Yukikaze with its combo chain.\nEnabling Gekko and Kasha options makes this a one button basic combo.", Job.SAM)]
+    [CustomComboInfo("Yukikaze Combo", "Replace Yukikaze with its combo chain.\nEnabling Gekko and Kasha combo options makes this a one button basic combo.", Job.SAM)]
     SAM_ST_YukikazeCombo = 15000,
 
     [ReplaceSkill(SAM.Kasha)]
@@ -6286,7 +6286,7 @@ public enum Preset
     SAM_AoE_OkaCombo = 15100,
 
     [ReplaceSkill(SAM.Mangetsu)]
-    [CustomComboInfo("Mangetsu Combo", "Replace Mangetsu with its combo chain.", Job.SAM)]
+    [CustomComboInfo("Mangetsu Combo", "Replace Mangetsu with its combo chain.\nEnabling Oka combo options makes this a one button basic combo.", Job.SAM)]
     SAM_AoE_MangetsuCombo = 15101,
 
     #endregion
