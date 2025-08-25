@@ -105,6 +105,115 @@ internal partial class MNK : Melee
         }
     }
 
+    internal class MNK_AOE_SimpleMode : CustomCombo
+    {
+        protected internal override Preset Preset => Preset.MNK_AOE_SimpleMode;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not (ArmOfTheDestroyer or ShadowOfTheDestroyer))
+                return actionID;
+
+            if (LevelChecked(InspiritedMeditation) &&
+                (!InCombat() || !InMeleeRange()) &&
+                Chakra < 5 &&
+                IsOriginal(MasterfulBlitz) &&
+                !HasStatusEffect(Buffs.RiddleOfFire) &&
+                !HasStatusEffect(Buffs.WindsRumination) &&
+                !HasStatusEffect(Buffs.FiresRumination))
+                return OriginalHook(InspiritedMeditation);
+
+            if (LevelChecked(FormShift) && !InCombat() &&
+                !HasStatusEffect(Buffs.FormlessFist) &&
+                !HasStatusEffect(Buffs.PerfectBalance) &&
+                !HasStatusEffect(Buffs.OpoOpoForm) &&
+                !HasStatusEffect(Buffs.RaptorForm) &&
+                !HasStatusEffect(Buffs.CoeurlForm))
+                return FormShift;
+
+            //Variant Cure
+            if (Variant.CanCure(Preset.MNK_Variant_Cure, MNK_VariantCure))
+                return Variant.Cure;
+
+            //Variant Rampart
+            if (Variant.CanRampart(Preset.MNK_Variant_Rampart))
+                return Variant.Rampart;
+
+            if (OccultCrescent.ShouldUsePhantomActions())
+                return OccultCrescent.BestPhantomAction();
+
+            // OGCD's
+            if (CanWeave())
+            {
+                if (UsePerfectBalanceAoE())
+                    return PerfectBalance;
+
+                if (UseBrotherhood())
+                    return Brotherhood;
+
+                if (UseRoF())
+                    return RiddleOfFire;
+
+                if (UseRoW())
+                    return RiddleOfWind;
+
+                if (Role.CanSecondWind(25))
+                    return Role.SecondWind;
+
+                if (Role.CanBloodBath(40))
+                    return Role.Bloodbath;
+
+                if (Chakra >= 5 &&
+                    LevelChecked(InspiritedMeditation) &&
+                    HasBattleTarget() && InCombat() &&
+                    !JustUsed(Brotherhood) && !JustUsed(RiddleOfFire) &&
+                    InActionRange(OriginalHook(InspiritedMeditation)))
+                    return OriginalHook(InspiritedMeditation);
+            }
+
+            // Masterful Blitz
+            if (LevelChecked(MasterfulBlitz) &&
+                !HasStatusEffect(Buffs.PerfectBalance) &&
+                InMasterfulRange() &&
+                !IsOriginal(MasterfulBlitz))
+                return OriginalHook(MasterfulBlitz);
+
+            if (HasStatusEffect(Buffs.FiresRumination) &&
+                !HasStatusEffect(Buffs.PerfectBalance) &&
+                !HasStatusEffect(Buffs.FormlessFist) &&
+                !JustUsed(RiddleOfFire, 4))
+                return FiresReply;
+
+            if (HasStatusEffect(Buffs.WindsRumination) &&
+                !HasStatusEffect(Buffs.PerfectBalance) &&
+                (GetCooldownRemainingTime(RiddleOfFire) > 10 ||
+                 HasStatusEffect(Buffs.RiddleOfFire)))
+                return WindsReply;
+
+            // Perfect Balance
+            if (DoPerfectBalanceComboAoE(ref actionID))
+                return actionID;
+
+            // Monk Rotation
+            if (HasStatusEffect(Buffs.OpoOpoForm))
+                return OriginalHook(ArmOfTheDestroyer);
+
+            if (HasStatusEffect(Buffs.RaptorForm))
+            {
+                if (LevelChecked(FourPointFury))
+                    return FourPointFury;
+
+                if (LevelChecked(TwinSnakes))
+                    return TwinSnakes;
+            }
+
+            if (HasStatusEffect(Buffs.CoeurlForm) && LevelChecked(Rockbreaker))
+                return Rockbreaker;
+
+            return actionID;
+        }
+    }
+
     internal class MNK_ST_AdvancedMode : CustomCombo
     {
         protected internal override Preset Preset => Preset.MNK_ST_AdvancedMode;
@@ -177,6 +286,12 @@ internal partial class MNK : Melee
                         return RiddleOfWind;
                 }
 
+                if (IsEnabled(Preset.MNK_ST_Feint) &&
+                    RoleActions.Melee.CanFeint() &&
+                    CanApplyStatus(CurrentTarget, RoleActions.Melee.Debuffs.Feint) &&
+                    RaidWideCasting())
+                    return Role.Feint;
+
                 if (IsEnabled(Preset.MNK_ST_ComboHeals))
                 {
                     if (Role.CanSecondWind(MNK_ST_SecondWindHPThreshold))
@@ -185,6 +300,11 @@ internal partial class MNK : Melee
                     if (Role.CanBloodBath(MNK_ST_BloodbathHPThreshold))
                         return Role.Bloodbath;
                 }
+
+                if (IsEnabled(Preset.MNK_ST_StunInterupt) &&
+                    RoleActions.Melee.CanLegSweep() &&
+                    !TargetIsBoss() && TargetIsCasting())
+                    return Role.LegSweep;
 
                 if (IsEnabled(Preset.MNK_STUseTheForbiddenChakra) &&
                     Chakra >= 5 && InCombat() &&
@@ -408,7 +528,7 @@ internal partial class MNK : Melee
                         GetTargetHPPercent() >= MNK_AoE_RiddleOfWindHPTreshold)
                         return RiddleOfWind;
                 }
-
+                
                 if (IsEnabled(Preset.MNK_AoE_ComboHeals))
                 {
                     if (Role.CanSecondWind(MNK_AoE_SecondWindHPThreshold))
@@ -417,6 +537,11 @@ internal partial class MNK : Melee
                     if (Role.CanBloodBath(MNK_AoE_BloodbathHPThreshold))
                         return Role.Bloodbath;
                 }
+
+                if (IsEnabled(Preset.MNK_AoE_StunInterupt) &&
+                    RoleActions.Melee.CanLegSweep() &&
+                    !TargetIsBoss() && TargetIsCasting())
+                    return Role.LegSweep;
 
                 if (IsEnabled(Preset.MNK_AoEUseHowlingFist) &&
                     Chakra >= 5 && HasBattleTarget() && InCombat() &&
