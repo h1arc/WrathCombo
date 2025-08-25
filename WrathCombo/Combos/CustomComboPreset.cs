@@ -3794,7 +3794,7 @@ public enum Preset
 
     [ReplaceSkill(MCH.HotShot)]
     [CustomComboInfo("Big Hitter Feature", "Replace Hot Shot, Drill, Air Anchor, Chainsaw and Excavator depending on which is on cooldown.", Job.MCH)]
-    MCH_HotShotDrillChainsawExcavator = 8004,
+    MCH_BigHitter = 8004,
 
     [ReplaceSkill(MCH.GaussRound, MCH.Ricochet, MCH.CheckMate, MCH.DoubleCheck)]
     [CustomComboInfo("Gauss Round / Ricochet \nDouble Check / Checkmate Feature", "Replace Gauss Round and Ricochet or Double Check and Checkmate with one or the other depending on which has more charges.", Job.MCH)]
