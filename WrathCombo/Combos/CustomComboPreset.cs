@@ -1223,6 +1223,10 @@ public enum Preset
     [CustomComboInfo("Fire IV Feature", "Replaces Fire IV with the options below.", Job.BLM)]
     BLM_Fire4 = 2059,
 
+    [ReplaceSkill(BLM.Flare)]
+    [CustomComboInfo("Flare Feature", "Replaces Flare with the options below.", Job.BLM)]
+    BLM_Flare = 2069,
+
     [ReplaceSkill(BLM.Blizzard, BLM.Blizzard3)]
     [CustomComboInfo("Blizzard I/III Feature", "Replaces Blizzard I or Blizzard III with the options below.", Job.BLM)]
     BLM_Blizzard1and3 = 2052,
@@ -1272,7 +1276,7 @@ public enum Preset
 
     // Last value ST = 2117
     //Last Value AoE = 2213
-    //Last Value misc = 2068
+    //Last Value misc = 2069
 
     #endregion
 
