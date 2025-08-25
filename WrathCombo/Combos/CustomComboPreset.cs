@@ -4426,6 +4426,14 @@ public enum Preset
     [ParentCombo(PCT_ST_AdvancedMode_MovementFeature)]
     [CustomComboInfo("Swiftcast Option ", "Adds Swiftcast to the combo while moving.", Job.PCT)]
     PCT_ST_AdvancedMode_SwitfcastOption = 20032,
+    
+    [ParentCombo(PCT_ST_AdvancedMode)]
+    [CustomComboInfo("Addle Raidwide Option", "Adds Addle when Raidwide is detected casting.", Job.PCT)]
+    PCT_ST_AdvancedMode_Addle = 20070,
+    
+    [ParentCombo(PCT_ST_AdvancedMode)]
+    [CustomComboInfo("Tempura Raidwide Option", "Adds Tempura Coat when Raidwide is detected casting. \nSpreads it with Tempura Grassa if enough party members are in range. More than 75%", Job.PCT)]
+    PCT_ST_AdvancedMode_Tempura = 20071,
 
     #endregion
 
@@ -4570,6 +4578,8 @@ public enum Preset
     PCT_Variant_Rampart = 20101,
 
     #endregion
+    
+    // Last used 20071
 
     #endregion
 
@@ -5393,8 +5403,16 @@ public enum Preset
     [CustomComboInfo("Lucid Dreaming Option", "Weaves Lucid Dreaming when your MP drops below the specified value.",
         Job.RDM)]
     RDM_ST_Lucid = 13023,
+    
+    [ParentCombo(RDM_ST_DPS)]
+    [CustomComboInfo("Addle Raidwide Option", "Adds Addle when Raidwide is detected casting.", Job.RDM)]
+    RDM_ST_Addle = 13024,
+    
+    [ParentCombo(RDM_ST_DPS)]
+    [CustomComboInfo("Magick Barrier Raidwide Option", "Adds Magick Barrier when Raidwide is detected casting.", Job.RDM)]
+    RDM_ST_MagickBarrier = 13025,
 
-    //Last Used 13024
+    //Last Used 13025
     #endregion
 
     #region AoE DPS
@@ -6920,6 +6938,10 @@ public enum Preset
     [CustomComboInfo("Lucid Dreaming Option",
        "Adds Lucid Dreaming to the single target combo when MP falls below the set value.", Job.SMN)]
     SMN_ST_Advanced_Combo_Lucid = 17031,
+    
+    [ParentCombo(SMN_ST_Advanced_Combo)]
+    [CustomComboInfo("Addle Raidwide Option", "Adds Addle when Raidwide is detected casting.", Job.SMN)]
+    SMN_ST_Advanced_Combo_Addle = 17082,
 
     #endregion
 
@@ -7095,7 +7117,7 @@ public enum Preset
 
     #endregion
 
-    // Last Used 17078
+    // Last Used 17080
 
     #endregion
 
