@@ -227,7 +227,7 @@ internal partial class BLM : Caster
                     return Manaward;
                 
                 if (IsEnabled(Preset.BLM_ST_Addle) && 
-                    RoleActions.Caster.CanAddle() &&
+                    Role.CanAddle() &&
                     RaidWideCasting())
                     return Role.Addle;
 

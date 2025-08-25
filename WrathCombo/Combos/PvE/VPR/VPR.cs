@@ -232,7 +232,7 @@ internal partial class VPR : Melee
                 }
 
                 if (IsEnabled(Preset.VPR_ST_Feint) &&
-                    RoleActions.Melee.CanFeint() &&
+                    Role.CanFeint() &&
                     RaidWideCasting())
                     return Role.Feint;
 

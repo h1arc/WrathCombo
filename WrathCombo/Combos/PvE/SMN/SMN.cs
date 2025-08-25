@@ -646,7 +646,7 @@ internal partial class SMN : Caster
                     return Role.LucidDreaming;
                 
                 if (IsEnabled(Preset.SMN_ST_Advanced_Combo_Addle) && 
-                    RoleActions.Caster.CanAddle() &&
+                    Role.CanAddle()  &&
                     RaidWideCasting())
                     return Role.Addle;
             }

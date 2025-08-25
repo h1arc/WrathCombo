@@ -178,7 +178,7 @@ internal partial class MNK : Melee
                 }
 
                 if (IsEnabled(Preset.MNK_ST_Feint) &&
-                    RoleActions.Melee.CanFeint() &&
+                    Role.CanFeint() &&
                     RaidWideCasting())
                     return Role.Feint;
 

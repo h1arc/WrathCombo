@@ -362,7 +362,7 @@ internal partial class NIN : Melee
             if ((!MudraPhase || HasKassatsu && TrickCD > 5) && CanWeave())
             {
                 if (IsEnabled(Preset.NIN_ST_AdvancedMode_Feint) && 
-                    RoleActions.Melee.CanFeint() &&
+                    Role.CanFeint() &&
                     RaidWideCasting())
                     return Role.Feint;
 

@@ -280,7 +280,7 @@ internal partial class PCT : Caster
                     return Role.LucidDreaming;
                 
                 if (IsEnabled(Preset.PCT_ST_AdvancedMode_Addle) && 
-                    RoleActions.Caster.CanAddle() && CanWeave() &&
+                    Role.CanAddle()  && CanWeave() &&
                     RaidWideCasting())
                     return Role.Addle;
 

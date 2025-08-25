@@ -275,7 +275,7 @@ internal partial class RDM : Caster
                     return Role.Swiftcast;
                 
                 if (IsEnabled(Preset.RDM_ST_Addle) && 
-                    RoleActions.Caster.CanAddle() &&
+                    Role.CanAddle() &&
                     RaidWideCasting())
                     return Role.Addle;
                 
