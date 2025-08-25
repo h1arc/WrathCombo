@@ -1442,7 +1442,7 @@ public enum Preset
 
     [AutoAction(false, false)]
     [ReplaceSkill(BRD.HeavyShot, BRD.BurstShot)]
-    [ConflictingCombos(BRD_ST_AdvMode, BRD_StraightShotUpgrade)]
+    [ConflictingCombos(BRD_ST_AdvMode)]
     [CustomComboInfo("Simple Mode - Single Target",
         "Replaces Heavy Shot with a full one-button single target rotation.\nThis is the ideal option for newcomers to the job.",
         Job.BRD)]
@@ -1450,7 +1450,7 @@ public enum Preset
     BRD_ST_SimpleMode = 3036,
 
     [AutoAction(true, false)]
-    [ConflictingCombos(BRD_AoE_Combo, BRD_AoE_AdvMode)]
+    [ConflictingCombos(BRD_AoE_AdvMode)]
     [ReplaceSkill(BRD.QuickNock, BRD.Ladonsbite)]
     [CustomComboInfo("Simple Mode - AoE",
         "Replaces Quick Nock with a full one-button AoE rotation.\nThis is the ideal option for newcomers to the job.",
@@ -1464,7 +1464,7 @@ public enum Preset
 
     [AutoAction(false, false)]
     [ReplaceSkill(BRD.HeavyShot, BRD.BurstShot)]
-    [ConflictingCombos(BRD_ST_SimpleMode, BRD_StraightShotUpgrade)]
+    [ConflictingCombos(BRD_ST_SimpleMode)]
     [CustomComboInfo("Advanced Mode - Single Target",
         "Replaces Heavy Shot with a full one-button single target rotation.\nThese features are ideal if you want to customize the rotation.",
         Job.BRD)]
@@ -1524,9 +1524,17 @@ public enum Preset
     [ParentCombo(BRD_ST_AdvMode)]
     [CustomComboInfo("Self Cleanse Option", "Uses Wardens Paeon when you have a cleansable debuff.", Job.BRD)]
     BRD_ST_Wardens = 3047,
+    
+    [ParentCombo(BRD_ST_AdvMode)]
+    [CustomComboInfo("Troubadour Raidwide Option", "Adds Troubador when Raidwide is detected casting.", Job.BRD)]
+    BRD_Adv_Troubadour = 3069,
+    
+    [ParentCombo(BRD_ST_AdvMode)]
+    [CustomComboInfo("Nature's Minne Raidwide Option", "Adds Nature's Minne when Raidwide is detected casting and you don't already have Troubadour up.", Job.BRD)]
+    BRD_Adv_NaturesMinne = 3070,
 
     [AutoAction(true, false)]
-    [ConflictingCombos(BRD_AoE_Combo, BRD_AoE_SimpleMode)]
+    [ConflictingCombos(BRD_AoE_SimpleMode)]
     [ReplaceSkill(BRD.QuickNock, BRD.Ladonsbite)]
     [CustomComboInfo("Advanced Mode - AoE",
         "Replaces Quick Nock with a full one-button AoE rotation.\nThese features are ideal if you want to customize the rotation.",
@@ -1587,52 +1595,38 @@ public enum Preset
 
     #region Smaller Features
 
-    [ReplaceSkill(BRD.HeavyShot, BRD.BurstShot)]
-    [ConflictingCombos(BRD_ST_AdvMode, BRD_ST_SimpleMode)]
-    [CustomComboInfo("Heavy Shot into Straight Shot Feature",
-        "Replaces Heavy Shot/Burst Shot with Straight Shot/Refulgent Arrow when procced.", Job.BRD)]
+    [ReplaceSkill(BRD.StraightShot, BRD.RefulgentArrow)]
+    [CustomComboInfo("Straight Shot Feature",
+        "Straight Shot/Refulgent Arrow with Heavy Shot when not procced.", Job.BRD)]
     BRD_StraightShotUpgrade = 3001,
+    
+    [ParentCombo(BRD_StraightShotUpgrade)]
+    [CustomComboInfo("OGCDs option", "Will use the following OGCDs to prevent overcap", Job.BRD)]
+    BRD_StraightShotUpgrade_OGCDs = 3002,
 
     [ParentCombo(BRD_StraightShotUpgrade)]
-    [CustomComboInfo("DoT Maintenance Option",
-        "Enabling this option will make Heavy Shot into Straight Shot refresh your DoTs on your current.", Job.BRD
-    )]
-    BRD_DoTMaintainance = 3002,
-
-    [ParentCombo(BRD_StraightShotUpgrade)]
-    [CustomComboInfo("Apex Arrow Option",
-        "Replaces Burst Shot with Apex Arrow when gauge is full and Blast Arrow when you are Blast Arrow ready.",
-        Job.BRD)]
-    BRD_ApexST = 3034,
+    [CustomComboInfo("DoT Option", "Will apply and refresh your dots.", Job.BRD)]
+    BRD_DoTMaintainance = 3067,
 
     [ReplaceSkill(BRD.IronJaws)]
-    [ConflictingCombos(BRD_IronJaws_Alternate)]
     [CustomComboInfo("Iron Jaws Feature",
         "Iron Jaws is replaced with Caustic Bite/Stormbite if one or both are not up.\nAlternates between the two if Iron Jaws isn't available.",
         Job.BRD)]
     BRD_IronJaws = 3003,
 
-    [ParentCombo(BRD_IronJaws)]
-    [CustomComboInfo("Iron Jaws Apex Option", "Adds Apex and Blast Arrow to Iron Jaws when available.", Job.BRD)]
-    BRD_IronJawsApex = 3024,
-
-    [ReplaceSkill(BRD.IronJaws)]
-    [ConflictingCombos(BRD_IronJaws)]
-    [CustomComboInfo("Iron Jaws Alternate Feature",
-        "Iron Jaws is replaced with Caustic Bite/Stormbite if one or both are not up.\nIron Jaws will only show up when debuffs are about to expire.",
-        Job.BRD)]
-    BRD_IronJaws_Alternate = 3004,
-
     [ReplaceSkill(BRD.QuickNock, BRD.Ladonsbite)]
-    [ConflictingCombos(BRD_AoE_AdvMode, BRD_AoE_SimpleMode)]
-    [CustomComboInfo("Quick Nock Feature", "Replaces Quick Nock/Ladonsbite with Shadowbite when ready.", Job.BRD)]
-    BRD_AoE_Combo = 3008,
+    [CustomComboInfo("Wide Volley Feature", "Replaces WideVolley/Shadowbite with Quicknock/LadonsBite when not procced or below level.", Job.BRD)]
+    BRD_WideVolleyUpgrade = 3008,
+    
+    [ParentCombo(BRD_WideVolleyUpgrade)]
+    [CustomComboInfo("OGCDs option", "Will use the following OGCDs to prevent overcap", Job.BRD)]
+    BRD_WideVolleyUpgrade_OGCDs = 3068,
 
-    [ParentCombo(BRD_AoE_Combo)]
+    [ParentCombo(BRD_WideVolleyUpgrade)]
     [CustomComboInfo("Apex Arrow Option",
-        "Replaces Ladonsbite and Quick Nock with Apex Arrow when gauge is full and Blast Arrow when you are Blast Arrow ready.",
+        "Replaces WideVolley/Shadowbite with Apex Arrow when gauge is full and Blast Arrow when you are Blast Arrow ready.",
         Job.BRD)]
-    BRD_Apex = 3005,
+    BRD_WideVolleyUpgrade_Apex = 3005,
 
     [ReplaceSkill(BRD.Bloodletter)]
     [CustomComboInfo("Single Target oGCD Feature", "All oGCD's on Bloodletter/Heartbreakshot", Job.BRD)]
@@ -1676,7 +1670,7 @@ public enum Preset
 
     #endregion
 
-    // Last value = 3066
+    // Last value = 3069
 
     #endregion
 
@@ -1841,9 +1835,13 @@ public enum Preset
         "Includes Curing Waltz and Second Wind in the rotation when available and your HP is below the set percentages.",
         Job.DNC)]
     DNC_ST_Adv_PanicHeals = 4027,
+    
+    [ParentCombo(DNC_ST_AdvancedMode)]
+    [CustomComboInfo("Shield Samba Raidwide Option", "Adds Shield Samba when Raidwide is detected casting.", Job.MCH)]
+    DNC_ST_Adv_ShieldSamba = 4034,
 
     #endregion
-    // Last value = 4033
+    // Last value = 4034
 
     #region Advanced Dancer (AoE)
 
@@ -3620,6 +3618,10 @@ public enum Preset
     [ParentCombo(MCH_ST_AdvancedMode)]
     [CustomComboInfo("Excavator Option", "Adds Excavator to the rotation.", Job.MCH)]
     MCH_ST_Adv_Excavator = 8116,
+    
+    [ParentCombo(MCH_ST_AdvancedMode)]
+    [CustomComboInfo("Tactician Raidwide Option", "Adds Tactician when Raidwide is detected casting.", Job.MCH)]
+    MCH_ST_Adv_Tactician = 8118,
 
     [ParentCombo(MCH_ST_AdvancedMode)]
     [CustomComboInfo("Head Graze Option", "Uses Head Graze to interrupt during the rotation, where applicable.", Job.MCH)]

@@ -60,6 +60,26 @@ internal abstract partial class CustomComboFunctions
     }
 
     /// <summary>
+    /// Checks to see if any statuses are on the Player or an optional target
+    /// </summary>
+    /// <param name="statusId">List Of StatusIDs</param>
+    /// <param name="target">Optional Target</param>
+    /// <param name="anyOwner">Check if the Player owns/created the statuses, true means anyone owns</param> 
+    /// <seealso cref="HasStatusEffect(ushort statusId, IGameObject? target = null, bool anyOwner = false)"/>
+    public static bool HasAnyStatusEffects(ushort[] status, IGameObject? target = null, bool anyOwner = false) =>
+        status.Any(statusId => HasStatusEffect(statusId, target ?? LocalPlayer, anyOwner));
+    
+    /// <summary>
+    /// Checks to see if all statuses are on the Player or an optional target
+    /// </summary>
+    /// <param name="statusId">List Of StatusIDs</param>
+    /// <param name="target">Optional Target</param>
+    /// <param name="anyOwner">Check if the Player owns/created the statuses, true means anyone owns</param>  
+    /// <seealso cref="HasStatusEffect(ushort statusId, IGameObject? target = null, bool anyOwner = false)"/>
+    public static bool HasAllStatusEffects(ushort[] status, IGameObject? target = null, bool anyOwner = false) =>
+        status.All(statusId => HasStatusEffect(statusId, target ?? LocalPlayer, anyOwner));
+    
+    /// <summary>
     /// Gets remaining time of a Status Effect
     /// </summary>
     /// <param name="effect">Dalamud Status object</param>
