@@ -462,23 +462,23 @@ internal partial class SGE : Healer
         protected override uint Invoke(uint actionID)
         {
             IGameObject? healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
-            IGameObject? esunaTarget = SimpleTarget.Stack.AllyToEsuna;
 
             if (actionID is not Diagnosis)
                 return actionID;
-            
+
             if (LevelChecked(Kardia) && 
                 !HasStatusEffect(Buffs.Kardia))
                 return Kardia.Retarget(Diagnosis, SimpleTarget.AnyLivingTank);
-
-            if (ActionReady(Role.Esuna) && 
-                GetTargetHPPercent(esunaTarget) >= 40 &&
-                HasCleansableDebuff(esunaTarget))
-                return Role.Esuna.RetargetIfEnabled(esunaTarget, Diagnosis);
             
+            if (ActionReady(Role.Esuna) && 
+                GetTargetHPPercent(healTarget) >= 40 &&
+                (HealRetargeting.RetargetSettingOn ||
+                 HasCleansableDebuff(healTarget)))
+                return Role.Esuna.RetargetIfEnabled(OptionalTarget, Diagnosis);
+
             if (Role.CanLucidDream(6500))
                 return Role.LucidDreaming;
-            
+
             if (ActionReady(Rhizomata) && !HasAddersgall() && 
                 CanWeave())
                 return Rhizomata;
@@ -599,7 +599,6 @@ internal partial class SGE : Healer
         protected override uint Invoke(uint actionID)
         {
             IGameObject? healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
-            IGameObject? esunaTarget = SimpleTarget.Stack.AllyToEsuna;
 
             if (actionID is not Diagnosis)
                 return actionID;
@@ -621,8 +620,9 @@ internal partial class SGE : Healer
 
             if (IsEnabled(Preset.SGE_ST_Heal_Esuna) &&
                 ActionReady(Role.Esuna) &&
-                GetTargetHPPercent(esunaTarget, SGE_ST_Heal_IncludeShields) >= SGE_ST_Heal_Esuna &&
-                HasCleansableDebuff(esunaTarget))
+                GetTargetHPPercent(healTarget, SGE_ST_Heal_IncludeShields) >= SGE_ST_Heal_Esuna &&
+                (HealRetargeting.RetargetSettingOn ||
+                 HasCleansableDebuff(healTarget)))
                 return Role.Esuna
                     .RetargetIfEnabled(OptionalTarget, Diagnosis);
 
