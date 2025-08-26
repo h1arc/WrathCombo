@@ -1022,7 +1022,7 @@ internal partial class DRK
     /// <remarks>
     ///     Each logic check is already combined with checking if the preset
     ///     <see cref="IsEnabled">is enabled</see>
-    ///     and if the action is <see cref="ActionReady(uint)">ready</see> and
+    ///     and if the action is <see cref="ActionReady(uint,bool,bool)">ready</see> and
     ///     <see cref="LevelChecked(uint)">level-checked</see>.<br />
     ///     Do not add any of these checks to <c>Logic</c>.
     /// </remarks>
@@ -1125,7 +1125,6 @@ internal partial class DRK
     /// <param name="extraParam">Any extra parameter to pass through.</param>
     /// <returns>Whether the <c>action</c> was changed.</returns>
     /// <seealso cref="IActionProvider.TryGetAction" />
-    /// <seealso cref="VariantAction" />
     /// <seealso cref="Mitigation" />
     /// <seealso cref="Spender" />
     /// <seealso cref="Cooldown" />
