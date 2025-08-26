@@ -562,6 +562,34 @@ internal partial class NIN : Melee
     #endregion
     
     #region Standalone
+
+    internal class NIN_MudraProtection : CustomCombo
+    {
+        protected internal override Preset Preset => Preset.NIN_MudraProtection;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not (RoleActions.Melee.Feint or RoleActions.Melee.Bloodbath or RoleActions.Physical.SecondWind or ShadeShift or Shukuchi or RoleActions.Melee.LegSweep) || !MudraPhase)
+                return actionID;
+
+            switch (actionID)
+            {
+                case ShadeShift when NIN_MudraProtection_Options[0]:
+                        
+                case Shukuchi when NIN_MudraProtection_Options[1]:
+                
+                case RoleActions.Melee.Feint when NIN_MudraProtection_Options[2]:
+                    
+                case RoleActions.Melee.Bloodbath when NIN_MudraProtection_Options[3]:
+                        
+                case RoleActions.Physical.SecondWind when NIN_MudraProtection_Options[4]:
+                
+                case RoleActions.Melee.LegSweep when NIN_MudraProtection_Options[5]:
+                    return All.SavageBlade;
+            }
+            return actionID;
+        }
+    }
     
     internal class NIN_ST_AeolianEdgeCombo : CustomCombo
     {

@@ -4231,6 +4231,9 @@ public enum Preset
     NIN_ArmorCrushCombo = 10041,
 
     #endregion
+    [ReplaceSkill(NIN.ShadeShift, NIN.Shukuchi, RoleActions.Melee.Feint, RoleActions.Melee.Bloodbath, RoleActions.Physical.SecondWind)]
+    [CustomComboInfo("Mudra Protection", "Replaces with Savage Blade during Mudra Phase to help prevent manual usage Mudra fails.", Job.NIN)]
+    NIN_MudraProtection = 10046,
     
     [ReplaceSkill(NIN.Kassatsu)]
     [CustomComboInfo("Kassatsu to Trick Feature",
