@@ -23,6 +23,9 @@ internal partial class MNK
 
     internal static uint DetermineCoreAbility(uint actionId, bool useTrueNorthIfEnabled)
     {
+        if (!LevelChecked(TrueStrike))
+            return Bootshine;
+
         if (HasStatusEffect(Buffs.OpoOpoForm) || HasStatusEffect(Buffs.FormlessFist))
             return OpoOpo is 0 && LevelChecked(DragonKick)
                 ? DragonKick
