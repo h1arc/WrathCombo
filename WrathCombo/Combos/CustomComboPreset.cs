@@ -800,7 +800,7 @@ public enum Preset
 
     [AutoAction(false, true)]
     [ReplaceSkill(AST.Benefic)]
-    [CustomComboInfo("Advanced Healing Mode - Single Target", "Replaces Benefic II with a one button healing replacement.",
+    [CustomComboInfo("Advanced Healing Mode - Single Target", "Replaces Benefic with a one button healing replacement.",
         Job.AST)]
     [PossiblyRetargeted(AST.Benefic2)]
     [HealingCombo]
@@ -1223,6 +1223,10 @@ public enum Preset
     [CustomComboInfo("Fire IV Feature", "Replaces Fire IV with the options below.", Job.BLM)]
     BLM_Fire4 = 2059,
 
+    [ReplaceSkill(BLM.Flare)]
+    [CustomComboInfo("Flare Feature", "Replaces Flare with the options below.", Job.BLM)]
+    BLM_Flare = 2069,
+
     [ReplaceSkill(BLM.Blizzard, BLM.Blizzard3)]
     [CustomComboInfo("Blizzard I/III Feature", "Replaces Blizzard I or Blizzard III with the options below.", Job.BLM)]
     BLM_Blizzard1and3 = 2052,
@@ -1272,7 +1276,7 @@ public enum Preset
 
     // Last value ST = 2117
     //Last Value AoE = 2213
-    //Last Value misc = 2068
+    //Last Value misc = 2069
 
     #endregion
 
@@ -2883,7 +2887,7 @@ public enum Preset
     #region Basic Combo
 
     [ReplaceSkill(DRG.FullThrust, DRG.HeavensThrust)]
-    [CustomComboInfo("Full / Heavens Thrust Combo", "Replace Full Thrust/Heavens' Thrust with the basic combo chain.", Job.DRG)]
+    [CustomComboInfo("Full / Heavens Thrust Combo", "Replace Full Thrust/Heavens' Thrust with the basic combo chain.\nEnabling Chaos combo option makes this a one button basic combo.", Job.DRG)]
     [BasicCombo]
     DRG_HeavensThrust = 6304,
 
@@ -3790,7 +3794,7 @@ public enum Preset
 
     [ReplaceSkill(MCH.HotShot)]
     [CustomComboInfo("Big Hitter Feature", "Replace Hot Shot, Drill, Air Anchor, Chainsaw and Excavator depending on which is on cooldown.", Job.MCH)]
-    MCH_HotShotDrillChainsawExcavator = 8004,
+    MCH_BigHitter = 8004,
 
     [ReplaceSkill(MCH.GaussRound, MCH.Ricochet, MCH.CheckMate, MCH.DoubleCheck)]
     [CustomComboInfo("Gauss Round / Ricochet \nDouble Check / Checkmate Feature", "Replace Gauss Round and Ricochet or Double Check and Checkmate with one or the other depending on which has more charges.", Job.MCH)]
@@ -6266,7 +6270,7 @@ public enum Preset
     #region Basic Combo
 
     [ReplaceSkill(SAM.Yukikaze)]
-    [CustomComboInfo("Yukikaze Combo", "Replace Yukikaze with its combo chain.", Job.SAM)]
+    [CustomComboInfo("Yukikaze Combo", "Replace Yukikaze with its combo chain.\nEnabling Gekko and Kasha combo options makes this a one button basic combo.", Job.SAM)]
     SAM_ST_YukikazeCombo = 15000,
 
     [ReplaceSkill(SAM.Kasha)]
@@ -6282,7 +6286,7 @@ public enum Preset
     SAM_AoE_OkaCombo = 15100,
 
     [ReplaceSkill(SAM.Mangetsu)]
-    [CustomComboInfo("Mangetsu Combo", "Replace Mangetsu with its combo chain.", Job.SAM)]
+    [CustomComboInfo("Mangetsu Combo", "Replace Mangetsu with its combo chain.\nEnabling Oka combo options makes this a one button basic combo.", Job.SAM)]
     SAM_AoE_MangetsuCombo = 15101,
 
     #endregion
