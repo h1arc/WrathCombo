@@ -779,17 +779,18 @@ internal partial class SAM : Melee
             }
 
             if (ComboTimer > 0 &&
-                ComboAction is Fuko or Fuga && LevelChecked(Mangetsu))
+                ComboAction is Fuko or Fuga)
             {
-                if (!SAM_Mangetsu_Oka ||
-                    !HasGetsu || RefreshFugetsu ||
-                    !HasStatusEffect(Buffs.Fugetsu) ||
-                    !LevelChecked(Oka))
+                if (LevelChecked(Mangetsu) &&
+                    (RefreshFugetsu && !HasGetsu ||
+                     !HasStatusEffect(Buffs.Fugetsu) ||
+                     !SAM_Mangetsu_Oka ||
+                     !LevelChecked(Oka)))
                     return Mangetsu;
 
                 if (SAM_Mangetsu_Oka &&
                     LevelChecked(Oka) &&
-                    (!HasKa || RefreshFuka ||
+                    (RefreshFuka && !HasKa ||
                      !HasStatusEffect(Buffs.Fuka)))
                     return Oka;
             }
