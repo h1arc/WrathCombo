@@ -120,6 +120,10 @@ internal partial class DRG
                         $"{Role.Bloodbath.ActionName()} HP percentage threshold");
                     break;
 
+                case Preset.DRG_HeavensThrust:
+                    DrawAdditionalBoolChoice(DRG_Heavens_Basic,
+                        "Add Chaos Combo", "Adds Chaos combo when applicable.");
+                    break;
             }
         }
 
@@ -138,7 +142,8 @@ internal partial class DRG
             DRG_AoE_BloodbathHPThreshold = new("DRG_AoE_BloodbathThreshold", 30);
 
         public static UserBool
-            DRG_ST_DoubleMirage = new("DRG_ST_DoubleMirage");
+            DRG_ST_DoubleMirage = new("DRG_ST_DoubleMirage"),
+            DRG_Heavens_Basic = new("DRG_Heavens_Basic");
 
         public static UserBoolArray
             DRG_ST_JumpMovingOptions = new("DRG_ST_Jump_Options"),
