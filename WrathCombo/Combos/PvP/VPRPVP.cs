@@ -98,7 +98,7 @@ internal static class VPRPvP
                 // Slither
                 case Preset.VPRPvP_Slither:
                     DrawSliderInt(0, 1, VPRPvP_Slither_Charges, "Charges to Keep");
-                    DrawSliderInt(6, 10, VPRPvP_Slither_Range, "Maximum Range");
+                    DrawSliderInt(6, 20, VPRPvP_Slither_Range, "Maximum Range");
                     break;
 
                 // Smite
