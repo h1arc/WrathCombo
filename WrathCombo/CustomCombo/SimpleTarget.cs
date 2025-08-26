@@ -102,12 +102,14 @@ internal static class SimpleTarget
 
         /// <summary>
         ///     The <see cref="AllyToHeal">Heal Stack</see>, but filtered to
-        ///     those with a cleansable status effect.
+        ///     those with a cleansable status effect, and falling back to
+        ///     <see cref="AnyCleansableAlly"/> if no such status effect is
+        ///     found in the stack.
         /// </summary>
         public static IGameObject? AllyToEsuna =>
             GetStack(logicForEachEntryInStack: 
-                target => target.IfHasCleansable(), 
-                esunaCheck: true);
+                target => target.IfHasCleansable()) ??
+            AnyCleansableAlly;
 
         /// <summary>
         ///     The Customizable Raise Stack.
@@ -143,8 +145,7 @@ internal static class SimpleTarget
         /// </returns>
         private static IGameObject? GetStack
         (StackOption stack = StackOption.UserChosenHealStack,
-            Func<IGameObject?, IGameObject?>? logicForEachEntryInStack = null,
-            bool esunaCheck = false)
+            Func<IGameObject?, IGameObject?>? logicForEachEntryInStack = null)
         {
             #region Default Heal Stack
 
@@ -165,9 +166,6 @@ internal static class SimpleTarget
                         : null) ??
                     (cfg.UseLowestHPOverrideInDefaultHealStack
                         ? CustomLogic(LowestHPPAlly.IfWithinRange().IfMissingHP())
-                        : null) ??
-                   (esunaCheck
-                        ? CleansableAlly
                         : null) ??
                    Self;
 
@@ -499,6 +497,12 @@ internal static class SimpleTarget
                         !x.IsInParty())
             .FirstOrDefault(x => x.IsDead());
 
+    public static IGameObject? AnyCleansableAlly =>
+        GetPartyMembers()
+            .Select(x => x.BattleChara)
+            .Where(x => x is not null && x.IsDead() == false && HasCleansableDebuff(x) && IsInLineOfSight(x))
+            .FirstOrDefault();
+
     #region HP-Based Targets
 
     public static IGameObject? LowestHPAlly =>
@@ -520,12 +524,6 @@ internal static class SimpleTarget
 
     public static IGameObject? LowestHPPAllyIfMissingHP =>
         LowestHPPAlly?.IfMissingHP();
-
-    public static IGameObject? CleansableAlly =>
-        GetPartyMembers()
-            .Select(x => x.BattleChara)
-            .Where(x => x is not null && x.IsDead() == false && HasCleansableDebuff(x) && IsInLineOfSight(x))
-            .FirstOrDefault();
 
     #endregion
 
