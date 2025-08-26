@@ -104,7 +104,10 @@ internal static class SimpleTarget
         ///     The <see cref="AllyToHeal">Heal Stack</see>, but filtered to
         ///     those with a cleansable status effect.
         /// </summary>
-        public static IGameObject? AllyToEsuna => CleansableAlly;
+        public static IGameObject? AllyToEsuna =>
+            GetStack(logicForEachEntryInStack: 
+                target => target.IfHasCleansable(), 
+                esunaCheck: true);
 
         /// <summary>
         ///     The Customizable Raise Stack.
@@ -140,7 +143,8 @@ internal static class SimpleTarget
         /// </returns>
         private static IGameObject? GetStack
         (StackOption stack = StackOption.UserChosenHealStack,
-            Func<IGameObject?, IGameObject?>? logicForEachEntryInStack = null)
+            Func<IGameObject?, IGameObject?>? logicForEachEntryInStack = null,
+            bool esunaCheck = false)
         {
             #region Default Heal Stack
 
@@ -162,7 +166,10 @@ internal static class SimpleTarget
                     (cfg.UseLowestHPOverrideInDefaultHealStack
                         ? CustomLogic(LowestHPPAlly.IfWithinRange().IfMissingHP())
                         : null) ??
-                    Self;
+                   (esunaCheck
+                        ? CleansableAlly
+                        : null) ??
+                   Self;
 
             #endregion
 
