@@ -177,12 +177,6 @@ internal partial class RPR : Melee
                 !HasStatusEffect(Buffs.Soulsow) && !PartyInCombat())
                 return Soulsow;
 
-            if (Variant.CanCure(Preset.RPR_Variant_Cure, RPR_VariantCure))
-                return Variant.Cure;
-
-            if (Variant.CanRampart(Preset.RPR_Variant_Rampart))
-                return Variant.Rampart;
-
             if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
 

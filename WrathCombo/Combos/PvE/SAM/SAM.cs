@@ -169,12 +169,6 @@ internal partial class SAM : Melee
             if (actionID is not (Fuga or Fuko))
                 return actionID;
 
-            if (Variant.CanCure(Preset.SAM_Variant_Cure, SAM_VariantCure))
-                return Variant.Cure;
-
-            if (Variant.CanRampart(Preset.SAM_Variant_Rampart))
-                return Variant.Rampart;
-
             if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
 
@@ -482,6 +476,8 @@ internal partial class SAM : Melee
         {
             if (actionID is not (Fuga or Fuko))
                 return actionID;
+
+            float kenkiOvercapAoE = SAM_AoE_KenkiOvercapAmount;
 
             if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;

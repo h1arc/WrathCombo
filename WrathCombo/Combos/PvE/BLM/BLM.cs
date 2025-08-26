@@ -199,12 +199,6 @@ internal partial class BLM : Caster
             if (actionID is not (Blizzard2 or HighBlizzard2))
                 return actionID;
 
-            if (Variant.CanCure(Preset.BLM_Variant_Cure, BLM_VariantCure))
-                return Variant.Cure;
-
-            if (Variant.CanRampart(Preset.BLM_Variant_Rampart))
-                return Variant.Rampart;
-
             if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
 

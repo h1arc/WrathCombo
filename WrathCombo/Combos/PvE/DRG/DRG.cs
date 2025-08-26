@@ -156,13 +156,6 @@ internal partial class DRG : Melee
             if (actionID is not DoomSpike)
                 return actionID;
 
-            if (Variant.CanCure(Preset.DRG_Variant_Cure, DRG_Variant_Cure))
-                return Variant.Cure;
-
-            if (Variant.CanRampart(Preset.DRG_Variant_Rampart) &&
-                CanDRGWeave())
-                return Variant.Rampart;
-
             if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
 
