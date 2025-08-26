@@ -248,7 +248,7 @@ internal partial class SAM : Melee
             }
 
             if (ComboTimer > 0 &&
-                ComboAction is Fuko or Fuga && LevelChecked(Mangetsu))
+                ComboAction is Fuko or Fuga)
             {
                 if (LevelChecked(Mangetsu) &&
                     (RefreshFugetsu && !HasGetsu ||
@@ -587,7 +587,8 @@ internal partial class SAM : Melee
                     return Oka;
             }
 
-            if (ComboTimer > 0 && ComboAction is Fuko or Fuga)
+            if (ComboTimer > 0 &&
+                ComboAction is Fuko or Fuga)
             {
                 if (LevelChecked(Mangetsu) &&
                     (RefreshFugetsu && !HasGetsu ||
@@ -624,12 +625,14 @@ internal partial class SAM : Melee
             {
                 if (SAM_Yukaze_Gekko &&
                     LevelChecked(Gekko) &&
-                    (RefreshFugetsu && !HasGetsu || !HasStatusEffect(Buffs.Fugetsu)))
+                    (RefreshFugetsu && !HasGetsu ||
+                     !HasStatusEffect(Buffs.Fugetsu)))
                     return Gekko;
 
                 if (SAM_Yukaze_Kasha &&
                     LevelChecked(Kasha) &&
-                    (RefreshFuka && !HasKa || !HasStatusEffect(Buffs.Fuka)))
+                    (RefreshFuka && !HasKa ||
+                     !HasStatusEffect(Buffs.Fuka)))
                     return Kasha;
 
                 if (LevelChecked(Yukikaze) && !HasSetsu)
@@ -642,22 +645,25 @@ internal partial class SAM : Melee
                 {
                     if (SAM_Yukaze_Gekko &&
                         LevelChecked(Jinpu) &&
-                        (RefreshFugetsu && !HasGetsu || !HasStatusEffect(Buffs.Fugetsu)))
+                        (RefreshFugetsu && !HasGetsu ||
+                         !HasStatusEffect(Buffs.Fugetsu)))
                         return Jinpu;
 
                     if (SAM_Yukaze_Kasha &&
                         LevelChecked(Shifu) &&
-                        (RefreshFuka && !HasKa || !HasStatusEffect(Buffs.Fuka)))
+                        (RefreshFuka && !HasKa ||
+                         !HasStatusEffect(Buffs.Fuka)))
                         return Shifu;
 
                     if (LevelChecked(Yukikaze))
                         return OriginalHook(Yukikaze);
                 }
 
-                if (ComboAction is Jinpu && LevelChecked(Gekko))
+                if (SAM_Yukaze_Gekko &&
+                    ComboAction is Jinpu && LevelChecked(Gekko))
                     return Gekko;
 
-                if (IsEnabled(Preset.SAM_ST_Kasha) &&
+                if (SAM_Yukaze_Kasha &&
                     ComboAction is Shifu && LevelChecked(Kasha))
                     return Kasha;
             }
