@@ -637,14 +637,12 @@ internal partial class SAM : Melee
             {
                 if (SAM_Yukaze_Gekko &&
                     LevelChecked(Gekko) &&
-                    (!HasStatusEffect(Buffs.Fugetsu) ||
-                     !HasGetsu && HasStatusEffect(Buffs.Fuka)))
+                    (RefreshFugetsu && !HasGetsu || !HasStatusEffect(Buffs.Fugetsu)))
                     return Gekko;
 
                 if (SAM_Yukaze_Kasha &&
                     LevelChecked(Kasha) &&
-                    (!HasStatusEffect(Buffs.Fuka) ||
-                     !HasKa && HasStatusEffect(Buffs.Fugetsu)))
+                    (RefreshFuka && !HasKa || !HasStatusEffect(Buffs.Fuka)))
                     return Kasha;
 
                 if (LevelChecked(Yukikaze) && !HasSetsu)
@@ -653,25 +651,16 @@ internal partial class SAM : Melee
 
             if (ComboTimer > 0)
             {
-                if (ComboAction is Hakaze or Gyofu && LevelChecked(Jinpu))
+                if (ComboAction is Hakaze or Gyofu)
                 {
                     if (SAM_Yukaze_Gekko &&
-                        !LevelChecked(Kasha) &&
-                        (RefreshFugetsu || !HasStatusEffect(Buffs.Fugetsu)) ||
-                        LevelChecked(Kasha) &&
-                        (!HasStatusEffect(Buffs.Fugetsu) ||
-                         HasStatusEffect(Buffs.Fuka) && !HasGetsu ||
-                         SenCount is 3 && RefreshFugetsu))
+                        LevelChecked(Jinpu) &&
+                        (RefreshFugetsu && !HasGetsu || !HasStatusEffect(Buffs.Fugetsu)))
                         return Jinpu;
 
                     if (SAM_Yukaze_Kasha &&
-                        LevelChecked(Shifu) &&
-                        (!LevelChecked(Kasha) &&
-                         (RefreshFuka || !HasStatusEffect(Buffs.Fuka)) ||
-                         LevelChecked(Kasha) &&
-                         (!HasStatusEffect(Buffs.Fuka) ||
-                          HasStatusEffect(Buffs.Fugetsu) && !HasKa ||
-                          SenCount is 3 && RefreshFuka)))
+                        LevelChecked(Kasha) &&
+                        (RefreshFuka && !HasKa || !HasStatusEffect(Buffs.Fuka)))
                         return Shifu;
 
                     if (LevelChecked(Yukikaze))
