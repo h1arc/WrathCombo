@@ -250,15 +250,14 @@ internal partial class SAM : Melee
             if (ComboTimer > 0 &&
                 ComboAction is Fuko or Fuga && LevelChecked(Mangetsu))
             {
-                if (!HasGetsu ||
-                    RefreshFugetsu ||
-                    !HasStatusEffect(Buffs.Fugetsu) ||
-                    !LevelChecked(Oka))
+                if (LevelChecked(Mangetsu) &&
+                    (RefreshFugetsu && !HasGetsu ||
+                     !HasStatusEffect(Buffs.Fugetsu) ||
+                     !LevelChecked(Oka)))
                     return Mangetsu;
 
                 if (LevelChecked(Oka) &&
-                    (!HasKa ||
-                     RefreshFuka ||
+                    (RefreshFuka && !HasKa ||
                      !HasStatusEffect(Buffs.Fuka)))
                     return Oka;
             }
@@ -588,21 +587,22 @@ internal partial class SAM : Melee
                     return Oka;
             }
 
-            if (ComboTimer > 0 &&
-                ComboAction is Fuko or Fuga && LevelChecked(Mangetsu))
+            if (ComboTimer > 0 && ComboAction is Fuko or Fuga)
             {
-                if (IsNotEnabled(Preset.SAM_AoE_Oka) ||
-                    !HasGetsu || RefreshFugetsu ||
-                    !HasStatusEffect(Buffs.Fugetsu) ||
-                    !LevelChecked(Oka))
+                if (LevelChecked(Mangetsu) &&
+                    (RefreshFugetsu && !HasGetsu ||
+                     !HasStatusEffect(Buffs.Fugetsu) ||
+                     IsNotEnabled(Preset.SAM_AoE_Oka) ||
+                     !LevelChecked(Oka)))
                     return Mangetsu;
 
                 if (IsEnabled(Preset.SAM_AoE_Oka) &&
                     LevelChecked(Oka) &&
-                    (!HasKa || RefreshFuka ||
+                    (RefreshFuka && !HasKa ||
                      !HasStatusEffect(Buffs.Fuka)))
                     return Oka;
             }
+
             return actionID;
         }
     }
