@@ -569,24 +569,25 @@ internal partial class NIN : Melee
 
         protected override uint Invoke(uint actionID)
         {
-            if (actionID is not (RoleActions.Melee.Feint or RoleActions.Melee.Bloodbath or RoleActions.Physical.SecondWind or ShadeShift or Shukuchi or RoleActions.Melee.LegSweep) || !MudraPhase)
+            if (actionID is not (RoleActions.Melee.Feint or RoleActions.Melee.Bloodbath or RoleActions.Physical.SecondWind or ShadeShift or Shukuchi or RoleActions.Melee.LegSweep))
                 return actionID;
 
             switch (actionID)
             {
-                case ShadeShift when NIN_MudraProtection_Options[0]:
+                case ShadeShift when NIN_MudraProtection_Options[0] && MudraPhase:
                         
-                case Shukuchi when NIN_MudraProtection_Options[1]:
+                case Shukuchi when NIN_MudraProtection_Options[1] && MudraPhase:
                 
-                case RoleActions.Melee.Feint when NIN_MudraProtection_Options[2]:
+                case RoleActions.Melee.Feint when NIN_MudraProtection_Options[2] && (MudraPhase || HasStatusEffect(RoleActions.Melee.Debuffs.Feint, CurrentTarget, true)):
                     
-                case RoleActions.Melee.Bloodbath when NIN_MudraProtection_Options[3]:
+                case RoleActions.Melee.Bloodbath when NIN_MudraProtection_Options[3] && MudraPhase:
                         
-                case RoleActions.Physical.SecondWind when NIN_MudraProtection_Options[4]:
+                case RoleActions.Physical.SecondWind when NIN_MudraProtection_Options[4] && MudraPhase:
                 
-                case RoleActions.Melee.LegSweep when NIN_MudraProtection_Options[5]:
+                case RoleActions.Melee.LegSweep when NIN_MudraProtection_Options[5] && MudraPhase:
                     return All.SavageBlade;
             }
+            
             return actionID;
         }
     }

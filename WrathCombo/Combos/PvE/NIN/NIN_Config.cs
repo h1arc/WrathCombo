@@ -280,7 +280,7 @@ internal partial class NIN
                 case Preset.NIN_MudraProtection:
                     DrawHorizontalMultiChoice(NIN_MudraProtection_Options, "Shade Shift", "Replaces with Savage Blade while in Mudra.", 6, 0);
                     DrawHorizontalMultiChoice(NIN_MudraProtection_Options, "Shukuchi", "Replaces with Savage Blade while in Mudra.", 6, 1);
-                    DrawHorizontalMultiChoice(NIN_MudraProtection_Options, "Feint", "Replaces with Savage Blade while in Mudra.", 6, 2);
+                    DrawHorizontalMultiChoice(NIN_MudraProtection_Options, "Feint", "Replaces with Savage Blade while in Mudra or Current Target already has Feint", 6, 2);
                     DrawHorizontalMultiChoice(NIN_MudraProtection_Options, "Bloodbath", "Replaces with Savage Blade while in Mudra.", 6, 3);
                     DrawHorizontalMultiChoice(NIN_MudraProtection_Options, "Second Wind", "Replaces with Savage Blade while in Mudra.", 6, 4);
                     DrawHorizontalMultiChoice(NIN_MudraProtection_Options, "Leg Sweep", "Replaces with Savage Blade while in Mudra.", 6, 5);
