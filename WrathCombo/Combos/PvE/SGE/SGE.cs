@@ -462,6 +462,7 @@ internal partial class SGE : Healer
         protected override uint Invoke(uint actionID)
         {
             IGameObject? healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
+            IGameObject? esunaTarget = SimpleTarget.Stack.AllyToEsuna;
 
             if (actionID is not Diagnosis)
                 return actionID;
@@ -471,9 +472,9 @@ internal partial class SGE : Healer
                 return Kardia.Retarget(Diagnosis, SimpleTarget.AnyLivingTank);
 
             if (ActionReady(Role.Esuna) && 
-                GetTargetHPPercent(healTarget) >= 40 &&
-                HasCleansableDebuff(healTarget))
-                return Role.Esuna.RetargetIfEnabled(healTarget, Diagnosis);
+                GetTargetHPPercent(esunaTarget) >= 40 &&
+                HasCleansableDebuff(esunaTarget))
+                return Role.Esuna.RetargetIfEnabled(esunaTarget, Diagnosis);
             
             if (Role.CanLucidDream(6500))
                 return Role.LucidDreaming;
@@ -598,6 +599,7 @@ internal partial class SGE : Healer
         protected override uint Invoke(uint actionID)
         {
             IGameObject? healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
+            IGameObject? esunaTarget = SimpleTarget.Stack.AllyToEsuna;
 
             if (actionID is not Diagnosis)
                 return actionID;
@@ -619,8 +621,8 @@ internal partial class SGE : Healer
 
             if (IsEnabled(Preset.SGE_ST_Heal_Esuna) &&
                 ActionReady(Role.Esuna) &&
-                GetTargetHPPercent(healTarget, SGE_ST_Heal_IncludeShields) >= SGE_ST_Heal_Esuna &&
-                HasCleansableDebuff(healTarget))
+                GetTargetHPPercent(esunaTarget, SGE_ST_Heal_IncludeShields) >= SGE_ST_Heal_Esuna &&
+                HasCleansableDebuff(esunaTarget))
                 return Role.Esuna
                     .RetargetIfEnabled(OptionalTarget, Diagnosis);
 
