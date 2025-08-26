@@ -609,8 +609,23 @@ internal partial class SAM : Melee
                 Kenki >= SAM_Yukaze_KenkiOvercapAmount && LevelChecked(Shinten))
                 return OriginalHook(Shinten);
 
-            if (ContentSpecificActions.TryGet(out uint contentAction))
-                return contentAction;
+            if (HasStatusEffect(Buffs.MeikyoShisui))
+            {
+                if (SAM_Yukaze_Gekko &&
+                    LevelChecked(Gekko) &&
+                    (!HasStatusEffect(Buffs.Fugetsu) ||
+                     !HasGetsu && HasStatusEffect(Buffs.Fuka)))
+                    return Gekko;
+
+                if (SAM_Yukaze_Kasha &&
+                    LevelChecked(Kasha) &&
+                    (!HasStatusEffect(Buffs.Fuka) ||
+                     !HasKa && HasStatusEffect(Buffs.Fugetsu)))
+                    return Kasha;
+
+                if (LevelChecked(Yukikaze) && !HasSetsu)
+                    return Yukikaze;
+            }
 
             if (ComboTimer > 0)
             {
