@@ -104,9 +104,7 @@ internal static class SimpleTarget
         ///     The <see cref="AllyToHeal">Heal Stack</see>, but filtered to
         ///     those with a cleansable status effect.
         /// </summary>
-        public static IGameObject? AllyToEsuna =>
-            GetStack(logicForEachEntryInStack:
-                target => target.IfHasCleansable());
+        public static IGameObject? AllyToEsuna => CleansableAlly;
 
         /// <summary>
         ///     The Customizable Raise Stack.
@@ -515,6 +513,12 @@ internal static class SimpleTarget
 
     public static IGameObject? LowestHPPAllyIfMissingHP =>
         LowestHPPAlly?.IfMissingHP();
+
+    public static IGameObject? CleansableAlly =>
+        GetPartyMembers()
+            .Select(x => x.BattleChara)
+            .Where(x => x is not null && x.IsDead() == false && HasCleansableDebuff(x) && IsInLineOfSight(x))
+            .FirstOrDefault();
 
     #endregion
 
