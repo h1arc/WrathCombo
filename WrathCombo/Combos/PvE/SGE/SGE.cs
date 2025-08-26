@@ -470,10 +470,12 @@ internal partial class SGE : Healer
                 !HasStatusEffect(Buffs.Kardia))
                 return Kardia.Retarget(Diagnosis, SimpleTarget.AnyLivingTank);
 
-            if (ActionReady(Role.Esuna) && 
+            bool cleansableTarget =
+                HealRetargeting.RetargetSettingOn && SimpleTarget.Stack.AllyToEsuna is not null ||
+                HasCleansableDebuff(healTarget);
+            if (ActionReady(Role.Esuna) &&
                 GetTargetHPPercent(healTarget) >= 40 &&
-                (HealRetargeting.RetargetSettingOn ||
-                 HasCleansableDebuff(healTarget)))
+                cleansableTarget)
                 return Role.Esuna.RetargetIfEnabled(OptionalTarget, Diagnosis);
 
             if (Role.CanLucidDream(6500))
@@ -618,11 +620,13 @@ internal partial class SGE : Healer
 
             #endregion
 
+            bool cleansableTarget =
+                HealRetargeting.RetargetSettingOn && SimpleTarget.Stack.AllyToEsuna is not null ||
+                HasCleansableDebuff(healTarget);
             if (IsEnabled(Preset.SGE_ST_Heal_Esuna) &&
                 ActionReady(Role.Esuna) &&
                 GetTargetHPPercent(healTarget, SGE_ST_Heal_IncludeShields) >= SGE_ST_Heal_Esuna &&
-                (HealRetargeting.RetargetSettingOn ||
-                 HasCleansableDebuff(healTarget)))
+                cleansableTarget)
                 return Role.Esuna
                     .RetargetIfEnabled(OptionalTarget, Diagnosis);
 
