@@ -469,7 +469,7 @@ internal partial class SGE : Healer
             if (LevelChecked(Kardia) && 
                 !HasStatusEffect(Buffs.Kardia))
                 return Kardia.Retarget(Diagnosis, SimpleTarget.AnyLivingTank);
-            
+
             if (ActionReady(Role.Esuna) && 
                 GetTargetHPPercent(healTarget) >= 40 &&
                 (HealRetargeting.RetargetSettingOn ||
