@@ -16,12 +16,6 @@ internal partial class BLM : Caster
             if (actionID is not Fire)
                 return actionID;
 
-            if (Variant.CanCure(Preset.BLM_Variant_Cure, BLM_VariantCure))
-                return Variant.Cure;
-
-            if (Variant.CanRampart(Preset.BLM_Variant_Rampart))
-                return Variant.Rampart;
-
             if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
 
@@ -205,12 +199,6 @@ internal partial class BLM : Caster
             if (actionID is not (Blizzard2 or HighBlizzard2))
                 return actionID;
 
-            if (Variant.CanCure(Preset.BLM_Variant_Cure, BLM_VariantCure))
-                return Variant.Cure;
-
-            if (Variant.CanRampart(Preset.BLM_Variant_Rampart))
-                return Variant.Rampart;
-
             if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
 
@@ -305,12 +293,6 @@ internal partial class BLM : Caster
                 Opener().FullOpener(ref actionID))
                 return actionID;
 
-            if (Variant.CanCure(Preset.BLM_Variant_Cure, BLM_VariantCure))
-                return Variant.Cure;
-
-            if (Variant.CanRampart(Preset.BLM_Variant_Rampart))
-                return Variant.Rampart;
-
             if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
 
@@ -320,8 +302,8 @@ internal partial class BLM : Caster
                     ActionReady(Manaward) &&
                     PlayerHealthPercentageHp() < BLM_ST_Manaward_Threshold && RaidWideCasting())
                     return Manaward;
-                
-                if (IsEnabled(Preset.BLM_ST_Addle) && 
+
+                if (IsEnabled(Preset.BLM_ST_Addle) &&
                     Role.CanAddle() &&
                     RaidWideCasting())
                     return Role.Addle;
@@ -521,12 +503,6 @@ internal partial class BLM : Caster
             if (actionID is not (Blizzard2 or HighBlizzard2))
                 return actionID;
 
-            if (Variant.CanCure(Preset.BLM_Variant_Cure, BLM_VariantCure))
-                return Variant.Cure;
-
-            if (Variant.CanRampart(Preset.BLM_Variant_Rampart))
-                return Variant.Rampart;
-
             if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
 
@@ -633,21 +609,6 @@ internal partial class BLM : Caster
         }
     }
 
-    internal class BLM_Variant_Raise : CustomCombo
-    {
-        protected internal override Preset Preset => Preset.BLM_Variant_Raise;
-
-        protected override uint Invoke(uint actionID)
-        {
-            if (actionID != Role.Swiftcast)
-                return actionID;
-
-            return actionID == Role.Swiftcast && Variant.CanRaise(Preset.BLM_Variant_Raise)
-                ? Variant.Raise
-                : actionID;
-        }
-    }
-
     internal class BLM_Retargetting_Aetherial_Manipulation : CustomCombo
     {
         protected internal override Preset Preset => Preset.BLM_Retargetting_Aetherial_Manipulation;
@@ -697,7 +658,7 @@ internal partial class BLM : Caster
                            !LevelChecked(Fire4) &&
                            HasStatusEffect(Buffs.Firestarter)) && !JustUsed(Fire3) => Fire3,
 
-                Fire when BLM_Fire1_Despair && FirePhase && CurMp < 2400 && LevelChecked(Despair) => Despair,
+                Fire when BLM_F1to3 == 0 && BLM_Fire1_Despair && FirePhase && CurMp < 2400 && LevelChecked(Despair) => Despair,
 
                 Fire3 when BLM_F1to3 == 1 && LevelChecked(Fire3) && FirePhase &&
                            (LevelChecked(Paradox) && ActiveParadox && AstralFireStacks is 3 ||
