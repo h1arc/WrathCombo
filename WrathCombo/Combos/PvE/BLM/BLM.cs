@@ -16,6 +16,12 @@ internal partial class BLM : Caster
             if (actionID is not Fire)
                 return actionID;
 
+            if (Variant.CanCure(Preset.BLM_Variant_Cure, BLM_VariantCure))
+                return Variant.Cure;
+
+            if (Variant.CanRampart(Preset.BLM_Variant_Rampart))
+                return Variant.Rampart;
+
             if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
 
@@ -199,6 +205,12 @@ internal partial class BLM : Caster
             if (actionID is not (Blizzard2 or HighBlizzard2))
                 return actionID;
 
+            if (Variant.CanCure(Preset.BLM_Variant_Cure, BLM_VariantCure))
+                return Variant.Cure;
+
+            if (Variant.CanRampart(Preset.BLM_Variant_Rampart))
+                return Variant.Rampart;
+
             if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
 
@@ -292,6 +304,12 @@ internal partial class BLM : Caster
             if (IsEnabled(Preset.BLM_ST_Opener) &&
                 Opener().FullOpener(ref actionID))
                 return actionID;
+
+            if (Variant.CanCure(Preset.BLM_Variant_Cure, BLM_VariantCure))
+                return Variant.Cure;
+
+            if (Variant.CanRampart(Preset.BLM_Variant_Rampart))
+                return Variant.Rampart;
 
             if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
@@ -503,6 +521,12 @@ internal partial class BLM : Caster
             if (actionID is not (Blizzard2 or HighBlizzard2))
                 return actionID;
 
+            if (Variant.CanCure(Preset.BLM_Variant_Cure, BLM_VariantCure))
+                return Variant.Cure;
+
+            if (Variant.CanRampart(Preset.BLM_Variant_Rampart))
+                return Variant.Rampart;
+
             if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
 
@@ -606,6 +630,21 @@ internal partial class BLM : Caster
             }
 
             return actionID;
+        }
+    }
+
+    internal class BLM_Variant_Raise : CustomCombo
+    {
+        protected internal override Preset Preset => Preset.BLM_Variant_Raise;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID != Role.Swiftcast)
+                return actionID;
+
+            return actionID == Role.Swiftcast && Variant.CanRaise(Preset.BLM_Variant_Raise)
+                ? Variant.Raise
+                : actionID;
         }
     }
 
