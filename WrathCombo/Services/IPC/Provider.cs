@@ -566,8 +566,8 @@ public partial class Provider : IDisposable
     /// </returns>
     [EzIPC]
     [SuppressMessage("Performance", "CA1822:Mark members as static")]
-    public List<string>? GetComboNamesForJob(Job job) =>
-        P.IPCSearch.ComboNamesByJob.GetValueOrDefault(job);
+    public List<string>? GetComboNamesForJob(uint jobID) =>
+        P.IPCSearch.ComboNamesByJob.GetValueOrDefault((Job)jobID);
 
     /// <summary>
     ///     Gets the names of all combo options for the given job.
@@ -581,8 +581,8 @@ public partial class Provider : IDisposable
     /// </returns>
     [EzIPC]
     [SuppressMessage("Performance", "CA1822:Mark members as static")]
-    public Dictionary<string, List<string>>? GetComboOptionNamesForJob(Job job) =>
-        P.IPCSearch.OptionNamesByJob.GetValueOrDefault(job);
+    public Dictionary<string, List<string>>? GetComboOptionNamesForJob(uint jobID) =>
+        P.IPCSearch.OptionNamesByJob.GetValueOrDefault((Job)jobID);
 
     /// <summary>
     ///     Get the current state of a combo in Wrath Combo.
