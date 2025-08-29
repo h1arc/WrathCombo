@@ -338,18 +338,18 @@ public partial class Leasing
     /// <seealso cref="Provider.IsCurrentJobAutoModeOn" />
     internal bool? CheckJobControlled(Job? job = null)
     {
-        if (CustomComboFunctions.LocalPlayer is null)
+        if (Player.Object is null)
             return null;
 
         var currentJob = Player.Job;
-        var resolvedJob = job is null ? currentJob : job;
+        var resolvedJob = job ?? currentJob;
 
         var lease = Registrations.Values
-            .Where(l => l.JobsControlled.ContainsKey(resolvedJob.Value))
+            .Where(l => l.JobsControlled.ContainsKey(resolvedJob))
             .OrderByDescending(l => l.LastUpdated)
             .FirstOrDefault();
 
-        return lease?.JobsControlled[resolvedJob.Value];
+        return lease?.JobsControlled[resolvedJob];
     }
 
     /// <summary>
