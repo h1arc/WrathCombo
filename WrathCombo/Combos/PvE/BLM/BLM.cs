@@ -692,6 +692,8 @@ internal partial class BLM : Caster
 
             return actionID switch
             {
+                Fire when BLM_F1to3 == 0 && BLM_Fire1_Despair && FirePhase && CurMp < 2400 && LevelChecked(Despair) => Despair,
+                
                 Fire when BLM_F1to3 == 0 && LevelChecked(Fire3) &&
                           (AstralFireStacks is 1 or 2 && HasStatusEffect(Buffs.Firestarter) ||
                            LevelChecked(Paradox) && !ActiveParadox ||
@@ -699,9 +701,7 @@ internal partial class BLM : Caster
                            IcePhase && !ActiveParadox ||
                            !LevelChecked(Fire4) &&
                            HasStatusEffect(Buffs.Firestarter)) && !JustUsed(Fire3) => Fire3,
-
-                Fire when BLM_F1to3 == 0 && BLM_Fire1_Despair && FirePhase && CurMp < 2400 && LevelChecked(Despair) => Despair,
-
+                
                 Fire3 when BLM_F1to3 == 1 && LevelChecked(Fire3) && FirePhase &&
                            (LevelChecked(Paradox) && ActiveParadox && AstralFireStacks is 3 ||
                             !LevelChecked(Fire4) && !HasStatusEffect(Buffs.Firestarter)) &&
