@@ -7,16 +7,18 @@ using ECommons.Logging;
 using System;
 using System.Linq;
 using System.Numerics;
+using ECommons;
 using WrathCombo.Core;
 using WrathCombo.Extensions;
 using WrathCombo.Services;
 using WrathCombo.Window.Functions;
 using WrathCombo.Window.MessagesNS;
+
 namespace WrathCombo.Window.Tabs;
 
 internal class PvEFeatures : ConfigWindow
 {
-    internal static Job? OpenJob = null;
+    internal static Job? OpenJob;
     internal static int ColCount = 1;
     internal static new void Draw()
     {
@@ -28,16 +30,16 @@ internal class PvEFeatures : ConfigWindow
         }
         //#endif
 
-        using (var scrolling = ImRaii.Child("scrolling", new Vector2(ImGui.GetContentRegionAvail().X, ImGui.GetContentRegionAvail().Y), true))
+        using (ImRaii.Child("scrolling", new Vector2(ImGui.GetContentRegionAvail().X, ImGui.GetContentRegionAvail().Y), true))
         {
-            var indentwidth = 12f.Scale();
-            var indentwidth2 = indentwidth + 42f.Scale();
+            var indentWidth = 12f.Scale();
+            var indentWidth2 = indentWidth + 42f.Scale();
             var iconMaxSize = 34f.Scale();
             var verticalCenteringPadding = (iconMaxSize - ImGui.GetTextLineHeight()) / 2f;
 
             if (OpenJob is null)
             {
-                ImGui.SameLine(indentwidth);
+                ImGui.SameLine(indentWidth);
                 ImGuiEx.LineCentered(() =>
                 {
                     ImGuiEx.TextUnderlined("Select a job from below to enable and configure features for it.");
@@ -66,7 +68,7 @@ internal class PvEFeatures : ConfigWindow
                             {
                                 OpenJob = job;
                             }
-                            ImGui.SameLine(indentwidth);
+                            ImGui.SameLine(indentWidth);
                             if (icon != null)
                             {
                                 var scale = Math.Min(iconMaxSize / icon.Size.X, iconMaxSize / icon.Size.Y);
@@ -80,7 +82,7 @@ internal class PvEFeatures : ConfigWindow
                             {
                                 ImGui.Dummy(new Vector2(iconMaxSize, iconMaxSize));
                             }
-                            ImGui.SameLine(indentwidth2);
+                            ImGui.SameLine(indentWidth2);
                             ImGuiEx.Spacing(new Vector2(0, verticalCenteringPadding));
                             ImGui.Text($"{header} {(disabled ? "(Disabled due to update)" : "")}");
 
@@ -139,7 +141,7 @@ internal class PvEFeatures : ConfigWindow
 
                 }
 
-                using (var contents = ImRaii.Child("Contents", new Vector2(0)))
+                using (ImRaii.Child("Contents", new Vector2(0)))
                 {
                     currentPreset = 1;
                     try
@@ -193,7 +195,7 @@ internal class PvEFeatures : ConfigWindow
                     }
                     catch (Exception e)
                     {
-                        PluginLog.Error($"Error while drawing Job's UI:\n{e}");
+                        PluginLog.Error($"Error while drawing Job's UI:\n{e.ToStringFull()}");
                     }
 
                 }
@@ -257,7 +259,7 @@ internal class PvEFeatures : ConfigWindow
                 var conflictOriginals = PresetStorage.GetConflicts(preset); // Presets that are contained within a ConflictedAttribute
                 var conflictsSource = PresetStorage.GetAllConflicts();      // Presets with the ConflictedAttribute
 
-                if (!conflictsSource.Where(x => x == preset).Any() || conflictOriginals.Length == 0)
+                if (conflictsSource.All(x => x != preset) || conflictOriginals.Length == 0)
                 {
                     presetBox.Draw();
                     ImGuiEx.Spacing(new Vector2(0, 12));
@@ -282,10 +284,7 @@ internal class PvEFeatures : ConfigWindow
                 }
 
                 else
-                {
                     presetBox.Draw();
-                    continue;
-                }
             }
 
             else
