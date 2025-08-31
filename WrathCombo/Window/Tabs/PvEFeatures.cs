@@ -210,7 +210,7 @@ internal class PvEFeatures : ConfigWindow
             PresetStorage.IsVariant(x.Preset) &&
             !PresetStorage.ShouldBeHidden(x.Preset)))
         {
-            InfoBox presetBox = new() { Color = Colors.Grey, BorderThickness = 1f, CurveRadius = 8f, ContentsAction = () => { Presets.DrawPreset(preset, info); } };
+            InfoBox presetBox = new() { CurveRadius = 8f, ContentsAction = () => { Presets.DrawPreset(preset, info); } };
             presetBox.Draw();
             ImGuiEx.Spacing(new Vector2(0, 12));
         }
@@ -222,7 +222,7 @@ internal class PvEFeatures : ConfigWindow
             PresetStorage.IsBozja(x.Preset) &&
             !PresetStorage.ShouldBeHidden(x.Preset)))
         {
-            InfoBox presetBox = new() { Color = Colors.Grey, BorderThickness = 1f, CurveRadius = 8f, ContentsAction = () => { Presets.DrawPreset(preset, info); } };
+            InfoBox presetBox = new() { CurveRadius = 8f, ContentsAction = () => { Presets.DrawPreset(preset, info); } };
             presetBox.Draw();
             ImGuiEx.Spacing(new Vector2(0, 12));
         }
@@ -234,7 +234,7 @@ internal class PvEFeatures : ConfigWindow
             PresetStorage.IsOccultCrescent(x.Preset) &&
             !PresetStorage.ShouldBeHidden(x.Preset)))
         {
-            InfoBox presetBox = new() { Color = Colors.Grey, BorderThickness = 1f, CurveRadius = 8f, ContentsAction = () => { Presets.DrawPreset(preset, info); } };
+            InfoBox presetBox = new() { CurveRadius = 8f, ContentsAction = () => { Presets.DrawPreset(preset, info); } };
             presetBox.Draw();
             ImGuiEx.Spacing(new Vector2(0, 12));
         }
@@ -252,7 +252,7 @@ internal class PvEFeatures : ConfigWindow
             !PresetStorage.IsOccultCrescent(x.Preset) &&
             !PresetStorage.ShouldBeHidden(x.Preset)))
         {
-            InfoBox presetBox = new() { Color = Colors.Grey, BorderThickness = 2f.Scale(), ContentsOffset = 5f.Scale(), ContentsAction = () => { Presets.DrawPreset(preset, info); } };
+            InfoBox presetBox = new() { ContentsOffset = 5f.Scale(), ContentsAction = () => { Presets.DrawPreset(preset, info); } };
 
             if (Service.Configuration.HideConflictedCombos)
             {
