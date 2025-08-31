@@ -106,7 +106,7 @@ internal class Settings : ConfigWindow
 
             bool childBorders = Service.Configuration.ShowBorderAroundOptionsWithChildren;
 
-            if (ImGui.Checkbox("Hide Borders around Job Options with sub-options", ref childBorders))
+            if (ImGui.Checkbox("Show Borders around Job Options with sub-options", ref childBorders))
             {
                 Service.Configuration.ShowBorderAroundOptionsWithChildren = childBorders;
                 Service.Configuration.Save();
