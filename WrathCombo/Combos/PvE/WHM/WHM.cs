@@ -44,9 +44,6 @@ internal partial class WHM : Healer
 
             if (CanWeave())
             {
-                if (Variant.CanRampart(Preset.WHM_DPS_Variant_Rampart))
-                    return Variant.Rampart;
-
                 if (ActionReady(PresenceOfMind) &&
                     ActionWatching.NumberOfGcdsUsed >= 3 &&
                     !HasStatusEffect(Buffs.SacredSight))
@@ -57,10 +54,6 @@ internal partial class WHM : Healer
 
                 if (Role.CanLucidDream(7500))
                     return Role.LucidDreaming;
-
-                if (Variant.CanSpiritDart(
-                        Preset.WHM_DPS_Variant_SpiritDart))
-                    return Variant.SpiritDart;
             }
 
             #endregion
@@ -83,7 +76,7 @@ internal partial class WHM : Healer
             if (ActionReady(AfflatusRapture) &&
                 (FullLily || AlmostFullLily))
                 return AfflatusRapture;
-            
+
             #region Movement Options
 
             if (IsMoving())
@@ -131,13 +124,6 @@ internal partial class WHM : Healer
 
                 if (Role.CanLucidDream(7500))
                     return Role.LucidDreaming;
-
-                if (Variant.CanRampart(Preset.WHM_DPS_Variant_Rampart))
-                    return Variant.Rampart;
-
-                if (Variant.CanSpiritDart(Preset
-                        .WHM_DPS_Variant_SpiritDart))
-                    return Variant.SpiritDart;
             }
 
             #endregion
@@ -180,7 +166,7 @@ internal partial class WHM : Healer
         protected override uint Invoke(uint actionID)
         {
             #region Button Selection
-            
+
             var replacedAction = (int)WHM_ST_MainCombo_Actions switch
             {
                 1 => AeroList.Keys.ToArray(),
@@ -221,9 +207,6 @@ internal partial class WHM : Healer
 
             if (CanWeave())
             {
-                if (Variant.CanRampart(Preset.WHM_DPS_Variant_Rampart))
-                    return Variant.Rampart;
-
                 if (IsEnabled(Preset.WHM_ST_MainCombo_PresenceOfMind) &&
                     ActionReady(PresenceOfMind) &&
                     ActionWatching.NumberOfGcdsUsed >= 3 &&
@@ -237,10 +220,6 @@ internal partial class WHM : Healer
                 if (IsEnabled(Preset.WHM_ST_MainCombo_Lucid) &&
                     Role.CanLucidDream(WHM_STDPS_Lucid))
                     return Role.LucidDreaming;
-
-                if (Variant.CanSpiritDart(
-                        Preset.WHM_DPS_Variant_SpiritDart))
-                    return Variant.SpiritDart;
             }
 
             #endregion
@@ -260,13 +239,13 @@ internal partial class WHM : Healer
             if (IsEnabled(Preset.WHM_ST_MainCombo_GlareIV) &&
                 HasStatusEffect(Buffs.SacredSight))
                 return Glare4;
-            
+
             // Lily Heal Overcap
             if (IsEnabled(Preset.WHM_ST_MainCombo_LilyOvercap) &&
                 ActionReady(AfflatusRapture) &&
                 (FullLily || AlmostFullLily))
                 return AfflatusRapture;
-            
+
             #region Movement Options
 
             if (IsMoving())
@@ -341,17 +320,6 @@ internal partial class WHM : Healer
                     ActionWatching.NumberOfGcdsUsed >= 4 &&
                     !HasStatusEffect(Buffs.SacredSight))
                     return PresenceOfMind;
-
-                if (IsEnabled(Preset.WHM_AoE_DPS_Lucid) &&
-                    Role.CanLucidDream(WHM_AoEDPS_Lucid))
-                    return Role.LucidDreaming;
-
-                if (Variant.CanRampart(Preset.WHM_DPS_Variant_Rampart))
-                    return Variant.Rampart;
-
-                if (Variant.CanSpiritDart(Preset
-                        .WHM_DPS_Variant_SpiritDart))
-                    return Variant.SpiritDart;
             }
 
             #endregion
@@ -805,7 +773,7 @@ internal partial class WHM : Healer
         protected override uint Invoke(uint actionID)
         {
             var healStack = SimpleTarget.Stack.AllyToHeal;
-            
+
             if (!EZ.Throttle("WHMRetargetingFeature", TS.FromSeconds(.1)))
                 return actionID;
 
@@ -846,7 +814,7 @@ internal partial class WHM : Healer
                     SimpleTarget.Self;
                 LiturgyOfTheBell.Retarget(bellTarget, dontCull: true);
             }
-            
+
             if (IsEnabled(Preset.WHM_Re_Cure3))
                 Cure3.Retarget(healStack, dontCull: true);
 

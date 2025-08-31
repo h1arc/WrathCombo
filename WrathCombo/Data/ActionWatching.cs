@@ -4,6 +4,7 @@ using Dalamud.Hooking;
 using ECommons;
 using ECommons.DalamudServices;
 using ECommons.GameFunctions;
+using ECommons.GameHelpers;
 using ECommons.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Character;
@@ -14,6 +15,8 @@ using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Threading;
+using System.Threading.Tasks;
 using WrathCombo.Combos.PvE;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
@@ -21,6 +24,7 @@ using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
 using WrathCombo.Services;
 using static FFXIVClientStructs.FFXIV.Client.Game.Character.ActionEffectHandler;
+using static FFXIVClientStructs.FFXIV.Client.UI.Agent.AgentFreeCompanyProfile.FCProfile;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using Action = Lumina.Excel.Sheets.Action;
 namespace WrathCombo.Data;
@@ -63,6 +67,10 @@ public static class ActionWatching
 
     private delegate void SendActionDelegate(ulong targetObjectId, byte actionType, uint actionId, ushort sequence, long a5, long a6, long a7, long a8, long a9);
     private static readonly Hook<SendActionDelegate>? SendActionHook;
+
+    private static Task UpdateActionTask = null;
+    private static CancellationTokenSource source = new CancellationTokenSource();
+    private static CancellationToken token;
 
     /// <summary> Handles logic when an action causes an effect. </summary>
     private unsafe static void ReceiveActionEffectDetour(uint casterEntityId, Character* casterPtr, Vector3* targetPos, Header* header, TargetEffects* effects, GameObjectId* targetEntityIds)
@@ -169,59 +177,61 @@ public static class ActionWatching
                     }
                 }
             }
-
-            // Skip Mounting or Consumables
-            if (actionType is ActionType.Mount or ActionType.Item)
-                return;
-
-            // Event: Cast By Player (Excl. Auto-Attacks)
-            if (casterEntityId == playerObjectId && actionId is not (7 or 8))
-            {
-                // Update Trackers
-                LastAction = actionId;
-                TimeLastActionUsed = dateNow;
-
-                // Update Counter
-                if (actionId != CombatActions.LastOrDefault())
-                    LastActionUseCount = 1;
-                else
-                    LastActionUseCount++;
-
-                // Update Lists
-                CombatActions.Add(actionId);
-                LastSuccessfulUseTime[actionId] = currentTick;
-                if (ActionSheet.TryGetValue(actionId, out var actionSheet))
-                {
-                    switch (actionSheet.ActionCategory.Value.RowId)
-                    {
-                        case 2: // Spell
-                            LastSpell = actionId;
-                            WeaveActions.Clear();
-                            break;
-
-                        case 3: // Weaponskill
-                            LastWeaponskill = actionId;
-                            WeaveActions.Clear();
-                            break;
-
-                        case 4: // Ability
-                            LastAbility = actionId;
-                            WeaveActions.Add(actionId);
-                            break;
-                    }
-
-                    if (actionSheet.TargetArea)
-                        WrathOpener.CurrentOpener?.ProgressOpener(actionId);
-                }
-
-                if (Service.Configuration.EnabledOutputLog)
-                    OutputLog();
-            }
         }
         catch (Exception ex)
         {
             Svc.Log.Error(ex, "ReceiveActionEffectDetour");
         }
+    }
+
+    private static unsafe void UpdateLastUsedAction(uint actionId, byte actionType, ulong targetObjectId)
+    {
+        // Update Trackers
+        LastAction = actionId;
+        TimeLastActionUsed = DateTime.Now;
+        var currentTick = Environment.TickCount64;
+
+        // Update Counter
+        if (actionId != CombatActions.LastOrDefault())
+            LastActionUseCount = 1;
+        else
+            LastActionUseCount++;
+
+        // Update Lists
+        CombatActions.Add(actionId);
+        LastSuccessfulUseTime[actionId] = currentTick;
+        if (ActionSheet.TryGetValue(actionId, out var actionSheet))
+        {
+            switch (actionSheet.ActionCategory.Value.RowId)
+            {
+                case 2: // Spell
+                    LastSpell = actionId;
+                    WeaveActions.Clear();
+                    break;
+
+                case 3: // Weaponskill
+                    LastWeaponskill = actionId;
+                    WeaveActions.Clear();
+                    break;
+
+                case 4: // Ability
+                    LastAbility = actionId;
+                    WeaveActions.Add(actionId);
+                    break;
+            }
+
+            if (actionType == 1)
+            {
+                ActionTimestamps[actionId] = currentTick;
+                UsedOnDict[(actionId, targetObjectId)] = currentTick;
+            }
+
+            if (actionSheet.TargetArea)
+                WrathOpener.CurrentOpener?.ProgressOpener(actionId);
+        }
+
+        if (Service.Configuration.EnabledOutputLog)
+            OutputLog();
     }
 
     /// <summary> Handles logic when an action is sent. </summary>
@@ -231,27 +241,16 @@ public static class ActionWatching
         {
             OnActionSend?.Invoke();
 
-            // Cache Data
-            var dateNow = DateTime.Now;
-            var currentTick = Environment.TickCount64;
-
             if (!InCombat())
             {
                 CombatActions.Clear();
                 WeaveActions.Clear();
             }
 
-            // Update Lists
-            if (actionType == 1)
-            {
-                ActionTimestamps[actionId] = currentTick;
-                UsedOnDict[(actionId, targetObjectId)] = currentTick;
-            }
-
-            // Update Trackers
-            LastAction = actionId;
-            LastActionType = actionType;
-            TimeLastActionUsed = dateNow + TimeSpan.FromMilliseconds(ActionManager.GetAdjustedCastTime((ActionType)actionType, actionId));
+            token = source.Token;
+            UpdateActionTask = Svc.Framework.RunOnTick(() => 
+            UpdateLastUsedAction(actionId, actionType, targetObjectId), 
+            TimeSpan.FromMilliseconds(ActionManager.GetAdjustedCastTime((ActionType)actionType, actionId)), cancellationToken: token);
 
             // Update Helpers
             NIN.InMudra = NIN.MudraSigns.Contains(actionId);
@@ -267,7 +266,6 @@ public static class ActionWatching
                 $"Params: [{a5}, {a6}, {a7}, {a8}, {a9}]"
             );
 #endif
-
             SendActionHook!.Original(targetObjectId, actionType, actionId, sequence, a5, a6, a7, a8, a9);
         }
         catch (Exception ex)
@@ -276,10 +274,6 @@ public static class ActionWatching
             SendActionHook!.Original(targetObjectId, actionType, actionId, sequence, a5, a6, a7, a8, a9);
         }
     }
-
-    /// <summary> Checks if at least two abilities were used between GCDs. </summary>
-    [Obsolete("CanWeave now includes a weave limiter by default. This method will be removed in a future update.")]
-    public static bool HasDoubleWeaved() => WeaveActions.Count > 1;
 
     /// <summary> Gets the amount of GCDs used since combat started. </summary>
     public static int NumberOfGcdsUsed => CombatActions.Count(x => x.ActionAttackType() is ActionAttackType.Spell or ActionAttackType.Weaponskill);
@@ -317,6 +311,7 @@ public static class ActionWatching
         ReceiveActionEffectHook?.Dispose();
         SendActionHook?.Dispose();
         UseActionHook?.Dispose();
+        OnCastInterrupted -= CancelPendingLastActionUpdate;
     }
 
     static unsafe ActionWatching()
@@ -324,6 +319,13 @@ public static class ActionWatching
         ReceiveActionEffectHook ??= Svc.Hook.HookFromAddress<ReceiveActionEffectDelegate>(Addresses.Receive.Value, ReceiveActionEffectDetour);
         SendActionHook ??= Svc.Hook.HookFromSignature<SendActionDelegate>("48 89 5C 24 ?? 48 89 6C 24 ?? 48 89 74 24 ?? 57 48 81 EC ?? ?? ?? ?? 48 8B 05 ?? ?? ?? ?? 48 33 C4 48 89 84 24 ?? ?? ?? ?? 48 8B E9 41 0F B7 D9", SendActionDetour);
         UseActionHook ??= Svc.Hook.HookFromAddress<UseActionDelegate>(ActionManager.Addresses.UseAction.Value, UseActionDetour);
+        OnCastInterrupted += CancelPendingLastActionUpdate;
+    }
+
+    private static void CancelPendingLastActionUpdate(uint interruptedAction)
+    {
+        source.Cancel();
+        source = new CancellationTokenSource();
     }
 
     /// <summary> Handles logic when an action is used. </summary>
