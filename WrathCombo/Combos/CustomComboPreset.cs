@@ -5342,8 +5342,12 @@ public enum Preset
     [ParentCombo(RDM_ST_DPS)]
     [CustomComboInfo("Magick Barrier Raidwide Option", "Adds Magick Barrier when Raidwide is detected casting.", Job.RDM)]
     RDM_ST_MagickBarrier = 13025,
+    
+    [ParentCombo(RDM_ST_DPS)]
+    [CustomComboInfo("Vercure Solo Option", "Adds Vercure on self when solo or in a party with no healers.", Job.RDM)]
+    RDM_ST_VerCure = 13026,
 
-    //Last Used 13025
+    //Last Used 13026
     #endregion
 
     #region AoE DPS
@@ -5434,8 +5438,13 @@ public enum Preset
     [CustomComboInfo("Lucid Dreaming Option", "Weaves Lucid Dreaming when your MP drops below the specified value.",
         Job.RDM)]
     RDM_AoE_Lucid = 13220,
+    
+    [ParentCombo(RDM_AoE_DPS)]
+    [CustomComboInfo("Vercure Solo Option", "Adds Vercure on self when solo or in a party with no healers.", Job.RDM)]
+    RDM_AoE_VerCure = 13222,
+    
+    //Last Used 13222
 
-    //Last Used 13221
     #endregion
 
     #region Stand Alone Features

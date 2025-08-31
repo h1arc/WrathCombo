@@ -18,9 +18,11 @@ internal partial class RDM
             RDM_ST_Corpsacorps_Distance = new("RDM_ST_Corpsacorps_Distance", 25),
             RDM_ST_Corpsacorps_Time = new("RDM_ST_Corpsacorps_Time", 0),
             RDM_ST_GapCloseCorpsacorps_Time = new("RDM_ST_GapCloseCorpsacorps_Time", 0),
+            RDM_ST_VerCureThreshold = new("RDM_ST_VerCureThreshold", 40),
             RDM_AoE_Corpsacorps_Distance = new("RDM_AoE_Corpsacorps_Distance", 25),
             RDM_AoE_Corpsacorps_Time = new("RDM_AoE_Corpsacorps_Time", 0),
             RDM_AoE_GapCloseCorpsacorps_Time = new("RDM_AoE_GapCloseCorpsacorps_Time", 0),
+            RDM_AoE_VerCureThreshold = new("RDM_AoE_VerCureThreshold", 40),
             RDM_Opener_Selection = new("RDM_Opener_Selection", 0),
             RDM_Riposte_Weaves_Options_EngagementCharges = new("RDM_Riposte_Weaves_Options_EngagementCharges", 0),
             RDM_Riposte_Weaves_Options_CorpsCharges = new("RDM_Riposte_Weaves_Options_CorpsCharges", 0),
@@ -56,6 +58,15 @@ internal partial class RDM
                     DrawBossOnlyChoice(RDM_BalanceOpener_Content);
                     ImGui.Unindent();
                     break;
+                
+                case Preset.RDM_Variant_Cure:
+                    DrawSliderInt(1, 100, RDM_VariantCure, "HP% to be at or under", 200);
+                    break;
+                
+                case Preset.RDM_ST_VerCure:
+                    DrawSliderInt(1, 100, RDM_ST_VerCureThreshold, "HP% to be at or under", 200);
+                    break;
+
 
                 case Preset.RDM_ST_MeleeCombo:
                     if (P.IPCSearch.AutoActions[Preset.RDM_ST_DPS] == true &&
@@ -93,6 +104,10 @@ internal partial class RDM
                 case Preset.RDM_AoE_MeleeCombo_GapCloser:
                     DrawSliderInt(0, 5, RDM_AoE_GapCloseCorpsacorps_Time,
                         " How long you need to be stationary to use. Zero to disable");
+                    break;
+                
+                case Preset.RDM_AoE_VerCure:
+                    DrawSliderInt(1, 100, RDM_AoE_VerCureThreshold, "HP% to be at or under", 200);
                     break;
 
                 case Preset.RDM_ST_Lucid:

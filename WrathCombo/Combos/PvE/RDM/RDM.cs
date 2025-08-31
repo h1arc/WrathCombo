@@ -299,6 +299,11 @@ internal partial class RDM : Caster
 
             if (CanGrandImpact)
                 return GrandImpact;
+            
+            if (IsEnabled(Preset.RDM_ST_VerCure) && ActionReady(Vercure) && 
+                PlayerHealthPercentageHp() <= RDM_ST_VerCureThreshold &&
+                (!InDuty() || InFATE() || !IsInParty()))
+                return Vercure;
 
             if (IsEnabled(Preset.RDM_ST_FireStone))
             {
@@ -404,6 +409,11 @@ internal partial class RDM : Caster
             #region GCD Casts
             if (CanGrandImpact)
                 return GrandImpact;
+            
+            if (IsEnabled(Preset.RDM_AoE_VerCure) && ActionReady(Vercure) && 
+                PlayerHealthPercentageHp() <= RDM_AoE_VerCureThreshold && !CanInstantCast &&
+                (!InDuty() || InFATE() || !IsInParty()))
+                return Vercure;            
 
             if (IsEnabled(Preset.RDM_AoE_ThunderAero) && !CanInstantCast)
                 return UseThunderAeroAoE(actionID);
