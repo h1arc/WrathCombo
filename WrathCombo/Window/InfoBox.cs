@@ -2,9 +2,7 @@
 using Dalamud.Interface.Utility.Raii;
 using System;
 using System.Numerics;
-using System.Text.Json;
 using Dalamud.Interface.Style;
-using ECommons.Logging;
 
 namespace WrathCombo.Window;
 
