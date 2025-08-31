@@ -81,7 +81,6 @@ internal class PvEFeatures : ConfigWindow
                                 ImGui.Dummy(new Vector2(iconMaxSize, iconMaxSize));
                             }
                             ImGui.SameLine(indentwidth2);
-
                             ImGuiEx.Spacing(new Vector2(0, verticalCenteringPadding));
                             ImGui.Text($"{header} {(disabled ? "(Disabled due to update)" : "")}");
 
