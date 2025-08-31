@@ -36,12 +36,12 @@ public enum Preset
     [ConflictingCombos(PLD_RetargetShieldBash)]
     [ParentCombo(ALL_Tank_Menu)]
     [CustomComboInfo("Tank: Interrupt Feature",
-        "Replaces Low Blow (Stun) with Interject (Interrupt) when the target can be interrupted.\nPLDs can slot Shield Bash to have the feature to work with Shield Bash.",
+        "Replaces Low Blow (Stun) with Interject (Interrupt) when the target can be interrupted.\nFor PLDs this feature will add Shield Bash when Interject and Low Blow are on cooldown.",
         Job.ADV)]
     ALL_Tank_Interrupt = 100000,
 
     [ParentCombo(ALL_Tank_Interrupt)]
-    [Retargeted(RoleActions.Tank.Interject, RoleActions.Tank.LowBlow)]
+    [Retargeted(RoleActions.Tank.Interject, RoleActions.Tank.LowBlow, PLD.ShieldBash)]
     [CustomComboInfo("Retarget Interrupts", "Will retarget the interrupt if the caster is not your current target.", Job.ADV)]
     ALL_Tank_Interrupt_Retarget = 100005,
 
