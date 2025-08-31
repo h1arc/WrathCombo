@@ -24,12 +24,6 @@ internal partial class MCH : PhysicalRanged
                  ActionReady(Drill)))
                 return Reassemble;
 
-            if (Variant.CanCure(Preset.MCH_Variant_Cure, MCH_VariantCure))
-                return Variant.Cure;
-
-            if (Variant.CanRampart(Preset.MCH_Variant_Rampart))
-                return Variant.Rampart;
-
             if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
 
@@ -161,12 +155,6 @@ internal partial class MCH : PhysicalRanged
             if (Role.CanHeadGraze(Preset.MCH_AoE_SimpleMode, WeaveTypes.DelayWeave))
                 return Role.HeadGraze;
 
-            if (Variant.CanCure(Preset.MCH_Variant_Cure, MCH_VariantCure))
-                return Variant.Cure;
-
-            if (Variant.CanRampart(Preset.MCH_Variant_Rampart))
-                return Variant.Rampart;
-
             if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
 
@@ -284,12 +272,6 @@ internal partial class MCH : PhysicalRanged
                  LevelChecked(AirAnchor) && IsOffCooldown(AirAnchor) && MCH_ST_Reassembled[2] ||
                  ActionReady(Drill) && MCH_ST_Reassembled[3]))
                 return Reassemble;
-
-            if (Variant.CanCure(Preset.MCH_Variant_Cure, MCH_VariantCure))
-                return Variant.Cure;
-
-            if (Variant.CanRampart(Preset.MCH_Variant_Rampart))
-                return Variant.Rampart;
 
             if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
@@ -476,12 +458,6 @@ internal partial class MCH : PhysicalRanged
 
             if (HasStatusEffect(Buffs.Flamethrower) || JustUsed(Flamethrower, GCD))
                 return All.SavageBlade;
-
-            if (Variant.CanCure(Preset.MCH_Variant_Cure, MCH_VariantCure))
-                return Variant.Cure;
-
-            if (Variant.CanRampart(Preset.MCH_Variant_Rampart))
-                return Variant.Rampart;
 
             if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
