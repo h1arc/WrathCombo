@@ -68,7 +68,7 @@ public static class ActionWatching
     private delegate void SendActionDelegate(ulong targetObjectId, byte actionType, uint actionId, ushort sequence, long a5, long a6, long a7, long a8, long a9);
     private static readonly Hook<SendActionDelegate>? SendActionHook;
 
-    private static Task UpdateActionTask = null;
+    private static Task UpdateActionTask = null!;
     private static CancellationTokenSource source = new CancellationTokenSource();
     private static CancellationToken token;
 
