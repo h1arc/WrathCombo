@@ -32,7 +32,7 @@ internal partial class MCH
                     DrawHorizontalRadioButton(MCH_ST_Adv_BarrelStabiliserBossOption,
                         "Boss encounters Only", $"Only uses {BarrelStabilizer.ActionName()} when in Boss encounters.", 1);
                     ImGui.Unindent();
-                    
+
                     DrawSliderInt(0, 100, MCH_ST_BarrelStabilizerHPThreshold,
                         $"Stop Using {BarrelStabilizer.ActionName()} When Target HP% is at or Below (Set to 0 to Disable This Check)");
                     break;
@@ -61,10 +61,10 @@ internal partial class MCH
                     }
                     break;
 
-                    case Preset.MCH_ST_Adv_Hypercharge :
+                case Preset.MCH_ST_Adv_Hypercharge:
                     DrawSliderInt(0, 100, MCH_ST_HyperchargeHPThreshold,
                         $"Stop Using {Hypercharge.ActionName()} When Target HP% is at or Below (Set to 0 to Disable This Check)");
-                        break;
+                    break;
 
                 case Preset.MCH_ST_Adv_Excavator:
                     DrawHorizontalRadioButton(MCH_ST_Adv_ExcavatorBossOption,
@@ -104,7 +104,7 @@ internal partial class MCH
                 case Preset.MCH_AoE_Adv_Reassemble:
                     DrawSliderInt(0, 100, MCH_AoE_ReassembleHPThreshold,
                         $"Stop Using {Reassemble.ActionName()} When Target HP% is at or Below (Set to 0 to Disable This Check)");
-                    
+
                     DrawSliderInt(0, 2, MCH_AoE_ReassemblePool,
                         "Number of Charges to Save for Manual Use");
 
@@ -154,7 +154,7 @@ internal partial class MCH
                     DrawSliderInt(0, 100, MCH_AoE_HyperchargeHPThreshold,
                         $"Stop Using {Hypercharge.ActionName()} When Target HP% is at or Below (Set to 0 to Disable This Check)");
                     break;
-                
+
                 case Preset.MCH_AoE_Adv_Stabilizer_FullMetalField:
                     DrawSliderInt(0, 100, MCH_AoE_FullMetalFieldHPThreshold,
                         $"Stop Using {FullMetalField.ActionName()} When Target HP% is at or Below (Set to 0 to Disable This Check)");
@@ -174,7 +174,7 @@ internal partial class MCH
                     DrawSliderInt(0, 100, MCH_AoE_AirAnchorHPThreshold,
                         $"Stop Using {AirAnchor.ActionName()} When Target HP% is at or Below (Set to 0 to Disable This Check)");
                     break;
-                
+
                 case Preset.MCH_GaussRoundRicochet:
                     DrawHorizontalRadioButton(MCH_GaussRico,
                         $"Change {GaussRound.ActionName()} / {DoubleCheck.ActionName()}", $"Changes to {Ricochet.ActionName()} / {CheckMate.ActionName()} depending on charges and what was used last", 0);

@@ -510,7 +510,7 @@ internal partial class MCH : PhysicalRanged
                     // Hypercharge
                     if (IsEnabled(Preset.MCH_AoE_Adv_Hypercharge) &&
                         (Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) && LevelChecked(Hypercharge) &&
-                        LevelChecked(AutoCrossbow) && 
+                        LevelChecked(AutoCrossbow) &&
                         GetTargetHPPercent() >= MCH_AoE_HyperchargeHPThreshold &&
                         (LevelChecked(BioBlaster) && GetCooldownRemainingTime(BioBlaster) > 10 ||
                          !LevelChecked(BioBlaster) || IsNotEnabled(Preset.MCH_AoE_Adv_Bioblaster)) &&
