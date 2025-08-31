@@ -540,7 +540,7 @@ internal partial class SGE : Healer
             if (ActionReady(Panhaima) && !HasStatusEffect(Buffs.Eudaimonia))
                 return Panhaima;
 
-            if (ActionReady(Zoe))
+            if (ActionReady(Zoe) || HasStatusEffect(Buffs.Zoe))
                 return ActionReady(Pneuma) && !HasStatusEffect(Buffs.Zoe) || !LevelChecked(Pneuma)
                     ? Zoe
                     : Pneuma;
