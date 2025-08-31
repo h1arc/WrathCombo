@@ -51,7 +51,8 @@ internal partial class NIN
             NIN_ST_AdvancedMode_TenChiJin_Options = new("NIN_ST_AdvancedMode_TenChiJin_Options"),
             NIN_AoE_AdvancedMode_Ninjitsus_Options = new("NIN_AoE_AdvancedMode_Ninjitsus_Options"),
             NIN_AoE_AdvancedMode_Katon_Options = new("NIN_AoE_AdvancedMode_Katon_Options"),
-            NIN_AoE_AdvancedMode_TenChiJin_Options = new("NIN_AoE_AdvancedMode_TenChiJin_Options");
+            NIN_AoE_AdvancedMode_TenChiJin_Options = new("NIN_AoE_AdvancedMode_TenChiJin_Options"),
+            NIN_MudraProtection_Options = new("NIN_MudraProtection_Options");
         
         internal static UserFloat
             NIN_AoE_AdvancedMode_Doton_TimeStill = new("NIN_AoE_AdvancedMode_Doton_TimeStill");
@@ -270,7 +271,19 @@ internal partial class NIN
                     }
                     ImGui.Unindent();
                     break;
-                    #endregion
+
+                
+                case Preset.NIN_MudraProtection:
+                    DrawHorizontalMultiChoice(NIN_MudraProtection_Options, "Shade Shift", "Replaces with Savage Blade while in Mudra.", 6, 0);
+                    DrawHorizontalMultiChoice(NIN_MudraProtection_Options, "Shukuchi", "Replaces with Savage Blade while in Mudra.", 6, 1);
+                    DrawHorizontalMultiChoice(NIN_MudraProtection_Options, "Feint", "Replaces with Savage Blade while in Mudra or Current Target already has Feint", 6, 2);
+                    DrawHorizontalMultiChoice(NIN_MudraProtection_Options, "Bloodbath", "Replaces with Savage Blade while in Mudra.", 6, 3);
+                    DrawHorizontalMultiChoice(NIN_MudraProtection_Options, "Second Wind", "Replaces with Savage Blade while in Mudra.", 6, 4);
+                    DrawHorizontalMultiChoice(NIN_MudraProtection_Options, "Leg Sweep", "Replaces with Savage Blade while in Mudra.", 6, 5);
+                    break;
+                    
+                #endregion
+
             }
         }
     }
