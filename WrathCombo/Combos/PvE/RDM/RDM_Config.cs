@@ -59,10 +59,6 @@ internal partial class RDM
                     ImGui.Unindent();
                     break;
                 
-                case Preset.RDM_Variant_Cure:
-                    DrawSliderInt(1, 100, RDM_VariantCure, "HP% to be at or under", 200);
-                    break;
-                
                 case Preset.RDM_ST_VerCure:
                     DrawSliderInt(1, 100, RDM_ST_VerCureThreshold, "HP% to be at or under", 200);
                     break;
