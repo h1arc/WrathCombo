@@ -4368,7 +4368,7 @@ public enum Preset
     PCT_ST_AdvancedMode_LandscapeMotif = 20017,
 
     [ParentCombo(PCT_ST_AdvancedMode_MotifFeature)]
-    [CustomComboInfo("Creature Motif Option", "Adds Landscape Motif.", Job.PCT)]
+    [CustomComboInfo("Creature Motif Option", "Adds Creature Motif.", Job.PCT)]
     PCT_ST_AdvancedMode_CreatureMotif = 20018,
 
     [ParentCombo(PCT_ST_AdvancedMode_MotifFeature)]
@@ -4486,7 +4486,7 @@ public enum Preset
     PCT_AoE_AdvancedMode_LandscapeMotif = 20050,
 
     [ParentCombo(PCT_AoE_AdvancedMode_MotifFeature)]
-    [CustomComboInfo("Creature Motif Option", "Adds Landscape Motif.", Job.PCT)]
+    [CustomComboInfo("Creature Motif Option", "Adds Creature Motif.", Job.PCT)]
     PCT_AoE_AdvancedMode_CreatureMotif = 20051,
 
     [ParentCombo(PCT_AoE_AdvancedMode_MotifFeature)]
