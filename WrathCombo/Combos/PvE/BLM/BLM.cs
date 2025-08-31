@@ -237,7 +237,8 @@ internal partial class BLM : Caster
                     return LeyLines;
             }
 
-            if ((EndOfFirePhase || EndOfIcePhase || EndOfIcePhaseAoEMaxLevel) &&
+            if ((EndOfFirePhase || EndOfIcePhaseAoEEarlyLevel ||
+                 EndOfIcePhaseAoEMidLevel || EndOfIcePhaseAoEMaxLevel) &&
                 HasPolyglotStacks())
                 return Foul;
 
@@ -246,7 +247,8 @@ internal partial class BLM : Caster
                 (ThunderDebuffAoE is null && ThunderDebuffST is null ||
                  ThunderDebuffAoE?.RemainingTime <= 3 ||
                  ThunderDebuffST?.RemainingTime <= 3) &&
-                (EndOfFirePhase || EndOfIcePhase || EndOfIcePhaseAoEMaxLevel))
+                (EndOfFirePhase || EndOfIcePhaseAoEEarlyLevel ||
+                 EndOfIcePhaseAoEMidLevel || EndOfIcePhaseAoEMaxLevel))
                 return OriginalHook(Thunder2);
 
             if (ActiveParadox && EndOfIcePhaseAoEMaxLevel)
@@ -560,7 +562,8 @@ internal partial class BLM : Caster
             }
 
             if (IsEnabled(Preset.BLM_AoE_UsePolyglot) &&
-                (EndOfFirePhase || EndOfIcePhase || EndOfIcePhaseAoEMaxLevel) &&
+                (EndOfFirePhase || EndOfIcePhaseAoEEarlyLevel ||
+                 EndOfIcePhaseAoEMidLevel || EndOfIcePhaseAoEMaxLevel) &&
                 HasPolyglotStacks())
                 return Foul;
 
@@ -571,7 +574,8 @@ internal partial class BLM : Caster
                 (ThunderDebuffAoE is null && ThunderDebuffST is null ||
                  ThunderDebuffAoE?.RemainingTime <= 3 ||
                  ThunderDebuffST?.RemainingTime <= 3) &&
-                (EndOfFirePhase || EndOfIcePhase || EndOfIcePhaseAoEMaxLevel))
+                (EndOfFirePhase || EndOfIcePhaseAoEEarlyLevel ||
+                 EndOfIcePhaseAoEMidLevel || EndOfIcePhaseAoEMaxLevel))
                 return OriginalHook(Thunder2);
 
             if (IsEnabled(Preset.BLM_AoE_ParadoxFiller) &&
