@@ -188,7 +188,7 @@ internal partial class WHM : Healer
                 _ => StoneGlareList.ToArray(),
             };
 
-            if (!Enumerable.Contains(replacedAction, actionID))
+            if (!replacedAction.Contains(actionID))
                 return actionID;
 
             #endregion
