@@ -472,13 +472,15 @@ internal partial class AST : Healer
                 return actionID;
             
             var healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
+            bool cleansableTarget = HealRetargeting.RetargetSettingOn && 
+                                    SimpleTarget.Stack.AllyToEsuna is not null ||
+                                    HasCleansableDebuff(healTarget);
 
             if (ActionReady(OriginalHook(AstralDraw)) && HasNoDPSCard)
                 return OriginalHook(AstralDraw);
             
-            if (ActionReady(Role.Esuna) && 
-                GetTargetHPPercent(healTarget) >= 40 &&
-                HasCleansableDebuff(healTarget))
+            if (ActionReady(Role.Esuna) && cleansableTarget &&
+                GetTargetHPPercent(healTarget) >= 40)
                 return Role.Esuna.RetargetIfEnabled(healTarget, Benefic);
             
             if (CanWeave() && Role.CanLucidDream(6500))
@@ -589,6 +591,9 @@ internal partial class AST : Healer
                 return actionID;
 
             var healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
+            bool cleansableTarget = HealRetargeting.RetargetSettingOn && 
+                                    SimpleTarget.Stack.AllyToEsuna is not null ||
+                                    HasCleansableDebuff(healTarget);
 
             #region Healing Helper
 
@@ -601,11 +606,9 @@ internal partial class AST : Healer
 
             #endregion
 
-            if (IsEnabled(Preset.AST_ST_Heals_Esuna) && ActionReady(Role.Esuna) &&
-                GetTargetHPPercent(healTarget, AST_ST_SimpleHeals_IncludeShields) >= AST_ST_SimpleHeals_Esuna &&
-                HasCleansableDebuff(healTarget))
-                return Role.Esuna
-                    .RetargetIfEnabled(OptionalTarget, Benefic);
+            if (IsEnabled(Preset.AST_ST_Heals_Esuna) && ActionReady(Role.Esuna) && cleansableTarget &&
+                GetTargetHPPercent(healTarget, AST_ST_SimpleHeals_IncludeShields) >= AST_ST_SimpleHeals_Esuna)
+                return Role.Esuna.RetargetIfEnabled(OptionalTarget, Benefic);
             
             //Priority List
             for (int i = 0; i < AST_ST_SimpleHeals_Priority.Count; i++)
