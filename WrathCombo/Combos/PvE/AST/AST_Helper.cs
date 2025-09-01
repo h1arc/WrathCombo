@@ -14,6 +14,7 @@ using ECommons.GameFunctions;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
+using WrathCombo.Data;
 using WrathCombo.Extensions;
 using static WrathCombo.Combos.PvE.AST.Config;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
@@ -45,7 +46,9 @@ internal partial class AST
     internal static bool HasEwer => Gauge.DrawnCards[2] == CardType.Ewer;
     internal static bool HasArrow => Gauge.DrawnCards[1] == CardType.Arrow;
     internal static bool HasBole => Gauge.DrawnCards[1] == CardType.Bole;
-    internal static bool HasDivination=> HasStatusEffect(Buffs.Divination, anyOwner: true) || JustUsed(Divination);
+    internal static bool HasDivination => HasStatusEffect(Buffs.Divination, anyOwner: true) || JustUsed(Divination);
+    internal static bool StandStill => TimeStoodStill >= TimeSpan.FromSeconds(3);
+    internal static bool WaitGCDs => ActionWatching.NumberOfGcdsUsed >= 10;
     internal static float DivinationCD => GetCooldownRemainingTime(Divination);
     internal static float LightspeedChargeCD => GetCooldownChargeRemainingTime(Lightspeed);
     #endregion
