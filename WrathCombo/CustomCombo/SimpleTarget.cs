@@ -167,7 +167,7 @@ internal static class SimpleTarget
                     (cfg.UseLowestHPOverrideInDefaultHealStack
                         ? CustomLogic(LowestHPPAlly.IfWithinRange().IfMissingHP())
                         : null) ??
-                   Self;
+                   CustomLogic(Self);
 
             #endregion
 
@@ -204,7 +204,7 @@ internal static class SimpleTarget
 
                 // Fall back to Self, if the stack is small and returned nothing
                 if (Service.Configuration.CustomHealStack.Length <= 3)
-                    return Self;
+                    return CustomLogic(Self);
             }
 
             #endregion
