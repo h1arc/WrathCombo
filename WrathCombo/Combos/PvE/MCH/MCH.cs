@@ -296,8 +296,8 @@ internal partial class MCH : PhysicalRanged
                 {
                     // BarrelStabilizer
                     if (IsEnabled(Preset.MCH_ST_Adv_Stabilizer) &&
-                        ActionReady(BarrelStabilizer) && !HasStatusEffect(Buffs.FullMetalMachinist) &&
-                        GetTargetHPPercent() > HPThresholdBarrelStabilizerST)
+                        (MCH_ST_BarrelStabilizerBossOption == 1 || TargetIsBoss()) &&
+                        ActionReady(BarrelStabilizer) && !HasStatusEffect(Buffs.FullMetalMachinist))
                         return BarrelStabilizer;
 
                     // Hypercharge

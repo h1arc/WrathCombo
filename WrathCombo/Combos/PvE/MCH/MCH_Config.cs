@@ -26,22 +26,11 @@ internal partial class MCH
                     break;
 
                 case Preset.MCH_ST_Adv_Stabilizer:
-
-                    DrawSliderInt(0, 50, MCH_ST_BarrelStabilizerHPOption,
-                        "Stop using at Enemy HP %. Set to Zero to disable this check.");
-
-                    ImGui.Indent();
-
-                    ImGui.TextColored(ImGuiColors.DalamudYellow,
-                        "Select what kind of enemies the HP check should be applied to:");
+                    DrawHorizontalRadioButton(MCH_ST_BarrelStabilizerBossOption,
+                        "Bosses Only", $"Only uses {Wildfire.ActionName()} when the targeted enemy is a boss.", 0);
 
                     DrawHorizontalRadioButton(MCH_ST_BarrelStabilizerBossOption,
-                        "Non-Bosses", "Only applies the HP check above to non-bosses.", 0);
-
-                    DrawHorizontalRadioButton(MCH_ST_BarrelStabilizerBossOption,
-                        "All Enemies", "Applies the HP check above to all enemies.", 1);
-
-                    ImGui.Unindent();
+                        "All content", $"Uses {Wildfire.ActionName()} regardless of content.", 1);
                     break;
 
                 case Preset.MCH_ST_Adv_Hypercharge:
@@ -228,7 +217,6 @@ internal partial class MCH
             MCH_ST_QueenBossOption = new("MCH_ST_QueenBossOption", 0),
             MCH_ST_QueenHPOption = new("MCH_ST_QueenHPOption", 10),
             MCH_ST_BarrelStabilizerBossOption = new("MCH_ST_BarrelStabilizerBossOption", 0),
-            MCH_ST_BarrelStabilizerHPOption = new("MCH_ST_BarrelStabilizerHPOption", 10),
             MCH_ST_WildfireBossOption = new("MCH_ST_WildfireBossOption", 0),
             MCH_ST_HyperchargeBossOption = new("MCH_ST_HyperchargeBossOption", 0),
             MCH_ST_HyperchargeHPOption = new("MCH_ST_HyperchargeHPOption", 10),

@@ -73,10 +73,6 @@ internal partial class MCH
 
     #region HP Treshold
 
-    internal static int HPThresholdBarrelStabilizerST =>
-        MCH_ST_BarrelStabilizerBossOption == 1 ||
-        !TargetIsBoss() ? MCH_ST_BarrelStabilizerHPOption : 0;
-
     internal static int HPThresholdHyperchargeST =>
         MCH_ST_HyperchargeBossOption == 1 ||
         !TargetIsBoss() ? MCH_ST_HyperchargeHPOption : 0;
