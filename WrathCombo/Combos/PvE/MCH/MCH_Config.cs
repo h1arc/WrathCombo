@@ -19,18 +19,18 @@ internal partial class MCH
 
                 case Preset.MCH_ST_Adv_WildFire:
                     DrawHorizontalRadioButton(MCH_ST_WildfireBossOption,
-                        "Bosses Only", $"Only uses {Wildfire.ActionName()} when the targeted enemy is a boss.", 0);
+                        "All content", $"Uses {Wildfire.ActionName()} regardless of content.", 0);
 
                     DrawHorizontalRadioButton(MCH_ST_WildfireBossOption,
-                        "All content", $"Uses {Wildfire.ActionName()} regardless of content.", 1);
+                        "Bosses Only", $"Only uses {Wildfire.ActionName()} when the targeted enemy is a boss.", 1);
+
                     break;
 
                 case Preset.MCH_ST_Adv_Stabilizer:
                     DrawHorizontalRadioButton(MCH_ST_BarrelStabilizerBossOption,
-                        "Bosses Only", $"Only uses {BarrelStabilizer.ActionName()} when the targeted enemy is a boss.", 0);
-
+                        "All content", $"Uses {BarrelStabilizer.ActionName()} regardless of content.", 0);
                     DrawHorizontalRadioButton(MCH_ST_BarrelStabilizerBossOption,
-                        "All content", $"Uses {BarrelStabilizer.ActionName()} regardless of content.", 1);
+                        "Bosses Only", $"Only uses {BarrelStabilizer.ActionName()} when the targeted enemy is a boss.", 1);
                     break;
 
                 case Preset.MCH_ST_Adv_Hypercharge:
