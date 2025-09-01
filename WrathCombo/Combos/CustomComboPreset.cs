@@ -953,6 +953,12 @@ public enum Preset
         "Essential Dignity will be added when the target is at or below the value set", Job.AST)]
     [PossiblyRetargeted(AST.EssentialDignity)]
     AST_ST_Heals_EssentialDignity = 1024,
+    
+    [ParentCombo(AST_ST_Heals_EssentialDignity)]
+    [CustomComboInfo("Emergency Essential Dignity Option",
+        "Will retain a charge of Essential Dignity to use at a different threshold.", Job.AST)]
+    [PossiblyRetargeted(AST.EssentialDignity)]
+    AST_ST_Heals_EssentialDignity_Emergency = 1096,
 
     [ParentCombo(AST_ST_Heals)]
     [CustomComboInfo("Celestial Intersection Option", "Adds Celestial Intersection.", Job.AST)]
