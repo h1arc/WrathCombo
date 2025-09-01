@@ -1,9 +1,9 @@
 using Dalamud.Game.ClientState.Statuses;
 using System.Linq;
+using Dalamud.Game.ClientState.Objects.Types;
 using ECommons.GameFunctions;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
-using WrathCombo.Data;
 using WrathCombo.Extensions;
 using static WrathCombo.Combos.PvE.AST.Config;
 using EZ = ECommons.Throttlers.EzThrottler;
@@ -470,18 +470,17 @@ internal partial class AST : Healer
         {
             if (actionID is not Benefic)
                 return actionID;
-            
-            var healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
-            bool cleansableTarget = HealRetargeting.RetargetSettingOn && 
-                                    SimpleTarget.Stack.AllyToEsuna is not null ||
-                                    HasCleansableDebuff(healTarget);
 
             if (ActionReady(OriginalHook(AstralDraw)) && HasNoDPSCard)
                 return OriginalHook(AstralDraw);
             
-            if (ActionReady(Role.Esuna) && cleansableTarget &&
-                GetTargetHPPercent(healTarget) >= 40)
-                return Role.Esuna.RetargetIfEnabled(healTarget, Benefic);
+            IGameObject? healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
+            IGameObject? cleansableTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToEsuna;
+            
+            if (ActionReady(Role.Esuna) &&
+                GetTargetHPPercent(cleansableTarget) >= 40 &&
+                HasCleansableDebuff(cleansableTarget))
+                return Role.Esuna.RetargetIfEnabled(OptionalTarget, Benefic);
             
             if (CanWeave() && Role.CanLucidDream(6500))
                 return Role.LucidDreaming;
@@ -590,11 +589,6 @@ internal partial class AST : Healer
             if (actionID is not Benefic)
                 return actionID;
 
-            var healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
-            bool cleansableTarget = HealRetargeting.RetargetSettingOn && 
-                                    SimpleTarget.Stack.AllyToEsuna is not null ||
-                                    HasCleansableDebuff(healTarget);
-
             #region Healing Helper
 
             if (RaidwideCollectiveUnconscious())
@@ -605,9 +599,14 @@ internal partial class AST : Healer
                 return OriginalHook(AspectedHelios);
 
             #endregion
-
-            if (IsEnabled(Preset.AST_ST_Heals_Esuna) && ActionReady(Role.Esuna) && cleansableTarget &&
-                GetTargetHPPercent(healTarget, AST_ST_SimpleHeals_IncludeShields) >= AST_ST_SimpleHeals_Esuna)
+            
+            IGameObject? healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
+            IGameObject? cleansableTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToEsuna;
+            
+            if (IsEnabled(Preset.AST_ST_Heals_Esuna) && 
+                ActionReady(Role.Esuna) &&
+                GetTargetHPPercent(cleansableTarget, AST_ST_SimpleHeals_IncludeShields) >= AST_ST_SimpleHeals_Esuna &&
+                HasCleansableDebuff(cleansableTarget))
                 return Role.Esuna.RetargetIfEnabled(OptionalTarget, Benefic);
             
             //Priority List

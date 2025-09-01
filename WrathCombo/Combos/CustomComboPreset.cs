@@ -763,7 +763,7 @@ public enum Preset
     [AutoAction(true, true)]
     [ReplaceSkill(AST.Helios)]
     [ConflictingCombos(AST_AoE_Heals)]
-    [CustomComboInfo("Simple Healing Mode - Single Target", "Replaces Helios with a full one-button single target healing utility." +
+    [CustomComboInfo("Simple Healing Mode - AoE", "Replaces Helios with a full one-button single target healing utility." +
                                                             "\nThis is the ideal option for newcomers to the job. Particularly with autorotation.", Job.AST)]
     [SimpleCombo]
     [PossiblyRetargeted]
@@ -932,6 +932,7 @@ public enum Preset
 
     [AutoAction(false, true)]
     [ReplaceSkill(AST.Benefic)]
+    [ConflictingCombos(AST_Simple_ST_Heals)]
     [CustomComboInfo("Advanced Healing Mode - Single Target", "Replaces Benefic with a one button healing replacement.",
         Job.AST)]
     [PossiblyRetargeted(AST.Benefic2)]
@@ -1004,6 +1005,7 @@ public enum Preset
 
     [AutoAction(true, true)]
     [ReplaceSkill(AST.Helios, AST.AspectedHelios, AST.HeliosConjuction)]
+    [ConflictingCombos(AST_Simple_AoE_Heals)]
     [CustomComboInfo("Advanced Healing Mode - AoE",
         "Replaces Aspected Helios/Helios Conjunction or Helios with a one button healing replacement."
         + "This Spell will be consider the bottom priority with no checks regardless of below settings.", Job.AST)]
@@ -5595,7 +5597,7 @@ public enum Preset
     [AutoAction(true, true)]
     [ReplaceSkill(SGE.Prognosis)]
     [ConflictingCombos(SGE_AoE_Heal)]
-    [CustomComboInfo("Simple Healing Mode - Single Target", "Replaces Prognosis with a full one-button single target healing utility." +
+    [CustomComboInfo("Simple Healing Mode - AoE", "Replaces Prognosis with a full one-button single target healing utility." +
                                                             "\nThis is the ideal option for newcomers to the job. Particularly with autorotation.", Job.SGE)]
     [SimpleCombo]
     [PossiblyRetargeted]
@@ -5708,6 +5710,7 @@ public enum Preset
 
     [AutoAction(false, true)]
     [ReplaceSkill(SGE.Diagnosis)]
+    [ConflictingCombos(SGE_Simple_ST_Heal)]
     [CustomComboInfo("Advanced Healing Mode - Single Target", "Change Diagnosis into various options.", Job.SGE)]
     [PossiblyRetargeted(SGE.Diagnosis)]
     [HealingCombo]
@@ -5794,6 +5797,7 @@ public enum Preset
 
     [AutoAction(true, true)]
     [ReplaceSkill(SGE.Prognosis)]
+    [ConflictingCombos(SGE_Simple_AoE_Heal)]
     [CustomComboInfo("Advanced Healing Mode - AoE", "Change Prognosis into various options.", Job.SGE)]
     [HealingCombo]
     SGE_AoE_Heal = 14026,
@@ -6360,7 +6364,7 @@ public enum Preset
     [AutoAction(true, true)]
     [ReplaceSkill(SCH.Succor)]
     [ConflictingCombos(SCH_AoE_Heal)]
-    [CustomComboInfo("Simple Healing Mode - Single Target", "Replaces Succor with a full one-button single target healing utility." +
+    [CustomComboInfo("Simple Healing Mode - AoE", "Replaces Succor with a full one-button single target healing utility." +
                                                             "\nThis is the ideal option for newcomers to the job. Particularly with autorotation.", Job.SCH)]
     [SimpleCombo]
     [PossiblyRetargeted]
@@ -6464,6 +6468,7 @@ public enum Preset
     #region  ST Healing
     [AutoAction(false, true)]
     [ReplaceSkill(SCH.Physick)]
+    [ConflictingCombos(SCH_Simple_ST_Heal)]
     [CustomComboInfo("Advanced Healing Mode - Single Target",
         "Change Physick based on the below options::", Job.SCH)]
     [PossiblyRetargeted(SCH.Physick)]
@@ -6523,16 +6528,16 @@ public enum Preset
     [ParentCombo(SCH_ST_Heal)]
     [CustomComboInfo("Fey Blessing Option", "Use Fey Blessing", Job.SCH)]
     SCH_ST_Heal_FeyBlessing = 16069,
-
-    [AutoAction(true, true)]
-    [ReplaceSkill(SCH.Succor)]
-    [CustomComboInfo("Advanced Healing Mode - AoE", "Replaces Succor with options below:", Job.SCH)]
-    [HealingCombo]
-    SCH_AoE_Heal = 16018,
-
     #endregion
 
     #region AoE Healing
+    [AutoAction(true, true)]
+    [ReplaceSkill(SCH.Succor)]
+    [ConflictingCombos(SCH_Simple_AoE_Heal)]
+    [CustomComboInfo("Advanced Healing Mode - AoE", "Replaces Succor with options below:", Job.SCH)]
+    [HealingCombo]
+    SCH_AoE_Heal = 16018,
+    
     [ParentCombo(SCH_AoE_Heal)]
     [CustomComboInfo("Indomitability Option", "Use Indomitabilty", Job.SCH)]
     SCH_AoE_Heal_Indomitability = 16022,
@@ -7823,11 +7828,10 @@ public enum Preset
     [PossiblyRetargeted]
     WHM_SimpleSTHeals = 19052,
 
-
     [AutoAction(true, true)]
     [ReplaceSkill(WHM.Medica1)]
     [ConflictingCombos(WHM_AoEHeals)]
-    [CustomComboInfo("Simple Healing Mode - Single Target", "Replaces Medica with a full one-button single target healing utility." +
+    [CustomComboInfo("Simple Healing Mode - AoE", "Replaces Medica with a full one-button single target healing utility." +
                                                             "\nThis is the ideal option for newcomers to the job. Particularly with autorotation.", Job.WHM)]
     [SimpleCombo]
     [PossiblyRetargeted]
@@ -7945,6 +7949,7 @@ public enum Preset
 
     [AutoAction(false, true)]
     [ReplaceSkill(WHM.Cure)]
+    [ConflictingCombos(WHM_SimpleSTHeals)]
     [CustomComboInfo("Advanced Healing Mode - Single Target", "Replaces Cure with a one button single target healing setup.",
         Job.WHM)]
     [PossiblyRetargeted(WHM.Cure)]
@@ -8015,6 +8020,7 @@ public enum Preset
 
     [AutoAction(true, true)]
     [ReplaceSkill(WHM.Medica1)]
+    [ConflictingCombos(WHM_Simple_AoEHeals)]
     [CustomComboInfo("Advanced Healing Mode - AoE", "Replaces Medica with a one button AoE healing setup.", Job.WHM)]
     [HealingCombo]
     WHM_AoEHeals = 19007,

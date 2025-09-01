@@ -431,8 +431,6 @@ internal partial class SGE : Healer
 
         protected override uint Invoke(uint actionID)
         {
-            IGameObject? healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
-
             if (actionID is not Diagnosis)
                 return actionID;
 
@@ -440,14 +438,15 @@ internal partial class SGE : Healer
                 !HasStatusEffect(Buffs.Kardia))
                 return Kardia.Retarget(Diagnosis, SimpleTarget.AnyLivingTank);
 
-            bool cleansableTarget =
-                HealRetargeting.RetargetSettingOn && SimpleTarget.Stack.AllyToEsuna is not null ||
-                HasCleansableDebuff(healTarget);
+            IGameObject? healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
+            IGameObject? cleansableTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToEsuna;
             
-            if (ActionReady(Role.Esuna) &&
-                GetTargetHPPercent(healTarget) >= 40 &&
-                cleansableTarget)
-                return Role.Esuna.RetargetIfEnabled(OptionalTarget, Diagnosis);
+            if (IsEnabled(Preset.SGE_ST_Heal_Esuna) &&
+                ActionReady(Role.Esuna) &&
+                GetTargetHPPercent(cleansableTarget) >= 40 &&
+                HasCleansableDebuff(cleansableTarget))
+                return Role.Esuna
+                    .RetargetIfEnabled(OptionalTarget, Diagnosis);
 
             if (Role.CanLucidDream(6500))
                 return Role.LucidDreaming;
@@ -571,8 +570,6 @@ internal partial class SGE : Healer
 
         protected override uint Invoke(uint actionID)
         {
-            IGameObject? healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
-
             if (actionID is not Diagnosis)
                 return actionID;
 
@@ -590,15 +587,14 @@ internal partial class SGE : Healer
                     : Eukrasia;
 
             #endregion
-
-            bool cleansableTarget =
-                HealRetargeting.RetargetSettingOn && SimpleTarget.Stack.AllyToEsuna is not null ||
-                HasCleansableDebuff(healTarget);
+            
+            IGameObject? healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
+            IGameObject? cleansableTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToEsuna;
             
             if (IsEnabled(Preset.SGE_ST_Heal_Esuna) &&
                 ActionReady(Role.Esuna) &&
-                GetTargetHPPercent(healTarget, SGE_ST_Heal_IncludeShields) >= SGE_ST_Heal_Esuna &&
-                cleansableTarget)
+                GetTargetHPPercent(cleansableTarget, SGE_ST_Heal_IncludeShields) >= SGE_ST_Heal_Esuna &&
+                HasCleansableDebuff(cleansableTarget))
                 return Role.Esuna
                     .RetargetIfEnabled(OptionalTarget, Diagnosis);
 
