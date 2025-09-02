@@ -179,7 +179,10 @@ public static class ActionWatching
             }
 
             if (ActionSheet.TryGetValue(actionId, out var actionSheet) && actionSheet.TargetArea)
+            {
                 WrathOpener.CurrentOpener?.ProgressOpener(actionId);
+                UpdateLastUsedAction(actionId, 1, 0);
+            }
 
         }
         catch (Exception ex)
