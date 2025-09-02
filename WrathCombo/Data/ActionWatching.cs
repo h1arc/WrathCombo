@@ -177,6 +177,10 @@ public static class ActionWatching
                     }
                 }
             }
+
+            if (ActionSheet.TryGetValue(actionId, out var actionSheet) && actionSheet.TargetArea)
+                WrathOpener.CurrentOpener?.ProgressOpener(actionId);
+
         }
         catch (Exception ex)
         {
@@ -225,9 +229,6 @@ public static class ActionWatching
                 ActionTimestamps[actionId] = currentTick;
                 UsedOnDict[(actionId, targetObjectId)] = currentTick;
             }
-
-            if (actionSheet.TargetArea)
-                WrathOpener.CurrentOpener?.ProgressOpener(actionId);
         }
 
         // Update Helpers
