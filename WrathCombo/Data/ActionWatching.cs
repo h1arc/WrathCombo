@@ -179,7 +179,9 @@ public static class ActionWatching
             }
 
             if (ActionSheet.TryGetValue(actionId, out var actionSheet) && actionSheet.TargetArea)
-                WrathOpener.CurrentOpener?.ProgressOpener(actionId);
+            {
+                UpdateLastUsedAction(actionId, 1, 0, 0);
+            }
 
         }
         catch (Exception ex)
@@ -188,7 +190,7 @@ public static class ActionWatching
         }
     }
 
-    private static unsafe void UpdateLastUsedAction(uint actionId, byte actionType, ulong targetObjectId)
+    private static unsafe void UpdateLastUsedAction(uint actionId, byte actionType, ulong targetObjectId, int castTime)
     {
         // Update Trackers
         LastAction = actionId;
@@ -233,7 +235,9 @@ public static class ActionWatching
 
         // Update Helpers
         NIN.InMudra = NIN.MudraSigns.Contains(actionId);
-        WrathOpener.CurrentOpener?.ProgressOpener(actionId);
+
+        if (castTime == 0)
+            WrathOpener.CurrentOpener?.ProgressOpener(actionId);
 
         if (Service.Configuration.EnabledOutputLog)
             OutputLog();
@@ -254,10 +258,17 @@ public static class ActionWatching
                     WeaveActions.Clear();
                 }
 
+                var castTime = ActionManager.GetAdjustedCastTime((ActionType)actionType, actionId);
                 token = source.Token;
                 UpdateActionTask = Svc.Framework.RunOnTick(() =>
-                UpdateLastUsedAction(actionId, actionType, targetObjectId),
-                TimeSpan.FromMilliseconds(ActionManager.GetAdjustedCastTime((ActionType)actionType, actionId)), cancellationToken: token);
+                UpdateLastUsedAction(actionId, actionType, targetObjectId, castTime),
+                TimeSpan.FromMilliseconds(castTime), cancellationToken: token);
+
+                if (castTime > 0)
+                {
+                    TimeLastActionUsed = DateTime.Now;
+                    WrathOpener.CurrentOpener?.ProgressOpener(actionId);
+                }
 
 #if DEBUG
                 Svc.Log.Verbose(
