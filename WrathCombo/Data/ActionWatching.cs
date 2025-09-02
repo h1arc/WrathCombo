@@ -230,6 +230,10 @@ public static class ActionWatching
                 WrathOpener.CurrentOpener?.ProgressOpener(actionId);
         }
 
+        // Update Helpers
+        NIN.InMudra = NIN.MudraSigns.Contains(actionId);
+        WrathOpener.CurrentOpener?.ProgressOpener(actionId);
+
         if (Service.Configuration.EnabledOutputLog)
             OutputLog();
     }
@@ -239,34 +243,33 @@ public static class ActionWatching
     {
         try
         {
-            OnActionSend?.Invoke();
-
-            if (!InCombat())
+            if (actionType is 1)
             {
-                CombatActions.Clear();
-                WeaveActions.Clear();
-            }
+                OnActionSend?.Invoke();
 
-            token = source.Token;
-            UpdateActionTask = Svc.Framework.RunOnTick(() => 
-            UpdateLastUsedAction(actionId, actionType, targetObjectId), 
-            TimeSpan.FromMilliseconds(ActionManager.GetAdjustedCastTime((ActionType)actionType, actionId)), cancellationToken: token);
+                if (!InCombat())
+                {
+                    CombatActions.Clear();
+                    WeaveActions.Clear();
+                }
 
-            // Update Helpers
-            NIN.InMudra = NIN.MudraSigns.Contains(actionId);
-            WrathOpener.CurrentOpener?.ProgressOpener(actionId);
+                token = source.Token;
+                UpdateActionTask = Svc.Framework.RunOnTick(() =>
+                UpdateLastUsedAction(actionId, actionType, targetObjectId),
+                TimeSpan.FromMilliseconds(ActionManager.GetAdjustedCastTime((ActionType)actionType, actionId)), cancellationToken: token);
 
 #if DEBUG
-            Svc.Log.Verbose(
-                $"[SendActionDetour] " +
-                $"Action: {actionId.ActionName()} (ID: {actionId}) | " +
-                $"Type: {actionType} | " +
-                $"Sequence: {sequence} | " +
-                $"Target: {Svc.Objects.FirstOrDefault(x => x.GameObjectId == targetObjectId)?.Name ?? "Unknown"} | " +
-                $"Params: [{a5}, {a6}, {a7}, {a8}, {a9}]"
-            );
+                Svc.Log.Verbose(
+                    $"[SendActionDetour] " +
+                    $"Action: {actionId.ActionName()} (ID: {actionId}) | " +
+                    $"Type: {actionType} | " +
+                    $"Sequence: {sequence} | " +
+                    $"Target: {Svc.Objects.FirstOrDefault(x => x.GameObjectId == targetObjectId)?.Name ?? "Unknown"} | " +
+                    $"Params: [{a5}, {a6}, {a7}, {a8}, {a9}]"
+                );
 #endif
-            SendActionHook!.Original(targetObjectId, actionType, actionId, sequence, a5, a6, a7, a8, a9);
+            }
+                SendActionHook!.Original(targetObjectId, actionType, actionId, sequence, a5, a6, a7, a8, a9);
         }
         catch (Exception ex)
         {
