@@ -475,11 +475,14 @@ internal partial class AST : Healer
                 return OriginalHook(AstralDraw);
             
             IGameObject? healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
-            IGameObject? cleansableTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToEsuna;
+            
+            bool cleansableTarget =
+                HealRetargeting.RetargetSettingOn && SimpleTarget.Stack.AllyToEsuna is not null ||
+                HasCleansableDebuff(healTarget);
             
             if (ActionReady(Role.Esuna) &&
-                GetTargetHPPercent(cleansableTarget) >= 40 &&
-                HasCleansableDebuff(cleansableTarget))
+                GetTargetHPPercent(healTarget) >= 40 &&
+                cleansableTarget)
                 return Role.Esuna.RetargetIfEnabled(OptionalTarget, Benefic);
             
             if (CanWeave() && Role.CanLucidDream(6500))
@@ -601,12 +604,15 @@ internal partial class AST : Healer
             #endregion
             
             IGameObject? healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
-            IGameObject? cleansableTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToEsuna;
+            
+            bool cleansableTarget =
+                HealRetargeting.RetargetSettingOn && SimpleTarget.Stack.AllyToEsuna is not null ||
+                HasCleansableDebuff(healTarget);
             
             if (IsEnabled(Preset.AST_ST_Heals_Esuna) && 
                 ActionReady(Role.Esuna) &&
-                GetTargetHPPercent(cleansableTarget, AST_ST_SimpleHeals_IncludeShields) >= AST_ST_SimpleHeals_Esuna &&
-                HasCleansableDebuff(cleansableTarget))
+                GetTargetHPPercent(healTarget, AST_ST_SimpleHeals_IncludeShields) >= AST_ST_SimpleHeals_Esuna &&
+                cleansableTarget)
                 return Role.Esuna.RetargetIfEnabled(OptionalTarget, Benefic);
             
             //Priority List
