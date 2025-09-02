@@ -230,6 +230,10 @@ public static class ActionWatching
                 WrathOpener.CurrentOpener?.ProgressOpener(actionId);
         }
 
+        // Update Helpers
+        NIN.InMudra = NIN.MudraSigns.Contains(actionId);
+        WrathOpener.CurrentOpener?.ProgressOpener(actionId);
+
         if (Service.Configuration.EnabledOutputLog)
             OutputLog();
     }
@@ -253,10 +257,6 @@ public static class ActionWatching
                 UpdateActionTask = Svc.Framework.RunOnTick(() =>
                 UpdateLastUsedAction(actionId, actionType, targetObjectId),
                 TimeSpan.FromMilliseconds(ActionManager.GetAdjustedCastTime((ActionType)actionType, actionId)), cancellationToken: token);
-
-                // Update Helpers
-                NIN.InMudra = NIN.MudraSigns.Contains(actionId);
-                WrathOpener.CurrentOpener?.ProgressOpener(actionId);
 
 #if DEBUG
                 Svc.Log.Verbose(
