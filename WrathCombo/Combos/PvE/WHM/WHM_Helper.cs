@@ -8,6 +8,7 @@ using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 using WrathCombo.Extensions;
+using TS = System.TimeSpan;
 using static WrathCombo.Combos.PvE.WHM.Config;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 
@@ -135,6 +136,7 @@ internal partial class WHM
             case 7:
                 action = Asylum;
                 enabled = IsEnabled(Preset.WHM_STHeals_Asylum) &&
+                          TimeStoodStill >= TS.FromSeconds(3) &&
                           (!WHM_STHeals_AsylumOptions[1] ||
                            !InBossEncounter()) &&
                           (!WHM_STHeals_AsylumOptions[0] || CanWeave());
@@ -144,6 +146,7 @@ internal partial class WHM
                 enabled =
                     IsEnabled(Preset.WHM_STHeals_LiturgyOfTheBell) &&
                     !HasStatusEffect(Buffs.LiturgyOfTheBell) &&
+                    TimeStoodStill >= TS.FromSeconds(3) &&
                     (!WHM_STHeals_LiturgyOfTheBellOptions[1] ||
                      !InBossEncounter()) &&
                     (!WHM_STHeals_LiturgyOfTheBellOptions[0] || CanWeave());
