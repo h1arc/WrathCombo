@@ -378,9 +378,14 @@ internal partial class WHM : Healer
                 GetTargetHPPercent(healTarget) <= 50)
                 return Tetragrammaton.RetargetIfEnabled(healTarget, Cure);
             
-            if (ActionReady(Role.Esuna) && GetTargetHPPercent(healTarget) >= 40 &&
-                HasCleansableDebuff(healTarget))
-                return Role.Esuna.RetargetIfEnabled(healTarget, Cure);
+            bool cleansableTarget =
+                HealRetargeting.RetargetSettingOn && SimpleTarget.Stack.AllyToEsuna is not null ||
+                HasCleansableDebuff(healTarget);
+            
+            if (ActionReady(Role.Esuna) &&
+                GetTargetHPPercent(healTarget) >= 40 &&
+                cleansableTarget)
+                return Role.Esuna.RetargetIfEnabled(OptionalTarget, Cure);
             
             if (CanWeave() && Role.CanLucidDream(6500))
                 return Role.LucidDreaming;
@@ -514,15 +519,16 @@ internal partial class WHM : Healer
             #endregion
 
             #region Priority Cleansing
-
+            
+            bool cleansableTarget =
+                HealRetargeting.RetargetSettingOn && SimpleTarget.Stack.AllyToEsuna is not null ||
+                HasCleansableDebuff(healTarget);
+            
             if (IsEnabled(Preset.WHM_STHeals_Esuna) &&
                 ActionReady(Role.Esuna) &&
-                GetTargetHPPercent(
-                    healTarget, WHM_STHeals_IncludeShields) >=
-                WHM_STHeals_Esuna &&
-                HasCleansableDebuff(healTarget))
-                return Role.Esuna
-                    .RetargetIfEnabled(OptionalTarget, Cure);
+                GetTargetHPPercent(healTarget, WHM_STHeals_IncludeShields) >= WHM_STHeals_Esuna &&
+                cleansableTarget)
+                return Role.Esuna.RetargetIfEnabled(OptionalTarget, Cure);
 
             #endregion
 
