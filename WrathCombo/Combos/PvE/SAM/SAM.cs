@@ -677,7 +677,7 @@ internal partial class SAM : Melee
         }
     }
 
-    internal class SAM_ST_GeckoCombo : CustomCombo
+    internal class SAM_ST_GekkoCombo : CustomCombo
     {
         protected internal override Preset Preset => Preset.SAM_ST_GekkoCombo;
 
@@ -744,13 +744,13 @@ internal partial class SAM : Melee
 
             if (HasStatusEffect(Buffs.MeikyoShisui))
             {
-                if (!HasGetsu && HasStatusEffect(Buffs.Fuka) ||
-                    !HasStatusEffect(Buffs.Fugetsu))
+                if (!HasStatusEffect(Buffs.Fugetsu) ||
+                    RefreshFugetsu)
                     return Mangetsu;
 
                 if (SAM_Mangetsu_Oka &&
-                    (!HasKa && HasStatusEffect(Buffs.Fugetsu) ||
-                     !HasStatusEffect(Buffs.Fuka)))
+                    (!HasStatusEffect(Buffs.Fuka) ||
+                     RefreshFuka))
                     return Oka;
             }
 
@@ -758,7 +758,7 @@ internal partial class SAM : Melee
                 ComboAction is Fuko or Fuga)
             {
                 if (LevelChecked(Mangetsu) &&
-                    (RefreshFugetsu && !HasGetsu ||
+                    (RefreshFugetsu ||
                      !HasStatusEffect(Buffs.Fugetsu) ||
                      !SAM_Mangetsu_Oka ||
                      !LevelChecked(Oka)))
@@ -766,7 +766,7 @@ internal partial class SAM : Melee
 
                 if (SAM_Mangetsu_Oka &&
                     LevelChecked(Oka) &&
-                    (RefreshFuka && !HasKa ||
+                    (RefreshFuka ||
                      !HasStatusEffect(Buffs.Fuka)))
                     return Oka;
             }
