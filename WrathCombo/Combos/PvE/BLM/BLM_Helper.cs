@@ -21,6 +21,9 @@ internal partial class BLM
     internal static bool EndOfFirePhase =>
         FirePhase && !ActionReady(Despair) && !ActionReady(FireSpam) && !ActionReady(FlareStar);
 
+    internal static bool EndOfIcePhaseAoE =>
+        EndOfIcePhaseAoEEarlyLevel || EndOfIcePhaseAoEMidLevel || EndOfIcePhaseAoEMaxLevel;
+
     internal static bool EndOfIcePhaseAoEEarlyLevel =>
         IcePhase && CurMp is MP.MaxMP && !TraitLevelChecked(UmbralHearts);
 
