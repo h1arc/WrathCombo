@@ -24,7 +24,7 @@ internal partial class MCH : PhysicalRanged
                  ActionReady(Drill)))
                 return Reassemble;
 
-            if (ContentSpecificActions.TryGet(out uint contentAction))
+            if (!HasStatusEffect(Buffs.Reassembled) && ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
 
             // All weaves
