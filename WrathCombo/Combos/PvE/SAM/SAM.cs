@@ -145,8 +145,7 @@ internal partial class SAM : Melee
                 if (ComboAction is Jinpu && LevelChecked(Gekko))
                     return Gekko;
 
-                if (IsEnabled(Preset.SAM_ST_Kasha) &&
-                    ComboAction is Shifu && LevelChecked(Kasha))
+                if (ComboAction is Shifu && LevelChecked(Kasha))
                     return Kasha;
             }
 
