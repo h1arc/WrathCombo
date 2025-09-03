@@ -50,7 +50,7 @@ internal partial class MCH : PhysicalRanged
                     {
                         // Ensures Hypercharge is double weaved with WF
                         if (LevelChecked(FullMetalField) && JustUsed(FullMetalField) &&
-                            GetCooldownRemainingTime(Wildfire) < GCD ||
+                            GetCooldownRemainingTime(Wildfire) < GCD / 2 ||
                             !LevelChecked(FullMetalField) && ActionReady(Wildfire) ||
                             !LevelChecked(Wildfire))
                             return Hypercharge;
@@ -308,7 +308,7 @@ internal partial class MCH : PhysicalRanged
                     {
                         // Ensures Hypercharge is double weaved with WF
                         if (LevelChecked(FullMetalField) && JustUsed(FullMetalField) &&
-                            GetCooldownRemainingTime(Wildfire) < GCD ||
+                            GetCooldownRemainingTime(Wildfire) < GCD / 2 ||
                             !LevelChecked(FullMetalField) && ActionReady(Wildfire) ||
                             !LevelChecked(Wildfire))
                             return Hypercharge;
