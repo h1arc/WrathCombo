@@ -57,7 +57,7 @@ internal partial class AST : Healer
                     return OriginalHook(Play1).Retarget(replacedActions, CardResolver);
 
                 //Minor Arcana / Lord of Crowns
-                if (HasLord && HasBattleTarget())
+                if (HasLord && HasBattleTarget() && LevelChecked(MinorArcana))
                     return OriginalHook(MinorArcana);
 
                 //Card Draw
@@ -138,7 +138,7 @@ internal partial class AST : Healer
                     return OriginalHook(Play1).Retarget(GravityList.ToArray(), CardResolver);
 
                 //Minor Arcana / Lord of Crowns
-                if (HasLord && HasBattleTarget())
+                if (HasLord && HasBattleTarget() && LevelChecked(MinorArcana))
                     return OriginalHook(MinorArcana);
 
                 //Card Draw
@@ -267,7 +267,8 @@ internal partial class AST : Healer
                         : OriginalHook(Play1);
 
                 //Minor Arcana / Lord of Crowns
-                if (IsEnabled(Preset.AST_DPS_LazyLord) && HasLord && HasBattleTarget() &&
+                if (IsEnabled(Preset.AST_DPS_LazyLord) && HasLord &&
+                    HasBattleTarget() && LevelChecked(MinorArcana) &&
                     (HasDivination || !lordPooling || !LevelChecked(Divination)))
                     return OriginalHook(MinorArcana);
 
@@ -392,7 +393,8 @@ internal partial class AST : Healer
                         : OriginalHook(Play1);
 
                 //Minor Arcana / Lord of Crowns
-                if (IsEnabled(Preset.AST_AOE_LazyLord) && HasLord && HasBattleTarget() &&
+                if (IsEnabled(Preset.AST_AOE_LazyLord) && HasLord &&
+                    HasBattleTarget() && LevelChecked(MinorArcana) &&
                     (HasDivination || !lordPooling || !LevelChecked(Divination)))
                     return OriginalHook(MinorArcana);
 
