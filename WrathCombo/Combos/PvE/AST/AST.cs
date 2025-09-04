@@ -152,8 +152,7 @@ internal partial class AST : Healer
                     return Divination;
 
                 //Earthly Star
-                if (LevelChecked(EarthlyStar) && IsOffCooldown(EarthlyStar) && 
-                    LevelChecked(EarthlyStar) && 
+                if (LevelChecked(EarthlyStar) && IsOffCooldown(EarthlyStar) &&
                     !HasStatusEffect(Buffs.EarthlyDominance) && StandStill &&
                     (GetTargetHPPercent() >= 10 || InBossEncounter()))
                     return EarthlyStar.Retarget(GravityList.ToArray(), SimpleTarget.Self);
