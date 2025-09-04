@@ -6528,6 +6528,22 @@ public enum Preset
     [ParentCombo(SCH_ST_Heal)]
     [CustomComboInfo("Fey Blessing Option", "Use Fey Blessing", Job.SCH)]
     SCH_ST_Heal_FeyBlessing = 16069,
+    
+    [ParentCombo(SCH_ST_Heal)]
+    [CustomComboInfo("Seraphism Option", "Use Seraphism", Job.SCH)]
+    SCH_ST_Heal_Seraphism = 16086,
+    
+    [ParentCombo(SCH_ST_Heal)]
+    [CustomComboInfo("Expedient Option", "Use Expedient", Job.SCH)]
+    SCH_ST_Heal_Expedient = 16087,
+    
+    [ParentCombo(SCH_ST_Heal)]
+    [CustomComboInfo("Summon Seraph Option", "Use Summon Seraph", Job.SCH)]
+    SCH_ST_Heal_SummonSeraph = 16088,
+    
+    [ParentCombo(SCH_ST_Heal)]
+    [CustomComboInfo("Consolation Option", "Use Consolation", Job.SCH)]
+    SCH_ST_Heal_Consolation = 16089,
     #endregion
 
     #region AoE Healing
@@ -6737,7 +6753,7 @@ public enum Preset
     SCH_Raidwide_Expedient = 16064,
     #endregion
 
-    // Last value = 16082
+    // Last value = 16089
 
     #endregion
 
