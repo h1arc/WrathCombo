@@ -7984,6 +7984,12 @@ public enum Preset
     [ParentCombo(WHM_STHeals)]
     [CustomComboInfo("Thin Air Option", "Adds Thin Air.", Job.WHM)]
     WHM_STHeals_ThinAir = 19304,
+    
+    [ParentCombo(WHM_STHeals)]
+    [CustomComboInfo("Afflatus Misery Option", "Uses Afflatus Misery to prevent overcap." +
+                                               "\nHostile Hard Target > Nearest Hostile Target", Job.WHM)]
+    [Retargeted]
+    WHM_STHeals_Misery = 19313,
 
     [ParentCombo(WHM_STHeals)]
     [CustomComboInfo("Regen Option", "Adds Regen.", Job.WHM)]
@@ -8050,7 +8056,8 @@ public enum Preset
     WHM_AoEHeals_ThinAir = 19200,
 
     [ParentCombo(WHM_AoEHeals)]
-    [CustomComboInfo("Afflatus Misery Option", "Uses Afflatus Misery when available.", Job.WHM)]
+    [CustomComboInfo("Afflatus Misery Option", "Uses Afflatus Misery to prevent overcap." +
+                                               "\nHostile Hard Target > Nearest Hostile Target", Job.WHM)]
     WHM_AoEHeals_Misery = 19010,
 
     [ParentCombo(WHM_AoEHeals)]

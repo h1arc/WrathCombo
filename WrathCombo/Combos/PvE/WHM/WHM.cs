@@ -413,7 +413,7 @@ internal partial class WHM : Healer
             
             if (ActionReady(AfflatusSolace))
                 return BloodLilyReady
-                    ? AfflatusMisery
+                    ? AfflatusMisery.Retarget(Cure, SimpleTarget.HardTarget.IfHostile() ?? SimpleTarget.NearestEnemyTarget)
                     : AfflatusSolace.RetargetIfEnabled(healTarget, Cure);
 
             if (ActionReady(ThinAir) && GetRemainingCharges(ThinAir) == 2)
@@ -465,7 +465,7 @@ internal partial class WHM : Healer
             
             if (ActionReady(AfflatusRapture))
                 return BloodLilyReady
-                    ? AfflatusMisery
+                    ? AfflatusMisery.Retarget(Medica1, SimpleTarget.HardTarget.IfHostile() ?? SimpleTarget.NearestEnemyTarget)
                     : AfflatusRapture;
             
             if (ActionReady(ThinAir) && GetRemainingCharges(ThinAir) == 2)
@@ -550,8 +550,8 @@ internal partial class WHM : Healer
                 var config = GetMatchingConfigST(index, OptionalTarget,
                     out var spell, out var enabled);
                 
-                if (IsEnabled(Preset.WHM_AoEHeals_Misery) && BloodLilyReady && spell is AfflatusSolace)
-                    return AfflatusMisery;
+                if (IsEnabled(Preset.WHM_STHeals_Misery) && BloodLilyReady && spell is AfflatusSolace)
+                    return AfflatusMisery.Retarget(Cure, SimpleTarget.HardTarget.IfHostile() ?? SimpleTarget.NearestEnemyTarget);
 
                 if (enabled)
                 {
@@ -614,7 +614,7 @@ internal partial class WHM : Healer
                 
                 // Blood Overcap
                 if (IsEnabled(Preset.WHM_AoEHeals_Misery) && BloodLilyReady && spell is AfflatusRapture)
-                    return AfflatusMisery;
+                    return AfflatusMisery.Retarget(Medica1, SimpleTarget.HardTarget.IfHostile() ?? SimpleTarget.NearestEnemyTarget);
 
                 if (enabled && GetPartyAvgHPPercent() <= config &&
                     ActionReady(spell))
