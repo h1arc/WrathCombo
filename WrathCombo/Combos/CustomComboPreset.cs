@@ -8058,6 +8058,7 @@ public enum Preset
     [ParentCombo(WHM_AoEHeals)]
     [CustomComboInfo("Afflatus Misery Option", "Uses Afflatus Misery to prevent overcap." +
                                                "\nHostile Hard Target > Nearest Hostile Target", Job.WHM)]
+    [Retargeted]
     WHM_AoEHeals_Misery = 19010,
 
     [ParentCombo(WHM_AoEHeals)]
