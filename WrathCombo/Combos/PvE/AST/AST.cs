@@ -504,7 +504,7 @@ internal partial class AST : Healer
                 if (ActionReady(OriginalHook(NeutralSect)))
                     return OriginalHook(NeutralSect);
 
-                if (HasLady)
+                if (HasLady && LevelChecked(MinorArcana))
                     return OriginalHook(LadyOfCrown);
 
                 if (ActionReady(OriginalHook(CollectiveUnconscious)))
@@ -559,7 +559,7 @@ internal partial class AST : Healer
             if (ActionReady(OriginalHook(CelestialOpposition)))
                 return OriginalHook(CelestialOpposition);
             
-            if (HasLady)
+            if (HasLady && LevelChecked(MinorArcana))
                 return OriginalHook(LadyOfCrown);
             
             if (ActionReady(OriginalHook(CollectiveUnconscious)))
