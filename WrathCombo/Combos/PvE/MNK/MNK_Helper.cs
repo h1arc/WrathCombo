@@ -114,7 +114,7 @@ internal partial class MNK
     internal static bool UseEarthsRumination() =>
         HasStatusEffect(Buffs.EarthsRumination) &&
         !RaidWideCasting() && NumberOfAlliesInRange(EarthsReply) >= GetPartyMembers().Count * .75 &&
-        GetPartyAvgHPPercent() <= 50;
+        GetPartyAvgHPPercent() <= MNK_ST_EarthsReplyHPThreshold;
 
     #endregion
 

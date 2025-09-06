@@ -269,7 +269,7 @@ internal partial class MNK : Melee
 
                 if (IsEnabled(Preset.MNK_ST_UseRoE) &&
                     (UseRoE() ||
-                     MNK_ST_EarthsRumination &&
+                     MNK_ST_EarthsReply &&
                      UseEarthsRumination()))
                     return OriginalHook(RiddleOfEarth);
 
