@@ -267,6 +267,16 @@ internal partial class MNK : Melee
                     RaidWideCasting())
                     return Role.Feint;
 
+                if (IsEnabled(Preset.MNK_ST_UseRoE) &&
+                    (UseRoE() ||
+                     MNK_ST_EarthsRumination &&
+                     UseEarthsRumination()))
+                    return OriginalHook(RiddleOfEarth);
+
+                if (IsEnabled(Preset.MNK_ST_UseMantra) &&
+                    UseMantra())
+                    return Mantra;
+
                 if (IsEnabled(Preset.MNK_ST_ComboHeals))
                 {
                     if (Role.CanSecondWind(MNK_ST_SecondWindHPThreshold))

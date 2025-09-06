@@ -92,6 +92,11 @@ internal partial class MNK
                         "Add Field Mouseover", "Add Field Mouseover targetting");
                     break;
 
+                case Preset.MNK_ST_UseRoE:
+                    DrawAdditionalBoolChoice(MNK_ST_EarthsRumination,
+                        "Add Earth's Rumination", "Add Earth's Rumination if average party HP is below 50%");
+                    break;
+
                 case Preset.MNK_ST_BeastChakras:
                     DrawHorizontalMultiChoice(MNK_BasicCombo,
                         "Opo-opo Option", "Replace Bootshine / Leaping Opo with Dragon Kick.", 3, 0);
@@ -122,7 +127,8 @@ internal partial class MNK
             MNK_BH_RoF = new("MNK_BH_RoF", 0);
 
         public static UserBool
-            MNK_Thunderclap_FieldMouseover = new("MNK_Thunderclap_FieldMouseover");
+            MNK_Thunderclap_FieldMouseover = new("MNK_Thunderclap_FieldMouseover"),
+            MNK_ST_EarthsRumination = new("MNK_ST_EarthsRumination");
 
         public static UserBoolArray
             MNK_BasicCombo = new("MNK_BasicCombo");
