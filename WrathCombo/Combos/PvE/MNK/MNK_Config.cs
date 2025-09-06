@@ -99,7 +99,7 @@ internal partial class MNK
                     if (MNK_ST_EarthsReply)
                     {
                         DrawSliderInt(0, 100, MNK_ST_EarthsReplyHPThreshold,
-                            $"Add {EarthsReply.ActionName()} when HP% is at or Below (Set to 0 to Disable This Check)");
+                            $"Add {EarthsReply.ActionName()} when average HP% of the party is at or below.");
                     }
                     break;
 
