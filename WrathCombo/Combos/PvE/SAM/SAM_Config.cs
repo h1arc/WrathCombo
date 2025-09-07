@@ -1,4 +1,3 @@
-using System.Numerics;
 using ECommons.ImGuiMethods;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
@@ -22,14 +21,14 @@ internal partial class SAM
                     break;
 
                 case Preset.SAM_ST_CDs_Iaijutsu:
-                    DrawHorizontalMultiChoice(SAM_ST_CDs_UseHiganbana, $"Add {Higanbana.ActionName()}", "Will use Higanbana depending on suboptions.", 4, 0);
-                    DrawHorizontalMultiChoice(SAM_ST_CDs_UseTenkaGoken, $"Add {TenkaGoken.ActionName()}", "Will Use Tenka Goken when lvlsynched below lvl 50.", 4, 1);
-                    DrawHorizontalMultiChoice(SAM_ST_CDs_UseMidare, $"Use {MidareSetsugekka.ActionName()}", "Will use Midare Setsugekka and Tendo Setsugekka.", 4, 2);
-                    DrawHorizontalMultiChoice(SAM_ST_CDs_UseKaeshi, $"Use {TsubameGaeshi.ActionName()}", "Will use Tsubame-gaeshi and Tendo Kaeshi Setsugekka.", 4, 3);
+                    DrawAdditionalBoolChoice(SAM_ST_CDs_UseHiganbana, $"Add {Higanbana.ActionName()}", "Will use Higanbana depending on suboptions.");
+                    DrawAdditionalBoolChoice(SAM_ST_CDs_UseTenkaGoken, $"Add {TenkaGoken.ActionName()}", "Will Use Tenka Goken when lvlsynched below lvl 50.");
+                    DrawAdditionalBoolChoice(SAM_ST_CDs_UseMidare, $"Use {MidareSetsugekka.ActionName()}", "Will use Midare Setsugekka and Tendo Setsugekka.");
+                    DrawAdditionalBoolChoice(SAM_ST_CDs_UseKaeshi, $"Use {TsubameGaeshi.ActionName()}", "Will use Tsubame-gaeshi and Tendo Kaeshi Setsugekka.");
 
                     if (SAM_ST_CDs_UseHiganbana)
                     {
-                        ImGui.Dummy(new Vector2(12f.Scale(), 0));
+                        ImGui.Dummy(new(12f.Scale(), 0));
                         ImGui.SameLine();
                         DrawHorizontalRadioButton(SAM_ST_HiganbanaBossOption,
                             "All Enemies", $"Uses {Higanbana.ActionName()} regardless of targeted enemy type.", 0);

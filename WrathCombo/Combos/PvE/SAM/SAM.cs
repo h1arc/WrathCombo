@@ -101,8 +101,9 @@ internal partial class SAM : Melee
                 return OriginalHook(OgiNamikiri);
 
             // Iaijutsu Features
-            if (!IsMoving())
-                return UseIaijutsu(actionID, true, true, true);
+            if (UseIaijutsu(true, true, true) &&
+                !IsMoving())
+                return OriginalHook(Iaijutsu);
 
             if (HasStatusEffect(Buffs.MeikyoShisui))
             {
@@ -126,6 +127,10 @@ internal partial class SAM : Melee
             {
                 if (ComboAction is Hakaze or Gyofu)
                 {
+                    if (!HasSetsu && LevelChecked(Yukikaze) &&
+                        HasStatusEffect(Buffs.Fugetsu) && HasStatusEffect(Buffs.Fuka))
+                        return Yukikaze;
+
                     if (LevelChecked(Jinpu) &&
                         (RefreshFugetsu && !HasGetsu ||
                          !HasStatusEffect(Buffs.Fugetsu) ||
@@ -137,10 +142,6 @@ internal partial class SAM : Melee
                          !HasStatusEffect(Buffs.Fuka) ||
                          SenCount is 3 && RefreshFuka))
                         return Shifu;
-
-                    if (!HasSetsu && LevelChecked(Yukikaze) &&
-                        HasStatusEffect(Buffs.Fugetsu) && HasStatusEffect(Buffs.Fuka))
-                        return Yukikaze;
                 }
 
                 if (ComboAction is Jinpu && LevelChecked(Gekko))
@@ -403,8 +404,9 @@ internal partial class SAM : Melee
 
                 // Iaijutsu Features
                 if (IsEnabled(Preset.SAM_ST_CDs_Iaijutsu) &&
-                    (!IsEnabled(Preset.SAM_ST_CDs_Iaijutsu_Movement) || !IsMoving()))
-                    return UseIaijutsu(actionID, SAM_ST_CDs_UseHiganbana, SAM_ST_CDs_UseTenkaGoken, SAM_ST_CDs_UseMidare);
+                    (!IsEnabled(Preset.SAM_ST_CDs_Iaijutsu_Movement) || !IsMoving()) &&
+                    UseIaijutsu(SAM_ST_CDs_UseHiganbana, SAM_ST_CDs_UseTenkaGoken, SAM_ST_CDs_UseMidare))
+                    return OriginalHook(Iaijutsu);
             }
 
             if (HasStatusEffect(Buffs.MeikyoShisui))
@@ -434,6 +436,11 @@ internal partial class SAM : Melee
             {
                 if (ComboAction is Hakaze or Gyofu)
                 {
+                    if (IsEnabled(Preset.SAM_ST_Yukikaze) &&
+                        !HasSetsu && LevelChecked(Yukikaze) &&
+                        HasStatusEffect(Buffs.Fugetsu) && HasStatusEffect(Buffs.Fuka))
+                        return Yukikaze;
+
                     if (IsEnabled(Preset.SAM_ST_Gekko) &&
                         LevelChecked(Jinpu) &&
                         (RefreshFugetsu && !HasGetsu ||
@@ -447,11 +454,6 @@ internal partial class SAM : Melee
                          !HasStatusEffect(Buffs.Fuka) ||
                          SenCount is 3 && RefreshFuka))
                         return Shifu;
-
-                    if (IsEnabled(Preset.SAM_ST_Yukikaze) &&
-                        !HasSetsu && LevelChecked(Yukikaze) &&
-                        HasStatusEffect(Buffs.Fugetsu) && HasStatusEffect(Buffs.Fuka))
-                        return Yukikaze;
                 }
 
                 if (ComboAction is Jinpu && LevelChecked(Gekko))
