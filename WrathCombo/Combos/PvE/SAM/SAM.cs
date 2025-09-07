@@ -294,6 +294,7 @@ internal partial class SAM : Melee
                         RaidWideCasting(2f))
                         return OriginalHook(ThirdEye);
 
+                    //Auto Meditate
                     if (IsEnabled(Preset.SAM_ST_Meditate) &&
                         ActionReady(Meditate) &&
                         !IsMoving() && TimeStoodStill > TimeSpan.FromSeconds(SAM_ST_MeditateTimeStill) &&
