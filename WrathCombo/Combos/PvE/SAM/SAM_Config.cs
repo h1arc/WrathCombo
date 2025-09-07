@@ -124,6 +124,12 @@ internal partial class SAM
                             "Kenki Amount", sliderIncrement: SliderIncrements.Fives);
                     break;
 
+                case Preset.SAM_ST_Meditate:
+                    ImGui.SetCursorPosX(48);
+                    DrawSliderFloat(0, 3, SAM_ST_MeditateTimeStill,
+                        " Stationary Delay Check (in seconds):", decimals: 1);
+                    break;
+
                 case Preset.SAM_AoE_OkaCombo:
                     DrawAdditionalBoolChoice(SAM_Oka_KenkiOvercap,
                         "Kenki Overcap Protection", "Spends Kenki when at the set value or above.");
@@ -144,7 +150,6 @@ internal partial class SAM
                         DrawSliderInt(25, 100, SAM_Mangetsu_KenkiOvercapAmount,
                             "Kenki Amount", sliderIncrement: SliderIncrements.Fives);
                     break;
-
             }
         }
         #region Variables
@@ -183,6 +188,9 @@ internal partial class SAM
 
         public static UserBoolArray
             SAM_ST_CDs_IaijutsuOption = new("SAM_ST_CDs_IaijutsuOption");
+
+        public static UserFloat
+            SAM_ST_MeditateTimeStill = new("SAM_ST_MeditateTimeStill", 2.5f);
 
         #endregion
     }

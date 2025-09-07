@@ -1,3 +1,4 @@
+using System;
 using WrathCombo.CustomComboNS;
 using static WrathCombo.Combos.PvE.SAM.Config;
 namespace WrathCombo.Combos.PvE;
@@ -287,6 +288,18 @@ internal partial class SAM : Melee
             {
                 if (IsEnabled(Preset.SAM_ST_CDs))
                 {
+                    //Auto Third Eye
+                    if (IsEnabled(Preset.SAM_ST_ThirdEye) &&
+                        ActionReady(OriginalHook(ThirdEye)) &&
+                        RaidWideCasting())
+                        return OriginalHook(ThirdEye);
+
+                    if (IsEnabled(Preset.SAM_ST_Meditate) &&
+                        ActionReady(Meditate) &&
+                        !IsMoving() && TimeStoodStill > TimeSpan.FromSeconds(SAM_ST_MeditateTimeStill) &&
+                        InCombat() && !HasBattleTarget())
+                        return Meditate;
+
                     //Meikyo Features
                     if (IsEnabled(Preset.SAM_ST_CDs_MeikyoShisui) &&
                         UseMeikyo())

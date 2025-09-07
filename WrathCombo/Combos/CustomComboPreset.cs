@@ -6099,6 +6099,14 @@ public enum Preset
     [CustomComboInfo("Feint Raidwide Option", "Adds Feint when Raidwide is detected casting.", Job.SAM)]
     SAM_ST_Feint = 15095,
 
+    [ParentCombo(SAM_ST_AdvancedMode)]
+    [CustomComboInfo("Third Eye Raidwide Option", "Adds Third Eye when Raidwide is detected casting.", Job.SAM)]
+    SAM_ST_ThirdEye = 15094,
+
+    [ParentCombo(SAM_ST_AdvancedMode)]
+    [CustomComboInfo("Meditate Option", "Adds Meditate when not moving, not having a target and being in combat.", Job.SAM)]
+    SAM_ST_Meditate = 15093,
+
     #endregion
 
     #region Advanced AoE
