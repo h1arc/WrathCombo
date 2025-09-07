@@ -20,28 +20,20 @@ internal partial class SAM
                         $"Delay from first {MeikyoShisui.ActionName()} to next step. (seconds)\nDelay is enforced by replacing your button with Savage Blade.");
                     break;
 
-                case Preset.SAM_ST_CDs_Iaijutsu:
-                    DrawAdditionalBoolChoice(SAM_ST_CDs_UseHiganbana, $"Add {Higanbana.ActionName()}", "Will use Higanbana depending on suboptions.");
-                    DrawAdditionalBoolChoice(SAM_ST_CDs_UseTenkaGoken, $"Add {TenkaGoken.ActionName()}", "Will Use Tenka Goken when lvlsynched below lvl 50.");
-                    DrawAdditionalBoolChoice(SAM_ST_CDs_UseMidare, $"Use {MidareSetsugekka.ActionName()}", "Will use Midare Setsugekka and Tendo Setsugekka.");
-                    DrawAdditionalBoolChoice(SAM_ST_CDs_UseKaeshi, $"Use {TsubameGaeshi.ActionName()}", "Will use Tsubame-gaeshi and Tendo Kaeshi Setsugekka.");
+                case Preset.SAM_ST_CDs_UseHiganbana:
+                    ImGui.Dummy(new(12f.Scale(), 0));
+                    ImGui.SameLine();
+                    DrawHorizontalRadioButton(SAM_ST_HiganbanaBossOption,
+                        "All Enemies", $"Uses {Higanbana.ActionName()} regardless of targeted enemy type.", 0);
 
-                    if (SAM_ST_CDs_UseHiganbana)
-                    {
-                        ImGui.Dummy(new(12f.Scale(), 0));
-                        ImGui.SameLine();
-                        DrawHorizontalRadioButton(SAM_ST_HiganbanaBossOption,
-                            "All Enemies", $"Uses {Higanbana.ActionName()} regardless of targeted enemy type.", 0);
+                    DrawHorizontalRadioButton(SAM_ST_HiganbanaBossOption,
+                        "Bosses Only", $"Only uses {Higanbana.ActionName()} when the targeted enemy is a boss.", 1);
 
-                        DrawHorizontalRadioButton(SAM_ST_HiganbanaBossOption,
-                            "Bosses Only", $"Only uses {Higanbana.ActionName()} when the targeted enemy is a boss.", 1);
+                    DrawSliderInt(0, 10, SAM_ST_HiganbanaHPThreshold,
+                        $"Stop using {Higanbana.ActionName()} on targets below this HP % (0% = always use).");
 
-                        DrawSliderInt(0, 10, SAM_ST_HiganbanaHPThreshold,
-                            $"Stop using {Higanbana.ActionName()} on targets below this HP % (0% = always use).");
-
-                        DrawSliderInt(0, 15, SAM_ST_HiganbanaRefresh,
-                            $"Seconds remaining before reapplying {Higanbana.ActionName()}. Set to Zero to disable this check.");
-                    }
+                    DrawSliderInt(0, 15, SAM_ST_HiganbanaRefresh,
+                        $"Seconds remaining before reapplying {Higanbana.ActionName()}. Set to Zero to disable this check.");
                     break;
 
                 case Preset.SAM_ST_CDs_MeikyoShisui:
@@ -184,10 +176,6 @@ internal partial class SAM
             SAM_Mangetsu_Oka = new("SAM_Mangetsu_Oka"),
             SAM_ST_CDs_Guren = new("SAM_ST_CDs_Guren"),
             SAM_ST_CDs_OgiNamikiri_Movement = new("SAM_ST_CDs_OgiNamikiri_Movement"),
-            SAM_ST_CDs_UseHiganbana = new("SAM_ST_CDs_UseHiganbana"),
-            SAM_ST_CDs_UseTenkaGoken = new("SAM_ST_CDs_UseTenkaGoken"),
-            SAM_ST_CDs_UseMidare = new("SAM_ST_CDs_UseMidare"),
-            SAM_ST_CDs_UseKaeshi = new("SAM_ST_CDs_UseKaeshi"),
             SAM_Oka_KenkiOvercap = new("SAM_Oka_KenkiOvercap"),
             SAM_Mangetsu_KenkiOvercap = new("SAM_Mangetsu_KenkiOvercap");
 

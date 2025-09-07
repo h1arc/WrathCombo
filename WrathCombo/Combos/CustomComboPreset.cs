@@ -6070,6 +6070,22 @@ public enum Preset
     [ParentCombo(SAM_ST_Damage)]
     [CustomComboInfo("Iaijutsu Option", "Adds Midare: Setsugekka, Higanbana, and Kaeshi: Setsugekka to the rotation.", Job.SAM)]
     SAM_ST_CDs_Iaijutsu = 15013,
+    
+    [ParentCombo(SAM_ST_CDs_Iaijutsu)]
+    [CustomComboInfo("Add Higanbana", "Will use Higanbana depending on suboptions.", Job.SAM)]
+    SAM_ST_CDs_UseHiganbana = 15024,
+
+    [ParentCombo(SAM_ST_CDs_Iaijutsu)]
+    [CustomComboInfo("Add Tenka Goken", "Will Use Tenka Goken when lvlsynched below lvl 50.", Job.SAM)]
+    SAM_ST_CDs_UseTenkaGoken = 15025,
+
+    [ParentCombo(SAM_ST_CDs_Iaijutsu)]
+    [CustomComboInfo("Add Midare Setsugekka", "Will use Midare Setsugekka and Tendo Setsugekka.", Job.SAM)]
+    SAM_ST_CDs_UseMidare = 15026,
+
+    [ParentCombo(SAM_ST_CDs_Iaijutsu)]
+    [CustomComboInfo("Add Tsubame-gaeshi", "Will use Tsubame-gaeshi and Tendo Kaeshi Setsugekka.", Job.SAM)]
+    SAM_ST_CDs_UseKaeshi = 15027,
 
     [ParentCombo(SAM_ST_CDs_Iaijutsu)]
     [CustomComboInfo("Iajutsu movement Option", "Adds Midare: Setsugekka and Higanbana when you're not moving.", Job.SAM)]
@@ -6341,7 +6357,7 @@ public enum Preset
 
     #endregion
 
-    // Last Value ST = 15023
+    // Last Value ST = 15027
     // Last Value AoE = 15113
     // Last Value Misc = 15255
     // Last Value Hidden = 15301

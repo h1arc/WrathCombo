@@ -389,7 +389,8 @@ internal partial class SAM : Melee
             if (IsEnabled(Preset.SAM_ST_Damage))
             {
                 if (IsEnabled(Preset.SAM_ST_CDs_Iaijutsu) &&
-                    SAM_ST_CDs_UseKaeshi && UseTsubame)
+                    IsEnabled(Preset.SAM_Iaijutsu_TsubameGaeshi) &&
+                    UseTsubame)
                     return OriginalHook(TsubameGaeshi);
 
                 //Ogi Namikiri Features
@@ -405,7 +406,7 @@ internal partial class SAM : Melee
                 // Iaijutsu Features
                 if (IsEnabled(Preset.SAM_ST_CDs_Iaijutsu) &&
                     (!IsEnabled(Preset.SAM_ST_CDs_Iaijutsu_Movement) || !IsMoving()) &&
-                    UseIaijutsu(SAM_ST_CDs_UseHiganbana, SAM_ST_CDs_UseTenkaGoken, SAM_ST_CDs_UseMidare))
+                    UseIaijutsu(IsEnabled(Preset.SAM_ST_CDs_UseHiganbana), IsEnabled(Preset.SAM_ST_CDs_UseTenkaGoken), IsEnabled(Preset.SAM_ST_CDs_UseMidare)))
                     return OriginalHook(Iaijutsu);
             }
 
