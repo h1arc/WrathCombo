@@ -398,7 +398,8 @@ internal partial class SAM : Melee
                     (!SAM_ST_CDs_OgiNamikiri_Movement || !IsMoving()) &&
                     ActionReady(OgiNamikiri) && InActionRange(OriginalHook(OgiNamikiri)) &&
                     HasStatusEffect(Buffs.OgiNamikiriReady) && M6SReady &&
-                    (JustUsed(Higanbana, 5f) ||
+                    (IsNotEnabled(Preset.SAM_ST_CDs_UseHiganbana) && JustUsed(Ikishoten) || 
+                     JustUsed(Higanbana, 5f) ||
                      SAM_ST_HiganbanaBossOption == 1 && !TargetIsBoss() ||
                      GetStatusEffectRemainingTime(Buffs.OgiNamikiriReady) <= 8) || NamikiriReady)
                     return OriginalHook(OgiNamikiri);
