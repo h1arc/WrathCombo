@@ -108,12 +108,13 @@ internal partial class MNK
 
     internal static bool UseRoE() =>
         ActionReady(RiddleOfEarth) &&
+        RaidWideCasting() &&
         !HasStatusEffect(Buffs.RiddleOfEarth) &&
         !HasStatusEffect(Buffs.EarthsRumination);
 
-    internal static bool UseEarthsRumination() =>
+    internal static bool UseEarthsReply() =>
         HasStatusEffect(Buffs.EarthsRumination) &&
-        !RaidWideCasting() && NumberOfAlliesInRange(EarthsReply) >= GetPartyMembers().Count * .75 &&
+        NumberOfAlliesInRange(EarthsReply) >= GetPartyMembers().Count * .75 &&
         GetPartyAvgHPPercent() <= MNK_ST_EarthsReplyHPThreshold;
 
     #endregion
