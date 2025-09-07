@@ -1103,7 +1103,7 @@ public enum Preset
     AST_Raidwide_NeutralSect = 1077,
 
     [ParentCombo(AST_Raidwide)]
-    [CustomComboInfo("RaidWide Aspected Helios Option", "Additionally, Will try to cast Aspected Helios for with Neutral Sect Buff for shields when a raidwide casting. " +
+    [CustomComboInfo("RaidWide Aspected Helios Option", "Additionally, Will try to cast Aspected Helios with Neutral Sect Buff for shields when a raidwide casting. " +
                                                            "\nWill be used in all 4 main combos.", Job.AST)]
     AST_Raidwide_AspectedHelios = 1078,
 
