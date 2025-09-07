@@ -101,8 +101,8 @@ internal partial class SAM : Melee
                 return OriginalHook(OgiNamikiri);
 
             // Iaijutsu Features
-            if (UseIaijutsu() && !IsMoving())
-                return OriginalHook(Iaijutsu);
+            if (!IsMoving())
+                return UseIaijutsu(actionID, true, true, true);
 
             if (HasStatusEffect(Buffs.MeikyoShisui))
             {
@@ -291,7 +291,7 @@ internal partial class SAM : Melee
                     //Auto Third Eye
                     if (IsEnabled(Preset.SAM_ST_ThirdEye) &&
                         ActionReady(OriginalHook(ThirdEye)) &&
-                        RaidWideCasting(2f))
+                        (RaidWideCasting(2f) || !IsInParty()))
                         return OriginalHook(ThirdEye);
 
                     //Auto Meditate
@@ -389,7 +389,7 @@ internal partial class SAM : Melee
             if (IsEnabled(Preset.SAM_ST_Damage))
             {
                 if (IsEnabled(Preset.SAM_ST_CDs_Iaijutsu) &&
-                    SAM_ST_CDs_IaijutsuOption[3] && UseTsubame)
+                    SAM_ST_CDs_UseKaeshi && UseTsubame)
                     return OriginalHook(TsubameGaeshi);
 
                 //Ogi Namikiri Features
@@ -404,9 +404,8 @@ internal partial class SAM : Melee
 
                 // Iaijutsu Features
                 if (IsEnabled(Preset.SAM_ST_CDs_Iaijutsu) &&
-                    (!IsEnabled(Preset.SAM_ST_CDs_Iaijutsu_Movement) || !IsMoving()) &&
-                    UseIaijutsu())
-                    return OriginalHook(Iaijutsu);
+                    (!IsEnabled(Preset.SAM_ST_CDs_Iaijutsu_Movement) || !IsMoving()))
+                    return UseIaijutsu(actionID, SAM_ST_CDs_UseHiganbana, SAM_ST_CDs_UseTenkaGoken, SAM_ST_CDs_UseMidare);
             }
 
             if (HasStatusEffect(Buffs.MeikyoShisui))

@@ -20,12 +20,12 @@ internal partial class SAM
                     break;
 
                 case Preset.SAM_ST_CDs_Iaijutsu:
-                    DrawHorizontalMultiChoice(SAM_ST_CDs_IaijutsuOption, $"Add {Higanbana.ActionName()}", "Will use Higanbana depending on suboptions.", 4, 0);
-                    DrawHorizontalMultiChoice(SAM_ST_CDs_IaijutsuOption, $"Add {TenkaGoken.ActionName()}", "Will Use Tenka Goken when lvlsynched below lvl 50.", 4, 1);
-                    DrawHorizontalMultiChoice(SAM_ST_CDs_IaijutsuOption, $"Use {MidareSetsugekka.ActionName()}", "Will use Midare Setsugekka and Tendo Setsugekka.", 4, 2);
-                    DrawHorizontalMultiChoice(SAM_ST_CDs_IaijutsuOption, $"Use {TsubameGaeshi.ActionName()}", "Will use Tsubame-gaeshi and Tendo Kaeshi Setsugekka.", 4, 3);
+                    DrawHorizontalMultiChoice(SAM_ST_CDs_UseHiganbana, $"Add {Higanbana.ActionName()}", "Will use Higanbana depending on suboptions.", 4, 0);
+                    DrawHorizontalMultiChoice(SAM_ST_CDs_UseTenkaGoken, $"Add {TenkaGoken.ActionName()}", "Will Use Tenka Goken when lvlsynched below lvl 50.", 4, 1);
+                    DrawHorizontalMultiChoice(SAM_ST_CDs_UseMidare, $"Use {MidareSetsugekka.ActionName()}", "Will use Midare Setsugekka and Tendo Setsugekka.", 4, 2);
+                    DrawHorizontalMultiChoice(SAM_ST_CDs_UseKaeshi, $"Use {TsubameGaeshi.ActionName()}", "Will use Tsubame-gaeshi and Tendo Kaeshi Setsugekka.", 4, 3);
 
-                    if (SAM_ST_CDs_IaijutsuOption[0])
+                    if (SAM_ST_CDs_UseHiganbana)
                     {
                         ImGui.Indent();
                         DrawHorizontalRadioButton(SAM_ST_HiganbanaBossOption,
@@ -183,11 +183,12 @@ internal partial class SAM
             SAM_Mangetsu_Oka = new("SAM_Mangetsu_Oka"),
             SAM_ST_CDs_Guren = new("SAM_ST_CDs_Guren"),
             SAM_ST_CDs_OgiNamikiri_Movement = new("SAM_ST_CDs_OgiNamikiri_Movement"),
+            SAM_ST_CDs_UseHiganbana = new("SAM_ST_CDs_UseHiganbana"),
+            SAM_ST_CDs_UseTenkaGoken = new("SAM_ST_CDs_UseTenkaGoken"),
+            SAM_ST_CDs_UseMidare = new("SAM_ST_CDs_UseMidare"),
+            SAM_ST_CDs_UseKaeshi = new("SAM_ST_CDs_UseKaeshi"),
             SAM_Oka_KenkiOvercap = new("SAM_Oka_KenkiOvercap"),
             SAM_Mangetsu_KenkiOvercap = new("SAM_Mangetsu_KenkiOvercap");
-
-        public static UserBoolArray
-            SAM_ST_CDs_IaijutsuOption = new("SAM_ST_CDs_IaijutsuOption");
 
         public static UserFloat
             SAM_ST_MeditateTimeStill = new("SAM_ST_MeditateTimeStill", 2.5f);

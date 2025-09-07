@@ -94,51 +94,43 @@ internal partial class SAM
 
     #region Iaijutsu
 
-    internal static bool UseIaijutsu()
+    internal static uint UseIaijutsu(uint actionId, bool useHiganbana, bool useTenkaGoken, bool useMidare)
     {
         int higanbanaHPThreshold = SAM_ST_HiganbanaHPThreshold;
         int higanbanaRefresh = SAM_ST_HiganbanaRefresh;
 
         if (LevelChecked(Iaijutsu))
         {
-            if (IsEnabled(Preset.SAM_ST_AdvancedMode) &&
+            //Higanbana
+            if (IsEnabled(Preset.SAM_ST_AdvancedMode) && 
+                useHiganbana &&
+                SenCount is 1 && GetTargetHPPercent() > higanbanaHPThreshold &&
+                (SAM_ST_HiganbanaBossOption == 0 || TargetIsBoss()) &&
+                CanApplyStatus(CurrentTarget, Debuffs.Higanbana) &&
+                (JustUsed(MeikyoShisui, 15f) && GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) <= higanbanaRefresh ||
+                 !HasStatusEffect(Debuffs.Higanbana, CurrentTarget)))
+                return OriginalHook(Iaijutsu);
 
-                //Higanbana
-                (SAM_ST_CDs_IaijutsuOption[0] &&
-                 SenCount is 1 && GetTargetHPPercent() > higanbanaHPThreshold &&
-                 (SAM_ST_HiganbanaBossOption == 0 || TargetIsBoss()) &&
-                 CanApplyStatus(CurrentTarget, Debuffs.Higanbana) &&
-                 (JustUsed(MeikyoShisui, 15f) && GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) <= higanbanaRefresh ||
-                  !HasStatusEffect(Debuffs.Higanbana, CurrentTarget)) ||
+            //Tenka Goken
+            if (useTenkaGoken && SenCount is 2 &&
+                !LevelChecked(MidareSetsugekka))
+                return OriginalHook(Iaijutsu);
 
-                 //Tenka Goken
-                 SAM_ST_CDs_IaijutsuOption[1] && SenCount is 2 &&
-                 !LevelChecked(MidareSetsugekka) ||
+            //Midare Setsugekka
+            if (useMidare && SenCount is 3 &&
+                LevelChecked(MidareSetsugekka) && !HasStatusEffect(Buffs.TsubameReady))
+                return OriginalHook(Iaijutsu);
 
-                 //Midare Setsugekka
-                 SAM_ST_CDs_IaijutsuOption[2] && SenCount is 3 &&
-                 LevelChecked(MidareSetsugekka) && !HasStatusEffect(Buffs.TsubameReady)))
-                return true;
-
-            if (IsEnabled(Preset.SAM_ST_SimpleMode) &&
-
-                //Higanbana
-                (SenCount is 1 && GetTargetHPPercent() > 1 && TargetIsBoss() &&
-                 CanApplyStatus(CurrentTarget, Debuffs.Higanbana) &&
-                 (JustUsed(MeikyoShisui, 15f) && GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) <= 15 ||
-                  !HasStatusEffect(Debuffs.Higanbana, CurrentTarget)) ||
-
-                 //Tenka Goken
-                 SenCount is 2 &&
-                 !LevelChecked(MidareSetsugekka) ||
-
-                 //Midare Setsugekka
-                 SenCount is 3 &&
-                 LevelChecked(MidareSetsugekka) && !HasStatusEffect(Buffs.TsubameReady)))
-                return true;
+            //Higanbana Simple Mode
+            if (IsEnabled(Preset.SAM_ST_SimpleMode) && 
+                useHiganbana &&
+                SenCount is 1 && GetTargetHPPercent() > 1 && TargetIsBoss() &&
+                CanApplyStatus(CurrentTarget, Debuffs.Higanbana) &&
+                (JustUsed(MeikyoShisui, 15f) && GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) <= 15 ||
+                 !HasStatusEffect(Debuffs.Higanbana, CurrentTarget)))
+                return OriginalHook(Iaijutsu);
         }
-
-        return false;
+        return actionId;
     }
 
     #endregion
