@@ -291,7 +291,7 @@ internal partial class SAM : Melee
                     //Auto Third Eye
                     if (IsEnabled(Preset.SAM_ST_ThirdEye) &&
                         ActionReady(OriginalHook(ThirdEye)) &&
-                        RaidWideCasting())
+                        RaidWideCasting(2f))
                         return OriginalHook(ThirdEye);
 
                     if (IsEnabled(Preset.SAM_ST_Meditate) &&
