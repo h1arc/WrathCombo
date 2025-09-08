@@ -350,7 +350,8 @@ internal partial class SAM : Melee
 
                     if (IsEnabled(Preset.SAM_ST_CDs_Shoha) &&
                         ActionReady(Shoha) && MeditationStacks is 3 &&
-                        InActionRange(Shoha))
+                        InActionRange(Shoha) && 
+                        (JustUsed(KaeshiSetsugekka) || JustUsed(TendoKaeshiSetsugekka)))
                         return Shoha;
                 }
                 if (IsEnabled(Preset.SAM_ST_Shinten) &&
@@ -389,7 +390,7 @@ internal partial class SAM : Melee
             if (IsEnabled(Preset.SAM_ST_Damage))
             {
                 if (IsEnabled(Preset.SAM_ST_CDs_Iaijutsu) &&
-                    IsEnabled(Preset.SAM_Iaijutsu_TsubameGaeshi) &&
+                    IsEnabled(Preset.SAM_ST_CDs_UseTsubame) &&
                     UseTsubame)
                     return OriginalHook(TsubameGaeshi);
 

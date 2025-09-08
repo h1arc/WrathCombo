@@ -6085,7 +6085,7 @@ public enum Preset
 
     [ParentCombo(SAM_ST_CDs_Iaijutsu)]
     [CustomComboInfo("Add Tsubame-gaeshi", "Will use Tsubame-gaeshi and Tendo Kaeshi Setsugekka.", Job.SAM)]
-    SAM_ST_CDs_UseKaeshi = 15027,
+    SAM_ST_CDs_UseTsubame = 15027,
 
     [ParentCombo(SAM_ST_CDs_Iaijutsu)]
     [CustomComboInfo("Iajutsu movement Option", "Adds Midare: Setsugekka and Higanbana when you're not moving.", Job.SAM)]
