@@ -264,7 +264,6 @@ internal partial class SAM : Melee
             if (actionID is not (Hakaze or Gyofu))
                 return actionID;
 
-            int kenkiOvercap = SAM_ST_KenkiOvercapAmount;
             int shintenTreshhold = SAM_ST_ExecuteThreshold;
 
             // Opener for SAM
@@ -324,7 +323,7 @@ internal partial class SAM : Melee
                 {
                     //Senei Features
                     if (IsEnabled(Preset.SAM_ST_CDs_Senei)
-                        && Kenki >= 25)
+                        && Kenki >= SAMKenki.Senei)
                     {
                         if (ActionReady(Senei))
                             return Senei;
@@ -339,7 +338,7 @@ internal partial class SAM : Melee
                     //Zanshin Usage
                     //TODO Buffcheck
                     if (IsEnabled(Preset.SAM_ST_CDs_Zanshin) &&
-                        ActionReady(Zanshin) && Kenki >= 50 &&
+                        ActionReady(Zanshin) && Kenki >= SAMKenki.Zanshin &&
                         InActionRange(Zanshin) &&
                         HasStatusEffect(Buffs.ZanshinReady) &&
                         (JustUsed(Higanbana) ||
@@ -350,15 +349,12 @@ internal partial class SAM : Melee
 
                     if (IsEnabled(Preset.SAM_ST_CDs_Shoha) &&
                         ActionReady(Shoha) && MeditationStacks is 3 &&
-                        InActionRange(Shoha) && 
+                        InActionRange(Shoha) &&
                         (JustUsed(KaeshiSetsugekka) || JustUsed(TendoKaeshiSetsugekka)))
                         return Shoha;
                 }
                 if (IsEnabled(Preset.SAM_ST_Shinten) &&
-                    ActionReady(Shinten) && !HasStatusEffect(Buffs.ZanshinReady) &&
-                    (IsEnabled(Preset.SAM_ST_CDs_Senei) && !ActionReady(Senei) ||
-                     IsNotEnabled(Preset.SAM_ST_CDs_Senei)) &&
-                    (Kenki >= kenkiOvercap || GetTargetHPPercent() <= shintenTreshhold && Kenki >= 25))
+                    UseShinten())
                     return Shinten;
 
                 if (IsEnabled(Preset.SAM_ST_Feint) &&
@@ -399,7 +395,7 @@ internal partial class SAM : Melee
                     (!SAM_ST_CDs_OgiNamikiri_Movement || !IsMoving()) &&
                     ActionReady(OgiNamikiri) && InActionRange(OriginalHook(OgiNamikiri)) &&
                     HasStatusEffect(Buffs.OgiNamikiriReady) && M6SReady &&
-                    (IsNotEnabled(Preset.SAM_ST_CDs_UseHiganbana) && JustUsed(Ikishoten) || 
+                    (IsNotEnabled(Preset.SAM_ST_CDs_UseHiganbana) && JustUsed(Ikishoten) ||
                      JustUsed(Higanbana, 5f) ||
                      SAM_ST_HiganbanaBossOption == 1 && !TargetIsBoss() ||
                      GetStatusEffectRemainingTime(Buffs.OgiNamikiriReady) <= 8) || NamikiriReady)

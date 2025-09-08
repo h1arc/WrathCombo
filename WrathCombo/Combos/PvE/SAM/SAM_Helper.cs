@@ -32,6 +32,9 @@ internal partial class SAM
         (HasStatusEffect(Buffs.TendoKaeshiSetsugekkaReady) ||
          HasStatusEffect(Buffs.TsubameReady) && (SenCount is 3 || GetCooldownRemainingTime(Senei) > 33));
 
+    internal static float GCD =>
+        GetAdjustedRecastTime(ActionType.Action, Hakaze) / 100f;
+
     internal static bool M6SReady =>
         !HiddenFeaturesData.IsEnabledWith(Preset.SAM_Hid_M6SHoldSquirrelBurst, () =>
             HiddenFeaturesData.Targeting.R6SSquirrel && CombatEngageDuration().TotalSeconds < 275);
@@ -40,7 +43,6 @@ internal partial class SAM
 
     internal static bool UseMeikyo()
     {
-        float gcd = GetAdjustedRecastTime(ActionType.Action, Hakaze) / 100f;
         int meikyoUsed = CombatActions.Count(x => x == MeikyoShisui);
 
         if (ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.Tendo) && !HasStatusEffect(Buffs.MeikyoShisui) &&
@@ -59,7 +61,7 @@ internal partial class SAM
 
                     if (HasStatusEffect(Buffs.TsubameReady))
                     {
-                        switch (gcd)
+                        switch (GCD)
                         {
                             //2.14 GCD
                             case >= 2.09f when GetCooldownRemainingTime(Senei) <= 10 &&
@@ -73,7 +75,7 @@ internal partial class SAM
                     }
 
                     // reset meikyo
-                    if (gcd >= 2.09f && meikyoUsed % 7 is 0 && JustUsed(Yukikaze))
+                    if (GCD >= 2.09f && meikyoUsed % 7 is 0 && JustUsed(Yukikaze))
                         return true;
                 }
 
@@ -130,6 +132,43 @@ internal partial class SAM
                 return true;
         }
         return false;
+    }
+
+    #endregion
+
+    #region Burst Management
+
+    internal static bool UseShinten()
+    {
+        if (ActionReady(Shinten) && Kenki >= SAMKenki.Shinten)
+        {
+            if (EnhancedSenei && (JustUsed(KaeshiSetsugekka, GCD * 5) || JustUsed(TendoKaeshiSetsugekka, GCD * 5)) && IsOnCooldown(Senei))
+                return true;
+
+            if (!EnhancedSenei && Kenki >= SAMKenki.Shinten)
+                return true;
+
+            if (Kenki >= 95 && IsOffCooldown(Senei))
+                return true;
+        }
+        return false;
+    }
+
+    #endregion
+
+    #region Rescourses
+
+    internal static class SAMKenki
+    {
+        internal const int MaxKenki = 100;
+
+        internal static int Zanshin => GetResourceCost(SAM.Zanshin);
+
+        internal static int Senei => GetResourceCost(SAM.Senei);
+
+        internal static int Guren => GetResourceCost(SAM.Guren);
+
+        internal static int Shinten => GetResourceCost(SAM.Shinten);
     }
 
     #endregion
