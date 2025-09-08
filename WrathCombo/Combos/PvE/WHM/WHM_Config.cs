@@ -607,7 +607,7 @@ internal partial class WHM
         ///     Priority order for single target healing abilities.
         /// </summary>
         internal static UserIntArray WHM_ST_Heals_Priority =
-            new("WHM_ST_Heals_Priority", [1,7,8,5,9,6,3,2,4]);
+            new("WHM_ST_Heals_Priority", [1,7,8,9,6,4,3,2,5]);
 
         /// <summary>
         ///     Time threshold in seconds before refreshing Regen.
@@ -888,7 +888,7 @@ internal partial class WHM
         ///     Priority order for AoE healing abilities.
         /// </summary>
         internal static UserIntArray WHM_AoE_Heals_Priority =
-            new("WHM_AoE_Heals_Priority",[7,6,4,8,3,9,5,2,1]);
+            new("WHM_AoE_Heals_Priority",[9,8,5,6,4,3,7,2,1]);
 
         /// <summary>
         ///     Number of Thin Air charges to reserve in AoE healing.
