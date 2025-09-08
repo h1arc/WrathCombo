@@ -945,62 +945,62 @@ public enum Preset
     AST_ST_Heals_Esuna = 1039,
 
     [ParentCombo(AST_ST_Heals)]
-    [CustomComboInfo("Aspected Benefic Option", "Adds Aspected Benefic & refreshes it if needed.", Job.AST)]
+    [CustomComboInfo("Aspected Benefic Option", "Adds Aspected Benefic & refreshes it if needed. Default Priority: 5", Job.AST)]
     [PossiblyRetargeted(AST.AspectedBenefic)]
     AST_ST_Heals_AspectedBenefic = 1027,
 
     [ParentCombo(AST_ST_Heals)]
     [CustomComboInfo("Essential Dignity Option",
-        "Essential Dignity will be added when the target is at or below the value set", Job.AST)]
+        "Essential Dignity will be added when the target is at or below the value set. Default Priority: 12", Job.AST)]
     [PossiblyRetargeted(AST.EssentialDignity)]
     AST_ST_Heals_EssentialDignity = 1024,
     
     [ParentCombo(AST_ST_Heals_EssentialDignity)]
     [CustomComboInfo("Emergency Essential Dignity Option",
-        "Will retain a charge of Essential Dignity to use at a different threshold.", Job.AST)]
+        "Will retain a charge of Essential Dignity to use at a different threshold. Default Priority: 1", Job.AST)]
     [PossiblyRetargeted(AST.EssentialDignity)]
     AST_ST_Heals_EssentialDignity_Emergency = 1096,
 
     [ParentCombo(AST_ST_Heals)]
-    [CustomComboInfo("Celestial Intersection Option", "Adds Celestial Intersection.", Job.AST)]
+    [CustomComboInfo("Celestial Intersection Option", "Adds Celestial Intersection. Default Priority: 11", Job.AST)]
     [PossiblyRetargeted(AST.CelestialIntersection)]
     AST_ST_Heals_CelestialIntersection = 1025,
 
     [ParentCombo(AST_ST_Heals)]
-    [CustomComboInfo("Exaltation Option", "Adds Exaltation.", Job.AST)]
+    [CustomComboInfo("Exaltation Option", "Adds Exaltation. Default Priority: 10", Job.AST)]
     [PossiblyRetargeted(AST.Exaltation)]
     AST_ST_Heals_Exaltation = 1028,
 
     [ParentCombo(AST_ST_Heals)]
-    [CustomComboInfo("The Spire Option", "Adds The Spire (Shield) when the card has been drawn", Job.AST)]
+    [CustomComboInfo("The Spire Option", "Adds The Spire (Shield) when the card has been drawn. Default Priority: 7", Job.AST)]
     [PossiblyRetargeted(AST.Spire)]
     AST_ST_Heals_Spire = 1030,
 
     [ParentCombo(AST_ST_Heals)]
-    [CustomComboInfo("The Ewer Option", "Adds The Ewer (Heal over time) when the card has been drawn", Job.AST)]
+    [CustomComboInfo("The Ewer Option", "Adds The Ewer (Heal over time) when the card has been drawn. Default Priority: 6", Job.AST)]
     [PossiblyRetargeted(AST.Ewer)]
     AST_ST_Heals_Ewer = 1032,
 
     [ParentCombo(AST_ST_Heals)]
-    [CustomComboInfo("The Arrow Option", "Adds The Arrow (increased healing)  when the card has been drawn", Job.AST)]
+    [CustomComboInfo("The Arrow Option", "Adds The Arrow (increased healing) when the card has been drawn. Default Priority: 8", Job.AST)]
     [PossiblyRetargeted(AST.Arrow)]
     AST_ST_Heals_Arrow = 1049,
 
     [ParentCombo(AST_ST_Heals)]
-    [CustomComboInfo("The Bole Option", "Adds The Bole (Reduced Damage) when the card has been drawn", Job.AST)]
+    [CustomComboInfo("The Bole Option", "Adds The Bole (Reduced Damage) when the card has been drawn. Default Priority: 9", Job.AST)]
     [PossiblyRetargeted(AST.Bole)]
     AST_ST_Heals_Bole = 1050,
 
     [ParentCombo(AST_ST_Heals)]
-    [CustomComboInfo("Celestial Opposition Option", "Adds Celestial Opposition", Job.AST)]
+    [CustomComboInfo("Celestial Opposition Option", "Adds Celestial Opposition. Default Priority: 4", Job.AST)]
     AST_ST_Heals_CelestialOpposition = 1068,
 
     [ParentCombo(AST_ST_Heals)]
-    [CustomComboInfo("Collective Unconscious Option", "Adds Collective Unconscious (for the regen so it will not channel)", Job.AST)]
+    [CustomComboInfo("Collective Unconscious Option", "Adds Collective Unconscious (for the regen so it will not channel). Default Priority: 3", Job.AST)]
     AST_ST_Heals_CollectiveUnconscious = 1069,
 
     [ParentCombo(AST_ST_Heals)]
-    [CustomComboInfo("Lady Option", "Adds Lady of Crowns, if the card is drawn.", Job.AST)]
+    [CustomComboInfo("Lady Option", "Adds Lady of Crowns, if the card is drawn. Default Priority: 2", Job.AST)]
     AST_ST_Heals_SoloLady = 1070,
 
     [AutoAction(true, true)]
@@ -1012,39 +1012,39 @@ public enum Preset
     AST_AoE_Heals = 1010,
 
     [ParentCombo(AST_AoE_Heals)]
-    [CustomComboInfo("Aspected Helios Option", "Adds Aspected Helios/Helios Conjunction", Job.AST)]
+    [CustomComboInfo("Aspected Helios Option", "Adds Aspected Helios/Helios Conjunction. Default Priority: 8", Job.AST)]
     AST_AoE_Heals_Aspected = 1053,
 
     [ParentCombo(AST_AoE_Heals)]
-    [CustomComboInfo("Helios Option", "Adds Helios", Job.AST)]
+    [CustomComboInfo("Helios Option", "Adds Helios. Default Priority: 9", Job.AST)]
     AST_AoE_Heals_Helios = 1073,
 
     [ParentCombo(AST_AoE_Heals)]
-    [CustomComboInfo("Celestial Opposition Option", "Adds Celestial Opposition", Job.AST)]
+    [CustomComboInfo("Celestial Opposition Option", "Adds Celestial Opposition. Default Priority: 4", Job.AST)]
     AST_AoE_Heals_CelestialOpposition = 1021,
 
     [ParentCombo(AST_AoE_Heals)]
-    [CustomComboInfo("Lazy Lady Option", "Adds Lady of Crowns, if the card is drawn", Job.AST)]
+    [CustomComboInfo("Lazy Lady Option", "Adds Lady of Crowns, if the card is drawn. Default Priority: 3", Job.AST)]
     AST_AoE_Heals_LazyLady = 1022,
 
     [ParentCombo(AST_AoE_Heals)]
-    [CustomComboInfo("Horoscope Option", "Adds Horoscope followed by Aspected Helios or Helios.", Job.AST)]
+    [CustomComboInfo("Horoscope Option", "Adds Horoscope followed by Aspected Helios or Helios. Default Priority: 6", Job.AST)]
     AST_AoE_Heals_Horoscope = 1026,
 
     [ParentCombo(AST_AoE_Heals)]
-    [CustomComboInfo("Horoscope Helios Option", "Adds Horoscope Helios.", Job.AST)]
+    [CustomComboInfo("Horoscope Helios Option", "Adds Horoscope Helios. Default Priority: 1", Job.AST)]
     AST_AoE_Heals_HoroscopeHeal = 1071,
 
     [ParentCombo(AST_AoE_Heals)]
-    [CustomComboInfo("Neutral Sect Option", "Adds Neutral Sect and its followup Sun Sign.", Job.AST)]
+    [CustomComboInfo("Neutral Sect Option", "Adds Neutral Sect and its followup Sun Sign. Default Priority: 7", Job.AST)]
     AST_AoE_Heals_NeutralSect = 1067,
 
     [ParentCombo(AST_AoE_Heals)]
-    [CustomComboInfo("Stellar Detonation Option", "Adds Stellar Detonation when under the effect of Giant Dominance", Job.AST)]
+    [CustomComboInfo("Stellar Detonation Option", "Adds Stellar Detonation when under the effect of Giant Dominance. Default Priority: 2", Job.AST)]
     AST_AoE_Heals_StellarDetonation = 1072,
 
     [ParentCombo(AST_AoE_Heals)]
-    [CustomComboInfo("Collective Unconscious Option", "Adds Collective Unconscious (for the regen so it will not channel)", Job.AST)]
+    [CustomComboInfo("Collective Unconscious Option", "Adds Collective Unconscious (for the regen so it will not channel). Default Priority: 5", Job.AST)]
     AST_AoE_Heals_CollectiveUnconscious = 1074,
     #endregion
 
@@ -5743,59 +5743,59 @@ public enum Preset
     SGE_ST_Heal_Esuna = 14015,
 
     [ParentCombo(SGE_ST_Heal)]
-    [CustomComboInfo("Eukrasian Diagnosis Option", "Diagnosis becomes Eukrasian Diagnosis if the shield is not applied to the target.", Job.SGE)]
+    [CustomComboInfo("Eukrasian Diagnosis Option", "Diagnosis becomes Eukrasian Diagnosis if the shield is not applied to the target. Default Priority: 12", Job.SGE)]
     [PossiblyRetargeted(SGE.Eukrasia)]
     SGE_ST_Heal_EDiagnosis = 14017,
 
     [ParentCombo(SGE_ST_Heal)]
-    [CustomComboInfo("Druochole Option", "Applies Druochole.", Job.SGE)]
+    [CustomComboInfo("Druochole Option", "Applies Druochole. Default Priority: 9", Job.SGE)]
     [PossiblyRetargeted(SGE.Druochole)]
     SGE_ST_Heal_Druochole = 14025,
 
     [ParentCombo(SGE_ST_Heal)]
-    [CustomComboInfo("Taurochole Option", "Adds Taurochole.", Job.SGE)]
+    [CustomComboInfo("Taurochole Option", "Adds Taurochole. Default Priority: 6", Job.SGE)]
     [PossiblyRetargeted(SGE.Taurochole)]
     SGE_ST_Heal_Taurochole = 14021,
 
     [ParentCombo(SGE_ST_Heal)]
-    [CustomComboInfo("Haima Option", "Applies Haima.", Job.SGE)]
+    [CustomComboInfo("Haima Option", "Applies Haima. Default Priority: 7", Job.SGE)]
     [PossiblyRetargeted(SGE.Haima)]
     SGE_ST_Heal_Haima = 14022,
 
     [ParentCombo(SGE_ST_Heal)]
-    [CustomComboInfo("Soteria Option", "Applies Soteria.", Job.SGE)]
+    [CustomComboInfo("Soteria Option", "Applies Soteria. Default Priority: 3", Job.SGE)]
     SGE_ST_Heal_Soteria = 14018,
 
     [ParentCombo(SGE_ST_Heal)]
-    [CustomComboInfo("Zoe Option", "Applies Zoe.", Job.SGE)]
+    [CustomComboInfo("Zoe Option", "Applies Zoe. Default Priority: 11", Job.SGE)]
     SGE_ST_Heal_Zoe = 14019,
 
     [ParentCombo(SGE_ST_Heal)]
-    [CustomComboInfo("Krasis Option", "Applies Krasis.", Job.SGE)]
+    [CustomComboInfo("Krasis Option", "Applies Krasis. Default Priority: 8", Job.SGE)]
     [PossiblyRetargeted(SGE.Krasis)]
     SGE_ST_Heal_Krasis = 14024,
 
     [ParentCombo(SGE_ST_Heal)]
-    [CustomComboInfo("Pepsis Option", "Triggers Pepsis if a shield is present.", Job.SGE)]
+    [CustomComboInfo("Pepsis Option", "Triggers Pepsis if a shield is present. Default Priority: 10", Job.SGE)]
     SGE_ST_Heal_Pepsis = 14020,
 
     [ParentCombo(SGE_ST_Heal)]
-    [CustomComboInfo("Physis Option", "Adds Physis.", Job.SGE)]
+    [CustomComboInfo("Physis Option", "Adds Physis. Default Priority: 2", Job.SGE)]
     [PossiblyRetargeted(SGE.Physis)]
     SGE_ST_Heal_Physis = 14065,
 
     [ParentCombo(SGE_ST_Heal)]
-    [CustomComboInfo("Kerachole Option", "Adds Kerachole.", Job.SGE)]
+    [CustomComboInfo("Kerachole Option", "Adds Kerachole. Default Priority: 1", Job.SGE)]
     [PossiblyRetargeted(SGE.Kerachole)]
     SGE_ST_Heal_Kerachole = 14066,
 
     [ParentCombo(SGE_ST_Heal)]
-    [CustomComboInfo("Holos Option", "Adds Holos.", Job.SGE)]
+    [CustomComboInfo("Holos Option", "Adds Holos. Default Priority: 5", Job.SGE)]
     [PossiblyRetargeted(SGE.Holos)]
     SGE_ST_Heal_Holos = 14067,
 
     [ParentCombo(SGE_ST_Heal)]
-    [CustomComboInfo("Panhaima Option", "Adds Panhaima.", Job.SGE)]
+    [CustomComboInfo("Panhaima Option", "Adds Panhaima. Default Priority: 4", Job.SGE)]
     [PossiblyRetargeted(SGE.Panhaima)]
     SGE_ST_Heal_Panhaima = 14068,
 
@@ -5819,39 +5819,39 @@ public enum Preset
     SGE_AoE_Heal_Rhizomata = 14036,
 
     [ParentCombo(SGE_AoE_Heal)]
-    [CustomComboInfo("Eukrasian Prognosis Option", "Adds Eukrasian Prognosis.", Job.SGE)]
+    [CustomComboInfo("Eukrasian Prognosis Option", "Adds Eukrasian Prognosis. Default Priority: 9", Job.SGE)]
     SGE_AoE_Heal_EPrognosis = 14028,
 
     [ParentCombo(SGE_AoE_Heal)]
-    [CustomComboInfo("Ixochole Option", "Adds Ixochole.", Job.SGE)]
+    [CustomComboInfo("Ixochole Option", "Adds Ixochole. Default Priority: 7", Job.SGE)]
     SGE_AoE_Heal_Ixochole = 14033,
 
     [ParentCombo(SGE_AoE_Heal)]
-    [CustomComboInfo("Kerachole Option", "Adds Kerachole.", Job.SGE)]
+    [CustomComboInfo("Kerachole Option", "Adds Kerachole. Default Priority: 1", Job.SGE)]
     SGE_AoE_Heal_Kerachole = 14035,
 
     [ParentCombo(SGE_AoE_Heal)]
-    [CustomComboInfo("Holos Option", "Adds Holos.", Job.SGE)]
+    [CustomComboInfo("Holos Option", "Adds Holos. Default Priority: 3", Job.SGE)]
     SGE_AoE_Heal_Holos = 14030,
 
     [ParentCombo(SGE_AoE_Heal)]
-    [CustomComboInfo("Physis Option", "Adds Physis.", Job.SGE)]
+    [CustomComboInfo("Physis Option", "Adds Physis. Default Priority: 2", Job.SGE)]
     SGE_AoE_Heal_Physis = 14027,
 
     [ParentCombo(SGE_AoE_Heal)]
-    [CustomComboInfo("Panhaima Option", "Adds Panhaima.", Job.SGE)]
+    [CustomComboInfo("Panhaima Option", "Adds Panhaima. Default Priority: 5", Job.SGE)]
     SGE_AoE_Heal_Panhaima = 14031,
 
     [ParentCombo(SGE_AoE_Heal)]
-    [CustomComboInfo("Zoe Option", "Adds Zoe.", Job.SGE)]
+    [CustomComboInfo("Zoe Option", "Adds Zoe. Default Priority: 6", Job.SGE)]
     SGE_AoE_Heal_Zoe = 14058,
 
     [ParentCombo(SGE_AoE_Heal)]
-    [CustomComboInfo("Philosophia Option", "Adds Philosophia.", Job.SGE)]
+    [CustomComboInfo("Philosophia Option", "Adds Philosophia. Default Priority: 4", Job.SGE)]
     SGE_AoE_Heal_Philosophia = 14050,
 
     [ParentCombo(SGE_AoE_Heal)]
-    [CustomComboInfo("Pepsis Option", "Triggers Pepsis if a shield is present.", Job.SGE)]
+    [CustomComboInfo("Pepsis Option", "Triggers Pepsis if a shield is present. Default Priority: 8", Job.SGE)]
     SGE_AoE_Heal_Pepsis = 14032,
 
     #endregion
@@ -6501,56 +6501,56 @@ public enum Preset
     SCH_ST_Heal_Esuna = 16026,
 
     [ParentCombo(SCH_ST_Heal)]
-    [CustomComboInfo("Adloquium Option", "Use Adloquium", Job.SCH)]
+    [CustomComboInfo("Adloquium Option", "Use Adloquium. Default Priority: 12", Job.SCH)]
     [PossiblyRetargeted(SCH.Adloquium)]
     SCH_ST_Heal_Adloquium = 16027,
 
     [ParentCombo(SCH_ST_Heal)]
-    [CustomComboInfo("Lustrate Option", "Use Lustrate", Job.SCH)]
+    [CustomComboInfo("Lustrate Option", "Use Lustrate. Default Priority: 11", Job.SCH)]
     [PossiblyRetargeted(SCH.Lustrate)]
     SCH_ST_Heal_Lustrate = 16028,
 
     [ParentCombo(SCH_ST_Heal)]
-    [CustomComboInfo("Excogitation Option", "Use Excogitation", Job.SCH)]
+    [CustomComboInfo("Excogitation Option", "Use Excogitation. Default Priority: 5", Job.SCH)]
     [PossiblyRetargeted(SCH.Excogitation)]
     SCH_ST_Heal_Excogitation = 16038,
 
     [ParentCombo(SCH_ST_Heal)]
-    [CustomComboInfo("Protraction Option", "Use Protraction", Job.SCH)]
+    [CustomComboInfo("Protraction Option", "Use Protraction. Default Priority: 6", Job.SCH)]
     [PossiblyRetargeted(SCH.Protraction)]
     SCH_ST_Heal_Protraction = 16039,
 
     [ParentCombo(SCH_ST_Heal)]
-    [CustomComboInfo("Aetherpact Option", "Use Aetherpact", Job.SCH)]
+    [CustomComboInfo("Aetherpact Option", "Use Aetherpact. Default Priority: 7", Job.SCH)]
     [PossiblyRetargeted(SCH.Aetherpact)]
     SCH_ST_Heal_Aetherpact = 16047,
 
     [ParentCombo(SCH_ST_Heal)]
-    [CustomComboInfo("Whispering Dawn Option", "Use Whispering Dawn", Job.SCH)]
+    [CustomComboInfo("Whispering Dawn Option", "Use Whispering Dawn. Default Priority: 3", Job.SCH)]
     SCH_ST_Heal_WhisperingDawn = 16067,
 
     [ParentCombo(SCH_ST_Heal)]
-    [CustomComboInfo("Fey Illumination Option", "Use Fey Illumination", Job.SCH)]
+    [CustomComboInfo("Fey Illumination Option", "Use Fey Illumination. Default Priority: 2", Job.SCH)]
     SCH_ST_Heal_FeyIllumination = 16068,
 
     [ParentCombo(SCH_ST_Heal)]
-    [CustomComboInfo("Fey Blessing Option", "Use Fey Blessing", Job.SCH)]
+    [CustomComboInfo("Fey Blessing Option", "Use Fey Blessing. Default Priority: 4", Job.SCH)]
     SCH_ST_Heal_FeyBlessing = 16069,
     
     [ParentCombo(SCH_ST_Heal)]
-    [CustomComboInfo("Seraphism Option", "Use Seraphism", Job.SCH)]
+    [CustomComboInfo("Seraphism Option", "Use Seraphism. Default Priority: 10", Job.SCH)]
     SCH_ST_Heal_Seraphism = 16086,
     
     [ParentCombo(SCH_ST_Heal)]
-    [CustomComboInfo("Expedient Option", "Use Expedient", Job.SCH)]
+    [CustomComboInfo("Expedient Option", "Use Expedient. Default Priority: 8", Job.SCH)]
     SCH_ST_Heal_Expedient = 16087,
     
     [ParentCombo(SCH_ST_Heal)]
-    [CustomComboInfo("Summon Seraph Option", "Use Summon Seraph", Job.SCH)]
+    [CustomComboInfo("Summon Seraph Option", "Use Summon Seraph. Default Priority: 9", Job.SCH)]
     SCH_ST_Heal_SummonSeraph = 16088,
     
     [ParentCombo(SCH_ST_Heal)]
-    [CustomComboInfo("Consolation Option", "Use Consolation", Job.SCH)]
+    [CustomComboInfo("Consolation Option", "Use Consolation. Default Priority: 1", Job.SCH)]
     SCH_ST_Heal_Consolation = 16089,
     #endregion
 
@@ -6558,36 +6558,36 @@ public enum Preset
     [AutoAction(true, true)]
     [ReplaceSkill(SCH.Succor)]
     [ConflictingCombos(SCH_Simple_AoE_Heal)]
-    [CustomComboInfo("Advanced Healing Mode - AoE", "Replaces Succor with options below:", Job.SCH)]
+    [CustomComboInfo("Advanced Healing Mode - AoE", "Replaces Succor with options below.  Default Priority: 8", Job.SCH)]
     [HealingCombo]
     SCH_AoE_Heal = 16018,
     
     [ParentCombo(SCH_AoE_Heal)]
-    [CustomComboInfo("Indomitability Option", "Use Indomitabilty", Job.SCH)]
+    [CustomComboInfo("Indomitability Option", "Use Indomitabilty. Default Priority: 7", Job.SCH)]
     SCH_AoE_Heal_Indomitability = 16022,
 
     [ParentCombo(SCH_AoE_Heal)]
-    [CustomComboInfo("Whispering Dawn Option", "Use Whispering Dawn", Job.SCH)]
+    [CustomComboInfo("Whispering Dawn Option", "Use Whispering Dawn. Default Priority: 3", Job.SCH)]
     SCH_AoE_Heal_WhisperingDawn = 16043,
 
     [ParentCombo(SCH_AoE_Heal)]
-    [CustomComboInfo("Fey Illumination Option", "Use Fey Illumination", Job.SCH)]
+    [CustomComboInfo("Fey Illumination Option", "Use Fey Illumination. Default Priority: 2", Job.SCH)]
     SCH_AoE_Heal_FeyIllumination = 16042,
 
     [ParentCombo(SCH_AoE_Heal)]
-    [CustomComboInfo("Fey Blessing Option", "Use Fey Blessing", Job.SCH)]
+    [CustomComboInfo("Fey Blessing Option", "Use Fey Blessing. Default Priority: 4", Job.SCH)]
     SCH_AoE_Heal_FeyBlessing = 16045,
 
     [ParentCombo(SCH_AoE_Heal)]
-    [CustomComboInfo("Seraphism Option", "Use Seraphism", Job.SCH)]
+    [CustomComboInfo("Seraphism Option", "Use Seraphism. Default Priority: 6", Job.SCH)]
     SCH_AoE_Heal_Seraphism = 16044,
 
     [ParentCombo(SCH_AoE_Heal)]
-    [CustomComboInfo("Summon Seraph Option", "Use Summon Seraph", Job.SCH)]
+    [CustomComboInfo("Summon Seraph Option", "Use Summon Seraph. Default Priority: 5", Job.SCH)]
     SCH_AoE_Heal_SummonSeraph = 16063,
 
     [ParentCombo(SCH_AoE_Heal)]
-    [CustomComboInfo("Consolation Option", "Use Consolation", Job.SCH)]
+    [CustomComboInfo("Consolation Option", "Use Consolation. Default Priority: 1", Job.SCH)]
     SCH_AoE_Heal_Consolation = 16046,
 
     [ParentCombo(SCH_AoE_Heal)]
@@ -8000,47 +8000,47 @@ public enum Preset
     WHM_STHeals_Misery = 19313,
 
     [ParentCombo(WHM_STHeals)]
-    [CustomComboInfo("Regen Option", "Adds Regen.", Job.WHM)]
+    [CustomComboInfo("Regen Option", "Adds Regen. Default Priority: 5", Job.WHM)]
     [PossiblyRetargeted(WHM.Regen)]
     WHM_STHeals_Regen = 19301,
 
     [ParentCombo(WHM_STHeals)]
-    [CustomComboInfo("Afflatus Solace Option", "Adds Afflatus Solace.", Job.WHM)]
+    [CustomComboInfo("Afflatus Solace Option", "Adds Afflatus Solace. Default Priority: 9", Job.WHM)]
     [PossiblyRetargeted]
     WHM_STHeals_Solace = 19303,
 
     [ParentCombo(WHM_STHeals)]
-    [CustomComboInfo("Tetragrammaton Option", "Adds Tetragrammaton.", Job.WHM)]
+    [CustomComboInfo("Tetragrammaton Option", "Adds Tetragrammaton. Default Priority: 8", Job.WHM)]
     [PossiblyRetargeted(WHM.Tetragrammaton)]
     WHM_STHeals_Tetragrammaton = 19305,
 
     [ParentCombo(WHM_STHeals)]
-    [CustomComboInfo("Divine Benison Option", "Adds Divine Benison.", Job.WHM)]
+    [CustomComboInfo("Divine Benison Option", "Adds Divine Benison. Default Priority: 7", Job.WHM)]
     [PossiblyRetargeted(WHM.DivineBenison)]
     WHM_STHeals_Benison = 19306,
 
     [ParentCombo(WHM_STHeals)]
-    [CustomComboInfo("Aquaveil Option", "Adds Aquaveil.", Job.WHM)]
+    [CustomComboInfo("Aquaveil Option", "Adds Aquaveil. Default Priority: 6", Job.WHM)]
     [PossiblyRetargeted(WHM.Aquaveil)]
     WHM_STHeals_Aquaveil = 19307,
 
     [ParentCombo(WHM_STHeals)]
-    [CustomComboInfo("Benediction Option", "Adds Benediciton.", Job.WHM)]
+    [CustomComboInfo("Benediction Option", "Adds Benediciton. Default Priority: 1", Job.WHM)]
     [PossiblyRetargeted]
     WHM_STHeals_Benediction = 19302,
 
     [ParentCombo(WHM_STHeals)]
-    [CustomComboInfo("Temperance Option", "Adds Temperance and it's followup Divine Caress.", Job.WHM)]
+    [CustomComboInfo("Temperance Option", "Adds Temperance and it's followup Divine Caress. Default Priority: 2", Job.WHM)]
     [PossiblyRetargeted]
     WHM_STHeals_Temperance = 19310,
 
     [ParentCombo(WHM_STHeals)]
-    [CustomComboInfo("Asylum Option", "Adds Asylum.", Job.WHM)]
+    [CustomComboInfo("Asylum Option", "Adds Asylum. Default Priority: 3", Job.WHM)]
     [PossiblyRetargeted]
     WHM_STHeals_Asylum = 19311,
 
     [ParentCombo(WHM_STHeals)]
-    [CustomComboInfo("LiturgyOfTheBell Option", "Adds LiturgyOfTheBell.", Job.WHM)]
+    [CustomComboInfo("LiturgyOfTheBell Option", "Adds LiturgyOfTheBell. Default Priority: 4", Job.WHM)]
     [PossiblyRetargeted]
     WHM_STHeals_LiturgyOfTheBell = 19312,
 
@@ -8071,41 +8071,41 @@ public enum Preset
 
     [ParentCombo(WHM_AoEHeals)]
     [CustomComboInfo("Medica II Option",
-        "Uses Medica II when heal target doesn't have Medica II buff." +
+        "Uses Medica II when heal target doesn't have Medica II buff. Default Priority: 9" +
         "\nUpgrades to Medica III when level allows.", Job.WHM)]
     WHM_AoEHeals_Medica2 = 19205,
 
     [ParentCombo(WHM_AoEHeals)]
-    [CustomComboInfo("Afflatus Rapture Option", "Uses Afflatus Rapture when available.", Job.WHM)]
+    [CustomComboInfo("Afflatus Rapture Option", "Uses Afflatus Rapture when available. Default Priority: 7", Job.WHM)]
     WHM_AoEHeals_Rapture = 19011,
 
     [ParentCombo(WHM_AoEHeals)]
-    [CustomComboInfo("Cure III Option", "Replaces Medica with Cure III when available.", Job.WHM)]
+    [CustomComboInfo("Cure III Option", "Replaces Medica with Cure III when available. Default Priority: 8", Job.WHM)]
     WHM_AoEHeals_Cure3 = 19201,
 
     [ParentCombo(WHM_AoEHeals)]
-    [CustomComboInfo("Assize Option", "Uses Assize when available.", Job.WHM)]
+    [CustomComboInfo("Assize Option", "Uses Assize when available. Default Priority: 2", Job.WHM)]
     WHM_AoEHeals_Assize = 19202,
 
     [ParentCombo(WHM_AoEHeals)]
-    [CustomComboInfo("Plenary Indulgence Option", "Uses Plenary Indulgence when available.", Job.WHM)]
+    [CustomComboInfo("Plenary Indulgence Option", "Uses Plenary Indulgence when available. Default Priority: 6", Job.WHM)]
     WHM_AoEHeals_Plenary = 19203,
 
     [ParentCombo(WHM_AoEHeals)]
-    [CustomComboInfo("Asylum Option", "Adds Asylum placement, when standing still, to the rotation.\nWill Retarget it onto yourself.", Job.WHM)]
+    [CustomComboInfo("Asylum Option", "Adds Asylum placement, when standing still, to the rotation. Default Priority: 3\nWill Retarget it onto yourself.", Job.WHM)]
     [Retargeted]
     WHM_AoEHeals_Asylum = 19028,
 
     [ParentCombo(WHM_AoEHeals)]
-    [CustomComboInfo("Temperance Option", "Uses Temperance when available for a healing boost whenever the party average falls below the set threshold.", Job.WHM)]
+    [CustomComboInfo("Temperance Option", "Uses Temperance when available for a healing boost whenever the party average falls below the set threshold. Default Priority: 5", Job.WHM)]
     WHM_AoEHeals_Temperance = 19210,
 
     [ParentCombo(WHM_AoEHeals)]
-    [CustomComboInfo("Divine Caress", "Uses Divine Caress when Divine Grace from Temperance is active.", Job.WHM)]
+    [CustomComboInfo("Divine Caress", "Uses Divine Caress when Divine Grace from Temperance is active. Default Priority: 1", Job.WHM)]
     WHM_AoEHeals_DivineCaress = 19207,
 
     [ParentCombo(WHM_AoEHeals)]
-    [CustomComboInfo("Liturgy of the Bell Option", "Adds Liturgy of the Bell (Lilybell) placement to the rotation.", Job.WHM)]
+    [CustomComboInfo("Liturgy of the Bell Option", "Adds Liturgy of the Bell (Lilybell) placement to the rotation. Default Priority: 4", Job.WHM)]
     [Retargeted(WHM.LiturgyOfTheBell)]
     WHM_AoEHeals_LiturgyOfTheBell = 19206,
 
