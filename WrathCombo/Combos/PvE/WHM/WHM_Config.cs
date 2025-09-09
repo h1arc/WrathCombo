@@ -81,6 +81,11 @@ internal partial class WHM
 
                     ImGui.Unindent();
                     break;
+                
+                case Preset.WHM_ST_MainCombo_Misery:
+                    DrawHorizontalRadioButton(WHM_ST_MainCombo_Misery_Option, "Hold for Burst", "Will attempt to hold for burst as long as possible without overcapping. \nWill prevent afflatus heals from being possible when at full Blood Lily stacks.", 0, descriptionColor: ImGuiColors.DalamudWhite);
+                    DrawHorizontalRadioButton(WHM_ST_MainCombo_Misery_Option, "Use Immediately", "Will Use Immediately to make sure you are free to use Afflatus heals. ", 1, descriptionColor: ImGuiColors.DalamudWhite);
+                    break;
 
                 case Preset.WHM_ST_MainCombo_Lucid:
                     DrawSliderInt(4000, 9500, WHM_STDPS_Lucid,
@@ -108,6 +113,11 @@ internal partial class WHM
                     ImGui.Unindent();
                     DrawSliderInt(0, 10, WHM_AoE_MainCombo_DoT_MaxTargets,
                         "Maximum number of targets to employ multi-dotting ");
+                    break;
+                
+                case Preset.WHM_AoE_DPS_Misery:
+                    DrawHorizontalRadioButton(WHM_AoE_DPS_Misery_Option, "Hold for Burst", "Will attempt to hold for burst as long as possible without overcapping. \nWill prevent afflatus heals from being possible when at full Blood Lily stacks.", 0 ,descriptionColor: ImGuiColors.DalamudWhite);
+                    DrawHorizontalRadioButton(WHM_AoE_DPS_Misery_Option, "Use Immediately", "Will Use Immediately to make sure you are free to use Afflatus heals. ", 1 ,descriptionColor: ImGuiColors.DalamudWhite);
                     break;
 
                 #endregion
@@ -524,6 +534,13 @@ internal partial class WHM
         /// <seealso cref="Preset.WHM_ST_MainCombo_DoT" />
         public static UserInt WHM_ST_DPS_AeroOptionSubOption =
             new("WHM_ST_DPS_AeroOptionSubOption", (int)EnemyRestriction.AllEnemies);
+        
+        /// <summary>
+        ///     Pooling option for Afflatus Misery. Default 1 = Use Immediately, 0 = Hold for Burst
+        /// </summary>
+        /// <seealso cref="Preset.WHM_ST_MainCombo_Misery" />
+        public static UserInt WHM_ST_MainCombo_Misery_Option = 
+            new("WHM_ST_MainCombo_Misery_Option", 1);
 
         /// <summary>
         ///     MP threshold to use Lucid Dreaming in single target rotations.
@@ -588,6 +605,13 @@ internal partial class WHM
         /// <seealso cref="Preset.WHM_AoE_MainCombo_DoT" />
         public static UserInt WHM_AoE_MainCombo_DoT_MaxTargets = 
             new("WHM_AoE_MainCombo_DoT_MaxTargets", 4);
+        
+        /// <summary>
+        ///     Pooling option for Afflatus Misery. Default 1 = Use Immediately, 0 = Hold for Burst
+        /// </summary>
+        /// <seealso cref="Preset.WHM_AoE_DPS_Misery" />
+        public static UserInt WHM_AoE_DPS_Misery_Option = 
+            new("WHM_AoE_DPS_Misery_Option", 1);
 
         #endregion
 

@@ -7899,7 +7899,7 @@ public enum Preset
     [ParentCombo(WHM_ST_MainCombo)]
     [CustomComboInfo("Afflatus Misery Option",
         "Adds Afflatus Misery to the single target combo when it is ready to be used.", Job.WHM)]
-    WHM_ST_MainCombo_Misery_oGCD = 19017,
+    WHM_ST_MainCombo_Misery = 19017,
 
     [ParentCombo(WHM_ST_MainCombo)]
     [CustomComboInfo("Lily Overcap Protection Option",
@@ -7992,12 +7992,6 @@ public enum Preset
     [ParentCombo(WHM_STHeals)]
     [CustomComboInfo("Thin Air Option", "Adds Thin Air.", Job.WHM)]
     WHM_STHeals_ThinAir = 19304,
-    
-    [ParentCombo(WHM_STHeals)]
-    [CustomComboInfo("Afflatus Misery Option", "Uses Afflatus Misery to prevent overcap." +
-                                               "\nHostile Hard Target > Nearest Hostile Target", Job.WHM)]
-    [Retargeted]
-    WHM_STHeals_Misery = 19313,
 
     [ParentCombo(WHM_STHeals)]
     [CustomComboInfo("Regen Option", "Adds Regen.", Job.WHM)]
@@ -8061,12 +8055,6 @@ public enum Preset
     [ParentCombo(WHM_AoEHeals)]
     [CustomComboInfo("Thin Air Option", "Uses Thin Air when available.", Job.WHM)]
     WHM_AoEHeals_ThinAir = 19200,
-
-    [ParentCombo(WHM_AoEHeals)]
-    [CustomComboInfo("Afflatus Misery Option", "Uses Afflatus Misery to prevent overcap." +
-                                               "\nHostile Hard Target > Nearest Hostile Target", Job.WHM)]
-    [Retargeted]
-    WHM_AoEHeals_Misery = 19010,
 
     [ParentCombo(WHM_AoEHeals)]
     [CustomComboInfo("Medica II Option",
