@@ -8035,7 +8035,7 @@ public enum Preset
     WHM_STHeals_Temperance = 19310,
 
     [ParentCombo(WHM_STHeals)]
-    [CustomComboInfo("Asylum Option", "Adds Asylum. Default Priority: 3
+    [CustomComboInfo("Asylum Option", "Adds Asylum.", Job.WHM)]
     WHM_STHeals_Asylum = 19311,
 
     [ParentCombo(WHM_STHeals)]
