@@ -15,7 +15,8 @@ internal partial class SAM : Melee
                 return actionID;
 
             //Meikyo to start before combat
-            if (!HasStatusEffect(Buffs.MeikyoShisui) && ActionReady(MeikyoShisui) &&
+            if (ActionReady(MeikyoShisui) &&
+                !HasStatusEffect(Buffs.MeikyoShisui) &&
                 !InCombat() && HasBattleTarget())
                 return MeikyoShisui;
 
@@ -23,41 +24,33 @@ internal partial class SAM : Melee
                 return contentAction;
 
             //oGCDs
-            if (CanWeave() && M6SReady)
+            if (CanWeave())
             {
                 //Meikyo Features
                 if (UseMeikyo())
                     return MeikyoShisui;
 
                 //Ikishoten Features
-                if (ActionReady(Ikishoten) &&
-                    !HasStatusEffect(Buffs.ZanshinReady))
-                {
-                    return Kenki switch
-                    {
-                        //Dumps Kenki in preparation for Ikishoten
-                        >= 50 => Shinten,
+                if (ActionReady(Ikishoten) && !HasStatusEffect(Buffs.ZanshinReady) &&
+                    (JustUsed(TendoKaeshiSetsugekka) || !LevelChecked(TendoKaeshiSetsugekka)))
+                    return Ikishoten;
 
-                        < 50 => Ikishoten
-                    };
-                }
 
-                switch (Kenki)
+                //Senei Features
+                if (Kenki >= SAMKenki.Senei)
                 {
-                    //Senei Features
-                    case >= 25 when ActionReady(Senei):
+                    if (ActionReady(Senei))
                         return Senei;
 
                     //Guren if no Senei
-                    case >= 25 when !LevelChecked(Senei) &&
-                                    ActionReady(Guren) &&
-                                    InActionRange(Guren):
+                    if (!LevelChecked(Senei) &&
+                        ActionReady(Guren) && InActionRange(Guren))
                         return Guren;
                 }
 
                 //Zanshin Usage
                 //TODO Buffcheck
-                if (ActionReady(Zanshin) && Kenki >= 50 &&
+                if (ActionReady(Zanshin) && Kenki >= SAMKenki.Zanshin &&
                     InActionRange(Zanshin) &&
                     HasStatusEffect(Buffs.ZanshinReady) &&
                     (JustUsed(Higanbana) ||
@@ -65,44 +58,49 @@ internal partial class SAM : Melee
                      GetStatusEffectRemainingTime(Buffs.ZanshinReady) <= 8))
                     return Zanshin;
 
-                if (ActionReady(Shoha) &&
-                    MeditationStacks is 3 &&
-                    InActionRange(Shoha))
+                if (ActionReady(Shoha) && MeditationStacks is 3 &&
+                    InActionRange(Shoha) &&
+                    (JustUsed(KaeshiSetsugekka) ||
+                     JustUsed(TendoKaeshiSetsugekka) ||
+                     JustUsed(Higanbana) ||
+                     JustUsed(OriginalHook(OgiNamikiri)) ||
+                     SenCount is 3))
                     return Shoha;
 
-                if (ActionReady(Shinten) &&
-                    !HasStatusEffect(Buffs.ZanshinReady) && !ActionReady(Senei) &&
-                    (Kenki >= 65 || GetTargetHPPercent() <= 1 && Kenki >= 25))
+                if (UseShinten())
                     return Shinten;
 
                 // healing
-                if (Role.CanSecondWind(25))
+                if (Role.CanSecondWind(SAM_STSecondWindHPThreshold))
                     return Role.SecondWind;
 
-                if (Role.CanBloodBath(40))
+                if (Role.CanBloodBath(SAM_STBloodbathHPThreshold))
                     return Role.Bloodbath;
+
+
+                if (RoleActions.Melee.CanLegSweep() &&
+                    !TargetIsBoss() && TargetIsCasting())
+                    return Role.LegSweep;
             }
 
             //Ranged
-            if (ActionReady(Enpi) &&
-                !InMeleeRange() &&
-                HasBattleTarget())
+            if (ActionReady(Enpi) && !InMeleeRange() && HasBattleTarget())
                 return Enpi;
+
             if (UseTsubame)
                 return OriginalHook(TsubameGaeshi);
 
             //Ogi Namikiri Features
-            if (ActionReady(OgiNamikiri) && M6SReady &&
-                InActionRange(OriginalHook(OgiNamikiri)) &&
-                HasStatusEffect(Buffs.OgiNamikiriReady) &&
+            if (!IsMoving() &&
+                ActionReady(OgiNamikiri) && InActionRange(OriginalHook(OgiNamikiri)) &&
+                HasStatusEffect(Buffs.OgiNamikiriReady) && M6SReady &&
                 (JustUsed(Higanbana, 5f) ||
-                 !TargetIsBoss() ||
                  GetStatusEffectRemainingTime(Buffs.OgiNamikiriReady) <= 8) || NamikiriReady)
                 return OriginalHook(OgiNamikiri);
 
             // Iaijutsu Features
-            if (UseIaijutsu(true, true, true) &&
-                !IsMoving())
+            if (!IsMoving() &&
+                UseIaijutsu(true, true, true))
                 return OriginalHook(Iaijutsu);
 
             if (HasStatusEffect(Buffs.MeikyoShisui))
@@ -154,6 +152,7 @@ internal partial class SAM : Melee
             return actionID;
         }
     }
+
 
     internal class SAM_AoE_SimpleMode : CustomCombo
     {
