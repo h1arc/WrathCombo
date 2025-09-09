@@ -150,10 +150,13 @@ internal partial class SAM
             if (Kenki >= 95)
                 return true;
 
+            if (ActionReady(Ikishoten) && Kenki > 50)
+                return true;
+
             if (EnhancedSenei)
             {
                 if (JustUsed(Senei, 20f) &&
-                    !HasStatusEffect(Buffs.ZanshinReady) && 
+                    !HasStatusEffect(Buffs.ZanshinReady) &&
                     !JustUsed(Ikishoten))
                     return true;
 

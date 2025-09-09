@@ -344,6 +344,7 @@ internal partial class SAM : Melee
                         (JustUsed(KaeshiSetsugekka) ||
                          JustUsed(TendoKaeshiSetsugekka) ||
                          JustUsed(Higanbana) ||
+                         JustUsed(OriginalHook(OgiNamikiri)) ||
                          SenCount is 3))
                         return Shoha;
                 }
