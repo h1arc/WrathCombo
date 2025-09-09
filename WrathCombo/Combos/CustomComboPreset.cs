@@ -6110,7 +6110,7 @@ public enum Preset
     #endregion
 
     [ParentCombo(SAM_ST_AdvancedMode)]
-    [CustomComboInfo("Shinten Option", "Adds Shinten to the rotation", Job.SAM)]
+    [CustomComboInfo("Shinten Option", "Adds Shinten to the rotation.\nWill pool kenki for burst.", Job.SAM)]
     SAM_ST_Shinten = 15008,
 
     [ParentCombo(SAM_ST_AdvancedMode)]
