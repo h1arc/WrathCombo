@@ -54,7 +54,7 @@ internal partial class SCH : Healer
                     return Role.LucidDreaming;
             }
             //Bio/Biolysis
-            if (NeedsDoT() && InCombat())
+            if (NeedsDoT() && PartyInCombat())
                 return OriginalHook(Bio);
 
             //Ruin 2 Movement
@@ -280,9 +280,6 @@ internal partial class SCH : Healer
             int chainThreshold = SCH_ST_DPS_ChainStratagemSubOption == 1 || !InBossEncounter() ? SCH_ST_DPS_ChainStratagemOption : 0;
             #endregion
 
-            if (!actionFound)
-                return actionID;
-
             if (IsEnabled(Preset.SCH_ST_ADV_DPS_FairyReminder) && NeedToSummon)
                 return SummonEos;
             //Opener
@@ -329,7 +326,7 @@ internal partial class SCH : Healer
             }
 
             //Bio/Biolysis
-            if (IsEnabled(Preset.SCH_ST_ADV_DPS_Bio) && NeedsDoT() && InCombat())
+            if (IsEnabled(Preset.SCH_ST_ADV_DPS_Bio) && NeedsDoT() && PartyInCombat())
                 return OriginalHook(Bio);
 
             //Ruin 2 Movement

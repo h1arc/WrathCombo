@@ -38,7 +38,7 @@ internal partial class WHM : Healer
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
-            if (!InCombat()) return actionID;
+            if (!PartyInCombat()) return actionID;
 
             #region Weaves
 
@@ -190,7 +190,7 @@ internal partial class WHM : Healer
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
-            if (!InCombat()) return actionID;
+            if (!PartyInCombat()) return actionID;
 
             #region Special Feature Raidwide
 

@@ -60,7 +60,7 @@ internal partial class SGE : Healer
 
             if (HasBattleTarget() && !HasStatusEffect(Buffs.Eukrasia))
             {
-                if (LevelChecked(Eukrasia) && InCombat() &&
+                if (LevelChecked(Eukrasia) && PartyInCombat() &&
                     !JustUsedOn(DosisList[OriginalHook(Dosis)].Eukrasian, CurrentTarget) &&
                     CanApplyStatus(CurrentTarget, DosisList[OriginalHook(Dosis)].Debuff))
                 {
@@ -276,7 +276,7 @@ internal partial class SGE : Healer
             if (HasBattleTarget() && !HasStatusEffect(Buffs.Eukrasia))
             {
                 if (IsEnabled(Preset.SGE_ST_DPS_EDosis) &&
-                    LevelChecked(Eukrasia) && InCombat() &&
+                    LevelChecked(Eukrasia) && PartyInCombat() &&
                     !JustUsedOn(DosisList[OriginalHook(Dosis)].Eukrasian, CurrentTarget) &&
                     CanApplyStatus(CurrentTarget, DosisList[OriginalHook(Dosis)].Debuff))
                 {

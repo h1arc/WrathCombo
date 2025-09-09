@@ -99,7 +99,7 @@ internal partial class AST : Healer
             }
             #endregion
 
-            return NeedsDoT() ?
+            return NeedsDoT() && PartyInCombat()?
                 OriginalHook(Combust) :
                 actionID;
 
@@ -330,7 +330,7 @@ internal partial class AST : Healer
             #endregion
 
             if (IsEnabled(Preset.AST_ST_DPS_CombustUptime)
-                && NeedsDoT())
+                && NeedsDoT() && PartyInCombat())
                 return OriginalHook(Combust);
 
             //Alternate Mode (idles as Malefic)

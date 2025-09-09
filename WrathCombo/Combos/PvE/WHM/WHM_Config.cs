@@ -591,7 +591,7 @@ internal partial class WHM
 
         #endregion
 
-        #region Single Target Heals
+        #region Single Target Heals 
 
         /// <summary>
         ///     Include shields when calculating HP percentages.
@@ -607,7 +607,7 @@ internal partial class WHM
         ///     Priority order for single target healing abilities.
         /// </summary>
         public static UserIntArray WHM_ST_Heals_Priority =
-            new("WHM_ST_Heals_Priority", [1,7,8,9,6,4,3,2,5]);
+            new("WHM_ST_Heals_Priority", [1,8,7,6,9,5,2,3,4]);
 
         /// <summary>
         ///     Time threshold in seconds before refreshing Regen.
@@ -888,7 +888,7 @@ internal partial class WHM
         ///     Priority order for AoE healing abilities.
         /// </summary>
         public static UserIntArray WHM_AoE_Heals_Priority =
-            new("WHM_AoE_Heals_Priority",[9,8,5,6,4,3,7,2,1]);
+            new("WHM_AoE_Heals_Priority",[9,8,6,5,3,4,7,2,1]);
 
         /// <summary>
         ///     Number of Thin Air charges to reserve in AoE healing.
