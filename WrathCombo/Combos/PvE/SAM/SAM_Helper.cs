@@ -140,15 +140,29 @@ internal partial class SAM
 
     internal static bool UseShinten()
     {
+        int shintenTreshhold = SAM_ST_ExecuteThreshold;
+
         if (ActionReady(Shinten) && Kenki >= SAMKenki.Shinten)
         {
-            if (EnhancedSenei && (JustUsed(KaeshiSetsugekka, GCD * 5) || JustUsed(TendoKaeshiSetsugekka, GCD * 5)) && IsOnCooldown(Senei))
+            if (GetTargetHPPercent() < shintenTreshhold)
                 return true;
 
-            if (!EnhancedSenei && Kenki >= SAMKenki.Shinten)
+            if (Kenki >= 95)
                 return true;
 
-            if (Kenki >= 95 && IsOffCooldown(Senei))
+            if (EnhancedSenei)
+            {
+                if (JustUsed(Senei, 20f) &&
+                    !HasStatusEffect(Buffs.ZanshinReady) && 
+                    !JustUsed(Ikishoten))
+                    return true;
+
+                if (GetCooldownRemainingTime(Senei) >= 25 &&
+                    Kenki >= SAM_ST_KenkiOvercapAmount)
+                    return true;
+            }
+
+            if (!EnhancedSenei && Kenki >= SAM_ST_KenkiOvercapAmount)
                 return true;
         }
         return false;

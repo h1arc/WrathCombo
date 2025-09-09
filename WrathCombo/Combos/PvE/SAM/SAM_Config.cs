@@ -72,6 +72,9 @@ internal partial class SAM
                     break;
 
                 case Preset.SAM_ST_Shinten:
+                    DrawSliderInt(25, 85, SAM_ST_KenkiOvercapAmount,
+                        "Set the Kenki overcap amount for ST combos.");
+
                     DrawSliderInt(0, 100, SAM_ST_ExecuteThreshold,
                         "HP percent threshold to not save Kenki");
                     break;
@@ -151,6 +154,7 @@ internal partial class SAM
             SAM_ST_MeikyoBossOption = new("SAM_ST_Meikyo_Suboption", 1),
             SAM_ST_HiganbanaHPThreshold = new("SAM_ST_Higanbana_HP_Threshold", 0),
             SAM_ST_HiganbanaRefresh = new("SAM_ST_Higanbana_Refresh", 15),
+            SAM_ST_KenkiOvercapAmount = new("SAM_ST_KenkiOvercapAmount", 65),
             SAM_ST_ExecuteThreshold = new("SAM_ST_ExecuteThreshold", 1),
             SAM_STSecondWindHPThreshold = new("SAM_STSecondWindThreshold", 40),
             SAM_STBloodbathHPThreshold = new("SAM_STBloodbathThreshold", 30),

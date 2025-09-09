@@ -264,8 +264,6 @@ internal partial class SAM : Melee
             if (actionID is not (Hakaze or Gyofu))
                 return actionID;
 
-            int shintenTreshhold = SAM_ST_ExecuteThreshold;
-
             // Opener for SAM
             if (IsEnabled(Preset.SAM_ST_Opener) &&
                 Opener().FullOpener(ref actionID))
@@ -307,16 +305,9 @@ internal partial class SAM : Melee
 
                     //Ikishoten Features
                     if (IsEnabled(Preset.SAM_ST_CDs_Ikishoten) &&
-                        ActionReady(Ikishoten) && !HasStatusEffect(Buffs.ZanshinReady))
-                    {
-                        return Kenki switch
-                        {
-                            //Dumps Kenki in preparation for Ikishoten
-                            >= 50 => Shinten,
-
-                            < 50 => Ikishoten
-                        };
-                    }
+                        ActionReady(Ikishoten) && !HasStatusEffect(Buffs.ZanshinReady) &&
+                        (JustUsed(TendoKaeshiSetsugekka) || !LevelChecked(TendoKaeshiSetsugekka)))
+                        return Ikishoten;
                 }
 
                 if (IsEnabled(Preset.SAM_ST_Damage))
@@ -350,7 +341,10 @@ internal partial class SAM : Melee
                     if (IsEnabled(Preset.SAM_ST_CDs_Shoha) &&
                         ActionReady(Shoha) && MeditationStacks is 3 &&
                         InActionRange(Shoha) &&
-                        (JustUsed(KaeshiSetsugekka) || JustUsed(TendoKaeshiSetsugekka)))
+                        (JustUsed(KaeshiSetsugekka) ||
+                         JustUsed(TendoKaeshiSetsugekka) ||
+                         JustUsed(Higanbana) ||
+                         SenCount is 3))
                         return Shoha;
                 }
                 if (IsEnabled(Preset.SAM_ST_Shinten) &&
