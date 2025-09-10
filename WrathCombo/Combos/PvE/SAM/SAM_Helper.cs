@@ -32,9 +32,6 @@ internal partial class SAM
         (HasStatusEffect(Buffs.TendoKaeshiSetsugekkaReady) ||
          HasStatusEffect(Buffs.TsubameReady) && (SenCount is 3 || GetCooldownRemainingTime(Senei) > 33));
 
-    internal static float GCD =>
-        GetAdjustedRecastTime(ActionType.Action, Hakaze) / 100f;
-
     internal static bool M6SReady =>
         !HiddenFeaturesData.IsEnabledWith(Preset.SAM_Hid_M6SHoldSquirrelBurst, () =>
             HiddenFeaturesData.Targeting.R6SSquirrel && CombatEngageDuration().TotalSeconds < 275);
@@ -44,6 +41,7 @@ internal partial class SAM
     internal static bool UseMeikyo()
     {
         int meikyoUsed = CombatActions.Count(x => x == MeikyoShisui);
+        float gcd = GetAdjustedRecastTime(ActionType.Action, Hakaze) / 100f;
 
         if (ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.Tendo) && !HasStatusEffect(Buffs.MeikyoShisui) &&
             (JustUsed(Gekko) || JustUsed(Kasha) || JustUsed(Yukikaze)))
@@ -61,7 +59,7 @@ internal partial class SAM
 
                     if (HasStatusEffect(Buffs.TsubameReady))
                     {
-                        switch (GCD)
+                        switch (gcd)
                         {
                             //2.14 GCD
                             case >= 2.09f when GetCooldownRemainingTime(Senei) <= 10 &&
@@ -75,7 +73,7 @@ internal partial class SAM
                     }
 
                     // reset meikyo
-                    if (GCD >= 2.09f && meikyoUsed % 7 is 0 && JustUsed(Yukikaze))
+                    if (gcd >= 2.09f && meikyoUsed % 7 is 0 && JustUsed(Yukikaze))
                         return true;
                 }
 
