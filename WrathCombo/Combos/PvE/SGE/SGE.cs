@@ -472,15 +472,15 @@ internal partial class SGE : Healer
             if (healTarget.IsInParty() && healTarget.GetRole() is CombatRole.Tank || !IsInParty())
             {
                 if (ActionReady(Krasis))
-                    return Krasis.RetargetIfEnabled(healTarget, Diagnosis);
+                    return Krasis.RetargetIfEnabled(OptionalTarget, Diagnosis);
                 if (ActionReady(Taurochole) && HasAddersgall())
-                    return Taurochole.RetargetIfEnabled(healTarget, Diagnosis);
+                    return Taurochole.RetargetIfEnabled(OptionalTarget, Diagnosis);
                 if (ActionReady(Haima) && !HasStatusEffect(Buffs.Panhaima, healTarget))
-                    return Haima.RetargetIfEnabled(healTarget, Diagnosis);
+                    return Haima.RetargetIfEnabled(OptionalTarget, Diagnosis);
             }
             
             if (ActionReady(Druochole) && HasAddersgall())
-                return Druochole.RetargetIfEnabled(healTarget, Diagnosis);
+                return Druochole.RetargetIfEnabled(OptionalTarget, Diagnosis);
             
             if (!InBossEncounter())
             {
@@ -500,7 +500,7 @@ internal partial class SGE : Healer
                     ? EukrasianDiagnosis
                     : Eukrasia;
 
-            return actionID.RetargetIfEnabled(healTarget, Diagnosis);
+            return actionID.RetargetIfEnabled(OptionalTarget, Diagnosis);
         }
     }
 

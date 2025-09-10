@@ -371,11 +371,11 @@ internal partial class WHM : Healer
             
             if (ActionReady(Benediction) && 
                 GetTargetHPPercent(healTarget) <= 20)
-                return Benediction.RetargetIfEnabled(healTarget, Cure);
+                return Benediction.RetargetIfEnabled(OptionalTarget, Cure);
             
             if (ActionReady(Tetragrammaton) && 
                 GetTargetHPPercent(healTarget) <= 50)
-                return Tetragrammaton.RetargetIfEnabled(healTarget, Cure);
+                return Tetragrammaton.RetargetIfEnabled(OptionalTarget, Cure);
             
             bool cleansableTarget =
                 HealRetargeting.RetargetSettingOn && SimpleTarget.Stack.AllyToEsuna is not null ||
@@ -397,28 +397,28 @@ internal partial class WHM : Healer
             if (ActionReady(Regen) && 
                 GetStatusEffect(Buffs.Regen, healTarget) == null &&  
                 GetTargetHPPercent(healTarget) >= 40)
-                return Regen.RetargetIfEnabled(healTarget, Cure);
+                return Regen.RetargetIfEnabled(OptionalTarget, Cure);
 
             if (ActionReady(DivineBenison) && 
                 GetStatusEffect(Buffs.DivineBenison, healTarget) == null)
-                return DivineBenison.RetargetIfEnabled(healTarget, Cure);
+                return DivineBenison.RetargetIfEnabled(OptionalTarget, Cure);
 
             if (ActionReady(Aquaveil) && IsOffCooldown(Aquaveil) && (healTarget.IsInParty() && healTarget.GetRole() is CombatRole.Tank || !IsInParty()))
-                return Aquaveil.RetargetIfEnabled(healTarget, Cure);
+                return Aquaveil.RetargetIfEnabled(OptionalTarget, Cure);
 
             if (ActionReady(OriginalHook(Temperance)) && 
                 !InBossEncounter())
                 return OriginalHook(Temperance);
             
             if (ActionReady(AfflatusSolace) && !BloodLilyReady)
-                return AfflatusSolace.RetargetIfEnabled(healTarget, Cure);
+                return AfflatusSolace.RetargetIfEnabled(OptionalTarget, Cure);
 
             if (ActionReady(ThinAir) && GetRemainingCharges(ThinAir) == 2)
                 return ThinAir;
             
             return LevelChecked(Cure2)
-                ? Cure2.RetargetIfEnabled(healTarget, Cure)
-                : Cure.RetargetIfEnabled(healTarget);
+                ? Cure2.RetargetIfEnabled(OptionalTarget, Cure)
+                : Cure.RetargetIfEnabled(OptionalTarget);
         }
     }
     
@@ -430,8 +430,6 @@ internal partial class WHM : Healer
         {
             if (actionID is not Medica1)
                 return actionID;
-            
-            var healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
 
             if (ActionReady(Assize))
                 return Assize;
@@ -468,7 +466,7 @@ internal partial class WHM : Healer
 
             if (ActionReady(Cure3) &&
                 NumberOfAlliesInRange(Cure3) >= GetPartyMembers().Count * .75)
-                return Cure3.RetargetIfEnabled(healTarget, Medica1);
+                return Cure3.RetargetIfEnabled(OptionalTarget, Medica1);
 
             if (ActionReady(OriginalHook(Medica2)) &&
                 !HasStatusEffect(Buffs.Medica2) &&
