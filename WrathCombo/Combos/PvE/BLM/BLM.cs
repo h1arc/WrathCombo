@@ -798,7 +798,7 @@ internal partial class BLM : Caster
             if (actionID is not Amplifier)
                 return actionID;
 
-            return BLM_AmplifierXenoCD && IsOnCooldown(Amplifier) || HasMaxPolyglotStacks
+            return BLM_AmplifierXenoCD && IsOnCooldown(Amplifier) && HasPolyglotStacks() || HasMaxPolyglotStacks
                 ? Xenoglossy
                 : actionID;
         }
