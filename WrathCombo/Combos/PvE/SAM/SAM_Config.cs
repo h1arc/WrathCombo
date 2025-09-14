@@ -118,7 +118,7 @@ internal partial class SAM
                     break;
 
                 case Preset.SAM_ST_Meditate:
-                    ImGui.SetCursorPosX(48);
+                    ImGui.SetCursorPosX(48f.Scale());
                     DrawSliderFloat(0, 3, SAM_ST_MeditateTimeStill,
                         " Stationary Delay Check (in seconds):", decimals: 1);
                     break;
