@@ -153,7 +153,6 @@ internal partial class SAM : Melee
         }
     }
 
-
     internal class SAM_AoE_SimpleMode : CustomCombo
     {
         protected internal override Preset Preset => Preset.SAM_AoE_SimpleMode;
