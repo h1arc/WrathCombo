@@ -45,22 +45,6 @@ internal partial class SAM
                                                                          $"\nWill use Meikyo every minute regardless of sen count outside of boss encounters.", 1);
                     break;
 
-                case Preset.SAM_ST_ComboHeals:
-                    DrawSliderInt(0, 100, SAM_STSecondWindHPThreshold,
-                        $"{Role.SecondWind.ActionName()} HP percentage threshold");
-
-                    DrawSliderInt(0, 100, SAM_STBloodbathHPThreshold,
-                        $"{Role.Bloodbath.ActionName()} HP percentage threshold");
-                    break;
-
-                case Preset.SAM_AoE_ComboHeals:
-                    DrawSliderInt(0, 100, SAM_AoESecondWindHPThreshold,
-                        $"{Role.SecondWind.ActionName()} HP percentage threshold");
-
-                    DrawSliderInt(0, 100, SAM_AoEBloodbathHPThreshold,
-                        $"{Role.Bloodbath.ActionName()} HP percentage threshold");
-                    break;
-
                 case Preset.SAM_ST_CDs_Senei:
                     DrawAdditionalBoolChoice(SAM_ST_CDs_Guren,
                         "Guren Option", "Adds Guren to the rotation if Senei is not unlocked.");
@@ -77,11 +61,6 @@ internal partial class SAM
 
                     DrawSliderInt(0, 100, SAM_ST_ExecuteThreshold,
                         "HP percent threshold to not save Kenki");
-                    break;
-
-                case Preset.SAM_AoE_Kyuten:
-                    DrawSliderInt(25, 85, SAM_AoE_KenkiOvercapAmount,
-                        "Set the Kenki overcap amount for AOE combos.");
                     break;
 
                 case Preset.SAM_ST_GekkoCombo:
@@ -123,6 +102,19 @@ internal partial class SAM
                         " Stationary Delay Check (in seconds):", decimals: 1);
                     break;
 
+                case Preset.SAM_ST_ComboHeals:
+                    DrawSliderInt(0, 100, SAM_STSecondWindHPThreshold,
+                        $"{Role.SecondWind.ActionName()} HP percentage threshold");
+
+                    DrawSliderInt(0, 100, SAM_STBloodbathHPThreshold,
+                        $"{Role.Bloodbath.ActionName()} HP percentage threshold");
+                    break;
+
+                case Preset.SAM_AoE_Kyuten:
+                    DrawSliderInt(25, 85, SAM_AoE_KenkiOvercapAmount,
+                        "Set the Kenki overcap amount for AOE combos.");
+                    break;
+
                 case Preset.SAM_AoE_OkaCombo:
                     DrawAdditionalBoolChoice(SAM_Oka_KenkiOvercap,
                         "Kenki Overcap Protection", "Spends Kenki when at the set value or above.");
@@ -142,6 +134,61 @@ internal partial class SAM
                     if (SAM_Mangetsu_KenkiOvercap)
                         DrawSliderInt(25, 100, SAM_Mangetsu_KenkiOvercapAmount,
                             "Kenki Amount", sliderIncrement: SliderIncrements.Fives);
+                    break;
+
+                case Preset.SAM_AoE_ComboHeals:
+                    DrawSliderInt(0, 100, SAM_AoESecondWindHPThreshold,
+                        $"{Role.SecondWind.ActionName()} HP percentage threshold");
+
+                    DrawSliderInt(0, 100, SAM_AoEBloodbathHPThreshold,
+                        $"{Role.Bloodbath.ActionName()} HP percentage threshold");
+                    break;
+
+                case Preset.SAM_Iaijutsu:
+                    DrawHorizontalMultiChoice(SAM_Iaijutsu_Features,
+                        "To Tsubame-Gaeshi", "Replace Iaijutsu with Tsubame-gaeshi when appropriate.", 3, 0);
+
+                    DrawHorizontalMultiChoice(SAM_Iaijutsu_Features,
+                        "To Shoha", "Replace Iaijutsu with Shoha when meditation is 3.", 3, 1);
+
+                    DrawHorizontalMultiChoice(SAM_Iaijutsu_Features,
+                        "To Ogi Namikiri", "Replace Iaijutsu with Ogi Namikiri and Kaeshi: Namikiri when buffed with Ogi Namikiri Ready.", 3, 2);
+                    break;
+
+                case Preset.SAM_Shinten:
+                    DrawHorizontalMultiChoice(SAM_Shinten_Features,
+                        "Add Shoha", "Replace Hissatsu: Shinten with Shoha when Meditation is full.", 4, 0);
+
+                    DrawHorizontalMultiChoice(SAM_Shinten_Features,
+                        "Add Senei", "Replace Hissatsu: Shinten with Senei when off cooldown.", 4, 1);
+
+                    DrawHorizontalMultiChoice(SAM_Shinten_Features,
+                        "Add Zanshin", "Replace Hissatsu: Shinten with Zanshin when useable.", 4, 2);
+
+                    DrawHorizontalMultiChoice(SAM_Shinten_Features,
+                        "Add Ikishoten", "Replace Hissatsu: Shinten with Ikishoten when off cooldown and below 50 kenki.", 4, 3);
+                    break;
+
+                case Preset.SAM_Kyuten:
+                    DrawHorizontalMultiChoice(SAM_Kyuten_Features,
+                        "Add Shoha", "Replace Hissatsu: Kyuten with Shoha when Meditation is full.", 4, 0);
+
+                    DrawHorizontalMultiChoice(SAM_Kyuten_Features,
+                        "Add Guren", "Replace Hissatsu: Kyuten with Guren when its cooldown is up.", 4, 1);
+
+                    DrawHorizontalMultiChoice(SAM_Kyuten_Features,
+                        "Add Zanshin", "Replace Hissatsu: Kyuten with Zanshin when usable.", 4, 2);
+
+                    DrawHorizontalMultiChoice(SAM_Kyuten_Features,
+                        "Add Ikishoten", "Replace Hissatsu: Kyuten with Ikishoten when off cooldown and below 50 kenki.", 4, 3);
+                    break;
+
+                case Preset.SAM_Ikishoten:
+                    DrawHorizontalMultiChoice(SAM_Ikishoten_Features,
+                        "To Namikiri", "Replace Ikishoten with Ogi Namikiri & Kaeshi Namikiri when available.", 2, 0);
+
+                    DrawHorizontalMultiChoice(SAM_Ikishoten_Features,
+                        "To Shoha", "Replace Ikishoten with Shoha when Meditation is full before Ogi Namikiri.", 4, 1);
                     break;
             }
         }
@@ -178,6 +225,12 @@ internal partial class SAM
             SAM_ST_CDs_OgiNamikiri_Movement = new("SAM_ST_CDs_OgiNamikiri_Movement"),
             SAM_Oka_KenkiOvercap = new("SAM_Oka_KenkiOvercap"),
             SAM_Mangetsu_KenkiOvercap = new("SAM_Mangetsu_KenkiOvercap");
+
+        public static UserBoolArray
+            SAM_Shinten_Features = new("SAM_Shinten_Features"),
+            SAM_Kyuten_Features = new("SAM_Kyuten_Features"),
+            SAM_Ikishoten_Features = new("SAM_Ikishoten_Features"),
+            SAM_Iaijutsu_Features = new("SAM_Iaijutsu_Features");
 
         public static UserFloat
             SAM_ST_MeditateTimeStill = new("SAM_ST_MeditateTimeStill", 2.5f);

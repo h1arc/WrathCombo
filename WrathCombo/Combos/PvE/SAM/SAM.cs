@@ -831,18 +831,18 @@ internal partial class SAM : Melee
             if (actionID is not Iaijutsu)
                 return actionID;
 
-            bool canAddShoha = IsEnabled(Preset.SAM_Iaijutsu_Shoha) &&
+            bool canAddShoha = SAM_Iaijutsu_Features[1] &&
                                ActionReady(Shoha) &&
                                MeditationStacks is 3;
 
             if (canAddShoha && CanWeave())
                 return Shoha;
 
-            if (IsEnabled(Preset.SAM_Iaijutsu_OgiNamikiri) &&
+            if (SAM_Iaijutsu_Features[2] &&
                 (ActionReady(OgiNamikiri) && HasStatusEffect(Buffs.OgiNamikiriReady) || NamikiriReady))
                 return OriginalHook(OgiNamikiri);
 
-            if (IsEnabled(Preset.SAM_Iaijutsu_TsubameGaeshi) &&
+            if (SAM_Iaijutsu_Features[0] &&
                 SenCount is not 1 &&
                 (LevelChecked(TsubameGaeshi) &&
                  (HasStatusEffect(Buffs.TsubameReady) ||
@@ -868,15 +868,22 @@ internal partial class SAM : Melee
             if (actionID is not Shinten)
                 return actionID;
 
-            if (IsEnabled(Preset.SAM_Shinten_Shoha) &&
-                ActionReady(Shoha) && MeditationStacks is 3)
+            if (SAM_Shinten_Features[0] &&
+                ActionReady(Shoha) &&
+                MeditationStacks is 3)
                 return Shoha;
 
-            if (IsEnabled(Preset.SAM_Shinten_Senei) &&
+            if (SAM_Shinten_Features[3] &&
+                ActionReady(Ikishoten) &&
+                Gauge.Kenki < 50)
+                return Ikishoten;
+
+            if (SAM_Shinten_Features[1] &&
                 ActionReady(Senei))
                 return Senei;
 
-            if (IsEnabled(Preset.SAM_Shinten_Zanshin) &&
+            if (SAM_Shinten_Features[2] &&
+                ActionReady(Zanshin) &&
                 HasStatusEffect(Buffs.ZanshinReady))
                 return Zanshin;
 
@@ -893,17 +900,26 @@ internal partial class SAM : Melee
             if (actionID is not Kyuten)
                 return actionID;
 
-            if (IsEnabled(Preset.SAM_Kyuten_Guren) &&
+            if (SAM_Kyuten_Features[0] &&
+                ActionReady(Shoha) &&
+                MeditationStacks is 3)
+                return Shoha;
+
+            if (SAM_Kyuten_Features[3] &&
+                ActionReady(Ikishoten) &&
+                Gauge.Kenki < 50)
+                return Ikishoten;
+
+            if (SAM_Kyuten_Features[1] &&
                 ActionReady(Guren))
                 return Guren;
 
-            if (IsEnabled(Preset.SAM_Kyuten_Zanshin) &&
+            if (SAM_Kyuten_Features[2] &&
+                ActionReady(Zanshin) &&
                 HasStatusEffect(Buffs.ZanshinReady))
                 return Zanshin;
 
-            if (IsEnabled(Preset.SAM_Kyuten_Shoha) &&
-                ActionReady(Shoha) && MeditationStacks is 3)
-                return Shoha;
+
 
             return actionID;
         }
@@ -918,14 +934,15 @@ internal partial class SAM : Melee
             if (actionID is not Ikishoten)
                 return actionID;
 
-            if (IsEnabled(Preset.SAM_Ikishoten_Shoha) &&
+            if (SAM_Ikishoten_Features[1] &&
                 ActionReady(Shoha) &&
                 HasStatusEffect(Buffs.OgiNamikiriReady) &&
                 MeditationStacks is 3)
                 return Shoha;
 
-            if (IsEnabled(Preset.SAM_Ikishoten_Namikiri) &&
-                (ActionReady(OgiNamikiri) && HasStatusEffect(Buffs.OgiNamikiriReady) || NamikiriReady))
+            if (SAM_Ikishoten_Features[0] &&
+                ActionReady(OgiNamikiri) &&
+                (HasStatusEffect(Buffs.OgiNamikiriReady) || NamikiriReady))
                 return OriginalHook(OgiNamikiri);
 
             return actionID;
