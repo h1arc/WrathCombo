@@ -157,30 +157,30 @@ internal partial class SAM
 
                 case Preset.SAM_Shinten:
                     DrawHorizontalMultiChoice(SAM_Shinten_Features,
-                        "Add Shoha", "Replace Hissatsu: Shinten with Shoha when Meditation is full.", 4, 0);
+                        "To Shoha", "Replace Hissatsu: Shinten with Shoha when Meditation is full.", 4, 0);
 
                     DrawHorizontalMultiChoice(SAM_Shinten_Features,
-                        "Add Senei", "Replace Hissatsu: Shinten with Senei when off cooldown.", 4, 1);
+                        "To Senei", "Replace Hissatsu: Shinten with Senei when off cooldown.", 4, 1);
 
                     DrawHorizontalMultiChoice(SAM_Shinten_Features,
-                        "Add Zanshin", "Replace Hissatsu: Shinten with Zanshin when useable.", 4, 2);
+                        "To Zanshin", "Replace Hissatsu: Shinten with Zanshin when useable.", 4, 2);
 
                     DrawHorizontalMultiChoice(SAM_Shinten_Features,
-                        "Add Ikishoten", "Replace Hissatsu: Shinten with Ikishoten when off cooldown and below 50 kenki.", 4, 3);
+                        "To Ikishoten", "Replace Hissatsu: Shinten with Ikishoten when off cooldown and below 50 kenki.", 4, 3);
                     break;
 
                 case Preset.SAM_Kyuten:
                     DrawHorizontalMultiChoice(SAM_Kyuten_Features,
-                        "Add Shoha", "Replace Hissatsu: Kyuten with Shoha when Meditation is full.", 4, 0);
+                        "To Shoha", "Replace Hissatsu: Kyuten with Shoha when Meditation is full.", 4, 0);
 
                     DrawHorizontalMultiChoice(SAM_Kyuten_Features,
-                        "Add Guren", "Replace Hissatsu: Kyuten with Guren when its cooldown is up.", 4, 1);
+                        "To Guren", "Replace Hissatsu: Kyuten with Guren when its cooldown is up.", 4, 1);
 
                     DrawHorizontalMultiChoice(SAM_Kyuten_Features,
-                        "Add Zanshin", "Replace Hissatsu: Kyuten with Zanshin when usable.", 4, 2);
+                        "To Zanshin", "Replace Hissatsu: Kyuten with Zanshin when usable.", 4, 2);
 
                     DrawHorizontalMultiChoice(SAM_Kyuten_Features,
-                        "Add Ikishoten", "Replace Hissatsu: Kyuten with Ikishoten when off cooldown and below 50 kenki.", 4, 3);
+                        "To Ikishoten", "Replace Hissatsu: Kyuten with Ikishoten when off cooldown and below 50 kenki.", 4, 3);
                     break;
 
                 case Preset.SAM_Ikishoten:
