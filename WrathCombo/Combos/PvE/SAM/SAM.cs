@@ -63,8 +63,7 @@ internal partial class SAM : Melee
                     (JustUsed(KaeshiSetsugekka) ||
                      JustUsed(TendoKaeshiSetsugekka) ||
                      JustUsed(Higanbana) ||
-                     JustUsed(OriginalHook(OgiNamikiri)) ||
-                     SenCount is 3))
+                     JustUsed(OriginalHook(OgiNamikiri))))
                     return Shoha;
 
                 if (UseShinten())
@@ -342,8 +341,7 @@ internal partial class SAM : Melee
                         (JustUsed(KaeshiSetsugekka) ||
                          JustUsed(TendoKaeshiSetsugekka) ||
                          JustUsed(Higanbana) ||
-                         JustUsed(OriginalHook(OgiNamikiri)) ||
-                         SenCount is 3))
+                         JustUsed(OriginalHook(OgiNamikiri))))
                         return Shoha;
                 }
                 if (IsEnabled(Preset.SAM_ST_Shinten) &&
