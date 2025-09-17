@@ -162,11 +162,14 @@ internal abstract partial class CustomComboFunctions
             //Player.IsInDuty &&  <-?
             Player.Status.Any(s =>
                 // Acceleration Bomb within Timeframe
-                (StatusCache.AccelerationBombs.Contains(s.StatusId) &&
+                (StatusCache.PausingStatuses.AccelerationBombs.Contains(s.StatusId) &&
                     GetStatusEffectRemainingTime(s) is > 0f and < 1.5f) ||
 
                 // Pyretic
-                StatusCache.Pyretics.Contains(s.StatusId)
+                StatusCache.PausingStatuses.Pyretics.Contains(s.StatusId) ||
+
+                // Others
+                StatusCache.PausingStatuses.Misc.Contains(s.StatusId)
 
             ) == true;
 
