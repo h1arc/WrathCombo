@@ -147,10 +147,7 @@ internal partial class SAM
 
             if (Kenki >= 95)
                 return true;
-
-            if (ActionReady(Ikishoten) && Kenki > 50)
-                return true;
-
+            
             if (EnhancedSenei &&
                 !HasStatusEffect(Buffs.ZanshinReady))
             {
