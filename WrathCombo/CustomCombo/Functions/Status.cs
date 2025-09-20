@@ -226,6 +226,11 @@ internal abstract partial class CustomComboFunctions
                 if (targetID is 5139 && HasStatusEffect(152, tar, true)) return true;
                 return false;
 
+            case 582: // Heart of the Creator
+                if ((targetID is 6101) && // Plasma Shield
+                    AngleToTarget(tar) is not AttackAngle.Front) return true;
+                return false;
+
             case 801 or 805 or 1122: // Interdimensional Rift (Omega 12 / Alphascape 4), Regular/Savage?/Ultimate?
                 // Omega-M = 9339
                 // Omega-F = 9340
