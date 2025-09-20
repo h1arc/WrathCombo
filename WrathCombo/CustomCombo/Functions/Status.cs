@@ -203,6 +203,7 @@ internal abstract partial class CustomComboFunctions
                 // Allagan Bomb
                 if (targetID is 2407)
                     return NumberOfObjectsInRange<SelfCircle>(30,
+                        target, // 30 yalms radius range of Allagan Bomb
                         checkInvincible: false) > 1;
 
                 return false;
