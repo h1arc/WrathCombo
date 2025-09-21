@@ -5283,6 +5283,11 @@ public enum Preset
     [CustomComboInfo("Include Riposte",
         "Adds Riposte to start the combo. Recommended for Auto Rotation. \n**Must be in melee range or have gap-close with Corps-a-corps enabled**", Job.RDM)]
     RDM_ST_MeleeCombo_IncludeRiposte = 13007,
+    
+    [ParentCombo(RDM_ST_MeleeCombo)]
+    [CustomComboInfo("Include Reprise",
+        "Adds Reprise when outside of range during the melee combo. Will retain enough mana in order to finish the current combo.", Job.RDM)]
+    RDM_ST_MeleeCombo_IncludeReprise = 13027,
 
     [ParentCombo(RDM_ST_MeleeCombo)]
     [CustomComboInfo("Gap-Close with Corps-a-corps Option",
@@ -5363,7 +5368,7 @@ public enum Preset
     [CustomComboInfo("Vercure Solo Option", "Adds Vercure on self when solo or in a party with no healers.", Job.RDM)]
     RDM_ST_VerCure = 13026,
 
-    //Last Used 13026
+    //Last Used 13027
     #endregion
 
     #region AoE DPS
