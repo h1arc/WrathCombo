@@ -4568,8 +4568,8 @@ public enum Preset
 
     [ReplaceSkill(PLD.PassageOfArms)]
     [CustomComboInfo("Block Combos for Passage of Arms",
-        "Will block the main Combos with Savage Blade to prevent actions from those combos cancelling Passage of Arms early.\nThis will leave it up to you to cancel Passage of Arms via other actions or movement (or letting it be used fully).", Job.PLD)]
-    PLD_BlockForWings = 11073,
+        "Will block the main Combos with Savage Blade while Passage of Arms is still active, to prevent actions from those combos cancelling Passage of Arms early.\nThis will leave it up to you to cancel Passage of Arms via other actions or movement (or letting it be used fully).", Job.PLD)]
+    PLD_BlockForWings = 11074,
 
     #region Simple Mode
 
@@ -4948,7 +4948,7 @@ public enum Preset
 
     #endregion
 
-    //// Last value = 11073
+    //// Last value = 11074
 
     #endregion
 
