@@ -158,7 +158,7 @@ internal partial class DRG : Melee
 
             if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
-            
+
             if (HasStatusEffect(Buffs.PowerSurge))
             {
                 if (CanDRGWeave())
