@@ -243,9 +243,9 @@ internal partial class WHM : Healer
                 return Glare4;
 
             // Lily Heal Overcap
-            if (IsEnabled(Preset.WHM_ST_MainCombo_LilyOvercap) &&
-                ActionReady(AfflatusRapture) &&
-                (FullLily || AlmostFullLily))
+            if (IsEnabled(Preset.WHM_ST_MainCombo_LilyOvercap) && ActionReady(AfflatusRapture) &&
+                LevelChecked(AfflatusMisery) &&  !BloodLilyReady &&
+                (FullLily || gauge.Lily == 2 && 20000 - gauge.LilyTimer <= WHM_STDPS_LilyOvercap * 1000))
                 return AfflatusRapture;
 
             #region Movement Options
@@ -337,9 +337,9 @@ internal partial class WHM : Healer
                 HasStatusEffect(Buffs.SacredSight))
                 return OriginalHook(Glare4);
 
-            if (IsEnabled(Preset.WHM_AoE_DPS_LilyOvercap) &&
-                ActionReady(AfflatusRapture) &&
-                (FullLily || AlmostFullLily))
+            if (IsEnabled(Preset.WHM_AoE_DPS_LilyOvercap) && ActionReady(AfflatusRapture) &&
+                LevelChecked(AfflatusMisery) &&  !BloodLilyReady &&
+                (FullLily || gauge.Lily == 2 && 20000 - gauge.LilyTimer <= WHM_AoEDPS_LilyOvercap * 1000))
                 return AfflatusRapture;
 
             var dotAction = OriginalHook(Aero);
