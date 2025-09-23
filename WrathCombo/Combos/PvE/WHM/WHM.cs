@@ -49,7 +49,8 @@ internal partial class WHM : Healer
                     !HasStatusEffect(Buffs.SacredSight))
                     return PresenceOfMind;
 
-                if (ActionReady(Assize))
+                if (ActionReady(Assize) &&
+                    HasBattleTarget() && GetTargetDistance() <= 20)
                     return Assize;
 
                 if (Role.CanLucidDream(7500))
@@ -114,7 +115,8 @@ internal partial class WHM : Healer
 
             if (CanWeave() || IsMoving())
             {
-                if (ActionReady(Assize))
+                if (ActionReady(Assize) &&
+                    HasBattleTarget() && GetTargetDistance() <= 20)
                     return Assize;
 
                 if (ActionReady(PresenceOfMind) &&
@@ -213,7 +215,8 @@ internal partial class WHM : Healer
                     return PresenceOfMind;
 
                 if (IsEnabled(Preset.WHM_ST_MainCombo_Assize) &&
-                    ActionReady(Assize))
+                    ActionReady(Assize) &&
+                    HasBattleTarget() && GetTargetDistance() <= 20)
                     return Assize;
 
                 if (IsEnabled(Preset.WHM_ST_MainCombo_Lucid) &&
@@ -311,7 +314,8 @@ internal partial class WHM : Healer
             if (CanWeave() || IsMoving())
             {
                 if (IsEnabled(Preset.WHM_AoE_DPS_Assize) &&
-                    ActionReady(Assize))
+                    ActionReady(Assize) &&
+                    HasBattleTarget() && GetTargetDistance() <= 20)
                     return Assize;
 
                 if (IsEnabled(Preset.WHM_AoE_DPS_PresenceOfMind) &&
