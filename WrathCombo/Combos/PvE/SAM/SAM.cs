@@ -32,7 +32,7 @@ internal partial class SAM : Melee
 
                 //Ikishoten Features
                 if (ActionReady(Ikishoten) && !HasStatusEffect(Buffs.ZanshinReady) && Kenki <= 50 &&
-                    (JustUsed(TendoKaeshiSetsugekka) || !LevelChecked(TendoKaeshiSetsugekka)))
+                    (JustUsed(TendoKaeshiSetsugekka, 5f) || !LevelChecked(TendoKaeshiSetsugekka)))
                     return Ikishoten;
 
 
@@ -303,7 +303,7 @@ internal partial class SAM : Melee
                     //Ikishoten Features
                     if (IsEnabled(Preset.SAM_ST_CDs_Ikishoten) &&
                         ActionReady(Ikishoten) && !HasStatusEffect(Buffs.ZanshinReady) && Kenki <= 50 &&
-                        (JustUsed(TendoKaeshiSetsugekka) || !LevelChecked(TendoKaeshiSetsugekka)))
+                        (JustUsed(TendoKaeshiSetsugekka, 5f) || !LevelChecked(TendoKaeshiSetsugekka)))
                         return Ikishoten;
                 }
 
