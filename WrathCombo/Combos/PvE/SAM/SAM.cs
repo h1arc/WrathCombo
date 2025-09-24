@@ -39,7 +39,9 @@ internal partial class SAM : Melee
                 //Senei Features
                 if (Kenki >= SAMKenki.Senei)
                 {
-                    if (ActionReady(Senei))
+                    if (ActionReady(Senei) &&
+                        (LevelChecked(KaeshiSetsugekka) && JustUsed(KaeshiSetsugekka, 5f) ||
+                         !LevelChecked(KaeshiSetsugekka)))
                         return Senei;
 
                     //Guren if no Senei
@@ -53,17 +55,14 @@ internal partial class SAM : Melee
                 if (ActionReady(Zanshin) && Kenki >= SAMKenki.Zanshin &&
                     InActionRange(Zanshin) &&
                     HasStatusEffect(Buffs.ZanshinReady) &&
-                    (JustUsed(Higanbana) ||
-                     JustUsed(OriginalHook(OgiNamikiri)) ||
+                    (JustUsed(Senei, 15f) ||
                      GetStatusEffectRemainingTime(Buffs.ZanshinReady) <= 8))
                     return Zanshin;
 
                 if (ActionReady(Shoha) && MeditationStacks is 3 &&
                     InActionRange(Shoha) &&
-                    (JustUsed(KaeshiSetsugekka) ||
-                     JustUsed(TendoKaeshiSetsugekka) ||
-                     JustUsed(Higanbana) ||
-                     JustUsed(OriginalHook(OgiNamikiri))))
+                    (EnhancedSenei && JustUsed(Senei, 15f) ||
+                     !EnhancedSenei && JustUsed(KaeshiSetsugekka, 10f)))
                     return Shoha;
 
                 if (UseShinten())
