@@ -19,8 +19,8 @@ internal partial class SAM
                     DrawSliderInt(0, 13, SAM_Opener_PrePullDelay,
                         $"Delay from first {MeikyoShisui.ActionName()} to next step. (seconds)\nDelay is enforced by replacing your button with Savage Blade.");
                     ImGui.NewLine();
-                    DrawAdditionalBoolChoice(SAM_Opener_NoHiganbana, "Remove Higanbana usage from the opener", "This will remove the Higanbana from the opener." +
-                                                                                                               "\nThis will make make it use higanbana first time u have 1 sen outside the opener.");
+                    //   DrawAdditionalBoolChoice(SAM_Opener_NoHiganbana, "Remove Higanbana usage from the opener", "This will remove the Higanbana from the opener." +
+                    //                                                                                            "\nThis will make make it use higanbana first time u have 1 sen outside the opener.");
                     break;
 
                 case Preset.SAM_ST_CDs_UseHiganbana:
