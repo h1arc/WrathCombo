@@ -40,7 +40,8 @@ internal partial class SAM : Melee
                 if (Kenki >= SAMKenki.Senei)
                 {
                     if (ActionReady(Senei) &&
-                        (LevelChecked(KaeshiSetsugekka) && JustUsed(KaeshiSetsugekka, 5f) ||
+                        (LevelChecked(KaeshiSetsugekka) &&
+                         (JustUsed(KaeshiSetsugekka, 5f) || JustUsed(TendoKaeshiSetsugekka, 5f)) ||
                          !LevelChecked(KaeshiSetsugekka)))
                         return Senei;
 
@@ -313,7 +314,8 @@ internal partial class SAM : Melee
                         && Kenki >= SAMKenki.Senei)
                     {
                         if (ActionReady(Senei) &&
-                            (LevelChecked(KaeshiSetsugekka) && JustUsed(KaeshiSetsugekka, 5f) ||
+                            (LevelChecked(KaeshiSetsugekka) && 
+                             (JustUsed(KaeshiSetsugekka, 5f) || JustUsed(TendoKaeshiSetsugekka, 5f)) ||
                              !LevelChecked(KaeshiSetsugekka)))
                             return Senei;
 
