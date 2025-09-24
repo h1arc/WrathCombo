@@ -56,13 +56,13 @@ internal partial class SAM : Melee
                 if (ActionReady(Zanshin) && Kenki >= SAMKenki.Zanshin &&
                     InActionRange(Zanshin) &&
                     HasStatusEffect(Buffs.ZanshinReady) &&
-                    (JustUsed(Senei, 15f) ||
+                    (JustUsed(Senei, 20f) ||
                      GetStatusEffectRemainingTime(Buffs.ZanshinReady) <= 8))
                     return Zanshin;
 
                 if (ActionReady(Shoha) && MeditationStacks is 3 &&
                     InActionRange(Shoha) &&
-                    (EnhancedSenei && JustUsed(Senei, 15f) ||
+                    (EnhancedSenei && JustUsed(Senei, 20f) ||
                      !EnhancedSenei && JustUsed(KaeshiSetsugekka, 10f)))
                     return Shoha;
 
@@ -314,7 +314,7 @@ internal partial class SAM : Melee
                         && Kenki >= SAMKenki.Senei)
                     {
                         if (ActionReady(Senei) &&
-                            (LevelChecked(KaeshiSetsugekka) && 
+                            (LevelChecked(KaeshiSetsugekka) &&
                              (JustUsed(KaeshiSetsugekka, 5f) || JustUsed(TendoKaeshiSetsugekka, 5f)) ||
                              !LevelChecked(KaeshiSetsugekka)))
                             return Senei;
@@ -332,14 +332,14 @@ internal partial class SAM : Melee
                         ActionReady(Zanshin) && Kenki >= SAMKenki.Zanshin &&
                         InActionRange(Zanshin) &&
                         HasStatusEffect(Buffs.ZanshinReady) &&
-                        (JustUsed(Senei, 15f) ||
+                        (JustUsed(Senei, 20f) ||
                          GetStatusEffectRemainingTime(Buffs.ZanshinReady) <= 8))
                         return Zanshin;
 
                     if (IsEnabled(Preset.SAM_ST_CDs_Shoha) &&
                         ActionReady(Shoha) && MeditationStacks is 3 &&
                         InActionRange(Shoha) &&
-                        (EnhancedSenei && JustUsed(Senei, 15f) ||
+                        (EnhancedSenei && JustUsed(Senei, 20f) ||
                          !EnhancedSenei && JustUsed(KaeshiSetsugekka, 10f)))
                         return Shoha;
                 }
