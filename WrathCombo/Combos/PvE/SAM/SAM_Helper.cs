@@ -151,7 +151,7 @@ internal partial class SAM
             if (EnhancedSenei &&
                 !HasStatusEffect(Buffs.ZanshinReady))
             {
-                if (JustUsed(Senei, 20f) &&
+                if (JustUsed(Senei, 15f) &&
                     !JustUsed(Ikishoten))
                     return true;
 
