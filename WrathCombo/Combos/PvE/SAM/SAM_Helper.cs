@@ -239,9 +239,14 @@ internal partial class SAM
             ([2], () => SAM_Opener_PrePullDelay)
         ];
 
+        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } =
+        [
+            ([2], () => !TargetNeedsPositionals())
+        ];
+
         public override List<(int[] Steps, uint NewAction, Func<bool> Condition)> SubstitutionSteps { get; set; } =
         [
-            ([2], 11, () => !TargetNeedsPositionals())
+            ([20], Shinten, () => Kenki >= SAMKenki.Shinten)
         ];
 
         public override bool HasCooldowns() =>
