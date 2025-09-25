@@ -1,6 +1,7 @@
 using System;
 using WrathCombo.CustomComboNS;
 using static WrathCombo.Combos.PvE.SAM.Config;
+using static WrathCombo.Data.ActionWatching;
 namespace WrathCombo.Combos.PvE;
 
 internal partial class SAM : Melee
@@ -31,8 +32,11 @@ internal partial class SAM : Melee
                     return MeikyoShisui;
 
                 //Ikishoten Features
-                if (ActionReady(Ikishoten) && !HasStatusEffect(Buffs.ZanshinReady) && Kenki <= 50 &&
-                    (JustUsed(TendoKaeshiSetsugekka, 5f) || !LevelChecked(TendoKaeshiSetsugekka)))
+                if (ActionReady(Ikishoten) &&
+                    !HasStatusEffect(Buffs.ZanshinReady) && Kenki <= 50 &&
+                    NumberOfGcdsUsed >= 2 &&
+                    (JustUsed(TendoKaeshiSetsugekka, 5f) ||
+                     !LevelChecked(TendoKaeshiSetsugekka)))
                     return Ikishoten;
 
 
@@ -40,8 +44,10 @@ internal partial class SAM : Melee
                 if (Kenki >= SAMKenki.Senei)
                 {
                     if (ActionReady(Senei) &&
+                        NumberOfGcdsUsed >= 4 &&
                         (LevelChecked(KaeshiSetsugekka) &&
-                         (JustUsed(KaeshiSetsugekka, 5f) || JustUsed(TendoKaeshiSetsugekka, 5f)) ||
+                         (JustUsed(KaeshiSetsugekka, 5f) ||
+                          JustUsed(TendoKaeshiSetsugekka, 5f)) ||
                          !LevelChecked(KaeshiSetsugekka)))
                         return Senei;
 
@@ -302,8 +308,11 @@ internal partial class SAM : Melee
 
                     //Ikishoten Features
                     if (IsEnabled(Preset.SAM_ST_CDs_Ikishoten) &&
-                        ActionReady(Ikishoten) && !HasStatusEffect(Buffs.ZanshinReady) && Kenki <= 50 &&
-                        (JustUsed(TendoKaeshiSetsugekka, 5f) || !LevelChecked(TendoKaeshiSetsugekka)))
+                        ActionReady(Ikishoten) &&
+                        !HasStatusEffect(Buffs.ZanshinReady) && Kenki <= 50 &&
+                        NumberOfGcdsUsed >= 2 &&
+                        (JustUsed(TendoKaeshiSetsugekka, 5f) ||
+                         !LevelChecked(TendoKaeshiSetsugekka)))
                         return Ikishoten;
                 }
 
@@ -314,8 +323,10 @@ internal partial class SAM : Melee
                         && Kenki >= SAMKenki.Senei)
                     {
                         if (ActionReady(Senei) &&
+                            NumberOfGcdsUsed >= 4 &&
                             (LevelChecked(KaeshiSetsugekka) &&
-                             (JustUsed(KaeshiSetsugekka, 5f) || JustUsed(TendoKaeshiSetsugekka, 5f)) ||
+                             (JustUsed(KaeshiSetsugekka, 5f) ||
+                              JustUsed(TendoKaeshiSetsugekka, 5f)) ||
                              !LevelChecked(KaeshiSetsugekka)))
                             return Senei;
 
