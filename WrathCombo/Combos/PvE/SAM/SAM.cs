@@ -39,7 +39,6 @@ internal partial class SAM : Melee
                      !LevelChecked(TendoKaeshiSetsugekka)))
                     return Ikishoten;
 
-
                 //Senei Features
                 if (Kenki >= SAMKenki.Senei)
                 {
@@ -101,8 +100,9 @@ internal partial class SAM : Melee
                 ActionReady(OgiNamikiri) && InActionRange(OriginalHook(OgiNamikiri)) &&
                 HasStatusEffect(Buffs.OgiNamikiriReady) &&
                 (JustUsed(Higanbana, 15f) ||
-                 GetStatusEffectRemainingTime(Buffs.OgiNamikiriReady) <= 8) ||
-                NamikiriReady || !InMeleeRange())
+                 GetStatusEffectRemainingTime(Buffs.OgiNamikiriReady) <= 8 ||
+                 !InMeleeRange()) ||
+                NamikiriReady)
                 return OriginalHook(OgiNamikiri);
 
             // Iaijutsu Features
@@ -402,8 +402,9 @@ internal partial class SAM : Melee
                     (IsNotEnabled(Preset.SAM_ST_CDs_UseHiganbana) && JustUsed(Ikishoten, 15f) ||
                      JustUsed(Higanbana, 15f) ||
                      SAM_ST_HiganbanaBossOption == 1 && !TargetIsBoss() ||
-                     GetStatusEffectRemainingTime(Buffs.OgiNamikiriReady) <= 8) ||
-                    NamikiriReady || !InMeleeRange())
+                     GetStatusEffectRemainingTime(Buffs.OgiNamikiriReady) <= 8 ||
+                     !InMeleeRange()) ||
+                    NamikiriReady)
                     return OriginalHook(OgiNamikiri);
 
                 // Iaijutsu Features
