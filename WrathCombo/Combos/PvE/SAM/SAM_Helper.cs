@@ -46,8 +46,8 @@ internal partial class SAM
         if (ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.Tendo) && !HasStatusEffect(Buffs.MeikyoShisui) &&
             (JustUsed(Gekko) || JustUsed(Kasha) || JustUsed(Yukikaze)))
         {
-            if ((SAM_ST_MeikyoBossOption == 0 || InBossEncounter() ||
-                 IsEnabled(Preset.SAM_ST_SimpleMode) && InBossEncounter()))
+            if (SAM_ST_MeikyoLogic == 1 && (SAM_ST_MeikyoBossOption == 0 || InBossEncounter()) ||
+                IsEnabled(Preset.SAM_ST_SimpleMode) && InBossEncounter())
             {
                 if (EnhancedSenei)
                 {
@@ -83,9 +83,13 @@ internal partial class SAM
             }
 
             if (IsEnabled(Preset.SAM_ST_SimpleMode) && !InBossEncounter() ||
-                SAM_ST_MeikyoBossOption == 1 && !InBossEncounter())
+                SAM_ST_MeikyoLogic == 1 && SAM_ST_MeikyoBossOption == 1 && !InBossEncounter())
+                return true;
+
+            if (SAM_ST_MeikyoLogic == 0 && SenCount is 3)
                 return true;
         }
+
 
         return false;
     }
@@ -238,11 +242,6 @@ internal partial class SAM
         [
             ([2], () => SAM_Opener_PrePullDelay)
         ];
-
-        /* public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } =
-          [
-              ([2], () => !TargetNeedsPositionals())
-          ];*/
 
         public override List<(int[] Steps, uint NewAction, Func<bool> Condition)> SubstitutionSteps { get; set; } =
         [

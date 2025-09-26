@@ -18,9 +18,6 @@ internal partial class SAM
                     ImGui.NewLine();
                     DrawSliderInt(0, 13, SAM_Opener_PrePullDelay,
                         $"Delay from first {MeikyoShisui.ActionName()} to next step. (seconds)\nDelay is enforced by replacing your button with Savage Blade.");
-                    ImGui.NewLine();
-                    //   DrawAdditionalBoolChoice(SAM_Opener_NoHiganbana, "Remove Higanbana usage from the opener", "This will remove the Higanbana from the opener." +
-                    //                                                                                            "\nThis will make make it use higanbana first time u have 1 sen outside the opener.");
                     break;
 
                 case Preset.SAM_ST_CDs_UseHiganbana:
@@ -40,12 +37,24 @@ internal partial class SAM
                     break;
 
                 case Preset.SAM_ST_CDs_MeikyoShisui:
-                    DrawHorizontalRadioButton(SAM_ST_MeikyoBossOption,
-                        "Use The Balance Logic in all content", $"Uses {MeikyoShisui.ActionName()} logic regardless of content.", 0);
+                    DrawHorizontalRadioButton(SAM_ST_MeikyoLogic,
+                        "Use No logic", $"Uses {MeikyoShisui.ActionName()} when u have 3 sens.", 0);
 
-                    DrawHorizontalRadioButton(SAM_ST_MeikyoBossOption,
-                        "Use The Balance logic only in Boss encounters", $"Only uses {MeikyoShisui.ActionName()} logic when in Boss encounters." +
-                                                                         $"\nWill use Meikyo every minute regardless of sen count outside of boss encounters.", 1);
+                    DrawHorizontalRadioButton(SAM_ST_MeikyoLogic,
+                        "Use The Balance Logic", "Uses The Balance logic.", 1);
+
+                    if (SAM_ST_MeikyoLogic == 1)
+                    {
+                        ImGui.Dummy(new(12f.Scale(), 0));
+                        ImGui.NewLine();
+
+                        DrawHorizontalRadioButton(SAM_ST_MeikyoBossOption,
+                            "All content", $"Uses {MeikyoShisui.ActionName()} logic regardless of content.", 0);
+
+                        DrawHorizontalRadioButton(SAM_ST_MeikyoBossOption,
+                            "Only in Boss encounters", $"Only uses {MeikyoShisui.ActionName()} logic when in Boss encounters." +
+                                                       $"\nWill use Meikyo every minute regardless of sen count outside of boss encounters.", 1);
+                    }
                     break;
 
                 case Preset.SAM_ST_CDs_Senei:
@@ -153,7 +162,7 @@ internal partial class SAM
         public static UserInt
             SAM_Balance_Content = new("SAM_Balance_Content", 1),
             SAM_Opener_PrePullDelay = new("SAM_Opener_PrePullDelay", 13),
-            SAM_Opener_NoHiganbana = new("SAM_Opener_NoHiganbana"),
+            SAM_ST_MeikyoLogic = new("SAM_ST_MeikyoLogic", 1),
             SAM_ST_HiganbanaBossOption = new("SAM_ST_Higanbana_Suboption", 1),
             SAM_ST_MeikyoBossOption = new("SAM_ST_Meikyo_Suboption", 1),
             SAM_ST_HiganbanaHPThreshold = new("SAM_ST_Higanbana_HP_Threshold", 0),
