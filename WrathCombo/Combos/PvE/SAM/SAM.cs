@@ -47,7 +47,7 @@ internal partial class SAM : Melee
                         NumberOfGcdsUsed >= 4 &&
                         (LevelChecked(KaeshiSetsugekka) &&
                          (JustUsed(KaeshiSetsugekka, 5f) ||
-                          JustUsed(TendoKaeshiSetsugekka, 5f)) ||
+                          JustUsed(TendoSetsugekka, 5f)) ||
                          !LevelChecked(KaeshiSetsugekka)))
                         return Senei;
 
@@ -328,7 +328,7 @@ internal partial class SAM : Melee
                             NumberOfGcdsUsed >= 4 &&
                             (LevelChecked(KaeshiSetsugekka) &&
                              (JustUsed(KaeshiSetsugekka, 5f) ||
-                              JustUsed(TendoKaeshiSetsugekka, 5f)) ||
+                              JustUsed(TendoSetsugekka, 5f)) ||
                              !LevelChecked(KaeshiSetsugekka)))
                             return Senei;
 
