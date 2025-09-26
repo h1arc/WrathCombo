@@ -74,14 +74,14 @@ internal partial class SAM : Melee
             if (UseRanged(true, true))
                 return Enpi;
 
-            if (UseTsubame)
+            if (UseTsubame())
                 return OriginalHook(TsubameGaeshi);
 
-            //Ogi Namikiri Features
+            //Ogi Namikiri feature
             if (!IsMoving() && UseOgi())
                 return OriginalHook(OgiNamikiri);
 
-            // Iaijutsu Features
+            // Iaijutsu feature
             if (!IsMoving() &&
                 UseIaijutsu(true, true, true))
                 return OriginalHook(Iaijutsu);
@@ -148,7 +148,7 @@ internal partial class SAM : Melee
             if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
 
-            //oGCD Features
+            //oGCD feature
             if (CanWeave())
             {
                 if (OriginalHook(Iaijutsu) is MidareSetsugekka && LevelChecked(Hagakure))
@@ -279,12 +279,12 @@ internal partial class SAM : Melee
                         InCombat() && !HasBattleTarget())
                         return Meditate;
 
-                    //Meikyo Features
+                    //Meikyo feature
                     if (IsEnabled(Preset.SAM_ST_CDs_MeikyoShisui) &&
                         UseMeikyo())
                         return MeikyoShisui;
 
-                    //Ikishoten Features
+                    //Ikishoten feature
                     if (IsEnabled(Preset.SAM_ST_CDs_Ikishoten) &&
                         UseIkishoten())
                         return Ikishoten;
@@ -292,7 +292,7 @@ internal partial class SAM : Melee
 
                 if (IsEnabled(Preset.SAM_ST_Damage))
                 {
-                    //Senei Features
+                    //Senei feature
                     if (IsEnabled(Preset.SAM_ST_CDs_Senei)
                         && Kenki >= SAMKenki.Senei)
                     {
@@ -349,16 +349,16 @@ internal partial class SAM : Melee
             {
                 if (IsEnabled(Preset.SAM_ST_CDs_Iaijutsu) &&
                     IsEnabled(Preset.SAM_ST_CDs_UseTsubame) &&
-                    UseTsubame)
+                    UseTsubame())
                     return OriginalHook(TsubameGaeshi);
 
-                //Ogi Namikiri Features
+                //Ogi Namikiri Feature
                 if (IsEnabled(Preset.SAM_ST_CDs_OgiNamikiri) &&
                     (!SAM_ST_CDs_OgiNamikiri_Movement || !IsMoving()) &&
                     M6SReady && UseOgi())
                     return OriginalHook(OgiNamikiri);
 
-                // Iaijutsu Features
+                // Iaijutsu Feature
                 if (IsEnabled(Preset.SAM_ST_CDs_Iaijutsu) &&
                     (!IsEnabled(Preset.SAM_ST_CDs_Iaijutsu_Movement) || !IsMoving()) &&
                     UseIaijutsu(IsEnabled(Preset.SAM_ST_CDs_UseHiganbana), IsEnabled(Preset.SAM_ST_CDs_UseTenkaGoken), IsEnabled(Preset.SAM_ST_CDs_UseMidare)))
@@ -438,7 +438,7 @@ internal partial class SAM : Melee
             if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
 
-            //oGCD Features
+            //oGCD feature
             if (CanWeave() && M6SReady)
             {
                 if (IsEnabled(Preset.SAM_AoE_Hagakure) &&

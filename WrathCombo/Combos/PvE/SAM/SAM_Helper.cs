@@ -145,7 +145,7 @@ internal partial class SAM
                 return true;
 
             //Iaijutsu option
-            if (useIaijutsu && (!IsOriginal(Iaijutsu) && !InActionRange(OriginalHook(Iaijutsu)) || UseTsubame && !InActionRange(OriginalHook(TsubameGaeshi))))
+            if (useIaijutsu && (!IsOriginal(Iaijutsu) && !InActionRange(OriginalHook(Iaijutsu)) || UseTsubame() && !InActionRange(OriginalHook(TsubameGaeshi))))
                 return true;
         }
         return false;
@@ -186,7 +186,7 @@ internal partial class SAM
          (JustUsed(KaeshiSetsugekka, 5f) ||
           JustUsed(TendoSetsugekka, 5f)));
 
-    internal static bool UseTsubame =>
+    internal static bool UseTsubame() =>
         LevelChecked(TsubameGaeshi) &&
         (HasStatusEffect(Buffs.TendoKaeshiSetsugekkaReady) ||
          HasStatusEffect(Buffs.TsubameReady) && (SenCount is 3 || GetCooldownRemainingTime(Senei) > 33));
