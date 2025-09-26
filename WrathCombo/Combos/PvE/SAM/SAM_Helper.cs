@@ -173,6 +173,25 @@ internal partial class SAM
 
     #endregion
 
+    #region Ranged Option
+
+    internal static bool UseRanged(bool useOgi, bool useIaijutsu)
+    {
+        if (ActionReady(Enpi) && !InMeleeRange() && HasBattleTarget())
+        {
+            //Ogi option
+            if (useOgi && (HasStatusEffect(Buffs.OgiNamikiriReady) || NamikiriReady) && !InActionRange(OriginalHook(OgiNamikiri)))
+                return true;
+
+            //Iaijutsu option
+            if (useIaijutsu && (!IsOriginal(Iaijutsu) && !InActionRange(OriginalHook(Iaijutsu)) || UseTsubame && !InActionRange(OriginalHook(TsubameGaeshi))))
+                return true;
+        }
+        return false;
+    }
+
+    #endregion
+
     #region Rescourses
 
     internal static class SAMKenki
