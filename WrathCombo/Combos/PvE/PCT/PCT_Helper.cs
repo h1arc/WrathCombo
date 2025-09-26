@@ -429,9 +429,7 @@ internal partial class PCT
             WaterInBlue
         ];
         internal override UserData? ContentCheckConfig => PCT_Balance_Content;
-
-        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } = [([18], () => !HasStatusEffect(Buffs.RainbowBright))];
-
+        
         public override List<(int[] Steps, uint NewAction, Func<bool> Condition)> SubstitutionSteps { get; set; } =
         [
             ([14, 15, 16], BlizzardinCyan, () => OriginalHook(BlizzardinCyan) == BlizzardinCyan),
