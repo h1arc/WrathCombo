@@ -383,7 +383,7 @@ internal partial class SAM : Melee
 
             //Ranged
             if (IsEnabled(Preset.SAM_ST_RangedUptime) &&
-                ActionReady(Enpi) && !InMeleeRange() && HasBattleTarget() && 
+                ActionReady(Enpi) && !InMeleeRange() && HasBattleTarget() &&
                 (!HasStatusEffect(Buffs.OgiNamikiriReady) || !InActionRange(OriginalHook(OgiNamikiri))))
                 return Enpi;
 
