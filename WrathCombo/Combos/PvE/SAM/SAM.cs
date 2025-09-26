@@ -99,7 +99,7 @@ internal partial class SAM : Melee
             //Ogi Namikiri Features
             if (!IsMoving() &&
                 ActionReady(OgiNamikiri) && InActionRange(OriginalHook(OgiNamikiri)) &&
-                HasStatusEffect(Buffs.OgiNamikiriReady) && M6SReady &&
+                HasStatusEffect(Buffs.OgiNamikiriReady) &&
                 (JustUsed(Higanbana, 5f) ||
                  GetStatusEffectRemainingTime(Buffs.OgiNamikiriReady) <= 8) ||
                 NamikiriReady || !InMeleeRange())
@@ -213,7 +213,7 @@ internal partial class SAM : Melee
                     return Role.Bloodbath;
             }
 
-            if (ActionReady(OgiNamikiri) && M6SReady &&
+            if (ActionReady(OgiNamikiri) &&
                 !IsMoving() && (HasStatusEffect(Buffs.OgiNamikiriReady) || NamikiriReady))
                 return OriginalHook(OgiNamikiri);
 
@@ -399,7 +399,7 @@ internal partial class SAM : Melee
                     (!SAM_ST_CDs_OgiNamikiri_Movement || !IsMoving()) &&
                     ActionReady(OgiNamikiri) && InActionRange(OriginalHook(OgiNamikiri)) &&
                     HasStatusEffect(Buffs.OgiNamikiriReady) && M6SReady &&
-                    (IsNotEnabled(Preset.SAM_ST_CDs_UseHiganbana) && JustUsed(Ikishoten) ||
+                    (IsNotEnabled(Preset.SAM_ST_CDs_UseHiganbana) && JustUsed(Ikishoten, 5f) ||
                      JustUsed(Higanbana, 5f) ||
                      SAM_ST_HiganbanaBossOption == 1 && !TargetIsBoss() ||
                      GetStatusEffectRemainingTime(Buffs.OgiNamikiriReady) <= 8) ||
