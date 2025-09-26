@@ -101,8 +101,7 @@ internal partial class SAM : Melee
                 HasStatusEffect(Buffs.OgiNamikiriReady) &&
                 (JustUsed(Higanbana, 15f) ||
                  GetStatusEffectRemainingTime(Buffs.OgiNamikiriReady) <= 8 ||
-                 !InMeleeRange()) ||
-                NamikiriReady)
+                 !InMeleeRange()) || NamikiriReady)
                 return OriginalHook(OgiNamikiri);
 
             // Iaijutsu Features
@@ -403,8 +402,7 @@ internal partial class SAM : Melee
                      JustUsed(Higanbana, 15f) ||
                      SAM_ST_HiganbanaBossOption == 1 && !TargetIsBoss() ||
                      GetStatusEffectRemainingTime(Buffs.OgiNamikiriReady) <= 8 ||
-                     !InMeleeRange()) ||
-                    NamikiriReady)
+                     !InMeleeRange()) || NamikiriReady)
                     return OriginalHook(OgiNamikiri);
 
                 // Iaijutsu Features
