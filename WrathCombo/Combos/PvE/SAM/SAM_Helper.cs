@@ -27,11 +27,6 @@ internal partial class SAM
     internal static int SenCount =>
         GetSenCount();
 
-    internal static bool UseTsubame =>
-        LevelChecked(TsubameGaeshi) &&
-        (HasStatusEffect(Buffs.TendoKaeshiSetsugekkaReady) ||
-         HasStatusEffect(Buffs.TsubameReady) && (SenCount is 3 || GetCooldownRemainingTime(Senei) > 33));
-
     internal static bool M6SReady =>
         !HiddenFeaturesData.IsEnabledWith(Preset.SAM_Hid_M6SHoldSquirrelBurst, () =>
             HiddenFeaturesData.Targeting.R6SSquirrel && CombatEngageDuration().TotalSeconds < 275);
@@ -139,40 +134,6 @@ internal partial class SAM
 
     #endregion
 
-    #region Burst Management
-
-    internal static bool UseShinten()
-    {
-        int shintenTreshhold = SAM_ST_ExecuteThreshold;
-
-        if (ActionReady(Shinten) && Kenki >= SAMKenki.Shinten)
-        {
-            if (GetTargetHPPercent() < shintenTreshhold)
-                return true;
-
-            if (Kenki >= 95)
-                return true;
-
-            if (EnhancedSenei &&
-                !HasStatusEffect(Buffs.ZanshinReady))
-            {
-                if (JustUsed(Senei, 15f) &&
-                    !JustUsed(Ikishoten))
-                    return true;
-
-                if (GetCooldownRemainingTime(Senei) >= 25 &&
-                    Kenki >= SAM_ST_KenkiOvercapAmount)
-                    return true;
-            }
-
-            if (!EnhancedSenei && Kenki >= SAM_ST_KenkiOvercapAmount)
-                return true;
-        }
-        return false;
-    }
-
-    #endregion
-
     #region Ranged Option
 
     internal static bool UseRanged(bool useOgi, bool useIaijutsu)
@@ -205,6 +166,96 @@ internal partial class SAM
         internal static int Guren => GetResourceCost(SAM.Guren);
 
         internal static int Shinten => GetResourceCost(SAM.Shinten);
+    }
+
+    #endregion
+
+    #region Burst Management
+
+    internal static bool UseIkishoten() =>
+        ActionReady(Ikishoten) &&
+        !HasStatusEffect(Buffs.ZanshinReady) && Kenki <= 50 &&
+        NumberOfGcdsUsed >= 2 &&
+        (JustUsed(TendoKaeshiSetsugekka, 15f) ||
+         !LevelChecked(TendoKaeshiSetsugekka));
+
+    internal static bool UseSenei() =>
+        ActionReady(Senei) && NumberOfGcdsUsed >= 4 &&
+        (!LevelChecked(KaeshiSetsugekka) ||
+         LevelChecked(KaeshiSetsugekka) &&
+         (JustUsed(KaeshiSetsugekka, 5f) ||
+          JustUsed(TendoSetsugekka, 5f)));
+
+    internal static bool UseTsubame =>
+        LevelChecked(TsubameGaeshi) &&
+        (HasStatusEffect(Buffs.TendoKaeshiSetsugekkaReady) ||
+         HasStatusEffect(Buffs.TsubameReady) && (SenCount is 3 || GetCooldownRemainingTime(Senei) > 33));
+
+    internal static bool UseShoha() =>
+        ActionReady(Shoha) && MeditationStacks is 3 &&
+        InActionRange(Shoha) &&
+        (EnhancedSenei && JustUsed(Senei, 20f) ||
+         !EnhancedSenei && JustUsed(KaeshiSetsugekka, 10f));
+
+    //TODO Buffcheck
+    internal static bool UseZanshin() =>
+        ActionReady(Zanshin) && Kenki >= SAMKenki.Zanshin &&
+        InActionRange(Zanshin) && HasStatusEffect(Buffs.ZanshinReady) &&
+        (JustUsed(Senei, 20f) || GetStatusEffectRemainingTime(Buffs.ZanshinReady) <= 8);
+
+    internal static bool UseShinten()
+    {
+        int shintenTreshhold = SAM_ST_ExecuteThreshold;
+
+        if (ActionReady(Shinten) && Kenki >= SAMKenki.Shinten)
+        {
+            if (GetTargetHPPercent() < shintenTreshhold)
+                return true;
+
+            if (Kenki >= 95)
+                return true;
+
+            if (EnhancedSenei &&
+                !HasStatusEffect(Buffs.ZanshinReady))
+            {
+                if (JustUsed(Senei, 15f) &&
+                    !JustUsed(Ikishoten))
+                    return true;
+
+                if (GetCooldownRemainingTime(Senei) >= 25 &&
+                    Kenki >= SAM_ST_KenkiOvercapAmount)
+                    return true;
+            }
+
+            if (!EnhancedSenei && Kenki >= SAM_ST_KenkiOvercapAmount)
+                return true;
+        }
+        return false;
+    }
+
+    internal static bool UseOgi()
+    {
+        if (ActionReady(OgiNamikiri) && InActionRange(OriginalHook(OgiNamikiri)) &&
+            HasStatusEffect(Buffs.OgiNamikiriReady))
+        {
+            if (NamikiriReady)
+                return true;
+
+            if (GetStatusEffectRemainingTime(Buffs.OgiNamikiriReady) <= 8)
+                return true;
+
+            if (IsEnabled(Preset.SAM_ST_AdvancedMode) &&
+                IsNotEnabled(Preset.SAM_ST_CDs_UseHiganbana) && JustUsed(Ikishoten, 15f))
+                return true;
+
+            if (JustUsed(Higanbana, 15f))
+                return true;
+
+            if (IsEnabled(Preset.SAM_ST_AdvancedMode) &&
+                SAM_ST_HiganbanaBossOption == 1 && !TargetIsBoss())
+                return true;
+        }
+        return false;
     }
 
     #endregion
