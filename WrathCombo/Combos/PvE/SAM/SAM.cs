@@ -35,7 +35,7 @@ internal partial class SAM : Melee
                 if (ActionReady(Ikishoten) &&
                     !HasStatusEffect(Buffs.ZanshinReady) && Kenki <= 50 &&
                     NumberOfGcdsUsed >= 2 &&
-                    (JustUsed(TendoKaeshiSetsugekka, 5f) ||
+                    (JustUsed(TendoKaeshiSetsugekka, 15f) ||
                      !LevelChecked(TendoKaeshiSetsugekka)))
                     return Ikishoten;
 
@@ -100,7 +100,7 @@ internal partial class SAM : Melee
             if (!IsMoving() &&
                 ActionReady(OgiNamikiri) && InActionRange(OriginalHook(OgiNamikiri)) &&
                 HasStatusEffect(Buffs.OgiNamikiriReady) &&
-                (JustUsed(Higanbana, 5f) ||
+                (JustUsed(Higanbana, 15f) ||
                  GetStatusEffectRemainingTime(Buffs.OgiNamikiriReady) <= 8) ||
                 NamikiriReady || !InMeleeRange())
                 return OriginalHook(OgiNamikiri);
@@ -313,7 +313,7 @@ internal partial class SAM : Melee
                         ActionReady(Ikishoten) &&
                         !HasStatusEffect(Buffs.ZanshinReady) && Kenki <= 50 &&
                         NumberOfGcdsUsed >= 2 &&
-                        (JustUsed(TendoKaeshiSetsugekka, 5f) ||
+                        (JustUsed(TendoKaeshiSetsugekka, 15f) ||
                          !LevelChecked(TendoKaeshiSetsugekka)))
                         return Ikishoten;
                 }
@@ -399,8 +399,8 @@ internal partial class SAM : Melee
                     (!SAM_ST_CDs_OgiNamikiri_Movement || !IsMoving()) &&
                     ActionReady(OgiNamikiri) && InActionRange(OriginalHook(OgiNamikiri)) &&
                     HasStatusEffect(Buffs.OgiNamikiriReady) && M6SReady &&
-                    (IsNotEnabled(Preset.SAM_ST_CDs_UseHiganbana) && JustUsed(Ikishoten, 5f) ||
-                     JustUsed(Higanbana, 5f) ||
+                    (IsNotEnabled(Preset.SAM_ST_CDs_UseHiganbana) && JustUsed(Ikishoten, 15f) ||
+                     JustUsed(Higanbana, 15f) ||
                      SAM_ST_HiganbanaBossOption == 1 && !TargetIsBoss() ||
                      GetStatusEffectRemainingTime(Buffs.OgiNamikiriReady) <= 8) ||
                     NamikiriReady || !InMeleeRange())
