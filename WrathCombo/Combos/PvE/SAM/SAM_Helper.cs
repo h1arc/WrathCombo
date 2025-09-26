@@ -119,6 +119,7 @@ internal partial class SAM
             if (useTenkaGoken && SenCount is 2 &&
                 !LevelChecked(MidareSetsugekka))
                 return true;
+
             //Midare Setsugekka
             if (useMidare && SenCount is 3 &&
                 LevelChecked(MidareSetsugekka) && !HasStatusEffect(Buffs.TsubameReady))

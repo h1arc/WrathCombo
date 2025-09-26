@@ -89,8 +89,8 @@ internal partial class SAM : Melee
 
             //Ranged
             if (ActionReady(Enpi) && !InMeleeRange() && HasBattleTarget() &&
-                (!HasStatusEffect(Buffs.OgiNamikiriReady) || !NamikiriReady || IsOriginal(Iaijutsu) ||
-                 !IsOriginal(Iaijutsu) && !InActionRange(OriginalHook(Iaijutsu)) ||
+                (!IsOriginal(Iaijutsu) && !InActionRange(OriginalHook(Iaijutsu)) ||
+                 UseTsubame && !InActionRange(OriginalHook(TsubameGaeshi)) ||
                  (HasStatusEffect(Buffs.OgiNamikiriReady) || NamikiriReady) && !InActionRange(OriginalHook(OgiNamikiri))))
                 return Enpi;
 
@@ -385,8 +385,12 @@ internal partial class SAM : Melee
             //Ranged
             if (IsEnabled(Preset.SAM_ST_RangedUptime) &&
                 ActionReady(Enpi) && !InMeleeRange() && HasBattleTarget() &&
-                (SAM_ST_RangedOptions[0] && ((HasStatusEffect(Buffs.OgiNamikiriReady) || NamikiriReady) && !InActionRange(OriginalHook(OgiNamikiri)) || !HasStatusEffect(Buffs.OgiNamikiriReady) && !NamikiriReady) ||
-                 SAM_ST_RangedOptions[1] && (!IsOriginal(Iaijutsu) && !InActionRange(OriginalHook(Iaijutsu)) || IsOriginal(Iaijutsu))))
+                (SAM_ST_RangedOptions[0] &&
+                 (HasStatusEffect(Buffs.OgiNamikiriReady) ||
+                  NamikiriReady) && !InActionRange(OriginalHook(OgiNamikiri)) ||
+                 SAM_ST_RangedOptions[1] &&
+                 (!IsOriginal(Iaijutsu) && !InActionRange(OriginalHook(Iaijutsu)) ||
+                  UseTsubame && !InActionRange(OriginalHook(TsubameGaeshi)))))
                 return Enpi;
 
             if (IsEnabled(Preset.SAM_ST_Damage))

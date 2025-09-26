@@ -113,7 +113,7 @@ internal partial class SAM
                         $"Include {OgiNamikiri.ActionName()}", $"Replace Enpi with {OgiNamikiri.ActionName()} and {KaeshiNamikiri.ActionName()} when applicable.", 2, 0);
 
                     DrawHorizontalMultiChoice(SAM_ST_RangedOptions,
-                        $"Include {Iaijutsu.ActionName()}", $"Replace Enpi with {Iaijutsu.ActionName()} when applicable.", 2, 1);
+                        $"Include {Iaijutsu.ActionName()}", $"Replace Enpi with {Iaijutsu.ActionName()} and Kaeshi variant when applicable.", 2, 1);
                     break;
 
                 case Preset.SAM_ST_Meditate:
