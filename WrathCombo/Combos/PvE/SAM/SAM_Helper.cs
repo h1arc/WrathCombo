@@ -103,7 +103,7 @@ internal partial class SAM
         int higanbanaHPThreshold = SAM_ST_HiganbanaHPThreshold;
         int higanbanaRefresh = SAM_ST_HiganbanaRefresh;
 
-        if (LevelChecked(Iaijutsu))
+        if (LevelChecked(Iaijutsu) && InActionRange(OriginalHook(Iaijutsu)))
         {
             //Higanbana
             if (IsEnabled(Preset.SAM_ST_AdvancedMode) &&

@@ -49,22 +49,22 @@ internal partial class SAM
                         ImGui.NewLine();
 
                         DrawHorizontalRadioButton(SAM_ST_MeikyoBossOption,
-                            "All content", $"Uses {MeikyoShisui.ActionName()} logic regardless of content.", 0);
+                            "All content", "Uses The Balance logic regardless of content.", 0);
 
                         DrawHorizontalRadioButton(SAM_ST_MeikyoBossOption,
-                            "Only in Boss encounters", $"Only uses {MeikyoShisui.ActionName()} logic when in Boss encounters." +
+                            "Only in Boss encounters", $"Only uses The Balance logic when in Boss encounters." +
                                                        $"\nWill use Meikyo every minute regardless of sen count outside of boss encounters.", 1);
                     }
                     break;
 
                 case Preset.SAM_ST_CDs_Senei:
                     DrawAdditionalBoolChoice(SAM_ST_CDs_Guren,
-                        "Guren Option", "Adds Guren to the rotation if Senei is not unlocked.");
+                        "Guren Option", $"Adds {Guren.ActionName()} to the rotation if Senei is not unlocked.");
                     break;
 
                 case Preset.SAM_ST_CDs_OgiNamikiri:
                     DrawAdditionalBoolChoice(SAM_ST_CDs_OgiNamikiri_Movement,
-                        "Movement Option", "Adds Ogi Namikiri and Kaeshi: Namikiri when you're not moving.");
+                        "Movement Option", $"Adds {OgiNamikiri.ActionName()} and {KaeshiNamikiri.ActionName()} when you're not moving.");
                     break;
 
                 case Preset.SAM_ST_Shinten:
@@ -106,6 +106,14 @@ internal partial class SAM
                     if (SAM_Yukaze_KenkiOvercap)
                         DrawSliderInt(25, 100, SAM_Yukaze_KenkiOvercapAmount,
                             "Kenki Amount", sliderIncrement: SliderIncrements.Fives);
+                    break;
+
+                case Preset.SAM_ST_RangedUptime:
+                    DrawHorizontalMultiChoice(SAM_ST_RangedOptions,
+                        $"Include {OgiNamikiri.ActionName()}", $"Replace Enpi with {OgiNamikiri.ActionName()} and {KaeshiNamikiri.ActionName()} when applicable.", 2, 0);
+
+                    DrawHorizontalMultiChoice(SAM_ST_RangedOptions,
+                        $"Include {Iaijutsu.ActionName()}", $"Replace Enpi with {Iaijutsu.ActionName()} when applicable.", 2, 1);
                     break;
 
                 case Preset.SAM_ST_Meditate:
@@ -191,6 +199,9 @@ internal partial class SAM
             SAM_ST_CDs_OgiNamikiri_Movement = new("SAM_ST_CDs_OgiNamikiri_Movement"),
             SAM_Oka_KenkiOvercap = new("SAM_Oka_KenkiOvercap"),
             SAM_Mangetsu_KenkiOvercap = new("SAM_Mangetsu_KenkiOvercap");
+
+        public static UserBoolArray
+            SAM_ST_RangedOptions = new("SAM_ST_RangedOptions");
 
         public static UserFloat
             SAM_ST_MeditateTimeStill = new("SAM_ST_MeditateTimeStill", 2.5f);
