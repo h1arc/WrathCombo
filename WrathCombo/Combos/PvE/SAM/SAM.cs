@@ -89,7 +89,8 @@ internal partial class SAM : Melee
             }
 
             //Ranged
-            if (ActionReady(Enpi) && !InMeleeRange() && HasBattleTarget())
+            if (ActionReady(Enpi) && !InMeleeRange() && HasBattleTarget() &&
+                (!HasStatusEffect(Buffs.OgiNamikiriReady) || !InActionRange(OriginalHook(OgiNamikiri))))
                 return Enpi;
 
             if (UseTsubame)
@@ -100,7 +101,8 @@ internal partial class SAM : Melee
                 ActionReady(OgiNamikiri) && InActionRange(OriginalHook(OgiNamikiri)) &&
                 HasStatusEffect(Buffs.OgiNamikiriReady) && M6SReady &&
                 (JustUsed(Higanbana, 5f) ||
-                 GetStatusEffectRemainingTime(Buffs.OgiNamikiriReady) <= 8) || NamikiriReady)
+                 GetStatusEffectRemainingTime(Buffs.OgiNamikiriReady) <= 8) ||
+                NamikiriReady || !InMeleeRange())
                 return OriginalHook(OgiNamikiri);
 
             // Iaijutsu Features
@@ -171,7 +173,7 @@ internal partial class SAM : Melee
                 return contentAction;
 
             //oGCD Features
-            if (CanWeave() && M6SReady)
+            if (CanWeave())
             {
                 if (OriginalHook(Iaijutsu) is MidareSetsugekka && LevelChecked(Hagakure))
                     return Hagakure;
@@ -381,7 +383,8 @@ internal partial class SAM : Melee
 
             //Ranged
             if (IsEnabled(Preset.SAM_ST_RangedUptime) &&
-                ActionReady(Enpi) && !InMeleeRange() && HasBattleTarget())
+                ActionReady(Enpi) && !InMeleeRange() && HasBattleTarget() && 
+                (!HasStatusEffect(Buffs.OgiNamikiriReady) || !InActionRange(OriginalHook(OgiNamikiri))))
                 return Enpi;
 
             if (IsEnabled(Preset.SAM_ST_Damage))
@@ -399,7 +402,8 @@ internal partial class SAM : Melee
                     (IsNotEnabled(Preset.SAM_ST_CDs_UseHiganbana) && JustUsed(Ikishoten) ||
                      JustUsed(Higanbana, 5f) ||
                      SAM_ST_HiganbanaBossOption == 1 && !TargetIsBoss() ||
-                     GetStatusEffectRemainingTime(Buffs.OgiNamikiriReady) <= 8) || NamikiriReady)
+                     GetStatusEffectRemainingTime(Buffs.OgiNamikiriReady) <= 8) ||
+                    NamikiriReady || !InMeleeRange())
                     return OriginalHook(OgiNamikiri);
 
                 // Iaijutsu Features
