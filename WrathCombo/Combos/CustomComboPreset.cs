@@ -6132,7 +6132,7 @@ public enum Preset
     SAM_ST_StunInterupt = 15096,
 
     [ParentCombo(SAM_ST_AdvancedMode)]
-    [CustomComboInfo("Ranged Uptime Feature", "Adds Enpi to the rotation when you are out of range.", Job.SAM)]
+    [CustomComboInfo("Ranged Uptime Feature", "Adds Enpi to the rotation when you are out of range.\nWill use Ogi-Namikiri when available.", Job.SAM)]
     SAM_ST_RangedUptime = 15097,
 
     [ParentCombo(SAM_ST_AdvancedMode)]
