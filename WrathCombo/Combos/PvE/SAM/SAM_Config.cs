@@ -38,7 +38,7 @@ internal partial class SAM
 
                 case Preset.SAM_ST_CDs_MeikyoShisui:
                     DrawHorizontalRadioButton(SAM_ST_MeikyoLogic,
-                        "Use No logic", $"Uses {MeikyoShisui.ActionName()} when u have 3 sens.", 0);
+                        "Use Simple Logic", $"Uses {MeikyoShisui.ActionName()} when u have 3 sens.", 0);
 
                     DrawHorizontalRadioButton(SAM_ST_MeikyoLogic,
                         "Use The Balance Logic", "Uses The Balance logic.", 1);
