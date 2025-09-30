@@ -141,11 +141,21 @@ internal partial class SAM
         if (ActionReady(Enpi) && !InMeleeRange() && HasBattleTarget())
         {
             //Ogi option
-            if (useOgi && (HasStatusEffect(Buffs.OgiNamikiriReady) || NamikiriReady) && !InActionRange(OriginalHook(OgiNamikiri)))
+            if (useOgi &&
+                ((HasStatusEffect(Buffs.OgiNamikiriReady) || NamikiriReady) &&
+                 !InActionRange(OriginalHook(OgiNamikiri)) ||
+                 !HasStatusEffect(Buffs.OgiNamikiriReady) && !NamikiriReady))
                 return true;
 
             //Iaijutsu option
-            if (useIaijutsu && (!IsOriginal(Iaijutsu) && !InActionRange(OriginalHook(Iaijutsu)) || UseTsubame() && !InActionRange(OriginalHook(TsubameGaeshi))))
+            if (useIaijutsu &&
+                (SenCount is 1 or 3 && !InActionRange((MidareSetsugekka)) ||
+                 UseTsubame() && !InActionRange(TsubameGaeshi) ||
+                 SenCount is 0 or 2 && !UseTsubame()))
+                return true;
+
+            //default - both disabled
+            if (!useOgi && !useIaijutsu)
                 return true;
         }
         return false;
@@ -175,12 +185,13 @@ internal partial class SAM
     internal static bool UseIkishoten() =>
         ActionReady(Ikishoten) &&
         !HasStatusEffect(Buffs.ZanshinReady) && Kenki <= 50 &&
-        NumberOfGcdsUsed >= 2 &&
-        (JustUsed(TendoKaeshiSetsugekka, 15f) ||
+        (NumberOfGcdsUsed is 2 ||
+         JustUsed(TendoKaeshiSetsugekka, 15f) ||
          !LevelChecked(TendoKaeshiSetsugekka));
 
     internal static bool UseSenei() =>
         ActionReady(Senei) && NumberOfGcdsUsed >= 4 &&
+        InActionRange(Senei) &&
         (!LevelChecked(KaeshiSetsugekka) ||
          LevelChecked(KaeshiSetsugekka) &&
          (JustUsed(KaeshiSetsugekka, 5f) ||
@@ -235,12 +246,12 @@ internal partial class SAM
 
     internal static bool UseOgi()
     {
+        if (NamikiriReady)
+            return true;
+
         if (ActionReady(OgiNamikiri) && InActionRange(OriginalHook(OgiNamikiri)) &&
             HasStatusEffect(Buffs.OgiNamikiriReady))
         {
-            if (NamikiriReady)
-                return true;
-
             if (GetStatusEffectRemainingTime(Buffs.OgiNamikiriReady) <= 8)
                 return true;
 
