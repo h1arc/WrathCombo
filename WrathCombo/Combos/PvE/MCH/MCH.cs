@@ -50,7 +50,7 @@ internal partial class MCH : PhysicalRanged
                     {
                         // Ensures Hypercharge is double weaved with WF
                         if (LevelChecked(FullMetalField) && JustUsed(FullMetalField) &&
-                            GetCooldownRemainingTime(Wildfire) < GCD / 2 ||
+                            ActionReady(Wildfire) ||
                             !LevelChecked(FullMetalField) && ActionReady(Wildfire) ||
                             !LevelChecked(Wildfire))
                             return Hypercharge;
@@ -108,19 +108,19 @@ internal partial class MCH : PhysicalRanged
                 }
             }
 
+            //Tools
+            if (Tools(ref actionID))
+                return actionID;
+
             // Full Metal Field
             if (HasStatusEffect(Buffs.FullMetalMachinist, out Status? fullMetal) &&
                 TargetIsBoss() && !JustUsed(BarrelStabilizer) &&
-                (GetCooldownRemainingTime(Wildfire) <= GCD || fullMetal.RemainingTime <= 6))
+                (GetCooldownRemainingTime(Wildfire) <= GCD / 2 || fullMetal.RemainingTime <= 6))
                 return FullMetalField;
 
             // Heatblast
             if (IsOverheated && ActionReady(Heatblast))
                 return OriginalHook(Heatblast);
-
-            //Tools
-            if (Tools(ref actionID))
-                return actionID;
 
             // 1-2-3 Combo
             if (ComboTimer > 0)
@@ -308,7 +308,7 @@ internal partial class MCH : PhysicalRanged
                     {
                         // Ensures Hypercharge is double weaved with WF
                         if (LevelChecked(FullMetalField) && JustUsed(FullMetalField) &&
-                            GetCooldownRemainingTime(Wildfire) < GCD / 2 ||
+                            ActionReady(Wildfire) ||
                             !LevelChecked(FullMetalField) && ActionReady(Wildfire) ||
                             !LevelChecked(Wildfire))
                             return Hypercharge;
@@ -391,23 +391,22 @@ internal partial class MCH : PhysicalRanged
                 }
             }
 
+            //Tools
+            if (Tools(ref actionID))
+                return actionID;
+
             // Full Metal Field
             if (IsEnabled(Preset.MCH_ST_Adv_Stabilizer_FullMetalField) &&
                 HasStatusEffect(Buffs.FullMetalMachinist, out Status? fullMetal) &&
                 !JustUsed(BarrelStabilizer) &&
                 (fullMetal.RemainingTime <= 6 ||
-                 GetCooldownRemainingTime(Wildfire) <= GCD ||
-                 ActionReady(Wildfire)))
+                 GetCooldownRemainingTime(Wildfire) <= GCD / 2))
                 return FullMetalField;
 
             // Heatblast
             if (IsEnabled(Preset.MCH_ST_Adv_Heatblast) &&
                 IsOverheated && ActionReady(Heatblast))
                 return OriginalHook(Heatblast);
-
-            //Tools
-            if (Tools(ref actionID))
-                return actionID;
 
             // 1-2-3 Combo
             if (ComboTimer > 0)
