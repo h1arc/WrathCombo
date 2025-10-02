@@ -383,7 +383,7 @@ internal partial class PCT
             if (!IsOffCooldown(StarryMuse))
                 return false;
 
-            if (GetRemainingCharges(LivingMuse) < 3)
+            if (GetRemainingCharges(LivingMuse) < 2)
                 return false;
 
             if (GetRemainingCharges(SteelMuse) < 2)
@@ -443,7 +443,7 @@ internal partial class PCT
             if (!IsOffCooldown(StarryMuse))
                 return false;
 
-            if (GetRemainingCharges(LivingMuse) < 3)
+            if (GetRemainingCharges(LivingMuse) < 2)
                 return false;
 
             if (GetRemainingCharges(SteelMuse) < 2)
