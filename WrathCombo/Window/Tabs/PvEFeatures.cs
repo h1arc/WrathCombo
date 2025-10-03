@@ -310,6 +310,7 @@ internal class PvEFeatures : ConfigWindow
         // Search for children if nothing was found at the root
         if (currentPreset == 1 && IsSearching)
         {
+            List<Preset> alreadyShown = [];
             foreach (var preset in PresetStorage.AllPresets!.Where(x =>
                          IsPvECombo(x) &&
                          x.Attributes().CustomComboInfo.Job == job))
@@ -318,11 +319,17 @@ internal class PvEFeatures : ConfigWindow
                 
                 if (!PresetMatchesSearch(preset))
                     continue;
+                // Don't show things that were already shown under another preset
+                if (alreadyShown.Any(y => y == attributes.Parent) ||
+                     alreadyShown.Any(y => y == attributes.GrandParent) ||
+                     alreadyShown.Any(y => y == attributes.GreatGrandParent))
+                    continue;
                 
                 var info = attributes.CustomComboInfo;
                 InfoBox presetBox = new() { ContentsOffset = 5f.Scale(), ContentsAction = () => { Presets.DrawPreset(preset, info!); } };
                 presetBox.Draw();
                 ImGuiEx.Spacing(new Vector2(0, 12));
+                alreadyShown.Add(preset);
             }
 
             // Show error message if still nothing was found

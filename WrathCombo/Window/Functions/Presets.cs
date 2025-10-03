@@ -37,6 +37,8 @@ internal class Presets : ConfigWindow
         public bool IsPvP;
         public Preset[] Conflicts;
         public Preset? Parent;
+        public Preset? GrandParent;
+        public Preset? GreatGrandParent;
         public BlueInactiveAttribute? BlueInactive;
         public VariantAttribute? Variant;
         public PossiblyRetargetedAttribute? PossiblyRetargeted;
@@ -74,6 +76,11 @@ internal class Presets : ConfigWindow
             RoleAttribute = preset.GetAttribute<RoleAttribute>();
             Hidden = preset.GetAttribute<HiddenAttribute>();
             ComboType = PresetStorage.GetComboType(preset);
+
+            if (Parent is not null)
+                GrandParent = PresetStorage.GetParent(Parent.Value);
+            if (GrandParent is not null)
+                GreatGrandParent = PresetStorage.GetParent(GrandParent.Value);
         }
     }
 
