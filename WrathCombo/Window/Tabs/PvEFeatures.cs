@@ -20,6 +20,7 @@ internal class PvEFeatures : ConfigWindow
 {
     internal static Job? OpenJob;
     internal static int ColCount = 1;
+
     internal static new void Draw()
     {
         //#if !DEBUG
@@ -103,8 +104,9 @@ internal class PvEFeatures : ConfigWindow
             {
                 var id = groupedPresets[OpenJob.Value].First().Info.Job;
                 IDalamudTextureWrap? icon = Icons.GetJobIcon(id);
+                var width = ImGui.GetContentRegionAvail().X;
 
-                using (ImRaii.Child("HeadingTab", new Vector2(ImGui.GetContentRegionAvail().X, iconMaxSize)))
+                using (ImRaii.Child("HeadingTab", new Vector2(width, iconMaxSize)))
                 {
                     if (ImGui.Button("Back", new Vector2(0, 24f.Scale())))
                     {
@@ -138,8 +140,9 @@ internal class PvEFeatures : ConfigWindow
                         P.UIHelper
                             .ShowIPCControlledIndicatorIfNeeded(id);
                     }
-
                 }
+
+                DrawSearchBar();
 
                 using (ImRaii.Child("Contents", new Vector2(0)))
                 {
@@ -316,5 +319,46 @@ internal class PvEFeatures : ConfigWindow
         var job = Player.Job.GetUpgradedJob();
         if (groupedPresets.ContainsKey(job))
             OpenJob = job;
+    }
+
+    internal static void DrawSearchBar()
+    {
+        if (!Service.Configuration.UIShowSearchBar)
+            return;
+        
+        var width = ImGui.GetContentRegionAvail().X;
+        var letterWidth = ImGui.CalcTextSize("W").X.Scale();
+
+        using var id = ImRaii.Child("SearchBar",
+            new Vector2(width, 22f.Scale()));
+        if (!id)
+            return;
+        
+        var searchLabelText = "Search:";
+        var searchHintText = "Option name, ID, Internal Name, Description, etc";
+        var searchDescriptionText = "Descriptions";
+
+        var searchWidth = letterWidth * 25 + 4f.Scale();
+        // line width for the search bar
+        var lineWidth = searchWidth
+                        // label
+                        + ImGui.CalcTextSize(searchLabelText).X
+                        + ImGui.GetStyle().ItemSpacing.X
+                        // checkbox
+                        + ImGui.GetStyle().ItemSpacing.X * 2
+                        + ImGui.GetFrameHeight()
+                        + ImGui.GetStyle().FramePadding.X * 2
+                        + ImGui.CalcTextSize(searchDescriptionText).X;
+        ImGui.SetCursorPosX((width - lineWidth) / 2f);
+                        
+        ImGui.Text(searchLabelText);
+        ImGui.SameLine();
+        ImGui.SetNextItemWidth(letterWidth*30+8f.Scale());
+        ImGui.InputTextWithHint(
+            "", searchHintText,
+            ref Search, 30,
+            ImGuiInputTextFlags.AutoSelectAll);
+        ImGui.SameLine();
+        ImGui.Checkbox(searchDescriptionText, ref SearchDescription);
     }
 }

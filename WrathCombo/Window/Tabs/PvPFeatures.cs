@@ -130,8 +130,9 @@ internal class PvPFeatures : ConfigWindow
                         ImGuiEx.Spacing(new Vector2(0, verticalCenteringPadding-2f.Scale()));
                         ImGuiEx.Text($"{OpenJob.Value.Name()}");
                     });
-
                 }
+
+                PvEFeatures.DrawSearchBar();
 
                 using (ImRaii.Child("Contents", new Vector2(0)))
                 {

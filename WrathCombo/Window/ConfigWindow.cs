@@ -28,8 +28,12 @@ internal class ConfigWindow : Dalamud.Interface.Windowing.Window
 {
     internal static readonly Dictionary<Job, List<(Preset Preset, CustomComboInfoAttribute Info)>> groupedPresets = GetGroupedPresets();
     internal static readonly Dictionary<Preset, (Preset Preset, CustomComboInfoAttribute Info)[]> presetChildren = GetPresetChildren();
+
     internal static int currentPreset = 1;
     internal static float lastLeftColumnWidth;
+    internal static string Search = string.Empty;
+    internal static bool SearchDescription = true;
+
     internal static Dictionary<Job, List<(Preset Preset, CustomComboInfoAttribute Info)>> GetGroupedPresets()
     {
         return Enum

@@ -133,6 +133,8 @@ public class PluginConfiguration : IPluginConfiguration
         
     public bool UILeftColumnCollapsed = false;
 
+    public bool UIShowSearchBar = true;
+
     #endregion
 
     #region AutoAction Settings
