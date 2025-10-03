@@ -116,6 +116,20 @@ internal class Settings : ConfigWindow
 
             #endregion
 
+            #region Search Bar
+
+            bool hideSearchBar = Service.Configuration.UIShowSearchBar;
+
+            if (ImGui.Checkbox("Show Search Bar within Jobs", ref childBorders))
+            {
+                Service.Configuration.UIShowSearchBar = hideSearchBar;
+                Service.Configuration.Save();
+            }
+
+            ImGuiComponents.HelpMarker("Toggles whether the Search Bar should be shown at the top of all PvE and PvP jobs");
+
+            #endregion
+
             ImGuiEx.Spacing(new Vector2(0, 10));
 
             #region Open to PvE
