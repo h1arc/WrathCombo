@@ -120,7 +120,7 @@ internal class Settings : ConfigWindow
 
             bool hideSearchBar = Service.Configuration.UIShowSearchBar;
 
-            if (ImGui.Checkbox("Show Search Bar within Jobs", ref childBorders))
+            if (ImGui.Checkbox("Show Search Bar within Jobs", ref hideSearchBar))
             {
                 Service.Configuration.UIShowSearchBar = hideSearchBar;
                 Service.Configuration.Save();
