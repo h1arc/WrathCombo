@@ -97,28 +97,31 @@ internal class PvPFeatures : FeaturesWindow
 
                 DrawHeader(id, true);
                 DrawSearchBar();
+                ImGuiEx.Spacing(new Vector2(0, 10));
+                
+                using var content = ImRaii.Child("PvPContent", Vector2.Zero);
+                if (!content)
+                    return;
 
-                using (ImRaii.Child("Contents", new Vector2(0)))
+                CurrentPreset = 1;
+
+                try
                 {
-                    CurrentPreset = 1;
-                    try
+                    if (ImGui.BeginTabBar($"subTab{OpenPvPJob.Value.Name()}", ImGuiTabBarFlags.Reorderable | ImGuiTabBarFlags.AutoSelectNewTabs))
                     {
-                        if (ImGui.BeginTabBar($"subTab{OpenPvPJob.Value.Name()}", ImGuiTabBarFlags.Reorderable | ImGuiTabBarFlags.AutoSelectNewTabs))
+                        if (ImGui.BeginTabItem("Normal"))
                         {
-                            if (ImGui.BeginTabItem("Normal"))
-                            {
-                                DrawHeadingContents(OpenPvPJob.Value);
-                                ImGui.EndTabItem();
-                            }
-
-                            ImGui.EndTabBar();
+                            SetCurrentTab(FeatureTab.Normal);
+                            DrawHeadingContents(OpenPvPJob.Value);
+                            ImGui.EndTabItem();
                         }
-                    }
-                    catch (Exception e)
-                    {
-                        PluginLog.Error($"Error while drawing Job's PvP UI:\n{e.ToStringFull()}");
-                    }
 
+                        ImGui.EndTabBar();
+                    }
+                }
+                catch (Exception e)
+                {
+                    PluginLog.Error($"Error while drawing Job's PvP UI:\n{e.ToStringFull()}");
                 }
             }
 
