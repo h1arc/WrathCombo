@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using Dalamud.Interface.Textures.TextureWraps;
 using Dalamud.Interface.Utility.Raii;
 using ECommons.ExcelServices;
 using ECommons.ImGuiMethods;
@@ -28,6 +27,7 @@ internal class FeaturesWindow : ConfigWindow
     internal static float VerticalCenteringPadding =>
         (IconMaxSize - ImGui.GetTextLineHeight()) / 2f;
     internal static float AvailableWidth => ImGui.GetContentRegionAvail().X;
+    internal static float LetterWidth => ImGui.CalcTextSize("W").X.Scale();
     
     public enum FeatureTab
     {
@@ -40,6 +40,7 @@ internal class FeaturesWindow : ConfigWindow
 
     public static void DrawHeader(Job job, bool pvp = false)
     {
+        var name = !pvp ? $"{OpenJob?.Name()}" : $"{OpenPvPJob?.Name()}";
         var icon = Icons.GetJobIcon(job);
         
         using var header = ImRaii.Child((pvp ? "PvP" : "") + "HeadingTab",
@@ -47,6 +48,7 @@ internal class FeaturesWindow : ConfigWindow
         if (!header)
             return;
 
+        #region Back Button
         if (ImGui.Button("Back", new Vector2(0, 24f.Scale())))
         {
             if (!pvp)
@@ -56,44 +58,65 @@ internal class FeaturesWindow : ConfigWindow
             return;
         }
         ImGui.SameLine();
-        ImGuiEx.LineCentered(() =>
-        {
-            if (icon != null)
-            {
-                var scale = Math.Min(IconMaxSize / icon.Size.X, IconMaxSize / icon.Size.Y);
-                var imgSize = new Vector2(icon.Size.X * scale, icon.Size.Y * scale);
-                var padSize = (IconMaxSize - imgSize.X) / 2f;
-                if (padSize > 0)
-                    ImGui.SetCursorPosX(ImGui.GetCursorPosX() + padSize);
-                ImGui.Image(icon.Handle, imgSize);
-            }
-            else
-            {
-                ImGui.Dummy(new Vector2(IconMaxSize, IconMaxSize));
-            }
-            ImGui.SameLine();
-            ImGuiEx.Spacing(new Vector2(0, VerticalCenteringPadding-2f.Scale()));
-            ImGuiEx.Text(!pvp ? $"{OpenJob?.Name()}" : $"{OpenPvPJob?.Name()}");
-        });
+        #endregion
 
+        #region Image Sizing
+        var imgSize = Vector2.Zero;
+        var imgPadSize = 0f;
+        if (icon != null)
+        {
+            var imgScale = Math.Min(IconMaxSize / icon.Size.X,
+                IconMaxSize / icon.Size.Y);
+            imgSize = new Vector2(icon.Size.X * imgScale,
+                icon.Size.Y * imgScale);
+            imgPadSize = (IconMaxSize - imgSize.X) / 2f;
+        }
+        #endregion
+
+        #region Centering
+        var lineWidth = // image
+            imgSize.X
+            + imgPadSize
+            // job name
+            + ImGui.GetStyle().ItemSpacing.X
+            + ImGui.CalcTextSize(name).X;
+        ImGui.SetCursorPosX((AvailableWidth - lineWidth) / 2f);
+        #endregion
+
+        #region Job Icon
+        if (icon != null)
+        {
+            if (imgPadSize > 0)
+                ImGui.SetCursorPosX(ImGui.GetCursorPosX() + imgPadSize);
+            ImGui.Image(icon.Handle, imgSize);
+        }
+        else
+        {
+            ImGui.Dummy(new Vector2(IconMaxSize, IconMaxSize));
+        }
+        ImGui.SameLine();
+        #endregion
+
+        ImGuiEx.Spacing(new Vector2(0, VerticalCenteringPadding-2f.Scale()));
+        ImGuiEx.Text(name);
+
+        #region IPC Indicator
         if (!pvp && P.UIHelper.JobControlled(job) is not null)
         {
             ImGui.SameLine();
             P.UIHelper
                 .ShowIPCControlledIndicatorIfNeeded(job);
         }
+        #endregion
     }
 
     public static void DrawSearchBar()
     {
         if (!Service.Configuration.UIShowSearchBar)
             return;
-        
-        var width = ImGui.GetContentRegionAvail().X;
-        var letterWidth = ImGui.CalcTextSize("W").X.Scale();
 
         using var id = ImRaii.Child("SearchBar",
-            new Vector2(width, 22f.Scale()));
+            new Vector2(AvailableWidth, 22f.Scale()));
         if (!id)
             return;
         
@@ -101,7 +124,7 @@ internal class FeaturesWindow : ConfigWindow
         var searchHintText = "Option name, ID, Internal Name, Description, etc";
         var searchDescriptionText = "Descriptions";
 
-        var searchWidth = letterWidth * 25 + 4f.Scale();
+        var searchWidth = LetterWidth * 25 + 4f.Scale();
         // line width for the search bar
         var lineWidth = searchWidth
                         // label
@@ -112,11 +135,11 @@ internal class FeaturesWindow : ConfigWindow
                         + ImGui.GetFrameHeight()
                         + ImGui.GetStyle().FramePadding.X * 2
                         + ImGui.CalcTextSize(searchDescriptionText).X;
-        ImGui.SetCursorPosX((width - lineWidth) / 2f);
+        ImGui.SetCursorPosX((AvailableWidth - lineWidth) / 2f);
                         
         ImGui.Text(searchLabelText);
         ImGui.SameLine();
-        ImGui.SetNextItemWidth(letterWidth*30+8f.Scale());
+        ImGui.SetNextItemWidth(searchWidth);
         ImGui.InputTextWithHint(
             "", searchHintText,
             ref Search, 30,
