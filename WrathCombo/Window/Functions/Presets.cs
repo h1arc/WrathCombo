@@ -211,10 +211,10 @@ internal class Presets : ConfigWindow
         Vector2 length = new();
         using (var styleCol = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudGrey))
         {
-            if (FeaturesWindow.currentPreset != -1)
+            if (FeaturesWindow.CurrentPreset != -1)
             {
-                ImGui.Text($"#{FeaturesWindow.currentPreset}: ");
-                length = ImGui.CalcTextSize($"#{FeaturesWindow.currentPreset}: ");
+                ImGui.Text($"#{FeaturesWindow.CurrentPreset}: ");
+                length = ImGui.CalcTextSize($"#{FeaturesWindow.CurrentPreset}: ");
                 ImGui.SameLine();
                 ImGui.PushItemWidth(length.Length());
             }
@@ -409,7 +409,7 @@ internal class Presets : ConfigWindow
         }
 
         ImGui.Spacing();
-        FeaturesWindow.currentPreset++;
+        FeaturesWindow.CurrentPreset++;
 
         presetChildren.TryGetValue(preset, out var children);
 
@@ -455,7 +455,7 @@ internal class Presets : ConfigWindow
                             }
 
                             // Keep removed items in the counter
-                            FeaturesWindow.currentPreset += 1 + AllChildren(presetChildren[childPreset]);
+                            FeaturesWindow.CurrentPreset += 1 + AllChildren(presetChildren[childPreset]);
                         }
 
                         else
@@ -477,7 +477,7 @@ internal class Presets : ConfigWindow
             }
             else
             {
-                FeaturesWindow.currentPreset += AllChildren(presetChildren[preset]);
+                FeaturesWindow.CurrentPreset += AllChildren(presetChildren[preset]);
 
             }
         }

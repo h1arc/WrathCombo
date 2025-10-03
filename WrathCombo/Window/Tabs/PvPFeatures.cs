@@ -137,7 +137,7 @@ internal class PvPFeatures : FeaturesWindow
 
                 using (ImRaii.Child("Contents", new Vector2(0)))
                 {
-                    currentPreset = 1;
+                    CurrentPreset = 1;
                     try
                     {
                         if (ImGui.BeginTabBar($"subTab{OpenJob.Value.Name()}", ImGuiTabBarFlags.Reorderable | ImGuiTabBarFlags.AutoSelectNewTabs))
@@ -197,7 +197,7 @@ internal class PvPFeatures : FeaturesWindow
 
                     // Keep removed items in the counter
                     var parent = PresetStorage.GetParent(preset) ?? preset;
-                    currentPreset += 1 + Presets.AllChildren(presetChildren[parent]);
+                    CurrentPreset += 1 + Presets.AllChildren(presetChildren[parent]);
                 }
 
                 else
@@ -215,7 +215,7 @@ internal class PvPFeatures : FeaturesWindow
         }
         
         // Search for children if nothing was found at the root
-        if (currentPreset == 1 && IsSearching)
+        if (CurrentPreset == 1 && IsSearching)
         {
             List<Preset> alreadyShown = [];
             foreach (var preset in PresetStorage.AllPresets!.Where(x =>
@@ -240,7 +240,7 @@ internal class PvPFeatures : FeaturesWindow
             }
 
             // Show error message if still nothing was found
-            if (currentPreset == 1) {
+            if (CurrentPreset == 1) {
                 ImGuiEx.LineCentered(() =>
                 {
                     ImGui.TextUnformatted("Nothing matched your search.");

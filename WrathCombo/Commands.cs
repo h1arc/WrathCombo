@@ -689,9 +689,7 @@ public partial class WrathCombo
     {
         argument ??= [""];
 
-        // Clear any searches
-        ConfigWindow.Search = String.Empty;
-        ConfigWindow.SearchDescription = true;
+        ConfigWindow.ClearAnySearches();
 
         // Toggle the window state
         ConfigWindow.IsOpen = !ConfigWindow.IsOpen;

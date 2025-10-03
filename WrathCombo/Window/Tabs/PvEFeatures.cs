@@ -148,7 +148,7 @@ internal class PvEFeatures : FeaturesWindow
 
                 using (ImRaii.Child("Contents", new Vector2(0)))
                 {
-                    currentPreset = 1;
+                    CurrentPreset = 1;
                     try
                     {
                         if (ImGui.BeginTabBar($"subTab{OpenJob.Value.Name()}", ImGuiTabBarFlags.Reorderable | ImGuiTabBarFlags.AutoSelectNewTabs))

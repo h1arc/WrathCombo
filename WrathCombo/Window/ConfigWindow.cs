@@ -88,9 +88,8 @@ internal class ConfigWindow : Dalamud.Interface.Windowing.Window
         get;
         set
         {
+            ClearAnySearches();
             field = value;
-            Search = string.Empty;
-            SearchDescription = true;
         }
     } = OpenWindow.PvE;
 
@@ -139,12 +138,16 @@ internal class ConfigWindow : Dalamud.Interface.Windowing.Window
 
         DrawCollapseButton();
     }
+    
+    public static void ClearAnySearches()
+    {
+        Search = string.Empty;
+        SearchDescription = true;
+    }
 
     public override void OnClose()
     {
-        // Clear any searches
-        Search = string.Empty;
-        SearchDescription = true;
+        ClearAnySearches();
 
         // Normal close
         base.OnClose();
