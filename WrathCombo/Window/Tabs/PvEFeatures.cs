@@ -5,6 +5,7 @@ using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
 using ECommons.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using Dalamud.Utility;
@@ -313,15 +314,18 @@ internal class PvEFeatures : ConfigWindow
                          IsPvECombo(x) &&
                          x.Attributes().CustomComboInfo.Job == job))
             {
+                var attributes = preset.Attributes();
+                
                 if (!PresetMatchesSearch(preset))
                     continue;
                 
-                var info = preset.Attributes().CustomComboInfo;
+                var info = attributes.CustomComboInfo;
                 InfoBox presetBox = new() { ContentsOffset = 5f.Scale(), ContentsAction = () => { Presets.DrawPreset(preset, info!); } };
                 presetBox.Draw();
                 ImGuiEx.Spacing(new Vector2(0, 12));
             }
-                
+
+            // Show error message if still nothing was found
             if (currentPreset == 1) {
                 ImGuiEx.LineCentered(() =>
                 {
@@ -406,9 +410,14 @@ internal class PvEFeatures : ConfigWindow
         if (!Presets.Attributes.TryGetValue(preset, out var attributes))
             attributes = new Presets.PresetAttributes(preset);
 
+        // ID matching
         if (UsableSearch.All(char.IsDigit) &&
             int.TryParse(UsableSearch, out var searchNum) &&
             (int)preset == searchNum)
+            return true;
+        
+        // Internal name matching
+        if (preset.ToString().Contains(UsableSearch, StringComparison.OrdinalIgnoreCase))
             return true;
 
         return false;
