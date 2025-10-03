@@ -408,6 +408,8 @@ internal class PvEFeatures : ConfigWindow
 
     internal static bool PresetMatchesSearch(Preset preset)
     {
+        const StringComparison lower = StringComparison.OrdinalIgnoreCase;
+        
         if (!IsSearching)
             return false;
 
@@ -418,13 +420,18 @@ internal class PvEFeatures : ConfigWindow
             attributes = new Presets.PresetAttributes(preset);
 
         // ID matching
-        if (UsableSearch.All(char.IsDigit) &&
-            int.TryParse(UsableSearch, out var searchNum) &&
+        if (UsableSearch.Replace(" ", "").All(char.IsDigit) &&
+            int.TryParse(UsableSearch.Replace("_", ""), out var searchNum) &&
             (int)preset == searchNum)
             return true;
         
         // Internal name matching
-        if (preset.ToString().Contains(UsableSearch, StringComparison.OrdinalIgnoreCase))
+        if (preset.ToString().Contains(UsableSearch, lower))
+            return true;
+        
+        // Internal name matching (without underscores)
+        if (preset.ToString().Replace("_", "")
+            .Contains(UsableSearch.Replace("_", ""), lower))
             return true;
 
         return false;
