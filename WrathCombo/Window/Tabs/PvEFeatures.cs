@@ -7,6 +7,7 @@ using ECommons.Logging;
 using System;
 using System.Linq;
 using System.Numerics;
+using Dalamud.Utility;
 using ECommons;
 using WrathCombo.Core;
 using WrathCombo.Extensions;
@@ -360,5 +361,24 @@ internal class PvEFeatures : ConfigWindow
             ImGuiInputTextFlags.AutoSelectAll);
         ImGui.SameLine();
         ImGui.Checkbox(searchDescriptionText, ref SearchDescription);
+    }
+
+    internal static bool PresetMatchesSearch(Preset preset)
+    {
+        if (!IsSearching)
+            return false;
+
+        if (PresetStorage.ShouldBeHidden(preset))
+            return false;
+
+        if (!Presets.Attributes.TryGetValue(preset, out var attributes))
+            attributes = new Presets.PresetAttributes(preset);
+
+        if (UsableSearch.All(char.IsDigit) &&
+            int.TryParse(UsableSearch, out var searchNum) &&
+            (int)preset == searchNum)
+            return true;
+
+        return false;
     }
 }
