@@ -111,7 +111,6 @@ internal class PvPFeatures : FeaturesWindow
                     {
                         if (ImGui.BeginTabItem("Normal"))
                         {
-                            SetCurrentTab(FeatureTab.Normal);
                             DrawHeadingContents(OpenPvPJob.Value);
                             ImGui.EndTabItem();
                         }
