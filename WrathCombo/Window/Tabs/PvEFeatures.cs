@@ -442,6 +442,36 @@ internal class PvEFeatures : ConfigWindow
         if (attributes.CustomComboInfo.Name.Replace(" ", "")
             .Contains(UsableSearch.Replace(" ", ""), lower))
             return true;
+        
+        // Title matching (without punctuation or spaces)
+        if (new string(attributes.CustomComboInfo.Name.Replace(" ", "")
+                .Where(c => !char.IsPunctuation(c))
+                .ToArray())
+            .Contains(new string(UsableSearch.Replace(" ", "")
+                .Where(c => !char.IsPunctuation(c))
+                .ToArray()), lower))
+            return true;
+
+        if (SearchDescription)
+        {
+            // Description matching
+            if (attributes.CustomComboInfo.Description.Contains(UsableSearch, lower))
+                return true;
+            
+            // Description matching (without spaces)
+            if (attributes.CustomComboInfo.Description.Replace(" ", "")
+                .Contains(UsableSearch.Replace(" ", ""), lower))
+                return true;
+            
+            // Description matching (without punctuation or spaces)
+            if (new string(attributes.CustomComboInfo.Description.Replace(" ", "")
+                    .Where(c => !char.IsPunctuation(c))
+                    .ToArray())
+                .Contains(new string(UsableSearch.Replace(" ", "")
+                    .Where(c => !char.IsPunctuation(c))
+                    .ToArray()), lower))
+                return true;
+        }
 
         return false;
     }
