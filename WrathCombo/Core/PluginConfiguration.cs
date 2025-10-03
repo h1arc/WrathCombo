@@ -135,6 +135,16 @@ public class PluginConfiguration : IPluginConfiguration
 
     public bool UIShowSearchBar = true;
 
+    public SearchMode SearchBehavior = SearchMode.Filter;
+
+    public enum SearchMode
+    {
+        Filter,
+        Highlight,
+    }
+    
+    public bool SearchPreserveHierarchy = false; // only applicable to Filter mode
+
     #endregion
 
     #region AutoAction Settings
