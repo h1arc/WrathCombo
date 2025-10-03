@@ -248,17 +248,25 @@ internal class PvEFeatures : ConfigWindow
     {
         if (!Messages.PrintBLUMessage(job)) return;
 
+        bool IsPvECombo(Preset preset)
+        {
+            return !PresetStorage.IsPvP(preset) &&
+                   !PresetStorage.IsVariant(preset) &&
+                   !PresetStorage.IsBozja(preset) &&
+                   !PresetStorage.IsEureka(preset) &&
+                   !PresetStorage.IsOccultCrescent(preset) &&
+                   !PresetStorage.ShouldBeHidden(preset);
+        }
+
         foreach (var (preset, info) in groupedPresets[job].Where(x =>
-            !PresetStorage.IsPvP(x.Preset) &&
-            !PresetStorage.IsVariant(x.Preset) &&
-            !PresetStorage.IsBozja(x.Preset) &&
-            !PresetStorage.IsEureka(x.Preset) &&
-            !PresetStorage.IsOccultCrescent(x.Preset) &&
-            !PresetStorage.ShouldBeHidden(x.Preset)))
+                     IsPvECombo(x.Preset)))
         {
             InfoBox presetBox = new() { ContentsOffset = 5f.Scale(), ContentsAction = () => { Presets.DrawPreset(preset, info); } };
+            
+            if (IsSearching && !PresetMatchesSearch(preset))
+                continue;
 
-            if (Service.Configuration.HideConflictedCombos)
+            if (Service.Configuration.HideConflictedCombos && !IsSearching)
             {
                 var conflictOriginals = PresetStorage.GetConflicts(preset); // Presets that are contained within a ConflictedAttribute
                 var conflictsSource = PresetStorage.GetAllConflicts();      // Presets with the ConflictedAttribute
@@ -295,6 +303,30 @@ internal class PvEFeatures : ConfigWindow
             {
                 presetBox.Draw();
                 ImGuiEx.Spacing(new Vector2(0, 12));
+            }
+        }
+        
+        // Search for children if nothing was found at the root
+        if (currentPreset == 1 && IsSearching)
+        {
+            foreach (var preset in PresetStorage.AllPresets!.Where(x =>
+                         IsPvECombo(x) &&
+                         x.Attributes().CustomComboInfo.Job == job))
+            {
+                if (!PresetMatchesSearch(preset))
+                    continue;
+                
+                var info = preset.Attributes().CustomComboInfo;
+                InfoBox presetBox = new() { ContentsOffset = 5f.Scale(), ContentsAction = () => { Presets.DrawPreset(preset, info!); } };
+                presetBox.Draw();
+                ImGuiEx.Spacing(new Vector2(0, 12));
+            }
+                
+            if (currentPreset == 1) {
+                ImGuiEx.LineCentered(() =>
+                {
+                    ImGui.TextUnformatted("Nothing matched your search.");
+                });
             }
         }
     }
