@@ -18,19 +18,11 @@ namespace WrathCombo.Window.Tabs;
 
 internal class PvPFeatures : FeaturesWindow
 {
-    internal static Job? OpenJob;
-    internal static int ColCount = 1;
-
     internal static new void Draw()
     {
         using (ImRaii.Child("scrolling", new Vector2(ImGui.GetContentRegionAvail().X, ImGui.GetContentRegionAvail().Y), true))
         {
-            var indentWidth = 12f.Scale();
-            var indentWidth2 = indentWidth + 42f.Scale();
-            var iconMaxSize = 34f.Scale();
-            var verticalCenteringPadding = (iconMaxSize - ImGui.GetTextLineHeight()) / 2f;
-
-            if (OpenJob is null)
+            if (OpenPvPJob is null)
             {
                 ImGuiEx.LineCentered("pvpDesc", () =>
                 {
@@ -72,26 +64,26 @@ internal class PvPFeatures : FeaturesWindow
                         ImGuiEx.Spacing(new Vector2(0, 2f.Scale()));
                         using (var disabled = ImRaii.Disabled(DisabledJobsPVP.Any(x => x == id)))
                         {
-                            if (ImGui.Selectable($"###{header}", OpenJob == job, ImGuiSelectableFlags.None, new Vector2(0, iconMaxSize)))
+                            if (ImGui.Selectable($"###{header}", OpenPvPJob == job, ImGuiSelectableFlags.None, new Vector2(0, IconMaxSize)))
                             {
-                                OpenJob = job;
+                                OpenPvPJob = job;
                             }
-                            ImGui.SameLine(indentWidth);
+                            ImGui.SameLine(IndentWidth);
                             if (icon != null)
                             {
-                                var scale = Math.Min(iconMaxSize / icon.Size.X, iconMaxSize / icon.Size.Y);
+                                var scale = Math.Min(IconMaxSize / icon.Size.X, IconMaxSize / icon.Size.Y);
                                 var imgSize = new Vector2(icon.Size.X * scale, icon.Size.Y * scale);
-                                var padSize = (iconMaxSize - imgSize.X) / 2f;
+                                var padSize = (IconMaxSize - imgSize.X) / 2f;
                                 if (padSize > 0)
                                     ImGui.SetCursorPosX(ImGui.GetCursorPosX() + padSize);
                                 ImGui.Image(icon.Handle, imgSize);
                             }
                             else
                             {
-                                ImGui.Dummy(new Vector2(iconMaxSize, iconMaxSize));
+                                ImGui.Dummy(new Vector2(IconMaxSize, IconMaxSize));
                             }
-                            ImGui.SameLine(indentWidth2);
-                            ImGuiEx.Spacing(new Vector2(0, verticalCenteringPadding));
+                            ImGui.SameLine(LargerIndentWidth);
+                            ImGuiEx.Spacing(new Vector2(0, VerticalCenteringPadding));
                             ImGui.Text($"{header} {(disabled ? "(Disabled due to update)" : "")}");
                         }
 
@@ -101,38 +93,9 @@ internal class PvPFeatures : FeaturesWindow
             }
             else
             {
-                var id = groupedPresets[OpenJob.Value].First().Info.Job;
-                IDalamudTextureWrap? icon = Icons.GetJobIcon(id);
+                var id = groupedPresets[OpenPvPJob.Value].First().Info.Job;
 
-                using (ImRaii.Child("PvPHeadingTab", new Vector2(ImGui.GetContentRegionAvail().X, iconMaxSize)))
-                {
-                    if (ImGui.Button("Back", new Vector2(0, 24f.Scale())))
-                    {
-                        OpenJob = null;
-                        return;
-                    }
-                    ImGui.SameLine();
-                    ImGuiEx.LineCentered(() =>
-                    {
-                        if (icon != null)
-                        {
-                            var scale = Math.Min(iconMaxSize / icon.Size.X, iconMaxSize / icon.Size.Y);
-                            var imgSize = new Vector2(icon.Size.X * scale, icon.Size.Y * scale);
-                            var padSize = (iconMaxSize - imgSize.X) / 2f;
-                            if (padSize > 0)
-                                ImGui.SetCursorPosX(ImGui.GetCursorPosX() + padSize);
-                            ImGui.Image(icon.Handle, imgSize);
-                        }
-                        else
-                        {
-                            ImGui.Dummy(new Vector2(iconMaxSize, iconMaxSize));
-                        }
-                        ImGui.SameLine();
-                        ImGuiEx.Spacing(new Vector2(0, verticalCenteringPadding-2f.Scale()));
-                        ImGuiEx.Text($"{OpenJob.Value.Name()}");
-                    });
-                }
-
+                DrawHeader(id, true);
                 DrawSearchBar();
 
                 using (ImRaii.Child("Contents", new Vector2(0)))
@@ -140,11 +103,11 @@ internal class PvPFeatures : FeaturesWindow
                     CurrentPreset = 1;
                     try
                     {
-                        if (ImGui.BeginTabBar($"subTab{OpenJob.Value.Name()}", ImGuiTabBarFlags.Reorderable | ImGuiTabBarFlags.AutoSelectNewTabs))
+                        if (ImGui.BeginTabBar($"subTab{OpenPvPJob.Value.Name()}", ImGuiTabBarFlags.Reorderable | ImGuiTabBarFlags.AutoSelectNewTabs))
                         {
                             if (ImGui.BeginTabItem("Normal"))
                             {
-                                DrawHeadingContents(OpenJob.Value);
+                                DrawHeadingContents(OpenPvPJob.Value);
                                 ImGui.EndTabItem();
                             }
 
@@ -203,7 +166,6 @@ internal class PvPFeatures : FeaturesWindow
                 else
                 {
                     presetBox.Draw();
-                    continue;
                 }
             }
 

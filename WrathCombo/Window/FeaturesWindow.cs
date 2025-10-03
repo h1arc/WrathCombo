@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using Dalamud.Interface.Textures.TextureWraps;
 using Dalamud.Interface.Utility.Raii;
+using ECommons.ExcelServices;
 using ECommons.ImGuiMethods;
 using WrathCombo.Core;
 using WrathCombo.Extensions;
@@ -13,8 +15,19 @@ namespace WrathCombo.Window;
 
 internal class FeaturesWindow : ConfigWindow
 {
+    internal static Job? OpenJob;
+    internal static Job? OpenPvPJob;
+    internal static int ColCount = 1;
     internal static FeatureTab CurrentTab = FeatureTab.Normal;
     internal static int CurrentPreset = 1;
+
+    internal static float IndentWidth = 12f.Scale();
+    internal static float LargerIndentWidth = IndentWidth + 42f.Scale();
+    internal static float IconMaxSize = 34f.Scale();
+
+    internal static float VerticalCenteringPadding =>
+        (IconMaxSize - ImGui.GetTextLineHeight()) / 2f;
+    internal static float AvailableWidth => ImGui.GetContentRegionAvail().X;
     
     public enum FeatureTab
     {
@@ -23,6 +36,52 @@ internal class FeaturesWindow : ConfigWindow
         Bozja,
         Eureka,
         OccultCrescent,
+    }
+
+    public static void DrawHeader(Job job, bool pvp = false)
+    {
+        var icon = Icons.GetJobIcon(job);
+        
+        using var header = ImRaii.Child((pvp ? "PvP" : "") + "HeadingTab",
+            new Vector2(AvailableWidth, IconMaxSize));
+        if (!header)
+            return;
+
+        if (ImGui.Button("Back", new Vector2(0, 24f.Scale())))
+        {
+            if (!pvp)
+                OpenJob = null;
+            else
+                OpenPvPJob = null;
+            return;
+        }
+        ImGui.SameLine();
+        ImGuiEx.LineCentered(() =>
+        {
+            if (icon != null)
+            {
+                var scale = Math.Min(IconMaxSize / icon.Size.X, IconMaxSize / icon.Size.Y);
+                var imgSize = new Vector2(icon.Size.X * scale, icon.Size.Y * scale);
+                var padSize = (IconMaxSize - imgSize.X) / 2f;
+                if (padSize > 0)
+                    ImGui.SetCursorPosX(ImGui.GetCursorPosX() + padSize);
+                ImGui.Image(icon.Handle, imgSize);
+            }
+            else
+            {
+                ImGui.Dummy(new Vector2(IconMaxSize, IconMaxSize));
+            }
+            ImGui.SameLine();
+            ImGuiEx.Spacing(new Vector2(0, VerticalCenteringPadding-2f.Scale()));
+            ImGuiEx.Text(!pvp ? $"{OpenJob?.Name()}" : $"{OpenPvPJob?.Name()}");
+        });
+
+        if (!pvp && P.UIHelper.JobControlled(job) is not null)
+        {
+            ImGui.SameLine();
+            P.UIHelper
+                .ShowIPCControlledIndicatorIfNeeded(job);
+        }
     }
 
     public static void DrawSearchBar()

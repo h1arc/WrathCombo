@@ -5,10 +5,8 @@ using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
 using ECommons.Logging;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using Dalamud.Utility;
 using ECommons;
 using WrathCombo.Core;
 using WrathCombo.Extensions;
@@ -20,9 +18,6 @@ namespace WrathCombo.Window.Tabs;
 
 internal class PvEFeatures : FeaturesWindow
 {
-    internal static Job? OpenJob;
-    internal static int ColCount = 1;
-
     internal static new void Draw()
     {
         //#if !DEBUG
@@ -33,22 +28,17 @@ internal class PvEFeatures : FeaturesWindow
         }
         //#endif
 
-        using (ImRaii.Child("scrolling", new Vector2(ImGui.GetContentRegionAvail().X, ImGui.GetContentRegionAvail().Y), true))
+        using (ImRaii.Child("scrolling", new Vector2(AvailableWidth, ImGui.GetContentRegionAvail().Y), true))
         {
-            var indentWidth = 12f.Scale();
-            var indentWidth2 = indentWidth + 42f.Scale();
-            var iconMaxSize = 34f.Scale();
-            var verticalCenteringPadding = (iconMaxSize - ImGui.GetTextLineHeight()) / 2f;
-
             if (OpenJob is null)
             {
-                ImGui.SameLine(indentWidth);
+                ImGui.SameLine(IndentWidth);
                 ImGuiEx.LineCentered(() =>
                 {
                     ImGuiEx.TextUnderlined("Select a job from below to enable and configure features for it.");
                 });
 
-                ColCount = Math.Max(1, (int)(ImGui.GetContentRegionAvail().X / 200f.Scale()));
+                ColCount = Math.Max(1, (int)(AvailableWidth / 200f.Scale()));
 
                 using (var tab = ImRaii.Table("PvETable", ColCount))
                 {
@@ -67,26 +57,26 @@ internal class PvEFeatures : FeaturesWindow
                         ImGuiEx.Spacing(new Vector2(0, 2f.Scale()));
                         using (var disabled = ImRaii.Disabled(DisabledJobsPVE.Any(x => x == id)))
                         {
-                            if (ImGui.Selectable($"###{header}", OpenJob == job, ImGuiSelectableFlags.None, new Vector2(0, iconMaxSize)))
+                            if (ImGui.Selectable($"###{header}", OpenJob == job, ImGuiSelectableFlags.None, new Vector2(0, IconMaxSize)))
                             {
                                 OpenJob = job;
                             }
-                            ImGui.SameLine(indentWidth);
+                            ImGui.SameLine(IndentWidth);
                             if (icon != null)
                             {
-                                var scale = Math.Min(iconMaxSize / icon.Size.X, iconMaxSize / icon.Size.Y);
+                                var scale = Math.Min(IconMaxSize / icon.Size.X, IconMaxSize / icon.Size.Y);
                                 var imgSize = new Vector2(icon.Size.X * scale, icon.Size.Y * scale);
-                                var padSize = (iconMaxSize - imgSize.X) / 2f;
+                                var padSize = (IconMaxSize - imgSize.X) / 2f;
                                 if (padSize > 0)
                                     ImGui.SetCursorPosX(ImGui.GetCursorPosX() + padSize);
                                 ImGui.Image(icon.Handle, imgSize);
                             }
                             else
                             {
-                                ImGui.Dummy(new Vector2(iconMaxSize, iconMaxSize));
+                                ImGui.Dummy(new Vector2(IconMaxSize, IconMaxSize));
                             }
-                            ImGui.SameLine(indentWidth2);
-                            ImGuiEx.Spacing(new Vector2(0, verticalCenteringPadding));
+                            ImGui.SameLine(LargerIndentWidth);
+                            ImGuiEx.Spacing(new Vector2(0, VerticalCenteringPadding));
                             ImGui.Text($"{header} {(disabled ? "(Disabled due to update)" : "")}");
 
                             if (!string.IsNullOrEmpty(abbreviation) &&
@@ -105,110 +95,81 @@ internal class PvEFeatures : FeaturesWindow
             else
             {
                 var id = groupedPresets[OpenJob.Value].First().Info.Job;
-                IDalamudTextureWrap? icon = Icons.GetJobIcon(id);
-                var width = ImGui.GetContentRegionAvail().X;
 
-                using (ImRaii.Child("HeadingTab", new Vector2(width, iconMaxSize)))
-                {
-                    if (ImGui.Button("Back", new Vector2(0, 24f.Scale())))
-                    {
-                        OpenJob = null;
-                        return;
-                    }
-                    ImGui.SameLine();
-                    ImGuiEx.LineCentered(() =>
-                    {
-                        if (icon != null)
-                        {
-                            var scale = Math.Min(iconMaxSize / icon.Size.X, iconMaxSize / icon.Size.Y);
-                            var imgSize = new Vector2(icon.Size.X * scale, icon.Size.Y * scale);
-                            var padSize = (iconMaxSize - imgSize.X) / 2f;
-                            if (padSize > 0)
-                                ImGui.SetCursorPosX(ImGui.GetCursorPosX() + padSize);
-                            ImGui.Image(icon.Handle, imgSize);
-                        }
-                        else
-                        {
-                            ImGui.Dummy(new Vector2(iconMaxSize, iconMaxSize));
-                        }
-                        ImGui.SameLine();
-                        ImGuiEx.Spacing(new Vector2(0, verticalCenteringPadding-2f.Scale()));
-                        ImGuiEx.Text($"{OpenJob.Value.Name()}");
-                    });
-
-                    if (P.UIHelper.JobControlled(id) is not null)
-                    {
-                        ImGui.SameLine();
-                        P.UIHelper
-                            .ShowIPCControlledIndicatorIfNeeded(id);
-                    }
-                }
-
+                DrawHeader(id);
                 DrawSearchBar();
+                
+                using var content = ImRaii.Child("Content", Vector2.Zero);
+                if (!content)
+                    return;
 
-                using (ImRaii.Child("Contents", new Vector2(0)))
+                CurrentPreset = 1;
+
+                try
                 {
-                    CurrentPreset = 1;
-                    try
+                    if (!ImGui.BeginTabBar($"subTab{OpenJob.Value.Name()}",
+                            ImGuiTabBarFlags.Reorderable |
+                            ImGuiTabBarFlags.AutoSelectNewTabs))
+                        return;
+
+                    var mainTabName = OpenJob is Job.ADV ? "Job Roles" : "Normal";
+                    if (ImGui.BeginTabItem(mainTabName))
                     {
-                        if (ImGui.BeginTabBar($"subTab{OpenJob.Value.Name()}", ImGuiTabBarFlags.Reorderable | ImGuiTabBarFlags.AutoSelectNewTabs))
+                        SetCurrentTab(FeatureTab.Normal);
+                        DrawHeadingContents(OpenJob.Value);
+                        ImGui.EndTabItem();
+                    }
+
+                    if (groupedPresets[OpenJob.Value].Any(x =>
+                            PresetStorage.IsVariant(x.Preset)))
+                    {
+                        if (ImGui.BeginTabItem("Variant Dungeons"))
                         {
-                            string mainTabName = OpenJob is Job.ADV ? "Job Roles" : "Normal";
-                            if (ImGui.BeginTabItem(mainTabName))
-                            {
-                                SetCurrentTab(FeatureTab.Normal);
-                                DrawHeadingContents(OpenJob.Value);
-                                ImGui.EndTabItem();
-                            }
-
-                            if (groupedPresets[OpenJob.Value].Any(x => PresetStorage.IsVariant(x.Preset)))
-                            {
-                                if (ImGui.BeginTabItem("Variant Dungeons"))
-                                {
-                                    SetCurrentTab(FeatureTab.Variant);
-                                    DrawVariantContents(OpenJob.Value);
-                                    ImGui.EndTabItem();
-                                }
-                            }
-
-                            if (groupedPresets[OpenJob.Value].Any(x => PresetStorage.IsBozja(x.Preset)))
-                            {
-                                if (ImGui.BeginTabItem("Bozja"))
-                                {
-                                    SetCurrentTab(FeatureTab.Bozja);
-                                    DrawBozjaContents(OpenJob.Value);
-                                    ImGui.EndTabItem();
-                                }
-                            }
-
-                            if (groupedPresets[OpenJob.Value].Any(x => PresetStorage.IsEureka(x.Preset)))
-                            {
-                                if (ImGui.BeginTabItem("Eureka"))
-                                {
-                                    SetCurrentTab(FeatureTab.Eureka);
-                                    //DrawEurekaContents(OpenJob.Value);
-                                    ImGui.EndTabItem();
-                                }
-                            }
-
-                            if (groupedPresets[OpenJob.Value].Any(x => PresetStorage.IsOccultCrescent(x.Preset)))
-                            {
-                                if (ImGui.BeginTabItem("Occult Crescent"))
-                                {
-                                    SetCurrentTab(FeatureTab.OccultCrescent);
-                                    DrawOccultContents(OpenJob.Value);
-                                    ImGui.EndTabItem();
-                                }
-                            }
-
-                            ImGui.EndTabBar();
+                            SetCurrentTab(FeatureTab.Variant);
+                            DrawVariantContents(OpenJob.Value);
+                            ImGui.EndTabItem();
                         }
                     }
-                    catch (Exception e)
+
+                    if (groupedPresets[OpenJob.Value].Any(x =>
+                            PresetStorage.IsBozja(x.Preset)))
                     {
-                        PluginLog.Error($"Error while drawing Job's UI:\n{e.ToStringFull()}");
+                        if (ImGui.BeginTabItem("Bozja"))
+                        {
+                            SetCurrentTab(FeatureTab.Bozja);
+                            DrawBozjaContents(OpenJob.Value);
+                            ImGui.EndTabItem();
+                        }
                     }
 
+                    if (groupedPresets[OpenJob.Value].Any(x =>
+                            PresetStorage.IsEureka(x.Preset)))
+                    {
+                        if (ImGui.BeginTabItem("Eureka"))
+                        {
+                            SetCurrentTab(FeatureTab.Eureka);
+                            //DrawEurekaContents(OpenJob.Value);
+                            ImGui.EndTabItem();
+                        }
+                    }
+
+                    if (groupedPresets[OpenJob.Value].Any(x =>
+                            PresetStorage.IsOccultCrescent(x.Preset)))
+                    {
+                        if (ImGui.BeginTabItem("Occult Crescent"))
+                        {
+                            SetCurrentTab(FeatureTab.OccultCrescent);
+                            DrawOccultContents(OpenJob.Value);
+                            ImGui.EndTabItem();
+                        }
+                    }
+
+                    ImGui.EndTabBar();
+                }
+                catch (Exception e)
+                {
+                    PluginLog.Error(
+                        $"Error while drawing Job's UI:\n{e.ToStringFull()}");
                 }
             }
 
