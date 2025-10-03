@@ -77,7 +77,16 @@ internal class ConfigWindow : Dalamud.Interface.Windowing.Window
                 .OrderBy(tpl => tpl.Info.Order).ToArray())!;
     }
 
-    public OpenWindow OpenWindow { get; set; } = OpenWindow.PvE;
+    public OpenWindow OpenWindow
+    {
+        get;
+        set
+        {
+            field = value;
+            Search = string.Empty;
+            SearchDescription = true;
+        }
+    } = OpenWindow.PvE;
 
     /// <summary> Initializes a new instance of the <see cref="ConfigWindow"/> class. </summary>
     public ConfigWindow() : base($"{P.Name} {P.GetType().Assembly.GetName().Version}###WrathCombo")
@@ -123,6 +132,16 @@ internal class ConfigWindow : Dalamud.Interface.Windowing.Window
         }
 
         DrawCollapseButton();
+    }
+
+    public override void OnClose()
+    {
+        // Clear any searches
+        Search = string.Empty;
+        SearchDescription = true;
+
+        // Normal close
+        base.OnClose();
     }
 
     private void DrawSidebar(float topLeftSideHeight)
@@ -243,8 +262,7 @@ internal class ConfigWindow : Dalamud.Interface.Windowing.Window
             case OpenWindow.AutoRotation:
                 AutoRotationTab.Draw();
                 break;
-        }
-        ;
+        };
     }
 
     private static void DrawCollapseButton()
