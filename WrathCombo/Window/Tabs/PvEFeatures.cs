@@ -433,6 +433,15 @@ internal class PvEFeatures : ConfigWindow
         if (preset.ToString().Replace("_", "")
             .Contains(UsableSearch.Replace("_", ""), lower))
             return true;
+        
+        // Title matching
+        if (attributes.CustomComboInfo.Name.Contains(UsableSearch, lower))
+            return true;
+        
+        // Title matching (without spaces)
+        if (attributes.CustomComboInfo.Name.Replace(" ", "")
+            .Contains(UsableSearch.Replace(" ", ""), lower))
+            return true;
 
         return false;
     }
