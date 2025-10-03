@@ -5,6 +5,7 @@ using ECommons.ExcelServices;
 using ECommons.ImGuiMethods;
 using ECommons.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using ECommons;
@@ -166,8 +167,11 @@ internal class PvPFeatures : ConfigWindow
         foreach (var (preset, info) in groupedPresets[job].Where(x => PresetStorage.IsPvP(x.Preset)))
         {
             InfoBox presetBox = new() { ContentsOffset = 5f.Scale(), ContentsAction = () => { Presets.DrawPreset(preset, info); } };
+            
+            if (IsSearching && !PvEFeatures.PresetMatchesSearch(preset))
+                continue;
 
-            if (Service.Configuration.HideConflictedCombos)
+            if (Service.Configuration.HideConflictedCombos && !IsSearching)
             {
                 var conflictOriginals = PresetStorage.GetConflicts(preset); // Presets that are contained within a ConflictedAttribute
                 var conflictsSource = PresetStorage.GetAllConflicts();      // Presets with the ConflictedAttribute
@@ -207,6 +211,40 @@ internal class PvPFeatures : ConfigWindow
             {
                 presetBox.Draw();
                 ImGuiEx.Spacing(new Vector2(0, 12));
+            }
+        }
+        
+        // Search for children if nothing was found at the root
+        if (currentPreset == 1 && IsSearching)
+        {
+            List<Preset> alreadyShown = [];
+            foreach (var preset in PresetStorage.AllPresets!.Where(x =>
+                         PresetStorage.IsPvP(x) &&
+                         x.Attributes().CustomComboInfo.Job == job))
+            {
+                var attributes = preset.Attributes();
+                
+                if (!PvEFeatures.PresetMatchesSearch(preset))
+                    continue;
+                // Don't show things that were already shown under another preset
+                if (alreadyShown.Any(y => y == attributes.Parent) ||
+                    alreadyShown.Any(y => y == attributes.GrandParent) ||
+                    alreadyShown.Any(y => y == attributes.GreatGrandParent))
+                    continue;
+                
+                var info = attributes.CustomComboInfo;
+                InfoBox presetBox = new() { ContentsOffset = 5f.Scale(), ContentsAction = () => { Presets.DrawPreset(preset, info!); } };
+                presetBox.Draw();
+                ImGuiEx.Spacing(new Vector2(0, 12));
+                alreadyShown.Add(preset);
+            }
+
+            // Show error message if still nothing was found
+            if (currentPreset == 1) {
+                ImGuiEx.LineCentered(() =>
+                {
+                    ImGui.TextUnformatted("Nothing matched your search.");
+                });
             }
         }
     }
