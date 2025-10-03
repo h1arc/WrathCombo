@@ -125,4 +125,38 @@ internal class FeaturesWindow : ConfigWindow
 
         return false;
     }
+
+    internal static void SearchMorePresets(Preset[] presetsToSearch)
+    {
+        List<Preset> alreadyShown = [];
+        foreach (var preset in presetsToSearch)
+        {
+            var attributes = preset.Attributes();
+                
+            if (!PresetMatchesSearch(preset))
+                continue;
+            // Don't show things that were already shown under another preset
+            if (alreadyShown.Any(y => y == attributes.Parent) ||
+                alreadyShown.Any(y => y == attributes.GrandParent) ||
+                alreadyShown.Any(y => y == attributes.GreatGrandParent))
+                continue;
+                
+            var info = attributes.CustomComboInfo;
+            InfoBox presetBox = new() { ContentsOffset = 5f.Scale(), ContentsAction = () => { Presets.DrawPreset(preset, info!); } };
+            presetBox.Draw();
+            ImGuiEx.Spacing(new Vector2(0, 12));
+            alreadyShown.Add(preset);
+        }
+    }
+
+    internal static void ShowSearchErrorIfNoResults()
+    {
+        if (CurrentPreset > 1 || !IsSearching)
+            return;
+        
+        ImGuiEx.LineCentered(() =>
+        {
+            ImGui.Text("Nothing matched your search.");
+        });
+    }
 }
