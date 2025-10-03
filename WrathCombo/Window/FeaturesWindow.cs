@@ -13,7 +13,17 @@ namespace WrathCombo.Window;
 
 internal class FeaturesWindow : ConfigWindow
 {
-    internal static int currentPreset = 1;
+    internal static FeatureTab CurrentTab = FeatureTab.Normal;
+    internal static int CurrentPreset = 1;
+    
+    public enum FeatureTab
+    {
+        Normal,
+        Variant,
+        Bozja,
+        Eureka,
+        OccultCrescent,
+    }
 
     public static void DrawSearchBar()
     {
@@ -55,8 +65,18 @@ internal class FeaturesWindow : ConfigWindow
         ImGui.SameLine();
         ImGui.Checkbox(searchDescriptionText, ref SearchDescription);
     }
+    
+    public static void SetCurrentTab(FeatureTab tab)
+    {
+        // Reset Search if changing tabs
+        if (CurrentTab != tab)
+            ClearAnySearches();
+        
+        CurrentTab = tab;
+        CurrentPreset = 1;
+    }
 
-    private static bool PresetMatchesSearch(Preset preset)
+    internal static bool PresetMatchesSearch(Preset preset)
     {
         const StringComparison lower = StringComparison.OrdinalIgnoreCase;
         
