@@ -16,7 +16,7 @@ using WrathCombo.Window.Functions;
 
 namespace WrathCombo.Window.Tabs;
 
-internal class PvPFeatures : ConfigWindow
+internal class PvPFeatures : FeaturesWindow
 {
     internal static Job? OpenJob;
     internal static int ColCount = 1;
@@ -133,7 +133,7 @@ internal class PvPFeatures : ConfigWindow
                     });
                 }
 
-                PvEFeatures.DrawSearchBar();
+                DrawSearchBar();
 
                 using (ImRaii.Child("Contents", new Vector2(0)))
                 {

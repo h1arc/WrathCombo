@@ -31,11 +31,14 @@ internal class ConfigWindow : Dalamud.Interface.Windowing.Window
 
     internal static int currentPreset = 1;
     internal static float lastLeftColumnWidth;
+
+    #region Search Variables
     internal static string Search = string.Empty;
     internal static string UsableSearch => Search.Trim().ToLowerInvariant();
     internal static bool SearchDescription = true;
     internal static bool IsSearching => !UsableSearch.IsNullOrWhitespace() &&
                                         UsableSearch.Length > 2;
+    #endregion
 
     internal static Dictionary<Job, List<(Preset Preset, CustomComboInfoAttribute Info)>> GetGroupedPresets()
     {
