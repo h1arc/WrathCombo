@@ -98,6 +98,7 @@ internal class PvEFeatures : FeaturesWindow
 
                 DrawHeader(id);
                 DrawSearchBar();
+                ImGuiEx.Spacing(new Vector2(0, 10));
                 
                 using var content = ImRaii.Child("Content", Vector2.Zero);
                 if (!content)

@@ -124,7 +124,7 @@ internal class FeaturesWindow : ConfigWindow
         var searchHintText = "Option name, ID, Internal Name, Description, etc";
         var searchDescriptionText = "Descriptions";
 
-        var searchWidth = LetterWidth * 25 + 4f.Scale();
+        var searchWidth = LetterWidth * 30f + 4f.Scale();
         // line width for the search bar
         var lineWidth = searchWidth
                         // label
