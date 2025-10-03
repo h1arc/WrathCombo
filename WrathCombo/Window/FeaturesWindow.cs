@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using Dalamud.Interface.Utility.Raii;
 using ECommons.ImGuiMethods;
 using WrathCombo.Core;
+using WrathCombo.Extensions;
 using WrathCombo.Services;
 using WrathCombo.Window.Functions;
 
@@ -11,7 +13,9 @@ namespace WrathCombo.Window;
 
 internal class FeaturesWindow : ConfigWindow
 {
-    internal static void DrawSearchBar()
+    internal static int currentPreset = 1;
+
+    public static void DrawSearchBar()
     {
         if (!Service.Configuration.UIShowSearchBar)
             return;
@@ -52,7 +56,7 @@ internal class FeaturesWindow : ConfigWindow
         ImGui.Checkbox(searchDescriptionText, ref SearchDescription);
     }
 
-    internal static bool PresetMatchesSearch(Preset preset)
+    private static bool PresetMatchesSearch(Preset preset)
     {
         const StringComparison lower = StringComparison.OrdinalIgnoreCase;
         
