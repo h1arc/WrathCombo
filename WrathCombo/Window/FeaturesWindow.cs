@@ -5,6 +5,7 @@ using System.Numerics;
 using Dalamud.Interface.Utility.Raii;
 using ECommons.ExcelServices;
 using ECommons.ImGuiMethods;
+using WrathCombo.Attributes;
 using WrathCombo.Core;
 using WrathCombo.Extensions;
 using WrathCombo.Services;
@@ -14,8 +15,25 @@ namespace WrathCombo.Window;
 
 internal class FeaturesWindow : ConfigWindow
 {
-    internal static Job? OpenJob;
-    internal static Job? OpenPvPJob;
+    internal static Job? OpenJob
+    {
+        get;
+        set
+        {
+            ClearAnySearches();
+            field = value;
+        }
+    }
+    internal static Job? OpenPvPJob
+    {
+        get;
+        set
+        {
+            ClearAnySearches();
+            field = value;
+        }
+    }
+    
     internal static int ColCount = 1;
     internal static FeatureTab CurrentTab = FeatureTab.Normal;
     internal static int CurrentPreset = 1;
@@ -28,6 +46,8 @@ internal class FeaturesWindow : ConfigWindow
         (IconMaxSize - ImGui.GetTextLineHeight()) / 2f;
     internal static float AvailableWidth => ImGui.GetContentRegionAvail().X;
     internal static float LetterWidth => ImGui.CalcTextSize("W").X.Scale();
+
+    private const StringComparison Lower = StringComparison.OrdinalIgnoreCase;
     
     public enum FeatureTab
     {
@@ -160,8 +180,6 @@ internal class FeaturesWindow : ConfigWindow
 
     internal static bool PresetMatchesSearch(Preset preset)
     {
-        const StringComparison lower = StringComparison.OrdinalIgnoreCase;
-        
         if (!IsSearching)
             return false;
 
@@ -171,6 +189,10 @@ internal class FeaturesWindow : ConfigWindow
         if (!Presets.Attributes.TryGetValue(preset, out var attributes))
             attributes = new Presets.PresetAttributes(preset);
 
+        // Keyword matching
+        if (TryFindKeywordsInSearch(preset, out var matchesKeyWords))
+            return matchesKeyWords;
+
         // ID matching
         if (UsableSearch.Replace(" ", "").All(char.IsDigit) &&
             int.TryParse(UsableSearch.Replace("_", ""), out var searchNum) &&
@@ -178,21 +200,21 @@ internal class FeaturesWindow : ConfigWindow
             return true;
         
         // Internal name matching
-        if (preset.ToString().Contains(UsableSearch, lower))
+        if (preset.ToString().Contains(UsableSearch, Lower))
             return true;
         
         // Internal name matching (without underscores)
         if (preset.ToString().Replace("_", "")
-            .Contains(UsableSearch.Replace("_", ""), lower))
+            .Contains(UsableSearch.Replace("_", ""), Lower))
             return true;
         
         // Title matching
-        if (attributes.CustomComboInfo.Name.Contains(UsableSearch, lower))
+        if (attributes.CustomComboInfo.Name.Contains(UsableSearch, Lower))
             return true;
         
         // Title matching (without spaces)
         if (attributes.CustomComboInfo.Name.Replace(" ", "")
-            .Contains(UsableSearch.Replace(" ", ""), lower))
+            .Contains(UsableSearch.Replace(" ", ""), Lower))
             return true;
         
         // Title matching (without punctuation or spaces)
@@ -201,18 +223,18 @@ internal class FeaturesWindow : ConfigWindow
                 .ToArray())
             .Contains(new string(UsableSearch.Replace(" ", "")
                 .Where(c => !char.IsPunctuation(c))
-                .ToArray()), lower))
+                .ToArray()), Lower))
             return true;
 
         if (SearchDescription)
         {
             // Description matching
-            if (attributes.CustomComboInfo.Description.Contains(UsableSearch, lower))
+            if (attributes.CustomComboInfo.Description.Contains(UsableSearch, Lower))
                 return true;
             
             // Description matching (without spaces)
             if (attributes.CustomComboInfo.Description.Replace(" ", "")
-                .Contains(UsableSearch.Replace(" ", ""), lower))
+                .Contains(UsableSearch.Replace(" ", ""), Lower))
                 return true;
             
             // Description matching (without punctuation or spaces)
@@ -221,7 +243,55 @@ internal class FeaturesWindow : ConfigWindow
                     .ToArray())
                 .Contains(new string(UsableSearch.Replace(" ", "")
                     .Where(c => !char.IsPunctuation(c))
-                    .ToArray()), lower))
+                    .ToArray()), Lower))
+                return true;
+        }
+
+        return false;
+    }
+
+    private static bool TryFindKeywordsInSearch
+        (Preset preset, out bool matchesKeyWords)
+    {
+        matchesKeyWords = false;
+        var search = new string(UsableSearch
+            .Replace(" ", "")
+            .Where(c => c == '!' || !char.IsPunctuation(c))
+            .ToArray());
+        var attributes = preset.Attributes();
+
+        switch (search)
+        {
+            case "!auto":
+            case "!automode":
+            case "!autorotation":
+            case "!autorot":
+                matchesKeyWords = attributes.AutoAction is not null;
+                return true;
+            
+            case "!secret":
+            case "!hidden":
+                matchesKeyWords = Service.Configuration.ShowHiddenFeatures &&
+                                  attributes.Hidden is not null;
+                return true;
+            
+            case "!main":
+            case "!mains":
+            case "!maincombo":
+            case "!maincombos":
+                matchesKeyWords = attributes.ComboType is
+                    (ComboType.Advanced or ComboType.Simple or ComboType.Healing);
+                return true;
+            
+            case "!combo":
+            case "!combos":
+                matchesKeyWords = attributes.ComboType is not
+                    (ComboType.Feature or ComboType.Option);
+                return true;
+            
+            case "!feature":
+            case  "!features":
+                matchesKeyWords = attributes.ComboType is ComboType.Feature;
                 return true;
         }
 
