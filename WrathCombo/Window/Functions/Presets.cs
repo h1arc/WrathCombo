@@ -213,8 +213,18 @@ internal class Presets : ConfigWindow
         {
             if (FeaturesWindow.CurrentPreset != -1)
             {
-                ImGui.Text($"#{FeaturesWindow.CurrentPreset}: ");
-                length = ImGui.CalcTextSize($"#{FeaturesWindow.CurrentPreset}: ");
+                string idForShow;
+                if (Service.Configuration.UIShowPresetIDs)
+                {
+                    var idToShow = ((int)preset).ToString();
+                    idForShow = $"#{idToShow}:".PadLeft(8);
+                }
+                else
+                {
+                    idForShow = " ".PadLeft(10);
+                }
+                ImGui.Text(idForShow);
+                length = ImGui.CalcTextSize(idForShow);
                 ImGui.SameLine();
                 ImGui.PushItemWidth(length.Length());
             }

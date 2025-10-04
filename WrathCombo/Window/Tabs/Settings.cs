@@ -116,13 +116,27 @@ internal class Settings : ConfigWindow
 
             #endregion
 
+            #region Preset IDs
+
+            bool showIDs = Service.Configuration.UIShowPresetIDs;
+
+            if (ImGui.Checkbox("Show Preset IDs before their Description", ref showIDs))
+            {
+                Service.Configuration.UIShowPresetIDs = showIDs;
+                Service.Configuration.Save();
+            }
+
+            ImGuiComponents.HelpMarker("Toggles whether Presets' (Combos, Features, etc) IDs should be shown before their Description.\nThese are the IDs used for stuff like `/wrath toggle <ID>`.\nPre-7.3-Behavior was to show a number here, but it was much shorter than the full IDs.");
+
+            #endregion
+
             #region Search Bar
 
-            bool hideSearchBar = Service.Configuration.UIShowSearchBar;
+            bool showSearchBar = Service.Configuration.UIShowSearchBar;
 
-            if (ImGui.Checkbox("Show Search Bar within Jobs", ref hideSearchBar))
+            if (ImGui.Checkbox("Show Search Bar within Jobs", ref showSearchBar))
             {
-                Service.Configuration.UIShowSearchBar = hideSearchBar;
+                Service.Configuration.UIShowSearchBar = showSearchBar;
                 Service.Configuration.Save();
             }
 

@@ -133,6 +133,8 @@ public class PluginConfiguration : IPluginConfiguration
         
     public bool UILeftColumnCollapsed = false;
 
+    public bool UIShowPresetIDs = true;
+
     public bool UIShowSearchBar = true;
 
     public SearchMode SearchBehavior = SearchMode.Filter;
