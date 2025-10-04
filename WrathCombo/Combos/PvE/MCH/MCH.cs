@@ -49,8 +49,7 @@ internal partial class MCH : PhysicalRanged
                         !IsComboExpiring(6) && ActionReady(Hypercharge))
                     {
                         // Ensures Hypercharge is double weaved with WF
-                        if (LevelChecked(FullMetalField) && JustUsed(FullMetalField) &&
-                            ActionReady(Wildfire) ||
+                        if (LevelChecked(FullMetalField) && JustUsed(FullMetalField) ||
                             !LevelChecked(FullMetalField) && ActionReady(Wildfire) ||
                             !LevelChecked(Wildfire))
                             return Hypercharge;
@@ -115,7 +114,7 @@ internal partial class MCH : PhysicalRanged
             // Full Metal Field
             if (HasStatusEffect(Buffs.FullMetalMachinist, out Status? fullMetal) &&
                 TargetIsBoss() && !JustUsed(BarrelStabilizer) &&
-                (GetCooldownRemainingTime(Wildfire) <= GCD / 2 || fullMetal.RemainingTime <= 6))
+                (ActionReady(Wildfire) || fullMetal.RemainingTime <= 6))
                 return FullMetalField;
 
             // Heatblast
@@ -307,8 +306,7 @@ internal partial class MCH : PhysicalRanged
                         GetTargetHPPercent() > HPThresholdHyperchargeST)
                     {
                         // Ensures Hypercharge is double weaved with WF
-                        if (LevelChecked(FullMetalField) && JustUsed(FullMetalField) &&
-                            ActionReady(Wildfire) ||
+                        if (LevelChecked(FullMetalField) && JustUsed(FullMetalField) ||
                             !LevelChecked(FullMetalField) && ActionReady(Wildfire) ||
                             !LevelChecked(Wildfire))
                             return Hypercharge;
@@ -399,8 +397,8 @@ internal partial class MCH : PhysicalRanged
             if (IsEnabled(Preset.MCH_ST_Adv_Stabilizer_FullMetalField) &&
                 HasStatusEffect(Buffs.FullMetalMachinist, out Status? fullMetal) &&
                 !JustUsed(BarrelStabilizer) &&
-                (fullMetal.RemainingTime <= 6 ||
-                 GetCooldownRemainingTime(Wildfire) <= GCD / 2))
+                (ActionReady(Wildfire) ||
+                 fullMetal.RemainingTime <= 6))
                 return FullMetalField;
 
             // Heatblast
