@@ -275,8 +275,12 @@ internal class FeaturesWindow : ConfigWindow
                                   attributes.Hidden is not null;
                 return true;
             
-            case "!main":
-            case "!mains":
+            case "!retargeting":
+            case "!retargeted":
+                matchesKeyWords = attributes.RetargetedAttribute is not null ||
+                                  attributes.PossiblyRetargeted is not null;
+                return true;
+            
             case "!maincombo":
             case "!maincombos":
                 matchesKeyWords = attributes.ComboType is
