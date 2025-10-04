@@ -345,7 +345,7 @@ internal partial class PCT
     {
         //2nd GCD Starry Opener
         public override int MinOpenerLevel => 90;
-        public override int MaxOpenerLevel => 99;
+        public override int MaxOpenerLevel => 90;
         
         public override List<uint> OpenerActions { get; set; } =
         [
@@ -403,7 +403,7 @@ internal partial class PCT
     {
         //3rd GCD Starry Opener
         public override int MinOpenerLevel => 90;
-        public override int MaxOpenerLevel => 99;
+        public override int MaxOpenerLevel => 90;
         public override List<uint> OpenerActions { get; set; } =
         [
             FireInRed,
