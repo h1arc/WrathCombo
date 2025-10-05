@@ -95,7 +95,8 @@ internal class PvEFeatures : FeaturesWindow
             }
             else
             {
-                var id = groupedPresets[OpenJob.Value].First().Info.Job;
+                var openJob = OpenJob.Value;
+                var id = groupedPresets[openJob].First().Info.Job;
 
                 DrawHeader(id);
                 DrawSearchBar();
@@ -109,7 +110,7 @@ internal class PvEFeatures : FeaturesWindow
 
                 try
                 {
-                    if (!ImGui.BeginTabBar($"subTab{OpenJob.Value.Name()}",
+                    if (!ImGui.BeginTabBar($"subTab{openJob.Name()}",
                             ImGuiTabBarFlags.Reorderable |
                             ImGuiTabBarFlags.AutoSelectNewTabs))
                         return;
@@ -118,50 +119,50 @@ internal class PvEFeatures : FeaturesWindow
                     if (ImGui.BeginTabItem(mainTabName))
                     {
                         SetCurrentTab(FeatureTab.Normal);
-                        DrawHeadingContents(OpenJob.Value);
+                        DrawHeadingContents(openJob);
                         ImGui.EndTabItem();
                     }
 
-                    if (groupedPresets[OpenJob.Value].Any(x =>
+                    if (groupedPresets[openJob].Any(x =>
                             PresetStorage.IsVariant(x.Preset)))
                     {
                         if (ImGui.BeginTabItem("Variant Dungeons"))
                         {
                             SetCurrentTab(FeatureTab.Variant);
-                            DrawVariantContents(OpenJob.Value);
+                            DrawVariantContents(openJob);
                             ImGui.EndTabItem();
                         }
                     }
 
-                    if (groupedPresets[OpenJob.Value].Any(x =>
+                    if (groupedPresets[openJob].Any(x =>
                             PresetStorage.IsBozja(x.Preset)))
                     {
                         if (ImGui.BeginTabItem("Bozja"))
                         {
                             SetCurrentTab(FeatureTab.Bozja);
-                            DrawBozjaContents(OpenJob.Value);
+                            DrawBozjaContents(openJob);
                             ImGui.EndTabItem();
                         }
                     }
 
-                    if (groupedPresets[OpenJob.Value].Any(x =>
+                    if (groupedPresets[openJob].Any(x =>
                             PresetStorage.IsEureka(x.Preset)))
                     {
                         if (ImGui.BeginTabItem("Eureka"))
                         {
                             SetCurrentTab(FeatureTab.Eureka);
-                            //DrawEurekaContents(OpenJob.Value);
+                            //DrawEurekaContents(openJob);
                             ImGui.EndTabItem();
                         }
                     }
 
-                    if (groupedPresets[OpenJob.Value].Any(x =>
+                    if (groupedPresets[openJob].Any(x =>
                             PresetStorage.IsOccultCrescent(x.Preset)))
                     {
                         if (ImGui.BeginTabItem("Occult Crescent"))
                         {
                             SetCurrentTab(FeatureTab.OccultCrescent);
-                            DrawOccultContents(OpenJob.Value);
+                            DrawOccultContents(openJob);
                             ImGui.EndTabItem();
                         }
                     }
