@@ -207,6 +207,9 @@ internal class FeaturesWindow : ConfigWindow
 
         if (!Presets.Attributes.TryGetValue(preset, out var attributes))
             attributes = new Presets.PresetAttributes(preset);
+        
+        if (UsableSearch == "erp")
+            return false;
 
         // Keyword matching
         if (TryFindKeywordsInSearch(preset, out var matchesKeyWords))
@@ -356,6 +359,12 @@ internal class FeaturesWindow : ConfigWindow
     {
         if (CurrentPreset > 1 || !IsSearching)
             return;
+        
+        if (UsableSearch == "erp")
+        {
+            ImGuiEx.LineCentered(() => { ImGui.Text("Behave!"); });
+            return;
+        }
 
         var error = "Nothing matched your search.";
 
