@@ -5,6 +5,7 @@ using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
 using ECommons.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using ECommons;
@@ -179,12 +180,14 @@ internal class PvEFeatures : FeaturesWindow
 
     private static void DrawVariantContents(Job job)
     {
+        List<Preset> alreadyShown = [];
         foreach (var (preset, info) in groupedPresets[job].Where(x =>
             PresetStorage.IsVariant(x.Preset) &&
             !PresetStorage.ShouldBeHidden(x.Preset)))
         {
             if (IsSearching && !PresetMatchesSearch(preset))
                 continue;
+            alreadyShown.Add(preset);
 
             InfoBox presetBox = new() { CurveRadius = 8f, ContentsAction = () => { Presets.DrawPreset(preset, info); } };
             presetBox.Draw();
@@ -192,24 +195,27 @@ internal class PvEFeatures : FeaturesWindow
         }
 
         // Search for children if nothing was found at the root
-        if (CurrentPreset == 1 && IsSearching)
+        if (IsSearching)
             SearchMorePresets(PresetStorage.AllPresets!
                 .Where(x =>
                     PresetStorage.IsVariant(x) &&
                     !PresetStorage.ShouldBeHidden(x) &&
                     x.Attributes().CustomComboInfo.Job == job)
-                .ToArray());
+                .ToArray(),
+                alreadyShown);
         ShowSearchErrorIfNoResults();
     }
 
     private static void DrawBozjaContents(Job job)
     {
+        List<Preset> alreadyShown = [];
         foreach (var (preset, info) in groupedPresets[job].Where(x =>
             PresetStorage.IsBozja(x.Preset) &&
             !PresetStorage.ShouldBeHidden(x.Preset)))
         {
             if (IsSearching && !PresetMatchesSearch(preset))
                 continue;
+            alreadyShown.Add(preset);
 
             InfoBox presetBox = new() { CurveRadius = 8f, ContentsAction = () => { Presets.DrawPreset(preset, info); } };
             presetBox.Draw();
@@ -217,24 +223,27 @@ internal class PvEFeatures : FeaturesWindow
         }
 
         // Search for children if nothing was found at the root
-        if (CurrentPreset == 1 && IsSearching)
+        if (IsSearching)
             SearchMorePresets(PresetStorage.AllPresets!
                 .Where(x =>
                     PresetStorage.IsBozja(x) &&
                     !PresetStorage.ShouldBeHidden(x) &&
                     x.Attributes().CustomComboInfo.Job == job)
-                .ToArray());
+                .ToArray(),
+                alreadyShown);
         ShowSearchErrorIfNoResults();
     }
 
     private static void DrawOccultContents(Job job)
     {
+        List<Preset> alreadyShown = [];
         foreach (var (preset, info) in groupedPresets[job].Where(x =>
             PresetStorage.IsOccultCrescent(x.Preset) &&
             !PresetStorage.ShouldBeHidden(x.Preset)))
         {
             if (IsSearching && !PresetMatchesSearch(preset))
                 continue;
+            alreadyShown.Add(preset);
 
             InfoBox presetBox = new() { CurveRadius = 8f, ContentsAction = () => { Presets.DrawPreset(preset, info); } };
             presetBox.Draw();
@@ -242,13 +251,14 @@ internal class PvEFeatures : FeaturesWindow
         }
 
         // Search for children if nothing was found at the root
-        if (CurrentPreset == 1 && IsSearching)
+        if (IsSearching)
             SearchMorePresets(PresetStorage.AllPresets!
                 .Where(x =>
                     PresetStorage.IsOccultCrescent(x) &&
                     !PresetStorage.ShouldBeHidden(x) &&
                     x.Attributes().CustomComboInfo.Job == job)
-                .ToArray());
+                .ToArray(),
+                alreadyShown);
         ShowSearchErrorIfNoResults();
     }
 
@@ -266,11 +276,13 @@ internal class PvEFeatures : FeaturesWindow
                    !PresetStorage.ShouldBeHidden(preset);
         }
 
+        List<Preset> alreadyShown = [];
         foreach (var (preset, info) in groupedPresets[job].Where(x =>
                      IsPvECombo(x.Preset)))
         {
             if (IsSearching && !PresetMatchesSearch(preset))
                 continue;
+            alreadyShown.Add(preset);
             
             InfoBox presetBox = new() { ContentsOffset = 5f.Scale(), ContentsAction = () => { Presets.DrawPreset(preset, info); } };
 
@@ -315,12 +327,13 @@ internal class PvEFeatures : FeaturesWindow
         }
 
         // Search for children if nothing was found at the root
-        if (CurrentPreset == 1 && IsSearching)
+        if (IsSearching)
             SearchMorePresets(PresetStorage.AllPresets!
                 .Where(x =>
                     IsPvECombo(x) &&
                     x.Attributes().CustomComboInfo.Job == job)
-                .ToArray());
+                .ToArray(),
+                alreadyShown);
         ShowSearchErrorIfNoResults();
     }
 

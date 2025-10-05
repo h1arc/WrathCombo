@@ -1,3 +1,5 @@
+#region
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,44 +13,12 @@ using WrathCombo.Extensions;
 using WrathCombo.Services;
 using WrathCombo.Window.Functions;
 
+#endregion
+
 namespace WrathCombo.Window;
 
 internal class FeaturesWindow : ConfigWindow
 {
-    internal static Job? OpenJob
-    {
-        get;
-        set
-        {
-            ClearAnySearches();
-            field = value;
-        }
-    }
-    internal static Job? OpenPvPJob
-    {
-        get;
-        set
-        {
-            ClearAnySearches();
-            field = value;
-        }
-    }
-    
-    internal static int ColCount = 1;
-    internal static FeatureTab CurrentTab = FeatureTab.Normal;
-    internal static int CurrentPreset = 1;
-
-    internal static float IndentWidth = 12f.Scale();
-    internal static float LargerIndentWidth = IndentWidth + 42f.Scale();
-    internal static float IconMaxSize = 34f.Scale();
-
-    internal static float VerticalCenteringPadding =>
-        (IconMaxSize - ImGui.GetTextLineHeight()) / 2f;
-    internal static float AvailableWidth => ImGui.GetContentRegionAvail().X;
-    internal static float LetterWidth => ImGui.CalcTextSize("W").X.Scale();
-
-    private const StringComparison Lower = StringComparison.OrdinalIgnoreCase;
-    
     public enum FeatureTab
     {
         Normal,
@@ -58,17 +28,54 @@ internal class FeaturesWindow : ConfigWindow
         OccultCrescent,
     }
 
+    private const StringComparison Lower = StringComparison.OrdinalIgnoreCase;
+
+    internal static int ColCount = 1;
+    internal static FeatureTab CurrentTab = FeatureTab.Normal;
+    internal static int CurrentPreset = 1;
+
+    internal static float IndentWidth = 12f.Scale();
+    internal static float LargerIndentWidth = IndentWidth + 42f.Scale();
+    internal static float IconMaxSize = 34f.Scale();
+
+    internal static Job? OpenJob
+    {
+        get;
+        set
+        {
+            ClearAnySearches();
+            field = value;
+        }
+    }
+
+    internal static Job? OpenPvPJob
+    {
+        get;
+        set
+        {
+            ClearAnySearches();
+            field = value;
+        }
+    }
+
+    internal static float VerticalCenteringPadding =>
+        (IconMaxSize - ImGui.GetTextLineHeight()) / 2f;
+
+    internal static float AvailableWidth => ImGui.GetContentRegionAvail().X;
+    internal static float LetterWidth => ImGui.CalcTextSize("W").X.Scale();
+
     public static void DrawHeader(Job job, bool pvp = false)
     {
         var name = !pvp ? $"{OpenJob?.Name()}" : $"{OpenPvPJob?.Name()}";
         var icon = Icons.GetJobIcon(job);
-        
+
         using var header = ImRaii.Child((pvp ? "PvP" : "") + "HeadingTab",
             new Vector2(AvailableWidth, IconMaxSize));
         if (!header)
             return;
 
         #region Back Button
+
         if (ImGui.Button("Back", new Vector2(0, 24f.Scale())))
         {
             if (!pvp)
@@ -77,10 +84,13 @@ internal class FeaturesWindow : ConfigWindow
                 OpenPvPJob = null;
             return;
         }
+
         ImGui.SameLine();
+
         #endregion
 
         #region Image Sizing
+
         var imgSize = Vector2.Zero;
         var imgPadSize = 0f;
         if (icon != null)
@@ -91,9 +101,11 @@ internal class FeaturesWindow : ConfigWindow
                 icon.Size.Y * imgScale);
             imgPadSize = (IconMaxSize - imgSize.X) / 2f;
         }
+
         #endregion
 
         #region Centering
+
         var lineWidth = // image
             imgSize.X
             + imgPadSize
@@ -101,9 +113,11 @@ internal class FeaturesWindow : ConfigWindow
             + ImGui.GetStyle().ItemSpacing.X
             + ImGui.CalcTextSize(name).X;
         ImGui.SetCursorPosX((AvailableWidth - lineWidth) / 2f);
+
         #endregion
 
         #region Job Icon
+
         if (icon != null)
         {
             if (imgPadSize > 0)
@@ -114,19 +128,23 @@ internal class FeaturesWindow : ConfigWindow
         {
             ImGui.Dummy(new Vector2(IconMaxSize, IconMaxSize));
         }
+
         ImGui.SameLine();
+
         #endregion
 
-        ImGuiEx.Spacing(new Vector2(0, VerticalCenteringPadding-2f.Scale()));
+        ImGuiEx.Spacing(new Vector2(0, VerticalCenteringPadding - 2f.Scale()));
         ImGuiEx.Text(name);
 
         #region IPC Indicator
+
         if (!pvp && P.UIHelper.JobControlled(job) is not null)
         {
             ImGui.SameLine();
             P.UIHelper
                 .ShowIPCControlledIndicatorIfNeeded(job);
         }
+
         #endregion
     }
 
@@ -139,7 +157,7 @@ internal class FeaturesWindow : ConfigWindow
             new Vector2(AvailableWidth, 22f.Scale()));
         if (!id)
             return;
-        
+
         var searchLabelText = "Search:";
         var searchHintText = "Option name, ID, Internal Name, Description, etc";
         var searchDescriptionText = "Descriptions";
@@ -156,7 +174,7 @@ internal class FeaturesWindow : ConfigWindow
                         + ImGui.GetStyle().FramePadding.X * 2
                         + ImGui.CalcTextSize(searchDescriptionText).X;
         ImGui.SetCursorPosX((AvailableWidth - lineWidth) / 2f);
-                        
+
         ImGui.Text(searchLabelText);
         ImGui.SameLine();
         ImGui.SetNextItemWidth(searchWidth);
@@ -167,13 +185,13 @@ internal class FeaturesWindow : ConfigWindow
         ImGui.SameLine();
         ImGui.Checkbox(searchDescriptionText, ref SearchDescription);
     }
-    
+
     public static void SetCurrentTab(FeatureTab tab)
     {
         // Reset Search if changing tabs
         if (CurrentTab != tab)
             ClearAnySearches();
-        
+
         CurrentTab = tab;
         CurrentPreset = 1;
     }
@@ -198,25 +216,25 @@ internal class FeaturesWindow : ConfigWindow
             int.TryParse(UsableSearch.Replace("_", ""), out var searchNum) &&
             (int)preset == searchNum)
             return true;
-        
+
         // Internal name matching
         if (preset.ToString().Contains(UsableSearch, Lower))
             return true;
-        
+
         // Internal name matching (without underscores)
         if (preset.ToString().Replace("_", "")
             .Contains(UsableSearch.Replace("_", ""), Lower))
             return true;
-        
+
         // Title matching
         if (attributes.CustomComboInfo.Name.Contains(UsableSearch, Lower))
             return true;
-        
+
         // Title matching (without spaces)
         if (attributes.CustomComboInfo.Name.Replace(" ", "")
             .Contains(UsableSearch.Replace(" ", ""), Lower))
             return true;
-        
+
         // Title matching (without punctuation or spaces)
         if (new string(attributes.CustomComboInfo.Name.Replace(" ", "")
                 .Where(c => !char.IsPunctuation(c))
@@ -231,12 +249,12 @@ internal class FeaturesWindow : ConfigWindow
             // Description matching
             if (attributes.CustomComboInfo.Description.Contains(UsableSearch, Lower))
                 return true;
-            
+
             // Description matching (without spaces)
             if (attributes.CustomComboInfo.Description.Replace(" ", "")
                 .Contains(UsableSearch.Replace(" ", ""), Lower))
                 return true;
-            
+
             // Description matching (without punctuation or spaces)
             if (new string(attributes.CustomComboInfo.Description.Replace(" ", "")
                     .Where(c => !char.IsPunctuation(c))
@@ -268,33 +286,33 @@ internal class FeaturesWindow : ConfigWindow
             case "!autorot":
                 matchesKeyWords = attributes.AutoAction is not null;
                 return true;
-            
+
             case "!secret":
             case "!hidden":
                 matchesKeyWords = Service.Configuration.ShowHiddenFeatures &&
                                   attributes.Hidden is not null;
                 return true;
-            
+
             case "!retargeting":
             case "!retargeted":
                 matchesKeyWords = attributes.RetargetedAttribute is not null ||
                                   attributes.PossiblyRetargeted is not null;
                 return true;
-            
+
             case "!maincombo":
             case "!maincombos":
                 matchesKeyWords = attributes.ComboType is
-                    (ComboType.Advanced or ComboType.Simple or ComboType.Healing);
+                    ComboType.Advanced or ComboType.Simple or ComboType.Healing;
                 return true;
-            
+
             case "!combo":
             case "!combos":
                 matchesKeyWords = attributes.ComboType is not
                     (ComboType.Feature or ComboType.Option);
                 return true;
-            
+
             case "!feature":
-            case  "!features":
+            case "!features":
                 matchesKeyWords = attributes.ComboType is ComboType.Feature;
                 return true;
         }
@@ -302,23 +320,30 @@ internal class FeaturesWindow : ConfigWindow
         return false;
     }
 
-    internal static void SearchMorePresets(Preset[] presetsToSearch)
+    internal static void SearchMorePresets
+        (Preset[] presetsToSearch, List<Preset>? alreadyShown = null)
     {
-        List<Preset> alreadyShown = [];
+        alreadyShown ??= [];
+
         foreach (var preset in presetsToSearch)
         {
             var attributes = preset.Attributes();
-                
+
             if (!PresetMatchesSearch(preset))
                 continue;
+
             // Don't show things that were already shown under another preset
             if (alreadyShown.Any(y => y == attributes.Parent) ||
                 alreadyShown.Any(y => y == attributes.GrandParent) ||
                 alreadyShown.Any(y => y == attributes.GreatGrandParent))
                 continue;
-                
+
             var info = attributes.CustomComboInfo;
-            InfoBox presetBox = new() { ContentsOffset = 5f.Scale(), ContentsAction = () => { Presets.DrawPreset(preset, info!); } };
+            InfoBox presetBox = new()
+            {
+                ContentsOffset = 5f.Scale(),
+                ContentsAction = () => { Presets.DrawPreset(preset, info!); }
+            };
             presetBox.Draw();
             ImGuiEx.Spacing(new Vector2(0, 12));
             alreadyShown.Add(preset);
@@ -329,10 +354,7 @@ internal class FeaturesWindow : ConfigWindow
     {
         if (CurrentPreset > 1 || !IsSearching)
             return;
-        
-        ImGuiEx.LineCentered(() =>
-        {
-            ImGui.Text("Nothing matched your search.");
-        });
+
+        ImGuiEx.LineCentered(() => { ImGui.Text("Nothing matched your search."); });
     }
 }
