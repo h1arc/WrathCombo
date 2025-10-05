@@ -106,7 +106,8 @@ internal class FeaturesWindow : ConfigWindow
 
         #region Centering
 
-        var lineWidth = // image
+        var lineWidth =
+            // image
             imgSize.X
             + imgPadSize
             // job name
@@ -237,10 +238,10 @@ internal class FeaturesWindow : ConfigWindow
 
         // Title matching (without punctuation or spaces)
         if (new string(attributes.CustomComboInfo.Name.Replace(" ", "")
-                .Where(c => !char.IsPunctuation(c))
+                .Where(c => c == '!' || !char.IsPunctuation(c))
                 .ToArray())
             .Contains(new string(UsableSearch.Replace(" ", "")
-                .Where(c => !char.IsPunctuation(c))
+                .Where(c => c == '!' || !char.IsPunctuation(c))
                 .ToArray()), Lower))
             return true;
 
@@ -257,10 +258,10 @@ internal class FeaturesWindow : ConfigWindow
 
             // Description matching (without punctuation or spaces)
             if (new string(attributes.CustomComboInfo.Description.Replace(" ", "")
-                    .Where(c => !char.IsPunctuation(c))
+                    .Where(c => c == '!' || !char.IsPunctuation(c))
                     .ToArray())
                 .Contains(new string(UsableSearch.Replace(" ", "")
-                    .Where(c => !char.IsPunctuation(c))
+                    .Where(c => c == '!' || !char.IsPunctuation(c))
                     .ToArray()), Lower))
                 return true;
         }
@@ -355,6 +356,11 @@ internal class FeaturesWindow : ConfigWindow
         if (CurrentPreset > 1 || !IsSearching)
             return;
 
-        ImGuiEx.LineCentered(() => { ImGui.Text("Nothing matched your search."); });
+        var error = "Nothing matched your search.";
+        
+        if (UsableSearch.StartsWith('!'))
+            error += "\nMake sure your keyword is valid.";
+
+        ImGuiEx.LineCentered(() => { ImGui.Text(error); });
     }
 }
