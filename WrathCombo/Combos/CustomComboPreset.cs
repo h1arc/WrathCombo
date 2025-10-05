@@ -4322,8 +4322,8 @@ public enum Preset
     PCT_ST_AdvancedMode = 20005,
 
     [ParentCombo(PCT_ST_AdvancedMode)]
-    [CustomComboInfo("Balance Opener (Level 100)",
-        "Adds the Balance opener at level 100.",
+    [CustomComboInfo("Balance Opener (Level 90/100)",
+        "Adds the Balance opener at level 90/100.",
         Job.PCT)]
     PCT_ST_Advanced_Openers = 20006,
 
