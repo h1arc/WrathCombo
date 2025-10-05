@@ -43,8 +43,8 @@ internal class FeaturesWindow : ConfigWindow
         get;
         set
         {
-            ClearAnySearches();
             field = value;
+            ClearAnySearches();
         }
     }
 

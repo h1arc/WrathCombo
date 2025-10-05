@@ -151,6 +151,7 @@ internal class Presets : ConfigWindow
         var auto = Attributes[preset].AutoAction;
         var hidden = Attributes[preset].Hidden;
         var presetName = info.Name;
+        var currentJob = Attributes[preset].CustomComboInfo.Job;
 
         ImGui.Spacing();
 
@@ -181,6 +182,9 @@ internal class Presets : ConfigWindow
         if (info.Name.Contains(" - AoE") || info.Name.Contains(" - Sin"))
             if (P.UIHelper.PresetControlled(preset) is not null)
                 P.UIHelper.ShowIPCControlledIndicatorIfNeeded(preset);
+
+        if (IsSearching)
+            presetName = preset.NameWithFullLineage(currentJob);
 
         if (P.UIHelper.ShowIPCControlledCheckboxIfNeeded
             ($"{presetName}###{preset}", ref enabled, preset, true))
