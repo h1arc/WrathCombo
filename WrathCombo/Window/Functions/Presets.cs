@@ -150,6 +150,7 @@ internal class Presets : ConfigWindow
         var eurekaParents = Attributes[preset].EurekaParent;
         var auto = Attributes[preset].AutoAction;
         var hidden = Attributes[preset].Hidden;
+        var presetName = info.Name;
 
         ImGui.Spacing();
 
@@ -182,7 +183,7 @@ internal class Presets : ConfigWindow
                 P.UIHelper.ShowIPCControlledIndicatorIfNeeded(preset);
 
         if (P.UIHelper.ShowIPCControlledCheckboxIfNeeded
-            ($"{info.Name}###{preset}", ref enabled, preset, true))
+            ($"{presetName}###{preset}", ref enabled, preset, true))
         {
             if (enabled)
             {
@@ -248,31 +249,14 @@ internal class Presets : ConfigWindow
         if (conflicts.Length > 0)
         {
             ImGui.TextColored(ImGuiColors.DalamudRed, "Conflicts with:");
-            StringBuilder conflictBuilder = new();
             ImGui.Indent();
             foreach (var conflict in conflicts)
-            {
-                var comboInfo = Attributes[conflict].CustomComboInfo;
-                conflictBuilder.Insert(0, $"{comboInfo.Name}");
-                var par2 = conflict;
-
-                while (PresetStorage.GetParent(par2) != null)
-                {
-                    var subpar = PresetStorage.GetParent(par2);
-                    if (subpar != null)
-                    {
-                        conflictBuilder.Insert(0, $"{Attributes[subpar.Value].CustomComboInfo.Name} -> ");
-                        par2 = subpar!.Value;
-                    }
-
-                }
-
-                if (!string.IsNullOrEmpty(comboInfo.JobShorthand))
-                    conflictBuilder.Insert(0, $"[{comboInfo.JobShorthand}] ");
-
-                ImGuiEx.Text(GradientColor.Get(ImGuiColors.DalamudRed, CustomComboFunctions.IsEnabled(conflict) ? ImGuiColors.HealerGreen : ImGuiColors.DalamudRed, 1500), $"- {conflictBuilder}");
-                conflictBuilder.Clear();
-            }
+                ImGuiEx.Text(GradientColor.Get(
+                        ImGuiColors.DalamudRed,
+                        IsEnabled(conflict)
+                            ? ImGuiColors.HealerGreen
+                            : ImGuiColors.DalamudRed, 1500),
+                    $"- {conflict.NameWithFullLineage(currentJob)}");
             ImGui.Unindent();
             ImGui.Spacing();
         }
