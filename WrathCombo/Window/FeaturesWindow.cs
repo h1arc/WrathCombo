@@ -358,7 +358,7 @@ internal class FeaturesWindow : ConfigWindow
             return;
 
         var error = "Nothing matched your search.";
-        
+
         if (UsableSearch.StartsWith('!'))
             error += "\nMake sure your keyword is valid.";
 

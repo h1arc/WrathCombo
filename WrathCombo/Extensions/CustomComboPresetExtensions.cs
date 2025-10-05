@@ -1,7 +1,12 @@
-﻿using System.Text;
+﻿#region
+
+using System.Text;
 using ECommons.ExcelServices;
 using WrathCombo.Core;
 using WrathCombo.Window.Functions;
+
+#endregion
+
 namespace WrathCombo.Extensions;
 
 internal static partial class PresetExtensions
@@ -10,7 +15,7 @@ internal static partial class PresetExtensions
     {
         if (Presets.Attributes.TryGetValue(preset, out var atts))
             return atts;
-        
+
         return null;
     }
 
@@ -68,7 +73,7 @@ internal static partial class PresetExtensions
 
                 name.Insert(0, lastPresetJob);
             }
-            
+
             inspectingPreset = parent;
         }
 
