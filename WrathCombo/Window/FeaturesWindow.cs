@@ -334,7 +334,8 @@ internal class FeaturesWindow : ConfigWindow
                 continue;
 
             // Don't show things that were already shown under another preset
-            if (alreadyShown.Any(y => y == attributes.Parent) ||
+            if (alreadyShown.Any(y => y == preset) ||
+                alreadyShown.Any(y => y == attributes.Parent) ||
                 alreadyShown.Any(y => y == attributes.GrandParent) ||
                 alreadyShown.Any(y => y == attributes.GreatGrandParent))
                 continue;
