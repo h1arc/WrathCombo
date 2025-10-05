@@ -149,9 +149,10 @@ internal partial class SAM
 
             //Iaijutsu option
             if (useIaijutsu &&
-                (SenCount is 1 or 3 && !InActionRange((MidareSetsugekka)) ||
-                 UseTsubame() && !InActionRange(TsubameGaeshi) ||
-                 SenCount is 0 or 2 && !UseTsubame()))
+                (SenCount is 0 or 2 && !UseTsubame() ||
+                 SenCount is 1 && GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) > 15 ||
+                 SenCount is 3 && !InActionRange((MidareSetsugekka)) ||
+                 UseTsubame() && !InActionRange(TsubameGaeshi)))
                 return true;
 
             //default - both disabled
