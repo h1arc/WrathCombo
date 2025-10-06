@@ -20,7 +20,6 @@ using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 using WrathCombo.Extensions;
 using WrathCombo.Services;
-using ContentType = ECommons.GameHelpers.ContentType;
 
 #endregion
 
