@@ -4,7 +4,6 @@ using ECommons.GameHelpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ECommons.Logging;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Window.Functions;
 using EZ = ECommons.Throttlers.EzThrottler;
