@@ -140,19 +140,30 @@ internal partial class SAM
     {
         if (ActionReady(Enpi) && !InMeleeRange() && HasBattleTarget())
         {
-            //Ogi option
-            if (useOgi &&
+            //Iaijutsu option enabled
+            if (useIaijutsu && !useOgi &&
+                (SenCount is 0 or 2 && !UseTsubame() ||
+                 SenCount is 1 && GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) > 15 ||
+                 SenCount is 3 && !InActionRange(OriginalHook(Iaijutsu)) ||
+                 UseTsubame() && !InActionRange(TsubameGaeshi)))
+                return true;
+
+            //Ogi option enabled
+            if (useOgi && !useIaijutsu &&
                 ((HasStatusEffect(Buffs.OgiNamikiriReady) || NamikiriReady) &&
                  !InActionRange(OriginalHook(OgiNamikiri)) ||
                  !HasStatusEffect(Buffs.OgiNamikiriReady) && !NamikiriReady))
                 return true;
 
-            //Iaijutsu option
-            if (useIaijutsu &&
-                (SenCount is 0 or 2 && !UseTsubame() ||
-                 SenCount is 1 && GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) > 15 ||
-                 SenCount is 3 && !InActionRange((MidareSetsugekka)) ||
-                 UseTsubame() && !InActionRange(TsubameGaeshi)))
+            //Ogi and Iaijutsu option enabled
+            if (useOgi && useIaijutsu &&
+                ((HasStatusEffect(Buffs.OgiNamikiriReady) || NamikiriReady) &&
+                 !InActionRange(OriginalHook(OgiNamikiri)) ||
+                 !HasStatusEffect(Buffs.OgiNamikiriReady) && !NamikiriReady &&
+                 (SenCount is 0 or 2 && !UseTsubame() ||
+                  SenCount is 1 && GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) > 15 ||
+                  SenCount is 3 && !InActionRange(OriginalHook(Iaijutsu)) ||
+                  UseTsubame() && !InActionRange(TsubameGaeshi))))
                 return true;
 
             //default - both disabled
@@ -219,7 +230,7 @@ internal partial class SAM
     {
         int shintenTreshhold = SAM_ST_ExecuteThreshold;
 
-        if (ActionReady(Shinten) && Kenki >= SAMKenki.Shinten)
+        if (ActionReady(Shinten) && Kenki >= SAMKenki.Shinten && InActionRange(Shinten))
         {
             if (GetTargetHPPercent() < shintenTreshhold)
                 return true;
@@ -251,7 +262,7 @@ internal partial class SAM
             return true;
 
         if (ActionReady(OgiNamikiri) && InActionRange(OriginalHook(OgiNamikiri)) &&
-            HasStatusEffect(Buffs.OgiNamikiriReady))
+            HasStatusEffect(Buffs.OgiNamikiriReady) && NumberOfGcdsUsed >= 5)
         {
             if (GetStatusEffectRemainingTime(Buffs.OgiNamikiriReady) <= 8)
                 return true;
