@@ -178,7 +178,7 @@ internal sealed class ActionReplacer : IDisposable
         if (Player.Object is null) return false;
 
         if (Player.Level <= 35) return false;
-        
+
         if (ContentCheck.IsInPOTD)
             return false;
 
