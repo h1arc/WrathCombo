@@ -381,7 +381,7 @@ internal partial class MCH
         [
             14
         ];
-        
+
         public override bool HasCooldowns() =>
             GetRemainingCharges(Reassemble) is 2 &&
             GetRemainingCharges(OriginalHook(GaussRound)) is 3 &&

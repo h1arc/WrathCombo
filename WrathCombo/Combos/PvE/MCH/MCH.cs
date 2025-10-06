@@ -108,7 +108,7 @@ internal partial class MCH : PhysicalRanged
             }
 
             //Tools
-            if (Tools(ref actionID))
+            if (Tools(ref actionID) && !IsOverheated)
                 return actionID;
 
             // Full Metal Field
@@ -390,7 +390,7 @@ internal partial class MCH : PhysicalRanged
             }
 
             //Tools
-            if (Tools(ref actionID))
+            if (Tools(ref actionID) && !IsOverheated)
                 return actionID;
 
             // Full Metal Field
