@@ -863,7 +863,8 @@ internal unsafe static class AutoRotationController
         {
             if (Svc.Targets.Target == null) return null;
             var t = Svc.Targets.Target;
-            bool goodToHeal = t is IBattleChara or IBattleNpc &&
+            bool goodToHeal = t is IBattleChara &&
+                              t.IsFriendly() &&
                               GetTargetHPPercent(t) <=
                               (TargetHasExcog(t) ? cfg.HealerSettings.SingleTargetExcogHPP :
                                   TargetHasRegen(t) ? cfg.HealerSettings.SingleTargetRegenHPP :
