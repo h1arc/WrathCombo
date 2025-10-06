@@ -140,19 +140,19 @@ internal partial class SAM
     {
         if (ActionReady(Enpi) && !InMeleeRange() && HasBattleTarget())
         {
+            //Ogi option enabled
+            if (useOgi && !useIaijutsu &&
+                ((HasStatusEffect(Buffs.OgiNamikiriReady) || NamikiriReady) &&
+                 !InActionRange(OriginalHook(OgiNamikiri)) ||
+                 !HasStatusEffect(Buffs.OgiNamikiriReady) && !NamikiriReady))
+                return true;
+
             //Iaijutsu option enabled
             if (useIaijutsu && !useOgi &&
                 (SenCount is 0 or 2 && !UseTsubame() ||
                  SenCount is 1 && GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) > 15 ||
                  SenCount is 3 && !InActionRange(OriginalHook(Iaijutsu)) ||
                  UseTsubame() && !InActionRange(TsubameGaeshi)))
-                return true;
-
-            //Ogi option enabled
-            if (useOgi && !useIaijutsu &&
-                ((HasStatusEffect(Buffs.OgiNamikiriReady) || NamikiriReady) &&
-                 !InActionRange(OriginalHook(OgiNamikiri)) ||
-                 !HasStatusEffect(Buffs.OgiNamikiriReady) && !NamikiriReady))
                 return true;
 
             //Ogi and Iaijutsu option enabled
