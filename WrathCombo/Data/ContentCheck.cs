@@ -4,6 +4,7 @@ using ECommons.GameHelpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ECommons.Logging;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Window.Functions;
 using EZ = ECommons.Throttlers.EzThrottler;
@@ -122,6 +123,19 @@ public class ContentCheck
         }
 
         return false;
+    }
+    
+    public static bool IsInPOTD
+    {
+        get
+        {
+            if (!EZ.Throttle("contentCheckInPOTD", TS.FromSeconds(5)))
+                return field;
+
+            // from: https://github.com/PunishXIV/PalacePal/blob/main/Pal.Common/ETerritoryType.cs
+            field = Content.TerritoryID is >= 561 and <= 565 or >= 593 and <= 607;
+            return field;
+        }
     }
 
     /// <summary>
