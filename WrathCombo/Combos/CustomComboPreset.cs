@@ -3657,7 +3657,7 @@ public enum Preset
     MCH_ST_Adv_Chainsaw = 8112,
 
     [ParentCombo(MCH_ST_AdvancedMode)]
-    [CustomComboInfo("Excavator Option", "Adds Excavator to the rotation.", Job.MCH)]
+    [CustomComboInfo("Excavator Option", "Adds Excavator to the rotation.\nWill follow Balance logic if selected on Turret/Queen.", Job.MCH)]
     MCH_ST_Adv_Excavator = 8116,
 
     [ParentCombo(MCH_ST_AdvancedMode)]
