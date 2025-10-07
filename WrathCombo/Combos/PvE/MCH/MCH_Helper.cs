@@ -179,7 +179,7 @@ internal partial class MCH
     {
         if ((IsEnabled(Preset.MCH_ST_SimpleMode) && !InBossEncounter() ||
              IsEnabled(Preset.MCH_ST_Adv_Excavator) && ReassembledExcavatorST &&
-             IsNotEnabled(Preset.MCH_ST_Adv_TurretQueen)) &&
+             (IsNotEnabled(Preset.MCH_ST_Adv_TurretQueen) || MCH_ST_QueenBossOption == 1 && !InBossEncounter())) &&
             LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady))
         {
             actionID = Excavator;
@@ -188,7 +188,7 @@ internal partial class MCH
 
         if ((IsEnabled(Preset.MCH_ST_SimpleMode) && InBossEncounter() ||
              IsEnabled(Preset.MCH_ST_Adv_Excavator) && ReassembledExcavatorST &&
-             IsEnabled(Preset.MCH_ST_Adv_TurretQueen)) &&
+            (MCH_ST_QueenBossOption == 0 || InBossEncounter())) &&
             LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady) &&
             (BSUsed is 1 ||
              BSUsed % 3 is 2 && Battery <= 40 ||
