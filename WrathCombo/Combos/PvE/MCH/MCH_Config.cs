@@ -64,7 +64,7 @@ internal partial class MCH
                             $"Uses {AutomatonQueen.ActionName()} at this battery threshold outside of Boss encounter.");
                     }
                     break;
-                
+
                 case Preset.MCH_ST_Adv_GaussRicochet:
                     DrawSliderInt(0, 2, MCH_ST_GaussRicoPool,
                         "Number of Charges of to Save for Manual Use");
@@ -97,7 +97,7 @@ internal partial class MCH
                     DrawHorizontalMultiChoice(MCH_ST_Reassembled, $"Use on {Drill.ActionName()}", "", 5, 3);
                     DrawHorizontalMultiChoice(MCH_ST_Reassembled, $"Use on {CleanShot.ActionName()}", "", 5, 4);
                     break;
-                
+
                 case Preset.MCH_ST_Adv_Chainsaw:
 
                     DrawSliderInt(0, 50, MCH_ST_ChainsawHPOption,
