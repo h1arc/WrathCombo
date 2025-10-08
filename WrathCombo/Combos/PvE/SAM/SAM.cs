@@ -70,16 +70,16 @@ internal partial class SAM : Melee
                     return Role.LegSweep;
             }
 
-            //Ranged
-            if (UseRanged(true, true))
-                return Enpi;
-
             if (UseTsubame())
                 return OriginalHook(TsubameGaeshi);
 
             //Ogi Namikiri feature
             if (!IsMoving() && UseOgi())
                 return OriginalHook(OgiNamikiri);
+
+            //Ranged
+            if (ActionReady(Enpi) && !InMeleeRange() && HasBattleTarget())
+                return Enpi;
 
             // Iaijutsu feature
             if (!IsMoving() &&
@@ -340,11 +340,6 @@ internal partial class SAM : Melee
                     return Role.LegSweep;
             }
 
-            //Ranged
-            if (IsEnabled(Preset.SAM_ST_RangedUptime) &&
-                UseRanged(SAM_ST_RangedOptions[0], SAM_ST_RangedOptions[1]))
-                return Enpi;
-
             if (IsEnabled(Preset.SAM_ST_Damage))
             {
                 if (IsEnabled(Preset.SAM_ST_CDs_Iaijutsu) &&
@@ -363,6 +358,11 @@ internal partial class SAM : Melee
                     (!IsEnabled(Preset.SAM_ST_CDs_Iaijutsu_Movement) || !IsMoving()) &&
                     UseIaijutsu(IsEnabled(Preset.SAM_ST_CDs_UseHiganbana), IsEnabled(Preset.SAM_ST_CDs_UseTenkaGoken), IsEnabled(Preset.SAM_ST_CDs_UseMidare)))
                     return OriginalHook(Iaijutsu);
+
+                //Ranged
+                if (IsEnabled(Preset.SAM_ST_RangedUptime) &&
+                    ActionReady(Enpi) && !InMeleeRange() && HasBattleTarget())
+                    return Enpi;
             }
 
             if (HasStatusEffect(Buffs.MeikyoShisui))

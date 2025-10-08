@@ -134,47 +134,6 @@ internal partial class SAM
 
     #endregion
 
-    #region Ranged Option
-
-    internal static bool UseRanged(bool useOgi, bool useIaijutsu)
-    {
-        if (ActionReady(Enpi) && !InMeleeRange() && HasBattleTarget())
-        {
-            //Ogi option enabled
-            if (useOgi && !useIaijutsu &&
-                ((HasStatusEffect(Buffs.OgiNamikiriReady) || NamikiriReady) &&
-                 !InActionRange(OriginalHook(OgiNamikiri)) ||
-                 !HasStatusEffect(Buffs.OgiNamikiriReady) && !NamikiriReady))
-                return true;
-
-            //Iaijutsu option enabled
-            if (useIaijutsu && !useOgi &&
-                (SenCount is 0 or 2 && !UseTsubame() ||
-                 SenCount is 1 && GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) > 15 ||
-                 SenCount is 3 && !InActionRange(OriginalHook(Iaijutsu)) ||
-                 UseTsubame() && !InActionRange(TsubameGaeshi)))
-                return true;
-
-            //Ogi and Iaijutsu option enabled
-            if (useOgi && useIaijutsu &&
-                ((HasStatusEffect(Buffs.OgiNamikiriReady) || NamikiriReady) &&
-                 !InActionRange(OriginalHook(OgiNamikiri)) ||
-                 !HasStatusEffect(Buffs.OgiNamikiriReady) && !NamikiriReady &&
-                 (SenCount is 0 or 2 && !UseTsubame() ||
-                  SenCount is 1 && GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) > 15 ||
-                  SenCount is 3 && !InActionRange(OriginalHook(Iaijutsu)) ||
-                  UseTsubame() && !InActionRange(TsubameGaeshi))))
-                return true;
-
-            //default - both disabled
-            if (!useOgi && !useIaijutsu)
-                return true;
-        }
-        return false;
-    }
-
-    #endregion
-
     #region Rescourses
 
     internal static class SAMKenki
