@@ -345,7 +345,7 @@ internal partial class SAM
 
         public override bool HasCooldowns() =>
             IsOffCooldown(MeikyoShisui) &&
-            GetRemainingCharges(Role.TrueNorth) is 2 &&
+            GetRemainingCharges(Role.TrueNorth) >= 1 &&
             IsOffCooldown(Guren) &&
             IsOffCooldown(Ikishoten) &&
             SenCount is 0;
@@ -394,7 +394,7 @@ internal partial class SAM
 
         public override bool HasCooldowns() =>
             GetRemainingCharges(MeikyoShisui) is 2 &&
-            GetRemainingCharges(Role.TrueNorth) is 2 &&
+            GetRemainingCharges(Role.TrueNorth) >= 1 &&
             IsOffCooldown(Senei) &&
             IsOffCooldown(Ikishoten) &&
             SenCount is 0;
@@ -445,7 +445,7 @@ internal partial class SAM
 
         public override bool HasCooldowns() =>
             GetRemainingCharges(MeikyoShisui) is 2 &&
-            GetRemainingCharges(Role.TrueNorth) is 2 &&
+            GetRemainingCharges(Role.TrueNorth) >= 1 &&
             IsOffCooldown(Senei) &&
             IsOffCooldown(Ikishoten) &&
             SenCount is 0;
@@ -501,7 +501,7 @@ internal partial class SAM
 
         public override bool HasCooldowns() =>
             GetRemainingCharges(MeikyoShisui) is 2 &&
-            GetRemainingCharges(Role.TrueNorth) is 2 &&
+            GetRemainingCharges(Role.TrueNorth) >= 1 &&
             IsOffCooldown(Senei) &&
             IsOffCooldown(Ikishoten) &&
             SenCount is 0;
