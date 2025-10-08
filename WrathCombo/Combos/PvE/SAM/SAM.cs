@@ -77,14 +77,14 @@ internal partial class SAM : Melee
             if (!IsMoving() && UseOgi())
                 return OriginalHook(OgiNamikiri);
 
-            //Ranged
-            if (ActionReady(Enpi) && !InMeleeRange() && HasBattleTarget())
-                return Enpi;
-
             // Iaijutsu feature
             if (!IsMoving() &&
                 UseIaijutsu(true, true, true))
                 return OriginalHook(Iaijutsu);
+
+            //Ranged
+            if (ActionReady(Enpi) && !InMeleeRange() && HasBattleTarget())
+                return Enpi;
 
             if (HasStatusEffect(Buffs.MeikyoShisui))
             {
