@@ -97,9 +97,9 @@ internal sealed class ActionReplacer : IDisposable
 
             // Bail if not wanting to replace actions in this manner
             if (Service.Configuration.PerformanceMode)
-                return OriginalHook(actionID);
+                return LastActionInvokeFor[actionID] = OriginalHook(actionID);
             if (Svc.ClientState.LocalPlayer == null)
-                return OriginalHook(actionID);
+                return LastActionInvokeFor[actionID] = OriginalHook(actionID);
 
             // Only refresh every so often
             if (!EzThrottler.Throttle("Actions" + actionID,
