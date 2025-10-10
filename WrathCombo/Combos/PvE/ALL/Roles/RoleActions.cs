@@ -148,7 +148,7 @@ internal static partial class RoleActions
         }
 
         public static bool CanLegSweep() =>
-            ActionReady(LegSweep);
+            ActionReady(LegSweep) && CanStunToInterruptEnemy();
 
         public static bool CanBloodBath(int healthPercent) =>
             ActionReady(Bloodbath) && PlayerHealthPercentageHp() <= healthPercent;

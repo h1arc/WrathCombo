@@ -168,7 +168,8 @@ internal abstract partial class CustomComboFunctions
             return false;
         
         // Bail if another form of interrupt was recently used
-        if (JustUsedOn(RoleActions.Tank.Interject, optionalTarget) ||
+        if (JustUsedOn(RoleActions.Melee.LegSweep, optionalTarget) ||
+            JustUsedOn(RoleActions.Tank.Interject, optionalTarget) ||
             JustUsedOn(RoleActions.Tank.LowBlow, optionalTarget) ||
             JustUsedOn(PLD.ShieldBash, optionalTarget))
             return false;
