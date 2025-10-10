@@ -174,7 +174,7 @@ internal partial class MNK : Melee
                 UseMeditationST())
                 return OriginalHook(SteeledMeditation);
 
-            if (IsEnabled(Preset.MNK_STUseFormShift) && 
+            if (IsEnabled(Preset.MNK_STUseFormShift) &&
                 UseFormshift())
                 return FormShift;
 
