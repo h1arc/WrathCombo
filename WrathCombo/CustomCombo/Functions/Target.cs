@@ -150,10 +150,10 @@ internal abstract partial class CustomComboFunctions
     public static bool CanStunToInterruptEnemy(float? minCastPercent = null,
         IGameObject? optionalTarget = null)
     {
-        optionalTarget ??= CurrentTarget;
+        var target = optionalTarget ?? CurrentTarget;
 
         // Bail if the target is not casting (and is a valid target)
-        if (optionalTarget is not IBattleChara { IsCasting: true } chara)
+        if (target is not IBattleChara { IsCasting: true } chara)
             return false;
 
         // Bail if it fails the Internal Cooldown tracker for Stuns
@@ -164,17 +164,17 @@ internal abstract partial class CustomComboFunctions
             return false;
 
         // Bail if the target is a boss
-        if (TargetIsBoss(optionalTarget))
+        if (TargetIsBoss(target))
             return false;
         
         // Bail if another form of interrupt was recently used
-        if (JustUsedOn(RoleActions.Melee.LegSweep, optionalTarget) ||
-            JustUsedOn(RoleActions.Tank.Interject, optionalTarget) ||
-            JustUsedOn(RoleActions.Tank.LowBlow, optionalTarget) ||
-            JustUsedOn(PLD.ShieldBash, optionalTarget))
+        if (JustUsedOn(RoleActions.Melee.LegSweep, target) ||
+            JustUsedOn(RoleActions.Tank.Interject, target) ||
+            JustUsedOn(RoleActions.Tank.LowBlow, target) ||
+            JustUsedOn(PLD.ShieldBash, target))
             return false;
 
-        float minThreshold = Math.Clamp(minCastPercent ?? (float)Service.Configuration.InterruptDelay, 0f, 1f);
+        var minThreshold = Math.Clamp(minCastPercent ?? (float)Service.Configuration.InterruptDelay, 0f, 1f);
 
         return chara.CurrentCastTime >= chara.TotalCastTime * minThreshold;
     }
