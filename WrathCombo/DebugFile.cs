@@ -234,9 +234,7 @@ public static class DebugFile
                 failedSheetFind = false;
             }
             else
-            {
                 failedSheetFind = true;
-            }
         }
 
         AddLine("START TARGET INFO");
