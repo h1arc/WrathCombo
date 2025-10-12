@@ -80,7 +80,10 @@ internal abstract partial class CustomComboFunctions
 
         foreach (var boss in NearbyBosses)
         {
-            if (boss.Struct()->InCombat && boss.GetNameplateKind() == NameplateKind.HostileEngagedSelfDamaged)
+            var plate = boss.GetNameplateKind();
+            if (boss.Struct()->InCombat &&
+                (plate == NameplateKind.HostileEngagedSelfDamaged ||
+                 boss.GetNameplateKind().ToString().Contains("HostileEngaged")))
                 return true;
         }
 
