@@ -186,7 +186,7 @@ internal partial class MCH
 
                 case Preset.MCH_AoE_Adv_Tools:
                     DrawSliderInt(0, 100, MCH_AoE_ToolsHPThreshold,
-                        $"Stop Using Tools When Target HP% is at or Below (Set to 0 to Disable This Check)");
+                        "Stop Using Tools When Target HP% is at or Below (Set to 0 to Disable This Check)");
                     break;
 
                 case Preset.MCH_AoE_Adv_Stabilizer:

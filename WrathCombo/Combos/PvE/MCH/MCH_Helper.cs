@@ -171,8 +171,8 @@ internal partial class MCH
                     !MaxBattery && LevelChecked(AirAnchor) &&
                     GetCooldownRemainingTime(AirAnchor) < GCD &&
                     (!LevelChecked(Chainsaw) ||
-                     LevelChecked(Chainsaw) && MCH_ST_Reassembled[1] && GetCooldownRemainingTime(Chainsaw) > 20 ||
-                     LevelChecked(Excavator) && MCH_ST_Reassembled[0] && GetCooldownRemainingTime(Chainsaw) > 20):
+                     LevelChecked(Chainsaw) && MCH_ST_Reassembled[1] && GetCooldownRemainingTime(Chainsaw) > 40 ||
+                     LevelChecked(Excavator) && MCH_ST_Reassembled[0] && GetCooldownRemainingTime(Chainsaw) > 40):
                     return true;
             }
 
@@ -181,9 +181,8 @@ internal partial class MCH
                 case true when
                     LevelChecked(Drill) &&
                     (!LevelChecked(AirAnchor) && MCH_ST_Reassembled[2] || !MCH_ST_Reassembled[2]) && ActionReady(Drill):
-                    break;
+                    return true;
             }
-            return true;
         }
 
         return false;
