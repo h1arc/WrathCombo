@@ -81,9 +81,9 @@ internal partial class MCH
         MCH_ST_ReassembleBossOption == 1 ||
         !TargetIsBoss() ? MCH_ST_ReassembleHPOption : 0;
 
-    internal static int HPThresholdChainsawST =>
-        MCH_ST_ChainsawBossOption == 1 ||
-        !TargetIsBoss() ? MCH_ST_ChainsawHPOption : 0;
+    internal static int HPThresholToolsST =>
+        MCH_ST_ToolsBossOption == 1 ||
+        !TargetIsBoss() ? MCH_ST_ToolsBossOption : 0;
 
     #endregion
 
@@ -134,46 +134,56 @@ internal partial class MCH
     internal static bool ReassembledScattergunAoE =
         IsEnabled(Preset.MCH_AoE_Adv_Reassemble) && MCH_AoE_Reassembled[0] && HasStatusEffect(Buffs.Reassembled);
 
-    internal static bool Reassembled()
+    internal static bool Reassembled(bool onExcavator, bool onChainsaw, bool onAirAnchor, bool onDrill)
     {
-        if (!JustUsed(OriginalHook(Heatblast)) && !HasStatusEffect(Buffs.Reassembled) &&
-            ActionReady(Reassemble) && !JustUsed(OriginalHook(Heatblast)))
+        if (!JustUsed(OriginalHook(Heatblast)) &&
+            !HasStatusEffect(Buffs.Reassembled) && ActionReady(Reassemble))
         {
-            if ((IsEnabled(Preset.MCH_ST_SimpleMode) && !InBossEncounter() ||
-                 IsEnabled(Preset.MCH_ST_Adv_Reassemble) && MCH_ST_Reassembled[0] &&
-                 IsNotEnabled(Preset.MCH_ST_Adv_TurretQueen)) &&
-                LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady))
-                return true;
+            switch (onExcavator)
+            {
+                case true when
+                    (IsNotEnabled(Preset.MCH_ST_Adv_TurretQueen) || MCH_ST_QueenBossOption == 1 && !InBossEncounter()) &&
+                    LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady):
 
-            if ((IsEnabled(Preset.MCH_ST_SimpleMode) && InBossEncounter() ||
-                 IsEnabled(Preset.MCH_ST_Adv_Reassemble) && MCH_ST_Reassembled[0] &&
-                 IsEnabled(Preset.MCH_ST_Adv_TurretQueen)) &&
-                LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady) &&
-                (BSUsed is 1 ||
-                 BSUsed % 3 is 2 && Battery <= 40 ||
-                 BSUsed % 3 is 0 && Battery <= 50 ||
-                 BSUsed % 3 is 1 && Battery <= 60 ||
-                 GetStatusEffectRemainingTime(Buffs.ExcavatorReady) <= 6))
-                return true;
+                case true when
+                    IsEnabled(Preset.MCH_ST_Adv_TurretQueen) &&
+                    IsEnabled(Preset.MCH_ST_Adv_TurretQueen) && (MCH_ST_QueenBossOption == 0 || InBossEncounter()) &&
+                    LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady) &&
+                    (BSUsed is 1 ||
+                     BSUsed % 3 is 2 && Battery <= 40 ||
+                     BSUsed % 3 is 0 && Battery <= 50 ||
+                     BSUsed % 3 is 1 && Battery <= 60 ||
+                     GetStatusEffectRemainingTime(Buffs.ExcavatorReady) <= 6):
+                    return true;
+            }
 
-            if ((IsEnabled(Preset.MCH_ST_SimpleMode) ||
-                 IsEnabled(Preset.MCH_ST_Adv_Reassemble) && MCH_ST_Reassembled[1]) &&
-                !LevelChecked(Excavator) && !MaxBattery && LevelChecked(Chainsaw) &&
-                GetCooldownRemainingTime(Chainsaw) <= GCD)
-                return true;
+            switch (onChainsaw)
+            {
+                case true when
+                    !LevelChecked(Excavator) && !MaxBattery &&
+                    LevelChecked(Chainsaw) && GetCooldownRemainingTime(Chainsaw) < GCD:
+                    return true;
+            }
 
-            if ((IsEnabled(Preset.MCH_ST_SimpleMode) ||
-                 IsEnabled(Preset.MCH_ST_Adv_Reassemble) && MCH_ST_Reassembled[2]) &&
-                !MaxBattery && LevelChecked(AirAnchor) &&
-                GetCooldownRemainingTime(AirAnchor) <= GCD)
-                return true;
+            switch (onAirAnchor)
+            {
+                case true when
+                    !MaxBattery && LevelChecked(AirAnchor) &&
+                    GetCooldownRemainingTime(AirAnchor) < GCD &&
+                    (!LevelChecked(Chainsaw) ||
+                     LevelChecked(Chainsaw) && MCH_ST_Reassembled[1] && GetCooldownRemainingTime(Chainsaw) > 20 ||
+                     LevelChecked(Excavator) && MCH_ST_Reassembled[0] && GetCooldownRemainingTime(Chainsaw) > 20):
+                    return true;
+            }
 
-            if ((IsEnabled(Preset.MCH_ST_SimpleMode) ||
-                 IsEnabled(Preset.MCH_ST_Adv_Reassemble) && MCH_ST_Reassembled[3]) &&
-                LevelChecked(Drill) &&
-                (!LevelChecked(AirAnchor) && MCH_ST_Reassembled[2] || !MCH_ST_Reassembled[2]) &&
-                ActionReady(Drill))
-                return true;
+            switch (onDrill)
+            {
+                case true when
+                    LevelChecked(Drill) &&
+                    (!LevelChecked(AirAnchor) && MCH_ST_Reassembled[2] || !MCH_ST_Reassembled[2]) && ActionReady(Drill):
+                    break;
+            }
+            return true;
         }
 
         return false;
@@ -196,69 +206,70 @@ internal partial class MCH
         !LevelChecked(Chainsaw) ||
         LevelChecked(Chainsaw) && GetCooldownRemainingTime(Chainsaw) >= 9;
 
-    internal static bool Tools(ref uint actionID)
+    internal static bool Tools(ref uint actionID, bool useExcavator, bool useChainsaw, bool useAirAnchor, bool useDrill)
     {
-        if ((IsEnabled(Preset.MCH_ST_SimpleMode) && !InBossEncounter() ||
-             IsEnabled(Preset.MCH_ST_Adv_Excavator) && ReassembledExcavatorST &&
-             (IsNotEnabled(Preset.MCH_ST_Adv_TurretQueen) || MCH_ST_QueenBossOption == 1 && !InBossEncounter())) &&
-            LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady))
+        switch (useExcavator)
         {
-            actionID = Excavator;
-            return true;
+            case true when
+                ReassembledExcavatorST &&
+                (IsNotEnabled(Preset.MCH_ST_Adv_TurretQueen) || (MCH_ST_QueenBossOption == 1 || IsEnabled(Preset.MCH_ST_SimpleMode)) && !InBossEncounter()) &&
+                LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady):
+
+            case true when
+                ReassembledExcavatorST &&
+                (IsEnabled(Preset.MCH_ST_Adv_TurretQueen) && (MCH_ST_QueenBossOption == 0 || InBossEncounter()) ||
+                 IsEnabled(Preset.MCH_ST_SimpleMode) && InBossEncounter()) &&
+                LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady) &&
+                (BSUsed is 1 ||
+                 BSUsed % 3 is 2 && Battery <= 40 ||
+                 BSUsed % 3 is 0 && Battery <= 50 ||
+                 BSUsed % 3 is 1 && Battery <= 60 ||
+                 GetStatusEffectRemainingTime(Buffs.ExcavatorReady) <= 6):
+                actionID = Excavator;
+                return true;
         }
 
-        if ((IsEnabled(Preset.MCH_ST_SimpleMode) && InBossEncounter() ||
-             IsEnabled(Preset.MCH_ST_Adv_Excavator) && ReassembledExcavatorST &&
-             IsEnabled(Preset.MCH_ST_Adv_TurretQueen) && (MCH_ST_QueenBossOption == 0 || InBossEncounter())) &&
-            LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady) &&
-            (BSUsed is 1 ||
-             BSUsed % 3 is 2 && Battery <= 40 ||
-             BSUsed % 3 is 0 && Battery <= 50 ||
-             BSUsed % 3 is 1 && Battery <= 60 ||
-             GetStatusEffectRemainingTime(Buffs.ExcavatorReady) <= 6))
+        switch (useChainsaw)
         {
-            actionID = Excavator;
-            return true;
+            case true when
+                ReassembledChainsawST &&
+                !MaxBattery && !HasStatusEffect(Buffs.ExcavatorReady) && LevelChecked(Chainsaw) &&
+                GetCooldownRemainingTime(Chainsaw) <= GCD / 2:
+                actionID = Chainsaw;
+                return true;
         }
 
-        if ((IsEnabled(Preset.MCH_ST_SimpleMode) ||
-             IsEnabled(Preset.MCH_ST_Adv_Chainsaw) && ReassembledChainsawST) &&
-            !MaxBattery && !HasStatusEffect(Buffs.ExcavatorReady) && LevelChecked(Chainsaw) &&
-            GetCooldownRemainingTime(Chainsaw) <= GCD / 2 &&
-            GetTargetHPPercent() > HPThresholdChainsawST)
+        switch (useAirAnchor)
         {
-            actionID = Chainsaw;
-            return true;
+            case true when
+                ReassembledAnchorST &&
+                !MaxBattery && LevelChecked(AirAnchor) &&
+                GetCooldownRemainingTime(AirAnchor) <= GCD / 2:
+                actionID = AirAnchor;
+                return true;
         }
 
-        if ((IsEnabled(Preset.MCH_ST_SimpleMode) ||
-             IsEnabled(Preset.MCH_ST_Adv_AirAnchor) && ReassembledAnchorST) &&
-            !MaxBattery && LevelChecked(AirAnchor) &&
-            GetCooldownRemainingTime(AirAnchor) <= GCD / 2)
+        switch (useDrill)
         {
-            actionID = AirAnchor;
-            return true;
+            case true when
+                ReassembledDrillST &&
+                !JustUsed(Drill) && ActionReady(Drill) &&
+                GetCooldownRemainingTime(Wildfire) is >= 20 or <= 10:
+                actionID = Drill;
+                return true;
         }
 
-        if ((IsEnabled(Preset.MCH_ST_SimpleMode) ||
-             IsEnabled(Preset.MCH_ST_Adv_Drill) && ReassembledDrillST) &&
-            !JustUsed(Drill) &&
-            ActionReady(Drill) && GetCooldownRemainingTime(Wildfire) is >= 20 or <= 10)
+        switch (useAirAnchor)
         {
-            actionID = Drill;
-            return true;
-        }
+            case true when
+                LevelChecked(HotShot) && !LevelChecked(AirAnchor) && !MaxBattery &&
+                GetCooldownRemainingTime(HotShot) <= GCD / 2:
+                actionID = HotShot;
+                return true;
 
-        if ((IsEnabled(Preset.MCH_ST_SimpleMode) ||
-             IsEnabled(Preset.MCH_ST_Adv_AirAnchor)) &&
-            LevelChecked(HotShot) && !LevelChecked(AirAnchor) && !MaxBattery &&
-            GetCooldownRemainingTime(HotShot) <= GCD / 2)
-        {
-            actionID = HotShot;
-            return true;
+            default:
+                return false;
         }
-
-        return false;
     }
 
     #endregion
