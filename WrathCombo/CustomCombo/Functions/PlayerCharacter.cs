@@ -82,7 +82,13 @@ internal abstract partial class CustomComboFunctions
         {
             var plate = boss.GetNameplateKind();
             if (boss.Struct()->InCombat &&
-                (plate == NameplateKind.HostileEngagedSelfDamaged ||
+                plate is NameplateKind.HostileEngagedSelfDamaged or
+                    NameplateKind.HostileEngagedSelfUndamaged)
+                return true;
+
+            if ((Player.Available &&
+                 Player.BattleChara->TargetId == boss.GameObjectId) ||
+                ((int)(Content.ContentType ?? 0) > (int)ContentType.PVP &&
                  boss.GetNameplateKind().ToString().Contains("HostileEngaged")))
                 return true;
         }
