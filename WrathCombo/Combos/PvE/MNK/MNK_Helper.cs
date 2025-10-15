@@ -12,16 +12,16 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class MNK
 {
-    internal static float GCD =>
+    private static float GCD =>
         GetCooldown(OriginalHook(Bootshine)).CooldownTotal;
 
-    internal static bool M6SReady =>
+    private static bool M6SReady =>
         !HiddenFeaturesData.IsEnabledWith(Preset.MNK_Hid_M6SHoldSquirrelBurst, () =>
             HiddenFeaturesData.Targeting.R6SSquirrel && CombatEngageDuration().TotalSeconds < 300);
 
     #region 1-2-3
 
-    internal static uint DetermineCoreAbility(uint actionId, bool useTrueNorthIfEnabled)
+    private static uint DetermineCoreAbility(uint actionId, bool useTrueNorthIfEnabled)
     {
         if (!LevelChecked(TrueStrike))
             return Bootshine;
@@ -60,7 +60,7 @@ internal partial class MNK
 
     #region PB
 
-    internal static bool UsePerfectBalance(bool ST, bool AoE)
+    private static bool UsePerfectBalance(bool ST, bool AoE)
     {
         if (ST &&
             ActionReady(PerfectBalance) && !HasStatusEffect(Buffs.PerfectBalance) &&
@@ -119,7 +119,7 @@ internal partial class MNK
 
     #region PB Combo
 
-    internal static bool DoPerfectBalanceCombo(ref uint actionID, bool ST, bool AoE)
+    private static bool DoPerfectBalanceCombo(ref uint actionID, bool ST, bool AoE)
     {
         if (ST && HasStatusEffect(Buffs.PerfectBalance))
         {
@@ -240,7 +240,7 @@ internal partial class MNK
 
     #region Masterful Blitz
 
-    internal static bool UseMasterfulBlitz(bool ST, bool AoE)
+    private static bool UseMasterfulBlitz(bool ST, bool AoE)
     {
         if (ST)
         {
@@ -291,7 +291,7 @@ internal partial class MNK
 
     #region Chakra
 
-    internal static bool UseFormshift() =>
+    private static bool UseFormshift() =>
         LevelChecked(FormShift) && !InCombat() &&
         !HasStatusEffect(Buffs.FormlessFist) &&
         !HasStatusEffect(Buffs.PerfectBalance) &&
@@ -299,7 +299,7 @@ internal partial class MNK
         !HasStatusEffect(Buffs.RaptorForm) &&
         !HasStatusEffect(Buffs.CoeurlForm);
 
-    internal static bool UseMeditation(bool ST, bool AoE)
+    private static bool UseMeditation(bool ST, bool AoE)
     {
         if (ST &&
             LevelChecked(SteeledMeditation) &&
@@ -324,7 +324,7 @@ internal partial class MNK
         return false;
     }
 
-    internal static bool UseChakra(bool ST, bool AoE)
+    private static bool UseChakra(bool ST, bool AoE)
     {
         if (ST &&
             Chakra >= 5 && LevelChecked(SteeledMeditation) &&
@@ -348,7 +348,7 @@ internal partial class MNK
     #region Buffs
 
     //RoF
-    internal static bool UseRoF() =>
+    private static bool UseRoF() =>
         ActionReady(RiddleOfFire) &&
         !HasStatusEffect(Buffs.FiresRumination) &&
         (JustUsed(Brotherhood, GCD) ||
@@ -356,7 +356,7 @@ internal partial class MNK
          !LevelChecked(Brotherhood) ||
          HasStatusEffect(Buffs.Brotherhood));
 
-    internal static bool UseFiresReply() =>
+    private static bool UseFiresReply() =>
         HasStatusEffect(Buffs.FiresRumination) &&
         !HasStatusEffect(Buffs.FormlessFist) &&
         !HasStatusEffect(Buffs.PerfectBalance) &&
@@ -367,34 +367,34 @@ internal partial class MNK
          !InMeleeRange());
 
     //Brotherhood
-    internal static bool UseBrotherhood() =>
+    private static bool UseBrotherhood() =>
         ActionReady(Brotherhood) &&
         ActionReady(RiddleOfFire);
 
     //RoW
-    internal static bool UseRoW() =>
+    private static bool UseRoW() =>
         ActionReady(RiddleOfWind) &&
         !HasStatusEffect(Buffs.WindsRumination);
 
-    internal static bool UseWindsReply() =>
+    private static bool UseWindsReply() =>
         HasStatusEffect(Buffs.WindsRumination) &&
         (GetCooldownRemainingTime(RiddleOfFire) > 5 ||
          HasStatusEffect(Buffs.RiddleOfFire) ||
          GetStatusEffectRemainingTime(Buffs.WindsRumination) < GCD * 2 ||
          !InMeleeRange());
 
-    internal static bool UseMantra() =>
+    private static bool UseMantra() =>
         ActionReady(Mantra) &&
         !HasStatusEffect(Buffs.Mantra) &&
         RaidWideCasting(3f);
 
-    internal static bool UseRoE() =>
+    private static bool UseRoE() =>
         ActionReady(RiddleOfEarth) &&
         RaidWideCasting(2f) &&
         !HasStatusEffect(Buffs.RiddleOfEarth) &&
         !HasStatusEffect(Buffs.EarthsRumination);
 
-    internal static bool UseEarthsReply() =>
+    private static bool UseEarthsReply() =>
         HasStatusEffect(Buffs.EarthsRumination) &&
         NumberOfAlliesInRange(EarthsReply) >= GetPartyMembers().Count * .75 &&
         GetPartyAvgHPPercent() <= MNK_ST_EarthsReplyHPThreshold;
@@ -523,29 +523,29 @@ internal partial class MNK
 
     #region Gauge
 
-    internal static MNKGauge Gauge = GetJobGauge<MNKGauge>();
+    private static MNKGauge Gauge = GetJobGauge<MNKGauge>();
 
-    internal static byte Chakra => Gauge.Chakra;
+    private static byte Chakra => Gauge.Chakra;
 
-    internal static int OpoOpoChakra => Gauge.BeastChakra.Count(x => x == BeastChakra.OpoOpo);
+    private static int OpoOpoChakra => Gauge.BeastChakra.Count(x => x == BeastChakra.OpoOpo);
 
-    internal static int OpoOpo => Gauge.OpoOpoFury;
+    private static int OpoOpo => Gauge.OpoOpoFury;
 
-    internal static int RaptorChakra => Gauge.BeastChakra.Count(x => x == BeastChakra.Raptor);
+    private static int RaptorChakra => Gauge.BeastChakra.Count(x => x == BeastChakra.Raptor);
 
-    internal static int Raptor => Gauge.RaptorFury;
+    private static int Raptor => Gauge.RaptorFury;
 
-    internal static int CoeurlChakra => Gauge.BeastChakra.Count(x => x == BeastChakra.Coeurl);
+    private static int CoeurlChakra => Gauge.BeastChakra.Count(x => x == BeastChakra.Coeurl);
 
-    internal static int Coeurl => Gauge.CoeurlFury;
+    private static int Coeurl => Gauge.CoeurlFury;
 
-    internal static Nadi Nadi => Gauge.Nadi;
+    private static Nadi Nadi => Gauge.Nadi;
 
-    internal static bool BothNadisOpen => Nadi.ToString() == "Lunar, Solar";
+    private static bool BothNadisOpen => Nadi.ToString() == "Lunar, Solar";
 
-    internal static bool SolarNadi => Nadi is Nadi.Solar;
+    private static bool SolarNadi => Nadi is Nadi.Solar;
 
-    internal static bool LunarNadi => Nadi is Nadi.Lunar;
+    private static bool LunarNadi => Nadi is Nadi.Lunar;
 
     #endregion
 
