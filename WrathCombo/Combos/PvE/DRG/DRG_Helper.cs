@@ -10,12 +10,12 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class DRG
 {
-    internal static Status? ChaosDebuff =>
+    private static Status? ChaosDebuff =>
         GetStatusEffect(ChaoticList[OriginalHook(ChaosThrust)], CurrentTarget);
 
     #region Lifesurge
 
-    internal static bool UseLifeSurge()
+    private static bool UseLifeSurge()
     {
         if (ActionReady(LifeSurge) && !HasStatusEffect(Buffs.LifeSurge))
         {
@@ -40,7 +40,7 @@ internal partial class DRG
 
     #region Animation Locks
 
-    internal static bool CanDRGWeave(float weaveTime = BaseAnimationLock, bool forceFirst = false) =>
+    private static bool CanDRGWeave(float weaveTime = BaseAnimationLock, bool forceFirst = false) =>
         !HasWeavedAction(Stardiver) && (!forceFirst || !HasWeaved()) && CanWeave(weaveTime);
 
     #endregion
@@ -154,13 +154,13 @@ internal partial class DRG
 
     #region Gauge
 
-    internal static DRGGauge Gauge = GetJobGauge<DRGGauge>();
+    private static DRGGauge Gauge = GetJobGauge<DRGGauge>();
 
-    internal static bool LoTDActive => Gauge.IsLOTDActive;
+    private static bool LoTDActive => Gauge.IsLOTDActive;
 
-    internal static byte FirstmindsFocus => Gauge.FirstmindsFocusCount;
+    private static byte FirstmindsFocus => Gauge.FirstmindsFocusCount;
 
-    internal static readonly FrozenDictionary<uint, ushort> ChaoticList = new Dictionary<uint, ushort>
+    private static readonly FrozenDictionary<uint, ushort> ChaoticList = new Dictionary<uint, ushort>
     {
         { ChaosThrust, Debuffs.ChaosThrust },
         { ChaoticSpring, Debuffs.ChaoticSpring }
