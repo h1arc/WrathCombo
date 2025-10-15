@@ -21,7 +21,7 @@ internal partial class MNK
 
     #region 1-2-3
 
-    private static uint DetermineCoreAbility(uint actionId, bool useTrueNorthIfEnabled)
+    private static uint DetermineCoreAbility(uint actionId, bool useTrueNorthIfEnabled = true)
     {
         if (!LevelChecked(TrueStrike))
             return Bootshine;
