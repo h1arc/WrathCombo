@@ -60,7 +60,7 @@ internal partial class MCH : PhysicalRanged
                         return BarrelStabilizer;
 
                     // Queen
-                    if (UseQueen())
+                    if (UseQueen(true))
                         return OriginalHook(RookAutoturret);
 
                     // Reassemble
@@ -112,7 +112,7 @@ internal partial class MCH : PhysicalRanged
             }
 
             //Tools
-            if (Tools(ref actionID, true, true, true, true) && !IsOverheated)
+            if (Tools(ref actionID, true, true, true, true, true) && !IsOverheated)
                 return actionID;
 
             // Full Metal Field
@@ -334,21 +334,21 @@ internal partial class MCH : PhysicalRanged
 
                     // Queen
                     if (IsEnabled(Preset.MCH_ST_Adv_TurretQueen) &&
-                        UseQueen())
+                        UseQueen(false))
                         return OriginalHook(RookAutoturret);
 
                     // Reassemble
                     if (IsEnabled(Preset.MCH_ST_Adv_Reassemble) &&
                         GetRemainingCharges(Reassemble) > MCH_ST_ReassemblePool &&
                         Reassembled(MCH_ST_Reassembled[0], MCH_ST_Reassembled[1], MCH_ST_Reassembled[2], MCH_ST_Reassembled[3]) &&
-                        GetTargetHPPercent() > HPThresholdReassembleST)
+                        GetTargetHPPercent() > HPThresholdReassemble)
                         return Reassemble;
 
                     // Hypercharge
                     if (IsEnabled(Preset.MCH_ST_Adv_Hypercharge) &&
                         (Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) &&
                         !IsComboExpiring(6) && ActionReady(Hypercharge) &&
-                        GetTargetHPPercent() > HPThresholdHyperchargeST)
+                        GetTargetHPPercent() > HPThresholdHypercharge)
                     {
                         // Ensures Hypercharge is double weaved with WF
                         if (LevelChecked(FullMetalField) && JustUsed(FullMetalField) ||
@@ -408,8 +408,8 @@ internal partial class MCH : PhysicalRanged
             }
 
             //Tools
-            if (IsEnabled(Preset.MCH_ST_Adv_Tools) && GetTargetHPPercent() > HPThresholToolsST &&
-                Tools(ref actionID, IsEnabled(Preset.MCH_ST_Adv_Excavator), IsEnabled(Preset.MCH_ST_Adv_Chainsaw),
+            if (IsEnabled(Preset.MCH_ST_Adv_Tools) && GetTargetHPPercent() > HPThresholTools &&
+                Tools(ref actionID, false, IsEnabled(Preset.MCH_ST_Adv_Excavator), IsEnabled(Preset.MCH_ST_Adv_Chainsaw),
                     IsEnabled(Preset.MCH_ST_Adv_AirAnchor), IsEnabled(Preset.MCH_ST_Adv_Drill)) && !IsOverheated)
                 return actionID;
 

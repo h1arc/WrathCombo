@@ -12,28 +12,25 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class MCH
 {
-    internal static int BSUsed =>
+    private static int BSUsed =>
         CombatActions.Count(x => x == BarrelStabilizer);
 
-    internal static bool UseGaussRound =>
+    private static bool UseGaussRound =>
         GetRemainingCharges(OriginalHook(GaussRound)) >= GetRemainingCharges(OriginalHook(Ricochet));
 
-    internal static bool UseRicochet =>
+    private static bool UseRicochet =>
         GetRemainingCharges(OriginalHook(Ricochet)) > GetRemainingCharges(OriginalHook(GaussRound));
-
-    internal static bool HasNotWeaved =>
-        GetAttackType(LastAction) != ActionAttackType.Ability;
 
     #region Queen
 
-    internal static bool UseQueen()
+    private static bool UseQueen(bool simpleMode)
     {
         if (!HasStatusEffect(Buffs.Wildfire) &&
             !JustUsed(OriginalHook(Heatblast)) && ActionReady(RookAutoturret) &&
             !RobotActive && Battery >= 50)
         {
             if ((MCH_ST_QueenBossOption == 0 || InBossEncounter() ||
-                 IsEnabled(Preset.MCH_ST_SimpleMode) && InBossEncounter()) &&
+                 simpleMode && InBossEncounter()) &&
                 (GetCooldownRemainingTime(Wildfire) > GCD || !LevelChecked(Wildfire)))
             {
                 if (LevelChecked(BarrelStabilizer))
@@ -61,7 +58,7 @@ internal partial class MCH
                     return true;
             }
 
-            if (IsEnabled(Preset.MCH_ST_SimpleMode) && !InBossEncounter() && Battery is 100 ||
+            if (simpleMode && !InBossEncounter() && Battery is 100 ||
                 MCH_ST_QueenBossOption == 1 && !InBossEncounter() && Battery >= MCH_ST_TurretUsage)
                 return true;
         }
@@ -73,15 +70,15 @@ internal partial class MCH
 
     #region HP Treshold
 
-    internal static int HPThresholdHyperchargeST =>
+    private static int HPThresholdHypercharge =>
         MCH_ST_HyperchargeBossOption == 1 ||
         !TargetIsBoss() ? MCH_ST_HyperchargeHPOption : 0;
 
-    internal static int HPThresholdReassembleST =>
+    private static int HPThresholdReassemble =>
         MCH_ST_ReassembleBossOption == 1 ||
         !TargetIsBoss() ? MCH_ST_ReassembleHPOption : 0;
 
-    internal static int HPThresholToolsST =>
+    private static int HPThresholTools =>
         MCH_ST_ToolsBossOption == 1 ||
         !TargetIsBoss() ? MCH_ST_ToolsBossOption : 0;
 
@@ -89,52 +86,52 @@ internal partial class MCH
 
     #region Reassembled
 
-    internal static bool ReassembledExcavatorST =>
+    private static bool ReassembledExcavatorST =>
         IsEnabled(Preset.MCH_ST_Adv_Reassemble) && MCH_ST_Reassembled[0] && (HasStatusEffect(Buffs.Reassembled) || !HasStatusEffect(Buffs.Reassembled)) ||
         IsEnabled(Preset.MCH_ST_Adv_Reassemble) && !MCH_ST_Reassembled[0] && !HasStatusEffect(Buffs.Reassembled) ||
         !HasStatusEffect(Buffs.Reassembled) && GetRemainingCharges(Reassemble) <= MCH_ST_ReassemblePool ||
         !IsEnabled(Preset.MCH_ST_Adv_Reassemble);
 
-    internal static bool ReassembledChainsawST =>
+    private static bool ReassembledChainsawST =>
         IsEnabled(Preset.MCH_ST_Adv_Reassemble) && MCH_ST_Reassembled[1] && (HasStatusEffect(Buffs.Reassembled) || !HasStatusEffect(Buffs.Reassembled)) ||
         IsEnabled(Preset.MCH_ST_Adv_Reassemble) && !MCH_ST_Reassembled[1] && !HasStatusEffect(Buffs.Reassembled) ||
         !HasStatusEffect(Buffs.Reassembled) && GetRemainingCharges(Reassemble) <= MCH_ST_ReassemblePool ||
         !IsEnabled(Preset.MCH_ST_Adv_Reassemble);
 
-    internal static bool ReassembledAnchorST =>
+    private static bool ReassembledAnchorST =>
         IsEnabled(Preset.MCH_ST_Adv_Reassemble) && MCH_ST_Reassembled[2] && (HasStatusEffect(Buffs.Reassembled) || !HasStatusEffect(Buffs.Reassembled)) ||
         IsEnabled(Preset.MCH_ST_Adv_Reassemble) && !MCH_ST_Reassembled[2] && !HasStatusEffect(Buffs.Reassembled) ||
         !HasStatusEffect(Buffs.Reassembled) && GetRemainingCharges(Reassemble) <= MCH_ST_ReassemblePool ||
         !IsEnabled(Preset.MCH_ST_Adv_Reassemble);
 
-    internal static bool ReassembledDrillST =>
+    private static bool ReassembledDrillST =>
         IsEnabled(Preset.MCH_ST_Adv_Reassemble) && MCH_ST_Reassembled[3] && (HasStatusEffect(Buffs.Reassembled) || !HasStatusEffect(Buffs.Reassembled)) ||
         IsEnabled(Preset.MCH_ST_Adv_Reassemble) && !MCH_ST_Reassembled[3] && !HasStatusEffect(Buffs.Reassembled) ||
         !HasStatusEffect(Buffs.Reassembled) && GetRemainingCharges(Reassemble) <= MCH_ST_ReassemblePool ||
         !IsEnabled(Preset.MCH_ST_Adv_Reassemble);
 
-    internal static bool ReassembledExcavatorAoE =
+    private static bool ReassembledExcavatorAoE =
         IsEnabled(Preset.MCH_AoE_Adv_Reassemble) && MCH_AoE_Reassembled[3] && HasStatusEffect(Buffs.Reassembled) ||
         IsEnabled(Preset.MCH_AoE_Adv_Reassemble) && !MCH_AoE_Reassembled[3] && !HasStatusEffect(Buffs.Reassembled) ||
         !HasStatusEffect(Buffs.Reassembled) && GetRemainingCharges(Reassemble) <= MCH_AoE_ReassemblePool ||
         !IsEnabled(Preset.MCH_AoE_Adv_Reassemble);
 
-    internal static bool ReassembledChainsawAoE =
+    private static bool ReassembledChainsawAoE =
         IsEnabled(Preset.MCH_AoE_Adv_Reassemble) && MCH_AoE_Reassembled[2] && HasStatusEffect(Buffs.Reassembled) ||
         IsEnabled(Preset.MCH_AoE_Adv_Reassemble) && !MCH_AoE_Reassembled[2] && !HasStatusEffect(Buffs.Reassembled) ||
         !HasStatusEffect(Buffs.Reassembled) && GetRemainingCharges(Reassemble) <= MCH_AoE_ReassemblePool ||
         !IsEnabled(Preset.MCH_AoE_Adv_Reassemble);
 
-    internal static bool ReassembledAirAnchorAoE =
+    private static bool ReassembledAirAnchorAoE =
         IsEnabled(Preset.MCH_AoE_Adv_Reassemble) && MCH_AoE_Reassembled[1] && HasStatusEffect(Buffs.Reassembled) ||
         IsEnabled(Preset.MCH_AoE_Adv_Reassemble) && !MCH_AoE_Reassembled[1] && !HasStatusEffect(Buffs.Reassembled) ||
         !HasStatusEffect(Buffs.Reassembled) && GetRemainingCharges(Reassemble) <= MCH_AoE_ReassemblePool ||
         !IsEnabled(Preset.MCH_AoE_Adv_Reassemble);
 
-    internal static bool ReassembledScattergunAoE =
+    private static bool ReassembledScattergunAoE =
         IsEnabled(Preset.MCH_AoE_Adv_Reassemble) && MCH_AoE_Reassembled[0] && HasStatusEffect(Buffs.Reassembled);
 
-    internal static bool Reassembled(bool onExcavator, bool onChainsaw, bool onAirAnchor, bool onDrill)
+    private static bool Reassembled(bool onExcavator, bool onChainsaw, bool onAirAnchor, bool onDrill)
     {
         if (!JustUsed(OriginalHook(Heatblast)) &&
             !HasStatusEffect(Buffs.Reassembled) && ActionReady(Reassemble))
@@ -192,32 +189,32 @@ internal partial class MCH
 
     #region Cooldowns
 
-    internal static bool DrillCD =>
+    private static bool DrillCD =>
         !LevelChecked(Drill) ||
         !TraitLevelChecked(Traits.EnhancedMultiWeapon) && GetCooldownRemainingTime(Drill) >= 9 ||
         TraitLevelChecked(Traits.EnhancedMultiWeapon) && GetRemainingCharges(Drill) < GetMaxCharges(Drill) && GetCooldownRemainingTime(Drill) >= 9;
 
-    internal static bool AnchorCD =>
+    private static bool AnchorCD =>
         !LevelChecked(AirAnchor) ||
         LevelChecked(AirAnchor) && GetCooldownRemainingTime(AirAnchor) >= 9;
 
-    internal static bool SawCD =>
+    private static bool SawCD =>
         !LevelChecked(Chainsaw) ||
         LevelChecked(Chainsaw) && GetCooldownRemainingTime(Chainsaw) >= 9;
 
-    internal static bool Tools(ref uint actionID, bool useExcavator, bool useChainsaw, bool useAirAnchor, bool useDrill)
+    private static bool Tools(ref uint actionID, bool simpleMode, bool useExcavator, bool useChainsaw, bool useAirAnchor, bool useDrill)
     {
         switch (useExcavator)
         {
             case true when
                 ReassembledExcavatorST &&
-                (IsNotEnabled(Preset.MCH_ST_Adv_TurretQueen) || (MCH_ST_QueenBossOption == 1 || IsEnabled(Preset.MCH_ST_SimpleMode)) && !InBossEncounter()) &&
+                (IsNotEnabled(Preset.MCH_ST_Adv_TurretQueen) || (MCH_ST_QueenBossOption == 1 || simpleMode) && !InBossEncounter()) &&
                 LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady):
 
             case true when
                 ReassembledExcavatorST &&
                 (IsEnabled(Preset.MCH_ST_Adv_TurretQueen) && (MCH_ST_QueenBossOption == 0 || InBossEncounter()) ||
-                 IsEnabled(Preset.MCH_ST_SimpleMode) && InBossEncounter()) &&
+                 simpleMode && InBossEncounter()) &&
                 LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady) &&
                 (BSUsed is 1 ||
                  BSUsed % 3 is 2 && Battery <= 40 ||
@@ -275,7 +272,7 @@ internal partial class MCH
 
     #region Combos
 
-    internal static float GCD => GetCooldown(OriginalHook(SplitShot)).CooldownTotal;
+    private static float GCD => GetCooldown(OriginalHook(SplitShot)).CooldownTotal;
 
     internal static unsafe bool IsComboExpiring(float times)
     {
@@ -426,19 +423,19 @@ internal partial class MCH
 
     #region Gauge
 
-    internal static MCHGauge Gauge = GetJobGauge<MCHGauge>();
+    private static MCHGauge Gauge = GetJobGauge<MCHGauge>();
 
-    internal static bool IsOverheated => Gauge.IsOverheated;
+    private static bool IsOverheated => Gauge.IsOverheated;
 
-    internal static bool RobotActive => Gauge.IsRobotActive;
+    private static bool RobotActive => Gauge.IsRobotActive;
 
-    internal static byte LastSummonBattery => Gauge.LastSummonBatteryPower;
+    private static byte LastSummonBattery => Gauge.LastSummonBatteryPower;
 
-    internal static byte Heat => Gauge.Heat;
+    private static byte Heat => Gauge.Heat;
 
-    internal static byte Battery => Gauge.Battery;
+    private static byte Battery => Gauge.Battery;
 
-    internal static bool MaxBattery => Battery >= 100;
+    private static bool MaxBattery => Battery >= 100;
 
     #endregion
 
