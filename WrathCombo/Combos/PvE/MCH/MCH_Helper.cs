@@ -23,7 +23,7 @@ internal partial class MCH
 
     #region Queen
 
-    private static bool UseQueen(bool simpleMode)
+    private static bool UseQueen(bool simpleMode = false)
     {
         if (!HasStatusEffect(Buffs.Wildfire) &&
             !JustUsed(OriginalHook(Heatblast)) && ActionReady(RookAutoturret) &&
@@ -202,7 +202,7 @@ internal partial class MCH
         !LevelChecked(Chainsaw) ||
         LevelChecked(Chainsaw) && GetCooldownRemainingTime(Chainsaw) >= 9;
 
-    private static bool Tools(ref uint actionID, bool simpleMode, bool useExcavator, bool useChainsaw, bool useAirAnchor, bool useDrill)
+    private static bool Tools(ref uint actionID, bool useExcavator, bool useChainsaw, bool useAirAnchor, bool useDrill, bool simpleMode = false)
     {
         switch (useExcavator)
         {
@@ -274,7 +274,7 @@ internal partial class MCH
 
     private static float GCD => GetCooldown(OriginalHook(SplitShot)).CooldownTotal;
 
-    internal static unsafe bool IsComboExpiring(float times)
+    private static unsafe bool IsComboExpiring(float times)
     {
         float gcd = GCD * times;
 
