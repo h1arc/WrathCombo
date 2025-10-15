@@ -14,7 +14,7 @@ internal partial class MNK : Melee
             if (actionID is not (Bootshine or LeapingOpo))
                 return actionID;
 
-            if (UseMeditationST())
+            if (UseMeditation(true, false))
                 return OriginalHook(SteeledMeditation);
 
             if (UseFormshift())
@@ -32,13 +32,13 @@ internal partial class MNK : Melee
                 if (UseRoF())
                     return RiddleOfFire;
 
-                if (UsePerfectBalanceST())
+                if (UsePerfectBalance(true, false))
                     return PerfectBalance;
 
                 if (UseRoW())
                     return RiddleOfWind;
 
-                if (UseChakraST())
+                if (UseChakra(true, false))
                     return OriginalHook(SteeledMeditation);
 
                 if (Role.CanSecondWind(25))
@@ -55,7 +55,7 @@ internal partial class MNK : Melee
                     : OriginalHook(Bootshine);
 
             // Masterful Blitz
-            if (UseMasterfulBlitz())
+            if (UseMasterfulBlitz(true, false))
                 return OriginalHook(MasterfulBlitz);
 
             if (UseWindsReply())
@@ -65,7 +65,7 @@ internal partial class MNK : Melee
                 return FiresReply;
 
             // Perfect Balance or Standard Beast Chakras
-            return DoPerfectBalanceComboST(ref actionID)
+            return DoPerfectBalanceCombo(ref actionID, true, false)
                 ? actionID
                 : DetermineCoreAbility(actionID, true);
         }
@@ -80,7 +80,7 @@ internal partial class MNK : Melee
             if (actionID is not (ArmOfTheDestroyer or ShadowOfTheDestroyer))
                 return actionID;
 
-            if (UseMeditationAoE())
+            if (UseMeditation(false, true))
                 return OriginalHook(InspiritedMeditation);
 
             if (UseFormshift())
@@ -98,13 +98,13 @@ internal partial class MNK : Melee
                 if (UseRoF())
                     return RiddleOfFire;
 
-                if (UsePerfectBalanceAoE())
+                if (UsePerfectBalance(false, true))
                     return PerfectBalance;
 
                 if (UseRoW())
                     return RiddleOfWind;
 
-                if (UseChakraAoE())
+                if (UseChakra(false, true))
                     return OriginalHook(InspiritedMeditation);
 
                 if (Role.CanSecondWind(25))
@@ -115,7 +115,7 @@ internal partial class MNK : Melee
             }
 
             // Masterful Blitz
-            if (UseMasterfulBlitz())
+            if (UseMasterfulBlitz(false, true))
                 return OriginalHook(MasterfulBlitz);
 
             if (HasStatusEffect(Buffs.FiresRumination) &&
@@ -131,7 +131,7 @@ internal partial class MNK : Melee
                 return WindsReply;
 
             // Perfect Balance
-            if (DoPerfectBalanceComboAoE(ref actionID))
+            if (DoPerfectBalanceCombo(ref actionID, false, true))
                 return actionID;
 
             // Monk Rotation
@@ -171,7 +171,7 @@ internal partial class MNK : Melee
                     : actionID;
 
             if (IsEnabled(Preset.MNK_STUseMeditation) &&
-                UseMeditationST())
+                UseMeditation(true, false))
                 return OriginalHook(SteeledMeditation);
 
             if (IsEnabled(Preset.MNK_STUseFormShift) &&
@@ -198,7 +198,7 @@ internal partial class MNK : Melee
                 }
 
                 if (IsEnabled(Preset.MNK_STUsePerfectBalance) &&
-                    UsePerfectBalanceST())
+                    UsePerfectBalance(true, false))
                     return PerfectBalance;
 
                 if (IsEnabled(Preset.MNK_STUseBuffs)
@@ -208,7 +208,7 @@ internal partial class MNK : Melee
                     return RiddleOfWind;
 
                 if (IsEnabled(Preset.MNK_STUseTheForbiddenChakra) &&
-                    UseChakraST())
+                    UseChakra(true, false))
                     return OriginalHook(SteeledMeditation);
 
                 if (IsEnabled(Preset.MNK_ST_Feint) &&
@@ -248,7 +248,7 @@ internal partial class MNK : Melee
 
             // Masterful Blitz
             if (IsEnabled(Preset.MNK_STUseMasterfulBlitz) &&
-                UseMasterfulBlitz())
+                UseMasterfulBlitz(true, false))
                 return OriginalHook(MasterfulBlitz);
 
             if (IsEnabled(Preset.MNK_STUseBuffs))
@@ -263,7 +263,7 @@ internal partial class MNK : Melee
             }
 
             // Perfect Balance or Standard Beast Chakras
-            return DoPerfectBalanceComboST(ref actionID)
+            return DoPerfectBalanceCombo(ref actionID, true, false)
                 ? actionID
                 : DetermineCoreAbility(actionID, IsEnabled(Preset.MNK_STUseTrueNorth));
         }
@@ -279,7 +279,7 @@ internal partial class MNK : Melee
                 return actionID;
 
             if (IsEnabled(Preset.MNK_AoEUseMeditation) &&
-                UseMeditationAoE())
+                UseMeditation(false, true))
                 return OriginalHook(InspiritedMeditation);
 
             if (IsEnabled(Preset.MNK_AoEUseFormShift) &&
@@ -306,7 +306,7 @@ internal partial class MNK : Melee
                 }
 
                 if (IsEnabled(Preset.MNK_AoEUsePerfectBalance) &&
-                    UsePerfectBalanceAoE())
+                    UsePerfectBalance(false, true))
                     return PerfectBalance;
 
                 if (IsEnabled(Preset.MNK_AoEUseBuffs) &&
@@ -316,7 +316,7 @@ internal partial class MNK : Melee
                     return RiddleOfWind;
 
                 if (IsEnabled(Preset.MNK_AoEUseHowlingFist) &&
-                    UseChakraAoE())
+                    UseChakra(false, true))
                     return OriginalHook(InspiritedMeditation);
 
                 if (IsEnabled(Preset.MNK_AoE_ComboHeals))
@@ -335,7 +335,7 @@ internal partial class MNK : Melee
 
             // Masterful Blitz
             if (IsEnabled(Preset.MNK_AoEUseMasterfulBlitz) &&
-                UseMasterfulBlitz())
+                UseMasterfulBlitz(false, true))
                 return OriginalHook(MasterfulBlitz);
 
             if (IsEnabled(Preset.MNK_AoEUseBuffs))
@@ -356,7 +356,7 @@ internal partial class MNK : Melee
             }
 
             // Perfect Balance
-            if (DoPerfectBalanceComboAoE(ref actionID))
+            if (DoPerfectBalanceCombo(ref actionID, false, true))
                 return actionID;
 
             // Monk Rotation

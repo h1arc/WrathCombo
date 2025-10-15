@@ -58,207 +58,61 @@ internal partial class MNK
 
     #endregion
 
-    #region Masterful Blitz
-
-    internal static bool UseMasterfulBlitz()
-    {
-        if (LevelChecked(MasterfulBlitz) &&
-            !HasStatusEffect(Buffs.PerfectBalance) &&
-            InMasterfulRange() && !IsOriginal(MasterfulBlitz))
-        {
-            //Only use when buff is active
-            if (LevelChecked(RiddleOfFire) && HasStatusEffect(Buffs.RiddleOfFire))
-                return true;
-
-            //Use whenver since no buff
-            if (!LevelChecked(RiddleOfFire))
-                return true;
-        }
-
-        return false;
-    }
-
-    internal static bool InMasterfulRange()
-    {
-        if (NumberOfEnemiesInRange(ElixirField) >= 1 &&
-            (OriginalHook(MasterfulBlitz) == ElixirField ||
-             OriginalHook(MasterfulBlitz) == FlintStrike ||
-             OriginalHook(MasterfulBlitz) == ElixirBurst ||
-             OriginalHook(MasterfulBlitz) == RisingPhoenix))
-            return true;
-
-        if (NumberOfEnemiesInRange(TornadoKick, CurrentTarget) >= 1 &&
-            (OriginalHook(MasterfulBlitz) == TornadoKick ||
-             OriginalHook(MasterfulBlitz) == CelestialRevolution ||
-             OriginalHook(MasterfulBlitz) == PhantomRush))
-            return true;
-
-        return false;
-    }
-
-    #endregion
-
-    #region Chakra
-
-    internal static bool UseFormshift() =>
-        LevelChecked(FormShift) && !InCombat() &&
-        !HasStatusEffect(Buffs.FormlessFist) &&
-        !HasStatusEffect(Buffs.PerfectBalance) &&
-        !HasStatusEffect(Buffs.OpoOpoForm) &&
-        !HasStatusEffect(Buffs.RaptorForm) &&
-        !HasStatusEffect(Buffs.CoeurlForm);
-
-    #region ST
-
-    internal static bool UseMeditationST() =>
-        LevelChecked(SteeledMeditation) &&
-        (!InCombat() || !InMeleeRange()) &&
-        Chakra < 5 &&
-        IsOriginal(MasterfulBlitz) &&
-        !HasStatusEffect(Buffs.RiddleOfFire) &&
-        !HasStatusEffect(Buffs.WindsRumination) &&
-        !HasStatusEffect(Buffs.FiresRumination);
-
-    internal static bool UseChakraST() =>
-        Chakra >= 5 && LevelChecked(SteeledMeditation) &&
-        !JustUsed(Brotherhood) && !JustUsed(RiddleOfFire) &&
-        InActionRange(OriginalHook(SteeledMeditation));
-
-    #endregion
-
-    #region AoE
-
-    internal static bool UseMeditationAoE() =>
-        LevelChecked(InspiritedMeditation) &&
-        (!InCombat() || !InMeleeRange()) &&
-        Chakra < 5 &&
-        IsOriginal(MasterfulBlitz) &&
-        !HasStatusEffect(Buffs.RiddleOfFire) &&
-        !HasStatusEffect(Buffs.WindsRumination) &&
-        !HasStatusEffect(Buffs.FiresRumination);
-
-    internal static bool UseChakraAoE() =>
-        Chakra >= 5 &&
-        LevelChecked(InspiritedMeditation) &&
-        HasBattleTarget() && !JustUsed(Brotherhood) &&
-        !JustUsed(RiddleOfFire) &&
-        InActionRange(OriginalHook(InspiritedMeditation));
-
-    #endregion
-
-    #endregion
-
-    #region Buffs
-
-    //RoF
-    internal static bool UseRoF() =>
-        ActionReady(RiddleOfFire) &&
-        !HasStatusEffect(Buffs.FiresRumination) &&
-        (JustUsed(Brotherhood, GCD) ||
-         GetCooldownRemainingTime(Brotherhood) is > 50 and < 65 ||
-         !LevelChecked(Brotherhood) ||
-         HasStatusEffect(Buffs.Brotherhood));
-
-    internal static bool UseFiresReply() =>
-        HasStatusEffect(Buffs.FiresRumination) &&
-        !HasStatusEffect(Buffs.FormlessFist) &&
-        !HasStatusEffect(Buffs.PerfectBalance) &&
-        IsOriginal(MasterfulBlitz) &&
-        (JustUsed(OriginalHook(Bootshine)) ||
-         JustUsed(DragonKick) ||
-         GetStatusEffectRemainingTime(Buffs.FiresRumination) < GCD * 2 ||
-         !InMeleeRange());
-
-    //Brotherhood
-    internal static bool UseBrotherhood() =>
-        ActionReady(Brotherhood) &&
-        ActionReady(RiddleOfFire);
-
-    //RoW
-    internal static bool UseRoW() =>
-        ActionReady(RiddleOfWind) &&
-        !HasStatusEffect(Buffs.WindsRumination);
-
-    internal static bool UseWindsReply() =>
-        HasStatusEffect(Buffs.WindsRumination) &&
-        (GetCooldownRemainingTime(RiddleOfFire) > 5 ||
-         HasStatusEffect(Buffs.RiddleOfFire) ||
-         GetStatusEffectRemainingTime(Buffs.WindsRumination) < GCD * 2 ||
-         !InMeleeRange());
-
-    internal static bool UseMantra() =>
-        ActionReady(Mantra) &&
-        !HasStatusEffect(Buffs.Mantra) &&
-        RaidWideCasting(3f);
-
-    internal static bool UseRoE() =>
-        ActionReady(RiddleOfEarth) &&
-        RaidWideCasting(2f) &&
-        !HasStatusEffect(Buffs.RiddleOfEarth) &&
-        !HasStatusEffect(Buffs.EarthsRumination);
-
-    internal static bool UseEarthsReply() =>
-        HasStatusEffect(Buffs.EarthsRumination) &&
-        NumberOfAlliesInRange(EarthsReply) >= GetPartyMembers().Count * .75 &&
-        GetPartyAvgHPPercent() <= MNK_ST_EarthsReplyHPThreshold;
-
-    #endregion
-
     #region PB
 
-    internal static bool UsePerfectBalanceST()
+    internal static bool UsePerfectBalance(bool ST, bool AoE)
     {
-        if (ActionReady(PerfectBalance) && !HasStatusEffect(Buffs.PerfectBalance) &&
-            !HasStatusEffect(Buffs.FormlessFist) && IsOriginal(MasterfulBlitz) &&
-            HasBattleTarget())
+        if (ST)
         {
-            // Odd window
-            if ((JustUsed(OriginalHook(Bootshine), GCD) || JustUsed(DragonKick, GCD)) &&
-                !JustUsed(PerfectBalance, 20) && HasStatusEffect(Buffs.RiddleOfFire) && !HasStatusEffect(Buffs.Brotherhood))
-                return true;
+            if (ActionReady(PerfectBalance) && !HasStatusEffect(Buffs.PerfectBalance) &&
+                !HasStatusEffect(Buffs.FormlessFist) && IsOriginal(MasterfulBlitz) &&
+                HasBattleTarget())
+            {
+                // Odd window
+                if ((JustUsed(OriginalHook(Bootshine), GCD) || JustUsed(DragonKick, GCD)) &&
+                    !JustUsed(PerfectBalance, 20) && HasStatusEffect(Buffs.RiddleOfFire) && !HasStatusEffect(Buffs.Brotherhood))
+                    return true;
 
-            // Even window first use
-            if ((JustUsed(OriginalHook(Bootshine), GCD) || JustUsed(DragonKick, GCD)) &&
-                GetCooldownRemainingTime(Brotherhood) <= GCD * 3 && GetCooldownRemainingTime(RiddleOfFire) <= GCD * 3)
-                return true;
+                // Even window first use
+                if ((JustUsed(OriginalHook(Bootshine), GCD) || JustUsed(DragonKick, GCD)) &&
+                    GetCooldownRemainingTime(Brotherhood) <= GCD * 3 && GetCooldownRemainingTime(RiddleOfFire) <= GCD * 3)
+                    return true;
 
-            // Even window second use
-            if ((JustUsed(OriginalHook(Bootshine), GCD) || JustUsed(DragonKick, GCD)) &&
-                HasStatusEffect(Buffs.Brotherhood) && HasStatusEffect(Buffs.RiddleOfFire) && !HasStatusEffect(Buffs.FiresRumination))
-                return true;
+                // Even window second use
+                if ((JustUsed(OriginalHook(Bootshine), GCD) || JustUsed(DragonKick, GCD)) &&
+                    HasStatusEffect(Buffs.Brotherhood) && HasStatusEffect(Buffs.RiddleOfFire) && !HasStatusEffect(Buffs.FiresRumination))
+                    return true;
 
-            // Low level
-            if ((JustUsed(OriginalHook(Bootshine), GCD) || JustUsed(DragonKick, GCD)) &&
-                (HasStatusEffect(Buffs.RiddleOfFire) && !LevelChecked(Brotherhood) ||
-                 !LevelChecked(RiddleOfFire)))
-                return true;
+                // Low level
+                if ((JustUsed(OriginalHook(Bootshine), GCD) || JustUsed(DragonKick, GCD)) &&
+                    (HasStatusEffect(Buffs.RiddleOfFire) && !LevelChecked(Brotherhood) ||
+                     !LevelChecked(RiddleOfFire)))
+                    return true;
+            }
         }
-
-        return false;
-    }
-
-    internal static bool UsePerfectBalanceAoE()
-    {
-        if (ActionReady(PerfectBalance) && !HasStatusEffect(Buffs.PerfectBalance) &&
-            !HasStatusEffect(Buffs.FormlessFist) && HasBattleTarget())
+        if (AoE)
         {
-            //Initial/Failsafe
-            if (GetRemainingCharges(PerfectBalance) == GetMaxCharges(PerfectBalance))
-                return true;
+            if (ActionReady(PerfectBalance) && !HasStatusEffect(Buffs.PerfectBalance) &&
+                !HasStatusEffect(Buffs.FormlessFist) && HasBattleTarget())
+            {
+                //Initial/Failsafe
+                if (GetRemainingCharges(PerfectBalance) == GetMaxCharges(PerfectBalance))
+                    return true;
 
-            // Odd window
-            if (HasStatusEffect(Buffs.RiddleOfFire) && !HasStatusEffect(Buffs.Brotherhood))
-                return true;
+                // Odd window
+                if (HasStatusEffect(Buffs.RiddleOfFire) && !HasStatusEffect(Buffs.Brotherhood))
+                    return true;
 
-            // Even window
-            if ((GetCooldownRemainingTime(Brotherhood) <= GCD * 2 || HasStatusEffect(Buffs.Brotherhood)) &&
-                (GetCooldownRemainingTime(RiddleOfFire) <= GCD * 2 || HasStatusEffect(Buffs.RiddleOfFire)))
-                return true;
+                // Even window
+                if ((GetCooldownRemainingTime(Brotherhood) <= GCD * 2 || HasStatusEffect(Buffs.Brotherhood)) &&
+                    (GetCooldownRemainingTime(RiddleOfFire) <= GCD * 2 || HasStatusEffect(Buffs.RiddleOfFire)))
+                    return true;
 
-            // Low level
-            if (HasStatusEffect(Buffs.RiddleOfFire) && !LevelChecked(Brotherhood) ||
-                !LevelChecked(RiddleOfFire))
-                return true;
+                // Low level
+                if (HasStatusEffect(Buffs.RiddleOfFire) && !LevelChecked(Brotherhood) ||
+                    !LevelChecked(RiddleOfFire))
+                    return true;
+            }
         }
 
         return false;
@@ -268,9 +122,9 @@ internal partial class MNK
 
     #region PB Combo
 
-    internal static bool DoPerfectBalanceComboST(ref uint actionID)
+    internal static bool DoPerfectBalanceCombo(ref uint actionID, bool ST, bool AoE)
     {
-        if (HasStatusEffect(Buffs.PerfectBalance))
+        if (ST && HasStatusEffect(Buffs.PerfectBalance))
         {
         #region Open Lunar
 
@@ -339,12 +193,7 @@ internal partial class MNK
 
         #endregion
         }
-        return false;
-    }
-
-    internal static bool DoPerfectBalanceComboAoE(ref uint actionID)
-    {
-        if (HasStatusEffect(Buffs.PerfectBalance))
+        if (AoE && HasStatusEffect(Buffs.PerfectBalance))
         {
         #region Open Lunar
 
@@ -389,6 +238,169 @@ internal partial class MNK
         }
         return false;
     }
+
+    #endregion
+
+    #region Masterful Blitz
+
+    internal static bool UseMasterfulBlitz(bool ST, bool AoE)
+    {
+        if (ST)
+        {
+            if (LevelChecked(MasterfulBlitz) &&
+                !HasStatusEffect(Buffs.PerfectBalance) &&
+                InMasterfulRange() && !IsOriginal(MasterfulBlitz))
+            {
+                //Only use when buff is active
+                if (LevelChecked(RiddleOfFire) && HasStatusEffect(Buffs.RiddleOfFire))
+                    return true;
+
+                //Use whenver since no buff
+                if (!LevelChecked(RiddleOfFire))
+                    return true;
+            }
+        }
+
+        if (AoE)
+        {
+            if (LevelChecked(MasterfulBlitz) &&
+                !HasStatusEffect(Buffs.PerfectBalance) &&
+                InMasterfulRange() && !IsOriginal(MasterfulBlitz))
+                return true;
+        }
+
+        return false;
+    }
+
+    internal static bool InMasterfulRange()
+    {
+        if (NumberOfEnemiesInRange(ElixirField) >= 1 &&
+            (OriginalHook(MasterfulBlitz) == ElixirField ||
+             OriginalHook(MasterfulBlitz) == FlintStrike ||
+             OriginalHook(MasterfulBlitz) == ElixirBurst ||
+             OriginalHook(MasterfulBlitz) == RisingPhoenix))
+            return true;
+
+        if (NumberOfEnemiesInRange(TornadoKick, CurrentTarget) >= 1 &&
+            (OriginalHook(MasterfulBlitz) == TornadoKick ||
+             OriginalHook(MasterfulBlitz) == CelestialRevolution ||
+             OriginalHook(MasterfulBlitz) == PhantomRush))
+            return true;
+
+        return false;
+    }
+
+    #endregion
+
+    #region Chakra
+
+    internal static bool UseFormshift() =>
+        LevelChecked(FormShift) && !InCombat() &&
+        !HasStatusEffect(Buffs.FormlessFist) &&
+        !HasStatusEffect(Buffs.PerfectBalance) &&
+        !HasStatusEffect(Buffs.OpoOpoForm) &&
+        !HasStatusEffect(Buffs.RaptorForm) &&
+        !HasStatusEffect(Buffs.CoeurlForm);
+
+    internal static bool UseMeditation(bool ST, bool AoE)
+    {
+        if (ST &&
+            LevelChecked(SteeledMeditation) &&
+            (!InCombat() || !InMeleeRange()) &&
+            Chakra < 5 &&
+            IsOriginal(MasterfulBlitz) &&
+            !HasStatusEffect(Buffs.RiddleOfFire) &&
+            !HasStatusEffect(Buffs.WindsRumination) &&
+            !HasStatusEffect(Buffs.FiresRumination))
+            return true;
+
+        if (AoE &&
+            LevelChecked(InspiritedMeditation) &&
+            (!InCombat() || !InMeleeRange()) &&
+            Chakra < 5 &&
+            IsOriginal(MasterfulBlitz) &&
+            !HasStatusEffect(Buffs.RiddleOfFire) &&
+            !HasStatusEffect(Buffs.WindsRumination) &&
+            !HasStatusEffect(Buffs.FiresRumination))
+            return true;
+
+        return false;
+    }
+
+    internal static bool UseChakra(bool ST, bool AoE)
+    {
+        if (ST &&
+            Chakra >= 5 && LevelChecked(SteeledMeditation) &&
+            !JustUsed(Brotherhood) && !JustUsed(RiddleOfFire) &&
+            InActionRange(OriginalHook(SteeledMeditation)))
+            return true;
+
+        if (AoE &&
+            Chakra >= 5 &&
+            LevelChecked(InspiritedMeditation) &&
+            HasBattleTarget() && !JustUsed(Brotherhood) &&
+            !JustUsed(RiddleOfFire) &&
+            InActionRange(OriginalHook(InspiritedMeditation)))
+            return true;
+
+        return false;
+    }
+
+    #endregion
+
+    #region Buffs
+
+    //RoF
+    internal static bool UseRoF() =>
+        ActionReady(RiddleOfFire) &&
+        !HasStatusEffect(Buffs.FiresRumination) &&
+        (JustUsed(Brotherhood, GCD) ||
+         GetCooldownRemainingTime(Brotherhood) is > 50 and < 65 ||
+         !LevelChecked(Brotherhood) ||
+         HasStatusEffect(Buffs.Brotherhood));
+
+    internal static bool UseFiresReply() =>
+        HasStatusEffect(Buffs.FiresRumination) &&
+        !HasStatusEffect(Buffs.FormlessFist) &&
+        !HasStatusEffect(Buffs.PerfectBalance) &&
+        IsOriginal(MasterfulBlitz) &&
+        (JustUsed(OriginalHook(Bootshine)) ||
+         JustUsed(DragonKick) ||
+         GetStatusEffectRemainingTime(Buffs.FiresRumination) < GCD * 2 ||
+         !InMeleeRange());
+
+    //Brotherhood
+    internal static bool UseBrotherhood() =>
+        ActionReady(Brotherhood) &&
+        ActionReady(RiddleOfFire);
+
+    //RoW
+    internal static bool UseRoW() =>
+        ActionReady(RiddleOfWind) &&
+        !HasStatusEffect(Buffs.WindsRumination);
+
+    internal static bool UseWindsReply() =>
+        HasStatusEffect(Buffs.WindsRumination) &&
+        (GetCooldownRemainingTime(RiddleOfFire) > 5 ||
+         HasStatusEffect(Buffs.RiddleOfFire) ||
+         GetStatusEffectRemainingTime(Buffs.WindsRumination) < GCD * 2 ||
+         !InMeleeRange());
+
+    internal static bool UseMantra() =>
+        ActionReady(Mantra) &&
+        !HasStatusEffect(Buffs.Mantra) &&
+        RaidWideCasting(3f);
+
+    internal static bool UseRoE() =>
+        ActionReady(RiddleOfEarth) &&
+        RaidWideCasting(2f) &&
+        !HasStatusEffect(Buffs.RiddleOfEarth) &&
+        !HasStatusEffect(Buffs.EarthsRumination);
+
+    internal static bool UseEarthsReply() =>
+        HasStatusEffect(Buffs.EarthsRumination) &&
+        NumberOfAlliesInRange(EarthsReply) >= GetPartyMembers().Count * .75 &&
+        GetPartyAvgHPPercent() <= MNK_ST_EarthsReplyHPThreshold;
 
     #endregion
 
