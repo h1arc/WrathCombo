@@ -184,16 +184,15 @@ internal partial class MNK : Melee
             // OGCDs
             if (CanWeave() && M6SReady && InCombat())
             {
-                if (IsEnabled(Preset.MNK_STUseBuffs))
+                if (IsEnabled(Preset.MNK_STUseBuffs) &&
+                    GetTargetHPPercent() > HPThresholdBuffs)
                 {
                     if (IsEnabled(Preset.MNK_STUseBrotherhood) &&
-                        UseBrotherhood() &&
-                        (MNK_ST_BrotherhoodBossOption == 0 || InBossEncounter()))
+                        UseBrotherhood())
                         return Brotherhood;
 
                     if (IsEnabled(Preset.MNK_STUseROF) &&
-                        UseRoF() &&
-                        (MNK_ST_RiddleOfFireBossOption == 0 || InBossEncounter()))
+                        UseRoF())
                         return RiddleOfFire;
                 }
 
@@ -201,10 +200,10 @@ internal partial class MNK : Melee
                     UsePerfectBalance(true, false))
                     return PerfectBalance;
 
-                if (IsEnabled(Preset.MNK_STUseBuffs)
-                    && IsEnabled(Preset.MNK_STUseROW) &&
-                    UseRoW() &&
-                    (MNK_ST_RiddleOfWindBossOption == 0 || InBossEncounter()))
+                if (IsEnabled(Preset.MNK_STUseBuffs) &&
+                    IsEnabled(Preset.MNK_STUseROW) &&
+                    GetTargetHPPercent() > HPThresholdBuffs &&
+                    UseRoW())
                     return RiddleOfWind;
 
                 if (IsEnabled(Preset.MNK_STUseTheForbiddenChakra) &&
@@ -251,7 +250,8 @@ internal partial class MNK : Melee
                 UseMasterfulBlitz(true, false))
                 return OriginalHook(MasterfulBlitz);
 
-            if (IsEnabled(Preset.MNK_STUseBuffs))
+            if (IsEnabled(Preset.MNK_STUseBuffs) &&
+                GetTargetHPPercent() > HPThresholdBuffs)
             {
                 if (IsEnabled(Preset.MNK_STUseWindsReply) &&
                     UseWindsReply())
@@ -292,16 +292,15 @@ internal partial class MNK : Melee
             // OGCD's
             if (CanWeave() && M6SReady && InCombat())
             {
-                if (IsEnabled(Preset.MNK_AoEUseBuffs))
+                if (IsEnabled(Preset.MNK_AoEUseBuffs) &&
+                    GetTargetHPPercent() >= MNK_AoE_BuffsHPTreshold)
                 {
                     if (IsEnabled(Preset.MNK_AoEUseBrotherhood) &&
-                        UseBrotherhood() &&
-                        GetTargetHPPercent() >= MNK_AoE_BrotherhoodHPThreshold)
+                        UseBrotherhood())
                         return Brotherhood;
 
                     if (IsEnabled(Preset.MNK_AoEUseROF) &&
-                        UseRoF() &&
-                        GetTargetHPPercent() >= MNK_AoE_RiddleOfFireHPTreshold)
+                        UseRoF())
                         return RiddleOfFire;
                 }
 
@@ -311,8 +310,8 @@ internal partial class MNK : Melee
 
                 if (IsEnabled(Preset.MNK_AoEUseBuffs) &&
                     IsEnabled(Preset.MNK_AoEUseROW) &&
-                    UseRoW() &&
-                    GetTargetHPPercent() >= MNK_AoE_RiddleOfWindHPTreshold)
+                    GetTargetHPPercent() >= MNK_AoE_BuffsHPTreshold &&
+                    UseRoW())
                     return RiddleOfWind;
 
                 if (IsEnabled(Preset.MNK_AoEUseHowlingFist) &&
@@ -338,7 +337,8 @@ internal partial class MNK : Melee
                 UseMasterfulBlitz(false, true))
                 return OriginalHook(MasterfulBlitz);
 
-            if (IsEnabled(Preset.MNK_AoEUseBuffs))
+            if (IsEnabled(Preset.MNK_AoEUseBuffs) &&
+                GetTargetHPPercent() >= MNK_AoE_BuffsHPTreshold)
             {
                 if (IsEnabled(Preset.MNK_AoEUseFiresReply) &&
                     HasStatusEffect(Buffs.FiresRumination) &&

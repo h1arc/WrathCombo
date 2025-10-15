@@ -15,6 +15,10 @@ internal partial class MNK
     private static float GCD =>
         GetCooldown(OriginalHook(Bootshine)).CooldownTotal;
 
+    private static int HPThresholdBuffs =>
+        MNK_ST_BuffsBossOption == 1 ||
+        !InBossEncounter() ? MNK_ST_BuffsHPThreshold : 0;
+
     private static bool M6SReady =>
         !HiddenFeaturesData.IsEnabledWith(Preset.MNK_Hid_M6SHoldSquirrelBurst, () =>
             HiddenFeaturesData.Targeting.R6SSquirrel && CombatEngageDuration().TotalSeconds < 300);
