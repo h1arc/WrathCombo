@@ -71,6 +71,11 @@ internal partial class MNK
                         $"Stop Using {RiddleOfWind.ActionName()} When Target HP% is at or Below (Set to 0 to Disable This Check)");
                     break;
 
+                case Preset.MNK_AoEUsePerfectBalance:
+                    DrawSliderInt(0, 100, MNK_AoE_PerfectBalanceHPTreshold,
+                        $"Stop Using {PerfectBalance.ActionName()} When Target HP% is at or Below (Set to 0 to Disable This Check)");
+                    break;
+
                 case Preset.MNK_AoE_ComboHeals:
                     DrawSliderInt(0, 100, MNK_AoE_SecondWindHPThreshold,
                         $"{Role.SecondWind.ActionName()} HP percentage threshold");
@@ -120,15 +125,16 @@ internal partial class MNK
         public static UserInt
             MNK_SelectedOpener = new("MNK_SelectedOpener", 0),
             MNK_Balance_Content = new("MNK_Balance_Content", 1),
-            MNK_ST_BrotherhoodBossOption = new("MNK_ST_Brotherhood_SubOption", 1),
-            MNK_ST_RiddleOfFireBossOption = new("MNK_ST_RiddleOfFire_SubOption", 1),
-            MNK_ST_RiddleOfWindBossOption = new("MNK_ST_RiddleOfWind_SubOption", 1),
+            MNK_ST_BrotherhoodBossOption = new("MNK_ST_BrotherhoodBossOption", 1),
+            MNK_ST_RiddleOfFireBossOption = new("MNK_ST_RiddleOfFireBossOption", 1),
+            MNK_ST_RiddleOfWindBossOption = new("MNK_ST_RiddleOfWindBossOption", 1),
             MNK_ST_EarthsReplyHPThreshold = new("MNK_ST_EarthsReplyHPThreshold", 50),
-            MNK_ST_SecondWindHPThreshold = new("MNK_ST_SecondWindThreshold", 40),
-            MNK_ST_BloodbathHPThreshold = new("MNK_ST_BloodbathThreshold", 30),
-            MNK_AoE_BrotherhoodHPThreshold = new("MNK_AoE_Brotherhood_HP", 40),
-            MNK_AoE_RiddleOfWindHPTreshold = new("MNK_AoE_RiddleOfWind_HP", 40),
-            MNK_AoE_RiddleOfFireHPTreshold = new("MNK_AoE_RiddleOfFire_HP", 40),
+            MNK_ST_SecondWindHPThreshold = new("MNK_ST_SecondWindHPThreshold", 40),
+            MNK_ST_BloodbathHPThreshold = new("MNK_ST_BloodbathHPThreshold", 30),
+            MNK_AoE_BrotherhoodHPThreshold = new("MNK_AoE_BrotherhoodHPThreshold", 40),
+            MNK_AoE_RiddleOfWindHPTreshold = new("MNK_AoE_RiddleOfWindHPTreshold", 40),
+            MNK_AoE_RiddleOfFireHPTreshold = new("MNK_AoE_RiddleOfFireHPTreshold", 40),
+            MNK_AoE_PerfectBalanceHPTreshold = new("MNK_AoE_PerfectBalanceHPTreshold", 40),
             MNK_AoE_SecondWindHPThreshold = new("MNK_AoE_SecondWindThreshold", 40),
             MNK_AoE_BloodbathHPThreshold = new("MNK_AoE_BloodbathThreshold", 30),
             MNK_BH_RoF = new("MNK_BH_RoF", 0);

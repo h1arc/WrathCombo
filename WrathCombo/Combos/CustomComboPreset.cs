@@ -3892,7 +3892,7 @@ public enum Preset
     MNK_STUsePerfectBalance = 9013,
 
     [ParentCombo(MNK_ST_AdvancedMode)]
-    [CustomComboInfo(" Masterful Blitz Option", "Adds Masterful Blitz to the rotation", Job.MNK)]
+    [CustomComboInfo(" Masterful Blitz Option", "Adds Masterful Blitz to the rotation.\nwill use it only under RoF when unlocked.", Job.MNK)]
     MNK_STUseMasterfulBlitz = 9039,
 
     [ParentCombo(MNK_ST_AdvancedMode)]

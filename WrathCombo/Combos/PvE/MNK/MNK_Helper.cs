@@ -90,7 +90,8 @@ internal partial class MNK
         }
         if (AoE &&
             ActionReady(PerfectBalance) && !HasStatusEffect(Buffs.PerfectBalance) &&
-            !HasStatusEffect(Buffs.FormlessFist) && HasBattleTarget())
+            !HasStatusEffect(Buffs.FormlessFist) && HasBattleTarget() &&
+            GetTargetHPPercent() >= MNK_AoE_PerfectBalanceHPTreshold)
         {
             //Initial/Failsafe
             if (GetRemainingCharges(PerfectBalance) == GetMaxCharges(PerfectBalance))
