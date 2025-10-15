@@ -298,18 +298,17 @@ internal partial class DRG : Melee
             {
                 if (CanDRGWeave())
                 {
-                    if (IsEnabled(Preset.DRG_ST_Buffs))
+                    if (IsEnabled(Preset.DRG_ST_Buffs) &&
+                        GetTargetHPPercent() > HPThresholdBuffs)
                     {
                         //Battle Litany Feature
                         if (IsEnabled(Preset.DRG_ST_Litany) &&
-                            ActionReady(BattleLitany) &&
-                            (DRG_ST_LitanyBossOption == 0 || InBossEncounter()))
+                            ActionReady(BattleLitany))
                             return BattleLitany;
 
                         //Lance Charge Feature
                         if (IsEnabled(Preset.DRG_ST_Lance) &&
-                            ActionReady(LanceCharge) &&
-                            (DRG_ST_LanceBossOption == 0 || InBossEncounter()))
+                            ActionReady(LanceCharge))
                             return LanceCharge;
                     }
 

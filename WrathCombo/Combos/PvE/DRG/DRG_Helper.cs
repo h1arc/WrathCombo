@@ -13,6 +13,10 @@ internal partial class DRG
     private static Status? ChaosDebuff =>
         GetStatusEffect(ChaoticList[OriginalHook(ChaosThrust)], CurrentTarget);
 
+    private static int HPThresholdBuffs =>
+        DRG_ST_BuffsBossOption == 1 ||
+        !InBossEncounter() ? DRG_ST_BuffsHPOption : 0;
+
     #region Lifesurge
 
     private static bool UseLifeSurge()
