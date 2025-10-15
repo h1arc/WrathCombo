@@ -250,17 +250,13 @@ internal partial class MNK : Melee
                 UseMasterfulBlitz(true, false))
                 return OriginalHook(MasterfulBlitz);
 
-            if (IsEnabled(Preset.MNK_STUseBuffs) &&
-                GetTargetHPPercent() > HPThresholdBuffs)
-            {
-                if (IsEnabled(Preset.MNK_STUseWindsReply) &&
-                    UseWindsReply())
-                    return WindsReply;
+            if (IsEnabled(Preset.MNK_STUseWindsReply) &&
+                UseWindsReply())
+                return WindsReply;
 
-                if (IsEnabled(Preset.MNK_STUseFiresReply) &&
-                    UseFiresReply())
-                    return FiresReply;
-            }
+            if (IsEnabled(Preset.MNK_STUseFiresReply) &&
+                UseFiresReply())
+                return FiresReply;
 
             // Perfect Balance or Standard Beast Chakras
             return DoPerfectBalanceCombo(ref actionID, true, false)
@@ -337,23 +333,19 @@ internal partial class MNK : Melee
                 UseMasterfulBlitz(false, true))
                 return OriginalHook(MasterfulBlitz);
 
-            if (IsEnabled(Preset.MNK_AoEUseBuffs) &&
-                GetTargetHPPercent() >= MNK_AoE_BuffsHPTreshold)
-            {
-                if (IsEnabled(Preset.MNK_AoEUseFiresReply) &&
-                    HasStatusEffect(Buffs.FiresRumination) &&
-                    !HasStatusEffect(Buffs.FormlessFist) &&
-                    !HasStatusEffect(Buffs.PerfectBalance) &&
-                    !JustUsed(RiddleOfFire, 4))
-                    return FiresReply;
+            if (IsEnabled(Preset.MNK_AoEUseFiresReply) &&
+                HasStatusEffect(Buffs.FiresRumination) &&
+                !HasStatusEffect(Buffs.FormlessFist) &&
+                !HasStatusEffect(Buffs.PerfectBalance) &&
+                !JustUsed(RiddleOfFire, 4))
+                return FiresReply;
 
-                if (IsEnabled(Preset.MNK_AoEUseWindsReply) &&
-                    HasStatusEffect(Buffs.WindsRumination) &&
-                    !HasStatusEffect(Buffs.PerfectBalance) &&
-                    (GetCooldownRemainingTime(RiddleOfFire) > 5 ||
-                     HasStatusEffect(Buffs.RiddleOfFire)))
-                    return WindsReply;
-            }
+            if (IsEnabled(Preset.MNK_AoEUseWindsReply) &&
+                HasStatusEffect(Buffs.WindsRumination) &&
+                !HasStatusEffect(Buffs.PerfectBalance) &&
+                (GetCooldownRemainingTime(RiddleOfFire) > 5 ||
+                 HasStatusEffect(Buffs.RiddleOfFire)))
+                return WindsReply;
 
             // Perfect Balance
             if (DoPerfectBalanceCombo(ref actionID, false, true))
