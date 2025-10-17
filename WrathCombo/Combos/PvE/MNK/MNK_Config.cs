@@ -106,6 +106,7 @@ internal partial class MNK
                     break;
             }
         }
+
         #region Variables
 
         public static UserInt
@@ -130,5 +131,6 @@ internal partial class MNK
             MNK_BasicCombo = new("MNK_BasicCombo");
 
         #endregion
+
     }
 }

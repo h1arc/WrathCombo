@@ -127,6 +127,7 @@ internal partial class MNK
     {
         if (ST && HasStatusEffect(Buffs.PerfectBalance))
         {
+
         #region Open Lunar
 
             if (!LunarNadi || BothNadisOpen || !SolarNadi && !LunarNadi)
@@ -193,9 +194,12 @@ internal partial class MNK
             }
 
         #endregion
+
         }
+
         if (AoE && HasStatusEffect(Buffs.PerfectBalance))
         {
+
         #region Open Lunar
 
             if (!LunarNadi || BothNadisOpen || !SolarNadi && !LunarNadi)
@@ -217,25 +221,28 @@ internal partial class MNK
 
         #region Open Solar
 
-            if (!SolarNadi && !BothNadisOpen)
+            switch (SolarNadi)
             {
-                switch (GetStatusEffectStacks(Buffs.PerfectBalance))
-                {
-                    case 3:
-                        actionID = OriginalHook(ArmOfTheDestroyer);
-                        return true;
+                case false when !BothNadisOpen:
+                    switch (GetStatusEffectStacks(Buffs.PerfectBalance))
+                    {
+                        case 3:
+                            actionID = OriginalHook(ArmOfTheDestroyer);
+                            return true;
 
-                    case 2:
-                        actionID = FourPointFury;
-                        return true;
+                        case 2:
+                            actionID = FourPointFury;
+                            return true;
 
-                    case 1:
-                        actionID = Rockbreaker;
-                        return true;
-                }
+                        case 1:
+                            actionID = Rockbreaker;
+                            return true;
+                    }
+                    break;
             }
 
         #endregion
+
         }
         return false;
     }
@@ -626,4 +633,5 @@ internal partial class MNK
     }
 
     #endregion
+
 }
