@@ -11,6 +11,7 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class SGE : Healer
 {
+
     #region Simple DPS Mode
 
     internal class SGE_ST_Simple_DPS : CustomCombo
@@ -68,7 +69,7 @@ internal partial class SGE : Healer
                     const int hpThreshold = 1;
 
                     if (GetTargetHPPercent() > hpThreshold &&
-                        ((DosisDebuff is null && DyskrasiaDebuff is null) ||
+                        (DosisDebuff is null && DyskrasiaDebuff is null ||
                          DosisDebuff?.RemainingTime <= refreshTimer ||
                          DyskrasiaDebuff?.RemainingTime <= refreshTimer))
                         return Eukrasia;
@@ -79,14 +80,14 @@ internal partial class SGE : Healer
                     ActionReady(Phlegma))
                 {
                     //If not enabled or not high enough level, follow slider
-                    if ((!LevelChecked(Psyche)) &&
+                    if (!LevelChecked(Psyche) &&
                         GetRemainingCharges(OriginalHook(Phlegma)) > 1)
                         return OriginalHook(Phlegma);
 
                     //If enabled and high enough level, burst
-                    if (((GetCooldownRemainingTime(Psyche) > 40 && MaxPhlegma) ||
-                         IsOffCooldown(Psyche) ||
-                         JustUsed(Psyche, 5f)))
+                    if (GetCooldownRemainingTime(Psyche) > 40 && MaxPhlegma ||
+                        IsOffCooldown(Psyche) ||
+                        JustUsed(Psyche, 5f))
                         return OriginalHook(Phlegma);
                 }
 
@@ -156,7 +157,7 @@ internal partial class SGE : Healer
                 HasBattleTarget() && InActionRange(Dyskrasia) &&
                 CanApplyStatus(CurrentTarget, Debuffs.EukrasianDyskrasia) &&
                 GetTargetHPPercent() > 25 &&
-                ((DyskrasiaDebuff is null && DosisDebuff is null) ||
+                (DyskrasiaDebuff is null && DosisDebuff is null ||
                  DyskrasiaDebuff?.RemainingTime <= 4 ||
                  DosisDebuff?.RemainingTime <= 4))
                 return Eukrasia;
@@ -271,7 +272,7 @@ internal partial class SGE : Healer
                     int hpThreshold = SGE_ST_DPS_EDosisBossOption == 1 || !InBossEncounter() ? SGE_ST_DPS_EDosisHPOption : 0;
 
                     if (GetTargetHPPercent() > hpThreshold &&
-                        ((DosisDebuff is null && DyskrasiaDebuff is null) ||
+                        (DosisDebuff is null && DyskrasiaDebuff is null ||
                          DosisDebuff?.RemainingTime <= refreshTimer ||
                          DyskrasiaDebuff?.RemainingTime <= refreshTimer))
                         return Eukrasia;
@@ -289,7 +290,7 @@ internal partial class SGE : Healer
 
                     //If enabled and high enough level, burst
                     if (SGE_ST_DPS_Phlegma_Burst &&
-                        ((GetCooldownRemainingTime(Psyche) > 40 && MaxPhlegma) ||
+                        (GetCooldownRemainingTime(Psyche) > 40 && MaxPhlegma ||
                          IsOffCooldown(Psyche) ||
                          JustUsed(Psyche, 5f)))
                         return OriginalHook(Phlegma);
@@ -379,7 +380,7 @@ internal partial class SGE : Healer
                 HasBattleTarget() && InActionRange(Dyskrasia) &&
                 CanApplyStatus(CurrentTarget, Debuffs.EukrasianDyskrasia) &&
                 GetTargetHPPercent() > 25 &&
-                ((DyskrasiaDebuff is null && DosisDebuff is null) ||
+                (DyskrasiaDebuff is null && DosisDebuff is null ||
                  DyskrasiaDebuff?.RemainingTime <= 4 ||
                  DosisDebuff?.RemainingTime <= 4))
                 return Eukrasia;
@@ -934,4 +935,5 @@ internal partial class SGE : Healer
     }
 
     #endregion
+
 }
