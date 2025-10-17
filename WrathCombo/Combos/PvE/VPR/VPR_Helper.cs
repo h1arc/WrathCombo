@@ -92,6 +92,7 @@ internal partial class VPR
     {
         if (ST && HasStatusEffect(Buffs.Reawakened))
         {
+
             #region Pre Ouroboros
 
             if (!TraitLevelChecked(Traits.EnhancedSerpentsLineage))
@@ -143,10 +144,12 @@ internal partial class VPR
                 }
 
             #endregion
+
         }
 
         if (AoE && HasStatusEffect(Buffs.Reawakened))
         {
+
             #region Pre Ouroboros
 
             if (!TraitLevelChecked(Traits.EnhancedSerpentsLineage))
@@ -198,6 +201,7 @@ internal partial class VPR
                 }
 
             #endregion
+
         }
 
         return false;
@@ -305,7 +309,7 @@ internal partial class VPR
 
         public override List<(int[], uint, Func<bool>)> SubstitutionSteps { get; set; } =
         [
-            ([33], SwiftskinsCoil, () => OnTargetsRear()),
+            ([33], SwiftskinsCoil, OnTargetsRear),
             ([34], TwinbloodBite, () => HasStatusEffect(Buffs.SwiftskinsVenom)),
             ([35], TwinfangBite, () => HasStatusEffect(Buffs.HuntersVenom)),
             ([36], HuntersCoil, () => SwiftskinsCoilReady),
@@ -441,4 +445,5 @@ internal partial class VPR
     }
 
     #endregion
+
 }
