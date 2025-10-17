@@ -87,10 +87,10 @@ internal partial class MCH : PhysicalRanged
                     }
 
                     // Gauss Round and Ricochet outside HC
-                    if ((JustUsed(OriginalHook(AirAnchor), 2f) ||
-                         JustUsed(Chainsaw, 2f) ||
-                         JustUsed(Drill, 2f) ||
-                         JustUsed(Excavator, 2f)))
+                    if (JustUsed(OriginalHook(AirAnchor), 2f) ||
+                        JustUsed(Chainsaw, 2f) ||
+                        JustUsed(Drill, 2f) ||
+                        JustUsed(Excavator, 2f))
                     {
                         if (ActionReady(GaussRound) &&
                             !JustUsed(OriginalHook(GaussRound), 2f))
