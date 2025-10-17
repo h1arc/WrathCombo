@@ -152,5 +152,6 @@ internal partial class DRG
             DRG_AoE_StardiverMovingOptions = new("DRG_AoE_Stardiver_Options");
 
         #endregion
+
     }
 }

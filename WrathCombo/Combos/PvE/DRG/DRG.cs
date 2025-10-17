@@ -84,14 +84,14 @@ internal partial class DRG : Melee
                 if (CanDRGWeave(0.8f))
                 {
                     //(High) Jump Feature   
-                    if (ActionReady(Jump) && (OriginalHook(Jump) is Jump or HighJump))
+                    if (ActionReady(Jump) && OriginalHook(Jump) is Jump or HighJump)
                     {
                         if (!LevelChecked(HighJump))
                             return Jump;
 
                         if (LevelChecked(HighJump) &&
                             (GetCooldownRemainingTime(Geirskogul) < 13 || LoTDActive))
-                            return (HighJump);
+                            return HighJump;
                     }
 
                     //Dragonfire Dive Feature
@@ -224,8 +224,8 @@ internal partial class DRG : Melee
                 if (CanDRGWeave(0.8f))
                 {
                     //(High) Jump Feature   
-                    if (ActionReady(Jump) && (OriginalHook(Jump) is Jump or HighJump))
-                        return (LevelChecked(HighJump))
+                    if (ActionReady(Jump) && OriginalHook(Jump) is Jump or HighJump)
+                        return LevelChecked(HighJump)
                             ? HighJump
                             : Jump;
 
@@ -323,7 +323,7 @@ internal partial class DRG : Melee
                         if (IsEnabled(Preset.DRG_ST_Mirage) &&
                             ActionReady(MirageDive) &&
                             HasStatusEffect(Buffs.DiveReady) &&
-                            (OriginalHook(Jump) is MirageDive) &&
+                            OriginalHook(Jump) is MirageDive &&
                             (DRG_ST_DoubleMirage &&
                              (LoTDActive ||
                               GetStatusEffectRemainingTime(Buffs.DiveReady) <= 1.2f &&
@@ -394,7 +394,7 @@ internal partial class DRG : Melee
                              DRG_ST_JumpMovingOptions[0] && !IsMoving()) &&
                             (!DRG_ST_JumpMovingOptions[1] ||
                              DRG_ST_JumpMovingOptions[1] && InMeleeRange()) &&
-                            ActionReady(Jump) && (OriginalHook(Jump) is Jump or HighJump))
+                            ActionReady(Jump) && OriginalHook(Jump) is Jump or HighJump)
                         {
                             if (!LevelChecked(HighJump))
                                 return Jump;
@@ -403,7 +403,7 @@ internal partial class DRG : Melee
                                 (DRG_ST_DoubleMirage &&
                                  (GetCooldownRemainingTime(Geirskogul) < 13 || LoTDActive) ||
                                  !DRG_ST_DoubleMirage))
-                                return (HighJump);
+                                return HighJump;
                         }
 
                         //Dragonfire Dive Feature
@@ -587,8 +587,8 @@ internal partial class DRG : Melee
                              DRG_AoE_JumpMovingOptions[0] && !IsMoving()) &&
                             (!DRG_AoE_JumpMovingOptions[1] ||
                              DRG_AoE_JumpMovingOptions[1] && InMeleeRange()) &&
-                            ActionReady(Jump) && (OriginalHook(Jump) is Jump or HighJump))
-                            return (LevelChecked(HighJump))
+                            ActionReady(Jump) && OriginalHook(Jump) is Jump or HighJump)
+                            return LevelChecked(HighJump)
                                 ? HighJump
                                 : Jump;
 
