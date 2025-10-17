@@ -10,6 +10,7 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class RPR
 {
+
     #region Enshroud
 
     private static bool UseEnshroud()
@@ -198,7 +199,7 @@ internal partial class RPR
 
         public override List<(int[], uint, Func<bool>)> SubstitutionSteps { get; set; } =
         [
-            ([6], ExecutionersGallows, () => OnTargetsRear()),
+            ([6], ExecutionersGallows, OnTargetsRear),
             ([7], ExecutionersGibbet, () => HasStatusEffect(Buffs.EnhancedGibbet)),
             ([20], UnveiledGallows, () => HasStatusEffect(Buffs.EnhancedGallows)),
             ([21], Gallows, () => HasStatusEffect(Buffs.EnhancedGallows))
@@ -311,4 +312,5 @@ internal partial class RPR
     }
 
     #endregion
+
 }
