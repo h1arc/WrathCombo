@@ -32,7 +32,7 @@ internal partial class BLM
         GetStatusEffect(ThunderList[OriginalHook(Thunder2)], CurrentTarget);
 
     internal static float TimeSinceFirestarterBuff =>
-        HasStatusEffect(Buffs.Firestarter) ? GetPartyMembers().First().TimeSinceBuffApplied(Buffs.Firestarter) : 0;
+        HasStatusEffect(Buffs.Firestarter) ? GetPartyMembers(false).First().TimeSinceBuffApplied(Buffs.Firestarter) : 0;
 
     internal static bool HasMaxPolyglotStacks =>
         PolyglotStacks == MaxPolyglot;
@@ -175,7 +175,7 @@ internal partial class BLM
         public override List<int> DelayedWeaveSteps { get; set; } = [6];
 
         public override bool HasCooldowns() =>
-            CurMp is MP.MaxMP &&
+            MP.IsFull &&
             IsOffCooldown(Manafont) &&
             GetRemainingCharges(Triplecast) >= 1 &&
             GetRemainingCharges(LeyLines) >= 1 &&
@@ -228,7 +228,7 @@ internal partial class BLM
         public override List<int> DelayedWeaveSteps { get; set; } = [6];
 
         public override bool HasCooldowns() =>
-            CurMp is MP.MaxMP &&
+            MP.IsFull &&
             IsOffCooldown(Manafont) &&
             GetRemainingCharges(Triplecast) >= 1 &&
             GetRemainingCharges(LeyLines) >= 1 &&
