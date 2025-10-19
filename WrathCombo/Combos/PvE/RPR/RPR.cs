@@ -32,7 +32,7 @@ internal partial class RPR : Melee
                     return ArcaneCircle;
 
                 //Enshroud
-                if (UseEnshroud())
+                if (CanEnshroud())
                     return Enshroud;
 
                 //Gluttony/Bloodstalk
@@ -93,7 +93,7 @@ internal partial class RPR : Melee
             }
 
             //Shadow Of Death
-            if (UseShadowOfDeath(true))
+            if (CanUseShadowOfDeath(true))
                 return ShadowOfDeath;
 
             //Perfectio
@@ -298,7 +298,7 @@ internal partial class RPR : Melee
 
                 //Enshroud
                 if (IsEnabled(Preset.RPR_ST_Enshroud) &&
-                    UseEnshroud())
+                    CanEnshroud())
                     return Enshroud;
 
                 //Gluttony/Bloodstalk
@@ -384,7 +384,7 @@ internal partial class RPR : Melee
 
             //Shadow Of Death
             if (IsEnabled(Preset.RPR_ST_SoD) &&
-                UseShadowOfDeath() && GetTargetHPPercent() > RPR_SoDHPThreshold)
+                CanUseShadowOfDeath() && GetTargetHPPercent() > RPR_SoDHPThreshold)
                 return ShadowOfDeath;
 
             //Perfectio

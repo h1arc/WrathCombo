@@ -33,7 +33,7 @@ internal partial class SAM
 
     #region Meikyo
 
-    private static bool UseMeikyo(bool simpleMode = false)
+    private static bool CanMeikyo(bool simpleMode = false)
     {
         int meikyoUsed = CombatActions.Count(x => x == MeikyoShisui);
         float gcd = GetAdjustedRecastTime(ActionType.Action, Hakaze) / 100f;
@@ -44,32 +44,36 @@ internal partial class SAM
             if (SAM_ST_MeikyoLogic == 1 && (SAM_ST_MeikyoBossOption == 0 || InBossEncounter()) ||
                 simpleMode && InBossEncounter())
             {
-                if (EnhancedSenei)
+                switch (EnhancedSenei)
                 {
                     //if no opener
-                    if ((IsEnabled(Preset.SAM_ST_Opener) && SAM_Balance_Content == 1 && !InBossEncounter() ||
-                         IsNotEnabled(Preset.SAM_ST_Opener)) &&
-                        meikyoUsed < 1 && !HasStatusEffect(Buffs.TsubameReady))
+                    case true when (IsEnabled(Preset.SAM_ST_Opener) && SAM_Balance_Content == 1 && !InBossEncounter() ||
+                                    IsNotEnabled(Preset.SAM_ST_Opener)) &&
+                                   meikyoUsed < 1 && !HasStatusEffect(Buffs.TsubameReady):
                         return true;
 
-                    if (HasStatusEffect(Buffs.TsubameReady))
+                    case true:
                     {
-                        switch (gcd)
+                        if (HasStatusEffect(Buffs.TsubameReady))
                         {
-                            //2.14 GCD
-                            case >= 2.09f when GetCooldownRemainingTime(Senei) <= 10 &&
-                                               (meikyoUsed % 7 is 1 or 2 && SenCount is 3 ||
-                                                meikyoUsed % 7 is 3 or 4 && SenCount is 2 ||
-                                                meikyoUsed % 7 is 5 or 6 && SenCount is 1):
-                            //2.08 gcd
-                            case <= 2.08f when GetCooldownRemainingTime(Senei) <= 10 && SenCount is 3:
-                                return true;
+                            switch (gcd)
+                            {
+                                //2.14 GCD
+                                case >= 2.09f when GetCooldownRemainingTime(Senei) <= 10 &&
+                                                   (meikyoUsed % 7 is 1 or 2 && SenCount is 3 ||
+                                                    meikyoUsed % 7 is 3 or 4 && SenCount is 2 ||
+                                                    meikyoUsed % 7 is 5 or 6 && SenCount is 1):
+                                //2.08 gcd
+                                case <= 2.08f when GetCooldownRemainingTime(Senei) <= 10 && SenCount is 3:
+                                    return true;
+                            }
                         }
-                    }
 
-                    // reset meikyo
-                    if (gcd >= 2.09f && meikyoUsed % 7 is 0 && JustUsed(Yukikaze))
-                        return true;
+                        // reset meikyo
+                        if (gcd >= 2.09f && meikyoUsed % 7 is 0 && JustUsed(Yukikaze))
+                            return true;
+                        break;
+                    }
                 }
 
                 //Pre Enhanced Senei
@@ -85,7 +89,6 @@ internal partial class SAM
                 return true;
         }
 
-
         return false;
     }
 
@@ -93,7 +96,7 @@ internal partial class SAM
 
     #region Iaijutsu
 
-    private static bool UseIaijutsu(bool useHiganbana, bool useTenkaGoken, bool useMidare, bool simpleMode = false)
+    private static bool CanUseIaijutsu(bool useHiganbana, bool useTenkaGoken, bool useMidare, bool simpleMode = false)
     {
         int higanbanaHPThreshold = SAM_ST_HiganbanaHPThreshold;
         int higanbanaRefresh = SAM_ST_HiganbanaRefresh;
@@ -121,8 +124,7 @@ internal partial class SAM
                 return true;
 
             //Higanbana Simple Mode
-            if (simpleMode &&
-                useHiganbana &&
+            if (simpleMode && useHiganbana &&
                 SenCount is 1 && GetTargetHPPercent() > 1 && TargetIsBoss() &&
                 CanApplyStatus(CurrentTarget, Debuffs.Higanbana) &&
                 (JustUsed(MeikyoShisui, 15f) && GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) <= 15 ||
@@ -153,14 +155,14 @@ internal partial class SAM
 
     #region Burst Management
 
-    private static bool UseIkishoten() =>
+    private static bool CanIkishoten() =>
         ActionReady(Ikishoten) &&
         !HasStatusEffect(Buffs.ZanshinReady) && Kenki <= 50 &&
         (NumberOfGcdsUsed is 2 ||
          JustUsed(TendoKaeshiSetsugekka, 15f) ||
          !LevelChecked(TendoKaeshiSetsugekka));
 
-    private static bool UseSenei() =>
+    private static bool CanSenei() =>
         ActionReady(Senei) && NumberOfGcdsUsed >= 4 &&
         InActionRange(Senei) &&
         (!LevelChecked(KaeshiSetsugekka) ||
@@ -168,24 +170,24 @@ internal partial class SAM
          (JustUsed(KaeshiSetsugekka, 5f) ||
           JustUsed(TendoSetsugekka, 5f)));
 
-    private static bool UseTsubame() =>
+    private static bool CanTsubame() =>
         LevelChecked(TsubameGaeshi) &&
         (HasStatusEffect(Buffs.TendoKaeshiSetsugekkaReady) ||
          HasStatusEffect(Buffs.TsubameReady) && (SenCount is 3 || GetCooldownRemainingTime(Senei) > 33));
 
-    private static bool UseShoha() =>
+    private static bool CanShoha() =>
         ActionReady(Shoha) && MeditationStacks is 3 &&
         InActionRange(Shoha) &&
         (EnhancedSenei && JustUsed(Senei, 20f) ||
          !EnhancedSenei && JustUsed(KaeshiSetsugekka, 10f));
 
     //TODO Buffcheck
-    private static bool UseZanshin() =>
+    private static bool CanZanshin() =>
         ActionReady(Zanshin) && Kenki >= SAMKenki.Zanshin &&
         InActionRange(Zanshin) && HasStatusEffect(Buffs.ZanshinReady) &&
         (JustUsed(Senei, 20f) || GetStatusEffectRemainingTime(Buffs.ZanshinReady) <= 8);
 
-    private static bool UseShinten()
+    private static bool CanShinten()
     {
         int shintenTreshhold = SAM_ST_ExecuteThreshold;
 
@@ -215,7 +217,7 @@ internal partial class SAM
         return false;
     }
 
-    private static bool UseOgi(bool simpleMode = false)
+    private static bool CanOgi(bool simpleMode = false)
     {
         if (NamikiriReady)
             return true;

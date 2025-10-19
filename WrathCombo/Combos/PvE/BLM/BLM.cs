@@ -135,7 +135,7 @@ internal partial class BLM : Caster
                      !LevelChecked(FlareStar) && ActionReady(Despair)))
                     return Paradox;
 
-                if (FlarestarReady)
+                if (CanFlarestar)
                     return FlareStar;
 
                 if (ActionReady(FireSpam) && (LevelChecked(Despair) && CurMp - MP.FireI >= 800 || !LevelChecked(Despair)))
@@ -241,7 +241,7 @@ internal partial class BLM : Caster
 
             if (FirePhase)
             {
-                if (FlarestarReady)
+                if (CanFlarestar)
                     return FlareStar;
 
                 if (ActionReady(Fire2) && !TraitLevelChecked(Traits.UmbralHeart))
@@ -436,7 +436,7 @@ internal partial class BLM : Caster
                     return Paradox;
 
                 if (IsEnabled(Preset.BLM_ST_FlareStar) &&
-                    FlarestarReady)
+                    CanFlarestar)
                     return FlareStar;
 
                 if (ActionReady(FireSpam) && (LevelChecked(Despair) && CurMp - MP.FireI >= 800 || !LevelChecked(Despair)))
@@ -556,7 +556,7 @@ internal partial class BLM : Caster
 
             if (FirePhase)
             {
-                if (FlarestarReady)
+                if (CanFlarestar)
                     return FlareStar;
 
                 if (ActionReady(Fire2) && !TraitLevelChecked(Traits.UmbralHeart))
@@ -690,7 +690,7 @@ internal partial class BLM : Caster
 
             return IcePhase switch
             {
-                false when BLM_Fire4_FlareStar && FlarestarReady && LevelChecked(FlareStar) => FlareStar,
+                false when BLM_Fire4_FlareStar && CanFlarestar && LevelChecked(FlareStar) => FlareStar,
                 false when BLM_Fire4_Fire3 && AstralFireStacks < 3 => LevelChecked(Fire3) ? Fire3 : Fire,
                 false => actionID,
 
@@ -713,7 +713,7 @@ internal partial class BLM : Caster
 
             return actionID switch
             {
-                Flare when BLM_Flare_FlareStar && FirePhase && FlarestarReady => FlareStar,
+                Flare when BLM_Flare_FlareStar && FirePhase && CanFlarestar => FlareStar,
                 Flare when FirePhase && LevelChecked(Flare) => Flare,
                 Flare when IcePhase && LevelChecked(Freeze) => Freeze,
                 var _ => actionID

@@ -13,7 +13,7 @@ internal partial class RPR
 
     #region Enshroud
 
-    private static bool UseEnshroud()
+    private static bool CanEnshroud()
     {
         if (LevelChecked(Enshroud) && (Shroud >= 50 || HasStatusEffect(Buffs.IdealHost)) &&
             !HasStatusEffect(Buffs.SoulReaver) && !HasStatusEffect(Buffs.Executioner) && HasBattleTarget() &&
@@ -55,7 +55,7 @@ internal partial class RPR
 
     #region SoD
 
-    private static bool UseShadowOfDeath(bool SimpleMode = false)
+    private static bool CanUseShadowOfDeath(bool SimpleMode = false)
     {
         if (LevelChecked(ShadowOfDeath) && !HasStatusEffect(Buffs.SoulReaver) &&
             !HasStatusEffect(Buffs.Executioner) && !HasStatusEffect(Buffs.PerfectioParata) &&

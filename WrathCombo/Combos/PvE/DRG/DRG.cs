@@ -35,7 +35,7 @@ internal partial class DRG : Melee
                         return LanceCharge;
 
                     //Life Surge Feature
-                    if (UseLifeSurge())
+                    if (CanLifeSurge())
                         return LifeSurge;
 
                     //Mirage Feature
@@ -316,7 +316,7 @@ internal partial class DRG : Melee
                     {
                         //Life Surge Feature
                         if (IsEnabled(Preset.DRG_ST_LifeSurge) &&
-                            UseLifeSurge())
+                            CanLifeSurge())
                             return LifeSurge;
 
                         //Mirage Feature

@@ -24,7 +24,7 @@ internal partial class BLM
     private static bool EndOfIcePhaseAoE =>
         IcePhase && HasMaxUmbralHeartStacks && TraitLevelChecked(Traits.EnhancedAstralFire);
 
-    private static bool FlarestarReady =>
+    private static bool CanFlarestar =>
         LevelChecked(FlareStar) && AstralSoulStacks is 6;
 
     private static Status? ThunderDebuffST =>

@@ -17,7 +17,7 @@ internal partial class VPR
     private static bool InRange() =>
         IsInRange(CurrentTarget, 5f);
 
-    private static bool CappedOnCoils() =>
+    private static bool MaxCoils() =>
         TraitLevelChecked(Traits.EnhancedVipersRattle) && RattlingCoilStacks > 2 ||
         !TraitLevelChecked(Traits.EnhancedVipersRattle) && RattlingCoilStacks > 1;
 
@@ -46,7 +46,7 @@ internal partial class VPR
 
     #region Reawaken
 
-    private static bool UseReawaken(bool simpleMode = false)
+    private static bool CanReawaken(bool simpleMode = false)
     {
         if (LevelChecked(Reawaken) && !HasStatusEffect(Buffs.Reawakened) && InActionRange(Reawaken) &&
             !HasStatusEffect(Buffs.HuntersVenom) && !HasStatusEffect(Buffs.SwiftskinsVenom) && HasBattleTarget() &&
@@ -73,7 +73,7 @@ internal partial class VPR
             if (SerpentOffering >= 100)
                 return true;
 
-            //non boss encounters
+            //non-boss encounters
             if ((simpleMode && !InBossEncounter() ||
                  !simpleMode && VPR_ST_SerpentsIre_SubOption == 1 && !InBossEncounter()) &&
                 SerpentOffering >= 50)

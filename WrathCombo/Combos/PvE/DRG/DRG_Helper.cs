@@ -19,7 +19,7 @@ internal partial class DRG
 
     #region Lifesurge
 
-    private static bool UseLifeSurge()
+    private static bool CanLifeSurge()
     {
         if (ActionReady(LifeSurge) && !HasStatusEffect(Buffs.LifeSurge))
         {
