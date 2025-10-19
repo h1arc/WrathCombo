@@ -391,6 +391,7 @@ internal class Debug : ConfigWindow, IDisposable
                 CustomStyleText("Is Invincible:", TargetIsInvincible(target!));
                 CustomStyleText("Is Hostile:", target?.IsHostile());
                 CustomStyleText("Is Friendly:", target?.IsFriendly());
+                CustomStyleText("Is Boss:", target?.IsBoss());
 
                 ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
 
