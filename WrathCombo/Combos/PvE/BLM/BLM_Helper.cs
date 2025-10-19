@@ -32,7 +32,7 @@ internal partial class BLM
         GetStatusEffect(ThunderList[OriginalHook(Thunder2)], CurrentTarget);
 
     internal static float TimeSinceFirestarterBuff =>
-        HasStatusEffect(Buffs.Firestarter) ? GetPartyMembers(false).First().TimeSinceBuffApplied(Buffs.Firestarter) : 0;
+        HasStatusEffect(Buffs.Firestarter) ? GetPartyMembers().First().TimeSinceBuffApplied(Buffs.Firestarter) : 0;
 
     internal static bool HasMaxPolyglotStacks =>
         PolyglotStacks == MaxPolyglot;
