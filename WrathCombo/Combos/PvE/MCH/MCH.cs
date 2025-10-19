@@ -35,10 +35,9 @@ internal partial class MCH : PhysicalRanged
                     return OriginalHook(RookOverdrive);
 
                 // Wildfire
-                if (TargetIsBoss() &&
-                    CanApplyStatus(CurrentTarget, Debuffs.Wildfire) &&
+                if (CanApplyStatus(CurrentTarget, Debuffs.Wildfire) &&
                     JustUsed(Hypercharge) && ActionReady(Wildfire) &&
-                    !HasStatusEffect(Buffs.Wildfire))
+                    HasWeavedAction(Hypercharge) && !HasStatusEffect(Buffs.Wildfire))
                     return Wildfire;
 
                 // Gauss Round and Ricochet during HC
@@ -55,8 +54,7 @@ internal partial class MCH : PhysicalRanged
                 if (!IsOverheated)
                 {
                     // BarrelStabilizer
-                    if (TargetIsBoss() &&
-                        ActionReady(BarrelStabilizer) && !HasStatusEffect(Buffs.FullMetalMachinist))
+                    if (ActionReady(BarrelStabilizer) && !HasStatusEffect(Buffs.FullMetalMachinist))
                         return BarrelStabilizer;
 
                     // Queen
@@ -68,23 +66,8 @@ internal partial class MCH : PhysicalRanged
                         return Reassemble;
 
                     // Hypercharge
-                    if ((Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) &&
-                        !IsComboExpiring(6) && ActionReady(Hypercharge))
-                    {
-                        // Ensures Hypercharge is double weaved with WF
-                        if (LevelChecked(FullMetalField) && JustUsed(FullMetalField) ||
-                            !LevelChecked(FullMetalField) && ActionReady(Wildfire) ||
-                            !LevelChecked(Wildfire))
-                            return Hypercharge;
-
-                        // Only Hypercharge when tools are on cooldown
-                        if (DrillCD && AnchorCD && SawCD &&
-                            (!LevelChecked(Wildfire) ||
-                             LevelChecked(Wildfire) &&
-                             (GetCooldownRemainingTime(Wildfire) > 40 ||
-                              IsOffCooldown(Wildfire) && !HasStatusEffect(Buffs.FullMetalMachinist))))
-                            return Hypercharge;
-                    }
+                    if (canHypercharge())
+                        return Hypercharge;
 
                     // Gauss Round and Ricochet outside HC
                     if (JustUsed(OriginalHook(AirAnchor), 2f) ||
@@ -193,12 +176,7 @@ internal partial class MCH : PhysicalRanged
                         return Reassemble;
 
                     // Hypercharge
-                    if ((Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) && LevelChecked(Hypercharge) &&
-                        LevelChecked(AutoCrossbow) &&
-                        (LevelChecked(BioBlaster) && GetCooldownRemainingTime(BioBlaster) > 10 ||
-                         !LevelChecked(BioBlaster) || IsNotEnabled(Preset.MCH_AoE_Adv_Bioblaster)) &&
-                        (LevelChecked(Flamethrower) && GetCooldownRemainingTime(Flamethrower) > 10 ||
-                         !LevelChecked(Flamethrower) || IsNotEnabled(Preset.MCH_AoE_Adv_FlameThrower)))
+                    if (canHypercharge(true))
                         return Hypercharge;
 
                     //gauss and ricochet outside HC
@@ -306,7 +284,7 @@ internal partial class MCH : PhysicalRanged
                     (MCH_ST_WildfireBossOption == 0 || TargetIsBoss()) &&
                     CanApplyStatus(CurrentTarget, Debuffs.Wildfire) &&
                     JustUsed(Hypercharge) && ActionReady(Wildfire) &&
-                    !HasStatusEffect(Buffs.Wildfire))
+                    HasWeavedAction(Hypercharge) && !HasStatusEffect(Buffs.Wildfire))
                     return Wildfire;
 
                 // Gauss Round and Ricochet during HC
@@ -346,24 +324,9 @@ internal partial class MCH : PhysicalRanged
 
                     // Hypercharge
                     if (IsEnabled(Preset.MCH_ST_Adv_Hypercharge) &&
-                        (Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) &&
-                        !IsComboExpiring(6) && ActionReady(Hypercharge) &&
-                        GetTargetHPPercent() > HPThresholdHypercharge)
-                    {
-                        // Ensures Hypercharge is double weaved with WF
-                        if (LevelChecked(FullMetalField) && JustUsed(FullMetalField) ||
-                            !LevelChecked(FullMetalField) && ActionReady(Wildfire) ||
-                            !LevelChecked(Wildfire))
-                            return Hypercharge;
-
-                        // Only Hypercharge when tools are on cooldown
-                        if (DrillCD && AnchorCD && SawCD &&
-                            (!LevelChecked(Wildfire) ||
-                             LevelChecked(Wildfire) &&
-                             (GetCooldownRemainingTime(Wildfire) > 40 ||
-                              IsOffCooldown(Wildfire) && !HasStatusEffect(Buffs.FullMetalMachinist))))
-                            return Hypercharge;
-                    }
+                        GetTargetHPPercent() > HPThresholdHypercharge &&
+                        canHypercharge())
+                        return Hypercharge;
 
                     // Gauss Round and Ricochet outside HC
                     if (IsEnabled(Preset.MCH_ST_Adv_GaussRicochet) &&
@@ -408,7 +371,7 @@ internal partial class MCH : PhysicalRanged
             }
 
             //Tools
-            if (IsEnabled(Preset.MCH_ST_Adv_Tools) && GetTargetHPPercent() > HPThresholTools &&
+            if (IsEnabled(Preset.MCH_ST_Adv_Tools) && GetTargetHPPercent() > HPThresholdTools &&
                 Tools(ref actionID, IsEnabled(Preset.MCH_ST_Adv_Excavator), IsEnabled(Preset.MCH_ST_Adv_Chainsaw),
                     IsEnabled(Preset.MCH_ST_Adv_AirAnchor), IsEnabled(Preset.MCH_ST_Adv_Drill)) && !IsOverheated)
                 return actionID;
@@ -507,13 +470,8 @@ internal partial class MCH : PhysicalRanged
 
                     // Hypercharge
                     if (IsEnabled(Preset.MCH_AoE_Adv_Hypercharge) &&
-                        (Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) && LevelChecked(Hypercharge) &&
-                        LevelChecked(AutoCrossbow) &&
                         GetTargetHPPercent() > MCH_AoE_HyperchargeHPThreshold &&
-                        (LevelChecked(BioBlaster) && GetCooldownRemainingTime(BioBlaster) > 10 ||
-                         !LevelChecked(BioBlaster) || IsNotEnabled(Preset.MCH_AoE_Adv_Bioblaster)) &&
-                        (LevelChecked(Flamethrower) && GetCooldownRemainingTime(Flamethrower) > 10 ||
-                         !LevelChecked(Flamethrower) || IsNotEnabled(Preset.MCH_AoE_Adv_FlameThrower)))
+                        canHypercharge(true))
                         return Hypercharge;
 
                     //gauss and ricochet outside HC
@@ -557,7 +515,7 @@ internal partial class MCH : PhysicalRanged
                     ActionReady(Flamethrower) &&
                     !HasStatusEffect(Buffs.Reassembled) &&
                     (MCH_AoE_FlamethrowerMovement == 1 ||
-                     MCH_AoE_FlamethrowerMovement == 0 && !IsMoving() && TimeStoodStill > TimeSpan.FromSeconds(MCH_AoE_FlamehrowerTimeStill)) &&
+                     MCH_AoE_FlamethrowerMovement == 0 && !IsMoving() && TimeStoodStill > TimeSpan.FromSeconds(MCH_AoE_FlamethrowerTimeStill)) &&
                     GetTargetHPPercent() > MCH_AoE_FlamethrowerHPOption)
                     return OriginalHook(Flamethrower);
 

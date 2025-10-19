@@ -170,7 +170,7 @@ internal partial class MCH
                     if (MCH_AoE_FlamethrowerMovement == 0)
                     {
                         ImGui.SetCursorPosX(48);
-                        DrawSliderFloat(0, 3, MCH_AoE_FlamehrowerTimeStill,
+                        DrawSliderFloat(0, 3, MCH_AoE_FlamethrowerTimeStill,
                             " Stationary Delay Check (in seconds):", decimals: 1);
                     }
 
@@ -237,8 +237,7 @@ internal partial class MCH
             MCH_GaussRico = new("MCHGaussRico", 0);
 
         public static UserFloat
-            MCH_AoE_FlamehrowerTimeStill = new("MCH_AoE_FlamehrowerTimeStill", 2.5f);
-
+            MCH_AoE_FlamethrowerTimeStill = new("MCH_AoE_FlamethrowerTimeStill", 2.5f);
         public static UserBoolArray
             MCH_ST_Reassembled = new("MCH_ST_Reassembled"),
             MCH_AoE_Reassembled = new("MCH_AoE_Reassembled");

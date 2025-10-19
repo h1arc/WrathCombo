@@ -68,6 +68,44 @@ internal partial class MCH
 
     #endregion
 
+    #region Hypercharge
+
+    private static bool canHypercharge(bool onAoE = false)
+    {
+        if (onAoE &
+            (Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) && LevelChecked(Hypercharge) &&
+            LevelChecked(AutoCrossbow) &&
+            (LevelChecked(BioBlaster) && GetCooldownRemainingTime(BioBlaster) > 10 ||
+             !LevelChecked(BioBlaster) || IsNotEnabled(Preset.MCH_AoE_Adv_Bioblaster)) &&
+            (LevelChecked(Flamethrower) && GetCooldownRemainingTime(Flamethrower) > 10 ||
+             !LevelChecked(Flamethrower) || IsNotEnabled(Preset.MCH_AoE_Adv_FlameThrower)))
+            return true;
+
+        if (!onAoE &&
+            (Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) &&
+            !IsComboExpiring(6) && ActionReady(Hypercharge) &&
+            CanWeave(GCD / 2))
+        {
+            // Ensures Hypercharge is double weaved with WF
+            if (LevelChecked(FullMetalField) && JustUsed(FullMetalField) ||
+                !LevelChecked(FullMetalField) && ActionReady(Wildfire) ||
+                !LevelChecked(Wildfire))
+                return true;
+
+            // Only Hypercharge when tools are on cooldown
+            if (DrillCD && AnchorCD && SawCD &&
+                (!LevelChecked(Wildfire) ||
+                 LevelChecked(Wildfire) &&
+                 (GetCooldownRemainingTime(Wildfire) > 40 ||
+                  IsOffCooldown(Wildfire) && !HasStatusEffect(Buffs.FullMetalMachinist))))
+                return true;
+        }
+
+        return false;
+    }
+
+        #endregion
+
     #region HP Treshold
 
     private static int HPThresholdHypercharge =>
@@ -78,7 +116,7 @@ internal partial class MCH
         MCH_ST_ReassembleBossOption == 1 ||
         !TargetIsBoss() ? MCH_ST_ReassembleHPOption : 0;
 
-    private static int HPThresholTools =>
+    private static int HPThresholdTools =>
         MCH_ST_ToolsBossOption == 1 ||
         !TargetIsBoss() ? MCH_ST_ToolsBossOption : 0;
 
