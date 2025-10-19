@@ -3915,7 +3915,7 @@ public enum Preset
     [CustomComboInfo("Riddle of Fire Option", "Adds Riddle of Fire to the rotation", Job.MNK)]
     MNK_STUseROF = 9011,
 
-    [ParentCombo(MNK_STUseBuffs)]
+    [ParentCombo(MNK_ST_AdvancedMode)]
     [CustomComboInfo("Fire's Reply Option", "Adds Fire's Reply to the rotation", Job.MNK)]
     MNK_STUseFiresReply = 9016,
 
@@ -3923,7 +3923,7 @@ public enum Preset
     [CustomComboInfo("Riddle of Wind Option", "Adds Riddle of Wind to the rotation", Job.MNK)]
     MNK_STUseROW = 9010,
 
-    [ParentCombo(MNK_STUseBuffs)]
+    [ParentCombo(MNK_ST_AdvancedMode)]
     [CustomComboInfo("Wind's Reply Option", "Adds Wind's Reply to the rotation", Job.MNK)]
     MNK_STUseWindsReply = 9015,
 
@@ -3932,7 +3932,7 @@ public enum Preset
     MNK_STUsePerfectBalance = 9013,
 
     [ParentCombo(MNK_ST_AdvancedMode)]
-    [CustomComboInfo(" Masterful Blitz Option", "Adds Masterful Blitz to the rotation", Job.MNK)]
+    [CustomComboInfo(" Masterful Blitz Option", "Adds Masterful Blitz to the rotation.\nwill use it only under RoF when unlocked.", Job.MNK)]
     MNK_STUseMasterfulBlitz = 9039,
 
     [ParentCombo(MNK_ST_AdvancedMode)]
@@ -3994,7 +3994,7 @@ public enum Preset
     [CustomComboInfo("Riddle of Fire Option", "Adds Riddle of Fire to the rotation", Job.MNK)]
     MNK_AoEUseROF = 9032,
 
-    [ParentCombo(MNK_AoEUseROF)]
+    [ParentCombo(MNK_AOE_AdvancedMode)]
     [CustomComboInfo("Fire's Reply Option", "Adds Fire's Reply to the rotation", Job.MNK)]
     MNK_AoEUseFiresReply = 9036,
 
@@ -4002,7 +4002,7 @@ public enum Preset
     [CustomComboInfo("Riddle of Wind Option", "Adds Riddle of Wind to the rotation", Job.MNK)]
     MNK_AoEUseROW = 9031,
 
-    [ParentCombo(MNK_AoEUseROW)]
+    [ParentCombo(MNK_AOE_AdvancedMode)]
     [CustomComboInfo("Wind's Reply Option", "Adds Wind's Reply to the rotation", Job.MNK)]
     MNK_AoEUseWindsReply = 9035,
 
