@@ -44,10 +44,10 @@ internal partial class MCH : PhysicalRanged
                 if (JustUsed(OriginalHook(Heatblast), 1f) && HasNotWeaved)
                 {
                     if (ActionReady(GaussRound) &&
-                        (UseGaussRound || !LevelChecked(Ricochet)))
+                        (CanGaussRound || !LevelChecked(Ricochet)))
                         return OriginalHook(GaussRound);
 
-                    if (ActionReady(Ricochet) && UseRicochet)
+                    if (ActionReady(Ricochet) && CanRicochet)
                         return OriginalHook(Ricochet);
                 }
 
@@ -58,15 +58,15 @@ internal partial class MCH : PhysicalRanged
                         return BarrelStabilizer;
 
                     // Queen
-                    if (UseQueen(true))
+                    if (CanQueen(true))
                         return OriginalHook(RookAutoturret);
 
                     // Reassemble
-                    if (Reassembled(true, true, true, true))
+                    if (CanReassemble(true, true, true, true))
                         return Reassemble;
 
                     // Hypercharge
-                    if (canHypercharge())
+                    if (CanHypercharge())
                         return Hypercharge;
 
                     // Gauss Round and Ricochet outside HC
@@ -95,7 +95,7 @@ internal partial class MCH : PhysicalRanged
             }
 
             //Tools
-            if (Tools(ref actionID, true, true, true, true, true) && !IsOverheated)
+            if (CanUseTools(ref actionID, true, true, true, true, true) && !IsOverheated)
                 return actionID;
 
             // Full Metal Field
@@ -150,10 +150,10 @@ internal partial class MCH : PhysicalRanged
                      JustUsed(OriginalHook(Heatblast), 1f)) && HasNotWeaved)
                 {
                     if (ActionReady(GaussRound) &&
-                        (UseGaussRound || !LevelChecked(Ricochet)))
+                        (CanGaussRound || !LevelChecked(Ricochet)))
                         return OriginalHook(GaussRound);
 
-                    if (ActionReady(Ricochet) && UseRicochet)
+                    if (ActionReady(Ricochet) && CanRicochet)
                         return OriginalHook(Ricochet);
                 }
 
@@ -176,7 +176,7 @@ internal partial class MCH : PhysicalRanged
                         return Reassemble;
 
                     // Hypercharge
-                    if (canHypercharge(true))
+                    if (CanHypercharge(true))
                         return Hypercharge;
 
                     //gauss and ricochet outside HC
@@ -292,12 +292,12 @@ internal partial class MCH : PhysicalRanged
                 {
                     if (ActionReady(GaussRound) &&
                         GetRemainingCharges(OriginalHook(GaussRound)) > MCH_ST_GaussRicoPool &&
-                        (UseGaussRound || !LevelChecked(Ricochet)))
+                        (CanGaussRound || !LevelChecked(Ricochet)))
                         return OriginalHook(GaussRound);
 
                     if (ActionReady(Ricochet) &&
                         GetRemainingCharges(OriginalHook(Ricochet)) > MCH_ST_GaussRicoPool &&
-                        UseRicochet)
+                        CanRicochet)
                         return OriginalHook(Ricochet);
                 }
 
@@ -311,20 +311,20 @@ internal partial class MCH : PhysicalRanged
 
                     // Queen
                     if (IsEnabled(Preset.MCH_ST_Adv_TurretQueen) &&
-                        UseQueen())
+                        CanQueen())
                         return OriginalHook(RookAutoturret);
 
                     // Reassemble
                     if (IsEnabled(Preset.MCH_ST_Adv_Reassemble) &&
                         GetRemainingCharges(Reassemble) > MCH_ST_ReassemblePool &&
-                        Reassembled(MCH_ST_Reassembled[0], MCH_ST_Reassembled[1], MCH_ST_Reassembled[2], MCH_ST_Reassembled[3]) &&
+                        CanReassemble(MCH_ST_Reassembled[0], MCH_ST_Reassembled[1], MCH_ST_Reassembled[2], MCH_ST_Reassembled[3]) &&
                         GetTargetHPPercent() > HPThresholdReassemble)
                         return Reassemble;
 
                     // Hypercharge
                     if (IsEnabled(Preset.MCH_ST_Adv_Hypercharge) &&
                         GetTargetHPPercent() > HPThresholdHypercharge &&
-                        canHypercharge())
+                        CanHypercharge())
                         return Hypercharge;
 
                     // Gauss Round and Ricochet outside HC
@@ -371,7 +371,7 @@ internal partial class MCH : PhysicalRanged
 
             //Tools
             if (IsEnabled(Preset.MCH_ST_Adv_Tools) && GetTargetHPPercent() > HPThresholdTools &&
-                Tools(ref actionID, IsEnabled(Preset.MCH_ST_Adv_Excavator), IsEnabled(Preset.MCH_ST_Adv_Chainsaw),
+                CanUseTools(ref actionID, IsEnabled(Preset.MCH_ST_Adv_Excavator), IsEnabled(Preset.MCH_ST_Adv_Chainsaw),
                     IsEnabled(Preset.MCH_ST_Adv_AirAnchor), IsEnabled(Preset.MCH_ST_Adv_Drill)) && !IsOverheated)
                 return actionID;
 
@@ -436,10 +436,10 @@ internal partial class MCH : PhysicalRanged
                      JustUsed(OriginalHook(Heatblast), 1f)) && HasNotWeaved)
                 {
                     if (ActionReady(GaussRound) &&
-                        (UseGaussRound || !LevelChecked(Ricochet)))
+                        (CanGaussRound || !LevelChecked(Ricochet)))
                         return OriginalHook(GaussRound);
 
-                    if (ActionReady(Ricochet) && UseRicochet)
+                    if (ActionReady(Ricochet) && CanRicochet)
                         return OriginalHook(Ricochet);
                 }
 
@@ -470,7 +470,7 @@ internal partial class MCH : PhysicalRanged
                     // Hypercharge
                     if (IsEnabled(Preset.MCH_AoE_Adv_Hypercharge) &&
                         GetTargetHPPercent() > MCH_AoE_HyperchargeHPThreshold &&
-                        canHypercharge(true))
+                        CanHypercharge(true))
                         return Hypercharge;
 
                     //gauss and ricochet outside HC
@@ -636,10 +636,10 @@ internal partial class MCH : PhysicalRanged
                 HasNotWeaved)
             {
                 if (ActionReady(GaussRound) &&
-                    (UseGaussRound || !LevelChecked(Ricochet)))
+                    (CanGaussRound || !LevelChecked(Ricochet)))
                     return OriginalHook(GaussRound);
 
-                if (ActionReady(Ricochet) && UseRicochet)
+                if (ActionReady(Ricochet) && CanRicochet)
                     return OriginalHook(Ricochet);
             }
 
@@ -672,10 +672,10 @@ internal partial class MCH : PhysicalRanged
                 CanWeave() && JustUsed(OriginalHook(AutoCrossbow), 1f) && HasNotWeaved)
             {
                 if (ActionReady(GaussRound) &&
-                    UseGaussRound || !LevelChecked(Ricochet))
+                    CanGaussRound || !LevelChecked(Ricochet))
                     return OriginalHook(GaussRound);
 
-                if (ActionReady(Ricochet) && UseRicochet)
+                if (ActionReady(Ricochet) && CanRicochet)
                     return OriginalHook(Ricochet);
             }
 
@@ -733,10 +733,10 @@ internal partial class MCH : PhysicalRanged
 
             return actionID switch
             {
-                GaussRound or DoubleCheck when MCH_GaussRico == 0 && ActionReady(GaussRound) && (UseGaussRound || !LevelChecked(Ricochet)) => OriginalHook(GaussRound),
-                GaussRound or DoubleCheck when MCH_GaussRico == 0 && ActionReady(Ricochet) && UseRicochet => OriginalHook(Ricochet),
-                Ricochet or CheckMate when MCH_GaussRico == 1 && ActionReady(GaussRound) && (UseGaussRound || !LevelChecked(Ricochet)) => OriginalHook(GaussRound),
-                Ricochet or CheckMate when MCH_GaussRico == 1 && ActionReady(Ricochet) && UseRicochet => OriginalHook(Ricochet),
+                GaussRound or DoubleCheck when MCH_GaussRico == 0 && ActionReady(GaussRound) && (CanGaussRound || !LevelChecked(Ricochet)) => OriginalHook(GaussRound),
+                GaussRound or DoubleCheck when MCH_GaussRico == 0 && ActionReady(Ricochet) && CanRicochet => OriginalHook(Ricochet),
+                Ricochet or CheckMate when MCH_GaussRico == 1 && ActionReady(GaussRound) && (CanGaussRound || !LevelChecked(Ricochet)) => OriginalHook(GaussRound),
+                Ricochet or CheckMate when MCH_GaussRico == 1 && ActionReady(Ricochet) && CanRicochet => OriginalHook(Ricochet),
                 var _ => actionID
             };
         }

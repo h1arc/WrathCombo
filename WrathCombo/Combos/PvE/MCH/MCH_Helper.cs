@@ -15,15 +15,15 @@ internal partial class MCH
     private static int BSUsed =>
         CombatActions.Count(x => x == BarrelStabilizer);
 
-    private static bool UseGaussRound =>
+    private static bool CanGaussRound =>
         GetRemainingCharges(OriginalHook(GaussRound)) >= GetRemainingCharges(OriginalHook(Ricochet));
 
-    private static bool UseRicochet =>
+    private static bool CanRicochet =>
         GetRemainingCharges(OriginalHook(Ricochet)) > GetRemainingCharges(OriginalHook(GaussRound));
 
     #region Queen
 
-    private static bool UseQueen(bool simpleMode = false)
+    private static bool CanQueen(bool simpleMode = false)
     {
         if (!HasStatusEffect(Buffs.Wildfire) &&
             !JustUsed(OriginalHook(Heatblast)) && ActionReady(RookAutoturret) &&
@@ -70,7 +70,7 @@ internal partial class MCH
 
     #region Hypercharge
 
-    private static bool canHypercharge(bool onAoE = false)
+    private static bool CanHypercharge(bool onAoE = false)
     {
         if (onAoE &
             (Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) && LevelChecked(Hypercharge) &&
@@ -169,7 +169,7 @@ internal partial class MCH
     private static bool ReassembledScattergunAoE =>
         IsEnabled(Preset.MCH_AoE_Adv_Reassemble) && MCH_AoE_Reassembled[0] && HasStatusEffect(Buffs.Reassembled);
 
-    private static bool Reassembled(bool onExcavator, bool onChainsaw, bool onAirAnchor, bool onDrill)
+    private static bool CanReassemble(bool onExcavator, bool onChainsaw, bool onAirAnchor, bool onDrill)
     {
         if (!JustUsed(OriginalHook(Heatblast)) &&
             !HasStatusEffect(Buffs.Reassembled) && ActionReady(Reassemble))
@@ -240,7 +240,7 @@ internal partial class MCH
         !LevelChecked(Chainsaw) ||
         LevelChecked(Chainsaw) && GetCooldownRemainingTime(Chainsaw) >= 9;
 
-    private static bool Tools(ref uint actionID, bool useExcavator, bool useChainsaw, bool useAirAnchor, bool useDrill, bool simpleMode = false)
+    private static bool CanUseTools(ref uint actionID, bool useExcavator, bool useChainsaw, bool useAirAnchor, bool useDrill, bool simpleMode = false)
     {
         switch (useExcavator)
         {
