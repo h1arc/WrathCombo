@@ -64,7 +64,7 @@ internal partial class MNK : Melee
             if (CanFiresReply())
                 return FiresReply;
 
-            // Perfect Balance or Standard Beast Chakras
+            // Perfect Balance or Standard Beast Chakra's
             return DoPerfectBalanceCombo(ref actionID)
                 ? actionID
                 : DetermineCoreAbility(actionID);
@@ -258,7 +258,7 @@ internal partial class MNK : Melee
                 CanFiresReply())
                 return FiresReply;
 
-            // Perfect Balance or Standard Beast Chakras
+            // Perfect Balance or Standard Beast Chakra's
             return DoPerfectBalanceCombo(ref actionID)
                 ? actionID
                 : DetermineCoreAbility(actionID, IsEnabled(Preset.MNK_STUseTrueNorth));
