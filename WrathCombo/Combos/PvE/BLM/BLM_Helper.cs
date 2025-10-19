@@ -12,9 +12,6 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class BLM
 {
-    internal static uint CurMp =>
-        GetPartyMembers().First().CurrentMP;
-
     internal static int MaxPolyglot =>
         TraitLevelChecked(Traits.EnhancedPolyglotII) ? 3 :
         TraitLevelChecked(Traits.EnhancedPolyglot) ? 2 : 1;
@@ -265,7 +262,8 @@ internal partial class BLM
 
     internal static class MP
     {
-        internal const int MaxMP = 10000;
+        internal static unsafe uint Cur => Player.Character->Mana;
+        
         internal static unsafe uint Max = Player.Character->MaxMana;
         
 
