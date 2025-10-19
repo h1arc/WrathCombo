@@ -3,6 +3,7 @@ using Dalamud.Game.ClientState.Statuses;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
+using ECommons.GameHelpers;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using static WrathCombo.Combos.PvE.BLM.Config;
@@ -265,6 +266,8 @@ internal partial class BLM
     internal static class MP
     {
         internal const int MaxMP = 10000;
+        internal static unsafe uint Max = Player.Character->MaxMana;
+        
 
         internal static int FireI => GetResourceCost(OriginalHook(Fire));
 
