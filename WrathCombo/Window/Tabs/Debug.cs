@@ -386,12 +386,11 @@ internal class Debug : ConfigWindow, IDisposable
                 CustomStyleText("Height Difference:", $"{MathF.Round(GetTargetHeightDifference(), 2)}y");
                 CustomStyleText("Relative Position:", AngleToTarget().ToString());
                 CustomStyleText("Requires Positionals:", TargetNeedsPositionals());
-                CustomStyleText("In Boss Encounter:", InBossEncounter());
-                CustomStyleText("Is Boss:", target?.IsBoss());
                 CustomStyleText("Is Invincible:", TargetIsInvincible(target!));
                 CustomStyleText("Is Hostile:", target?.IsHostile());
                 CustomStyleText("Is Friendly:", target?.IsFriendly());
                 CustomStyleText("Is Boss:", target?.IsBoss());
+                CustomStyleText("In Boss Encounter:", InBossEncounter());
 
                 ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
 
