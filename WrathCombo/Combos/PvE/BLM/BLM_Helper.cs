@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Statuses;
+using ECommons.GameHelpers;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,6 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class BLM
 {
-    private static uint CurMp =>
-        GetPartyMembers().First().CurrentMP;
-
     private static int MaxPolyglot =>
         TraitLevelChecked(Traits.EnhancedPolyglotII) ? 3 :
         TraitLevelChecked(Traits.EnhancedPolyglot) ? 2 : 1;
@@ -177,7 +175,7 @@ internal partial class BLM
         public override List<int> DelayedWeaveSteps { get; set; } = [6];
 
         public override bool HasCooldowns() =>
-            CurMp is MP.MaxMP &&
+            MP.IsFull &&
             IsOffCooldown(Manafont) &&
             GetRemainingCharges(Triplecast) >= 1 &&
             GetRemainingCharges(LeyLines) >= 1 &&
@@ -230,7 +228,7 @@ internal partial class BLM
         public override List<int> DelayedWeaveSteps { get; set; } = [6];
 
         public override bool HasCooldowns() =>
-            CurMp is MP.MaxMP &&
+            MP.IsFull &&
             IsOffCooldown(Manafont) &&
             GetRemainingCharges(Triplecast) >= 1 &&
             GetRemainingCharges(LeyLines) >= 1 &&
@@ -264,7 +262,11 @@ internal partial class BLM
 
     private static class MP
     {
-        internal const int MaxMP = 10000;
+
+        private static unsafe uint Max = Player.Character->MaxMana;
+
+        internal static bool IsFull = Max == Cur;
+        internal static unsafe uint Cur => Player.Character->Mana;
 
         internal static int FireI => GetResourceCost(OriginalHook(Fire));
 
