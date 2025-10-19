@@ -292,10 +292,7 @@ internal abstract partial class CustomComboFunctions
         WeaveTypes.DelayWeave => CanDelayedWeave(),
         _ => false
     };
-
-    //Check if there has been no weave at all.
-    public static bool HasNotWeaved => GetAttackType(LastAction) != ActionAttackType.Ability;
-
+    
     /// <summary> Gets the current combo timer. </summary>
     public static unsafe float ComboTimer => ActionManager.Instance()->Combo.Timer;
 

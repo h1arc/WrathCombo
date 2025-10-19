@@ -41,7 +41,7 @@ internal partial class MCH : PhysicalRanged
                     return Wildfire;
 
                 // Gauss Round and Ricochet during HC
-                if (JustUsed(OriginalHook(Heatblast), 1f) && HasNotWeaved)
+                if (JustUsed(OriginalHook(Heatblast), 1f) && !HasWeaved())
                 {
                     if (ActionReady(GaussRound) &&
                         (CanGaussRound || !LevelChecked(Ricochet)))
@@ -147,7 +147,7 @@ internal partial class MCH : PhysicalRanged
                 //AutoCrossbow, Gauss, Rico
                 if (IsOverheated &&
                     (JustUsed(OriginalHook(AutoCrossbow), 1f) ||
-                     JustUsed(OriginalHook(Heatblast), 1f)) && HasNotWeaved)
+                     JustUsed(OriginalHook(Heatblast), 1f)) && !HasWeaved())
                 {
                     if (ActionReady(GaussRound) &&
                         (CanGaussRound || !LevelChecked(Ricochet)))
@@ -288,7 +288,7 @@ internal partial class MCH : PhysicalRanged
 
                 // Gauss Round and Ricochet during HC
                 if (IsEnabled(Preset.MCH_ST_Adv_GaussRicochet) &&
-                    JustUsed(OriginalHook(Heatblast), 1f) && HasNotWeaved)
+                    JustUsed(OriginalHook(Heatblast), 1f) && !HasWeaved())
                 {
                     if (ActionReady(GaussRound) &&
                         GetRemainingCharges(OriginalHook(GaussRound)) > MCH_ST_GaussRicoPool &&
@@ -433,7 +433,7 @@ internal partial class MCH : PhysicalRanged
                 if (IsEnabled(Preset.MCH_AoE_Adv_GaussRicochet) &&
                     IsOverheated &&
                     (JustUsed(OriginalHook(AutoCrossbow), 1f) ||
-                     JustUsed(OriginalHook(Heatblast), 1f)) && HasNotWeaved)
+                     JustUsed(OriginalHook(Heatblast), 1f)) && !HasWeaved())
                 {
                     if (ActionReady(GaussRound) &&
                         (CanGaussRound || !LevelChecked(Ricochet)))
@@ -633,7 +633,7 @@ internal partial class MCH : PhysicalRanged
             if (IsEnabled(Preset.MCH_Heatblast_GaussRound) &&
                 CanWeave() &&
                 JustUsed(OriginalHook(Heatblast), 1f) &&
-                HasNotWeaved)
+                !HasWeaved())
             {
                 if (ActionReady(GaussRound) &&
                     (CanGaussRound || !LevelChecked(Ricochet)))
@@ -669,7 +669,7 @@ internal partial class MCH : PhysicalRanged
                 return Hypercharge;
 
             if (IsEnabled(Preset.MCH_AutoCrossbow_GaussRound) &&
-                CanWeave() && JustUsed(OriginalHook(AutoCrossbow), 1f) && HasNotWeaved)
+                CanWeave() && JustUsed(OriginalHook(AutoCrossbow), 1f) && !HasWeaved())
             {
                 if (ActionReady(GaussRound) &&
                     CanGaussRound || !LevelChecked(Ricochet))
