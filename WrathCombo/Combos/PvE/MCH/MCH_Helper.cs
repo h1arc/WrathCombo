@@ -148,25 +148,25 @@ internal partial class MCH
         !HasStatusEffect(Buffs.Reassembled) && GetRemainingCharges(Reassemble) <= MCH_ST_ReassemblePool ||
         !IsEnabled(Preset.MCH_ST_Adv_Reassemble);
 
-    private static bool ReassembledExcavatorAoE =
+    private static bool ReassembledExcavatorAoE =>
         IsEnabled(Preset.MCH_AoE_Adv_Reassemble) && MCH_AoE_Reassembled[3] && HasStatusEffect(Buffs.Reassembled) ||
         IsEnabled(Preset.MCH_AoE_Adv_Reassemble) && !MCH_AoE_Reassembled[3] && !HasStatusEffect(Buffs.Reassembled) ||
         !HasStatusEffect(Buffs.Reassembled) && GetRemainingCharges(Reassemble) <= MCH_AoE_ReassemblePool ||
         !IsEnabled(Preset.MCH_AoE_Adv_Reassemble);
 
-    private static bool ReassembledChainsawAoE =
+    private static bool ReassembledChainsawAoE =>
         IsEnabled(Preset.MCH_AoE_Adv_Reassemble) && MCH_AoE_Reassembled[2] && HasStatusEffect(Buffs.Reassembled) ||
         IsEnabled(Preset.MCH_AoE_Adv_Reassemble) && !MCH_AoE_Reassembled[2] && !HasStatusEffect(Buffs.Reassembled) ||
         !HasStatusEffect(Buffs.Reassembled) && GetRemainingCharges(Reassemble) <= MCH_AoE_ReassemblePool ||
         !IsEnabled(Preset.MCH_AoE_Adv_Reassemble);
 
-    private static bool ReassembledAirAnchorAoE =
+    private static bool ReassembledAirAnchorAoE =>
         IsEnabled(Preset.MCH_AoE_Adv_Reassemble) && MCH_AoE_Reassembled[1] && HasStatusEffect(Buffs.Reassembled) ||
         IsEnabled(Preset.MCH_AoE_Adv_Reassemble) && !MCH_AoE_Reassembled[1] && !HasStatusEffect(Buffs.Reassembled) ||
         !HasStatusEffect(Buffs.Reassembled) && GetRemainingCharges(Reassemble) <= MCH_AoE_ReassemblePool ||
         !IsEnabled(Preset.MCH_AoE_Adv_Reassemble);
 
-    private static bool ReassembledScattergunAoE =
+    private static bool ReassembledScattergunAoE =>
         IsEnabled(Preset.MCH_AoE_Adv_Reassemble) && MCH_AoE_Reassembled[0] && HasStatusEffect(Buffs.Reassembled);
 
     private static bool Reassembled(bool onExcavator, bool onChainsaw, bool onAirAnchor, bool onDrill)
