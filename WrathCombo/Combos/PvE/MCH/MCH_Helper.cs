@@ -263,47 +263,41 @@ internal partial class MCH
                 return true;
         }
 
-        switch (useChainsaw)
+        if (useChainsaw &&
+            ReassembledChainsawST &&
+            !MaxBattery && !HasStatusEffect(Buffs.ExcavatorReady) && LevelChecked(Chainsaw) &&
+            GetCooldownRemainingTime(Chainsaw) <= GCD / 2)
         {
-            case true when
-                ReassembledChainsawST &&
-                !MaxBattery && !HasStatusEffect(Buffs.ExcavatorReady) && LevelChecked(Chainsaw) &&
-                GetCooldownRemainingTime(Chainsaw) <= GCD / 2:
-                actionID = Chainsaw;
-                return true;
+            actionID = Chainsaw;
+            return true;
         }
 
-        switch (useAirAnchor)
+        if (useAirAnchor &&
+            ReassembledAnchorST &&
+            !MaxBattery && LevelChecked(AirAnchor) &&
+            GetCooldownRemainingTime(AirAnchor) <= GCD / 2)
         {
-            case true when
-                ReassembledAnchorST &&
-                !MaxBattery && LevelChecked(AirAnchor) &&
-                GetCooldownRemainingTime(AirAnchor) <= GCD / 2:
-                actionID = AirAnchor;
-                return true;
+            actionID = AirAnchor;
+            return true;
         }
 
-        switch (useDrill)
+        if (useDrill &&
+            ReassembledDrillST &&
+            !JustUsed(Drill) && ActionReady(Drill) &&
+            GetCooldownRemainingTime(Wildfire) is >= 20 or <= 10)
         {
-            case true when
-                ReassembledDrillST &&
-                !JustUsed(Drill) && ActionReady(Drill) &&
-                GetCooldownRemainingTime(Wildfire) is >= 20 or <= 10:
-                actionID = Drill;
-                return true;
+            actionID = Drill;
+            return true;
         }
 
-        switch (useAirAnchor)
+        if (useAirAnchor &&
+            LevelChecked(HotShot) && !LevelChecked(AirAnchor) && !MaxBattery &&
+            GetCooldownRemainingTime(HotShot) <= GCD / 2)
         {
-            case true when
-                LevelChecked(HotShot) && !LevelChecked(AirAnchor) && !MaxBattery &&
-                GetCooldownRemainingTime(HotShot) <= GCD / 2:
-                actionID = HotShot;
-                return true;
-
-            default:
-                return false;
+            actionID = HotShot;
+            return true;
         }
+        return false;
     }
 
     #endregion
