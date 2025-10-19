@@ -14,10 +14,10 @@ internal partial class MNK : Melee
             if (actionID is not (Bootshine or LeapingOpo))
                 return actionID;
 
-            if (UseMeditation())
+            if (CanMeditate())
                 return OriginalHook(SteeledMeditation);
 
-            if (UseFormshift())
+            if (CanFormshift())
                 return FormShift;
 
             if (ContentSpecificActions.TryGet(out uint contentAction))
@@ -26,19 +26,19 @@ internal partial class MNK : Melee
             // OGCDs
             if (CanWeave() && InCombat())
             {
-                if (UseBrotherhood())
+                if (CanBrotherhood())
                     return Brotherhood;
 
-                if (UseRoF())
+                if (CanRoF())
                     return RiddleOfFire;
 
-                if (UsePerfectBalance())
+                if (CanPerfectBalance())
                     return PerfectBalance;
 
-                if (UseRoW())
+                if (CanRoW())
                     return RiddleOfWind;
 
-                if (UseChakra())
+                if (CanUseChakra())
                     return OriginalHook(SteeledMeditation);
 
                 if (Role.CanSecondWind(25))
@@ -55,13 +55,13 @@ internal partial class MNK : Melee
                     : OriginalHook(Bootshine);
 
             // Masterful Blitz
-            if (UseMasterfulBlitz(false))
+            if (CanMasterfulBlitz(false))
                 return OriginalHook(MasterfulBlitz);
 
-            if (UseWindsReply())
+            if (CanWindsReply())
                 return WindsReply;
 
-            if (UseFiresReply())
+            if (CanFiresReply())
                 return FiresReply;
 
             // Perfect Balance or Standard Beast Chakras
@@ -80,10 +80,10 @@ internal partial class MNK : Melee
             if (actionID is not (ArmOfTheDestroyer or ShadowOfTheDestroyer))
                 return actionID;
 
-            if (UseMeditation(true))
+            if (CanMeditate(true))
                 return OriginalHook(InspiritedMeditation);
 
-            if (UseFormshift())
+            if (CanFormshift())
                 return FormShift;
 
             if (ContentSpecificActions.TryGet(out uint contentAction))
@@ -92,19 +92,19 @@ internal partial class MNK : Melee
             // OGCD's
             if (CanWeave() && InCombat())
             {
-                if (UseBrotherhood())
+                if (CanBrotherhood())
                     return Brotherhood;
 
-                if (UseRoF())
+                if (CanRoF())
                     return RiddleOfFire;
 
-                if (UsePerfectBalance(true))
+                if (CanPerfectBalance(true))
                     return PerfectBalance;
 
-                if (UseRoW())
+                if (CanRoW())
                     return RiddleOfWind;
 
-                if (UseChakra(true))
+                if (CanUseChakra(true))
                     return OriginalHook(InspiritedMeditation);
 
                 if (Role.CanSecondWind(25))
@@ -115,7 +115,7 @@ internal partial class MNK : Melee
             }
 
             // Masterful Blitz
-            if (UseMasterfulBlitz(true))
+            if (CanMasterfulBlitz(true))
                 return OriginalHook(MasterfulBlitz);
 
             if (HasStatusEffect(Buffs.FiresRumination) &&
@@ -171,11 +171,11 @@ internal partial class MNK : Melee
                     : actionID;
 
             if (IsEnabled(Preset.MNK_STUseMeditation) &&
-                UseMeditation())
+                CanMeditate())
                 return OriginalHook(SteeledMeditation);
 
             if (IsEnabled(Preset.MNK_STUseFormShift) &&
-                UseFormshift())
+                CanFormshift())
                 return FormShift;
 
             if (ContentSpecificActions.TryGet(out uint contentAction))
@@ -188,26 +188,26 @@ internal partial class MNK : Melee
                     GetTargetHPPercent() > HPThresholdBuffs)
                 {
                     if (IsEnabled(Preset.MNK_STUseBrotherhood) &&
-                        UseBrotherhood())
+                        CanBrotherhood())
                         return Brotherhood;
 
                     if (IsEnabled(Preset.MNK_STUseROF) &&
-                        UseRoF())
+                        CanRoF())
                         return RiddleOfFire;
                 }
 
                 if (IsEnabled(Preset.MNK_STUsePerfectBalance) &&
-                    UsePerfectBalance())
+                    CanPerfectBalance())
                     return PerfectBalance;
 
                 if (IsEnabled(Preset.MNK_STUseBuffs) &&
                     IsEnabled(Preset.MNK_STUseROW) &&
                     GetTargetHPPercent() > HPThresholdBuffs &&
-                    UseRoW())
+                    CanRoW())
                     return RiddleOfWind;
 
                 if (IsEnabled(Preset.MNK_STUseTheForbiddenChakra) &&
-                    UseChakra())
+                    CanUseChakra())
                     return OriginalHook(SteeledMeditation);
 
                 if (IsEnabled(Preset.MNK_ST_Feint) &&
@@ -216,13 +216,13 @@ internal partial class MNK : Melee
                     return Role.Feint;
 
                 if (IsEnabled(Preset.MNK_ST_UseRoE) &&
-                    (UseRoE() ||
+                    (CanRoE() ||
                      MNK_ST_EarthsReply &&
-                     UseEarthsReply()))
+                     CanEarthsReply()))
                     return OriginalHook(RiddleOfEarth);
 
                 if (IsEnabled(Preset.MNK_ST_UseMantra) &&
-                    UseMantra())
+                    CanMantra())
                     return Mantra;
 
                 if (IsEnabled(Preset.MNK_ST_ComboHeals))
@@ -247,15 +247,15 @@ internal partial class MNK : Melee
 
             // Masterful Blitz
             if (IsEnabled(Preset.MNK_STUseMasterfulBlitz) &&
-                UseMasterfulBlitz(false))
+                CanMasterfulBlitz(false))
                 return OriginalHook(MasterfulBlitz);
 
             if (IsEnabled(Preset.MNK_STUseWindsReply) &&
-                UseWindsReply())
+                CanWindsReply())
                 return WindsReply;
 
             if (IsEnabled(Preset.MNK_STUseFiresReply) &&
-                UseFiresReply())
+                CanFiresReply())
                 return FiresReply;
 
             // Perfect Balance or Standard Beast Chakras
@@ -275,11 +275,11 @@ internal partial class MNK : Melee
                 return actionID;
 
             if (IsEnabled(Preset.MNK_AoEUseMeditation) &&
-                UseMeditation(true))
+                CanMeditate(true))
                 return OriginalHook(InspiritedMeditation);
 
             if (IsEnabled(Preset.MNK_AoEUseFormShift) &&
-                UseFormshift())
+                CanFormshift())
                 return FormShift;
 
             if (ContentSpecificActions.TryGet(out uint contentAction))
@@ -289,29 +289,29 @@ internal partial class MNK : Melee
             if (CanWeave() && M6SReady && InCombat())
             {
                 if (IsEnabled(Preset.MNK_AoEUseBuffs) &&
-                    GetTargetHPPercent() >= MNK_AoE_BuffsHPTreshold)
+                    GetTargetHPPercent() >= MNK_AoE_BuffsHPThreshold)
                 {
                     if (IsEnabled(Preset.MNK_AoEUseBrotherhood) &&
-                        UseBrotherhood())
+                        CanBrotherhood())
                         return Brotherhood;
 
                     if (IsEnabled(Preset.MNK_AoEUseROF) &&
-                        UseRoF())
+                        CanRoF())
                         return RiddleOfFire;
                 }
 
                 if (IsEnabled(Preset.MNK_AoEUsePerfectBalance) &&
-                    UsePerfectBalance(true))
+                    CanPerfectBalance(true))
                     return PerfectBalance;
 
                 if (IsEnabled(Preset.MNK_AoEUseBuffs) &&
                     IsEnabled(Preset.MNK_AoEUseROW) &&
-                    GetTargetHPPercent() >= MNK_AoE_BuffsHPTreshold &&
-                    UseRoW())
+                    GetTargetHPPercent() >= MNK_AoE_BuffsHPThreshold &&
+                    CanRoW())
                     return RiddleOfWind;
 
                 if (IsEnabled(Preset.MNK_AoEUseHowlingFist) &&
-                    UseChakra(true))
+                    CanUseChakra(true))
                     return OriginalHook(InspiritedMeditation);
 
                 if (IsEnabled(Preset.MNK_AoE_ComboHeals))
@@ -330,7 +330,7 @@ internal partial class MNK : Melee
 
             // Masterful Blitz
             if (IsEnabled(Preset.MNK_AoEUseMasterfulBlitz) &&
-                UseMasterfulBlitz(true))
+                CanMasterfulBlitz(true))
                 return OriginalHook(MasterfulBlitz);
 
             if (IsEnabled(Preset.MNK_AoEUseFiresReply) &&

@@ -53,12 +53,12 @@ internal partial class MNK
                     break;
 
                 case Preset.MNK_AoEUseBuffs:
-                    DrawSliderInt(0, 100, MNK_AoE_BuffsHPTreshold,
+                    DrawSliderInt(0, 100, MNK_AoE_BuffsHPThreshold,
                         "Stop Using Buffs When Target HP% is at or Below (Set to 0 to Disable This Check)");
                     break;
 
                 case Preset.MNK_AoEUsePerfectBalance:
-                    DrawSliderInt(0, 100, MNK_AoE_PerfectBalanceHPTreshold,
+                    DrawSliderInt(0, 100, MNK_AoE_PerfectBalanceHPThreshold,
                         $"Stop Using {PerfectBalance.ActionName()} When Target HP% is at or Below (Set to 0 to Disable This Check)");
                     break;
 
@@ -80,7 +80,7 @@ internal partial class MNK
 
                 case Preset.MNK_Retarget_Thunderclap:
                     DrawAdditionalBoolChoice(MNK_Thunderclap_FieldMouseover,
-                        "Add Field Mouseover", "Add Field Mouseover targetting.");
+                        "Add Field Mouseover", "Add Field Mouseover targeting.");
                     break;
 
                 case Preset.MNK_ST_UseRoE:
@@ -117,8 +117,8 @@ internal partial class MNK
             MNK_ST_EarthsReplyHPThreshold = new("MNK_ST_EarthsReplyHPThreshold", 50),
             MNK_ST_SecondWindHPThreshold = new("MNK_ST_SecondWindHPThreshold", 40),
             MNK_ST_BloodbathHPThreshold = new("MNK_ST_BloodbathHPThreshold", 30),
-            MNK_AoE_BuffsHPTreshold = new("MNK_AoE_BuffsHPTreshold", 40),
-            MNK_AoE_PerfectBalanceHPTreshold = new("MNK_AoE_PerfectBalanceHPTreshold", 40),
+            MNK_AoE_BuffsHPThreshold = new("MNK_AoE_BuffsHPThreshold", 40),
+            MNK_AoE_PerfectBalanceHPThreshold = new("MNK_AoE_PerfectBalanceHPThreshold", 40),
             MNK_AoE_SecondWindHPThreshold = new("MNK_AoE_SecondWindThreshold", 40),
             MNK_AoE_BloodbathHPThreshold = new("MNK_AoE_BloodbathThreshold", 30),
             MNK_BH_RoF = new("MNK_BH_RoF", 0);

@@ -64,7 +64,7 @@ internal partial class MNK
 
     #region PB
 
-    private static bool UsePerfectBalance(bool onAoE = false)
+    private static bool CanPerfectBalance(bool onAoE = false)
     {
         switch (onAoE)
         {
@@ -99,7 +99,7 @@ internal partial class MNK
             case true when
                 ActionReady(PerfectBalance) && !HasStatusEffect(Buffs.PerfectBalance) &&
                 !HasStatusEffect(Buffs.FormlessFist) && HasBattleTarget() &&
-                GetTargetHPPercent() >= MNK_AoE_PerfectBalanceHPTreshold:
+                GetTargetHPPercent() >= MNK_AoE_PerfectBalanceHPThreshold:
             {
                 //Initial/Failsafe
                 if (GetRemainingCharges(PerfectBalance) == GetMaxCharges(PerfectBalance))
@@ -262,7 +262,7 @@ internal partial class MNK
 
     #region Masterful Blitz
 
-    private static bool UseMasterfulBlitz(bool onAoE)
+    private static bool CanMasterfulBlitz(bool onAoE)
     {
         switch (onAoE)
         {
@@ -275,7 +275,7 @@ internal partial class MNK
                 if (LevelChecked(RiddleOfFire) && HasStatusEffect(Buffs.RiddleOfFire))
                     return true;
 
-                //Use whenver since no buff
+                //Use whenever since no buff
                 if (!LevelChecked(RiddleOfFire))
                     return true;
                 break;
@@ -313,7 +313,7 @@ internal partial class MNK
 
     #region Chakra
 
-    private static bool UseFormshift() =>
+    private static bool CanFormshift() =>
         LevelChecked(FormShift) && !InCombat() &&
         !HasStatusEffect(Buffs.FormlessFist) &&
         !HasStatusEffect(Buffs.PerfectBalance) &&
@@ -321,7 +321,7 @@ internal partial class MNK
         !HasStatusEffect(Buffs.RaptorForm) &&
         !HasStatusEffect(Buffs.CoeurlForm);
 
-    private static bool UseMeditation(bool onAoE = false)
+    private static bool CanMeditate(bool onAoE = false)
     {
         switch (onAoE)
         {
@@ -349,7 +349,7 @@ internal partial class MNK
 
     }
 
-    private static bool UseChakra(bool onAoE = false)
+    private static bool CanUseChakra(bool onAoE = false)
     {
         switch (onAoE)
         {
@@ -377,15 +377,14 @@ internal partial class MNK
     #region Buffs
 
     //RoF
-    private static bool UseRoF() =>
+    private static bool CanRoF() =>
         ActionReady(RiddleOfFire) &&
         !HasStatusEffect(Buffs.FiresRumination) &&
         (HasWeavedAction(Brotherhood) ||
          GetCooldownRemainingTime(Brotherhood) is > 50 and < 65 ||
-         !LevelChecked(Brotherhood) ||
-         HasStatusEffect(Buffs.Brotherhood));
+         !LevelChecked(Brotherhood));
 
-    private static bool UseFiresReply() =>
+    private static bool CanFiresReply() =>
         HasStatusEffect(Buffs.FiresRumination) &&
         !HasStatusEffect(Buffs.FormlessFist) &&
         !HasStatusEffect(Buffs.PerfectBalance) &&
@@ -396,35 +395,35 @@ internal partial class MNK
          !InMeleeRange());
 
     //Brotherhood
-    private static bool UseBrotherhood() =>
+    private static bool CanBrotherhood() =>
         ActionReady(Brotherhood) &&
         ActionReady(RiddleOfFire) &&
         CanWeave(GCD / 2);
 
     //RoW
-    private static bool UseRoW() =>
+    private static bool CanRoW() =>
         ActionReady(RiddleOfWind) &&
         !HasStatusEffect(Buffs.WindsRumination);
 
-    private static bool UseWindsReply() =>
+    private static bool CanWindsReply() =>
         HasStatusEffect(Buffs.WindsRumination) &&
         (GetCooldownRemainingTime(RiddleOfFire) > 5 ||
          HasStatusEffect(Buffs.RiddleOfFire) ||
          GetStatusEffectRemainingTime(Buffs.WindsRumination) < GCD * 2 ||
          !InMeleeRange());
 
-    private static bool UseMantra() =>
+    private static bool CanMantra() =>
         ActionReady(Mantra) &&
         !HasStatusEffect(Buffs.Mantra) &&
         RaidWideCasting(3f);
 
-    private static bool UseRoE() =>
+    private static bool CanRoE() =>
         ActionReady(RiddleOfEarth) &&
         RaidWideCasting(2f) &&
         !HasStatusEffect(Buffs.RiddleOfEarth) &&
         !HasStatusEffect(Buffs.EarthsRumination);
 
-    private static bool UseEarthsReply() =>
+    private static bool CanEarthsReply() =>
         HasStatusEffect(Buffs.EarthsRumination) &&
         NumberOfAlliesInRange(EarthsReply) >= GetPartyMembers().Count * .75 &&
         GetPartyAvgHPPercent() <= MNK_ST_EarthsReplyHPThreshold;
