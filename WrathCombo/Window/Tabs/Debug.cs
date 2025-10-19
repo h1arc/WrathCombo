@@ -373,6 +373,7 @@ internal class Debug : ConfigWindow, IDisposable
                 CustomStyleText("Requires Positionals:", TargetNeedsPositionals());
                 CustomStyleText("Is Invincible:", TargetIsInvincible(target!));
                 CustomStyleText("Is Friendly:", target?.IsFriendly());
+                CustomStyleText("Is Boss:", target?.IsBoss());
 
                 ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
 
