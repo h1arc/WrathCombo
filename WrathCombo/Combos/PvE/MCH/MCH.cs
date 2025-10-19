@@ -36,8 +36,8 @@ internal partial class MCH : PhysicalRanged
 
                 // Wildfire
                 if (CanApplyStatus(CurrentTarget, Debuffs.Wildfire) &&
-                    JustUsed(Hypercharge) && ActionReady(Wildfire) &&
-                    HasWeavedAction(Hypercharge) && !HasStatusEffect(Buffs.Wildfire))
+                    ActionReady(Wildfire) && HasWeavedAction(Hypercharge) &&
+                    !HasStatusEffect(Buffs.Wildfire))
                     return Wildfire;
 
                 // Gauss Round and Ricochet during HC
@@ -214,7 +214,6 @@ internal partial class MCH : PhysicalRanged
                     !IsMoving() && TimeStoodStill > TimeSpan.FromSeconds(3))
                     return OriginalHook(Flamethrower);
 
-
                 if (ReassembledExcavatorAoE &&
                     LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady))
                     return Excavator;
@@ -283,8 +282,8 @@ internal partial class MCH : PhysicalRanged
                 if (IsEnabled(Preset.MCH_ST_Adv_WildFire) &&
                     (MCH_ST_WildfireBossOption == 0 || TargetIsBoss()) &&
                     CanApplyStatus(CurrentTarget, Debuffs.Wildfire) &&
-                    JustUsed(Hypercharge) && ActionReady(Wildfire) &&
-                    HasWeavedAction(Hypercharge) && !HasStatusEffect(Buffs.Wildfire))
+                    ActionReady(Wildfire) && HasWeavedAction(Hypercharge) &&
+                    !HasStatusEffect(Buffs.Wildfire))
                     return Wildfire;
 
                 // Gauss Round and Ricochet during HC
