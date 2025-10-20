@@ -93,7 +93,8 @@ internal class MajorChangesWindow : Dalamud.Interface.Windowing.Window
                 "You were using one of these options! Please Read!");
         ImGuiEx.Text(
             "Monk's Burst settings (like the HP Slider and Boss-only option) are no longer on each Burst action,\n" +
-            "and are instead now all together on the Burst section.\n\n" +
+            "and are instead now all together on the Burst section.\n" +
+            "If you were using one of these options then you'll need to adjust these new settings.\n\n" +
             "You can find these moved settings here:\n" +
             "PvE Features > MNK > Single Target Advanced > Buffs Option");
         ImGui.NewLine();
