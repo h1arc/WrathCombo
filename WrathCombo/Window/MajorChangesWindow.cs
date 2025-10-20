@@ -65,7 +65,7 @@ internal class MajorChangesWindow : Dalamud.Interface.Windowing.Window
         );
         ImGui.NewLine();
         if (ImGui.Button("> Open Machinists Config##majorSettings1"))
-            P.HandleOpenCommand(["MCH"], OpenWindow.PvE, true);
+            P.HandleOpenCommand(["MCH"], forceOpen: true);
         if (ImGui.Button("> Enable the new Section for me"))
         {
             PresetStorage.EnablePreset(Preset.MCH_ST_Adv_Tools);
@@ -93,10 +93,12 @@ internal class MajorChangesWindow : Dalamud.Interface.Windowing.Window
                 "You were using one of these options! Please Read!");
         ImGuiEx.Text(
             "Monk's Burst settings (like the HP Slider and Boss-only option) are no longer on each Burst action,\n" +
-            "and are instead now all together on the Burst section.");
+            "and are instead now all together on the Burst section.\n\n" +
+            "You can find these moved settings here:\n" +
+            "PvE Features > MNK > Single Target Advanced > Buffs Option");
         ImGui.NewLine();
         if (ImGui.Button("> Open Monks Config##majorSettings2"))
-            P.HandleOpenCommand(["MNK"], OpenWindow.PvE, true);
+            P.HandleOpenCommand(["MNK"], forceOpen: true);
 
         #endregion
 
