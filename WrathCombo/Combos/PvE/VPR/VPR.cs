@@ -47,7 +47,7 @@ internal partial class VPR : Melee
                     if (HasStatusEffect(Buffs.SwiftskinsVenom))
                         return OriginalHook(Twinblood);
                 }
-                
+
                 // healing
                 if (Role.CanSecondWind(40))
                     return Role.SecondWind;
@@ -208,7 +208,7 @@ internal partial class VPR : Melee
                     //Serpents Ire usage
                     if (!MaxCoils() && ActionReady(SerpentsIre))
                         return SerpentsIre;
-                    
+
                     // healing
                     if (Role.CanSecondWind(40))
                         return Role.SecondWind;
@@ -264,7 +264,7 @@ internal partial class VPR : Melee
             //Reawaken combo
             if (ReawakenCombo(ref actionID, true))
                 return actionID;
-            
+
             //1-2-3 (4-5-6) Combo
             if (ComboTimer > 0 && !HasStatusEffect(Buffs.Reawakened))
             {
