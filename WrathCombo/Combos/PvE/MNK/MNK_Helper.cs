@@ -278,6 +278,11 @@ internal partial class MNK
                 //Use whenever since no buff
                 if (!LevelChecked(RiddleOfFire))
                     return true;
+
+                //Failsafe to use AFTER buffs are gone
+                if (BlitzTimer <= GCD * 3)
+                    return true;
+
                 break;
             }
 
@@ -291,23 +296,11 @@ internal partial class MNK
         return false;
     }
 
-    internal static bool InMasterfulRange()
-    {
-        if (NumberOfEnemiesInRange(ElixirField) >= 1 &&
-            (OriginalHook(MasterfulBlitz) == ElixirField ||
-             OriginalHook(MasterfulBlitz) == FlintStrike ||
-             OriginalHook(MasterfulBlitz) == ElixirBurst ||
-             OriginalHook(MasterfulBlitz) == RisingPhoenix))
-            return true;
-
-        if (NumberOfEnemiesInRange(TornadoKick, CurrentTarget) >= 1 &&
-            (OriginalHook(MasterfulBlitz) == TornadoKick ||
-             OriginalHook(MasterfulBlitz) == CelestialRevolution ||
-             OriginalHook(MasterfulBlitz) == PhantomRush))
-            return true;
-
-        return false;
-    }
+    internal static bool InMasterfulRange() =>
+        NumberOfEnemiesInRange(ElixirField) >= 1 &&
+        OriginalHook(MasterfulBlitz) is ElixirField or FlintStrike or ElixirBurst or RisingPhoenix ||
+        NumberOfEnemiesInRange(TornadoKick, CurrentTarget) >= 1 &&
+        OriginalHook(MasterfulBlitz) is TornadoKick or CelestialRevolution or PhantomRush;
 
     #endregion
 
@@ -333,6 +326,7 @@ internal partial class MNK
                 !HasStatusEffect(Buffs.RiddleOfFire) &&
                 !HasStatusEffect(Buffs.WindsRumination) &&
                 !HasStatusEffect(Buffs.FiresRumination):
+
             case true when
                 LevelChecked(InspiritedMeditation) &&
                 (!InCombat() || !InMeleeRange()) &&
@@ -575,6 +569,8 @@ internal partial class MNK
     private static bool SolarNadi => Nadi is Nadi.Solar;
 
     private static bool LunarNadi => Nadi is Nadi.Lunar;
+
+    private static uint BlitzTimer => Gauge.BlitzTimeRemaining;
 
     #endregion
 
