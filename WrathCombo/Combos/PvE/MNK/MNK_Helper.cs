@@ -271,18 +271,18 @@ internal partial class MNK
                 !HasStatusEffect(Buffs.PerfectBalance) &&
                 InMasterfulRange() && !IsOriginal(MasterfulBlitz):
             {
-                //Only use when buff is active
+                //Failsafe to use AFTER buffs are gone
+                if (BlitzTimer <= GCD * 3)
+                    return true;
+                
+                //Use when buff is active
                 if (LevelChecked(RiddleOfFire) && HasStatusEffect(Buffs.RiddleOfFire))
                     return true;
 
                 //Use whenever since no buff
                 if (!LevelChecked(RiddleOfFire))
                     return true;
-
-                //Failsafe to use AFTER buffs are gone
-                if (BlitzTimer <= GCD * 3)
-                    return true;
-
+                
                 break;
             }
 
