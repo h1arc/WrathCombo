@@ -31,18 +31,18 @@ internal partial class MNK
             return Bootshine;
 
         if (HasStatusEffect(Buffs.OpoOpoForm) || HasStatusEffect(Buffs.FormlessFist))
-            return OpoOpo is 0 && LevelChecked(DragonKick)
+            return OpoOpoStacks is 0 && LevelChecked(DragonKick)
                 ? DragonKick
                 : OriginalHook(Bootshine);
 
         if (HasStatusEffect(Buffs.RaptorForm))
-            return Raptor is 0 && LevelChecked(TwinSnakes)
+            return RaptorStacks is 0 && LevelChecked(TwinSnakes)
                 ? TwinSnakes
                 : OriginalHook(TrueStrike);
 
         if (HasStatusEffect(Buffs.CoeurlForm))
         {
-            if (Coeurl is 0 && LevelChecked(Demolish))
+            if (CoeurlStacks is 0 && LevelChecked(Demolish))
                 return !OnTargetsRear() &&
                        Role.CanTrueNorth() &&
                        useTrueNorthIfEnabled
@@ -140,7 +140,7 @@ internal partial class MNK
 
                 if (!LunarNadi || BothNadisOpen || !SolarNadi && !LunarNadi)
                 {
-                    switch (OpoOpo)
+                    switch (OpoOpoStacks)
                     {
                         case 0:
                             actionID = DragonKick;
@@ -160,7 +160,7 @@ internal partial class MNK
                 {
                     if (CoeurlChakra is 0)
                     {
-                        switch (Coeurl)
+                        switch (CoeurlStacks)
                         {
                             case 0:
                                 actionID = Demolish;
@@ -174,7 +174,7 @@ internal partial class MNK
 
                     if (RaptorChakra is 0)
                     {
-                        switch (Raptor)
+                        switch (RaptorStacks)
                         {
                             case 0:
                                 actionID = TwinSnakes;
@@ -188,7 +188,7 @@ internal partial class MNK
 
                     if (OpoOpoChakra is 0)
                     {
-                        switch (OpoOpo)
+                        switch (OpoOpoStacks)
                         {
                             case 0:
                                 actionID = DragonKick;
@@ -205,6 +205,7 @@ internal partial class MNK
 
                 break;
             }
+
             case true when HasStatusEffect(Buffs.PerfectBalance):
             {
 
@@ -487,9 +488,10 @@ internal partial class MNK
             IsOffCooldown(Brotherhood) &&
             IsOffCooldown(RiddleOfFire) &&
             IsOffCooldown(RiddleOfWind) &&
-            Nadi is Nadi.None &&
-            Raptor is 0 &&
-            Coeurl is 0;
+            NadiGauge is Nadi.None &&
+            OpoOpoStacks is 0 &&
+            RaptorStacks is 0 &&
+            CoeurlStacks is 0;
     }
 
     internal class MNKSLOpener : WrathOpener
@@ -537,9 +539,10 @@ internal partial class MNK
             IsOffCooldown(Brotherhood) &&
             IsOffCooldown(RiddleOfFire) &&
             IsOffCooldown(RiddleOfWind) &&
-            Nadi is Nadi.None &&
-            Raptor is 0 &&
-            Coeurl is 0;
+            NadiGauge is Nadi.None &&
+            OpoOpoStacks is 0 &&
+            RaptorStacks is 0 &&
+            CoeurlStacks is 0;
     }
 
     #endregion
@@ -552,23 +555,23 @@ internal partial class MNK
 
     private static int OpoOpoChakra => Gauge.BeastChakra.Count(x => x == BeastChakra.OpoOpo);
 
-    private static int OpoOpo => Gauge.OpoOpoFury;
-
     private static int RaptorChakra => Gauge.BeastChakra.Count(x => x == BeastChakra.Raptor);
-
-    private static int Raptor => Gauge.RaptorFury;
 
     private static int CoeurlChakra => Gauge.BeastChakra.Count(x => x == BeastChakra.Coeurl);
 
-    private static int Coeurl => Gauge.CoeurlFury;
+    private static int OpoOpoStacks => Gauge.OpoOpoFury;
 
-    private static Nadi Nadi => Gauge.Nadi;
+    private static int RaptorStacks => Gauge.RaptorFury;
 
-    private static bool BothNadisOpen => Nadi.ToString() == "Lunar, Solar";
+    private static int CoeurlStacks => Gauge.CoeurlFury;
 
-    private static bool SolarNadi => Nadi is Nadi.Solar;
+    private static Nadi NadiGauge => Gauge.Nadi;
 
-    private static bool LunarNadi => Nadi is Nadi.Lunar;
+    private static bool BothNadisOpen => NadiGauge.HasFlag(Nadi.Lunar) && NadiGauge.HasFlag(Nadi.Solar);
+
+    private static bool SolarNadi => NadiGauge is Nadi.Solar;
+
+    private static bool LunarNadi => NadiGauge is Nadi.Lunar;
 
     private static int BlitzTimer => Gauge.BlitzTimeRemaining / 1000;
 
