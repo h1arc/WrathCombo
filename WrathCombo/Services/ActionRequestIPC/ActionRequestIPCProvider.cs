@@ -56,6 +56,15 @@ public static class ActionRequestIPCProvider
         ActionBlacklist.Clear();
     }
 
+    /// <summary>
+    /// Clears entire blacklist
+    /// </summary>
+    [EzIPC]
+    public static void ResetAllBlacklist()
+    {
+        ActionBlacklist.Clear();
+    }
+
     public static void Initialize()
     {
         EzIPC.Init(typeof(ActionRequestIPCProvider), $"{Svc.PluginInterface.InternalName}.ActionRequest");
