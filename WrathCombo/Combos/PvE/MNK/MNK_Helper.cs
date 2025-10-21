@@ -384,6 +384,7 @@ internal partial class MNK
         !HasStatusEffect(Buffs.FormlessFist) &&
         !HasStatusEffect(Buffs.PerfectBalance) &&
         IsOriginal(MasterfulBlitz) &&
+        !JustUsed(RiddleOfFire, 5f) &&
         (JustUsed(OriginalHook(Bootshine)) ||
          JustUsed(DragonKick) ||
          GetStatusEffectRemainingTime(Buffs.FiresRumination) < GCD * 2 ||
