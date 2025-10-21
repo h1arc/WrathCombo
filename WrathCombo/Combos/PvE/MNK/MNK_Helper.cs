@@ -274,7 +274,7 @@ internal partial class MNK
                 //Failsafe to use AFTER buffs are gone
                 if (BlitzTimer <= GCD * 3)
                     return true;
-                
+
                 //Use when buff is active
                 if (LevelChecked(RiddleOfFire) && HasStatusEffect(Buffs.RiddleOfFire))
                     return true;
@@ -282,7 +282,7 @@ internal partial class MNK
                 //Use whenever since no buff
                 if (!LevelChecked(RiddleOfFire))
                     return true;
-                
+
                 break;
             }
 
@@ -570,7 +570,7 @@ internal partial class MNK
 
     private static bool LunarNadi => Nadi is Nadi.Lunar;
 
-    private static uint BlitzTimer => Gauge.BlitzTimeRemaining;
+    private static int BlitzTimer => Gauge.BlitzTimeRemaining / 1000;
 
     #endregion
 
