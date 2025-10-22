@@ -103,35 +103,7 @@ internal partial class SAM : Melee
                     return Yukikaze;
             }
 
-            if (ComboTimer > 0)
-            {
-                if (ComboAction is Hakaze or Gyofu)
-                {
-                    if (!HasSetsu && LevelChecked(Yukikaze) &&
-                        HasStatusEffect(Buffs.Fugetsu) && HasStatusEffect(Buffs.Fuka))
-                        return Yukikaze;
-
-                    if (LevelChecked(Jinpu) &&
-                        (RefreshFugetsu && !HasGetsu ||
-                         !HasStatusEffect(Buffs.Fugetsu) ||
-                         SenCount is 3 && RefreshFugetsu))
-                        return Jinpu;
-
-                    if (LevelChecked(Shifu) &&
-                        (RefreshFuka && !HasKa ||
-                         !HasStatusEffect(Buffs.Fuka) ||
-                         SenCount is 3 && RefreshFuka))
-                        return Shifu;
-                }
-
-                if (ComboAction is Jinpu && LevelChecked(Gekko))
-                    return Gekko;
-
-                if (ComboAction is Shifu && LevelChecked(Kasha))
-                    return Kasha;
-            }
-
-            return actionID;
+            return DoBasicCombo(actionID, true,true);
         }
     }
 
@@ -386,39 +358,8 @@ internal partial class SAM : Melee
                     return Yukikaze;
             }
 
-            if (ComboTimer > 0)
-            {
-                if (ComboAction is Hakaze or Gyofu)
-                {
-                    if (IsEnabled(Preset.SAM_ST_Yukikaze) &&
-                        !HasSetsu && LevelChecked(Yukikaze) &&
-                        HasStatusEffect(Buffs.Fugetsu) && HasStatusEffect(Buffs.Fuka))
-                        return Yukikaze;
+            return DoBasicCombo(actionID, IsEnabled(Preset.SAM_ST_TrueNorth));
 
-                    if (IsEnabled(Preset.SAM_ST_Gekko) &&
-                        LevelChecked(Jinpu) &&
-                        (RefreshFugetsu && !HasGetsu ||
-                         !HasStatusEffect(Buffs.Fugetsu) ||
-                         SenCount is 3 && RefreshFugetsu))
-                        return Jinpu;
-
-                    if (IsEnabled(Preset.SAM_ST_Kasha) &&
-                        LevelChecked(Shifu) &&
-                        (RefreshFuka && !HasKa ||
-                         !HasStatusEffect(Buffs.Fuka) ||
-                         SenCount is 3 && RefreshFuka))
-                        return Shifu;
-                }
-
-                if (ComboAction is Jinpu && LevelChecked(Gekko))
-                    return Gekko;
-
-                if (IsEnabled(Preset.SAM_ST_Kasha) &&
-                    ComboAction is Shifu && LevelChecked(Kasha))
-                    return Kasha;
-            }
-
-            return actionID;
         }
     }
 

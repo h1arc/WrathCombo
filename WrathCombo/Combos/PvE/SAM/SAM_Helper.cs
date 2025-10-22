@@ -16,10 +16,10 @@ namespace WrathCombo.Combos.PvE;
 internal partial class SAM
 {
     private static bool RefreshFugetsu =>
-        GetStatusEffectRemainingTime(Buffs.Fugetsu) < GetStatusEffectRemainingTime(Buffs.Fuka);
+        GetStatusEffectRemainingTime(Buffs.Fugetsu) < 8;
 
     private static bool RefreshFuka =>
-        GetStatusEffectRemainingTime(Buffs.Fuka) < GetStatusEffectRemainingTime(Buffs.Fugetsu);
+        GetStatusEffectRemainingTime(Buffs.Fuka) < 8;
 
     private static bool EnhancedSenei =>
         TraitLevelChecked(Traits.EnhancedHissatsu);
@@ -30,6 +30,56 @@ internal partial class SAM
     private static bool M6SReady =>
         !HiddenFeaturesData.IsEnabledWith(Preset.SAM_Hid_M6SHoldSquirrelBurst, () =>
             HiddenFeaturesData.Targeting.R6SSquirrel && CombatEngageDuration().TotalSeconds < 275);
+
+
+    #region Basic Combo
+
+    private static uint DoBasicCombo(uint actionId, bool useTrueNorthIfEnabled = true, bool SimpleMode = false)
+    {
+        if (ComboTimer > 0)
+        {
+            if (ComboAction is Hakaze or Gyofu)
+            {
+                if ((SimpleMode || IsEnabled(Preset.SAM_ST_Yukikaze)) && 
+                    !HasSetsu && LevelChecked(Yukikaze) &&
+                    HasStatusEffect(Buffs.Fugetsu) && HasStatusEffect(Buffs.Fuka))
+                    return Yukikaze;
+
+                if ((SimpleMode || IsEnabled(Preset.SAM_ST_Gekko)) &&
+                    LevelChecked(Jinpu) && 
+                    (OnTargetsRear() && !HasGetsu ||
+                     OnTargetsFlank() && HasKa ||
+                     !HasStatusEffect(Buffs.Fugetsu) ||
+                     SenCount is 3 && RefreshFugetsu))
+                    return Jinpu;
+
+                if ((SimpleMode || IsEnabled(Preset.SAM_ST_Kasha)) &&
+                    LevelChecked(Shifu) && 
+                    (OnTargetsFlank() && !HasKa ||
+                     OnTargetsRear() && HasGetsu ||
+                     !HasStatusEffect(Buffs.Fuka) ||
+                     SenCount is 3 && RefreshFuka))
+                    return Shifu;
+            }
+
+            if (ComboAction is Jinpu && LevelChecked(Gekko))
+                return !OnTargetsRear() &&
+                       Role.CanTrueNorth() &&
+                       useTrueNorthIfEnabled
+                    ? Role.TrueNorth
+                    : Gekko;
+
+            if (ComboAction is Shifu && LevelChecked(Kasha))
+                return !OnTargetsFlank() &&
+                       Role.CanTrueNorth() &&
+                       useTrueNorthIfEnabled
+                    ? Role.TrueNorth
+                    : Kasha;
+        }
+        return actionId;
+    }
+
+    #endregion
 
     #region Meikyo
 
