@@ -489,7 +489,7 @@ internal partial class MNK
             IsOffCooldown(Brotherhood) &&
             IsOffCooldown(RiddleOfFire) &&
             IsOffCooldown(RiddleOfWind) &&
-            NadiGauge is Nadi.None &&
+            NadiFlag is Nadi.None &&
             OpoOpoStacks is 0 &&
             RaptorStacks is 0 &&
             CoeurlStacks is 0;
@@ -540,7 +540,7 @@ internal partial class MNK
             IsOffCooldown(Brotherhood) &&
             IsOffCooldown(RiddleOfFire) &&
             IsOffCooldown(RiddleOfWind) &&
-            NadiGauge is Nadi.None &&
+            NadiFlag is Nadi.None &&
             OpoOpoStacks is 0 &&
             RaptorStacks is 0 &&
             CoeurlStacks is 0;
@@ -560,13 +560,13 @@ internal partial class MNK
 
     private static int CoeurlStacks => Gauge.CoeurlFury;
 
-    private static Nadi NadiGauge => Gauge.Nadi;
+    private static Nadi NadiFlag => Gauge.Nadi;
 
-    private static bool BothNadisOpen => NadiGauge.HasFlag(Nadi.Lunar) && NadiGauge.HasFlag(Nadi.Solar);
+    private static bool BothNadisOpen => NadiFlag.HasFlag(Nadi.Lunar) && NadiFlag.HasFlag(Nadi.Solar);
 
-    private static bool SolarNadi => NadiGauge is Nadi.Solar;
+    private static bool SolarNadi => NadiFlag is Nadi.Solar;
 
-    private static bool LunarNadi => NadiGauge is Nadi.Lunar;
+    private static bool LunarNadi => NadiFlag is Nadi.Lunar;
 
     private static int BlitzTimer => Gauge.BlitzTimeRemaining / 1000;
 
