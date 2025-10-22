@@ -85,25 +85,9 @@ internal partial class SAM : Melee
             if (ActionReady(Enpi) && !InMeleeRange() && HasBattleTarget())
                 return Enpi;
 
-            if (HasStatusEffect(Buffs.MeikyoShisui))
-            {
-                if (LevelChecked(Gekko) &&
-                    (RefreshFugetsu && !HasGetsu || !HasStatusEffect(Buffs.Fugetsu)))
-                    return Role.CanTrueNorth() && !OnTargetsRear()
-                        ? Role.TrueNorth
-                        : Gekko;
-
-                if (LevelChecked(Kasha) &&
-                    (RefreshFuka && !HasKa || !HasStatusEffect(Buffs.Fuka)))
-                    return Role.CanTrueNorth() && !OnTargetsFlank()
-                        ? Role.TrueNorth
-                        : Kasha;
-
-                if (LevelChecked(Yukikaze) && !HasSetsu)
-                    return Yukikaze;
-            }
-
-            return DoBasicCombo(actionID, true, true);
+            return HasStatusEffect(Buffs.MeikyoShisui)
+                ? DoMeikyoCombo(actionID, true, true)
+                : DoBasicCombo(actionID, true, true);
         }
     }
 
@@ -335,30 +319,9 @@ internal partial class SAM : Melee
                     return Enpi;
             }
 
-            if (HasStatusEffect(Buffs.MeikyoShisui))
-            {
-                if (IsEnabled(Preset.SAM_ST_Gekko) &&
-                    LevelChecked(Gekko) &&
-                    (RefreshFugetsu && !HasGetsu || !HasStatusEffect(Buffs.Fugetsu)))
-                    return IsEnabled(Preset.SAM_ST_TrueNorth) &&
-                           Role.CanTrueNorth() && !OnTargetsRear()
-                        ? Role.TrueNorth
-                        : Gekko;
-
-                if (IsEnabled(Preset.SAM_ST_Kasha) &&
-                    LevelChecked(Kasha) &&
-                    (RefreshFuka && !HasKa || !HasStatusEffect(Buffs.Fuka)))
-                    return IsEnabled(Preset.SAM_ST_TrueNorth) &&
-                           Role.CanTrueNorth() && !OnTargetsFlank()
-                        ? Role.TrueNorth
-                        : Kasha;
-
-                if (IsEnabled(Preset.SAM_ST_Yukikaze) &&
-                    LevelChecked(Yukikaze) && !HasSetsu)
-                    return Yukikaze;
-            }
-
-            return DoBasicCombo(actionID, IsEnabled(Preset.SAM_ST_TrueNorth));
+            return HasStatusEffect(Buffs.MeikyoShisui)
+                ? DoMeikyoCombo(actionID, IsEnabled(Preset.SAM_ST_TrueNorth))
+                : DoBasicCombo(actionID, IsEnabled(Preset.SAM_ST_TrueNorth));
 
         }
     }
