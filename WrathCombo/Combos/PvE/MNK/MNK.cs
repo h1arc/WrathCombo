@@ -67,7 +67,7 @@ internal partial class MNK : Melee
             // Perfect Balance or Standard Beast Chakra's
             return DoPerfectBalanceCombo(ref actionID)
                 ? actionID
-                : DetermineCoreAbility(actionID);
+                : DoBasicCombo(actionID);
         }
     }
 
@@ -261,7 +261,7 @@ internal partial class MNK : Melee
             // Perfect Balance or Standard Beast Chakra's
             return DoPerfectBalanceCombo(ref actionID)
                 ? actionID
-                : DetermineCoreAbility(actionID, IsEnabled(Preset.MNK_STUseTrueNorth));
+                : DoBasicCombo(actionID, IsEnabled(Preset.MNK_STUseTrueNorth));
         }
     }
 

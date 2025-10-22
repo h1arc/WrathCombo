@@ -22,9 +22,9 @@ internal partial class MNK
         !HiddenFeaturesData.IsEnabledWith(Preset.MNK_Hid_M6SHoldSquirrelBurst, () =>
             HiddenFeaturesData.Targeting.R6SSquirrel && CombatEngageDuration().TotalSeconds < 300);
 
-    #region 1-2-3
+    #region Basic Combo
 
-    private static uint DetermineCoreAbility(uint actionId, bool useTrueNorthIfEnabled = true)
+    private static uint DoBasicCombo(uint actionId, bool useTrueNorthIfEnabled = true)
     {
         if (!LevelChecked(TrueStrike))
             return Bootshine;
@@ -45,14 +45,14 @@ internal partial class MNK
                 return !OnTargetsRear() &&
                        Role.CanTrueNorth() &&
                        useTrueNorthIfEnabled
-                    ? TrueNorth
+                    ? Role.TrueNorth
                     : Demolish;
 
             if (LevelChecked(SnapPunch))
                 return !OnTargetsFlank() &&
                        Role.CanTrueNorth() &&
                        useTrueNorthIfEnabled
-                    ? TrueNorth
+                    ? Role.TrueNorth
                     : OriginalHook(SnapPunch);
         }
 
@@ -159,14 +159,14 @@ internal partial class MNK
                 {
                     if (Gauge.BeastChakra[0] is BeastChakra.None)
                     {
-                        switch (CoeurlStacks)
+                        switch (OpoOpoStacks)
                         {
                             case 0:
-                                actionID = Demolish;
+                                actionID = DragonKick;
                                 return true;
 
                             case > 0:
-                                actionID = OriginalHook(SnapPunch);
+                                actionID = OriginalHook(Bootshine);
                                 return true;
                         }
                     }
@@ -187,14 +187,14 @@ internal partial class MNK
 
                     if (Gauge.BeastChakra[2] is BeastChakra.None)
                     {
-                        switch (OpoOpoStacks)
+                        switch (CoeurlStacks)
                         {
                             case 0:
-                                actionID = DragonKick;
+                                actionID = Demolish;
                                 return true;
 
                             case > 0:
-                                actionID = OriginalHook(Bootshine);
+                                actionID = OriginalHook(SnapPunch);
                                 return true;
                         }
                     }
@@ -375,7 +375,7 @@ internal partial class MNK
     private static bool CanRoF() =>
         ActionReady(RiddleOfFire) &&
         !HasStatusEffect(Buffs.FiresRumination) &&
-        (HasWeavedAction(Brotherhood) ||
+        (JustUsed(Brotherhood, GCD / 2) ||
          GetCooldownRemainingTime(Brotherhood) is > 50 and < 65 ||
          !LevelChecked(Brotherhood));
 
@@ -393,8 +393,7 @@ internal partial class MNK
     //Brotherhood
     private static bool CanBrotherhood() =>
         ActionReady(Brotherhood) &&
-        ActionReady(RiddleOfFire) &&
-        CanWeave(GCD / 2);
+        ActionReady(RiddleOfFire);
 
     //RoW
     private static bool CanRoW() =>
@@ -592,7 +591,6 @@ internal partial class MNK
         LeapingOpo = 36945,
         RisingRaptor = 36946,
         PouncingCoeurl = 36947,
-        TrueNorth = 7546,
 
         //Blitzes
         PerfectBalance = 69,
@@ -636,7 +634,6 @@ internal partial class MNK
             RiddleOfEarth = 1179,
             RiddleOfFire = 1181,
             Brotherhood = 1185,
-            TrueNorth = 1250,
             FormlessFist = 2513,
             RiddleOfWind = 2687,
             EarthsRumination = 3841,
