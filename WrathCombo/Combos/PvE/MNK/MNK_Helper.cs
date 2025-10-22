@@ -2,7 +2,6 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
@@ -152,13 +151,13 @@ internal partial class MNK
                     }
                 }
 
-        #endregion
+            #endregion
 
             #region Open Solar
 
-                if (!SolarNadi && !BothNadisOpen)
+                if (!SolarNadi && LunarNadi)
                 {
-                    if (CoeurlChakra is 0)
+                    if (Gauge.BeastChakra[0] is BeastChakra.None)
                     {
                         switch (CoeurlStacks)
                         {
@@ -172,7 +171,7 @@ internal partial class MNK
                         }
                     }
 
-                    if (RaptorChakra is 0)
+                    if (Gauge.BeastChakra[1] is BeastChakra.None)
                     {
                         switch (RaptorStacks)
                         {
@@ -186,7 +185,7 @@ internal partial class MNK
                         }
                     }
 
-                    if (OpoOpoChakra is 0)
+                    if (Gauge.BeastChakra[2] is BeastChakra.None)
                     {
                         switch (OpoOpoStacks)
                         {
@@ -201,7 +200,7 @@ internal partial class MNK
                     }
                 }
 
-        #endregion
+            #endregion
 
                 break;
             }
@@ -226,31 +225,32 @@ internal partial class MNK
                     }
                 }
 
-        #endregion
+            #endregion
 
             #region Open Solar
 
-                switch (SolarNadi)
+                if (!SolarNadi && LunarNadi)
                 {
-                    case false when !BothNadisOpen:
-                        switch (GetStatusEffectStacks(Buffs.PerfectBalance))
-                        {
-                            case 3:
-                                actionID = OriginalHook(ArmOfTheDestroyer);
-                                return true;
+                    if (Gauge.BeastChakra[0] is BeastChakra.None)
+                    {
+                        actionID = OriginalHook(ArmOfTheDestroyer);
+                        return true;
+                    }
 
-                            case 2:
-                                actionID = FourPointFury;
-                                return true;
+                    if (Gauge.BeastChakra[1] is BeastChakra.None)
+                    {
+                        actionID = FourPointFury;
+                        return true;
+                    }
 
-                            case 1:
-                                actionID = Rockbreaker;
-                                return true;
-                        }
-                        break;
+                    if (Gauge.BeastChakra[2] is BeastChakra.None)
+                    {
+                        actionID = Rockbreaker;
+                        return true;
+                    }
                 }
 
-        #endregion
+            #endregion
 
                 break;
             }
@@ -553,12 +553,6 @@ internal partial class MNK
     private static MNKGauge Gauge = GetJobGauge<MNKGauge>();
 
     private static byte Chakra => Gauge.Chakra;
-
-    private static int OpoOpoChakra => Gauge.BeastChakra.Count(x => x == BeastChakra.OpoOpo);
-
-    private static int RaptorChakra => Gauge.BeastChakra.Count(x => x == BeastChakra.Raptor);
-
-    private static int CoeurlChakra => Gauge.BeastChakra.Count(x => x == BeastChakra.Coeurl);
 
     private static int OpoOpoStacks => Gauge.OpoOpoFury;
 
