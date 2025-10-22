@@ -40,13 +40,13 @@ internal partial class SAM
         {
             if (ComboAction is Hakaze or Gyofu)
             {
-                if ((SimpleMode || IsEnabled(Preset.SAM_ST_Yukikaze)) && 
+                if ((SimpleMode || IsEnabled(Preset.SAM_ST_Yukikaze)) &&
                     !HasSetsu && LevelChecked(Yukikaze) &&
                     HasStatusEffect(Buffs.Fugetsu) && HasStatusEffect(Buffs.Fuka))
                     return Yukikaze;
 
                 if ((SimpleMode || IsEnabled(Preset.SAM_ST_Gekko)) &&
-                    LevelChecked(Jinpu) && 
+                    LevelChecked(Jinpu) &&
                     (OnTargetsRear() && !HasGetsu ||
                      OnTargetsFlank() && HasKa ||
                      !HasStatusEffect(Buffs.Fugetsu) ||
@@ -54,7 +54,7 @@ internal partial class SAM
                     return Jinpu;
 
                 if ((SimpleMode || IsEnabled(Preset.SAM_ST_Kasha)) &&
-                    LevelChecked(Shifu) && 
+                    LevelChecked(Shifu) &&
                     (OnTargetsFlank() && !HasKa ||
                      OnTargetsRear() && HasGetsu ||
                      !HasStatusEffect(Buffs.Fuka) ||

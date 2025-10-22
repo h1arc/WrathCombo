@@ -103,7 +103,7 @@ internal partial class SAM : Melee
                     return Yukikaze;
             }
 
-            return DoBasicCombo(actionID, true,true);
+            return DoBasicCombo(actionID, true, true);
         }
     }
 
