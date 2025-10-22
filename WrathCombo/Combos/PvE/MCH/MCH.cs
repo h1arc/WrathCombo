@@ -36,7 +36,7 @@ internal partial class MCH : PhysicalRanged
 
                 // Wildfire
                 if (CanApplyStatus(CurrentTarget, Debuffs.Wildfire) &&
-                    ActionReady(Wildfire) && HasWeavedAction(Hypercharge) &&
+                    ActionReady(Wildfire) && JustUsed(Hypercharge, GCD / 2) &&
                     !HasStatusEffect(Buffs.Wildfire))
                     return Wildfire;
 
@@ -282,7 +282,7 @@ internal partial class MCH : PhysicalRanged
                 if (IsEnabled(Preset.MCH_ST_Adv_WildFire) &&
                     (MCH_ST_WildfireBossOption == 0 || TargetIsBoss()) &&
                     CanApplyStatus(CurrentTarget, Debuffs.Wildfire) &&
-                    ActionReady(Wildfire) && HasWeavedAction(Hypercharge) &&
+                    ActionReady(Wildfire) && JustUsed(Hypercharge, GCD / 2) &&
                     !HasStatusEffect(Buffs.Wildfire))
                     return Wildfire;
 
