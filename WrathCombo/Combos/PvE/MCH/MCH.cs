@@ -317,8 +317,8 @@ internal partial class MCH : PhysicalRanged
                     // Reassemble
                     if (IsEnabled(Preset.MCH_ST_Adv_Reassemble) &&
                         GetRemainingCharges(Reassemble) > MCH_ST_ReassemblePool &&
-                        CanReassemble(MCH_ST_Reassembled[0], MCH_ST_Reassembled[1], MCH_ST_Reassembled[2], MCH_ST_Reassembled[3]) &&
-                        GetTargetHPPercent() > HPThresholdReassemble)
+                        GetTargetHPPercent() > HPThresholdReassemble &&
+                        CanReassemble(MCH_ST_Reassembled[0], MCH_ST_Reassembled[1], MCH_ST_Reassembled[2], MCH_ST_Reassembled[3]))
                         return Reassemble;
 
                     // Hypercharge
