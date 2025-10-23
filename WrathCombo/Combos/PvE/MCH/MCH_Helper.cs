@@ -83,8 +83,7 @@ internal partial class MCH
 
         if (!onAoE &&
             (Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) &&
-            !IsComboExpiring(6) && ActionReady(Hypercharge) &&
-            CanWeave(GCD / 2))
+            !IsComboExpiring(6) && ActionReady(Hypercharge))
         {
             // Ensures Hypercharge is double weaved with WF
             if (LevelChecked(FullMetalField) && JustUsed(FullMetalField) ||
