@@ -36,7 +36,7 @@ internal partial class SAM
 
     private static uint DoBasicCombo(uint actionId, bool useTrueNorthIfEnabled = true, bool SimpleMode = false)
     {
-        if (ComboTimer > 0 && !HasStatusEffect(Buffs.MeikyoShisui))
+        if (ComboTimer > 0)
         {
             if (ComboAction is Hakaze or Gyofu)
             {
