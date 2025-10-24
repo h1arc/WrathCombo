@@ -165,17 +165,18 @@ internal partial class SAM
                     {
                         if (HasStatusEffect(Buffs.TsubameReady))
                         {
-                            switch (gcd)
-                            {
-                                //2.14 GCD
-                                case >= 2.09f when GetCooldownRemainingTime(Senei) <= 10 &&
-                                                   (meikyoUsed % 7 is 1 or 2 && SenCount is 3 ||
-                                                    meikyoUsed % 7 is 3 or 4 && SenCount is 2 ||
-                                                    meikyoUsed % 7 is 5 or 6 && SenCount is 1):
+                            //2.14 GCD
+                            if (gcd >= 2.09f && IsEnabled(Preset.SAM_ST_CDs_UseHiganbana) &&
+                                GetCooldownRemainingTime(Senei) <= 10 &&
+                                (meikyoUsed % 7 is 1 or 2 && SenCount is 3 ||
+                                 meikyoUsed % 7 is 3 or 4 && SenCount is 2 ||
+                                 meikyoUsed % 7 is 5 or 6 && SenCount is 1) ||
+
                                 //2.08 gcd
-                                case <= 2.08f when GetCooldownRemainingTime(Senei) <= 10 && SenCount is 3:
-                                    return true;
-                            }
+                                (gcd <= 2.08f || IsNotEnabled(Preset.SAM_ST_CDs_UseHiganbana)) &&
+                                GetCooldownRemainingTime(Senei) <= 10 && SenCount is 3)
+                                return true;
+
                         }
 
                         // reset meikyo
