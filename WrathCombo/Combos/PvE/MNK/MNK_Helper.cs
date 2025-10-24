@@ -375,7 +375,7 @@ internal partial class MNK
     private static bool CanRoF() =>
         ActionReady(RiddleOfFire) &&
         !HasStatusEffect(Buffs.FiresRumination) &&
-        (JustUsed(Brotherhood, 2 * GCD) ||
+        (JustUsed(Brotherhood, GCD + GCD / 2) ||
          GetCooldownRemainingTime(Brotherhood) is > 50 and < 65 ||
          !LevelChecked(Brotherhood));
 
