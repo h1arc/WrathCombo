@@ -282,7 +282,7 @@ internal partial class MCH : PhysicalRanged
                 if (IsEnabled(Preset.MCH_ST_Adv_WildFire) &&
                     (MCH_ST_WildfireBossOption == 0 || TargetIsBoss()) &&
                     CanApplyStatus(CurrentTarget, Debuffs.Wildfire) &&
-                    ActionReady(Wildfire) && JustUsed(Hypercharge, GCD) &&
+                    ActionReady(Wildfire) && JustUsed(Hypercharge, GCD + 0.9f) &&
                     !HasStatusEffect(Buffs.Wildfire))
                     return Wildfire;
 
