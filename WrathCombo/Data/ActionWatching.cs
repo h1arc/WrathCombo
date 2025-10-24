@@ -368,11 +368,6 @@ public static class ActionWatching
                     }
                 }
 
-                if (AutoRotationController.CurrentActIsAutorot) 
-                {
-                    return UseActionHook.Original(actionManager, actionType, actionId, targetId, extraParam, mode, comboRouteId, outOptAreaTargeted);
-                }
-
                 var changed = CheckForChangedTarget(original, ref targetId,
                     out var replacedWith); //Passes the original action to the retargeting framework, outputs a targetId and a replaced action
 
@@ -403,7 +398,8 @@ public static class ActionWatching
                 }
 
                 //Important to pass actionId here and not replaced. Performance mode = result from earlier, which could be modified. Non-performance mode = original action, which gets modified by the hook. Same result.
-                var hookResult = UseActionHook.Original(actionManager, actionType, actionId, targetId, extraParam, mode, comboRouteId, outOptAreaTargeted);
+                var hookResult = AutoRotationController.CurrentActIsAutorot ? UseActionHook.Original(actionManager, actionType, actionId, originalTargetId, extraParam, mode, comboRouteId, outOptAreaTargeted) :
+                    UseActionHook.Original(actionManager, actionType, actionId, targetId, extraParam, mode, comboRouteId, outOptAreaTargeted);
 
                 // Fallback if the Retargeted ground action couldn't be placed smartly
                 if (changed && areaTargeted)
