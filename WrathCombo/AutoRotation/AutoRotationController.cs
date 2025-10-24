@@ -666,12 +666,10 @@ internal unsafe static class AutoRotationController
                 }
 
                 //Chance target of target.GameObjectID can be null
-                CurrentActIsAutorot = true;
                 var ret = ActionManager.Instance()->UseAction(
                     ActionType.Action,
                     Service.ActionReplacer.getActionHook.IsEnabled ? gameAct : outAct,
                     (mustTarget && target != null) || switched ? target.GameObjectId : Player.Object.GameObjectId);
-                CurrentActIsAutorot = false;
 
                 if (outAct is NIN.Ten or NIN.Chi or NIN.Jin or NIN.TenCombo or NIN.ChiCombo or NIN.JinCombo
                     or NIN.TCJFumaShurikenTen or NIN.TCJFumaShurikenChi or NIN.TCJFumaShurikenJin or NIN.TCJKaton or NIN.TCJRaiton && ret)
@@ -732,10 +730,12 @@ internal unsafe static class AutoRotationController
 
             if (canUse && (inRange || areaTargeted))
             {
-                CurrentActIsAutorot = true;
+                var isHeal = attributes.AutoAction!.IsHeal;
+                if (isHeal) CurrentActIsAutorot = true;
                 var ret = ActionManager.Instance()->UseAction(ActionType.Action, Service.ActionReplacer.getActionHook.IsEnabled ? gameAct : outAct, canUseTarget || areaTargeted ? target.GameObjectId : Player.Object.GameObjectId);
                 CurrentActIsAutorot = false;
-                if (mode is HealerRotationMode && !ret)
+
+                if (isHeal && !ret)
                     LastHealAt = Environment.TickCount64 + castTime;
 
                 return !ret;
