@@ -204,8 +204,10 @@ internal partial class SAM
     private static uint DoMeikyoCombo(uint actionId, bool useTrueNorthIfEnabled = true, bool SimpleMode = false)
     {
         if ((SimpleMode || IsEnabled(Preset.SAM_ST_Gekko)) &&
-            LevelChecked(Gekko) &&
-            (!HasGetsu || !HasStatusEffect(Buffs.Fugetsu)))
+            LevelChecked(Jinpu) &&
+            ((OnTargetsRear() || OnTargetsFront()) && !HasGetsu ||
+             OnTargetsFlank() && HasKa ||
+             !HasStatusEffect(Buffs.Fugetsu)))
             return !OnTargetsRear() &&
                    Role.CanTrueNorth() &&
                    useTrueNorthIfEnabled
@@ -213,8 +215,10 @@ internal partial class SAM
                 : Gekko;
 
         if ((SimpleMode || IsEnabled(Preset.SAM_ST_Kasha)) &&
-            LevelChecked(Kasha) &&
-            (!HasKa || !HasStatusEffect(Buffs.Fuka)))
+            LevelChecked(Shifu) &&
+            ((OnTargetsFlank() || OnTargetsFront()) && !HasKa ||
+             OnTargetsRear() && HasGetsu ||
+             !HasStatusEffect(Buffs.Fuka)))
             return !OnTargetsFlank() &&
                    Role.CanTrueNorth() &&
                    useTrueNorthIfEnabled
@@ -222,7 +226,8 @@ internal partial class SAM
                 : Kasha;
 
         if ((SimpleMode || IsEnabled(Preset.SAM_ST_Yukikaze)) &&
-            LevelChecked(Yukikaze) && !HasSetsu)
+            !HasSetsu && LevelChecked(Yukikaze) &&
+            HasStatusEffect(Buffs.Fugetsu) && HasStatusEffect(Buffs.Fuka))
             return Yukikaze;
 
         return actionId;
