@@ -161,7 +161,7 @@ internal partial class BLM : Caster
                     ActiveParadox)
                     return Paradox;
 
-                if (MP.IsFull)
+                if (MP.IsFull || JustUsed(Blizzard4))
                 {
                     if (LevelChecked(Fire3))
                         return Fire3;
@@ -464,7 +464,7 @@ internal partial class BLM : Caster
                     ActiveParadox)
                     return Paradox;
 
-                if (MP.IsFull)
+                if (MP.IsFull || JustUsed(Blizzard4))
                 {
                     if (LevelChecked(Fire3))
                         return Fire3;
