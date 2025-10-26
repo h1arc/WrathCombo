@@ -36,7 +36,7 @@ internal partial class MCH : PhysicalRanged
 
                 // Wildfire
                 if (CanApplyStatus(CurrentTarget, Debuffs.Wildfire) &&
-                    ActionReady(Wildfire) && JustUsed(Hypercharge, GCD) &&
+                    ActionReady(Wildfire) && JustUsed(Hypercharge, GCD + 0.9f) &&
                     !HasStatusEffect(Buffs.Wildfire))
                     return Wildfire;
 
