@@ -552,6 +552,8 @@ public partial class WrathCombo
     ///     <c>&lt;blank&gt;</c> - current job<br />
     ///     <c>&lt;job abbr&gt;</c> - that job<br />
     ///     <c>all</c> - all jobs<br />
+    ///     <c>path</c> - prints the path to the debug file<br />
+    ///     <c>string</c> - puts the debug string on the clipboard<br />
     /// </value>
     /// <param name="argument">
     ///     The job abbreviation to provide the debug file for (or "all").<br />
