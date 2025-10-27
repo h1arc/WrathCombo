@@ -25,6 +25,7 @@ using WrathCombo.Extensions;
 using WrathCombo.Services;
 using WrathCombo.Window.Functions;
 using Dalamud.Game.Config;
+using ECommons;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 
 #endregion
@@ -734,20 +735,33 @@ public static class DebugFile
     {
         try
         {
-            var parent = Svc.PluginInterface.ConfigDirectory.Parent;
-            if (parent is null) return [];
+            var parent = Svc.PluginInterface.ConfigDirectory.Parent.Parent;
+            if (parent is null)
+            {
+                PluginLog.Error(
+                    $"Failed to locate dalamud.log folder: no parent directory ({parent})");
+                return [];
+            }
             var path = Path.Combine(parent.FullName, "dalamud.log");
-            if (!File.Exists(path)) return [];
+            if (!File.Exists(path))
+            {
+                PluginLog.Error(
+                    $"Failed to locate dalamud.log: file does not exist ({path})");
+                return [];
+            }
 
             var mergedEntries = new List<string>();
             var currentEntry  = new StringBuilder();
             var foundEntries  = 0;
 
             // Read the file backwards in chunks
-            using var stream = new FileStream(path, FileMode.Open, FileAccess.Read);
             const int bufferSize = 4096;
-            var       buffer = new byte[bufferSize];
-            var       leftOver = "";
+            using var stream = new FileStream(path, FileMode.Open,
+                FileAccess.Read, FileShare.ReadWrite | FileShare.Delete,
+                bufferSize,
+                FileOptions.SequentialScan);
+            var buffer = new byte[bufferSize];
+            var leftOver = string.Empty;
 
             for (var i = stream.Length; i > 0 && foundEntries < count;)
             {
@@ -801,7 +815,7 @@ public static class DebugFile
                     }
                     else if (currentEntry.Length > 0)
                     {
-                        currentEntry.Insert(0, line + Environment.NewLine);
+                        currentEntry.Insert(0, line);
                     }
                 }
             }
@@ -817,8 +831,9 @@ public static class DebugFile
 
             return mergedEntries;
         }
-        catch
+        catch (Exception ex)
         {
+            PluginLog.Error("Failed to read dalamud log: " + ex.ToStringFull());
             return [];
         }
     }
