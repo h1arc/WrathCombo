@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using ECommons.Reflection;
 using WrathCombo.AutoRotation;
 using WrathCombo.Combos.PvE;
 using WrathCombo.Combos.PvP;
@@ -22,6 +23,7 @@ using WrathCombo.Data;
 using WrathCombo.Data.Conflicts;
 using WrathCombo.Extensions;
 using WrathCombo.Services;
+using WrathCombo.Window.Functions;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 
 #endregion
@@ -104,9 +106,7 @@ public static class DebugFile
 
             AddPluginInfo();
             AddIPCInfo();
-            AddLine();
             AddConflictingInfo();
-            AddLine();
 
             AddPlayerInfo();
             AddTargetInfo();
@@ -117,16 +117,13 @@ public static class DebugFile
             AddFeatures(job);
             AddConfigs(job);
             AddStatusEffects();
-            AddLine();
 
             AddRedundantIDs();
-            AddLine();
 
             AddDebugCode();
             AddSettingsHistory();
             AddDalamudLog();
 
-            AddLine();
             AddLine("END DEBUG LOG");
 
             DuoLog.Information(
@@ -155,12 +152,18 @@ public static class DebugFile
 
         AddLine($"Plugins controlling via IPC: {leaseesCount}");
 
-        if (leaseesCount <= 0) return;
+        if (leaseesCount <= 0)
+        {
+            AddLine();
+            return;
+        }
 
         AddLine("START IPC LEASES");
         foreach (var leasee in leasees)
             AddLine($"- {leasee.pluginName} ({leasee.configurationsCount} configs)");
         AddLine("END IPC LEASES");
+
+        AddLine();
     }
 
     private static void AddConflictingInfo()
@@ -171,7 +174,11 @@ public static class DebugFile
 
         AddLine($"Conflicting Plugins: {conflictingPluginsCount}");
 
-        if (!hasConflicts) return;
+        if (!hasConflicts)
+        {
+            AddLine();
+            return;
+        }
 
         AddLine("START CONFLICTING PLUGINS");
         foreach (var plugin in conflicts)
@@ -180,6 +187,8 @@ public static class DebugFile
                         ? ""
                         : "reason: " + plugin.Reason));
         AddLine("END CONFLICTING PLUGINS");
+
+        AddLine();
     }
 
     private static void AddPlayerInfo()
@@ -210,7 +219,11 @@ public static class DebugFile
 
         AddLine($"Target: {target?.GameObjectId.ToString() ?? "None"}");
 
-        if (target is null) return;
+        if (target is null)
+        {
+            AddLine();
+            return;
+        }
 
         bool? failedSheetFind = null;
         IBattleChara? battleTarget = null;
@@ -264,15 +277,64 @@ public static class DebugFile
 
     private static void AddSettingsInfo()
     {
+        Dictionary<string, Dictionary<string, string>>
+            settingsToDisplay = new()
+            {
+                // Section Name
+                ["Rotation Behavior"] = new Dictionary<string, string>
+                {
+                    // Key in Settings           Alias for Setting
+                    ["BlockSpellOnMove"]       = "Block Spell on Move",
+                    ["ActionChanging"]         = "Action Replacing",
+                    ["PerformanceMode"]        = "Performance Mode",
+                    ["SuppressQueuedActions"]  = "Queued Action Suppression",
+                    ["Throttle"]               = "Throttle (ms)",
+                    ["MovementLeeway"]         = "Movement Delay (s)",
+                    ["OpenerTimeout"]          = "Opener Timeout (s)",
+                    ["MeleeOffset"]            = "Melee Offset (y)",
+                    ["InterruptDelay"]         = "Interrupt/Stun Delay (%)",
+                    ["MaximumWeavesPerWindow"] = "Maximum Weaves Per Window",
+                },
+                ["Targeting"] = new Dictionary<string, string>
+                {
+                    ["RetargetHealingActionsToStack"] = "Retarget Healing Actions",
+                    ["CustomHealStack"]               = "Heal Stack",
+                    ["RaiseStack"]                    = "Raise Stack",
+                },
+            };
+
         AddLine("START SETTINGS INFO");
-        AddLine($"Throttle: {Service.Configuration.Throttle}ms");
-        AddLine($"Performance Mode: {(Service.Configuration.PerformanceMode ? "ON" : "OFF")}");
-        AddLine($"Suppress Queued Actions: {(Service.Configuration.SuppressQueuedActions ? "ON" : "OFF")}");
-        AddLine($"Block Spell on Move: {(Service.Configuration.BlockSpellOnMove ? "ON" : "OFF")}");
-        AddLine($"Movement Delay: {Service.Configuration.MovementLeeway}s");
-        AddLine($"Opener Timeout: {Service.Configuration.OpenerTimeout}s");
-        AddLine($"Melee Offset: {Service.Configuration.MeleeOffset}y");
-        AddLine($"Interrupt Delay: {Service.Configuration.InterruptDelay*100}%");
+
+        foreach (var (section, settings) in settingsToDisplay)
+        {
+            AddLine($"---{section}---");
+            foreach (var (property, alias) in settings)
+            {
+                var value = Service.Configuration.GetFoP(property);
+                if (value == null)
+                {
+                    PluginLog.Information(
+                        $"failed to get setting: {section}.{property}");
+                    continue;
+                }
+
+                var displayValue = property switch
+                {
+                    "InterruptDelay" => $"{(double)value * 100}",
+                    "CustomHealStack" => Service.Configuration.UseCustomHealStack
+                        .DisplayStack(separator: " > "),
+                    "RaiseStack" => ((string[])value).StackString(" > ", true),
+                    _ when value is bool b => b ? "ON" : "OFF",
+                    _ => value.ToString(),
+                };
+
+                AddLine($"{alias}: {displayValue}");
+            }
+
+            if (!section.Equals(settingsToDisplay.Keys.Last()))
+                AddLine();
+        }
+
         AddLine("END SETTINGS INFO");
 
         AddLine();
@@ -317,8 +379,6 @@ public static class DebugFile
                     }
                     catch
                     {
-                        PluginLog.Debug(
-                            $"Error printing AutoRotation property: {property.Name}");
                         AddLine($"{prefix}{property.Name}: {value}");
                     }
                 }
@@ -534,7 +594,11 @@ public static class DebugFile
         AddLine($"Status Effects found: {statusEffectsCount} " +
                 $"(max: {statusEffects.Count()})");
 
-        if (statusEffectsCount <= 0) return;
+        if (statusEffectsCount <= 0)
+        {
+            AddLine();
+            return;
+        }
 
         AddLine("START STATUS EFFECTS");
         foreach (var effect in statusEffects)
@@ -545,18 +609,25 @@ public static class DebugFile
                     .SourceId)}, " +
                 $"NAME: {GetStatusName(effect.StatusId)}");
         AddLine("END STATUS EFFECTS");
+
+        AddLine();
     }
 
     private static void AddRedundantIDs()
     {
         AddLine($"Redundant IDs found: {_redundantIDs.Length}");
 
-        if (_redundantIDs.Length <= 0) return;
+        if (_redundantIDs.Length <= 0)
+        {
+            AddLine();
+            return;
+        }
 
         AddLine("START REDUNDANT IDS");
         foreach (var id in _redundantIDs)
             AddLine(id.ToString());
         AddLine("END REDUNDANT IDS");
+        AddLine();
     }
 
     /// Get the debug code by itself.
@@ -579,7 +650,11 @@ public static class DebugFile
     {
         AddLine($"Setting Changes History Count: {DebugLog.Count}");
 
-        if (DebugLog.Count < 1) return;
+        if (DebugLog.Count < 1)
+        {
+            AddLine();
+            return;
+        }
 
         var logsCopy = DebugLog.ToList();
         logsCopy.Reverse();
@@ -587,6 +662,8 @@ public static class DebugFile
         AddLine("START SETTINGS CHANGES HISTORY (most recent first)");
         AddLine(string.Join("\n", logsCopy));
         AddLine("END SETTINGS CHANGES HISTORY");
+
+        AddLine();
     }
 
     public static void AddSettingLog(string log)
@@ -710,12 +787,14 @@ public static class DebugFile
         if (logs.Count < 1)
         {
             AddLine("No Dalamud log entries found.");
+            AddLine();
             return;
         }
         
         AddLine("START DALAMUD LOG HISTORY (most recent first)");
         AddLine(string.Join("\n", logs));
         AddLine("END DALAMUD LOG HISTORY");
+
         AddLine();
     }
 }
