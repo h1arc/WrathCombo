@@ -93,9 +93,19 @@ internal class Debug : ConfigWindow, IDisposable
             try
             {
                 // Trim off anything extra copied from that section of the file
-                var stripped = _debugConfig
-                    .Replace("\n", "").Replace("\r", "").Replace(" ", "")
-                    .Replace("START DEBUG CODE", "").Replace("END DEBUG CODE", "");
+                var stripped = _debugConfig;
+                const string startMarker = "START DEBUG CODE";
+                const string endMarker = "END DEBUG CODE";
+                var startIdx = stripped.IndexOf(startMarker, StringComparison.OrdinalIgnoreCase);
+                if (startIdx >= 0)
+                {
+                    startIdx += startMarker.Length;
+                    var endIdx = stripped.IndexOf(endMarker, startIdx, StringComparison.OrdinalIgnoreCase);
+                    stripped = endIdx >= 0 ? stripped.Substring(startIdx, endIdx - startIdx) : stripped[startIdx..];
+                }
+                // Remove all whitespace characters (spaces, tabs, newlines)
+                stripped = new string(stripped
+                    .Where(c => !char.IsWhiteSpace(c)).ToArray());
 
                 // Try to load the data from the string
                 byte[] base64;
