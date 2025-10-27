@@ -124,6 +124,7 @@ public static class DebugFile
 
             AddDebugCode();
             AddSettingsHistory();
+            AddDalamudLog();
 
             AddLine();
             AddLine("END DEBUG LOG");
@@ -132,7 +133,7 @@ public static class DebugFile
                 "WrathDebug.txt created on your desktop, for " +
                 (job is null ? "all jobs" : job.Value.Abbreviation.ToString()) +
                 ". Upload this file where requested.\n" +
-                "If you're unsure of where the file was created, use /wrath debug path");
+                "If you're unsure of where the file was created, use: /wrath debug path");
         }
     }
 
@@ -576,7 +577,7 @@ public static class DebugFile
 
     private static void AddSettingsHistory()
     {
-        AddLine($"Setting Changes log Count: {DebugLog.Count}");
+        AddLine($"Setting Changes History Count: {DebugLog.Count}");
 
         if (DebugLog.Count < 1) return;
 
@@ -591,5 +592,130 @@ public static class DebugFile
     public static void AddSettingLog(string log)
     {
         DebugLog.Add($"{DateTime.UtcNow} | {log}");
+    }
+    
+    /// <summary>
+    ///     Gets the last lines of the dalamud log file.
+    /// </summary>
+    /// <param name="count">
+    ///     How many lines to get.
+    /// </param>
+    /// <param name="onlyOurs">
+    ///     Whether to filter the lines to those that mention the plugin.
+    /// </param>
+    /// <returns>
+    ///     A list of the last lines of the debug file.
+    /// </returns>
+    /// <remarks>
+    ///     Complexity is to handle multi-line log entries correctly and to avoid
+    ///     trying to load the entire file into memory.
+    /// </remarks>
+    public static List<string> GetLastLogs(int count = 50, bool onlyOurs = false)
+    {
+        try
+        {
+            var parent = Svc.PluginInterface.ConfigDirectory.Parent;
+            if (parent is null) return [];
+            var path = Path.Combine(parent.FullName, "dalamud.log");
+            if (!File.Exists(path)) return [];
+
+            var mergedEntries = new List<string>();
+            var currentEntry  = new StringBuilder();
+            var foundEntries  = 0;
+
+            // Read the file backwards in chunks
+            using var stream = new FileStream(path, FileMode.Open, FileAccess.Read);
+            const int bufferSize = 4096;
+            var       buffer = new byte[bufferSize];
+            var       leftOver = "";
+
+            for (var i = stream.Length; i > 0 && foundEntries < count;)
+            {
+                // Load just a chunk of the file
+                var readSize    = Math.Min(bufferSize, i);
+                i              -= readSize;
+                stream.Position = i;
+                stream.ReadExactly(buffer, 0, (int)readSize);
+
+                // Convert chunk to string
+                var chunk = Encoding.UTF8.GetString(buffer, 0, (int)readSize);
+                // prepend any leftover from previous chunk
+                chunk += leftOver;
+
+                // Split into lines
+                var lines = chunk.Split("\n");
+
+                // Save the incomplete first line for next iteration
+                if (i > 0)
+                {
+                    leftOver = lines[0];
+                    lines    = lines.Skip(1).ToArray();
+                }
+
+                // Process lines in reverse
+                for (var j = lines.Length - 1; j >= 0 && foundEntries < count; j--)
+                {
+                    var line = lines[j];
+                    if (string.IsNullOrWhiteSpace(line)) continue;
+
+                    // Check if this is a multi-line log
+                    var openBrackets  = line.Count(c => c == '[');
+                    var closeBrackets = line.Count(c => c == ']');
+                    var isNewEntry    = openBrackets >= 2 && closeBrackets >= 2;
+
+                    if (isNewEntry)
+                    {
+                        if (currentEntry.Length > 0)
+                        {
+                            if (!onlyOurs || currentEntry.ToString()
+                                    .Contains("WrathCombo"))
+                            {
+                                mergedEntries.Add(currentEntry.ToString());
+                                foundEntries++;
+                            }
+
+                            currentEntry.Clear();
+                        }
+
+                        currentEntry.Insert(0, line);
+                    }
+                    else if (currentEntry.Length > 0)
+                    {
+                        currentEntry.Insert(0, line + Environment.NewLine);
+                    }
+                }
+            }
+
+            // Add final entry if any
+            if (currentEntry.Length <= 0 || foundEntries >= count)
+                return mergedEntries;
+
+            if (!onlyOurs || currentEntry.ToString().Contains("WrathCombo"))
+            {
+                mergedEntries.Add(currentEntry.ToString());
+            }
+
+            return mergedEntries;
+        }
+        catch
+        {
+            return [];
+        }
+    }
+
+    private static void AddDalamudLog()
+    {
+        var logs = GetLastLogs(onlyOurs: true);
+
+        if (logs.Count < 1)
+        {
+            AddLine("No Dalamud log entries found.");
+            return;
+        }
+        
+        AddLine("START DALAMUD LOG HISTORY (most recent first)");
+        AddLine(string.Join("\n", logs));
+        AddLine("END DALAMUD LOG HISTORY");
+        AddLine();
     }
 }
