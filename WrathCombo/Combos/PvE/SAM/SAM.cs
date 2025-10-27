@@ -176,14 +176,15 @@ internal partial class SAM : Melee
                 ComboAction is Fuko or Fuga)
             {
                 if (LevelChecked(Mangetsu) &&
-                    (RefreshFugetsu && !HasGetsu ||
+                    (!HasGetsu ||
                      !HasStatusEffect(Buffs.Fugetsu) ||
-                     !LevelChecked(Oka)))
+                     RefreshFugetsu))
                     return Mangetsu;
 
                 if (LevelChecked(Oka) &&
-                    (RefreshFuka && !HasKa ||
-                     !HasStatusEffect(Buffs.Fuka)))
+                    (!HasKa ||
+                     !HasStatusEffect(Buffs.Fuka) ||
+                     RefreshFuka))
                     return Oka;
             }
 
@@ -429,8 +430,8 @@ internal partial class SAM : Melee
                     return Mangetsu;
 
                 if (IsEnabled(Preset.SAM_AoE_Oka) &&
-                    (!HasKa && HasStatusEffect(Buffs.Fugetsu) ||
-                     !HasStatusEffect(Buffs.Fuka)))
+                    !HasKa && HasStatusEffect(Buffs.Fugetsu) ||
+                    !HasStatusEffect(Buffs.Fuka))
                     return Oka;
             }
 
@@ -622,13 +623,13 @@ internal partial class SAM : Melee
 
             if (HasStatusEffect(Buffs.MeikyoShisui))
             {
-                if (!HasStatusEffect(Buffs.Fugetsu) ||
-                    RefreshFugetsu)
+                if (!HasGetsu && HasStatusEffect(Buffs.Fuka) ||
+                    !HasStatusEffect(Buffs.Fugetsu))
                     return Mangetsu;
 
                 if (SAM_Mangetsu_Oka &&
-                    (!HasStatusEffect(Buffs.Fuka) ||
-                     RefreshFuka))
+                    !HasKa && HasStatusEffect(Buffs.Fugetsu) ||
+                    !HasStatusEffect(Buffs.Fuka))
                     return Oka;
             }
 
@@ -636,16 +637,16 @@ internal partial class SAM : Melee
                 ComboAction is Fuko or Fuga)
             {
                 if (LevelChecked(Mangetsu) &&
-                    (RefreshFugetsu ||
+                    (!HasGetsu ||
                      !HasStatusEffect(Buffs.Fugetsu) ||
-                     !SAM_Mangetsu_Oka ||
-                     !LevelChecked(Oka)))
+                     RefreshFugetsu))
                     return Mangetsu;
 
                 if (SAM_Mangetsu_Oka &&
                     LevelChecked(Oka) &&
-                    (RefreshFuka ||
-                     !HasStatusEffect(Buffs.Fuka)))
+                    (!HasKa ||
+                     !HasStatusEffect(Buffs.Fuka) ||
+                     RefreshFuka))
                     return Oka;
             }
 
