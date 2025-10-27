@@ -24,6 +24,7 @@ using WrathCombo.Data.Conflicts;
 using WrathCombo.Extensions;
 using WrathCombo.Services;
 using WrathCombo.Window.Functions;
+using Dalamud.Game.Config;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 
 #endregion
@@ -277,11 +278,11 @@ public static class DebugFile
 
     private static void AddSettingsInfo()
     {
-        Dictionary<string, Dictionary<string, string>>
+        Dictionary<string, Dictionary<object, object>>
             settingsToDisplay = new()
             {
                 // Section Name
-                ["Rotation Behavior"] = new Dictionary<string, string>
+                ["Rotation Behavior"] = new Dictionary<object, object>
                 {
                     // Key in Settings           Alias for Setting
                     ["BlockSpellOnMove"]       = "Block Spell on Move",
@@ -295,11 +296,15 @@ public static class DebugFile
                     ["InterruptDelay"]         = "Interrupt/Stun Delay (%)",
                     ["MaximumWeavesPerWindow"] = "Maximum Weaves Per Window",
                 },
-                ["Targeting"] = new Dictionary<string, string>
+                ["Targeting"] = new Dictionary<object, object>
                 {
                     ["RetargetHealingActionsToStack"] = "Retarget Healing Actions",
                     ["CustomHealStack"]               = "Heal Stack",
                     ["RaiseStack"]                    = "Raise Stack",
+                },
+                ["XIV"] = new Dictionary<object, object>
+                {
+                    [UiControlOption.AutoFaceTargetOnAction] = "Auto Face Target",
                 },
             };
 
@@ -310,12 +315,50 @@ public static class DebugFile
             AddLine($"---{section}---");
             foreach (var (property, alias) in settings)
             {
-                var value = Service.Configuration.GetFoP(property);
+                var value = Service.Configuration.GetFoP(property.ToString());
                 if (value == null)
                 {
-                    PluginLog.Information(
-                        $"failed to get setting: {section}.{property}");
-                    continue;
+                    #region Try to get FFXIV options
+                    // Currently only supports boolean-compatibles.
+                    // could have try-catch's into supporting ints,
+                    // and that would cover most
+                    // (note: we're only getting the values - the types only have to be compatible, not actually correct)
+                    if (section == "XIV")
+                    {
+                        try
+                        {
+                            switch (property)
+                            {
+                                case UiControlOption uiOpt:
+                                {
+                                    if (Svc.GameConfig.TryGet(uiOpt, out bool gameVal))
+                                        value = gameVal;
+                                    break;
+                                }
+                                case SystemConfigOption sysOpt:
+                                {
+                                    if (Svc.GameConfig.TryGet(sysOpt, out bool gameVal))
+                                        value = gameVal;
+                                    break;
+                                }
+                                default:
+                                    value = null;
+                                    break;
+                            }
+                        }
+                        catch
+                        {
+                            value = null;
+                        }
+                    }
+                    #endregion
+
+                    if (value == null)
+                    {
+                        PluginLog.Information(
+                            $"failed to get setting: {section}.{property}");
+                        continue;
+                    }
                 }
 
                 var displayValue = property switch
