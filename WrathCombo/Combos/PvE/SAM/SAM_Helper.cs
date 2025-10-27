@@ -204,6 +204,11 @@ internal partial class SAM
 
     private static uint DoMeikyoCombo(uint actionId, bool useTrueNorthIfEnabled = true, bool SimpleMode = false)
     {
+        if ((SimpleMode || IsEnabled(Preset.SAM_ST_Yukikaze)) &&
+            LevelChecked(Yukikaze) &&
+            !HasSetsu && HasKa && HasGetsu)
+            return Yukikaze;
+
         if ((SimpleMode || IsEnabled(Preset.SAM_ST_Gekko)) &&
             LevelChecked(Jinpu) &&
             ((OnTargetsRear() || OnTargetsFront()) && !HasGetsu ||
@@ -225,11 +230,6 @@ internal partial class SAM
                    useTrueNorthIfEnabled
                 ? Role.TrueNorth
                 : Kasha;
-
-        if ((SimpleMode || IsEnabled(Preset.SAM_ST_Yukikaze)) &&
-            !HasSetsu && LevelChecked(Yukikaze) &&
-            HasStatusEffect(Buffs.Fugetsu) && HasStatusEffect(Buffs.Fuka))
-            return Yukikaze;
 
         return actionId;
     }
