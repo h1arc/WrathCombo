@@ -185,17 +185,7 @@ public static class DebugFile
     {
         var player = Svc.ClientState.LocalPlayer;
         var job = player.ClassJob.Value;
-        var currentZone = "Unknown";
-        try
-        {
-            currentZone = Svc.Data.GetExcelSheet<TerritoryType>()
-                .FirstOrDefault(x => x.RowId == Svc.ClientState.TerritoryType)
-                .PlaceName.Value.Name.ToString();
-        }
-        catch
-        {
-            // ignored
-        }
+        var currentZone = Content.ContentName ?? "Unknown";
 
         AddLine("START PLAYER INFO");
         AddLine($"Job: {job.Abbreviation} / {job.Name} / {job.NameEnglish}");
