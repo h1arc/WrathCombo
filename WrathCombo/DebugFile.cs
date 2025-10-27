@@ -340,7 +340,7 @@ public static class DebugFile
                     continue;
                 }
 
-                var line = $"{(int)preset} - {preset}";
+                var line = $"{(int)preset} - {preset}".PadRight(70);
                 if (leaseesCount > 0)
                     if (P.UIHelper.PresetControlled(preset) is not null)
                         line += " (IPC)";
