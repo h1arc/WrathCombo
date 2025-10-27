@@ -85,18 +85,12 @@ internal partial class MCH
             (Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) &&
             !IsComboExpiring(6) && ActionReady(Hypercharge))
         {
-            // Ensures Hypercharge is double weaved with WF
-            if (LevelChecked(FullMetalField) && JustUsed(FullMetalField) ||
-                !LevelChecked(FullMetalField) && ActionReady(Wildfire) ||
-                !LevelChecked(Wildfire))
-                return true;
-
-            // Only Hypercharge when tools are on cooldown
-            if (DrillCD && AnchorCD && SawCD &&
-                (!LevelChecked(Wildfire) ||
-                 LevelChecked(Wildfire) &&
-                 (GetCooldownRemainingTime(Wildfire) > 40 ||
-                  IsOffCooldown(Wildfire) && !HasStatusEffect(Buffs.FullMetalMachinist))))
+            if (DrillCD && AnchorCD && SawCD && 
+                (LevelChecked(FullMetalField) && JustUsed(FullMetalField) ||
+                 !LevelChecked(FullMetalField) && ActionReady(Wildfire) ||
+                 GetCooldownRemainingTime(Wildfire) > 40 ||
+                 IsOffCooldown(Wildfire) && !HasStatusEffect(Buffs.FullMetalMachinist)||
+                 !LevelChecked(Wildfire)))
                 return true;
         }
 
