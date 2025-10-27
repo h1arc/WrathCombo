@@ -731,7 +731,7 @@ public static class DebugFile
     ///     Complexity is to handle multi-line log entries correctly and to avoid
     ///     trying to load the entire file into memory.
     /// </remarks>
-    public static List<string> GetLastLogs(int count = 50, bool onlyOurs = false)
+    public static List<string> GetLastLogs(int count = 100, bool onlyOurs = false)
     {
         try
         {
@@ -740,21 +740,20 @@ public static class DebugFile
             {
                 PluginLog.Error(
                     $"Failed to locate dalamud.log folder: no parent directory ({parent})");
-                return [];
+                return new List<string>();
             }
             var path = Path.Combine(parent.FullName, "dalamud.log");
             if (!File.Exists(path))
             {
                 PluginLog.Error(
                     $"Failed to locate dalamud.log: file does not exist ({path})");
-                return [];
+                return new List<string>();
             }
 
             var mergedEntries = new List<string>();
-            var currentEntry  = new StringBuilder();
-            var foundEntries  = 0;
+            var currentEntry = new StringBuilder();
+            var foundEntries = 0;
 
-            // Read the file backwards in chunks
             const int bufferSize = 4096;
             using var stream = new FileStream(path, FileMode.Open,
                 FileAccess.Read, FileShare.ReadWrite | FileShare.Delete,
@@ -763,70 +762,89 @@ public static class DebugFile
             var buffer = new byte[bufferSize];
             var leftOver = string.Empty;
 
-            for (var i = stream.Length; i > 0 && foundEntries < count;)
+            var headerRegex = new System.Text.RegularExpressions.Regex(
+                @"^(?:\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}|\d{2}:\d{2}:\d{2}\.\d{3})",
+                System.Text.RegularExpressions.RegexOptions.Compiled);
+
+            var stop = false;
+            for (long i = stream.Length; i > 0; )
             {
-                // Load just a chunk of the file
-                var readSize    = Math.Min(bufferSize, i);
-                i              -= readSize;
+                var readSize = (int)Math.Min(bufferSize, i);
+                i -= readSize;
                 stream.Position = i;
-                stream.ReadExactly(buffer, 0, (int)readSize);
+                stream.ReadExactly(buffer, 0, readSize);
 
-                // Convert chunk to string
-                var chunk = Encoding.UTF8.GetString(buffer, 0, (int)readSize);
-                // prepend any leftover from previous chunk
-                chunk += leftOver;
+                var chunk = Encoding.UTF8.GetString(buffer, 0, readSize) + leftOver;
+                var lines = chunk.Split('\n');
 
-                // Split into lines
-                var lines = chunk.Split("\n");
-
-                // Save the incomplete first line for next iteration
                 if (i > 0)
                 {
+                    // first line is likely partial (cut), save it for the next iteration
                     leftOver = lines[0];
-                    lines    = lines.Skip(1).ToArray();
+                    lines = lines.Skip(1).ToArray();
+                }
+                else
+                {
+                    leftOver = string.Empty;
                 }
 
-                // Process lines in reverse
-                for (var j = lines.Length - 1; j >= 0 && foundEntries < count; j--)
+                // Process chunk lines in reverse (from file end backwards)
+                for (var j = lines.Length - 1; j >= 0; j--)
                 {
-                    var line = lines[j];
+                    var line = lines[j].TrimEnd('\r');
                     if (string.IsNullOrWhiteSpace(line)) continue;
 
-                    // Check if this is a multi-line log
-                    var openBrackets  = line.Count(c => c == '[');
-                    var closeBrackets = line.Count(c => c == ']');
-                    var isNewEntry    = openBrackets >= 2 && closeBrackets >= 2;
-
-                    if (isNewEntry)
+                    var isHeader = headerRegex.IsMatch(line.TrimStart());
+                    if (isHeader)
                     {
+                        // Completed a log entry: currentEntry holds the lines that came after this header
                         if (currentEntry.Length > 0)
                         {
-                            if (!onlyOurs || currentEntry.ToString()
-                                    .Contains("WrathCombo"))
+                            var entryText = currentEntry.ToString();
+                            if (!onlyOurs || entryText.Contains("WrathCombo"))
                             {
-                                mergedEntries.Add(currentEntry.ToString());
+                                mergedEntries.Add(entryText);
                                 foundEntries++;
+                                if (foundEntries >= count)
+                                {
+                                    stop = true;
+                                    break;
+                                }
                             }
 
                             currentEntry.Clear();
                         }
 
+                        // Start the new current entry with this header line
                         currentEntry.Insert(0, line);
                     }
-                    else if (currentEntry.Length > 0)
+                    else
                     {
-                        currentEntry.Insert(0, line);
+                        // Continuation line: prepend it to the currentEntry with a newline
+                        if (currentEntry.Length > 0)
+                        {
+                            currentEntry.Insert(0, "\n");
+                            currentEntry.Insert(0, line);
+                        }
+                        else
+                        {
+                            // If we haven't seen a header yet (very start of file), treat as part of current entry
+                            currentEntry.Insert(0, line);
+                        }
                     }
                 }
+
+                if (stop) break;
             }
 
-            // Add final entry if any
-            if (currentEntry.Length <= 0 || foundEntries >= count)
-                return mergedEntries;
-
-            if (!onlyOurs || currentEntry.ToString().Contains("WrathCombo"))
+            // After reading, ensure the most-recent (last) assembled entry is included if needed
+            if (currentEntry.Length > 0 && foundEntries < count)
             {
-                mergedEntries.Add(currentEntry.ToString());
+                var entryText = currentEntry.ToString();
+                if (!onlyOurs || entryText.Contains("WrathCombo"))
+                {
+                    mergedEntries.Add(entryText);
+                }
             }
 
             return mergedEntries;
@@ -834,7 +852,7 @@ public static class DebugFile
         catch (Exception ex)
         {
             PluginLog.Error("Failed to read dalamud log: " + ex.ToStringFull());
-            return [];
+            return new List<string>();
         }
     }
 
