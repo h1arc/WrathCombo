@@ -77,7 +77,7 @@ internal partial class MCH
             case false when
                 (Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) &&
                 !IsComboExpiring(6) && ActionReady(Hypercharge) &&
-                DrillCD && AnchorCD && SawCD &&
+                HotShotCD && DrillCD && AirAnchorCD && ChainSawCD &&
                 (LevelChecked(FullMetalField) && JustUsed(FullMetalField) ||
                  !LevelChecked(FullMetalField) && ActionReady(Wildfire) ||
                  GetCooldownRemainingTime(Wildfire) > 40 ||
@@ -215,16 +215,20 @@ internal partial class MCH
 
     #region Cooldowns
 
+    private static bool HotShotCD =>
+        !LevelChecked(HotShot) ||
+        LevelChecked(HotShot) && GetCooldownRemainingTime(HotShot) >= 9;
+
     private static bool DrillCD =>
         !LevelChecked(Drill) ||
         !TraitLevelChecked(Traits.EnhancedMultiWeapon) && GetCooldownRemainingTime(Drill) >= 9 ||
         TraitLevelChecked(Traits.EnhancedMultiWeapon) && GetRemainingCharges(Drill) < GetMaxCharges(Drill) && GetCooldownRemainingTime(Drill) >= 9;
 
-    private static bool AnchorCD =>
+    private static bool AirAnchorCD =>
         !LevelChecked(AirAnchor) ||
         LevelChecked(AirAnchor) && GetCooldownRemainingTime(AirAnchor) >= 9;
 
-    private static bool SawCD =>
+    private static bool ChainSawCD =>
         !LevelChecked(Chainsaw) ||
         LevelChecked(Chainsaw) && GetCooldownRemainingTime(Chainsaw) >= 9;
 
