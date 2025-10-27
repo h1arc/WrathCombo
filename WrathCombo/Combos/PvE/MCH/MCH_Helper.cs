@@ -72,26 +72,26 @@ internal partial class MCH
 
     private static bool CanHypercharge(bool onAoE = false)
     {
-        if (onAoE &
-            (Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) && LevelChecked(Hypercharge) &&
-            LevelChecked(AutoCrossbow) &&
-            (LevelChecked(BioBlaster) && GetCooldownRemainingTime(BioBlaster) > 10 ||
-             !LevelChecked(BioBlaster) || IsNotEnabled(Preset.MCH_AoE_Adv_Bioblaster)) &&
-            (LevelChecked(Flamethrower) && GetCooldownRemainingTime(Flamethrower) > 10 ||
-             !LevelChecked(Flamethrower) || IsNotEnabled(Preset.MCH_AoE_Adv_FlameThrower)))
-            return true;
-
-        if (!onAoE &&
-            (Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) &&
-            !IsComboExpiring(6) && ActionReady(Hypercharge))
+        switch (onAoE)
         {
-            if (DrillCD && AnchorCD && SawCD && 
+            case false when
+                (Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) &&
+                !IsComboExpiring(6) && ActionReady(Hypercharge) &&
+                DrillCD && AnchorCD && SawCD &&
                 (LevelChecked(FullMetalField) && JustUsed(FullMetalField) ||
                  !LevelChecked(FullMetalField) && ActionReady(Wildfire) ||
                  GetCooldownRemainingTime(Wildfire) > 40 ||
-                 IsOffCooldown(Wildfire) && !HasStatusEffect(Buffs.FullMetalMachinist)||
-                 !LevelChecked(Wildfire)))
+                 !LevelChecked(Wildfire)):
+
+            case true when
+                (Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) && LevelChecked(Hypercharge) &&
+                LevelChecked(AutoCrossbow) &&
+                (LevelChecked(BioBlaster) && GetCooldownRemainingTime(BioBlaster) > 10 ||
+                 !LevelChecked(BioBlaster) || IsNotEnabled(Preset.MCH_AoE_Adv_Bioblaster)) &&
+                (LevelChecked(Flamethrower) && GetCooldownRemainingTime(Flamethrower) > 10 ||
+                 !LevelChecked(Flamethrower) || IsNotEnabled(Preset.MCH_AoE_Adv_FlameThrower)):
                 return true;
+
         }
 
         return false;
