@@ -123,7 +123,7 @@ public static class DebugFile
             AddLine();
 
             AddDebugCode();
-            AddLogHistory();
+            AddSettingsHistory();
 
             AddLine();
             AddLine("END DEBUG LOG");
@@ -574,7 +574,7 @@ public static class DebugFile
         AddLine();
     }
 
-    private static void AddLogHistory()
+    private static void AddSettingsHistory()
     {
         AddLine($"Setting Changes log Count: {DebugLog.Count}");
 
@@ -583,12 +583,12 @@ public static class DebugFile
         var logsCopy = DebugLog.ToList();
         logsCopy.Reverse();
 
-        AddLine("START LOG HISTORY (most recent first)");
+        AddLine("START SETTINGS CHANGES HISTORY (most recent first)");
         AddLine(string.Join("\n", logsCopy));
-        AddLine("END LOG HISTORY");
+        AddLine("END SETTINGS CHANGES HISTORY");
     }
 
-    public static void AddLog(string log)
+    public static void AddSettingLog(string log)
     {
         DebugLog.Add($"{DateTime.UtcNow} | {log}");
     }
