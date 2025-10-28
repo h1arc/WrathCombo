@@ -454,7 +454,7 @@ internal partial class MCH
 
     private static byte Battery => Gauge.Battery;
 
-    private static bool MaxBattery => Battery >= 100;
+    private static bool MaxBattery => Battery >= 90;
 
     #endregion
 
