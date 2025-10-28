@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using ECommons.Reflection;
 using WrathCombo.AutoRotation;
 using WrathCombo.Combos.PvE;
@@ -105,6 +106,9 @@ public static class DebugFile
         {
             AddLine("START DEBUG LOG");
             AddLine();
+            
+            AddLine($"Log at: {DateTimeOffset.UtcNow:yyyy-MM-ddTHH:mm:sszzz}");
+            AddLine();
 
             AddPluginInfo();
             AddIPCInfo();
@@ -170,7 +174,8 @@ public static class DebugFile
 
     private static void AddConflictingInfo()
     {
-        var hasConflicts = ConflictingPlugins.TryGetConflicts(out var conflictsObj);
+        var hasConflicts = ConflictingPlugins
+            .TryGetConflicts(out var conflictsObj, true);
         var conflicts = conflictsObj.ToArray();
         var conflictingPluginsCount = conflicts.Length;
 
