@@ -388,7 +388,7 @@ internal partial class NIN
                 }
                 // Start the Mudra
                 CurrentMudra = MudraState.CastingKaton;
-                actionID = HasStatusEffect(Buffs.Kassatsu) ? JinCombo: Jin;
+                actionID = HasStatusEffect(Buffs.Kassatsu) ? ChiCombo: Chi;
                 return true;
             }
             CurrentMudra = MudraState.None;
