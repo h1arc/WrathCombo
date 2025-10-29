@@ -285,7 +285,7 @@ internal partial class NIN
                 }
                 // Start the Mudra
                 CurrentMudra = MudraState.CastingFumaShuriken;
-                actionID = Ten;
+                actionID = HasStatusEffect(Buffs.Kassatsu) ? TenCombo : Ten;
                 return true;
             }
             CurrentMudra = MudraState.None;
@@ -310,7 +310,7 @@ internal partial class NIN
                 }
                 // Start the Mudra
                 CurrentMudra = MudraState.CastingRaiton;
-                actionID = Ten;
+                actionID = HasStatusEffect(Buffs.Kassatsu) ? TenCombo: Ten;
                 return true;
             }
             CurrentMudra = MudraState.None;
@@ -338,7 +338,7 @@ internal partial class NIN
                 }
                 // Start the Mudra
                 CurrentMudra = MudraState.CastingSuiton;
-                actionID = Ten;
+                actionID = HasStatusEffect(Buffs.Kassatsu) ? TenCombo : Ten;
                 return true;
             }
             CurrentMudra = MudraState.None;
@@ -363,7 +363,7 @@ internal partial class NIN
                 }
                 // Start the Mudra
                 CurrentMudra = MudraState.CastingHyoshoRanryu;
-                actionID = Ten;
+                actionID = HasStatusEffect(Buffs.Kassatsu) ? TenCombo : Ten;
                 return true;
             }
             CurrentMudra = MudraState.None;
@@ -388,7 +388,7 @@ internal partial class NIN
                 }
                 // Start the Mudra
                 CurrentMudra = MudraState.CastingKaton;
-                actionID = Jin;
+                actionID = HasStatusEffect(Buffs.Kassatsu) ? JinCombo: Jin;
                 return true;
             }
             CurrentMudra = MudraState.None;
@@ -416,7 +416,7 @@ internal partial class NIN
                 }
                 // Start the Mudra
                 CurrentMudra = MudraState.CastingDoton;
-                actionID = Jin;
+                actionID = HasStatusEffect(Buffs.Kassatsu) ? JinCombo: Jin;
                 return true;
             }
             CurrentMudra = MudraState.None;
@@ -444,7 +444,7 @@ internal partial class NIN
                 }
                 // Start the Mudra
                 CurrentMudra = MudraState.CastingHuton;
-                actionID = Jin;
+                actionID = HasStatusEffect(Buffs.Kassatsu) ? JinCombo: Jin;
                 return true;
             }
             CurrentMudra = MudraState.None;
@@ -469,7 +469,7 @@ internal partial class NIN
                 }
                 // Start the Mudra
                 CurrentMudra = MudraState.CastingGokaMekkyaku;
-                actionID = Jin;
+                actionID = HasStatusEffect(Buffs.Kassatsu) ? JinCombo: Jin;
                 return true;
             }
             CurrentMudra = MudraState.None;
