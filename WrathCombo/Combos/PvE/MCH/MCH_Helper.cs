@@ -21,53 +21,6 @@ internal partial class MCH
     private static bool CanRicochet =>
         GetRemainingCharges(OriginalHook(Ricochet)) > GetRemainingCharges(OriginalHook(GaussRound));
 
-    #region Queen
-
-    private static bool CanQueen(bool simpleMode = false)
-    {
-        if (!HasStatusEffect(Buffs.Wildfire) &&
-            !JustUsed(OriginalHook(Heatblast)) && ActionReady(RookAutoturret) &&
-            !RobotActive && Battery >= 50)
-        {
-            if ((MCH_ST_QueenBossOption == 0 || InBossEncounter() ||
-                 simpleMode && InBossEncounter()) &&
-                (GetCooldownRemainingTime(Wildfire) > GCD || !LevelChecked(Wildfire)))
-            {
-                if (LevelChecked(BarrelStabilizer))
-                {
-                    //1min
-                    if (BSUsed == 1 && Battery >= 90)
-                        return true;
-
-                    //even mins
-                    if (BSUsed >= 2 && Battery == 100)
-                        return true;
-
-                    //odd mins 1st queen
-                    if (BSUsed >= 2 && Battery is 50 && LastSummonBattery is 100)
-                        return true;
-
-                    //odd mins 2nd queen
-                    if ((BSUsed % 3 is 2 && Battery >= 60 ||
-                         BSUsed % 3 is 0 && Battery >= 70 ||
-                         BSUsed % 3 is 1 && Battery >= 80) && LastSummonBattery is 50)
-                        return true;
-                }
-
-                if (!LevelChecked(BarrelStabilizer))
-                    return true;
-            }
-
-            if (simpleMode && !InBossEncounter() && Battery is 100 ||
-                MCH_ST_QueenBossOption == 1 && !InBossEncounter() && Battery >= MCH_ST_TurretUsage)
-                return true;
-        }
-
-        return false;
-    }
-
-    #endregion
-
     #region Hypercharge
 
     private static bool CanHypercharge(bool onAoE = false)
@@ -99,6 +52,54 @@ internal partial class MCH
 
         #endregion
 
+    #region Queen
+
+    private static bool CanQueen(bool simpleMode = false)
+    {
+        if (!HasStatusEffect(Buffs.Wildfire) &&
+            !JustUsed(OriginalHook(Heatblast)) && ActionReady(RookAutoturret) &&
+            !RobotActive && Battery >= 50)
+        {
+            if ((MCH_ST_QueenBossOption == 0 || InBossEncounter() ||
+                 simpleMode && InBossEncounter()) &&
+                (GetCooldownRemainingTime(Wildfire) > GCD || !LevelChecked(Wildfire)))
+            {
+                if (LevelChecked(BarrelStabilizer))
+                {
+                    switch (Battery)
+                    {
+                        //even mins
+                        case 100:
+
+                        //1min
+                        case >= 90 when CombatEngageDuration().Seconds < 100:
+
+                        //odd mins 1st queen
+                        case 50 when LastSummonBattery is 100:
+                            return true;
+                    }
+
+                    //odd mins 2nd queen
+                    if ((BSUsed % 3 is 2 && Battery >= 60 ||
+                         BSUsed % 3 is 0 && Battery >= 70 ||
+                         BSUsed % 3 is 1 && Battery >= 80) && LastSummonBattery is 50)
+                        return true;
+                }
+
+                if (!LevelChecked(BarrelStabilizer))
+                    return true;
+            }
+
+            if (simpleMode && !InBossEncounter() && Battery is 100 ||
+                MCH_ST_QueenBossOption == 1 && !InBossEncounter() && Battery >= MCH_ST_TurretUsage)
+                return true;
+        }
+
+        return false;
+    }
+
+    #endregion
+
     #region HP Treshold
 
     private static int HPThresholdHypercharge =>
@@ -116,6 +117,8 @@ internal partial class MCH
     #endregion
 
     #region Reassembled
+
+    #region Variables
 
     private static bool ReassembledExcavatorST =>
         IsEnabled(Preset.MCH_ST_Adv_Reassemble) && MCH_ST_Reassembled[0] && (HasStatusEffect(Buffs.Reassembled) || !HasStatusEffect(Buffs.Reassembled)) ||
@@ -162,18 +165,22 @@ internal partial class MCH
     private static bool ReassembledScattergunAoE =>
         IsEnabled(Preset.MCH_AoE_Adv_Reassemble) && MCH_AoE_Reassembled[0] && HasStatusEffect(Buffs.Reassembled);
 
+    #endregion
+
     private static bool CanReassemble(bool onExcavator, bool onChainsaw, bool onAirAnchor, bool onDrill)
     {
         if (!JustUsed(OriginalHook(Heatblast)) &&
             !HasStatusEffect(Buffs.Reassembled) && ActionReady(Reassemble))
         {
-            switch (onExcavator && LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady))
+            switch (onExcavator)
             {
                 case true when
-                    IsNotEnabled(Preset.MCH_ST_Adv_TurretQueen) || MCH_ST_QueenBossOption == 1 && !InBossEncounter():
+                    IsNotEnabled(Preset.MCH_ST_Adv_TurretQueen) || MCH_ST_QueenBossOption == 1 && !InBossEncounter() &&
+                    LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady):
 
                 case true when
                     IsEnabled(Preset.MCH_ST_Adv_TurretQueen) && (MCH_ST_QueenBossOption == 0 || InBossEncounter()) &&
+                    LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady) &&
                     (BSUsed is 1 ||
                      BSUsed % 3 is 2 && Battery <= 40 ||
                      BSUsed % 3 is 0 && Battery <= 50 ||
