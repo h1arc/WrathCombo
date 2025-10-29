@@ -406,6 +406,9 @@ public static class ActionWatching
                     ActionManager.Instance()->AreaTargetingExecuteAtObject =
                         targetId;
 
+                if (NIN.MudraSigns.Contains(replacedWith) && !hookResult)
+                    NIN.InMudra = true;
+
                 return hookResult;
             }
             else
