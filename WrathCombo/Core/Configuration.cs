@@ -1,10 +1,15 @@
-using Dalamud.Configuration;
-using Newtonsoft.Json;
+#region
+
 using System;
 using System.Collections.Generic;
 using System.Numerics;
+using Dalamud.Configuration;
+using Newtonsoft.Json;
 using WrathCombo.AutoRotation;
 using WrathCombo.Window;
+
+#endregion
+
 // ReSharper disable RedundantDefaultMemberInitializer
 
 namespace WrathCombo.Core;
@@ -20,10 +25,16 @@ public partial class Configuration : IPluginConfiguration
 
     #region UI Settings
 
-    /// <summary> Gets or sets a value indicating whether to hide the children of a feature if it is disabled. </summary>
+    /// <summary>
+    ///     Gets or sets a value indicating whether to hide the children of a feature
+    ///     if it is disabled.
+    /// </summary>
     public bool HideChildren = false;
 
-    /// <summary> Gets or sets a value indicating whether to hide combos which conflict with enabled presets. </summary>
+    /// <summary>
+    ///     Gets or sets a value indicating whether to hide combos which conflict with
+    ///     enabled presets.
+    /// </summary>
     public bool HideConflictedCombos = false;
 
     /// <summary>
@@ -36,8 +47,9 @@ public partial class Configuration : IPluginConfiguration
 
     public bool ShowTargetHighlight = false;
 
-    public Vector4 TargetHighlightColor = new() { W = 1, X = 0.5f, Y = 0.5f, Z = 0.5f };
-    
+    public Vector4 TargetHighlightColor =
+        new() { W = 1, X = 0.5f, Y = 0.5f, Z = 0.5f };
+
     public bool ShowBorderAroundOptionsWithChildren = true;
 
     public bool UIShowPresetIDs = true;
@@ -53,7 +65,7 @@ public partial class Configuration : IPluginConfiguration
         Filter,
         Highlight,
     }
-    
+
     public bool SearchPreserveHierarchy = false; // only applicable to Filter mode
 
     #endregion
@@ -72,7 +84,7 @@ public partial class Configuration : IPluginConfiguration
 
     public bool BlockSpellOnMove = false;
 
-    /// <seealso cref="SetActionChanging"/>
+    /// <seealso cref="SetActionChanging" />
     public bool ActionChanging = true;
 
     public bool PerformanceMode = false;
@@ -86,10 +98,10 @@ public partial class Configuration : IPluginConfiguration
     public float OpenerTimeout = 4f;
 
     /// <summary> Gets or sets the offset of the melee range check. Default is 0. </summary>
-    public double MeleeOffset = 0;
+    public float MeleeOffset = 0;
 
-    public double InterruptDelay  = 0.0f;
-        
+    public float InterruptDelay = 0.0f;
+
     public int MaximumWeavesPerWindow = 2;
 
     #endregion
@@ -116,7 +128,8 @@ public partial class Configuration : IPluginConfiguration
 
     public bool UseCustomHealStack = false;
 
-    public string[] CustomHealStack = [
+    public string[] CustomHealStack =
+    [
         "FocusTarget",
         "HardTarget",
         "Self",
@@ -126,7 +139,8 @@ public partial class Configuration : IPluginConfiguration
 
     #region Rez Stack
 
-    public string[] RaiseStack = [
+    public string[] RaiseStack =
+    [
         "AnyHealer",
         "AnyTank",
         "AnyRaiser",
@@ -139,7 +153,10 @@ public partial class Configuration : IPluginConfiguration
 
     #region Troubleshooting
 
-    /// <summary> Gets or sets a value indicating whether to output combat log to the chatbox. </summary>
+    /// <summary>
+    ///     Gets or sets a value indicating whether to output combat log to the
+    ///     chatbox.
+    /// </summary>
     public bool EnabledOutputLog { get; set; } = false;
 
     public bool OutputOpenerLogs;
@@ -149,7 +166,7 @@ public partial class Configuration : IPluginConfiguration
     #endregion
 
     #region Non-Settings Configurations
-        
+
     public bool UILeftColumnCollapsed = false;
 
     public bool ShowHiddenFeatures = false;
@@ -177,8 +194,11 @@ public partial class Configuration : IPluginConfiguration
     /// <summary> Gets active Blue Mage (BLU) spells. </summary>
     public List<uint> ActiveBLUSpells { get; set; } = [];
 
-    /// <summary> Gets or sets an array of 4 ability IDs to interact with the <see cref="Preset.DNC_CustomDanceSteps"/> combo. </summary>
-    public uint[] DancerDanceCompatActionIDs { get; set; } = [ 0, 0, 0, 0, ];
+    /// <summary>
+    ///     Gets or sets an array of 4 ability IDs to interact with the
+    ///     <see cref="Preset.DNC_CustomDanceSteps" /> combo.
+    /// </summary>
+    public uint[] DancerDanceCompatActionIDs { get; set; } = [0, 0, 0, 0,];
 
     #endregion
 
@@ -188,7 +208,7 @@ public partial class Configuration : IPluginConfiguration
     ///     Whether the Major Changes window was hidden for a
     ///     specific version.
     /// </summary>
-    /// <seealso cref="MajorChangesWindow"/>
+    /// <seealso cref="MajorChangesWindow" />
     public Version HideMajorChangesForVersion =
         System.Version.Parse("0.0.0");
 
