@@ -7,12 +7,28 @@ using ECommons.DalamudServices;
 using ECommons.Logging;
 using Newtonsoft.Json;
 using WrathCombo.Extensions;
+using WrathCombo.Services;
 using Debug = WrathCombo.Window.Tabs.Debug;
 
 namespace WrathCombo.Core;
 
 public partial class Configuration
 {
+    internal void SetActionChanging(bool? newValue = null)
+    {
+        if (newValue is not null && newValue != ActionChanging)
+        {
+            ActionChanging = newValue.Value;
+            Save();
+        }
+
+        // Checks if action replacing is not in line with the setting
+        if (ActionChanging && !Service.ActionReplacer.getActionHook.IsEnabled)
+            Service.ActionReplacer.getActionHook.Enable();
+        if (!ActionChanging && Service.ActionReplacer.getActionHook.IsEnabled)
+            Service.ActionReplacer.getActionHook.Disable();
+    }
+
     #region Saving
 
     /// <summary>
@@ -151,6 +167,105 @@ public partial class Configuration
         SetResetValues(config, true);
         Save();
     }
+
+    #endregion
+
+    #region UserConfig Values
+
+    #region Custom Float Values
+
+    /// <summary> Gets a custom float value. </summary>
+    public static float GetCustomFloatValue(string config, float defaultMinValue = 0)
+    {
+        if (!CustomFloatValues.TryGetValue(config, out float configValue))
+        {
+            SetCustomFloatValue(config, defaultMinValue);
+            return defaultMinValue;
+        }
+
+        return configValue;
+    }
+
+    /// <summary> Sets a custom float value. </summary>
+    public static void SetCustomFloatValue(string config, float value) => CustomFloatValues[config] = value;
+
+    #endregion
+
+    #region Custom Int Values
+
+    /// <summary> Gets a custom integer value. </summary>
+    public static int GetCustomIntValue(string config, int defaultMinVal = 0)
+    {
+        if (!CustomIntValues.TryGetValue(config, out int configValue))
+        {
+            SetCustomIntValue(config, defaultMinVal);
+            return defaultMinVal;
+        }
+
+        return configValue;
+    }
+
+    /// <summary> Sets a custom integer value. </summary>
+    public static void SetCustomIntValue(string config, int value) => CustomIntValues[config] = value;
+
+    #endregion
+
+    #region Custom Int Array Values
+
+    /// <summary> Gets a custom integer array value. </summary>
+    public static int[] GetCustomIntArrayValue(string config)
+    {
+        if (!CustomIntArrayValues.TryGetValue(config, out int[]? configValue))
+        {
+            SetCustomIntArrayValue(config, []);
+            return [];
+        }
+
+        return configValue;
+    }
+
+    /// <summary> Sets a custom integer array value. </summary>
+    public static void SetCustomIntArrayValue(string config, int[] value) => CustomIntArrayValues[config] = value;
+
+    #endregion
+
+    #region Custom Bool Values
+
+    /// <summary> Gets a custom boolean value. </summary>
+    public static bool GetCustomBoolValue(string config)
+    {
+        if (!CustomBoolValues.TryGetValue(config, out bool configValue))
+        {
+            SetCustomBoolValue(config, false);
+            return false;
+        }
+
+        return configValue;
+    }
+
+    /// <summary> Sets a custom boolean value. </summary>
+    public static void SetCustomBoolValue(string config, bool value) => CustomBoolValues[config] = value;
+
+    #endregion
+
+    #region Custom Bool Array Values
+
+    /// <summary> Gets a custom boolean array value. </summary>
+    public static bool[] GetCustomBoolArrayValue(string config)
+    {
+        if (!CustomBoolArrayValues.TryGetValue(config, out bool[]? configValue))
+        {
+            SetCustomBoolArrayValue(config, []);
+            return [];
+        }
+
+        return configValue;
+    }
+
+    /// <summary> Sets a custom boolean array value. </summary>
+    public static void SetCustomBoolArrayValue(string config, bool[] value) => CustomBoolArrayValues[config] = value;
+
+    #endregion
 
     #endregion
 }
