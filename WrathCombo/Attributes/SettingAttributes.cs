@@ -46,12 +46,12 @@ public class Setting(
     string helpMark,
     string recommendedValue,
     string defaultValue,
-    string? untilLabel = null,
+    string untilLabel = "DEFAULT",
     Setting.Type type = Setting.Type.Toggle,
-    string? warningMark = null,
-    string? extraText = null,
-    float? sliderMax = null,
-    float? sliderMin = null) : Attribute
+    string warningMark = "DEFAULT",
+    string extraText = "DEFAULT",
+    float sliderMin = float.NaN,
+    float sliderMax = float.NaN) : Attribute
 {
     public enum Type
     {
@@ -65,12 +65,17 @@ public class Setting(
     internal string HelpMark { get; } = helpMark;
     internal string RecommendedValue { get; } = recommendedValue;
     internal string DefaultValue { get; } = defaultValue;
-    internal string? UntilLabel { get; } = untilLabel;
+    internal string? UntilLabel { get; } =
+        untilLabel == "DEFAULT" ? null : untilLabel;
     internal Type TheType { get; } = type;
-    internal string? WarningMark { get; } = warningMark;
-    internal string? ExtraText { get; } = extraText;
-    internal float? SliderMax { get; } = sliderMax;
-    internal float? SliderMin { get; } = sliderMin;
+    internal string? WarningMark { get; } =
+        warningMark == "DEFAULT" ? null : warningMark;
+    internal string? ExtraText { get; } = 
+        extraText == "DEFAULT" ? null : extraText;
+    internal float? SliderMin { get; } = 
+        float.IsNaN(sliderMin) ? null : sliderMin;
+    internal float? SliderMax { get; } = 
+        float.IsNaN(sliderMax) ? null : sliderMax;
 }
 
 [AttributeUsage(AttributeTargets.Field)]
