@@ -25,7 +25,8 @@ internal class TargetHelper : Dalamud.Interface.Windowing.Window
 
     internal unsafe void DrawTargetHelper()
     {
-        if (SuggestedTarget is null)
+        if (!Service.Configuration.ShowTargetHighlight ||
+            SuggestedTarget is null)
         {
             IsOpen = false;
             return;
