@@ -21,6 +21,7 @@ internal class TargetHelper : Dalamud.Interface.Windowing.Window
 
     private static IGameObject? SuggestedTarget =>
         Combos.PvE.AST.CardTarget ??
+        Combos.PvE.DNC.DesiredDancePartner.GetObject();
 
     internal unsafe void DrawTargetHelper()
     {
