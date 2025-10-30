@@ -4,8 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Numerics;
 using WrathCombo.AutoRotation;
-using WrathCombo.Services;
 using WrathCombo.Window;
+// ReSharper disable RedundantDefaultMemberInitializer
 
 namespace WrathCombo.Core;
 
@@ -18,39 +18,45 @@ public partial class Configuration : IPluginConfiguration
 
     #region Settings
 
-    /// <summary> Gets or sets a value indicating whether to output combat log to the chatbox. </summary>
-    public bool EnabledOutputLog { get; set; } = false;
-
-    /// <summary> Gets or sets a value indicating whether to hide combos which conflict with enabled presets. </summary>
-    public bool HideConflictedCombos { get; set; } = false;
+    #region UI Settings
 
     /// <summary> Gets or sets a value indicating whether to hide the children of a feature if it is disabled. </summary>
-    public bool HideChildren { get; set; } = false;
+    public bool HideChildren = false;
 
-    /// <summary> Gets or sets the offset of the melee range check. Default is 0. </summary>
-    public double MeleeOffset { get; set; } = 0;
+    /// <summary> Gets or sets a value indicating whether to hide combos which conflict with enabled presets. </summary>
+    public bool HideConflictedCombos = false;
 
-    public bool BlockSpellOnMove = false;
+    /// <summary>
+    ///     If the DTR Bar text should be shortened.
+    /// </summary>
+    public bool ShortDTRText = false;
+
+    /// <summary> Hides the message of the day. </summary>
+    public bool HideMessageOfTheDay = false;
 
     public bool ShowTargetHighlight = false;
 
-    public Vector4 TargetHighlightColor { get; set; } = new() { W = 1, X = 0.5f, Y = 0.5f, Z = 0.5f };
+    public Vector4 TargetHighlightColor = new() { W = 1, X = 0.5f, Y = 0.5f, Z = 0.5f };
     
     public bool ShowBorderAroundOptionsWithChildren = true;
 
-    public bool OutputOpenerLogs;
+    public bool UIShowPresetIDs = true;
 
-    public float MovementLeeway = 0f;
+    public bool UIShowSearchBar = true;
 
-    public float OpenerTimeout = 4f;
+    #region Future Search Settings
 
-    public bool PerformanceMode = false;
+    public SearchMode SearchBehavior = SearchMode.Filter;
 
-    public int Throttle = 50;
+    public enum SearchMode
+    {
+        Filter,
+        Highlight,
+    }
+    
+    public bool SearchPreserveHierarchy = false; // only applicable to Filter mode
 
-    public double InterruptDelay  = 0.0f;
-        
-    public int MaximumWeavesPerWindow = 2;
+    #endregion
 
     public bool OpenToPvE = false;
 
@@ -59,6 +65,43 @@ public partial class Configuration : IPluginConfiguration
     public bool OpenToCurrentJob = false;
 
     public bool OpenToCurrentJobOnSwitch = false;
+
+    #endregion
+
+    #region Rotation Behavior Settings
+
+    public bool BlockSpellOnMove = false;
+
+    /// <seealso cref="SetActionChanging"/>
+    public bool ActionChanging = true;
+
+    public bool PerformanceMode = false;
+
+    public bool SuppressQueuedActions = true;
+
+    public int Throttle = 50;
+
+    public float MovementLeeway = 0f;
+
+    public float OpenerTimeout = 4f;
+
+    /// <summary> Gets or sets the offset of the melee range check. Default is 0. </summary>
+    public double MeleeOffset = 0;
+
+    public double InterruptDelay  = 0.0f;
+        
+    public int MaximumWeavesPerWindow = 2;
+
+    #endregion
+
+    #region Troubleshooting
+
+    /// <summary> Gets or sets a value indicating whether to output combat log to the chatbox. </summary>
+    public bool EnabledOutputLog { get; set; } = false;
+
+    public bool OutputOpenerLogs;
+
+    #endregion
 
     #region Target Settings
 
@@ -92,39 +135,13 @@ public partial class Configuration : IPluginConfiguration
 
     #endregion
 
-    public bool ActionChanging = true;
-
-    public bool ShowHiddenFeatures = false;
-
-    public bool SuppressQueuedActions = true;
-        
-    public bool UILeftColumnCollapsed = false;
-
-    public bool UIShowPresetIDs = true;
-
-    public bool UIShowSearchBar = true;
-
-    public SearchMode SearchBehavior = SearchMode.Filter;
-
-    public enum SearchMode
-    {
-        Filter,
-        Highlight,
-    }
-    
-    public bool SearchPreserveHierarchy = false; // only applicable to Filter mode
-
-    /// <summary> Hides the message of the day. </summary>
-    public bool HideMessageOfTheDay { get; set; } = false;
-
-    /// <summary>
-    ///     If the DTR Bar text should be shortened.
-    /// </summary>
-    public bool ShortDTRText { get; set; } = false;
-
     #endregion
 
     #region Non-Settings Configurations
+        
+    public bool UILeftColumnCollapsed = false;
+
+    public bool ShowHiddenFeatures = false;
 
     #region EnabledActions
 
@@ -161,7 +178,7 @@ public partial class Configuration : IPluginConfiguration
     ///     specific version.
     /// </summary>
     /// <seealso cref="MajorChangesWindow"/>
-    public Version HideMajorChangesForVersion { get; set; } =
+    public Version HideMajorChangesForVersion =
         System.Version.Parse("0.0.0");
 
     #endregion
