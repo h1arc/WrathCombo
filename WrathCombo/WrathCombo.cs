@@ -156,7 +156,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
         TM = new();
         RemoveNullAutos(); 
         Service.Configuration = pluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
-        Service.Address = new PluginAddressResolver();
+        Service.Address = new AddressResolver();
         Service.Address.Setup(Svc.SigScanner);
         MoveHook = new();
         PresetStorage.Init();
