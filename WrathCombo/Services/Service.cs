@@ -12,7 +12,7 @@ internal class Service
     internal static CustomComboCache ComboCache { get; set; } = null!;
 
     /// <summary> Gets or sets the plugin configuration. </summary>
-    internal static PluginConfiguration Configuration { get; set; } = null!;
+    internal static Configuration Configuration { get; set; } = null!;
 
     /// <summary> Gets or sets the plugin icon replacer. </summary>
     internal static ActionReplacer ActionReplacer { get; set; } = null!;

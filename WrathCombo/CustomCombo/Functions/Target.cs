@@ -284,7 +284,7 @@ internal abstract partial class CustomComboFunctions
     /// </param>
     /// <param name="checkIgnoredList">
     ///     Whether to check the 
-    ///     <see cref="PluginConfiguration.IgnoredNPCs"/> list. <br />
+    ///     <see cref="Configuration.IgnoredNPCs"/> list. <br />
     ///     (Optional, defaults to false)
     /// </param>
     /// <returns>
@@ -563,7 +563,7 @@ internal abstract partial class CustomComboFunctions
     /// </param>
     /// <param name="checkIgnoredList">
     ///     Whether to check the 
-    ///     <see cref="PluginConfiguration.IgnoredNPCs"/> list. <br />
+    ///     <see cref="Configuration.IgnoredNPCs"/> list. <br />
     ///     (Optional, defaults to false)
     /// </param>
     /// <param name="enemies">
