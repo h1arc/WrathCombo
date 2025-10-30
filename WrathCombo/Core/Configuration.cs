@@ -94,20 +94,13 @@ public partial class Configuration : IPluginConfiguration
 
     #endregion
 
-    #region Troubleshooting
-
-    /// <summary> Gets or sets a value indicating whether to output combat log to the chatbox. </summary>
-    public bool EnabledOutputLog { get; set; } = false;
-
-    public bool OutputOpenerLogs;
-
-    #endregion
-
     #region Target Settings
 
     public bool RetargetHealingActionsToStack = false;
 
     public bool AddOutOfPartyNPCsToRetargeting = false;
+
+    #region Default+ Heal Stack
 
     public bool UseUIMouseoverOverridesInDefaultHealStack = false;
 
@@ -117,14 +110,21 @@ public partial class Configuration : IPluginConfiguration
 
     public bool UseLowestHPOverrideInDefaultHealStack = false;
 
+    #endregion
+
+    #region Custom Heal Stack
+
     public bool UseCustomHealStack = false;
 
-    // Just has value so the UI element for it is more obvious from the get-go
     public string[] CustomHealStack = [
         "FocusTarget",
         "HardTarget",
         "Self",
     ];
+
+    #endregion
+
+    #region Rez Stack
 
     public string[] RaiseStack = [
         "AnyHealer",
@@ -132,6 +132,17 @@ public partial class Configuration : IPluginConfiguration
         "AnyRaiser",
         "AnyDeadPartyMember",
     ];
+
+    #endregion
+
+    #endregion
+
+    #region Troubleshooting
+
+    /// <summary> Gets or sets a value indicating whether to output combat log to the chatbox. </summary>
+    public bool EnabledOutputLog { get; set; } = false;
+
+    public bool OutputOpenerLogs;
 
     #endregion
 
