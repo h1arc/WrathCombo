@@ -170,9 +170,9 @@ public partial class Configuration
 
     #endregion
 
-    #region UserConfig Values
+    #region UserConfig Method Access
 
-    #region Custom Float Values
+    #region Custom Floats
 
     /// <summary> Gets a custom float value. </summary>
     public static float GetCustomFloatValue(string config, float defaultMinValue = 0)
@@ -191,7 +191,7 @@ public partial class Configuration
 
     #endregion
 
-    #region Custom Int Values
+    #region Custom Ints
 
     /// <summary> Gets a custom integer value. </summary>
     public static int GetCustomIntValue(string config, int defaultMinVal = 0)
@@ -210,7 +210,7 @@ public partial class Configuration
 
     #endregion
 
-    #region Custom Int Array Values
+    #region Custom Int Arrays
 
     /// <summary> Gets a custom integer array value. </summary>
     public static int[] GetCustomIntArrayValue(string config)
@@ -229,7 +229,7 @@ public partial class Configuration
 
     #endregion
 
-    #region Custom Bool Values
+    #region Custom Bools
 
     /// <summary> Gets a custom boolean value. </summary>
     public static bool GetCustomBoolValue(string config)
@@ -248,7 +248,7 @@ public partial class Configuration
 
     #endregion
 
-    #region Custom Bool Array Values
+    #region Custom Bool Arrays
 
     /// <summary> Gets a custom boolean array value. </summary>
     public static bool[] GetCustomBoolArrayValue(string config)
