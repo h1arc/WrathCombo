@@ -66,16 +66,16 @@ internal partial class MCH
             {
                 if (LevelChecked(BarrelStabilizer))
                 {
-                    switch (Battery)
+                    switch (BSUsed)
                     {
-                        //even mins
-                        case 100:
-
                         //1min
-                        case >= 90 when CombatEngageDuration().Seconds < 100:
-
+                        case 1 when Battery >= 90:
+ 
+                        //even mins
+                        case >= 2 when Battery == 100:
+     
                         //odd mins 1st queen
-                        case 50 when LastSummonBattery is 100:
+                        case >= 2 when Battery is 50 && LastSummonBattery is 100:
                             return true;
                     }
 
