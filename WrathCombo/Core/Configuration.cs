@@ -8,6 +8,8 @@ using Newtonsoft.Json;
 using WrathCombo.AutoRotation;
 using WrathCombo.Window;
 using WrathCombo.Attributes;
+using WrathCombo.Window.Functions;
+using WrathCombo.Window.Tabs;
 using static WrathCombo.Attributes.SettingCategory.Category;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using Space = WrathCombo.Attributes.SettingUI_Space;
@@ -30,10 +32,8 @@ public partial class Configuration : IPluginConfiguration
 
     #region UI Settings
 
-    /// <summary>
-    ///     Gets or sets a value indicating whether to hide the children of a feature
-    ///     if it is disabled.
-    /// </summary>
+    /// Whether to hide the children of a feature if it is disabled. Default: false.
+    /// <seealso cref="Presets.DrawPreset"/>
     [SettingCategory(Main_UI_Options)]
     [Setting("Hide Sub-Combo Options",
         "Will hide the Features and Options under disabled Combos.",
@@ -41,10 +41,10 @@ public partial class Configuration : IPluginConfiguration
         defaultValue: "Off")]
     public bool HideChildren = false;
 
-    /// <summary>
-    ///     Gets or sets a value indicating whether to hide combos which conflict with
-    ///     enabled presets.
-    /// </summary>
+    /// Whether to hide combos which conflict with enabled presets. Default: false.
+    /// <seealso cref="Presets.DrawPreset"/>
+    /// <seealso cref="PvEFeatures.DrawHeadingContents"/>
+    /// <seealso cref="PvPFeatures.DrawHeadingContents"/>
     [SettingCategory(Main_UI_Options)]
     [Setting("Hide Conflicted Combos",
         "Will hide Combos that conflict with Combos that you have enabled.",
@@ -52,9 +52,8 @@ public partial class Configuration : IPluginConfiguration
         defaultValue: "Off")]
     public bool HideConflictedCombos = false;
 
-    /// <summary>
-    ///     If the DTR Bar text should be shortened.
-    /// </summary>
+    /// If the DTR Bar text should be shortened. Default: false.
+    /// <seealso cref="WrathCombo.OnFrameworkUpdate"/>
     [SettingCategory(Main_UI_Options)]
     [Setting("Shorten Server Info Bar Text",
         "Will hide the number of active Auto-Mode Combos.\n" +
@@ -66,7 +65,8 @@ public partial class Configuration : IPluginConfiguration
         defaultValue: "Off")]
     public bool ShortDTRText = false;
 
-    /// <summary> Hides the message of the day. </summary>
+    /// Hides the message of the day. Default: false.
+    /// <seealso cref="WrathCombo.PrintLoginMessage"/>
     [SettingCategory(Main_UI_Options)]
     [Setting("Hide Message of the Day",
         "Will prevent the Message of the Day from being shown in your chat upon login.",
@@ -74,6 +74,9 @@ public partial class Configuration : IPluginConfiguration
         defaultValue: "Off")]
     public bool HideMessageOfTheDay = false;
 
+    /// Whether to draw a box around targeted party members. Default: false.
+    /// <seealso cref="TargetHelper"/>
+    /// <seealso cref="TargetHighlightColor"/>
     [SettingCategory(Main_UI_Options)]
     [Setting("Show Target Highlighter",
         "Draws a box around party members in the vanilla Party List, when targeted by certain Features.",
@@ -82,6 +85,9 @@ public partial class Configuration : IPluginConfiguration
         extraText: "(Only used by AST and DNC currently)")]
     public bool ShowTargetHighlight = false;
 
+    /// The color of box to draw around targeted party members. Default: 808080FF.
+    /// <seealso cref="ShowTargetHighlight"/>
+    /// <seealso cref="TargetHelper"/>
     [SettingParent(nameof(ShowTargetHighlight))]
     [SettingCategory(Main_UI_Options)]
     [Setting("Target Highlighter Color",
@@ -92,6 +98,9 @@ public partial class Configuration : IPluginConfiguration
     public Vector4 TargetHighlightColor =
         new() { W = 1, X = 0.5f, Y = 0.5f, Z = 0.5f };
 
+    /// Whether to draw a box around Presets with children. Default: true.
+    /// <seealso cref="Presets.DrawPreset"/>
+    /// <seealso cref="InfoBox"/>
     [SettingCategory(Main_UI_Options)]
     [Setting("Show Borders around Combos and Features with Options",
         "Will draw a border around Combos and Features that have Features and Options of their own.",
@@ -99,6 +108,8 @@ public partial class Configuration : IPluginConfiguration
         defaultValue: "On")]
     public bool ShowBorderAroundOptionsWithChildren = true;
 
+    /// Whether to label Presets with their ID. Default: true.
+    /// <seealso cref="Presets.DrawPreset"/>
     [SettingCategory(Main_UI_Options)]
     [Setting("Show Preset IDs next to Combo Names",
         "Displays the Preset ID number next to the name of each Combo and Feature.\n" +
@@ -108,6 +119,9 @@ public partial class Configuration : IPluginConfiguration
         defaultValue: "On")]
     public bool UIShowPresetIDs = true;
 
+    /// Whether to show search bars. Default: true.
+    /// <seealso cref="FeaturesWindow.DrawSearchBar"/>
+    /// <seealso cref="ConfigWindow.Search"/>
     [SettingCategory(Main_UI_Options)]
     [Setting("Show Search Bars",
         "Controls whether Search Bars should be shown in Settings, and PvE and PvP Jobs.",
@@ -117,18 +131,30 @@ public partial class Configuration : IPluginConfiguration
 
     #region Future Search Settings
 
+    /// The preferred search behavior. Default: Filter.
+    /// <seealso cref="FeaturesWindow.PresetMatchesSearch"/>
+    /// <seealso cref="ConfigWindow.Search"/>
+    /// <seealso cref="SearchMode"/>
     public SearchMode SearchBehavior = SearchMode.Filter;
 
+    /// The search mode. Default: Filter.
+    /// <seealso cref="Configuration.SearchBehavior"/>
     public enum SearchMode
     {
+        /// Only shows matching Presets.
         Filter,
+        /// Shows all Presets, but highlights matching ones.
         Highlight,
     }
 
-    public bool SearchPreserveHierarchy = false; // only applicable to Filter mode
+    /// Whether to preserve hierarchy in Filter mode. Default: false.
+    /// <seealso cref="Configuration.SearchBehavior"/>
+    public bool SearchPreserveHierarchy = false;
 
     #endregion
 
+    /// Whether, upon opening, it should always go to the PvE tab. Default: false.
+    /// <seealso cref="WrathCombo.HandleOpenCommand"/>
     [Space]
     [SettingCategory(Main_UI_Options)]
     [Setting("Open Wrath to the PvE Features Tab",
@@ -138,6 +164,8 @@ public partial class Configuration : IPluginConfiguration
         defaultValue: "Off")]
     public bool OpenToPvE = false;
 
+    /// Whether, upon opening, it should go to the PvP tab in PvP zones. Default: false.
+    /// <seealso cref="WrathCombo.HandleOpenCommand"/>
     [SettingCategory(Main_UI_Options)]
     [Setting("Open Wrath to the PvP Features Tab in PvP areas",
         "Same as above, when you open Wrath with `/wrath`, it will open to the PvP Features tab, instead of the last tab you were on, when in a PvP area." +
@@ -146,6 +174,8 @@ public partial class Configuration : IPluginConfiguration
         defaultValue: "Off")]
     public bool OpenToPvP = false;
 
+    /// Whether the PvE Features tab should open to your current Job. Default: false.
+    /// <seealso cref="PvEFeatures.OpenToCurrentJob"/>
     [SettingCategory(Main_UI_Options)]
     [Setting("Open PvE Features Tab to Current Job on Opening",
         "When the PvE Features tab is opened it will automatically open to your current Job.",
@@ -153,8 +183,10 @@ public partial class Configuration : IPluginConfiguration
         defaultValue: "Off")]
     public bool OpenToCurrentJob = false;
 
+    /// Whether the PvE Features tab, upon switching jobs, should open to your new Job. Default: false.
+    /// <seealso cref="PvEFeatures.OpenToCurrentJob"/>
     [SettingCategory(Main_UI_Options)]
-    [Setting("Open PvE Features Tab to Current Job on Opening",
+    [Setting("Open PvE Features Tab to Current Job on Switching Jobs",
         "Will automatically switch the PvE Features tab to the job you are currently playing, when you switch jobs.",
         recommendedValue: "Preference",
         defaultValue: "Off")]
