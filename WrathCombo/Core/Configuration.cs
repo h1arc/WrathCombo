@@ -14,6 +14,7 @@ using WrathCombo.Combos.PvE;
 using WrathCombo.CustomComboNS.Functions;
 using static WrathCombo.Attributes.SettingCategory.Category;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
+using Setting = WrathCombo.Attributes.Setting;
 using Space = WrathCombo.Attributes.SettingUI_Space;
 using Or = WrathCombo.Attributes.SettingUI_Or;
 using Retarget = WrathCombo.Attributes.SettingUI_RetargetIcon;
