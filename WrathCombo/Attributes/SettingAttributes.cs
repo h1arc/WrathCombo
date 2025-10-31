@@ -71,7 +71,7 @@ public class Setting(
         unitLabel == "DEFAULT" ? null : unitLabel;
     internal Type TheType { get; } = type;
     internal string? ExtraHelpMark { get; } = 
-        extraText == "DEFAULT" ? null : extraText;
+        extraHelpMark == "DEFAULT" ? null : extraHelpMark;
     internal string? WarningMark { get; } =
         warningMark == "DEFAULT" ? null : warningMark;
     internal string? ExtraText { get; } = 
