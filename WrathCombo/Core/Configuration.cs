@@ -10,6 +10,8 @@ using WrathCombo.Window;
 using WrathCombo.Attributes;
 using WrathCombo.Window.Functions;
 using WrathCombo.Window.Tabs;
+using WrathCombo.Combos.PvE;
+using WrathCombo.CustomComboNS.Functions;
 using static WrathCombo.Attributes.SettingCategory.Category;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using Space = WrathCombo.Attributes.SettingUI_Space;
@@ -196,6 +198,8 @@ public partial class Configuration : IPluginConfiguration
 
     #region Rotation Behavior Settings
 
+    /// Whether all Combos should be <see cref="All.SavageBlade"/> when moving. Default: false.
+    /// <seealso cref="ActionReplacer.GetAdjustedAction"/>
     [SettingCategory(Rotation_Behavior_Options)]
     [Setting("Block Spells while Moving",
         "Will completely block actions while moving, by replacing Combo outputs with Savage Blade.\n" +
@@ -204,7 +208,9 @@ public partial class Configuration : IPluginConfiguration
         defaultValue: "Off")]
     public bool BlockSpellOnMove = false;
 
+    /// Whether Hotbars will be walked, and matching actions updated. Default: true.
     /// <seealso cref="SetActionChanging" />
+    /// <seealso cref="WrathCombo.HandleComboCommands" />
     [SettingCategory(Rotation_Behavior_Options)]
     [Setting("Action Replacing",
         "Controls whether Actions on your Hotbar will be Replaced with combos from the plugin.\n" +
@@ -216,6 +222,8 @@ public partial class Configuration : IPluginConfiguration
                      "Disabling it may lead to unexpected behavior, such as with Retargeting.")]
     public bool ActionChanging = true;
 
+    /// Whether actions should only be replaced with a value from a Combo at Use time. Default: false.
+    /// <seealso cref="Data.ActionWatching.UseActionDetour"/>
     [SettingParent(nameof(ActionChanging))]
     [SettingCategory(Rotation_Behavior_Options)]
     [Setting("Performance Mode",
@@ -227,6 +235,8 @@ public partial class Configuration : IPluginConfiguration
                      "Disabling it -even partially- may lead to unexpected behavior, such as with Retargeting AND Openers.")]
     public bool PerformanceMode = false;
 
+    /// Whether to suppress other combos when an action is queued. Default: true.
+    /// <seealso cref="CustomComboNS.CustomCombo.TryInvoke"/>
     [SettingCategory(Rotation_Behavior_Options)]
     [Setting("Queued Action Suppression",
         "While Enabled:\n" +
@@ -266,6 +276,9 @@ public partial class Configuration : IPluginConfiguration
                      "Disabling it WILL lead to unexpected behavior, which we DO NOT support.")]
     public bool SuppressQueuedActions = true;
 
+    /// The throttle for how often the hotbar gets walked. Default: 50.
+    /// <seealso cref="ActionChanging"/>
+    /// <seealso cref="ActionReplacer.GetAdjustedActionDetour"/>
     [SettingCategory(Rotation_Behavior_Options)]
     [Setting("Action Updater Throttle",
         "Will restrict how often Combos will update the Action on your Hotbar.\n" +
@@ -279,6 +292,8 @@ public partial class Configuration : IPluginConfiguration
         type: Setting.Type.Slider_Int)]
     public int Throttle = 50;
 
+    /// Delay before recognizing movement. Default: 0.
+    /// <seealso cref="CustomComboFunctions.IsMoving"/>
     [SettingCategory(Rotation_Behavior_Options)]
     [Setting("Movement Check Delay",
         "This controls how long of a delay is needed before Wrath recognizes you as moving.\n" +
@@ -289,6 +304,8 @@ public partial class Configuration : IPluginConfiguration
         type: Setting.Type.Slider_Float)]
     public float MovementLeeway = 0f;
 
+    /// The timeout for opener failure. Default: 4.
+    /// <seealso cref="CustomComboNS.WrathOpener.FullOpener"/>
     [SettingCategory(Rotation_Behavior_Options)]
     [Setting("Opener Failure Timeout",
         "Controls how long of a gap with no action is allowed in an Opener, before it is considered failed and normal rotation is resumed.\n" +
