@@ -341,7 +341,9 @@ public partial class Configuration : IPluginConfiguration
         recommendedValue: "below 40 (Above that and you start failing to interrupt many short casts)",
         defaultValue: "0",
         unitLabel: "% of cast",
-        type: Setting.Type.Slider_Int)]
+        type: Setting.Type.Slider_Int,
+        sliderMin: 0,
+        sliderMax: 100)]
     public float InterruptDelay = 0;
 
     /// The maximum allowable weaves between GCDs. Default: 2.
@@ -356,7 +358,9 @@ public partial class Configuration : IPluginConfiguration
         recommendedValue: "2-3",
         defaultValue: "2",
         unitLabel: "oGCDs",
-        type: Setting.Type.Slider_Int)]
+        type: Setting.Type.Slider_Int,
+        sliderMin: 1,
+        sliderMax: 3)]
     public int MaximumWeavesPerWindow = 2;
 
     #endregion
