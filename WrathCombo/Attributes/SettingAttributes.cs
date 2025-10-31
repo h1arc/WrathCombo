@@ -33,6 +33,11 @@ public class SettingGroup(
     internal string NameSpace { get; } = nameSpace;
     internal bool ShouldThisGroupGetDisabled { get; } = shouldThisGroupGetDisabled;
 }
+[AttributeUsage(AttributeTargets.Field)]
+public class SettingCollapsibleGroup(string groupName) : Attribute
+{
+    internal string GroupName { get; } = groupName;
+}
 
 [AttributeUsage(AttributeTargets.Field)]
 public class SettingParent(string parentSettingFieldName) : Attribute
