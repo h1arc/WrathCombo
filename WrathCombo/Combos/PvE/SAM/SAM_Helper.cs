@@ -210,10 +210,10 @@ internal partial class SAM
             return Yukikaze;
 
         if ((SimpleMode || IsEnabled(Preset.SAM_ST_Gekko)) &&
-            LevelChecked(Jinpu) &&
+            LevelChecked(Gekko) &&
             ((OnTargetsRear() || OnTargetsFront()) && !HasGetsu ||
              OnTargetsFlank() && HasKa ||
-             !HasStatusEffect(Buffs.Fugetsu)))
+             !HasStatusEffect(Buffs.Fugetsu) && !HasGetsu))
             return !OnTargetsRear() &&
                    Role.CanTrueNorth() &&
                    useTrueNorthIfEnabled
@@ -221,10 +221,10 @@ internal partial class SAM
                 : Gekko;
 
         if ((SimpleMode || IsEnabled(Preset.SAM_ST_Kasha)) &&
-            LevelChecked(Shifu) &&
+            LevelChecked(Kasha) &&
             ((OnTargetsFlank() || OnTargetsFront()) && !HasKa ||
              OnTargetsRear() && HasGetsu ||
-             !HasStatusEffect(Buffs.Fuka)))
+             !HasStatusEffect(Buffs.Fuka) && !HasKa))
             return !OnTargetsFlank() &&
                    Role.CanTrueNorth() &&
                    useTrueNorthIfEnabled

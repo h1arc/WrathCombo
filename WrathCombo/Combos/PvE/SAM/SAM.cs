@@ -471,22 +471,23 @@ internal partial class SAM : Melee
 
             if (HasStatusEffect(Buffs.MeikyoShisui))
             {
+                if (LevelChecked(Yukikaze) &&
+                    !HasSetsu && HasKa && HasGetsu)
+                    return Yukikaze;
+
                 if (SAM_Yukaze_Gekko &&
-                    LevelChecked(Jinpu) &&
+                    LevelChecked(Gekko) &&
                     ((OnTargetsRear() || OnTargetsFront()) && !HasGetsu ||
                      OnTargetsFlank() && HasKa ||
-                     !HasStatusEffect(Buffs.Fugetsu)))
+                     !HasStatusEffect(Buffs.Fugetsu) && !HasGetsu))
                     return Gekko;
 
                 if (SAM_Yukaze_Kasha &&
-                    LevelChecked(Shifu) &&
+                    LevelChecked(Kasha) &&
                     ((OnTargetsFlank() || OnTargetsFront()) && !HasKa ||
                      OnTargetsRear() && HasGetsu ||
-                     !HasStatusEffect(Buffs.Fuka)))
+                     !HasStatusEffect(Buffs.Fuka) && !HasKa))
                     return Kasha;
-
-                if (LevelChecked(Yukikaze) && !HasSetsu)
-                    return Yukikaze;
             }
 
             if (ComboTimer > 0)
