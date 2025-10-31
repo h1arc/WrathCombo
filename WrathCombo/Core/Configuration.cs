@@ -9,6 +9,7 @@ using WrathCombo.AutoRotation;
 using WrathCombo.Window;
 using WrathCombo.Attributes;
 using static WrathCombo.Attributes.SettingCategory.Category;
+using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using Space = WrathCombo.Attributes.SettingUI_Space;
 using Or = WrathCombo.Attributes.SettingUI_Or;
 
@@ -86,7 +87,8 @@ public partial class Configuration : IPluginConfiguration
     [Setting("Target Highlighter Color",
         "Controls the color of the box drawn around party members.",
         recommendedValue: "Preference",
-        defaultValue: "#808080FF")]
+        defaultValue: "#808080FF",
+        type: Setting.Type.Color)]
     public Vector4 TargetHighlightColor =
         new() { W = 1, X = 0.5f, Y = 0.5f, Z = 0.5f };
 
@@ -162,27 +164,150 @@ public partial class Configuration : IPluginConfiguration
 
     #region Rotation Behavior Settings
 
+    [SettingCategory(Rotation_Behavior_Options)]
+    [Setting("Block Spells while Moving",
+        "Will completely block actions while moving, by replacing Combo outputs with Savage Blade.\n" +
+        "This would supersede combo-specific movement options, which many jobs have.",
+        recommendedValue: "Off (Most Jobs will handle this better with their Features)",
+        defaultValue: "Off")]
     public bool BlockSpellOnMove = false;
 
     /// <seealso cref="SetActionChanging" />
+    [SettingCategory(Rotation_Behavior_Options)]
+    [Setting("Action Replacing",
+        "Controls whether Actions on your Hotbar will be Replaced with combos from the plugin.\n" +
+        "If disabled, your manual presses of abilities will no longer be affected by any Wrath settings.\n\n" +
+        "Auto-Rotation will work regardless of the setting.",
+        recommendedValue: "On (This is essentially turning OFF most of Wrath)",
+        defaultValue: "On",
+        warningMark: "Wrath is largely designed with Action Replacing in mind.\n" +
+                     "Disabling it may lead to unexpected behavior, such as with Retargeting.")]
     public bool ActionChanging = true;
 
     [SettingParent(nameof(ActionChanging))]
+    [SettingCategory(Rotation_Behavior_Options)]
+    [Setting("Performance Mode",
+        "Controls whether Action Replacing will actually only work in the background.\n" +
+        "This will prevent Combos from running on your Hotbar, but will still replace Actions before they are submitted to the server.\n",
+        recommendedValue: "Off (But do try it if you have performance issues)",
+        defaultValue: "Off",
+        warningMark: "Wrath is largely designed with Action Replacing in mind.\n" +
+                     "Disabling it -even partially- may lead to unexpected behavior, such as with Retargeting AND Openers.")]
     public bool PerformanceMode = false;
 
+    [SettingCategory(Rotation_Behavior_Options)]
+    [Setting("Queued Action Suppression",
+        "While Enabled:\n" +
+        "When an action is Queued that is not the same as the button on the Hotbar, Wrath will disable every other Combo, preventing them from thinking the Queued action should trigger them.\n" +
+        "- This prevents combos from conflicting with each other, with overlap in actions that combos return and actions that combos replace.\n" +
+        "- This does however cause the Replaced Action for each combo to 'flash' through during Suppression.\n" +
+        "That 'flashed' hotbar action won't go through, it is only visual.\n\n" +
+        "While Disabled:\n" +
+        "Combos will not be disabled when actions are queued from a combo.\n" +
+        "- This prevents your hotbars 'flashing', that is the only real benefit.\n" +
+        "- This does however allow Combos to conflict with each other, if one combo returns an action that another combo has as its Replaced Action.\n" +
+        "We do NOT mark these types of conflicts, and we do NOT try to avoid them as we add new features.\n\n" +
+        "It is STRONGLY recommended to keep this setting On.\n" +
+        "If the 'flashing' bothers you it is MUCH more advised to use Performance Mode, instead of turning this off.",
+        recommendedValue: "On (NO SUPPORT if off)",
+        defaultValue: "On",
+        extraHelpMark: "With this enabled, whenever you queue an action that is not the same as the button you are pressing, it will disable every other button's feature from running. " +
+                       "This resolves a number of issues where incorrect actions are performed due to how the game processes queued actions, however the visual experience on your hotbars is degraded. " +
+                       "This is not recommended to be disabled, however if you feel uncomfortable with hotbar icons changing quickly this is one way to resolve it (or use Performance Mode) but be aware that this may introduce unintended side effects to combos if you have a lot enabled for a job.\n\n" +
+                       "For a more complicated explanation, whenever an action is used, the following happens:\n" +
+                       "1. If the action invokes the GCD (Weaponskills & Spells), if the GCD currently isn't active it will use it right away.\n" +
+                       "2. Otherwise, if you're within the \"Queue Window\" (normally the last 0.5s of the GCD), it gets added to the queue before it is used.\n" +
+                       "3. If the action is an Ability, as long as there's no animation lock currently happening it will execute right away.\n" +
+                       "4. Otherwise, it is added to the queue immediately and then used when the animation lock is finished.\n\n" +
+                       "For step 1, the action being passed to the game is the original, unmodified action, which is then converted at use time. " +
+                       "At step 2, things get messy as the queued action still remains the unmodified action, but when the queue is executed it treats it as if the modified action *is* the unmodified action.\n\n" +
+                       "E.g. Original action Cure, modified action Cure II. At step 1, the game is okay to convert Cure to Cure II because that is what we're telling it to do. However, when Cure is passed to the queue, it treats it as if the unmodified action is Cure II.\n\n" +
+                       "This is similar for steps 3 & 4, except it can just happen earlier.\n\n" +
+                       "How this impacts us is if using the example before, we have a feature replacing Cure with Cure II, " +
+                       "and another replacing Cure II with Regen and you enable both, the following happens:\n\n" +
+                       "Step 1, Cure is passed to the game, is converted to Cure II.\n" +
+                       "You press Cure again at the Queue Window, Cure is passed to the queue, however the queue when it goes to execute will treat it as Cure II.\n" +
+                       "Result is instead of Cure II being executed, it's Regen, because we've told it to modify Cure II to Regen.\n" +
+                       "This was not part of the first Feature, but rather the result of a Feature replacing an action you did not even press, therefore an incorrect action.\n\n" +
+                       "Our workaround for this is to disable all other actions being replaced if they don't match the queued action, which this setting controls.",
+        warningMark: "Wrath is entirely designed with Queued Action Suppression in mind.\n" +
+                     "Disabling it WILL lead to unexpected behavior, which we DO NOT support.")]
     public bool SuppressQueuedActions = true;
 
+    [SettingCategory(Rotation_Behavior_Options)]
+    [Setting("Action Updater Throttle",
+        "Will restrict how often Combos will update the Action on your Hotbar.\n" +
+        "At 50ms it's not really restrictive, always giving you an up to date action.\n\n" +
+        "If you are looking for some (fairly minor) FPS gains then you can increase this value to make Combos run less often.\n" +
+        "This makes your combos less responsive, and perhaps even clips GCDs.\n" +
+        "At high values this will clip your GCDs by several seconds or break your rotation altogether.",
+        recommendedValue: "20-200 (More substantial performance issues should be handled with Performance Mode instead)",
+        defaultValue: "50",
+        unitLabel: "milliseconds",
+        type: Setting.Type.Slider_Int)]
     public int Throttle = 50;
 
+    [SettingCategory(Rotation_Behavior_Options)]
+    [Setting("Movement Check Delay",
+        "This controls how long of a delay is needed before Wrath recognizes you as moving.\n" +
+        "This allows you to not have to worry about small movements affecting your rotation, primarily for casters.",
+        recommendedValue: "0.0-1.0 (Above that gets into the territory of breaking any Movement Options in your Job)",
+        defaultValue: "0.0",
+        unitLabel: "seconds",
+        type: Setting.Type.Slider_Float)]
     public float MovementLeeway = 0f;
 
+    [SettingCategory(Rotation_Behavior_Options)]
+    [Setting("Opener Failure Timeout",
+        "Controls how long of a gap with no action is allowed in an Opener, before it is considered failed and normal rotation is resumed.\n" +
+        "Can be necessary for some casters to increase, particularly when the first action of an Opener is a hard-cast.",
+        recommendedValue: "4.0-7.0 (Above that can really screw Openers)",
+        defaultValue: "4.0",
+        unitLabel: "seconds",
+        type: Setting.Type.Slider_Float)]
     public float OpenerTimeout = 4f;
 
-    /// <summary> Gets or sets the offset of the melee range check. Default is 0. </summary>
+    /// The offset of the melee range check. Default: 0.
+    /// <seealso cref="InMeleeRange"/>
+    [SettingCategory(Rotation_Behavior_Options)]
+    [Setting("Melee Distance Offset",
+        "Controls what is considered to be in melee range.\n" +
+        "Mainly for those who don't want to switch to ranged attacks if the boss walks slightly outside of range.\n" +
+        "For example a value of -0.5 would make you have to be 0.5 yalms closer to the target,\n" +
+        "or a value of 2 would allow you to be 2 yalms further away and still be considered in melee range\n" +
+        "(melee actions wouldn't work, but it would give you some warning instead of just suddenly doing less optimal actions).",
+        recommendedValue: "0",
+        defaultValue: "0",
+        unitLabel: "yalms",
+        type: Setting.Type.Slider_Float)]
     public float MeleeOffset = 0;
 
+    /// The % through a cast before interrupting. Default: 0.
+    /// <seealso cref="CanInterruptEnemy"/>
+    /// <seealso cref="CanStunToInterruptEnemy"/>
+    [SettingCategory(Rotation_Behavior_Options)]
+    [Setting("Interrupt Delay",
+        "Controls the percentage of a total cast time to wait before interrupting enemy casts.\n" +
+        "Applies to all interrupts (including stuns used to interrupt) in every Job's Combos.",
+        recommendedValue: "below 40 (Above that and you start failing to interrupt many short casts)",
+        defaultValue: "0",
+        unitLabel: "% of cast",
+        type: Setting.Type.Slider_Int)]
     public float InterruptDelay = 0;
 
+    /// The maximum allowable weaves between GCDs. Default: 2.
+    /// <seealso cref="CanWeave"/>
+    /// <seealso cref="CanDelayedWeave"/>
+    [SettingCategory(Rotation_Behavior_Options)]
+    [Setting("Maximum Number of Weaves",
+        "Controls how many oGCDs are allowed between GCDs.\n" +
+        "The 'default' for the game is double weaving, but triple weaving is completely possible with low enough latency (of every kind);" +
+        "but if you struggle with latency of any sort then single weaving may even be a good answer to try for you.\n" +
+        "Triple weaving is already done in a manner where we try to avoid clipping GCDs, and as such doesn't happen particularly often even if you have good latency, and is a valid thing to do, so it is a safe option if you want.",
+        recommendedValue: "2-3",
+        defaultValue: "2",
+        unitLabel: "oGCDs",
+        type: Setting.Type.Slider_Int)]
     public int MaximumWeavesPerWindow = 2;
 
     #endregion
