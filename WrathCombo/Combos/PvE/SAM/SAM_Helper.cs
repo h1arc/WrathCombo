@@ -42,7 +42,8 @@ internal partial class SAM
             {
                 if ((SimpleMode || IsEnabled(Preset.SAM_ST_Yukikaze)) &&
                     !HasSetsu && LevelChecked(Yukikaze) &&
-                    HasStatusEffect(Buffs.Fugetsu) && HasStatusEffect(Buffs.Fuka))
+                    (HasStatusEffect(Buffs.Fugetsu) || IsNotEnabled(Preset.SAM_ST_Gekko)) &&
+                    (HasStatusEffect(Buffs.Fuka) || IsNotEnabled(Preset.SAM_ST_Kasha)))
                     return Yukikaze;
 
                 if ((SimpleMode || IsEnabled(Preset.SAM_ST_Gekko)) &&
@@ -205,8 +206,9 @@ internal partial class SAM
     private static uint DoMeikyoCombo(uint actionId, bool useTrueNorthIfEnabled = true, bool SimpleMode = false)
     {
         if ((SimpleMode || IsEnabled(Preset.SAM_ST_Yukikaze)) &&
-            LevelChecked(Yukikaze) &&
-            !HasSetsu && HasKa && HasGetsu)
+            LevelChecked(Yukikaze) && !HasSetsu &&
+            (HasKa || IsNotEnabled(Preset.SAM_ST_Gekko)) &&
+            (HasGetsu || IsNotEnabled(Preset.SAM_ST_Kasha)))
             return Yukikaze;
 
         if ((SimpleMode || IsEnabled(Preset.SAM_ST_Gekko)) &&
