@@ -437,8 +437,30 @@ public partial class Configuration : IPluginConfiguration
 
     #region Custom Heal Stack
 
+    [SettingUI_Or]
+    [SettingGroup("custom", "healStackPlus")]
+    [SettingCategory(Main_UI_Options)]
+    [Setting("Use a Custom Heal Stack Instead",
+        "Select this if you would rather make your own stack of target priorities for Heal Targets instead of using our default stack.\n\n" +
+        "It is recommended to use this to align with your Redirect/Reaction configuration IF you're not using the Retarget Healing Actions option above; otherwise it is preference.",
+        recommendedValue: "Preference",
+        defaultValue: "Off")]
     public bool UseCustomHealStack = false;
 
+    [SettingCategory(Main_UI_Options)]
+    [Setting("",
+        "The priority goes from top to bottom.\n" +
+        "Scroll down to see all of your items.\n" +
+        "Click the Up and Down buttons to move items in the list.\n" +
+        "Click the X button to remove an item from the list.\n\n" +
+        "If there are fewer than 4 items, and all return nothing when checked, will fall back to Self.\n\n" +
+        "These targets will only be considered valid if they are friendly and within 25y.\n\n" +
+        "When applied to something like Esuna, " +
+        "these targets will be checked for having a Cleansable Debuff, etc.\n" +
+        "So adding 'Any Cleansable Ally' or similar is not strictly necessary.",
+        recommendedValue: "Preference",
+        defaultValue: "Focus Target > Hard Target > Self",
+        type: Setting.Type.Stack)]
     public string[] CustomHealStack =
     [
         "FocusTarget",

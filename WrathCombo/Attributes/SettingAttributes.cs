@@ -60,6 +60,7 @@ public class Setting(
         Color,
         Slider_Int,
         Slider_Float,
+        Stack,
     }
     
     internal string Name { get; } = name;
