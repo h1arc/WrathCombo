@@ -19,7 +19,7 @@ public class Setting
     public Setting(string settingName)
     {
         if (ConfigurationType.GetField(settingName) is { } field)
-            Field = field;
+            _field = field;
         else
             throw new ArgumentException(
                 $"Setting '{settingName}' not found in Configuration class.");
@@ -56,11 +56,11 @@ public class Setting
 
         #region Loading from Attributes
 
-        Category = Field.GetCustomAttribute<SettingCategory>()?.TheCategory ??
+        Category = _field.GetCustomAttribute<SettingCategory>()?.TheCategory ??
                    throw new ArgumentException(
                        $"Setting `{settingName}` is missing required " +
                        $"`SettingCategory` attribute.");
-        var setting = Field.GetCustomAttribute<Attributes.Setting>() ??
+        var setting = _field.GetCustomAttribute<Attributes.Setting>() ??
                       throw new ArgumentException(
                           $"Setting `{settingName}` is missing required " +
                           $"`Setting` attribute.");
@@ -76,23 +76,23 @@ public class Setting
         SliderMin        = setting.SliderMin;
         SliderMax        = setting.SliderMax;
 
-        var group = Field.GetCustomAttribute<SettingGroup>();
+        var group = _field.GetCustomAttribute<SettingGroup>();
         GroupName             = group?.GroupName;
         GroupNameSpace        = group?.NameSpace;
         GroupShouldBeDisabled = group?.ShouldThisGroupGetDisabled;
 
-        var collapsibleGroup = Field.GetCustomAttribute<SettingCollapsibleGroup>();
+        var collapsibleGroup = _field.GetCustomAttribute<SettingCollapsibleGroup>();
         CollapsibleGroupName = collapsibleGroup?.GroupName;
 
-        Parent = Field.GetCustomAttribute<SettingParent>()?.ParentSettingFieldName;
+        Parent = _field.GetCustomAttribute<SettingParent>()?.ParentSettingFieldName;
 
-        ShowSpace = Field.GetCustomAttribute<SettingUI_Space>() is not null
+        ShowSpace = _field.GetCustomAttribute<SettingUI_Space>() is not null
             ? true
             : null;
-        ShowOr = Field.GetCustomAttribute<SettingUI_Or>() is not null
+        ShowOr = _field.GetCustomAttribute<SettingUI_Or>() is not null
             ? true
             : null;
-        ShowRetarget = Field.GetCustomAttribute<SettingUI_RetargetIcon>() is not null
+        ShowRetarget = _field.GetCustomAttribute<SettingUI_RetargetIcon>() is not null
             ? true
             : null;
 
@@ -106,7 +106,7 @@ public class Setting
     {
         set
         {
-            var targetType = Field.FieldType;
+            var targetType = _field.FieldType;
 
             if (!targetType.IsInstanceOfType(value))
             {
@@ -162,7 +162,7 @@ public class Setting
 
     #region References
 
-    private                 FieldInfo                   Field;
+    private readonly        FieldInfo                   _field;
     private static readonly Dictionary<string, Setting> CachedSettings = [];
 
     private static Type ConfigurationType => typeof(Configuration);
