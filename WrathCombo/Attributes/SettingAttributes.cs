@@ -46,8 +46,9 @@ public class Setting(
     string helpMark,
     string recommendedValue,
     string defaultValue,
-    string untilLabel = "DEFAULT",
+    string unitLabel = "DEFAULT",
     Setting.Type type = Setting.Type.Toggle,
+    string extraHelpMark = "DEFAULT",
     string warningMark = "DEFAULT",
     string extraText = "DEFAULT",
     float sliderMin = float.NaN,
@@ -65,9 +66,11 @@ public class Setting(
     internal string HelpMark { get; } = helpMark;
     internal string RecommendedValue { get; } = recommendedValue;
     internal string DefaultValue { get; } = defaultValue;
-    internal string? UntilLabel { get; } =
-        untilLabel == "DEFAULT" ? null : untilLabel;
+    internal string? UnitLabel { get; } =
+        unitLabel == "DEFAULT" ? null : unitLabel;
     internal Type TheType { get; } = type;
+    internal string? ExtraHelpMark { get; } = 
+        extraText == "DEFAULT" ? null : extraText;
     internal string? WarningMark { get; } =
         warningMark == "DEFAULT" ? null : warningMark;
     internal string? ExtraText { get; } = 
