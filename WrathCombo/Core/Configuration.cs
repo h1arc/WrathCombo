@@ -441,9 +441,12 @@ public partial class Configuration : IPluginConfiguration
 
     #region Custom Heal Stack
 
+    /// Whether to use a Custom Heal Stack. Default: false.
+    /// <seealso cref="CustomComboNS.SimpleTarget.Stack.GetStack"/>
+    /// <seealso cref="HealRetargeting.RetargetSettingOn"/>
     [SettingUI_Or]
     [SettingGroup("custom", "healStackPlus")]
-    [SettingCategory(Main_UI_Options)]
+    [SettingCategory(Targeting_Options)]
     [Setting("Use a Custom Heal Stack Instead",
         "Select this if you would rather make your own stack of target priorities for Heal Targets instead of using our default stack.\n\n" +
         "It is recommended to use this to align with your Redirect/Reaction configuration IF you're not using the Retarget Healing Actions option above; otherwise it is preference.",
@@ -451,7 +454,11 @@ public partial class Configuration : IPluginConfiguration
         defaultValue: "Off")]
     public bool UseCustomHealStack = false;
 
-    [SettingCategory(Main_UI_Options)]
+    /// The Custom Heal Stack.
+    /// <seealso cref="CustomComboNS.SimpleTarget.Stack.GetStack"/>
+    /// <seealso cref="HealRetargeting.HealStack"/>
+    /// <seealso cref="CustomComboNS.SimpleTarget.Stack.AllyToHeal"/>
+    [SettingCategory(Targeting_Options)]
     [Setting("",
         "The priority goes from top to bottom.\n" +
         "Scroll down to see all of your items.\n" +
@@ -474,8 +481,22 @@ public partial class Configuration : IPluginConfiguration
 
     #endregion
 
-    #region Rez Stack
-
+    /// The Custom Raise Stack.
+    /// <seealso cref="CustomComboNS.SimpleTarget.Stack.GetStack"/>
+    /// <seealso cref="CustomComboNS.SimpleTarget.Stack.AllyToRaise"/>
+    [SettingCategory(Targeting_Options)]
+    [Setting("Current Raise Stack:",
+        "The priority goes from top to bottom.\n" +
+        "Scroll down to see all of your items.\n" +
+        "Click the Up and Down buttons to move items in the list.\n" +
+        "Click the X button to remove an item from the list.\n\n" +
+        "If there are fewer than 5 items, and all return nothing when checked, will fall back to:\n" +
+        "your Hard Target if they're dead, or <Any Dead Party Member>.\n\n"+
+        "These targets will only be considered valid if they are friendly, dead, and within 30y.\n",
+        recommendedValue: "Preference",
+        defaultValue: "Any Healer > Any Tank > Any Raiser > Any Dead Party Member",
+        type: Setting.Type.Stack,
+        extraText: "(all targets are checked for rezz-ability)")]
     public string[] RaiseStack =
     [
         "AnyHealer",
@@ -483,8 +504,6 @@ public partial class Configuration : IPluginConfiguration
         "AnyRaiser",
         "AnyDeadPartyMember",
     ];
-
-    #endregion
 
     #endregion
 
