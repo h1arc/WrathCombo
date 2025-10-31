@@ -363,18 +363,74 @@ public partial class Configuration : IPluginConfiguration
 
     #region Target Settings
 
+    /// Whether to retarget heals to the Heal Stack. Default: false.
+    /// <seealso cref="HealRetargeting"/>
+    [SettingCategory(Targeting_Options)]
+    [Setting("Retarget (Single Target) Healing Actions",
+        "Will Retarget all Single-Target Healing Actions to the Heal Stack as shown below,\n" +
+        "similarly to how Redirect or Reaction would.\n" +
+        "This ensures that the target used to check HP% threshold logic for healing actions is the same target that will receive that heal.",
+        recommendedValue: "On (If you customize the Heal Stack AT ALL)",
+        defaultValue: "Off")]
     public bool RetargetHealingActionsToStack = false;
 
+    /// Whether to include out-of-party NPCs to retargeting. Default: false.
+    /// <seealso cref="GetPartyMembers"/>
+    [SettingCategory(Targeting_Options)]
+    [Setting("Add Out-of-Party NPCs to Retargeting",
+        "This will add any NPCs that are not in your party to the retargeting logic for healing actions.\n\n" +
+        "Useful for healers who want to be able to target NPCs that are not in their party, such as quest NPCs.\n" +
+        "These NPCs will not generally work with any role-based custom Heal Stack entries\n" +
+        "(even if an NPC looks like a tank, they're not always classified as one)",
+        recommendedValue: "On (If you use Retargeting at all)",
+        defaultValue: "Off")]
     public bool AddOutOfPartyNPCsToRetargeting = false;
 
     #region Default+ Heal Stack
 
+    /// Whether to include UI Mouseover in 'default' Heal Stack. Default: false.
+    /// <seealso cref="CustomComboNS.SimpleTarget.Stack.GetStack"/>
+    [SettingCategory(Targeting_Options)]
+    [SettingGroup("defaultPlus", "healStackPlus")]
+    [Setting("Add UI MouseOver to the Default Healing Stack",
+        "Will add any UI MouseOver targets to the top of the Default Heal Stack, overriding the rest of the stack if you are mousing over any party member UI.\n\n" +
+        "It is recommended to enable this if you are a keyboard+mouse user and enable Retarget Healing Actions (or have UI MouseOver targets in your Redirect/Reaction configuration).",
+        recommendedValue: "Preference",
+        defaultValue: "Off")]
     public bool UseUIMouseoverOverridesInDefaultHealStack = false;
-
+    
+    /// Whether to include UI Mouseover in 'default' Heal Stack. Default: false.
+    /// <seealso cref="CustomComboNS.SimpleTarget.Stack.GetStack"/>
+    [SettingCategory(Targeting_Options)]
+    [SettingGroup("defaultPlus", "healStackPlus")]
+    [Setting("Add Field MouseOver to the Default Healing Stack",
+        "Will add any MouseOver targets to the top of the Default Heal Stack, overriding the rest of the stack if you are mousing over any party member UI.\n\n" +
+        "It is recommended to enable this if you are a keyboard+mouse user and enable Retarget Healing Actions (or have UI MouseOver targets in your Redirect/Reaction configuration).",
+        recommendedValue: "Preference",
+        defaultValue: "Off")]
     public bool UseFieldMouseoverOverridesInDefaultHealStack = false;
-
+    
+    /// Whether to include Focus Target in 'default' Heal Stack. Default: false.
+    /// <seealso cref="CustomComboNS.SimpleTarget.Stack.GetStack"/>
+    [SettingCategory(Targeting_Options)]
+    [SettingGroup("defaultPlus", "healStackPlus")]
+    [Setting("Add Focus Target to the Default Healing Stack",
+        "This will add your focus target under your hard and soft targets in the Default Heal Stack, overriding the rest of the stack if you have a living focus target.",
+        recommendedValue: "Preference",
+        defaultValue: "Off")]
     public bool UseFocusTargetOverrideInDefaultHealStack = false;
-
+    
+    /// Whether to include Lowest HP% in 'default' Heal Stack. Default: false.
+    /// <seealso cref="CustomComboNS.SimpleTarget.Stack.GetStack"/>
+    [SettingCategory(Targeting_Options)]
+    [SettingGroup("defaultPlus", "healStackPlus")]
+    [Setting("Add Lowest HP% Ally to the Default Healing Stack",
+        "This will add a nearby party member with the lowest HP% to bottom of the Default Heal Stack, overriding only yourself.",
+        recommendedValue: "Preference",
+        defaultValue: "Off",
+        warningMark: "Unlike the other Default+ Options, " +
+                     "this one is not an option in most other Retargeting Plugins.\n" +
+                     "THIS SHOULD BE USED WITH THE 'RETARGET HEALING ACTIONS' SETTING!")]
     public bool UseLowestHPOverrideInDefaultHealStack = false;
 
     #endregion
