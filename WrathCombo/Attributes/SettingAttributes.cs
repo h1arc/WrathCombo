@@ -91,3 +91,8 @@ public class SettingUI_Space : Attribute
 public class SettingUI_Or : Attribute
 {
 }
+
+[AttributeUsage(AttributeTargets.Field)]
+public class SettingUI_RetargetIcon : Attribute
+{
+}

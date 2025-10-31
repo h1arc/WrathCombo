@@ -16,6 +16,7 @@ using static WrathCombo.Attributes.SettingCategory.Category;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using Space = WrathCombo.Attributes.SettingUI_Space;
 using Or = WrathCombo.Attributes.SettingUI_Or;
+using Retarget = WrathCombo.Attributes.SettingUI_RetargetIcon;
 
 #endregion
 
@@ -376,6 +377,7 @@ public partial class Configuration : IPluginConfiguration
         "This ensures that the target used to check HP% threshold logic for healing actions is the same target that will receive that heal.",
         recommendedValue: "On (If you customize the Heal Stack AT ALL)",
         defaultValue: "Off")]
+    [Retarget]
     public bool RetargetHealingActionsToStack = false;
 
     /// Whether to include out-of-party NPCs to retargeting. Default: false.
@@ -444,7 +446,7 @@ public partial class Configuration : IPluginConfiguration
     /// Whether to use a Custom Heal Stack. Default: false.
     /// <seealso cref="CustomComboNS.SimpleTarget.Stack.GetStack"/>
     /// <seealso cref="HealRetargeting.RetargetSettingOn"/>
-    [SettingUI_Or]
+    [Or]
     [SettingGroup("custom", "healStackPlus", false)]
     [SettingCategory(Targeting_Options)]
     [Setting("Use a Custom Heal Stack Instead",
