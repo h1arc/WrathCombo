@@ -445,7 +445,7 @@ public partial class Configuration : IPluginConfiguration
     /// <seealso cref="CustomComboNS.SimpleTarget.Stack.GetStack"/>
     /// <seealso cref="HealRetargeting.RetargetSettingOn"/>
     [SettingUI_Or]
-    [SettingGroup("custom", "healStackPlus")]
+    [SettingGroup("custom", "healStackPlus", false)]
     [SettingCategory(Targeting_Options)]
     [Setting("Use a Custom Heal Stack Instead",
         "Select this if you would rather make your own stack of target priorities for Heal Targets instead of using our default stack.\n\n" +
@@ -458,6 +458,7 @@ public partial class Configuration : IPluginConfiguration
     /// <seealso cref="CustomComboNS.SimpleTarget.Stack.GetStack"/>
     /// <seealso cref="HealRetargeting.HealStack"/>
     /// <seealso cref="CustomComboNS.SimpleTarget.Stack.AllyToHeal"/>
+    [SettingParent(nameof(UseCustomHealStack))]
     [SettingCategory(Targeting_Options)]
     [Setting("",
         "The priority goes from top to bottom.\n" +
@@ -509,12 +510,23 @@ public partial class Configuration : IPluginConfiguration
 
     #region Troubleshooting
 
-    /// <summary>
-    ///     Gets or sets a value indicating whether to output combat log to the
-    ///     chatbox.
-    /// </summary>
-    public bool EnabledOutputLog { get; set; } = false;
+    /// Whether to output Combo actions to the chatbox.
+    /// <seealso cref="Data.ActionWatching.UpdateLastUsedAction"/>
+    [SettingCategory(Troubleshooting_Options)]
+    [Setting("Output Log to Chat",
+        "Will print to chat every time you use an action provided by Wrath.",
+        recommendedValue: "On (IF trying to report an issue)",
+        defaultValue: "Off")]
+    public bool EnabledOutputLog = false;
 
+    /// Whether to output Opener state to the chatbox.
+    /// <seealso cref="CustomComboNS.WrathOpener.CurrentState"/>
+    [SettingCategory(Troubleshooting_Options)]
+    [Setting("Output Opener Status to Chat",
+        "Will print the status of your Job's Opener to chat.\n" +
+        "e.g. When it is Ready, Fails, or Finishes.",
+        recommendedValue: "On (IF trying to troubleshoot an Opener)",
+        defaultValue: "Off")]
     public bool OutputOpenerLogs;
 
     #endregion
