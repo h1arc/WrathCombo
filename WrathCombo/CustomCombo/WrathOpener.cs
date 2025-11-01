@@ -146,10 +146,12 @@ public abstract class WrathOpener
 
     public abstract bool HasCooldowns();
 
+    public bool CacheReady = false;
+
     public unsafe bool FullOpener(ref uint actionID)
     {
         bool inContent = ContentCheckConfig is UserBoolArray ? ContentCheck.IsInConfiguredContent((UserBoolArray)ContentCheckConfig, ContentCheck.ListSet.BossOnly) : ContentCheckConfig is UserInt ? ContentCheck.IsInConfiguredContent((UserInt)ContentCheckConfig, ContentCheck.ListSet.BossOnly) : false;
-        if (!LevelChecked || OpenerActions.Count == 0 || !inContent)
+        if (!LevelChecked || OpenerActions.Count == 0 || !inContent || !CacheReady)
         {
             return false;
         }
@@ -271,6 +273,8 @@ public abstract class WrathOpener
 
     internal static void SelectOpener()
     {
+        CurrentOpener?.CurrentState = OpenerState.OpenerNotReady; //Tidy up previous for clarity
+        CurrentOpener?.CacheReady = false;
         CurrentOpener = Player.Job switch
         {
             Job.AST => AST.Opener(),
@@ -296,6 +300,7 @@ public abstract class WrathOpener
             Job.WHM => WHM.Opener(),
             _ => Dummy
         };
+        CurrentOpener?.CacheReady = true;
     }
 
     public static WrathOpener? CurrentOpener
