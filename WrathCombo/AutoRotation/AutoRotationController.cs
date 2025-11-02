@@ -875,7 +875,6 @@ internal unsafe static class AutoRotationController
                 .OrderByDescending(x => IsCombatPriority(x))
                 .ThenBy(x => GetTargetMaxHP(x))
                 .ThenBy(x => GetTargetHPPercent(x))
-                .ThenBy(x => GetTargetDistance(x))
                 .FirstOrDefault();
         }
 
