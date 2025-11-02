@@ -273,7 +273,6 @@ public abstract class WrathOpener
 
     internal static void SelectOpener()
     {
-        CurrentOpener?.CurrentState = OpenerState.OpenerNotReady; //Tidy up previous for clarity
         CurrentOpener = Player.Job switch
         {
             Job.AST => AST.Opener(),
