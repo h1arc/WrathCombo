@@ -139,7 +139,9 @@ internal partial class BLM : Caster
                 if (CanFlarestar)
                     return FlareStar;
 
-                if (ActionReady(FireSpam) && (LevelChecked(Despair) && MP.Cur - MP.FireI >= 800 || !LevelChecked(Despair)))
+                if (ActionReady(FireSpam) &&
+                    (LevelChecked(Despair) && MP.Cur - MP.FireI >= 800 ||
+                     !LevelChecked(Despair)))
                     return FireSpam;
 
                 if (ActionReady(Despair))
@@ -164,11 +166,11 @@ internal partial class BLM : Caster
 
                 if (MP.Full || JustUsed(Blizzard4))
                 {
-                    if (ActionReady(Fire3))
+                    if (LevelChecked(Fire3))
                         return Fire3;
 
                     if (ActionReady(Transpose) &&
-                        !LevelChecked(Blizzard3))
+                        !LevelChecked(Fire3))
                         return Transpose;
                 }
 
@@ -182,10 +184,10 @@ internal partial class BLM : Caster
                     return BlizzardSpam;
             }
 
-            if (ActionReady(Fire3))
-                return MP.Cur >= 7500
-                    ? Fire3
-                    : Blizzard3;
+            if (ActionReady(Blizzard3))
+                return MP.Cur < 7500
+                    ? Blizzard3
+                    : Fire3;
 
             return actionID;
         }
@@ -262,8 +264,8 @@ internal partial class BLM : Caster
             if (IcePhase)
             {
                 if ((HasMaxUmbralHeartStacks ||
-                     MP.Full && !LevelChecked(Flare) ||
-                     MP.Cur >= 5000 && LevelChecked(Flare)) &&
+                     MP.Full && !ActionReady(Flare) ||
+                     MP.Cur >= 5000 && ActionReady(Flare)) &&
                     ActionReady(Transpose))
                     return Transpose;
 
@@ -441,7 +443,9 @@ internal partial class BLM : Caster
                     CanFlarestar)
                     return FlareStar;
 
-                if (ActionReady(FireSpam) && (LevelChecked(Despair) && MP.Cur - MP.FireI >= 800 || !LevelChecked(Despair)))
+                if (ActionReady(FireSpam) &&
+                    (LevelChecked(Despair) && MP.Cur - MP.FireI >= 800 ||
+                     !LevelChecked(Despair)))
                     return FireSpam;
 
                 if (IsEnabled(Preset.BLM_ST_Despair) &&
@@ -585,8 +589,8 @@ internal partial class BLM : Caster
             if (IcePhase)
             {
                 if (HasMaxUmbralHeartStacks ||
-                    MP.Full && !LevelChecked(Flare) ||
-                    MP.Cur >= 5000 && LevelChecked(Flare))
+                    MP.Full && !ActionReady(Flare) ||
+                    MP.Cur >= 5000 && ActionReady(Flare))
                 {
                     if (IsNotEnabled(Preset.BLM_AoE_Transpose) &&
                         LevelChecked(Fire2) && TraitLevelChecked(Traits.AspectMasteryIII))
