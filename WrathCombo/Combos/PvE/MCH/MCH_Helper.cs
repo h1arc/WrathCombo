@@ -16,10 +16,14 @@ internal partial class MCH
         CombatActions.Count(x => x == BarrelStabilizer);
 
     private static bool CanGaussRound =>
-        GetRemainingCharges(OriginalHook(GaussRound)) >= GetRemainingCharges(OriginalHook(Ricochet));
+        ActionReady(GaussRound) &&
+        GetRemainingCharges(OriginalHook(GaussRound)) >= GetRemainingCharges(OriginalHook(Ricochet)) ||
+        GetRemainingCharges(OriginalHook(GaussRound)) is 2 && GetCooldownChargeRemainingTime(OriginalHook(GaussRound)) < 15;
 
     private static bool CanRicochet =>
-        GetRemainingCharges(OriginalHook(Ricochet)) > GetRemainingCharges(OriginalHook(GaussRound));
+        ActionReady(Ricochet) &&
+        GetRemainingCharges(OriginalHook(Ricochet)) > GetRemainingCharges(OriginalHook(GaussRound)) ||
+        GetRemainingCharges(OriginalHook(Ricochet)) is 2 && GetCooldownChargeRemainingTime(OriginalHook(Ricochet)) < 15;
 
     #region Hypercharge
 
@@ -70,10 +74,10 @@ internal partial class MCH
                     {
                         //1min
                         case 1 when Battery >= 90:
- 
+
                         //even mins
                         case >= 2 when Battery == 100:
-     
+
                         //odd mins 1st queen
                         case >= 2 when Battery is 50 && LastSummonBattery is 100:
                             return true;
