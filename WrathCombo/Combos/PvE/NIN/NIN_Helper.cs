@@ -52,7 +52,7 @@ internal partial class NIN
                                           NIN_AoE_AdvancedMode_Katon_Options[1] && !InMeleeRange() && 
                                           GetCooldownChargeRemainingTime(Ten) <= TrickCD - 10); //Uptime option
     
-    internal static bool CanUseDoton => LevelChecked(Doton) && MudraReady && DotonStoppedMoving &&
+    internal static bool CanUseDoton => LevelChecked(Doton) && MudraReady && DotonStoppedMoving && !JustUsed(Doton) &&
                                         (!HasDoton || DotonRemaining <= 2) &&
                                         (TrickDebuff || //Buff Window
                                          GetCooldownChargeRemainingTime(Ten) < 3); // Use if you have Kassatsu before you get Hosho Ranryu
