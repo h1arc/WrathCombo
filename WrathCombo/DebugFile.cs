@@ -456,7 +456,7 @@ public static class DebugFile
                         line += " (IPC)";
                 if (preset.Attributes().AutoAction is not null)
                 {
-                    line += "  AUTO-MODE: ";
+                    line += " AUTO-MODE: ";
                     line += P.IPCSearch.AutoActions[preset] ? "ON" : "OFF";
                     if (leaseesCount > 0)
                         if (Service.Configuration.AutoActions[preset] !=
@@ -482,13 +482,13 @@ public static class DebugFile
                     prefix != "pvp")
                     continue;
 
-                var line = $"{(int)preset} - {preset}";
+                var line = $"{(int)preset} - {preset}".PadRight(70);
                 if (leaseesCount > 0)
                     if (P.UIHelper.PresetControlled(preset) is not null)
                         line += " (IPC)";
                 if (preset.Attributes().AutoAction is not null)
                 {
-                    line += "      AUTO-MODE: ";
+                    line += " AUTO-MODE: ";
                     line += P.IPCSearch.AutoActions[preset] ? "ON" : "OFF";
                     if (leaseesCount > 0)
                         if (P.UIHelper.PresetControlled(preset) is not null)
