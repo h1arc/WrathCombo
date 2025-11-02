@@ -15,16 +15,6 @@ internal partial class MCH
     private static int BSUsed =>
         CombatActions.Count(x => x == BarrelStabilizer);
 
-    private static bool CanGaussRound =>
-        ActionReady(GaussRound) &&
-        GetRemainingCharges(OriginalHook(GaussRound)) >= GetRemainingCharges(OriginalHook(Ricochet)) ||
-        GetRemainingCharges(OriginalHook(GaussRound)) is 2 && GetCooldownChargeRemainingTime(OriginalHook(GaussRound)) < 15;
-
-    private static bool CanRicochet =>
-        ActionReady(Ricochet) &&
-        GetRemainingCharges(OriginalHook(Ricochet)) > GetRemainingCharges(OriginalHook(GaussRound)) ||
-        GetRemainingCharges(OriginalHook(Ricochet)) is 2 && GetCooldownChargeRemainingTime(OriginalHook(Ricochet)) < 15;
-
     #region Hypercharge
 
     private static bool CanHypercharge(bool onAoE = false)
@@ -101,6 +91,20 @@ internal partial class MCH
 
         return false;
     }
+
+    #endregion
+
+    #region Gauss and Rico
+
+    private static bool CanGaussRound =>
+        ActionReady(GaussRound) &&
+        GetRemainingCharges(OriginalHook(GaussRound)) >= GetRemainingCharges(OriginalHook(Ricochet)) ||
+        GetRemainingCharges(OriginalHook(GaussRound)) is 2 && GetCooldownChargeRemainingTime(OriginalHook(GaussRound)) < 15;
+
+    private static bool CanRicochet =>
+        ActionReady(Ricochet) &&
+        GetRemainingCharges(OriginalHook(Ricochet)) > GetRemainingCharges(OriginalHook(GaussRound)) ||
+        GetRemainingCharges(OriginalHook(Ricochet)) is 2 && GetCooldownChargeRemainingTime(OriginalHook(Ricochet)) < 15;
 
     #endregion
 
