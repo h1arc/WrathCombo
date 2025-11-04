@@ -22,28 +22,28 @@ internal partial class MCH
 
                 case Preset.MCH_ST_Adv_WildFire:
                     DrawHorizontalRadioButton(MCH_ST_WildfireBossOption,
-                        "All content", $"Uses {Wildfire.ActionName()} regardless of content.", 0);
+                        "All content", $"Use {Wildfire.ActionName()} regardless of content.", 0);
 
                     DrawHorizontalRadioButton(MCH_ST_WildfireBossOption,
-                        "Bosses Only", $"Only uses {Wildfire.ActionName()} when the targeted enemy is a boss.", 1);
+                        "Bosses Only", $"Only use {Wildfire.ActionName()} when the targeted enemy is a boss.", 1);
 
                     break;
 
                 case Preset.MCH_ST_Adv_Stabilizer:
                     DrawHorizontalRadioButton(MCH_ST_BarrelStabilizerBossOption,
-                        "All content", $"Uses {BarrelStabilizer.ActionName()} regardless of content.", 0);
+                        "All content", $"Use {BarrelStabilizer.ActionName()} regardless of content.", 0);
 
                     DrawHorizontalRadioButton(MCH_ST_BarrelStabilizerBossOption,
-                        "Bosses Only", $"Only uses {BarrelStabilizer.ActionName()} when the targeted enemy is a boss.", 1);
+                        "Bosses Only", $"Only use {BarrelStabilizer.ActionName()} when the targeted enemy is a boss.", 1);
 
                     ImGui.Dummy(new(12f.Scale(), 0));
                     ImGui.NewLine();
 
                     DrawHorizontalRadioButton(MCH_ST_BarrelStabilizerWildFireOption,
-                        "On Cooldown", $"Uses {BarrelStabilizer.ActionName()} on cooldown.", 0);
+                        "On Cooldown", $"Use {BarrelStabilizer.ActionName()} on cooldown.", 0);
 
                     DrawHorizontalRadioButton(MCH_ST_BarrelStabilizerWildFireOption,
-                        "Wildfire option", $"Uses {BarrelStabilizer.ActionName()} when {Wildfire.ActionName()} is ready.", 1);
+                        "Wildfire option", $"Use {BarrelStabilizer.ActionName()} when {Wildfire.ActionName()} is ready.", 1);
                     break;
 
                 case Preset.MCH_ST_Adv_Hypercharge:
@@ -56,25 +56,25 @@ internal partial class MCH
                         "Select what kind of enemies the HP check should be applied to:");
 
                     DrawHorizontalRadioButton(MCH_ST_HyperchargeBossOption,
-                        "Non-Bosses", "Only applies the HP check above to non-bosses.", 0);
+                        "Non-Bosses", "Only apply the HP check above to non-bosses.", 0);
 
                     DrawHorizontalRadioButton(MCH_ST_HyperchargeBossOption,
-                        "All Enemies", "Applies the HP check above to all enemies.", 1);
+                        "All Enemies", "Apply the HP check above to all enemies.", 1);
 
                     ImGui.Unindent();
                     break;
 
                 case Preset.MCH_ST_Adv_TurretQueen:
                     DrawHorizontalRadioButton(MCH_ST_QueenBossOption,
-                        "Use The Balance Logic in all content", $"Uses {AutomatonQueen.ActionName()} logic regardless of content.", 0);
+                        "Use The Balance Logic in all content", $"Use {AutomatonQueen.ActionName()} logic regardless of content.", 0);
 
                     DrawHorizontalRadioButton(MCH_ST_QueenBossOption,
-                        "Use The Balance logic only in Boss encounters", $"Only uses {AutomatonQueen.ActionName()} logic when in Boss encounters.", 1);
+                        "Use The Balance logic only in Boss encounters", $"Only use {AutomatonQueen.ActionName()} logic when in Boss encounters.", 1);
 
                     if (MCH_ST_QueenBossOption == 1)
                     {
                         DrawSliderInt(50, 100, MCH_ST_TurretUsage,
-                            $"Uses {AutomatonQueen.ActionName()} at this battery threshold outside of Boss encounter.");
+                            $"Use {AutomatonQueen.ActionName()} at this battery threshold outside of Boss encounter.");
                     }
                     break;
 
@@ -94,10 +94,10 @@ internal partial class MCH
                         "Select what kind of enemies the HP check should be applied to:");
 
                     DrawHorizontalRadioButton(MCH_ST_ReassembleBossOption,
-                        "Non-Bosses", "Only applies the HP check above to non-bosses.", 0);
+                        "Non-Bosses", "Only apply the HP check above to non-bosses.", 0);
 
                     DrawHorizontalRadioButton(MCH_ST_ReassembleBossOption,
-                        "All Enemies", "Applies the HP check above to all enemies.", 1);
+                        "All Enemies", "Apply the HP check above to all enemies.", 1);
 
                     ImGui.Unindent();
 
@@ -122,10 +122,10 @@ internal partial class MCH
                         "Select what kind of enemies the HP check should be applied to:");
 
                     DrawHorizontalRadioButton(MCH_ST_ToolsBossOption,
-                        "Non-Bosses", "Only applies the HP check above to non-bosses.", 0);
+                        "Non-Bosses", "Only apply the HP check above to non-bosses.", 0);
 
                     DrawHorizontalRadioButton(MCH_ST_ToolsBossOption,
-                        "All Enemies", "Applies the HP check above to all enemies.", 1);
+                        "All Enemies", "Apply the HP check above to all enemies.", 1);
 
                     ImGui.Unindent();
                     break;
@@ -178,10 +178,10 @@ internal partial class MCH
                 case Preset.MCH_AoE_Adv_FlameThrower:
 
                     DrawHorizontalRadioButton(MCH_AoE_FlamethrowerMovement,
-                        "Stationary Only", $"Uses {Flamethrower.ActionName()} only while stationary", 0);
+                        "Stationary Only", $"Use {Flamethrower.ActionName()} only while stationary", 0);
 
                     DrawHorizontalRadioButton(MCH_AoE_FlamethrowerMovement,
-                        "Any Movement", $"Uses {Flamethrower.ActionName()} regardless of any movement conditions.", 1);
+                        "Any Movement", $"Use {Flamethrower.ActionName()} regardless of any movement conditions.", 1);
 
                     ImGui.Spacing();
                     if (MCH_AoE_FlamethrowerMovement == 0)
