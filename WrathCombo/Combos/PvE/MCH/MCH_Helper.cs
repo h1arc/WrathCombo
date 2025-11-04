@@ -252,12 +252,12 @@ internal partial class MCH
         switch (useExcavator)
         {
             case true when
-                ReassembledExcavatorST &&
+                ReassembledExcavatorST && !MaxBattery &&
                 (IsNotEnabled(Preset.MCH_ST_Adv_TurretQueen) || (MCH_ST_QueenBossOption == 1 || simpleMode) && !InBossEncounter()) &&
                 LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady):
 
             case true when
-                ReassembledExcavatorST &&
+                ReassembledExcavatorST && !MaxBattery &&
                 (IsEnabled(Preset.MCH_ST_Adv_TurretQueen) && (MCH_ST_QueenBossOption == 0 || InBossEncounter()) ||
                  simpleMode && InBossEncounter()) &&
                 LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady) &&
@@ -271,8 +271,8 @@ internal partial class MCH
         }
 
         if (useChainsaw &&
-            ReassembledChainsawST &&
-            !MaxBattery && !HasStatusEffect(Buffs.ExcavatorReady) && LevelChecked(Chainsaw) &&
+            ReassembledChainsawST && !MaxBattery &&
+            !HasStatusEffect(Buffs.ExcavatorReady) && LevelChecked(Chainsaw) &&
             GetCooldownRemainingTime(Chainsaw) <= GCD / 2)
         {
             actionID = Chainsaw;
@@ -280,8 +280,8 @@ internal partial class MCH
         }
 
         if (useAirAnchor &&
-            ReassembledAnchorST &&
-            !MaxBattery && LevelChecked(AirAnchor) &&
+            ReassembledAnchorST && !MaxBattery &&
+            LevelChecked(AirAnchor) &&
             GetCooldownRemainingTime(AirAnchor) <= GCD / 2)
         {
             actionID = AirAnchor;
