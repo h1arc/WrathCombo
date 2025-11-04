@@ -25,8 +25,8 @@ internal partial class MCH
                 (Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) &&
                 !IsComboExpiring(6) && ActionReady(Hypercharge) &&
                 DrillCD && AirAnchorCD && ChainSawCD &&
-                (LevelChecked(FullMetalField) && JustUsed(FullMetalField) ||
-                 !LevelChecked(FullMetalField) && ActionReady(Wildfire) ||
+                (LevelChecked(FullMetalField) && (JustUsed(FullMetalField) || MCH_ST_BarrelStabilizerBossOption == 1 && !TargetIsBoss()) ||
+                 !LevelChecked(FullMetalField) && (ActionReady(Wildfire) || MCH_ST_WildfireBossOption == 1 && !TargetIsBoss()) ||
                  GetCooldownRemainingTime(Wildfire) > 40 ||
                  !LevelChecked(Wildfire)):
 
