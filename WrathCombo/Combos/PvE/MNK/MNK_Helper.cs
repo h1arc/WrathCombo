@@ -159,14 +159,14 @@ internal partial class MNK
                 {
                     if (Gauge.BeastChakra[0] is BeastChakra.None)
                     {
-                        switch (OpoOpoStacks)
+                        switch (CoeurlStacks)
                         {
                             case 0:
-                                actionID = DragonKick;
+                                actionID = Demolish;
                                 return true;
 
                             case > 0:
-                                actionID = OriginalHook(Bootshine);
+                                actionID = OriginalHook(SnapPunch);
                                 return true;
                         }
                     }
@@ -187,14 +187,14 @@ internal partial class MNK
 
                     if (Gauge.BeastChakra[2] is BeastChakra.None)
                     {
-                        switch (CoeurlStacks)
+                        switch (OpoOpoStacks)
                         {
                             case 0:
-                                actionID = Demolish;
+                                actionID = DragonKick;
                                 return true;
 
                             case > 0:
-                                actionID = OriginalHook(SnapPunch);
+                                actionID = OriginalHook(Bootshine);
                                 return true;
                         }
                     }
