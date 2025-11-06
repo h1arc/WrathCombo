@@ -25,7 +25,7 @@ internal partial class MCH
                 (ActionReady(Wildfire) ||
                  MCH_ST_WildfireBossOption == 1 && !TargetIsBoss() ||
                  GetCooldownRemainingTime(Wildfire) > GCD * 15 ||
-                 Heat is 100 ||
+                 Heat is 100 && GetCooldownRemainingTime(Wildfire) > 10 ||
                  !LevelChecked(Wildfire)):
 
             case true when
