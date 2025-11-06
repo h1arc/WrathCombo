@@ -97,7 +97,7 @@ internal partial class MCH : PhysicalRanged
             }
 
             //Tools
-            if (CanUseTools(ref actionID, true, true, true, true, true) && !IsOverheated)
+            if (CanUseTools(ref actionID, true, true, true, true) && !IsOverheated)
                 return actionID;
 
             // Full Metal Field
@@ -311,8 +311,7 @@ internal partial class MCH : PhysicalRanged
                     // BarrelStabilizer
                     if (IsEnabled(Preset.MCH_ST_Adv_Stabilizer) &&
                         (MCH_ST_BarrelStabilizerBossOption == 0 || TargetIsBoss()) &&
-                        (MCH_ST_BarrelStabilizerWildFireOption == 0 ||
-                         DrillCD && AirAnchorCD && ChainSawCD && GetCooldownRemainingTime(Wildfire) <= GCD) &&
+                        DrillCD && AirAnchorCD && ChainSawCD && GetCooldownRemainingTime(Wildfire) <= GCD &&
                         ActionReady(BarrelStabilizer) && !HasStatusEffect(Buffs.FullMetalMachinist))
                         return BarrelStabilizer;
 
@@ -383,8 +382,9 @@ internal partial class MCH : PhysicalRanged
             // Full Metal Field
             if (IsEnabled(Preset.MCH_ST_Adv_Stabilizer_FullMetalField) &&
                 HasStatusEffect(Buffs.FullMetalMachinist, out Status? fullMetal) &&
-                (!JustUsed(BarrelStabilizer) || MCH_ST_BarrelStabilizerWildFireOption == 1) &&
+                !IsOverheated &&
                 (ActionReady(Wildfire) ||
+                 GetCooldownRemainingTime(Wildfire) > 90 ||
                  fullMetal.RemainingTime <= 6))
                 return FullMetalField;
 

@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
+using ECommons.MathHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using System;
 using System.Collections.Generic;
@@ -25,9 +26,10 @@ internal partial class MCH
                 (Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) &&
                 !IsComboExpiring(6) && ActionReady(Hypercharge) &&
                 DrillCD && AirAnchorCD && ChainSawCD &&
-                (LevelChecked(FullMetalField) && (JustUsed(FullMetalField) || MCH_ST_BarrelStabilizerBossOption == 1 && !TargetIsBoss()) ||
-                 !LevelChecked(FullMetalField) && (ActionReady(Wildfire) || MCH_ST_WildfireBossOption == 1 && !TargetIsBoss()) ||
-                 GetCooldownRemainingTime(Wildfire) > 40 ||
+                (ActionReady(Wildfire) ||
+                 MCH_ST_WildfireBossOption == 1 && !TargetIsBoss() ||
+                 GetCooldownRemainingTime(Wildfire) > GCD * 15 ||
+                 Heat is 100 ||
                  !LevelChecked(Wildfire)):
 
             case true when
@@ -50,38 +52,21 @@ internal partial class MCH
 
     private static bool CanQueen(bool simpleMode = false)
     {
-        if (!HasStatusEffect(Buffs.Wildfire) &&
-            !JustUsed(OriginalHook(Heatblast)) && ActionReady(RookAutoturret) &&
+        if (!HasStatusEffect(Buffs.Wildfire) && ActionReady(RookAutoturret) &&
             !RobotActive && Battery >= 50)
         {
-            if ((MCH_ST_QueenBossOption == 0 || InBossEncounter() ||
-                 simpleMode && InBossEncounter()) &&
-                (GetCooldownRemainingTime(Wildfire) > GCD || !LevelChecked(Wildfire)))
+            if (MCH_ST_QueenBossOption == 0 || InBossEncounter() ||
+                simpleMode && InBossEncounter())
             {
-                if (LevelChecked(BarrelStabilizer))
+                if (LevelChecked(Wildfire))
                 {
-                    switch (BSUsed)
-                    {
-                        //1min
-                        case 1 when Battery >= 90:
+                    float wfcd = GetCooldownRemainingTime(Wildfire);
 
-                        //even mins
-                        case >= 2 when Battery == 100:
-
-                        //odd mins 1st queen
-                        case >= 2 when Battery is 50 && LastSummonBattery is 100:
-                            return true;
-                    }
-
-                    //odd mins 2nd queen
-                    if ((BSUsed % 3 is 2 && Battery >= 60 ||
-                         BSUsed % 3 is 0 && Battery >= 70 ||
-                         BSUsed % 3 is 1 && Battery >= 80) && LastSummonBattery is 50)
-                        return true;
+                    if (wfcd.InRange(5, 40) || wfcd.InRange(55, 75)) //insert "burst allowed" check maybe
+                        return Battery > 80;
                 }
+                return true;
 
-                if (!LevelChecked(BarrelStabilizer))
-                    return true;
             }
 
             if (simpleMode && !InBossEncounter() && Battery is 100 ||
@@ -187,22 +172,10 @@ internal partial class MCH
         if (!JustUsed(OriginalHook(Heatblast)) &&
             !HasStatusEffect(Buffs.Reassembled) && ActionReady(Reassemble))
         {
-            switch (onExcavator)
-            {
-                case true when
-                    IsNotEnabled(Preset.MCH_ST_Adv_TurretQueen) || MCH_ST_QueenBossOption == 1 && !InBossEncounter() &&
-                    LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady):
-
-                case true when
-                    IsEnabled(Preset.MCH_ST_Adv_TurretQueen) && (MCH_ST_QueenBossOption == 0 || InBossEncounter()) &&
-                    LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady) &&
-                    (BSUsed is 1 ||
-                     BSUsed % 3 is 2 && Battery <= 40 ||
-                     BSUsed % 3 is 0 && Battery <= 50 ||
-                     BSUsed % 3 is 1 && Battery <= 60 ||
-                     GetStatusEffectRemainingTime(Buffs.ExcavatorReady) <= 6):
-                    return true;
-            }
+            if (onExcavator &&
+                LevelChecked(Excavator) && !MaxBattery &&
+                HasStatusEffect(Buffs.ExcavatorReady))
+                return true;
 
             if (onChainsaw &&
                 LevelChecked(Chainsaw) && !MaxBattery &&
@@ -247,27 +220,14 @@ internal partial class MCH
         !LevelChecked(Chainsaw) ||
         LevelChecked(Chainsaw) && GetCooldownRemainingTime(Chainsaw) >= 9;
 
-    private static bool CanUseTools(ref uint actionID, bool useExcavator, bool useChainsaw, bool useAirAnchor, bool useDrill, bool simpleMode = false)
+    private static bool CanUseTools(ref uint actionID, bool useExcavator, bool useChainsaw, bool useAirAnchor, bool useDrill)
     {
-        switch (useExcavator)
+        if (useExcavator &&
+            ReassembledExcavatorST && !MaxBattery &&
+            LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady))
         {
-            case true when
-                ReassembledExcavatorST && !MaxBattery &&
-                (IsNotEnabled(Preset.MCH_ST_Adv_TurretQueen) || (MCH_ST_QueenBossOption == 1 || simpleMode) && !InBossEncounter()) &&
-                LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady):
-
-            case true when
-                ReassembledExcavatorST && !MaxBattery &&
-                (IsEnabled(Preset.MCH_ST_Adv_TurretQueen) && (MCH_ST_QueenBossOption == 0 || InBossEncounter()) ||
-                 simpleMode && InBossEncounter()) &&
-                LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady) &&
-                (BSUsed is 1 ||
-                 BSUsed % 3 is 2 && Battery <= 40 ||
-                 BSUsed % 3 is 0 && Battery <= 50 ||
-                 BSUsed % 3 is 1 && Battery <= 60 ||
-                 GetStatusEffectRemainingTime(Buffs.ExcavatorReady) <= 6):
-                actionID = Excavator;
-                return true;
+            actionID = Excavator;
+            return true;
         }
 
         if (useChainsaw &&

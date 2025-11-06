@@ -1,5 +1,4 @@
 using Dalamud.Interface.Colors;
-using ECommons.ImGuiMethods;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
 using static WrathCombo.Window.Functions.UserConfig;
@@ -36,14 +35,6 @@ internal partial class MCH
                     DrawHorizontalRadioButton(MCH_ST_BarrelStabilizerBossOption,
                         "Bosses Only", $"Only use {BarrelStabilizer.ActionName()} when the targeted enemy is a boss.", 1);
 
-                    ImGui.Dummy(new(12f.Scale(), 0));
-                    ImGui.NewLine();
-
-                    DrawHorizontalRadioButton(MCH_ST_BarrelStabilizerWildFireOption,
-                        "On Cooldown", $"Use {BarrelStabilizer.ActionName()} on cooldown.", 0);
-
-                    DrawHorizontalRadioButton(MCH_ST_BarrelStabilizerWildFireOption,
-                        "Wildfire option", $"Use {BarrelStabilizer.ActionName()} when {Wildfire.ActionName()} is ready.", 1);
                     break;
 
                 case Preset.MCH_ST_Adv_Hypercharge:
@@ -230,7 +221,6 @@ internal partial class MCH
             MCH_ST_QueenOverDriveHPThreshold = new("MCH_ST_QueenOverDrive", 1),
             MCH_ST_QueenBossOption = new("MCH_ST_QueenBossOption", 0),
             MCH_ST_BarrelStabilizerBossOption = new("MCH_ST_BarrelStabilizerBossOption", 1),
-            MCH_ST_BarrelStabilizerWildFireOption = new("MCH_ST_BarrelStabilizerWildFireOption", 0),
             MCH_ST_WildfireBossOption = new("MCH_ST_WildfireBossOption", 1),
             MCH_ST_HyperchargeBossOption = new("MCH_ST_HyperchargeBossOption", 0),
             MCH_ST_HyperchargeHPOption = new("MCH_ST_HyperchargeHPOption", 10),
