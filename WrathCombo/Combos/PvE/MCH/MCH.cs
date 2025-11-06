@@ -38,7 +38,8 @@ internal partial class MCH : PhysicalRanged
                     return OriginalHook(RookOverdrive);
 
                 // Wildfire
-                if (CanApplyStatus(CurrentTarget, Debuffs.Wildfire) &&
+                if (TargetIsBoss() &&
+                    CanApplyStatus(CurrentTarget, Debuffs.Wildfire) &&
                     ActionReady(Wildfire) && JustUsed(Hypercharge, GCD + 0.9f) &&
                     !HasStatusEffect(Buffs.Wildfire))
                     return Wildfire;
@@ -56,7 +57,9 @@ internal partial class MCH : PhysicalRanged
                 if (!IsOverheated)
                 {
                     // BarrelStabilizer
-                    if (ActionReady(BarrelStabilizer) && !HasStatusEffect(Buffs.FullMetalMachinist))
+                    if (TargetIsBoss() &&
+                        DrillCD && AirAnchorCD && ChainSawCD && GetCooldownRemainingTime(Wildfire) <= GCD &&
+                        ActionReady(BarrelStabilizer) && !HasStatusEffect(Buffs.FullMetalMachinist))
                         return BarrelStabilizer;
 
                     // Queen
@@ -64,51 +67,73 @@ internal partial class MCH : PhysicalRanged
                         return OriginalHook(RookAutoturret);
 
                     // Reassemble
-                    if (CanReassemble(true, true, true, true))
+                    if (CanReassemble(MCH_ST_Reassembled[0], MCH_ST_Reassembled[1], MCH_ST_Reassembled[2], MCH_ST_Reassembled[3]))
                         return Reassemble;
 
                     // Hypercharge
-                    if (CanHypercharge())
+                    if (IsEnabled(Preset.MCH_ST_Adv_Hypercharge) &&
+                        GetTargetHPPercent() > HPThresholdHypercharge &&
+                        CanHypercharge())
                         return Hypercharge;
 
                     // Gauss Round and Ricochet outside HC
-                    if (JustUsed(OriginalHook(AirAnchor), 2f) ||
-                        JustUsed(Chainsaw, 2f) ||
-                        JustUsed(Drill, 2f) ||
-                        JustUsed(Excavator, 2f))
+                    if (IsEnabled(Preset.MCH_ST_Adv_GaussRicochet) &&
+                        (JustUsed(OriginalHook(AirAnchor), 2f) ||
+                         JustUsed(Chainsaw, 2f) ||
+                         JustUsed(Drill, 2f) ||
+                         JustUsed(Excavator, 2f)))
                     {
-                        if (CanGaussRound &&
-                            !JustUsed(OriginalHook(GaussRound), 2f))
+                        if (GetRemainingCharges(OriginalHook(GaussRound)) > MCH_ST_GaussRicoPool &&
+                            CanGaussRound && !JustUsed(OriginalHook(GaussRound), 2f))
                             return OriginalHook(GaussRound);
 
-                        if (CanRicochet &&
-                            !JustUsed(OriginalHook(Ricochet), 2f))
+                        if (GetRemainingCharges(OriginalHook(Ricochet)) > MCH_ST_GaussRicoPool &&
+                            CanRicochet && !JustUsed(OriginalHook(Ricochet), 2f))
                             return OriginalHook(Ricochet);
                     }
 
+                    if (ActionReady(Tactician) &&
+                        IsEnabled(Preset.MCH_ST_Adv_Tactician) && RaidWideCasting() &&
+                        NumberOfAlliesInRange(Tactician) >= GetPartyMembers().Count * .75 &&
+                        !HasAnyStatusEffects([BRD.Buffs.Troubadour, DNC.Buffs.ShieldSamba, Buffs.Tactician], anyOwner: true))
+                        return Tactician;
+
                     // Interrupt
-                    if (Role.CanHeadGraze(true))
+                    if (Role.CanHeadGraze(Preset.MCH_ST_Adv_Interrupt))
                         return Role.HeadGraze;
 
+                    if (IsEnabled(Preset.MCH_ST_Dismantle) &&
+                        ActionReady(Dismantle) &&
+                        !HasStatusEffect(Debuffs.Dismantled, CurrentTarget, true) &&
+                        CanApplyStatus(CurrentTarget, Debuffs.Dismantled) &&
+                        RaidWideCasting())
+                        return Dismantle;
+
                     // Healing
-                    if (Role.CanSecondWind(40))
+                    if (IsEnabled(Preset.MCH_ST_Adv_SecondWind) &&
+                        Role.CanSecondWind(MCH_ST_SecondWindHPThreshold))
                         return Role.SecondWind;
                 }
             }
 
             //Tools
-            if (CanUseTools(ref actionID, true, true, true, true) && !IsOverheated)
+            if (IsEnabled(Preset.MCH_ST_Adv_Tools) && GetTargetHPPercent() > HPThresholdTools &&
+                CanUseTools(ref actionID, IsEnabled(Preset.MCH_ST_Adv_Excavator), IsEnabled(Preset.MCH_ST_Adv_Chainsaw),
+                    IsEnabled(Preset.MCH_ST_Adv_AirAnchor), IsEnabled(Preset.MCH_ST_Adv_Drill)) && !IsOverheated)
                 return actionID;
 
             // Full Metal Field
-            if (HasStatusEffect(Buffs.FullMetalMachinist, out Status? fullMetal) &&
-                !JustUsed(BarrelStabilizer) &&
+            if (IsEnabled(Preset.MCH_ST_Adv_Stabilizer_FullMetalField) &&
+                HasStatusEffect(Buffs.FullMetalMachinist, out Status? fullMetal) &&
+                !IsOverheated &&
                 (ActionReady(Wildfire) ||
+                 GetCooldownRemainingTime(Wildfire) > 90 ||
                  fullMetal.RemainingTime <= 6))
                 return FullMetalField;
 
             // Heatblast
-            if (IsOverheated && ActionReady(Heatblast))
+            if (IsEnabled(Preset.MCH_ST_Adv_Heatblast) &&
+                IsOverheated && ActionReady(Heatblast))
                 return OriginalHook(Heatblast);
 
             // 1-2-3 Combo
@@ -117,7 +142,8 @@ internal partial class MCH : PhysicalRanged
                 if (ComboAction is SplitShot && LevelChecked(SlugShot))
                     return OriginalHook(SlugShot);
 
-                if (ComboAction is SlugShot &&
+                if (IsEnabled(Preset.MCH_ST_Adv_Reassemble) && MCH_ST_Reassembled[4] &&
+                    ComboAction is SlugShot &&
                     !LevelChecked(Drill) && !HasStatusEffect(Buffs.Reassembled) && ActionReady(Reassemble))
                     return Reassemble;
 

@@ -55,6 +55,11 @@ internal partial class MCH
                     ImGui.Unindent();
                     break;
 
+                case Preset.MCH_ST_Adv_TurretQueen:
+                    DrawSliderInt(50, 100, MCH_ST_TurretUsage,
+                        $"Use {AutomatonQueen.ActionName()} at this battery threshold outside of Boss encounter.");
+                    break;
+
                 case Preset.MCH_ST_Adv_GaussRicochet:
                     DrawSliderInt(0, 2, MCH_ST_GaussRicoPool,
                         "Number of Charges of to Save for Manual Use");

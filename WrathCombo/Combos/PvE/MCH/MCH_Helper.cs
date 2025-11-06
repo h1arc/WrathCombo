@@ -57,6 +57,9 @@ internal partial class MCH
                 wfcd.InRange(5, 40) || wfcd.InRange(55, 75)) //insert "burst allowed" check maybereturn Battery > 80;
                 return true;
 
+            if (MCH_ST_WildfireBossOption == 1 && !TargetIsBoss() && Battery >= MCH_ST_TurretUsage)
+                return true;
+
             if (!LevelChecked(Wildfire) && Battery is 100)
                 return true;
         }
