@@ -60,7 +60,7 @@ internal partial class MCH : PhysicalRanged
                         return BarrelStabilizer;
 
                     // Queen
-                    if (CanQueen(true))
+                    if (CanQueen())
                         return OriginalHook(RookAutoturret);
 
                     // Reassemble

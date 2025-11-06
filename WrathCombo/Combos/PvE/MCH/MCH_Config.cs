@@ -55,20 +55,6 @@ internal partial class MCH
                     ImGui.Unindent();
                     break;
 
-                case Preset.MCH_ST_Adv_TurretQueen:
-                    DrawHorizontalRadioButton(MCH_ST_QueenBossOption,
-                        "Use The Balance Logic in all content", $"Use {AutomatonQueen.ActionName()} logic regardless of content.", 0);
-
-                    DrawHorizontalRadioButton(MCH_ST_QueenBossOption,
-                        "Use The Balance logic only in Boss encounters", $"Only use {AutomatonQueen.ActionName()} logic when in Boss encounters.", 1);
-
-                    if (MCH_ST_QueenBossOption == 1)
-                    {
-                        DrawSliderInt(50, 100, MCH_ST_TurretUsage,
-                            $"Use {AutomatonQueen.ActionName()} at this battery threshold outside of Boss encounter.");
-                    }
-                    break;
-
                 case Preset.MCH_ST_Adv_GaussRicochet:
                     DrawSliderInt(0, 2, MCH_ST_GaussRicoPool,
                         "Number of Charges of to Save for Manual Use");
@@ -219,7 +205,6 @@ internal partial class MCH
         public static UserInt
             MCH_Balance_Content = new("MCH_Balance_Content", 1),
             MCH_ST_QueenOverDriveHPThreshold = new("MCH_ST_QueenOverDrive", 1),
-            MCH_ST_QueenBossOption = new("MCH_ST_QueenBossOption", 0),
             MCH_ST_BarrelStabilizerBossOption = new("MCH_ST_BarrelStabilizerBossOption", 1),
             MCH_ST_WildfireBossOption = new("MCH_ST_WildfireBossOption", 1),
             MCH_ST_HyperchargeBossOption = new("MCH_ST_HyperchargeBossOption", 0),

@@ -3,18 +3,14 @@ using ECommons.MathHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using static WrathCombo.Combos.PvE.MCH.Config;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
-using static WrathCombo.Data.ActionWatching;
 namespace WrathCombo.Combos.PvE;
 
 internal partial class MCH
 {
-    private static int BSUsed =>
-        CombatActions.Count(x => x == BarrelStabilizer);
 
     #region Hypercharge
 
@@ -50,27 +46,18 @@ internal partial class MCH
 
     #region Queen
 
-    private static bool CanQueen(bool simpleMode = false)
+    private static bool CanQueen()
     {
         if (!HasStatusEffect(Buffs.Wildfire) && ActionReady(RookAutoturret) &&
             !RobotActive && Battery >= 50)
         {
-            if (MCH_ST_QueenBossOption == 0 || InBossEncounter() ||
-                simpleMode && InBossEncounter())
-            {
-                if (LevelChecked(Wildfire))
-                {
-                    float wfcd = GetCooldownRemainingTime(Wildfire);
+            float wfcd = GetCooldownRemainingTime(Wildfire);
 
-                    if (wfcd.InRange(5, 40) || wfcd.InRange(55, 75)) //insert "burst allowed" check maybe
-                        return Battery > 80;
-                }
+            if (LevelChecked(Wildfire) &&
+                wfcd.InRange(5, 40) || wfcd.InRange(55, 75)) //insert "burst allowed" check maybereturn Battery > 80;
                 return true;
 
-            }
-
-            if (simpleMode && !InBossEncounter() && Battery is 100 ||
-                MCH_ST_QueenBossOption == 1 && !InBossEncounter() && Battery >= MCH_ST_TurretUsage)
+            if (!LevelChecked(Wildfire) && Battery is 100)
                 return true;
         }
 
