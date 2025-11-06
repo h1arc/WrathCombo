@@ -67,47 +67,29 @@ internal partial class MCH : PhysicalRanged
                         return OriginalHook(RookAutoturret);
 
                     // Reassemble
-                    if (CanReassemble(MCH_ST_Reassembled[0], MCH_ST_Reassembled[1], MCH_ST_Reassembled[2], MCH_ST_Reassembled[3]))
+                    if (CanReassemble(true, true, true, true))
                         return Reassemble;
 
                     // Hypercharge
-                    if (IsEnabled(Preset.MCH_ST_Adv_Hypercharge) &&
-                        GetTargetHPPercent() > HPThresholdHypercharge &&
-                        CanHypercharge())
+                    if (CanHypercharge())
                         return Hypercharge;
 
                     // Gauss Round and Ricochet outside HC
-                    if (IsEnabled(Preset.MCH_ST_Adv_GaussRicochet) &&
-                        (JustUsed(OriginalHook(AirAnchor), 2f) ||
-                         JustUsed(Chainsaw, 2f) ||
-                         JustUsed(Drill, 2f) ||
-                         JustUsed(Excavator, 2f)))
+                    if (JustUsed(OriginalHook(AirAnchor), 2f) ||
+                        JustUsed(Chainsaw, 2f) ||
+                        JustUsed(Drill, 2f) ||
+                        JustUsed(Excavator, 2f))
                     {
-                        if (GetRemainingCharges(OriginalHook(GaussRound)) > MCH_ST_GaussRicoPool &&
-                            CanGaussRound && !JustUsed(OriginalHook(GaussRound), 2f))
+                        if (CanGaussRound && !JustUsed(OriginalHook(GaussRound), 2f))
                             return OriginalHook(GaussRound);
 
-                        if (GetRemainingCharges(OriginalHook(Ricochet)) > MCH_ST_GaussRicoPool &&
-                            CanRicochet && !JustUsed(OriginalHook(Ricochet), 2f))
+                        if (CanRicochet && !JustUsed(OriginalHook(Ricochet), 2f))
                             return OriginalHook(Ricochet);
                     }
-
-                    if (ActionReady(Tactician) &&
-                        IsEnabled(Preset.MCH_ST_Adv_Tactician) && RaidWideCasting() &&
-                        NumberOfAlliesInRange(Tactician) >= GetPartyMembers().Count * .75 &&
-                        !HasAnyStatusEffects([BRD.Buffs.Troubadour, DNC.Buffs.ShieldSamba, Buffs.Tactician], anyOwner: true))
-                        return Tactician;
 
                     // Interrupt
                     if (Role.CanHeadGraze(Preset.MCH_ST_Adv_Interrupt))
                         return Role.HeadGraze;
-
-                    if (IsEnabled(Preset.MCH_ST_Dismantle) &&
-                        ActionReady(Dismantle) &&
-                        !HasStatusEffect(Debuffs.Dismantled, CurrentTarget, true) &&
-                        CanApplyStatus(CurrentTarget, Debuffs.Dismantled) &&
-                        RaidWideCasting())
-                        return Dismantle;
 
                     // Healing
                     if (IsEnabled(Preset.MCH_ST_Adv_SecondWind) &&
@@ -117,14 +99,11 @@ internal partial class MCH : PhysicalRanged
             }
 
             //Tools
-            if (IsEnabled(Preset.MCH_ST_Adv_Tools) && GetTargetHPPercent() > HPThresholdTools &&
-                CanUseTools(ref actionID, IsEnabled(Preset.MCH_ST_Adv_Excavator), IsEnabled(Preset.MCH_ST_Adv_Chainsaw),
-                    IsEnabled(Preset.MCH_ST_Adv_AirAnchor), IsEnabled(Preset.MCH_ST_Adv_Drill)) && !IsOverheated)
+            if (CanUseTools(ref actionID, true, true, true, true) && !IsOverheated)
                 return actionID;
 
             // Full Metal Field
-            if (IsEnabled(Preset.MCH_ST_Adv_Stabilizer_FullMetalField) &&
-                HasStatusEffect(Buffs.FullMetalMachinist, out Status? fullMetal) &&
+            if (HasStatusEffect(Buffs.FullMetalMachinist, out Status? fullMetal) &&
                 !IsOverheated &&
                 (ActionReady(Wildfire) ||
                  GetCooldownRemainingTime(Wildfire) > 90 ||
@@ -132,8 +111,7 @@ internal partial class MCH : PhysicalRanged
                 return FullMetalField;
 
             // Heatblast
-            if (IsEnabled(Preset.MCH_ST_Adv_Heatblast) &&
-                IsOverheated && ActionReady(Heatblast))
+            if (IsOverheated && ActionReady(Heatblast))
                 return OriginalHook(Heatblast);
 
             // 1-2-3 Combo
@@ -142,8 +120,7 @@ internal partial class MCH : PhysicalRanged
                 if (ComboAction is SplitShot && LevelChecked(SlugShot))
                     return OriginalHook(SlugShot);
 
-                if (IsEnabled(Preset.MCH_ST_Adv_Reassemble) && MCH_ST_Reassembled[4] &&
-                    ComboAction is SlugShot &&
+                if (ComboAction is SlugShot &&
                     !LevelChecked(Drill) && !HasStatusEffect(Buffs.Reassembled) && ActionReady(Reassemble))
                     return Reassemble;
 

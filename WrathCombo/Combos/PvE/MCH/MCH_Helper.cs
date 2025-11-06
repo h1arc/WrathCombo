@@ -54,13 +54,14 @@ internal partial class MCH
             float wfcd = GetCooldownRemainingTime(Wildfire);
 
             if (LevelChecked(Wildfire) &&
+                (MCH_ST_WildfireBossOption == 0 || TargetIsBoss()) &&
                 wfcd.InRange(5, 40) || wfcd.InRange(55, 75) && Battery >= 80) //insert "burst allowed" check maybereturn Battery > 80;
                 return true;
 
             if (MCH_ST_WildfireBossOption == 1 && !TargetIsBoss() && Battery >= MCH_ST_TurretUsage)
                 return true;
 
-            if (!LevelChecked(Wildfire) && Battery is 100)
+            if (!LevelChecked(Wildfire) && Battery >= MCH_ST_TurretUsage)
                 return true;
         }
 
