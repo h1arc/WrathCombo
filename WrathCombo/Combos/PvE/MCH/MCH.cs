@@ -88,12 +88,11 @@ internal partial class MCH : PhysicalRanged
                     }
 
                     // Interrupt
-                    if (Role.CanHeadGraze(Preset.MCH_ST_Adv_Interrupt))
+                    if (Role.CanHeadGraze(true))
                         return Role.HeadGraze;
 
                     // Healing
-                    if (IsEnabled(Preset.MCH_ST_Adv_SecondWind) &&
-                        Role.CanSecondWind(MCH_ST_SecondWindHPThreshold))
+                    if (Role.CanSecondWind(40))
                         return Role.SecondWind;
                 }
             }
