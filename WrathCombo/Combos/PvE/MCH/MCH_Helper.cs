@@ -55,7 +55,7 @@ internal partial class MCH
 
             if (LevelChecked(Wildfire) &&
                 (MCH_ST_WildfireBossOption == 0 || TargetIsBoss()) &&
-                (wfcd.InRange(5, 40) || wfcd.InRange(55, 75) && Battery >= 80 || Battery is 100)) //insert "burst allowed" check maybereturn Battery > 80;
+                (wfcd.InRange(5, 40) || wfcd.InRange(55, 75) && Battery >= 80 || Battery is 100)) //insert "burst allowed" check maybe;
                 return true;
 
             if (MCH_ST_WildfireBossOption == 1 && !TargetIsBoss() && Battery >= MCH_ST_TurretUsage)
@@ -104,6 +104,10 @@ internal partial class MCH
     private static int HPThresholdTools =>
         MCH_ST_ToolsBossOption == 1 ||
         !TargetIsBoss() ? MCH_ST_ToolsBossOption : 0;
+
+    private static int HPThresholdBarrelStabilizer =>
+        MCH_ST_BarrelStabilizerHPBossOption == 1 ||
+        !TargetIsBoss() ? MCH_ST_BarrelStabilizerHPBossOption : 0;
 
     #endregion
 

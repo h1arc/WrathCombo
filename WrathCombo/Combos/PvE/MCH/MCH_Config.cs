@@ -25,7 +25,6 @@ internal partial class MCH
 
                     DrawHorizontalRadioButton(MCH_ST_WildfireBossOption,
                         "Bosses Only", $"Only use {Wildfire.ActionName()} when the targeted enemy is a boss.", 1);
-
                     break;
 
                 case Preset.MCH_ST_Adv_Stabilizer:
@@ -35,6 +34,21 @@ internal partial class MCH
                     DrawHorizontalRadioButton(MCH_ST_BarrelStabilizerBossOption,
                         "Bosses Only", $"Only use {BarrelStabilizer.ActionName()} when the targeted enemy is a boss.", 1);
 
+                    DrawSliderInt(0, 50, MCH_ST_BarrelStabilizerHPOption,
+                        "Stop using at Enemy HP %. Set to Zero to disable this check.");
+
+                    ImGui.Indent();
+
+                    ImGui.TextColored(ImGuiColors.DalamudYellow,
+                        "Select what kind of enemies the HP check should be applied to:");
+
+                    DrawHorizontalRadioButton(MCH_ST_BarrelStabilizerHPBossOption,
+                        "Non-Bosses", "Only apply the HP check above to non-bosses.", 0);
+
+                    DrawHorizontalRadioButton(MCH_ST_BarrelStabilizerHPBossOption,
+                        "All Enemies", "Apply the HP check above to all enemies.", 1);
+
+                    ImGui.Unindent();
                     break;
 
                 case Preset.MCH_ST_Adv_Hypercharge:
@@ -211,6 +225,8 @@ internal partial class MCH
             MCH_Balance_Content = new("MCH_Balance_Content", 1),
             MCH_ST_QueenOverDriveHPThreshold = new("MCH_ST_QueenOverDrive", 1),
             MCH_ST_BarrelStabilizerBossOption = new("MCH_ST_BarrelStabilizerBossOption", 1),
+            MCH_ST_BarrelStabilizerHPOption = new("MCH_ST_BarrelStabilizerHPOption", 10),
+            MCH_ST_BarrelStabilizerHPBossOption = new("MCH_ST_BarrelStabilizerHPBossOption", 0),
             MCH_ST_WildfireBossOption = new("MCH_ST_WildfireBossOption", 1),
             MCH_ST_HyperchargeBossOption = new("MCH_ST_HyperchargeBossOption", 0),
             MCH_ST_HyperchargeHPOption = new("MCH_ST_HyperchargeHPOption", 10),

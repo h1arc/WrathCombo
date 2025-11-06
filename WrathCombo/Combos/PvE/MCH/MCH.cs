@@ -313,6 +313,7 @@ internal partial class MCH : PhysicalRanged
                     // BarrelStabilizer
                     if (IsEnabled(Preset.MCH_ST_Adv_Stabilizer) &&
                         (MCH_ST_BarrelStabilizerBossOption == 0 || TargetIsBoss()) &&
+                        GetTargetHPPercent() > HPThresholdBarrelStabilizer &&
                         DrillCD && AirAnchorCD && ChainSawCD && GetCooldownRemainingTime(Wildfire) <= GCD &&
                         ActionReady(BarrelStabilizer) && !HasStatusEffect(Buffs.FullMetalMachinist))
                         return BarrelStabilizer;
