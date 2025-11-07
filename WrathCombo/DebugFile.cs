@@ -13,7 +13,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 using ECommons.Reflection;
 using WrathCombo.AutoRotation;
 using WrathCombo.Combos.PvE;
@@ -28,6 +27,9 @@ using WrathCombo.Window.Functions;
 using Dalamud.Game.Config;
 using ECommons;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
+using UIConfig = Dalamud.Game.Config.UiConfigOption;
+using UIControl = Dalamud.Game.Config.UiControlOption;
+using SysConfig = Dalamud.Game.Config.SystemConfigOption;
 
 #endregion
 
@@ -310,7 +312,8 @@ public static class DebugFile
                 },
                 ["XIV"] = new Dictionary<object, object>
                 {
-                    [UiControlOption.AutoFaceTargetOnAction] = "Auto Face Target",
+                    [UIControl.AutoFaceTargetOnAction] = "Auto Face Target",
+                    [UIConfig.GroundTargetActionExcuteType] = "2x-Press Ground Actions",
                 },
             };
 
@@ -335,15 +338,21 @@ public static class DebugFile
                         {
                             switch (property)
                             {
-                                case UiControlOption uiOpt:
+                                case UIControl opt:
                                 {
-                                    if (Svc.GameConfig.TryGet(uiOpt, out bool gameVal))
+                                    if (Svc.GameConfig.TryGet(opt, out bool gameVal))
                                         value = gameVal;
                                     break;
                                 }
-                                case SystemConfigOption sysOpt:
+                                case UIConfig opt:
                                 {
-                                    if (Svc.GameConfig.TryGet(sysOpt, out bool gameVal))
+                                    if (Svc.GameConfig.TryGet(opt, out bool gameVal))
+                                        value = gameVal;
+                                    break;
+                                }
+                                case SysConfig opt:
+                                {
+                                    if (Svc.GameConfig.TryGet(opt, out bool gameVal))
                                         value = gameVal;
                                     break;
                                 }
@@ -369,7 +378,7 @@ public static class DebugFile
 
                 var displayValue = property switch
                 {
-                    "InterruptDelay" => $"{(double)value * 100}",
+                    "InterruptDelay" => $"{(float)value * 100}",
                     "CustomHealStack" => Service.Configuration.UseCustomHealStack
                         .DisplayStack(separator: " > "),
                     "RaiseStack" => ((string[])value).StackString(" > ", true),
