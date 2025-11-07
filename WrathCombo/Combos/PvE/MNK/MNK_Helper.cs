@@ -385,6 +385,7 @@ internal partial class MNK
         !HasStatusEffect(Buffs.PerfectBalance) &&
         IsOriginal(MasterfulBlitz) &&
         !JustUsed(RiddleOfFire, 5f) &&
+        InActionRange(FiresReply) &&
         (JustUsed(OriginalHook(Bootshine)) ||
          JustUsed(DragonKick) ||
          GetStatusEffectRemainingTime(Buffs.FiresRumination) < GCD * 2 ||
@@ -402,6 +403,7 @@ internal partial class MNK
 
     private static bool CanWindsReply() =>
         HasStatusEffect(Buffs.WindsRumination) &&
+        InActionRange(WindsReply) &&
         (GetCooldownRemainingTime(RiddleOfFire) > 5 ||
          HasStatusEffect(Buffs.RiddleOfFire) ||
          GetStatusEffectRemainingTime(Buffs.WindsRumination) < GCD * 2 ||
