@@ -11,6 +11,8 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class MCH
 {
+    private static float WFCD =>
+        GetCooldownRemainingTime(Wildfire);
 
     #region Hypercharge
 
@@ -48,12 +50,19 @@ internal partial class MCH
 
     private static bool CanQueen()
     {
-        if (!HasStatusEffect(Buffs.Wildfire) && ActionReady(RookAutoturret) &&
+        if (!HasStatusEffect(Buffs.Wildfire) && 
+            ActionReady(RookAutoturret) &&
             !RobotActive && Battery >= 50)
         {
             if (LevelChecked(Wildfire) &&
                 (MCH_ST_WildfireBossOption == 0 || TargetIsBoss()) &&
-                (WFCD.InRange(5, 40) || WFCD.InRange(55, 75) || Battery is 100)) //insert "burst allowed" check.
+                (WFCD.InRange(5, 40) ||
+                 WFCD.InRange(55, 75) ||
+                 Battery is 100 &&
+                 (HasStatusEffect(Buffs.ExcavatorReady) ||
+                  ActionReady(Chainsaw) ||
+                  ActionReady(OriginalHook(AirAnchor)) ||
+                  ComboAction == OriginalHook(SlugShot)))) //insert "burst allowed" check.
                 return true;
 
             if (MCH_ST_WildfireBossOption == 1 && !TargetIsBoss() && Battery >= MCH_ST_TurretUsage)
@@ -430,8 +439,6 @@ internal partial class MCH
     private static byte Battery => Gauge.Battery;
 
     private static bool MaxBattery => Battery >= 90;
-
-    private static float WFCD => GetCooldownRemainingTime(Wildfire);
 
     #endregion
 
