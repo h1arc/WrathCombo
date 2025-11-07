@@ -18,10 +18,10 @@ internal partial class MCH : PhysicalRanged
             //Reassemble to start before combat
             if (!HasStatusEffect(Buffs.Reassembled) && ActionReady(Reassemble) &&
                 !InCombat() && HasBattleTarget() &&
-                (ActionReady(Excavator) ||
-                 ActionReady(Chainsaw) ||
-                 LevelChecked(AirAnchor) && IsOffCooldown(AirAnchor) ||
-                 ActionReady(Drill)))
+                (HasStatusEffect(Buffs.ExcavatorReady) && InActionRange(Excavator) ||
+                 ActionReady(Chainsaw) && InActionRange(Chainsaw) ||
+                 LevelChecked(AirAnchor) && IsOffCooldown(AirAnchor) && InActionRange(AirAnchor) ||
+                 ActionReady(Drill) && InActionRange(Drill)))
                 return Reassemble;
 
             if (ContentSpecificActions.TryGet(out uint contentAction))
@@ -219,20 +219,16 @@ internal partial class MCH : PhysicalRanged
                     !IsMoving() && TimeStoodStill > TimeSpan.FromSeconds(3))
                     return OriginalHook(Flamethrower);
 
-                if (ReassembledExcavatorAoE &&
-                    LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady))
+                if (LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady))
                     return Excavator;
 
-                if (ReassembledChainsawAoE &&
-                    ActionReady(Chainsaw) && !HasStatusEffect(Buffs.ExcavatorReady))
+                if (ActionReady(Chainsaw) && !HasStatusEffect(Buffs.ExcavatorReady))
                     return Chainsaw;
 
-                if (ReassembledAirAnchorAoE &&
-                    LevelChecked(AirAnchor) && IsOffCooldown(AirAnchor))
+                if (LevelChecked(AirAnchor) && IsOffCooldown(AirAnchor))
                     return AirAnchor;
 
-                if (ReassembledScattergunAoE)
-                    return OriginalHook(Scattergun);
+                return OriginalHook(Scattergun);
             }
 
             if (ActionReady(BlazingShot) && IsOverheated)
@@ -266,10 +262,10 @@ internal partial class MCH : PhysicalRanged
             if (IsEnabled(Preset.MCH_ST_Adv_Reassemble) &&
                 !HasStatusEffect(Buffs.Reassembled) && ActionReady(Reassemble) &&
                 !InCombat() && HasBattleTarget() &&
-                (ActionReady(Excavator) && MCH_ST_Reassembled[0] ||
-                 ActionReady(Chainsaw) && MCH_ST_Reassembled[1] ||
-                 LevelChecked(AirAnchor) && IsOffCooldown(AirAnchor) && MCH_ST_Reassembled[2] ||
-                 ActionReady(Drill) && MCH_ST_Reassembled[3]))
+                (MCH_ST_Reassembled[0] && HasStatusEffect(Buffs.ExcavatorReady) && InActionRange(Excavator) ||
+                 MCH_ST_Reassembled[1] && ActionReady(Chainsaw) && InActionRange(Chainsaw) ||
+                 MCH_ST_Reassembled[2] && LevelChecked(AirAnchor) && IsOffCooldown(AirAnchor) && InActionRange(AirAnchor) ||
+                 MCH_ST_Reassembled[3] && ActionReady(Drill) && InActionRange(Drill)))
                 return Reassemble;
 
             if (ContentSpecificActions.TryGet(out uint contentAction))
@@ -473,9 +469,9 @@ internal partial class MCH : PhysicalRanged
                         !HasStatusEffect(Buffs.Reassembled) && !JustUsed(Flamethrower, 10f) &&
                         GetRemainingCharges(Reassemble) > MCH_AoE_ReassemblePool &&
                         (MCH_AoE_Reassembled[0] && LevelChecked(Scattergun) ||
-                         GetCooldownRemainingTime(AirAnchor) < GCD && MCH_AoE_Reassembled[1] && LevelChecked(AirAnchor) ||
-                         GetCooldownRemainingTime(Chainsaw) < GCD && MCH_AoE_Reassembled[2] && LevelChecked(Chainsaw) ||
-                         GetCooldownRemainingTime(OriginalHook(Chainsaw)) < GCD && MCH_AoE_Reassembled[3] && LevelChecked(Excavator)))
+                         MCH_AoE_Reassembled[1] && GetCooldownRemainingTime(AirAnchor) < GCD && LevelChecked(AirAnchor) ||
+                         MCH_AoE_Reassembled[2] && GetCooldownRemainingTime(Chainsaw) < GCD && LevelChecked(Chainsaw) ||
+                         MCH_AoE_Reassembled[3] && GetCooldownRemainingTime(OriginalHook(Chainsaw)) < GCD && LevelChecked(Excavator)))
                         return Reassemble;
 
                     // Hypercharge

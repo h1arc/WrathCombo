@@ -50,7 +50,7 @@ internal partial class MCH
 
     private static bool CanQueen()
     {
-        if (!HasStatusEffect(Buffs.Wildfire) && 
+        if (!HasStatusEffect(Buffs.Wildfire) &&
             ActionReady(RookAutoturret) &&
             !RobotActive && Battery >= 50)
         {
@@ -176,18 +176,21 @@ internal partial class MCH
         {
             if (onExcavator &&
                 LevelChecked(Excavator) && !MaxBattery &&
-                HasStatusEffect(Buffs.ExcavatorReady))
+                HasStatusEffect(Buffs.ExcavatorReady) &&
+                InActionRange(Excavator))
                 return true;
 
             if (onChainsaw &&
                 LevelChecked(Chainsaw) && !MaxBattery &&
                 GetCooldownRemainingTime(Chainsaw) < GCD &&
+                InActionRange(Chainsaw) &&
                 (!LevelChecked(Excavator) || !MCH_ST_Reassembled[0]))
                 return true;
 
             if (onAirAnchor &&
                 LevelChecked(AirAnchor) && !MaxBattery &&
                 GetCooldownRemainingTime(AirAnchor) < GCD &&
+                InActionRange(AirAnchor) &&
                 (!LevelChecked(Excavator) || MCH_ST_Reassembled[0] && GetCooldownRemainingTime(Chainsaw) > 40 || !MCH_ST_Reassembled[0]))
                 return true;
 
@@ -195,7 +198,8 @@ internal partial class MCH
                 LevelChecked(Drill) &&
                 (TraitLevelChecked(Traits.EnhancedMultiWeapon) && GetRemainingCharges(Drill) is 1 or 2 ||
                  GetCooldownRemainingTime(Drill) < GCD) &&
-                WFCD.InRange(11, 21) &&
+                InActionRange(Drill) &&
+                !WFCD.InRange(11, 21) &&
                 (!LevelChecked(AirAnchor) || MCH_ST_Reassembled[2] && GetCooldownRemainingTime(AirAnchor) > 20 || !MCH_ST_Reassembled[2]) &&
                 (!LevelChecked(Chainsaw) || MCH_ST_Reassembled[1] && GetCooldownRemainingTime(Chainsaw) > 40 || !MCH_ST_Reassembled[1]) &&
                 (!LevelChecked(Excavator) || MCH_ST_Reassembled[0] && GetCooldownRemainingTime(Chainsaw) > 40 || !MCH_ST_Reassembled[0]))
@@ -255,7 +259,7 @@ internal partial class MCH
             LevelChecked(Drill) &&
             (TraitLevelChecked(Traits.EnhancedMultiWeapon) && GetRemainingCharges(Drill) is 1 or 2 ||
              GetCooldownRemainingTime(Drill) < GCD / 2) &&
-            GetCooldownRemainingTime(Wildfire) is >= 20 or <= 10)
+            !WFCD.InRange(11, 21))
         {
             actionID = Drill;
             return true;
