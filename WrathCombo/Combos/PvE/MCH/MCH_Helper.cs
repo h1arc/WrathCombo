@@ -54,18 +54,34 @@ internal partial class MCH
             ActionReady(RookAutoturret) &&
             !RobotActive && Battery >= 50)
         {
-            if (LevelChecked(Wildfire) &&
-                (MCH_ST_WildfireBossOption == 0 || TargetIsBoss()) &&
-                ((WFCD.InRange(5, 40) || WFCD.InRange(55, 75)) && Battery >= 80 ||
-                 Battery is 100 &&
-                 (HasStatusEffect(Buffs.ExcavatorReady) ||
-                  ActionReady(Chainsaw) ||
-                  ActionReady(OriginalHook(AirAnchor)) ||
-                  ComboAction == OriginalHook(SlugShot)))) //insert "burst allowed" check.
-                return true;
+            if (LevelChecked(Wildfire))
+            {
+                if (MCH_ST_WildfireBossOption == 0 || TargetIsBoss())
+                {
+                    //Add some form of loop for minutes
+                    if (LevelChecked(Excavator) &&
+                        (WFCD.InRange(5, 40) || WFCD.InRange(55, 75)) &&
+                        Battery >= 80)
+                        return true;
 
-            if (MCH_ST_WildfireBossOption == 1 && !TargetIsBoss() && Battery >= MCH_ST_TurretUsage)
-                return true;
+                    //Don't need any logic for below excavator, since its a perfect 1 min loop
+                    if (!LevelChecked(Excavator) &&
+                        Battery is 100)
+                        return true;
+
+                    //Failsafe
+                    if (Battery is 100 &&
+                        (HasStatusEffect(Buffs.ExcavatorReady) ||
+                         ActionReady(Chainsaw) ||
+                         ActionReady(OriginalHook(AirAnchor)) ||
+                         ComboAction == OriginalHook(SlugShot)))
+                        return true;
+
+                }
+
+                if (MCH_ST_WildfireBossOption == 1 && !TargetIsBoss() && Battery >= MCH_ST_TurretUsage)
+                    return true;
+            }
 
             if (!LevelChecked(Wildfire) && Battery >= MCH_ST_TurretUsage)
                 return true;
