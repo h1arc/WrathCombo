@@ -51,11 +51,9 @@ internal partial class MCH
         if (!HasStatusEffect(Buffs.Wildfire) && ActionReady(RookAutoturret) &&
             !RobotActive && Battery >= 50)
         {
-            float wfcd = GetCooldownRemainingTime(Wildfire);
-
             if (LevelChecked(Wildfire) &&
                 (MCH_ST_WildfireBossOption == 0 || TargetIsBoss()) &&
-                (wfcd.InRange(5, 40) || wfcd.InRange(55, 75) && Battery >= 80 || Battery is 100)) //insert "burst allowed" check maybe;
+                (WFCD.InRange(5, 40) || WFCD.InRange(55, 75) || Battery is 100)) //insert "burst allowed" check.
                 return true;
 
             if (MCH_ST_WildfireBossOption == 1 && !TargetIsBoss() && Battery >= MCH_ST_TurretUsage)
@@ -188,7 +186,7 @@ internal partial class MCH
                 LevelChecked(Drill) &&
                 (TraitLevelChecked(Traits.EnhancedMultiWeapon) && GetRemainingCharges(Drill) is 1 or 2 ||
                  GetCooldownRemainingTime(Drill) < GCD) &&
-                GetCooldownRemainingTime(Wildfire) is >= 20 or <= 10 &&
+                WFCD.InRange(11, 21) &&
                 (!LevelChecked(AirAnchor) || MCH_ST_Reassembled[2] && GetCooldownRemainingTime(AirAnchor) > 20 || !MCH_ST_Reassembled[2]) &&
                 (!LevelChecked(Chainsaw) || MCH_ST_Reassembled[1] && GetCooldownRemainingTime(Chainsaw) > 40 || !MCH_ST_Reassembled[1]) &&
                 (!LevelChecked(Excavator) || MCH_ST_Reassembled[0] && GetCooldownRemainingTime(Chainsaw) > 40 || !MCH_ST_Reassembled[0]))
@@ -432,6 +430,8 @@ internal partial class MCH
     private static byte Battery => Gauge.Battery;
 
     private static bool MaxBattery => Battery >= 90;
+
+    private static float WFCD => GetCooldownRemainingTime(Wildfire);
 
     #endregion
 
