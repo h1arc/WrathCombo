@@ -59,23 +59,22 @@ internal partial class MCH
                 if (MCH_ST_WildfireBossOption == 0 || TargetIsBoss())
                 {
                     //Add some form of loop for minutes
-                    if (LevelChecked(Excavator) &&
-                        (WFCD.InRange(5, 40) || WFCD.InRange(55, 75)) &&
-                        Battery >= 80)
+                   if (LevelChecked(Excavator) &&
+                       (WFCD.InRange(5, 40) || WFCD.InRange(55, 75) ||
+                        CombatEngageDuration().TotalSeconds.InRange(55,70) && Battery >=90))
                         return true;
 
                     //Don't need any logic for below excavator, since its a perfect 1 min loop
-                    if (!LevelChecked(Excavator) &&
-                        Battery is 100)
+                    if (Battery is 100)
                         return true;
 
                     //Failsafe
-                    if (Battery is 100 &&
-                        (HasStatusEffect(Buffs.ExcavatorReady) ||
-                         ActionReady(Chainsaw) ||
-                         ActionReady(OriginalHook(AirAnchor)) ||
-                         ComboAction == OriginalHook(SlugShot)))
-                        return true;
+                    //   if (Battery is 100 &&
+                    //     (HasStatusEffect(Buffs.ExcavatorReady) ||
+                    //    ActionReady(Chainsaw) ||
+                    //  ActionReady(OriginalHook(AirAnchor)) ||
+                    // ComboAction == OriginalHook(SlugShot)))
+                    // return true;
 
                 }
 
