@@ -116,6 +116,10 @@ internal partial class MCH
         MCH_ST_BarrelStabilizerHPBossOption == 1 ||
         !TargetIsBoss() ? MCH_ST_BarrelStabilizerHPBossOption : 0;
 
+    private static int HPThresholdWildFire =>
+        MCH_ST_WildfireBossHPOption == 1 ||
+        !TargetIsBoss() ? MCH_ST_WildfireBossHPOption : 0;
+
     #endregion
 
     #region Reassembled
