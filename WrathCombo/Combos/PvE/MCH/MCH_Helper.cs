@@ -56,8 +56,7 @@ internal partial class MCH
         {
             if (LevelChecked(Wildfire) &&
                 (MCH_ST_WildfireBossOption == 0 || TargetIsBoss()) &&
-                (WFCD.InRange(5, 40) ||
-                 WFCD.InRange(55, 75) ||
+                ((WFCD.InRange(5, 40) || WFCD.InRange(55, 75)) && Battery >= 80 ||
                  Battery is 100 &&
                  (HasStatusEffect(Buffs.ExcavatorReady) ||
                   ActionReady(Chainsaw) ||
