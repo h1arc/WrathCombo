@@ -5022,7 +5022,7 @@ public enum Preset
     RPR_ST_AdvancedMode = 12001,
 
     [ParentCombo(RPR_ST_AdvancedMode)]
-    [CustomComboInfo("Balance Opener (Level 100)", "Adds the Balance opener at level 90/100.", Job.RPR)]
+    [CustomComboInfo("Balance Opener (Level 90/100)", "Adds the Balance opener at level 90/100.", Job.RPR)]
     RPR_ST_Opener = 12002,
 
     [ParentCombo(RPR_ST_AdvancedMode)]
