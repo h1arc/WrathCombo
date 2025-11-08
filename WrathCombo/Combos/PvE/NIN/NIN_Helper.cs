@@ -518,6 +518,9 @@ internal partial class NIN
     }
     internal static uint UseRaiton(ref uint actionId) // Ten Chi
     {
+        if (!MudraSigns.Contains(ActionWatching.LastAction))
+            return actionId = Rabbit;
+
         if (ActionWatching.LastAction == OriginalTen || ActionWatching.LastAction == OriginalJin)
             actionId = ChiCombo;
         else if (ActionWatching.LastAction is ChiCombo)
@@ -527,6 +530,9 @@ internal partial class NIN
     }
     internal static uint UseHyoshoRanryu(ref uint actionId) // Ten Jin
     {
+        if (!MudraSigns.Contains(ActionWatching.LastAction))
+            return actionId = Rabbit;
+
         if (ActionWatching.LastAction is TenCombo or ChiCombo)
             actionId = JinCombo;
         else if (ActionWatching.LastAction is JinCombo)
@@ -536,6 +542,9 @@ internal partial class NIN
     }
     internal static uint UseSuiton(ref uint actionId) // Ten Chi Jin
     {
+        if (!MudraSigns.Contains(ActionWatching.LastAction))
+            return actionId = Rabbit;
+
         if (ActionWatching.LastAction == OriginalTen)
             actionId = ChiCombo;
         else if (ActionWatching.LastAction is ChiCombo)
@@ -548,6 +557,9 @@ internal partial class NIN
     //Multi Target
     internal static uint UseGokaMekkyaku(ref uint actionId) // Chi Ten
     {
+        if (!MudraSigns.Contains(ActionWatching.LastAction))
+            return actionId = Rabbit;
+
         if (ActionWatching.LastAction == OriginalChi)
             actionId = TenCombo;
         else if (ActionWatching.LastAction is TenCombo)
@@ -557,6 +569,9 @@ internal partial class NIN
     }
     internal static uint UseKaton(ref uint actionId) // Chi Ten
     {
+        if (!MudraSigns.Contains(ActionWatching.LastAction))
+            return actionId = Rabbit;
+
         if (ActionWatching.LastAction == OriginalChi)
             actionId = TenCombo;
         else if (ActionWatching.LastAction is TenCombo)
@@ -566,6 +581,9 @@ internal partial class NIN
     }
     internal static uint UseDoton(ref uint actionId)  //Jin Ten Chi
     {
+        if (!MudraSigns.Contains(ActionWatching.LastAction))
+            return actionId = Rabbit;
+
         if (ActionWatching.LastAction == OriginalJin)
             actionId = TenCombo;
         else if (ActionWatching.LastAction is TenCombo)
@@ -578,6 +596,9 @@ internal partial class NIN
 
     internal static uint UseHuton(ref uint actionId) // Jin Chi Ten
     {
+        if (!MudraSigns.Contains(ActionWatching.LastAction))
+            return actionId = Rabbit;
+
         if (ActionWatching.LastAction == OriginalChi)
             actionId = JinCombo;
         else if (ActionWatching.LastAction is JinCombo)
