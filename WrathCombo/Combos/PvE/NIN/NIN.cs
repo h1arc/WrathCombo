@@ -33,8 +33,8 @@ internal partial class NIN : Melee
             if (InMudra && MudraState.ContinueCurrentMudra(ref actionID))
                 return actionID;
             
-            if (HasStatusEffect(Buffs.TenChiJin))
-                return STTenChiJin(actionID);
+            if (STTenChiJin(ref actionID))
+                return actionID;
 
             #region Special Content
             if (ContentSpecificActions.TryGet(out var contentAction) && !MudraPhase)
@@ -153,10 +153,9 @@ internal partial class NIN : Melee
             if (InMudra && MudraState.ContinueCurrentMudra(ref actionID))
                 return actionID;
 
-            if (HasStatusEffect(Buffs.TenChiJin))
-                return DotonRemaining < 3
-                    ? AoETenChiJinDoton(actionID)
-                    : AoETenChiJinSuiton(actionID);
+            if (DotonRemaining < 3 && AoETenChiJinDoton(ref actionID) ||
+                DotonRemaining >= 3 && AoETenChiJinSuiton(ref actionID))
+                return actionID;
 
             #region Special Content
             if (ContentSpecificActions.TryGet(out var contentAction) && !MudraPhase)
@@ -281,8 +280,8 @@ internal partial class NIN : Melee
                 return actionID;
             
             if (NIN_ST_AdvancedMode_TenChiJin_Options[0] &&
-                HasStatusEffect(Buffs.TenChiJin))
-                return STTenChiJin(actionID);
+                STTenChiJin(ref actionID))
+                return actionID;
 
             #region Special Content
             if (ContentSpecificActions.TryGet(out var contentAction) && !MudraPhase)
@@ -431,11 +430,9 @@ internal partial class NIN : Melee
             if (IsEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus) && InMudra && MudraState.ContinueCurrentMudra(ref actionID))
                 return actionID;
            
-            if (NIN_AoE_AdvancedMode_TenChiJin_Options[0] &&
-                HasStatusEffect(Buffs.TenChiJin))
-                return NIN_AoE_AdvancedMode_Ninjitsus_Options[2] && DotonRemaining < 3
-                ? AoETenChiJinDoton(actionID)
-                : AoETenChiJinSuiton(actionID);
+            if (NIN_AoE_AdvancedMode_TenChiJin_Options[0])
+                if ((NIN_AoE_AdvancedMode_Ninjitsus_Options[2] && DotonRemaining < 3 && AoETenChiJinDoton(ref actionID)) || AoETenChiJinSuiton(ref actionID))
+                return actionID;
 
             #region Special Content
             if (ContentSpecificActions.TryGet(out var contentAction) && !MudraPhase)
@@ -685,8 +682,8 @@ internal partial class NIN : Melee
             if (actionID is not TenChiJin)
                 return actionID;
 
-            if (HasStatusEffect(Buffs.TenChiJin) && IsEnabled(Preset.NIN_TCJ))
-                return STTenChiJin(actionID);
+            if (IsEnabled(Preset.NIN_TCJ) && STTenChiJin(ref actionID))
+                return actionID;
 
             return HasStatusEffect(Buffs.ShadowWalker)
                 ? Meisui
