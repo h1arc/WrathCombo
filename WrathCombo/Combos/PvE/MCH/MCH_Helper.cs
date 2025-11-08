@@ -63,12 +63,12 @@ internal partial class MCH
                     {
                         //Always use on 100
                         case 100:
-                            
+
                         //Failsafe
                         case > 80 when
-                            (HasStatusEffect(Buffs.ExcavatorReady) ||
-                             ActionReady(Chainsaw) ||
-                             ActionReady(OriginalHook(AirAnchor))):
+                            HasStatusEffect(Buffs.ExcavatorReady) ||
+                            ActionReady(Chainsaw) ||
+                            ActionReady(OriginalHook(AirAnchor)):
 
                         case > 90 when ComboAction == OriginalHook(SlugShot):
                             return true;
@@ -245,7 +245,7 @@ internal partial class MCH
     private static bool CanUseTools(ref uint actionID, bool useExcavator, bool useChainsaw, bool useAirAnchor, bool useDrill)
     {
         if (useExcavator &&
-            ReassembledExcavatorST && !MaxBattery &&
+            ReassembledExcavatorST &&
             LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady))
         {
             actionID = Excavator;
@@ -253,7 +253,7 @@ internal partial class MCH
         }
 
         if (useChainsaw &&
-            ReassembledChainsawST && !MaxBattery &&
+            ReassembledChainsawST &&
             !HasStatusEffect(Buffs.ExcavatorReady) && LevelChecked(Chainsaw) &&
             GetCooldownRemainingTime(Chainsaw) <= GCD / 2)
         {
@@ -262,7 +262,7 @@ internal partial class MCH
         }
 
         if (useAirAnchor &&
-            ReassembledAnchorST && !MaxBattery &&
+            ReassembledAnchorST &&
             LevelChecked(AirAnchor) &&
             GetCooldownRemainingTime(AirAnchor) <= GCD / 2)
         {
@@ -282,7 +282,7 @@ internal partial class MCH
         }
 
         if (useAirAnchor &&
-            LevelChecked(HotShot) && !LevelChecked(AirAnchor) && !MaxBattery &&
+            LevelChecked(HotShot) && !LevelChecked(AirAnchor) &&
             GetCooldownRemainingTime(HotShot) <= GCD / 2)
         {
             actionID = HotShot;
