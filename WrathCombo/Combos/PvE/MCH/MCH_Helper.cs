@@ -97,17 +97,17 @@ internal partial class MCH
 
     private static bool CanGaussRound =>
         ActionReady(GaussRound) &&
-        GetRemainingCharges(OriginalHook(GaussRound)) >= GetRemainingCharges(OriginalHook(Ricochet)) ||
-        (!LevelChecked(Traits.ChargedActionMastery) && GetRemainingCharges(OriginalHook(GaussRound)) is 1 ||
-         LevelChecked(Traits.ChargedActionMastery) && GetRemainingCharges(OriginalHook(GaussRound)) is 2) &&
-        GetCooldownChargeRemainingTime(OriginalHook(GaussRound)) < 15;
+        (GetRemainingCharges(OriginalHook(GaussRound)) >= GetRemainingCharges(OriginalHook(Ricochet)) ||
+         (!LevelChecked(Traits.ChargedActionMastery) && GetRemainingCharges(OriginalHook(GaussRound)) is 1 ||
+          LevelChecked(Traits.ChargedActionMastery) && GetRemainingCharges(OriginalHook(GaussRound)) is 2) &&
+         GetCooldownChargeRemainingTime(OriginalHook(GaussRound)) < 15);
 
     private static bool CanRicochet =>
         ActionReady(Ricochet) &&
-        GetRemainingCharges(OriginalHook(Ricochet)) > GetRemainingCharges(OriginalHook(GaussRound)) ||
-        (!LevelChecked(Traits.ChargedActionMastery) && GetRemainingCharges(OriginalHook(Ricochet)) is 1 ||
-         LevelChecked(Traits.ChargedActionMastery) && GetRemainingCharges(OriginalHook(Ricochet)) is 2) &&
-        GetCooldownChargeRemainingTime(OriginalHook(Ricochet)) < 15;
+        (GetRemainingCharges(OriginalHook(Ricochet)) > GetRemainingCharges(OriginalHook(GaussRound)) ||
+         (!LevelChecked(Traits.ChargedActionMastery) && GetRemainingCharges(OriginalHook(Ricochet)) is 1 ||
+          LevelChecked(Traits.ChargedActionMastery) && GetRemainingCharges(OriginalHook(Ricochet)) is 2) &&
+         GetCooldownChargeRemainingTime(OriginalHook(Ricochet)) < 15);
 
     #endregion
 
@@ -160,6 +160,12 @@ internal partial class MCH
     private static bool ReassembledDrillST =>
         IsEnabled(Preset.MCH_ST_Adv_Reassemble) && MCH_ST_Reassembled[3] && (HasStatusEffect(Buffs.Reassembled) || !HasStatusEffect(Buffs.Reassembled)) ||
         IsEnabled(Preset.MCH_ST_Adv_Reassemble) && !MCH_ST_Reassembled[3] && !HasStatusEffect(Buffs.Reassembled) ||
+        !HasStatusEffect(Buffs.Reassembled) && GetRemainingCharges(Reassemble) <= MCH_ST_ReassemblePool ||
+        !IsEnabled(Preset.MCH_ST_Adv_Reassemble);
+
+    private static bool ReassembledHotShotST =>
+        IsEnabled(Preset.MCH_ST_Adv_Reassemble) && MCH_ST_Reassembled[2] && (HasStatusEffect(Buffs.Reassembled) || !HasStatusEffect(Buffs.Reassembled)) ||
+        IsEnabled(Preset.MCH_ST_Adv_Reassemble) && !MCH_ST_Reassembled[2] && !HasStatusEffect(Buffs.Reassembled) ||
         !HasStatusEffect(Buffs.Reassembled) && GetRemainingCharges(Reassemble) <= MCH_ST_ReassemblePool ||
         !IsEnabled(Preset.MCH_ST_Adv_Reassemble);
 
@@ -220,6 +226,12 @@ internal partial class MCH
                 (!LevelChecked(AirAnchor) || MCH_ST_Reassembled[2] && GetCooldownRemainingTime(AirAnchor) > 20 || !MCH_ST_Reassembled[2]) &&
                 (!LevelChecked(Chainsaw) || MCH_ST_Reassembled[1] && GetCooldownRemainingTime(Chainsaw) > 40 || !MCH_ST_Reassembled[1]) &&
                 (!LevelChecked(Excavator) || MCH_ST_Reassembled[0] && GetCooldownRemainingTime(Chainsaw) > 40 || !MCH_ST_Reassembled[0]))
+                return true;
+
+            if (onAirAnchor &&
+                !LevelChecked(CleanShot) &&
+                GetCooldownRemainingTime(HotShot) < GCD &&
+                InActionRange(HotShot))
                 return true;
         }
 
@@ -283,6 +295,7 @@ internal partial class MCH
         }
 
         if (useAirAnchor &&
+            ReassembledHotShotST &&
             LevelChecked(HotShot) && !LevelChecked(AirAnchor) &&
             GetCooldownRemainingTime(HotShot) <= GCD / 2)
         {

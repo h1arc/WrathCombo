@@ -21,7 +21,8 @@ internal partial class MCH : PhysicalRanged
                 (HasStatusEffect(Buffs.ExcavatorReady) && InActionRange(Excavator) ||
                  ActionReady(Chainsaw) && InActionRange(Chainsaw) ||
                  LevelChecked(AirAnchor) && IsOffCooldown(AirAnchor) && InActionRange(AirAnchor) ||
-                 ActionReady(Drill) && InActionRange(Drill)))
+                 ActionReady(Drill) && InActionRange(Drill) ||
+                 !LevelChecked(CleanShot) && ActionReady(HotShot) && InActionRange(HotShot)))
                 return Reassemble;
 
             if (ContentSpecificActions.TryGet(out uint contentAction))
@@ -82,7 +83,7 @@ internal partial class MCH : PhysicalRanged
                         JustUsed(Drill, 2f) ||
                         JustUsed(Excavator, 2f))
                     {
-                        if (CanGaussRound && !JustUsed(OriginalHook(GaussRound), 2f))
+                        if (CanGaussRound && (!JustUsed(OriginalHook(GaussRound), 2f) || !LevelChecked(Ricochet)))
                             return OriginalHook(GaussRound);
 
                         if (CanRicochet && !JustUsed(OriginalHook(Ricochet), 2f))
@@ -122,7 +123,8 @@ internal partial class MCH : PhysicalRanged
                     return OriginalHook(SlugShot);
 
                 if (ComboAction is SlugShot && !LevelChecked(Drill) &&
-                    !HasStatusEffect(Buffs.Reassembled) && ActionReady(Reassemble))
+                    LevelChecked(CleanShot) && !HasStatusEffect(Buffs.Reassembled) &&
+                    ActionReady(Reassemble))
                     return Reassemble;
 
                 if (ComboAction is SlugShot && LevelChecked(CleanShot))
@@ -190,7 +192,7 @@ internal partial class MCH : PhysicalRanged
 
                     //gauss and ricochet outside HC
                     if (CanGaussRound &&
-                        !JustUsed(OriginalHook(GaussRound), 2.5f))
+                        (!JustUsed(OriginalHook(GaussRound), 2.5f) || !LevelChecked(Ricochet)))
                         return OriginalHook(GaussRound);
 
                     if (CanRicochet &&
@@ -271,7 +273,8 @@ internal partial class MCH : PhysicalRanged
                 (MCH_ST_Reassembled[0] && HasStatusEffect(Buffs.ExcavatorReady) && InActionRange(Excavator) ||
                  MCH_ST_Reassembled[1] && ActionReady(Chainsaw) && InActionRange(Chainsaw) ||
                  MCH_ST_Reassembled[2] && LevelChecked(AirAnchor) && IsOffCooldown(AirAnchor) && InActionRange(AirAnchor) ||
-                 MCH_ST_Reassembled[3] && ActionReady(Drill) && InActionRange(Drill)))
+                 MCH_ST_Reassembled[3] && ActionReady(Drill) && InActionRange(Drill) ||
+                 MCH_ST_Reassembled[4] && !LevelChecked(CleanShot) && ActionReady(HotShot) && InActionRange(HotShot)))
                 return Reassemble;
 
             if (ContentSpecificActions.TryGet(out uint contentAction))
@@ -345,7 +348,7 @@ internal partial class MCH : PhysicalRanged
                          JustUsed(Excavator, 2f)))
                     {
                         if (GetRemainingCharges(OriginalHook(GaussRound)) > MCH_ST_GaussRicoPool &&
-                            CanGaussRound && !JustUsed(OriginalHook(GaussRound), 2f))
+                            CanGaussRound && (!JustUsed(OriginalHook(GaussRound), 2f) || !LevelChecked(Ricochet)))
                             return OriginalHook(GaussRound);
 
                         if (GetRemainingCharges(OriginalHook(Ricochet)) > MCH_ST_GaussRicoPool &&
@@ -404,7 +407,7 @@ internal partial class MCH : PhysicalRanged
                     return OriginalHook(SlugShot);
 
                 if (IsEnabled(Preset.MCH_ST_Adv_Reassemble) && MCH_ST_Reassembled[4] &&
-                    ComboAction is SlugShot && !LevelChecked(Drill) &&
+                    ComboAction is SlugShot && !LevelChecked(Drill) && LevelChecked(CleanShot) &&
                     !HasStatusEffect(Buffs.Reassembled) && ActionReady(Reassemble))
                     return Reassemble;
 
@@ -488,7 +491,7 @@ internal partial class MCH : PhysicalRanged
                     //gauss and ricochet outside HC
                     if (IsEnabled(Preset.MCH_AoE_Adv_GaussRicochet))
                     {
-                        if (CanGaussRound && !JustUsed(OriginalHook(GaussRound), 2.5f))
+                        if (CanGaussRound && (!JustUsed(OriginalHook(GaussRound), 2.5f) || !LevelChecked(Ricochet)))
                             return OriginalHook(GaussRound);
 
                         if (CanRicochet && !JustUsed(OriginalHook(Ricochet), 2.5f))
