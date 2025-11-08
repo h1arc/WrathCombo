@@ -1,5 +1,7 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
+using ECommons;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using System.Linq;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
 using WrathCombo.Extensions;
@@ -823,24 +825,27 @@ internal partial class NIN : Melee
 
         protected override uint Invoke(uint actionID)
         {
-            if (actionID is not (Ten or Chi or Jin) || !HasStatusEffect(Buffs.Mudra))
+            if (!MudraSigns.Any(x => x == actionID) || (!InMudra && !Rabbitting))
                 return actionID;
-            
+
+            if (Rabbitting)
+                return Rabbit;
+
             switch (actionID)
             {
-                case Ten when LevelChecked(HyoshoRanryu) && MudraReady && HasKassatsu:
+                case Ten when LevelChecked(HyoshoRanryu) && HasKassatsu:
                     return UseHyoshoRanryu(ref actionID);
-                case Ten when LevelChecked(Suiton) && MudraReady && !HasStatusEffect(Buffs.ShadowWalker) && TrickCD <= 20:
+                case Ten when LevelChecked(Suiton) && !HasStatusEffect(Buffs.ShadowWalker) && TrickCD <= 20:
                     return UseSuiton(ref actionID);
-                case Ten when MudraReady:
+                case Ten:
                     return LevelChecked(Raiton)
                         ? UseRaiton(ref actionID)
                         : UseFumaShuriken(ref actionID);
-                case Chi when LevelChecked(GokaMekkyaku) && MudraReady && HasKassatsu:
+                case Chi when LevelChecked(GokaMekkyaku) && HasKassatsu:
                     return UseGokaMekkyaku(ref actionID);
-                case Chi when LevelChecked(Huton) && MudraReady && !HasStatusEffect(Buffs.ShadowWalker) && TrickCD <= 20:
+                case Chi when LevelChecked(Huton) && !HasStatusEffect(Buffs.ShadowWalker) && TrickCD <= 20:
                     return UseHuton(ref actionID);
-                case Chi when MudraReady:
+                case Chi:
                     return LevelChecked(Katon)
                         ? UseKaton(ref actionID)
                         : UseFumaShuriken(ref actionID);

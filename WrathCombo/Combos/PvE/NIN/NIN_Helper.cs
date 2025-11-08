@@ -15,6 +15,7 @@ internal partial class NIN
 {
     static NINGauge gauge = GetJobGauge<NINGauge>();
     public static FrozenSet<uint> MudraSigns = [Ten, Chi, Jin, TenCombo, ChiCombo, JinCombo];
+    public static FrozenSet<uint> NormalJutsus = [FumaShuriken, Raiton, Katon, Doton, Suiton, Hyoton, HyoshoRanryu, GokaMekkyaku];
     internal static bool STSimpleMode => IsEnabled(Preset.NIN_ST_SimpleMode);
     internal static bool AoESimpleMode => IsEnabled(Preset.NIN_AoE_SimpleMode);
     internal static bool NinjaWeave => CanWeave(.6f, 10);
@@ -22,6 +23,7 @@ internal partial class NIN
     #region Mudra Logic
     public static uint CurrentNinjutsu => OriginalHook(Ninjutsu);
     internal static bool InMudra = false;
+    internal static bool Rabbitting => GetStatusEffect(Buffs.Mudra)?.Param == 255;
     internal static bool MudraPhase => WasLastAction(Ten) || WasLastAction(Chi) || WasLastAction(Jin) || WasLastAction(TenCombo) || WasLastAction(ChiCombo) || WasLastAction(JinCombo);
     internal static bool MudraReady => MudraCasting.CanCast();
     internal static uint MudraCharges => GetRemainingCharges(Ten);
@@ -518,38 +520,29 @@ internal partial class NIN
     }
     internal static uint UseRaiton(ref uint actionId) // Ten Chi
     {
-        if (!MudraSigns.Contains(ActionWatching.LastAction))
-            return actionId = Rabbit;
-
         if (ActionWatching.LastAction == OriginalTen || ActionWatching.LastAction == OriginalJin)
             actionId = ChiCombo;
-        else if (ActionWatching.LastAction is ChiCombo)
+        else if (ActionWatching.LastAction == ChiCombo)
             actionId = Raiton;
 
         return actionId;
     }
     internal static uint UseHyoshoRanryu(ref uint actionId) // Ten Jin
     {
-        if (!MudraSigns.Contains(ActionWatching.LastAction))
-            return actionId = Rabbit;
-
         if (ActionWatching.LastAction is TenCombo or ChiCombo)
             actionId = JinCombo;
-        else if (ActionWatching.LastAction is JinCombo)
+        else if (ActionWatching.LastAction == JinCombo)
             actionId = HyoshoRanryu;
 
         return actionId;
     }
     internal static uint UseSuiton(ref uint actionId) // Ten Chi Jin
     {
-        if (!MudraSigns.Contains(ActionWatching.LastAction))
-            return actionId = Rabbit;
-
         if (ActionWatching.LastAction == OriginalTen)
             actionId = ChiCombo;
-        else if (ActionWatching.LastAction is ChiCombo)
+        else if (ActionWatching.LastAction == ChiCombo)
             actionId = JinCombo;
-        else if (ActionWatching.LastAction is JinCombo)
+        else if (ActionWatching.LastAction == JinCombo)
             actionId = Suiton;
 
         return actionId;
@@ -557,9 +550,6 @@ internal partial class NIN
     //Multi Target
     internal static uint UseGokaMekkyaku(ref uint actionId) // Chi Ten
     {
-        if (!MudraSigns.Contains(ActionWatching.LastAction))
-            return actionId = Rabbit;
-
         if (ActionWatching.LastAction == OriginalChi)
             actionId = TenCombo;
         else if (ActionWatching.LastAction is TenCombo)
@@ -569,9 +559,6 @@ internal partial class NIN
     }
     internal static uint UseKaton(ref uint actionId) // Chi Ten
     {
-        if (!MudraSigns.Contains(ActionWatching.LastAction))
-            return actionId = Rabbit;
-
         if (ActionWatching.LastAction == OriginalChi)
             actionId = TenCombo;
         else if (ActionWatching.LastAction is TenCombo)
@@ -581,9 +568,6 @@ internal partial class NIN
     }
     internal static uint UseDoton(ref uint actionId)  //Jin Ten Chi
     {
-        if (!MudraSigns.Contains(ActionWatching.LastAction))
-            return actionId = Rabbit;
-
         if (ActionWatching.LastAction == OriginalJin)
             actionId = TenCombo;
         else if (ActionWatching.LastAction is TenCombo)
@@ -596,9 +580,6 @@ internal partial class NIN
 
     internal static uint UseHuton(ref uint actionId) // Jin Chi Ten
     {
-        if (!MudraSigns.Contains(ActionWatching.LastAction))
-            return actionId = Rabbit;
-
         if (ActionWatching.LastAction == OriginalChi)
             actionId = JinCombo;
         else if (ActionWatching.LastAction is JinCombo)
