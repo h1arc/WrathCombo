@@ -59,14 +59,21 @@ internal partial class MCH
             {
                 if (MCH_ST_WildfireBossOption == 0 || TargetIsBoss())
                 {
-                    //Add some form of loop for minutes
-                    if (LevelChecked(Excavator) &&
-                        (WFCD.InRange(5, 40) || WFCD.InRange(55, 75)))
-                        return true;
+                    switch (Battery)
+                    {
+                        //Always use on 100
+                        case 100:
+                            
+                        //Failsafe
+                        case > 80 when
+                            (HasStatusEffect(Buffs.ExcavatorReady) ||
+                             ActionReady(Chainsaw) ||
+                             ActionReady(OriginalHook(AirAnchor))):
 
-                    //Always use on 100
-                    if (Battery is 100)
-                        return true;
+                        case > 90 when ComboAction == OriginalHook(SlugShot):
+                            return true;
+
+                    }
                 }
 
                 if (MCH_ST_WildfireBossOption == 1 && !TargetIsBoss() && Battery >= MCH_ST_TurretUsage)
