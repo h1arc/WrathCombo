@@ -23,6 +23,7 @@ internal partial class MCH
             case false when
                 (Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) &&
                 !IsComboExpiring(6) && ActionReady(Hypercharge) &&
+                !JustUsed(BarrelStabilizer) &&
                 DrillCD && AirAnchorCD && ChainSawCD &&
                 !HasStatusEffect(Buffs.ExcavatorReady) &&
                 (ActionReady(Wildfire) ||
