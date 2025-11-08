@@ -829,25 +829,25 @@ internal partial class NIN : Melee
             switch (actionID)
             {
                 case Ten when LevelChecked(HyoshoRanryu) && MudraReady && HasKassatsu:
-                    return UseHyoshoRanryu(actionID);
+                    return UseHyoshoRanryu(ref actionID);
                 case Ten when LevelChecked(Suiton) && MudraReady && !HasStatusEffect(Buffs.ShadowWalker) && TrickCD <= 20:
-                    return UseSuiton(actionID);
+                    return UseSuiton(ref actionID);
                 case Ten when MudraReady:
                     return LevelChecked(Raiton)
-                        ? UseRaiton(actionID)
-                        : UseFumaShuriken(actionID);
+                        ? UseRaiton(ref actionID)
+                        : UseFumaShuriken(ref actionID);
                 case Chi when LevelChecked(GokaMekkyaku) && MudraReady && HasKassatsu:
-                    return UseGokaMekkyaku(actionID);
+                    return UseGokaMekkyaku(ref actionID);
                 case Chi when LevelChecked(Huton) && MudraReady && !HasStatusEffect(Buffs.ShadowWalker) && TrickCD <= 20:
-                    return UseHuton(actionID);
+                    return UseHuton(ref actionID);
                 case Chi when MudraReady:
                     return LevelChecked(Katon)
-                        ? UseKaton(actionID)
-                        : UseFumaShuriken(actionID);
+                        ? UseKaton(ref actionID)
+                        : UseFumaShuriken(ref actionID);
                 case Jin:
                     return LevelChecked(Doton)
-                        ? UseDoton(actionID)
-                        : UseFumaShuriken(actionID);
+                        ? UseDoton(ref actionID)
+                        : UseFumaShuriken(ref actionID);
                 default:
                     return actionID;
             }

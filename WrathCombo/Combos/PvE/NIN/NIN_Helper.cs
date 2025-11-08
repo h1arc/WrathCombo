@@ -135,7 +135,7 @@ internal partial class NIN
     #endregion
 
     #region Kassatsu, Meisui, Assassinate, TenChiJin Logic
-    internal static bool HasKassatsu => HasStatusEffect(Buffs.Kassatsu);
+    internal static bool HasKassatsu => HasStatusEffect(Buffs.Kassatsu) || JustUsed(Kassatsu, 1);
     internal static float KassatsuRemaining => GetStatusEffectRemainingTime(Buffs.Kassatsu);
     internal static bool CanKassatsu => !MudraPhase && ActionReady(Kassatsu) && NinjaWeave &&
                                         (TrickCD < 10 && HasStatusEffect(Buffs.ShadowWalker) ||
@@ -163,6 +163,10 @@ internal partial class NIN
                                             (BuffWindow || TrickDisabledAoE);
 
     internal static bool CanTenriJindo => NinjaWeave && HasStatusEffect(Buffs.TenriJendoReady);
+
+    internal static uint OriginalTen => HasKassatsu ? TenCombo : Ten;
+    internal static uint OriginalJin => HasKassatsu ? JinCombo : Jin;
+    internal static uint OriginalChi => HasKassatsu ? ChiCombo : Chi;
     #endregion
 
     #region TCJ Methods
@@ -508,75 +512,80 @@ internal partial class NIN
 
     #region Mudra Standalone Logic
     // Single Target
-    internal static uint UseFumaShuriken(uint actionId)
+    internal static uint UseFumaShuriken(ref uint actionId)
     {
-        return ActionWatching.LastAction is Ten or Chi or Jin ? FumaShuriken : Ten;
+        return actionId = ActionWatching.LastAction is Ten or Chi or Jin ? FumaShuriken : Ten;
     }
-    internal static uint UseRaiton(uint actionId) // Ten Chi
+    internal static uint UseRaiton(ref uint actionId) // Ten Chi
     {
-        uint t = HasKassatsu ? TenCombo : Ten;
-        uint j = HasKassatsu ? JinCombo : Jin;
-
-        if (ActionWatching.LastAction == t || ActionWatching.LastAction == j)
-            return ChiCombo;
-
-        if (ActionWatching.LastAction is ChiCombo)
-            return Raiton;
+        if (ActionWatching.LastAction == OriginalTen || ActionWatching.LastAction == OriginalJin)
+            actionId = ChiCombo;
+        else if (ActionWatching.LastAction is ChiCombo)
+            actionId = Raiton;
 
         return actionId;
     }
-    internal static uint UseHyoshoRanryu(uint actionId) // Ten Jin
+    internal static uint UseHyoshoRanryu(ref uint actionId) // Ten Jin
     {
-        if (OriginalHook(Ninjutsu) == Ninjutsu)
-            return TenCombo;
-        return OriginalHook(Ninjutsu) == FumaShuriken &&
-               ActionWatching.LastAction is TenCombo
-            ? JinCombo
-            : OriginalHook(Ninjutsu);
+        if (ActionWatching.LastAction is TenCombo or ChiCombo)
+            actionId = JinCombo;
+        else if (ActionWatching.LastAction is JinCombo)
+            actionId = HyoshoRanryu;
+
+        return actionId;
     }
-    internal static uint UseSuiton(uint actionId) // Ten Chi Jin
+    internal static uint UseSuiton(ref uint actionId) // Ten Chi Jin
     {
-        if (OriginalHook(Ninjutsu) == Ninjutsu)
-            return Ten;
-        if (ActionWatching.LastAction is Ten)
-            return ChiCombo;
-        return ActionWatching.LastAction is ChiCombo ? JinCombo : OriginalHook(Ninjutsu);
+        if (ActionWatching.LastAction == OriginalTen)
+            actionId = ChiCombo;
+        else if (ActionWatching.LastAction is ChiCombo)
+            actionId = JinCombo;
+        else if (ActionWatching.LastAction is JinCombo)
+            actionId = Suiton;
+
+        return actionId;
     }
     //Multi Target
-    internal static uint UseGokaMekkyaku(uint actionId) // Chi Ten
+    internal static uint UseGokaMekkyaku(ref uint actionId) // Chi Ten
     {
-        if (OriginalHook(Ninjutsu) == Ninjutsu)
-            return HasKassatsu ? ChiCombo : Chi;
-        return OriginalHook(Ninjutsu) == FumaShuriken &&
-               ActionWatching.LastAction is Chi or ChiCombo
-            ? TenCombo
-            : OriginalHook(Ninjutsu);
+        if (ActionWatching.LastAction == OriginalChi)
+            actionId = TenCombo;
+        else if (ActionWatching.LastAction is TenCombo)
+            actionId = GokaMekkyaku;
+
+        return actionId;
     }
-    internal static uint UseKaton(uint actionId) // Chi Ten
+    internal static uint UseKaton(ref uint actionId) // Chi Ten
     {
-        if (OriginalHook(Ninjutsu) == Ninjutsu)
-            return HasKassatsu ? ChiCombo : Chi;
-        return OriginalHook(Ninjutsu) == FumaShuriken &&
-               ActionWatching.LastAction is Jin or JinCombo or ChiCombo or Chi
-            ? TenCombo
-            : OriginalHook(Ninjutsu);
+        if (ActionWatching.LastAction == OriginalChi)
+            actionId = TenCombo;
+        else if (ActionWatching.LastAction is TenCombo)
+            actionId = Katon;
+
+        return actionId;
     }
-    internal static uint UseDoton(uint actionId)  //Jin Ten Chi
+    internal static uint UseDoton(ref uint actionId)  //Jin Ten Chi
     {
-        if (OriginalHook(Ninjutsu) == Ninjutsu)
-            return HasKassatsu ? JinCombo : Jin;
-        if (ActionWatching.LastAction is Jin or JinCombo)
-            return TenCombo;
-        return ActionWatching.LastAction is TenCombo ? ChiCombo : OriginalHook(Ninjutsu);
+        if (ActionWatching.LastAction == OriginalJin)
+            actionId = TenCombo;
+        else if (ActionWatching.LastAction is TenCombo)
+            actionId = ChiCombo;
+        else if (ActionWatching.LastAction is ChiCombo)
+            actionId = Doton;
+
+        return actionId;
     }
 
-    internal static uint UseHuton(uint actionId) // Jin Chi Ten
+    internal static uint UseHuton(ref uint actionId) // Jin Chi Ten
     {
-        if (OriginalHook(Ninjutsu) == Ninjutsu)
-            return Chi;
-        if (ActionWatching.LastAction is Chi or ChiCombo)
-            return JinCombo;
-        return ActionWatching.LastAction is JinCombo ? TenCombo : Huton;
+        if (ActionWatching.LastAction == OriginalChi)
+            actionId = JinCombo;
+        else if (ActionWatching.LastAction is JinCombo)
+            actionId = TenCombo;
+        else if (ActionWatching.LastAction is TenCombo)
+            actionId = Huton;
+
+        return actionId;
     }
     #endregion
 
