@@ -92,22 +92,24 @@ internal partial class MCH
 
     #region Gauss and Rico
 
-    private static bool OvercapLowlevelGaussRound =>
-        ActionReady(GaussRound) && !LevelChecked(Hypercharge) && GetRemainingCharges(GaussRound) is 2;
+    private static bool OvercapGaussRound =>
+        ActionReady(GaussRound) && ((!LevelChecked(Traits.ChargedActionMastery) && GetRemainingCharges(OriginalHook(GaussRound)) is 1 ||
+                                     LevelChecked(Traits.ChargedActionMastery) && GetRemainingCharges(OriginalHook(GaussRound)) is 2) &&
+                                    GetCooldownChargeRemainingTime(OriginalHook(GaussRound)) < 25 ||
+                                    !LevelChecked(Hypercharge) && GetRemainingCharges(OriginalHook(GaussRound)) is 2);
+
+    private static bool OvercapRicochet =>
+        ActionReady(Ricochet) && (!LevelChecked(Traits.ChargedActionMastery) && GetRemainingCharges(OriginalHook(Ricochet)) is 1 ||
+                                  LevelChecked(Traits.ChargedActionMastery) && GetRemainingCharges(OriginalHook(Ricochet)) is 2) &&
+        GetCooldownChargeRemainingTime(OriginalHook(Ricochet)) < 25;
 
     private static bool CanGaussRound =>
         ActionReady(GaussRound) &&
-        (GetRemainingCharges(OriginalHook(GaussRound)) >= GetRemainingCharges(OriginalHook(Ricochet)) ||
-         (!LevelChecked(Traits.ChargedActionMastery) && GetRemainingCharges(OriginalHook(GaussRound)) is 1 ||
-          LevelChecked(Traits.ChargedActionMastery) && GetRemainingCharges(OriginalHook(GaussRound)) is 2) &&
-         GetCooldownChargeRemainingTime(OriginalHook(GaussRound)) < 15);
+        GetRemainingCharges(OriginalHook(GaussRound)) >= GetRemainingCharges(OriginalHook(Ricochet));
 
     private static bool CanRicochet =>
         ActionReady(Ricochet) &&
-        (GetRemainingCharges(OriginalHook(Ricochet)) > GetRemainingCharges(OriginalHook(GaussRound)) ||
-         (!LevelChecked(Traits.ChargedActionMastery) && GetRemainingCharges(OriginalHook(Ricochet)) is 1 ||
-          LevelChecked(Traits.ChargedActionMastery) && GetRemainingCharges(OriginalHook(Ricochet)) is 2) &&
-         GetCooldownChargeRemainingTime(OriginalHook(Ricochet)) < 15);
+        GetRemainingCharges(OriginalHook(Ricochet)) > GetRemainingCharges(OriginalHook(GaussRound));
 
     #endregion
 
