@@ -54,7 +54,7 @@ internal partial class DRG
 
                 case Preset.DRG_ST_Mirage:
                     DrawAdditionalBoolChoice(DRG_ST_DoubleMirage,
-                        "Burst Mirage Dive During LotD", "Adds Mirage Dive to the rotation when under Life of the Dragon.");
+                        "Burst Mirage Dive During LotD", "Adds Mirage Dive to the rotation when under Life of the Dragon.\nWorks best on 2.50 GCD.");
                     break;
 
                 case Preset.DRG_ST_DragonfireDive:
