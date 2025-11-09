@@ -198,20 +198,20 @@ internal partial class MCH
             !HasStatusEffect(Buffs.Reassembled) && ActionReady(Reassemble))
         {
             if (onExcavator &&
-                LevelChecked(Excavator) &&
+                LevelChecked(Excavator) && Battery < 90 &&
                 HasStatusEffect(Buffs.ExcavatorReady) &&
                 InActionRange(Excavator))
                 return true;
 
             if (onChainsaw &&
-                LevelChecked(Chainsaw) &&
+                LevelChecked(Chainsaw) && Battery < 90 &&
                 GetCooldownRemainingTime(Chainsaw) < GCD &&
                 InActionRange(Chainsaw) &&
                 (!LevelChecked(Excavator) || !MCH_ST_Reassembled[0]))
                 return true;
 
             if (onAirAnchor &&
-                LevelChecked(AirAnchor) &&
+                LevelChecked(AirAnchor) && Battery < 90 &&
                 GetCooldownRemainingTime(AirAnchor) < GCD &&
                 InActionRange(AirAnchor) &&
                 (!LevelChecked(Excavator) || MCH_ST_Reassembled[0] && GetCooldownRemainingTime(Chainsaw) > 40 || !MCH_ST_Reassembled[0]))
@@ -228,7 +228,7 @@ internal partial class MCH
                 (!LevelChecked(Excavator) || MCH_ST_Reassembled[0] && GetCooldownRemainingTime(Chainsaw) > 40 || !MCH_ST_Reassembled[0]))
                 return true;
 
-            if (onAirAnchor &&
+            if (onAirAnchor && Battery < 90 &&
                 !LevelChecked(CleanShot) &&
                 GetCooldownRemainingTime(HotShot) < GCD &&
                 InActionRange(HotShot))
