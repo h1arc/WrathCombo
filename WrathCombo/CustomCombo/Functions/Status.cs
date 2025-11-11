@@ -317,8 +317,8 @@ internal abstract partial class CustomComboFunctions
                 // Wolf of Stone = 18225
                 if (targetID is 18219 or 18225)
                 {
-                    if (HasStatusEffect(4389)) return targetID != 18219; // Target Wolf of Stone
-                    if (HasStatusEffect(4390)) return targetID != 18225; // Target Wolf of Wind
+                    if (HasStatusEffect(4389)) return targetID != 18225; // Target Wolf of Wind
+                    if (HasStatusEffect(4390)) return targetID != 18219; // Target Wolf of Stone
                 }
                 return false;
             
