@@ -425,7 +425,7 @@ internal partial class DRK
                  IsAoEEnabled(flags, Preset.DRK_AoE_Mit_Reprisal)) &&
                 reprisalUseForRaidwides &&
                 Role.CanReprisal(reprisalThreshold, reprisalTargetCount,
-                    !flags.HasFlag(Combo.AoE)))
+                    target: Target(flags)))
                 return (action = Role.Reprisal) != 0;
 
             #endregion
@@ -1016,7 +1016,7 @@ internal partial class DRK
                      HasStatusEffect(Buffs.Oblation, anyOwner: true))) &&
                   GetRemainingCharges(Oblation) > DRK_Mit_Oblation_Charges),
         (Role.Reprisal, Preset.DRK_Mit_Reprisal,
-            () => Role.CanReprisal(checkTargetForDebuff: false)),
+            () => Role.CanReprisal()),
         (DarkMissionary, Preset.DRK_Mit_DarkMissionary,
             () => DRK_Mit_DarkMissionary_PartyRequirement ==
                 (int)PartyRequirement.No || IsInParty()),
