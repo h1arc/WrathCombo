@@ -23,14 +23,8 @@ internal partial class PLD : Tank
                 if (ComboAction is FastBlade && LevelChecked(RiotBlade))
                     return RiotBlade;
 
-                if (ComboAction is RiotBlade)
-                {
-                    if (LevelChecked(RoyalAuthority))
-                        return OriginalHook(RoyalAuthority);
-
-                    if (LevelChecked(RageOfHalone))
-                        return OriginalHook(RageOfHalone);
-                }
+                if (ComboAction is RiotBlade && LevelChecked(RageOfHalone))
+                    return OriginalHook(RageOfHalone);
             }
 
             return FastBlade;
