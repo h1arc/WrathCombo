@@ -15,7 +15,7 @@ internal partial class PLD : Tank
 
         protected override uint Invoke(uint actionID)
         {
-            if (actionID is not RageOfHalone)
+            if (actionID is not (RageOfHalone or RoyalAuthority))
                 return actionID;
 
             if (ComboTimer > 0)
@@ -23,8 +23,14 @@ internal partial class PLD : Tank
                 if (ComboAction is FastBlade && LevelChecked(RiotBlade))
                     return RiotBlade;
 
-                if (ComboAction is RiotBlade && LevelChecked(RageOfHalone))
-                    return OriginalHook(RageOfHalone);
+                if (ComboAction is RiotBlade)
+                {
+                    if (LevelChecked(RoyalAuthority))
+                        return OriginalHook(RoyalAuthority);
+
+                    if (LevelChecked(RageOfHalone))
+                        return OriginalHook(RageOfHalone);
+                }
             }
 
             return FastBlade;
