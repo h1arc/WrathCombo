@@ -4063,15 +4063,11 @@ public enum Preset
     [Hidden]
     [CustomComboInfo("Hidden Options", "Collection of cheeky or encounter-specific extra options only available to those in the know.\nDo not expect these options to be maintained, or even kept, after they are no longer Current.", Job.MNK)]
     MNK_Hidden = 9300,
-
-    [ParentCombo(MNK_Hidden)]
-    [Hidden]
-    [CustomComboInfo("M6S: Hold Burst on Squirrels", "When you're targeting Squirrels in M6S add phase, hold burst.\n(until about the time the first manta is dying)", Job.MNK)]
-    MNK_Hid_M6SHoldSquirrelBurst = 9301,
-
+    
     #endregion
 
     // Last value = 9045
+    // Hidden = 9300
 
     #endregion
 
@@ -6407,19 +6403,14 @@ public enum Preset
     [CustomComboInfo("Hidden Options", "Collection of cheeky or encounter-specific extra options only available to those in the know.\nDo not expect these options to be maintained, or even kept, after they are no longer Current.", Job.SAM)]
     [Hidden]
     SAM_Hidden = 15300,
-
-    [ParentCombo(SAM_Hidden)]
-    [CustomComboInfo("M6S: Hold Burst on Squirrels", "When you're targeting Squirrels in M6S add phase, hold burst.\n(until about the time the first manta is dying)", Job.SAM)]
-    [Hidden]
-    SAM_Hid_M6SHoldSquirrelBurst = 15301,
+    
 
     #endregion
 
     // Last Value ST = 15027
     // Last Value AoE = 15113
     // Last Value Misc = 15257
-    // Last Value Hidden = 15301
-
+    // Last Value Hidden = 153010
     #endregion
 
     #region SCHOLAR
