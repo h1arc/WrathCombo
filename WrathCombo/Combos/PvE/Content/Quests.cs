@@ -76,9 +76,10 @@ public class Quests
                  StringComparison.InvariantCultureIgnoreCase) ?? false) ||
              (SimpleTarget.NearestEnemyTarget?.Name.TextValue.Equals(ArcherButtName,
                  StringComparison.InvariantCultureIgnoreCase) ?? false) ||
-             Svc.Objects.Any(x => x.Name.TextValue.Equals(ArcherButtName,
-                 StringComparison.InvariantCultureIgnoreCase) &&
-                                  x.IsTargetable && x.IsWithinRange(30))))
+             Svc.Objects.Any(x => x is IBattleNpc && x.IsTargetable &&
+                                  x.IsWithinRange(30) &&
+                                  x.Name.TextValue.Equals(ArcherButtName,
+                                      StringComparison.InvariantCultureIgnoreCase))))
         {
             actionID = BRD.HeavyShot;
             return true;
