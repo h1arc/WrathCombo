@@ -18,6 +18,14 @@ namespace WrathCombo.Combos.PvE.Content;
 
 public class Quests
 {
+    #region ARC-specific caches
+
+    private static readonly string ArcherButtName =
+        Svc.Data.GetExcelSheet<EObjName>().GetRowOrDefault(2000925)?.Singular
+            .ToString() ?? string.Empty;
+
+    #endregion
+
     private static Job Job => Player.Job;
 
     private static IGameObject? Target => SimpleTarget.HardTarget;
@@ -45,8 +53,7 @@ public class Quests
         var target = Target.IfFriendly() ?? HealTarget;
 
         if (Player.Level > 29 &&
-            target?.ObjectKind is ObjectKind.EventNpc &&
-            target.BaseId is 1008174)
+            target is { ObjectKind: ObjectKind.EventNpc, BaseId: 1008174 })
         {
             actionID = WHM.Cure;
             return true;
@@ -56,7 +63,7 @@ public class Quests
 
         return false;
     }
-    
+
     private static bool TryGetARCFix(ref uint actionID)
     {
         if (Job != Job.ARC)
@@ -64,16 +71,14 @@ public class Quests
 
         #region Level 5-15 ARC Quest Fix
 
-        var archeryButt = Svc.Data.GetExcelSheet<EObjName>()[2000925]
-            .Singular.ToString();
-
         if (Player.Level < 30 &&
-            (Target.Name.TextValue.Equals(archeryButt,
-                 StringComparison.InvariantCultureIgnoreCase) ||
-             SimpleTarget.NearestEnemyTarget.Name.TextValue.Equals(archeryButt,
-                 StringComparison.InvariantCultureIgnoreCase) ||
-             Svc.Objects.Any(x => x.Name.TextValue.Equals(archeryButt,
-                 StringComparison.InvariantCultureIgnoreCase) && x.IsTargetable)))
+            ((Target?.Name.TextValue.Equals(ArcherButtName,
+                 StringComparison.InvariantCultureIgnoreCase) ?? false) ||
+             (SimpleTarget.NearestEnemyTarget?.Name.TextValue.Equals(ArcherButtName,
+                 StringComparison.InvariantCultureIgnoreCase) ?? false) ||
+             Svc.Objects.Any(x => x.Name.TextValue.Equals(ArcherButtName,
+                 StringComparison.InvariantCultureIgnoreCase) &&
+                                  x.IsTargetable && x.IsWithinRange(30))))
         {
             actionID = BRD.HeavyShot;
             return true;
