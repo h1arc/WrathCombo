@@ -275,6 +275,14 @@ public partial class Configuration
     /// <summary>
     ///     Fired when a user/config setting is changed in any way.
     /// </summary>
+    /// <remarks>
+    ///     TODO: Trigger on preset change in ui, preset change via cmd, config change,
+    ///           ipc stuff(?), setting change via ui, etc.
+    ///           (replacing the DebugFile.logs)
+    ///     TODO: Add Retarget-Clearing if it's a preset or config change.
+    ///           (fix hanging Retargets)
+    ///     TODO: Add DebugFile logging.
+    /// </remarks>
     public static event EventHandler<SettingChangeEventArgs>? ConfigChanged;
 
     /// <summary>
