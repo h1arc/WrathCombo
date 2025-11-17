@@ -41,10 +41,10 @@ public class Quests
 
         if (Player.Level > 29 &&
             target?.ObjectKind is ObjectKind.EventNpc &&
-            (target.BaseId is 1008174 ||
-             target.EntityId is 3758096384))
+            target.BaseId is 1008174)
         {
             actionID = WHM.Cure;
+            return true;
         }
 
         #endregion
