@@ -23,10 +23,7 @@ internal class UserFloat : UserData
     public UserFloat(string configName, float defaults = 0f) : base(configName)
     {
         if (!Configuration.CustomFloatValues.ContainsKey(ConfigName))
-        {
-            Configuration.SetCustomFloatValue(ConfigName, defaults);
-            Service.Configuration.Save();
-        }
+            Configuration.SetCustomFloatValue(ConfigName, defaults, true);
 
         Default = defaults;
         MasterList.Add(ConfigName, this);
@@ -37,18 +34,11 @@ internal class UserFloat : UserData
 
     public float Value
     {
-        set
-        {
-            Configuration.SetCustomFloatValue(ConfigName, value);
-            Service.Configuration.Save();
-        }
+        set => Configuration.SetCustomFloatValue(ConfigName, value);
     }
 
-    public override void ResetToDefault()
-    {
+    public override void ResetToDefault() =>
         Configuration.SetCustomFloatValue(ConfigName, Default);
-        Service.Configuration.Save();
-    }
 }
 
 internal class UserInt : UserData
@@ -58,10 +48,7 @@ internal class UserInt : UserData
     public UserInt(string configName, int defaults = 0) : base(configName)
     {
         if (!Configuration.CustomIntValues.ContainsKey(ConfigName))
-        {
-            Configuration.SetCustomIntValue(ConfigName, defaults);
-            Service.Configuration.Save();
-        }
+            Configuration.SetCustomIntValue(ConfigName, defaults, true);
 
         Default = defaults;
         MasterList.Add(ConfigName, this);
@@ -72,18 +59,11 @@ internal class UserInt : UserData
 
     public int Value
     {
-        set
-        {
-            Configuration.SetCustomIntValue(ConfigName, value);
-            Service.Configuration.Save();
-        }
+        set => Configuration.SetCustomIntValue(ConfigName, value);
     }
 
-    public override void ResetToDefault()
-    {
+    public override void ResetToDefault() =>
         Configuration.SetCustomIntValue(ConfigName, Default);
-        Service.Configuration.Save();
-    }
 }
 
 internal class UserBool : UserData
@@ -93,10 +73,7 @@ internal class UserBool : UserData
     public UserBool(string configName, bool defaults = false) : base(configName)
     {
         if (!Configuration.CustomBoolValues.ContainsKey(ConfigName))
-        {
-            Configuration.SetCustomBoolValue(ConfigName, defaults);
-            Service.Configuration.Save();
-        }
+            Configuration.SetCustomBoolValue(ConfigName, defaults, true);
 
         Default = defaults;
         MasterList.Add(ConfigName, this);
@@ -106,18 +83,11 @@ internal class UserBool : UserData
 
     public bool Value
     {
-        set
-        {
-            Configuration.SetCustomBoolValue(ConfigName, value);
-            Service.Configuration.Save();
-        }
+        set => Configuration.SetCustomBoolValue(ConfigName, value);
     }
 
-    public override void ResetToDefault()
-    {
+    public override void ResetToDefault() =>
         Configuration.SetCustomBoolValue(this.ConfigName, Default);
-        Service.Configuration.Save();
-    }
 }
 
 internal class UserIntArray : UserData
@@ -128,10 +98,7 @@ internal class UserIntArray : UserData
     {
         defaults ??= [];
         if (!Configuration.CustomIntArrayValues.ContainsKey(ConfigName))
-        {
             Configuration.SetCustomIntArrayValue(ConfigName, defaults);
-            Service.Configuration.Save();
-        }
 
         Default = defaults;
         MasterList.Add(ConfigName, this);
@@ -153,7 +120,6 @@ internal class UserIntArray : UserData
         var array = Configuration.GetCustomIntArrayValue(ConfigName);
         Array.Resize(ref array, maxValues);
         Configuration.SetCustomIntArrayValue(ConfigName, array);
-        Service.Configuration.Save();
     }
     #endregion
 
@@ -178,7 +144,6 @@ internal class UserIntArray : UserData
             Array.Resize(ref array, index + 1);
             array[index] = 0;
             Configuration.SetCustomIntArrayValue(ConfigName, array);
-            Service.Configuration.Save();
 
             return Configuration.GetCustomIntArrayValue(ConfigName)[index];
         }
@@ -192,11 +157,8 @@ internal class UserIntArray : UserData
         }
     }
 
-    public override void ResetToDefault()
-    {
+    public override void ResetToDefault() =>
         Configuration.SetCustomIntArrayValue(ConfigName, (int[])Default.Clone());
-        Service.Configuration.Save();
-    }
 }
 
 internal class UserBoolArray : UserData
@@ -207,10 +169,7 @@ internal class UserBoolArray : UserData
     {
         defaults ??= [];
         if (!Configuration.CustomBoolArrayValues.ContainsKey(ConfigName))
-        {
             Configuration.SetCustomBoolArrayValue(ConfigName, defaults);
-            Service.Configuration.Save();
-        }
 
         Default = defaults;
         MasterList.Add(ConfigName, this);
@@ -223,7 +182,6 @@ internal class UserBoolArray : UserData
         var array = Configuration.GetCustomBoolArrayValue(ConfigName);
         Array.Resize(ref array, maxValues);
         Configuration.SetCustomBoolArrayValue(ConfigName, array);
-        Service.Configuration.Save();
     }
     #endregion
 
@@ -248,7 +206,6 @@ internal class UserBoolArray : UserData
             Array.Resize(ref array, index + 1);
             array[index] = false;
             Configuration.SetCustomBoolArrayValue(ConfigName, array);
-            Service.Configuration.Save();
 
             return Configuration.GetCustomBoolArrayValue(ConfigName)[index];
         }
@@ -262,9 +219,6 @@ internal class UserBoolArray : UserData
         }
     }
 
-    public override void ResetToDefault()
-    {
+    public override void ResetToDefault() =>
         Configuration.SetCustomBoolArrayValue(ConfigName, Default);
-        Service.Configuration.Save();
-    }
 }

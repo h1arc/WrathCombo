@@ -175,57 +175,60 @@ public partial class Configuration
     #region Custom Floats
 
     /// <summary> Gets a custom float value. </summary>
-    public static float GetCustomFloatValue(string config, float defaultMinValue = 0)
+    public static float GetCustomFloatValue(string config, float value = 0)
     {
         if (!CustomFloatValues.TryGetValue(config, out float configValue))
         {
-            SetCustomFloatValue(config, defaultMinValue);
-            return defaultMinValue;
+            SetCustomFloatValue(config, value, true);
+            return value;
         }
 
         return configValue;
     }
 
     /// <summary> Sets a custom float value. </summary>
-    public static void SetCustomFloatValue(string config, float value) => CustomFloatValues[config] = value;
+    public static void SetCustomFloatValue
+        (string config, float value, bool shouldBatch = false)
+    {
+        CustomFloatValues[config] = value;
+        
+        Service.Configuration.TriggerUserConfigChanged(
+            ConfigChangeType.UserData, ConfigChangeSource.UI,
+            config, value);
+        
+        // todo: add batching logic, for initial plugin loading
+        Service.Configuration.Save();
+    }
 
     #endregion
 
     #region Custom Ints
 
     /// <summary> Gets a custom integer value. </summary>
-    public static int GetCustomIntValue(string config, int defaultMinVal = 0)
+    public static int GetCustomIntValue(string config, int value = 0)
     {
         if (!CustomIntValues.TryGetValue(config, out int configValue))
         {
-            SetCustomIntValue(config, defaultMinVal);
-            return defaultMinVal;
+            SetCustomIntValue(config, value, true);
+            return value;
         }
 
         return configValue;
     }
 
     /// <summary> Sets a custom integer value. </summary>
-    public static void SetCustomIntValue(string config, int value) => CustomIntValues[config] = value;
-
-    #endregion
-
-    #region Custom Int Arrays
-
-    /// <summary> Gets a custom integer array value. </summary>
-    public static int[] GetCustomIntArrayValue(string config)
+    public static void SetCustomIntValue
+        (string config, int value, bool shouldBatch = false)
     {
-        if (!CustomIntArrayValues.TryGetValue(config, out int[]? configValue))
-        {
-            SetCustomIntArrayValue(config, []);
-            return [];
-        }
-
-        return configValue;
+        CustomIntValues[config] = value;
+        
+        Service.Configuration.TriggerUserConfigChanged(
+            ConfigChangeType.UserData, ConfigChangeSource.UI,
+            config, value);
+        
+        // todo: add batching logic, for initial plugin loading
+        Service.Configuration.Save();
     }
-
-    /// <summary> Sets a custom integer array value. </summary>
-    public static void SetCustomIntArrayValue(string config, int[] value) => CustomIntArrayValues[config] = value;
 
     #endregion
 
@@ -236,7 +239,7 @@ public partial class Configuration
     {
         if (!CustomBoolValues.TryGetValue(config, out bool configValue))
         {
-            SetCustomBoolValue(config, false);
+            SetCustomBoolValue(config, false, true);
             return false;
         }
 
@@ -244,7 +247,48 @@ public partial class Configuration
     }
 
     /// <summary> Sets a custom boolean value. </summary>
-    public static void SetCustomBoolValue(string config, bool value) => CustomBoolValues[config] = value;
+    public static void SetCustomBoolValue
+        (string config, bool value, bool shouldBatch = false)
+    {
+        CustomBoolValues[config] = value;
+        
+        Service.Configuration.TriggerUserConfigChanged(
+            ConfigChangeType.UserData, ConfigChangeSource.UI,
+            config, value);
+        
+        // todo: add batching logic, for initial plugin loading
+        Service.Configuration.Save();
+    }
+
+    #endregion
+
+    #region Custom Int Arrays
+
+    /// <summary> Gets a custom integer array value. </summary>
+    public static int[] GetCustomIntArrayValue(string config)
+    {
+        if (!CustomIntArrayValues.TryGetValue(config, out int[]? configValue))
+        {
+            SetCustomIntArrayValue(config, [], true);
+            return [];
+        }
+
+        return configValue;
+    }
+
+    /// <summary> Sets a custom integer array value. </summary>
+    public static void SetCustomIntArrayValue
+        (string config, int[] value, bool shouldBatch = false)
+    {
+        CustomIntArrayValues[config] = value;
+        
+        Service.Configuration.TriggerUserConfigChanged(
+            ConfigChangeType.UserData, ConfigChangeSource.UI,
+            config, value);
+        
+        // todo: add batching logic, for initial plugin loading
+        Service.Configuration.Save();
+    }
 
     #endregion
 
@@ -255,7 +299,7 @@ public partial class Configuration
     {
         if (!CustomBoolArrayValues.TryGetValue(config, out bool[]? configValue))
         {
-            SetCustomBoolArrayValue(config, []);
+            SetCustomBoolArrayValue(config, [], true);
             return [];
         }
 
@@ -263,7 +307,18 @@ public partial class Configuration
     }
 
     /// <summary> Sets a custom boolean array value. </summary>
-    public static void SetCustomBoolArrayValue(string config, bool[] value) => CustomBoolArrayValues[config] = value;
+    public static void SetCustomBoolArrayValue
+        (string config, bool[] value, bool shouldBatch = false)
+    {
+        CustomBoolArrayValues[config] = value;
+        
+        Service.Configuration.TriggerUserConfigChanged(
+            ConfigChangeType.UserData, ConfigChangeSource.UI,
+            config, value);
+        
+        // todo: add batching logic, for initial plugin loading
+        Service.Configuration.Save();
+    }
 
     #endregion
 
