@@ -33,11 +33,7 @@ public static class UserConfig
         ImGui.Indent();
         int output = Configuration.GetCustomIntValue(config, minValue);
         if (output < minValue)
-        {
-            output = minValue;
-            Configuration.SetCustomIntValue(config, output);
-            Service.Configuration.Save();
-        }
+            output = Configuration.SetCustomIntValue(config, output);
 
         float contentRegionMin = ImGui.GetItemRectMax().Y - ImGui.GetItemRectMin().Y;
         float wrapPos = ImGui.GetContentRegionMax().X - 35f;
@@ -111,7 +107,6 @@ public static class UserConfig
 
                     DebugFile.AddSettingLog($"Set Config {config} to {output}");
                     Configuration.SetCustomIntValue(config, output);
-                    Service.Configuration.Save();
                 }
 
                 return inputChanged;
@@ -154,11 +149,7 @@ public static class UserConfig
     {
         float output = Configuration.GetCustomFloatValue(config, minValue);
         if (output < minValue)
-        {
-            output = minValue;
-            Configuration.SetCustomFloatValue(config, output);
-            Service.Configuration.Save();
-        }
+            output = Configuration.SetCustomFloatValue(config, output);
 
         float contentRegionMin = ImGui.GetItemRectMax().Y - ImGui.GetItemRectMin().Y;
         float wrapPos = ImGui.GetContentRegionMax().X - 35f;
@@ -225,7 +216,6 @@ public static class UserConfig
                 {
                     DebugFile.AddSettingLog($"Set Config {config} to {output}");
                     Configuration.SetCustomFloatValue(config, output);
-                    Service.Configuration.Save();
                 }
             }
         };
@@ -248,11 +238,7 @@ public static class UserConfig
     {
         float output = Configuration.GetCustomFloatValue(config, minValue);
         if (output < minValue)
-        {
-            output = minValue;
-            Configuration.SetCustomFloatValue(config, output);
-            Service.Configuration.Save();
-        }
+            output = Configuration.SetCustomFloatValue(config, output);
 
         float contentRegionMin = ImGui.GetItemRectMax().Y - ImGui.GetItemRectMin().Y;
         float wrapPos = ImGui.GetContentRegionMax().X - 35f;
@@ -320,7 +306,6 @@ public static class UserConfig
                 {
                     DebugFile.AddSettingLog($"Set Config {config} to {output}");
                     Configuration.SetCustomFloatValue(config, output);
-                    Service.Configuration.Save();
                 }
             }
         };
@@ -352,7 +337,6 @@ public static class UserConfig
         {
             DebugFile.AddSettingLog($"Set Config {config} to {output}");
             Configuration.SetCustomIntValue(config, outputValue);
-            Service.Configuration.Save();
         }
 
         if (!checkboxDescription.IsNullOrEmpty())
@@ -405,7 +389,6 @@ public static class UserConfig
             {
                 DebugFile.AddSettingLog($"Set Config {config} to {output}");
                 Configuration.SetCustomIntValue(config, outputValue);
-                Service.Configuration.Save();
                 o = true;
             }
 
@@ -449,7 +432,6 @@ public static class UserConfig
                 values[choice] = true;
                 DebugFile.AddSettingLog($"Set Config {config} to {string.Join(", ", values)}");
                 Configuration.SetCustomBoolArrayValue(config, values);
-                Service.Configuration.Save();
             }
 
             if (!checkboxDescription.IsNullOrEmpty() && ImGui.IsItemHovered())
@@ -496,7 +478,6 @@ public static class UserConfig
         {
             DebugFile.AddSettingLog($"Set Config {config} to {output}");
             Configuration.SetCustomBoolValue(config, output);
-            Service.Configuration.Save();
         }
 
         DrawResetContextMenu(config);
@@ -535,7 +516,6 @@ public static class UserConfig
         {
             Array.Resize(ref values, totalChoices);
             Configuration.SetCustomBoolArrayValue(config, values);
-            Service.Configuration.Save();
         }
 
         using (ImRaii.PushColor(ImGuiCol.Text, descriptionColor))
@@ -555,7 +535,6 @@ public static class UserConfig
             {
                 DebugFile.AddSettingLog($"Set Config {config} to {string.Join(", ", values)}");
                 Configuration.SetCustomBoolArrayValue(config, values);
-                Service.Configuration.Save();
             }
 
             if (!checkboxDescription.IsNullOrEmpty() && ImGui.IsItemHovered())
@@ -591,7 +570,6 @@ public static class UserConfig
             {
                 DebugFile.AddSettingLog($"Set Config {config} to {string.Join(", ", values)}");
                 Configuration.SetCustomBoolArrayValue(config, values);
-                Service.Configuration.Save();
             }
 
             ImGui.NextColumn();
