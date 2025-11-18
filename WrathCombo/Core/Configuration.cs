@@ -221,7 +221,7 @@ public partial class Configuration : IPluginConfiguration
         recommendedValue: "On (This is essentially turning OFF most of Wrath)",
         defaultValue: "On",
         warningMark: "Wrath is largely designed with Action Replacing in mind.\n" +
-                     "Disabling it may lead to unexpected behavior, such as with Retargeting.")]
+                     "Disabling it may lead to unexpected behavior, such as regarding Retargeting.")]
     public bool ActionChanging = true;
 
     /// Whether actions should only be replaced with a value from a Combo at Use time. Default: false.
@@ -234,7 +234,8 @@ public partial class Configuration : IPluginConfiguration
         recommendedValue: "Off (But do try it if you have performance issues)",
         defaultValue: "Off",
         warningMark: "Wrath is largely designed with Action Replacing in mind.\n" +
-                     "Disabling it -even partially- may lead to unexpected behavior, such as with Retargeting AND Openers.")]
+                     "Disabling it -even partially, like with this option- may lead\n" +
+                     "to unexpected behavior, such as regarding Retargeting AND Openers.")]
     public bool PerformanceMode = false;
 
     /// Whether to suppress other combos when an action is queued. Default: true.
