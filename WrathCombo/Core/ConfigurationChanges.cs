@@ -1,0 +1,111 @@
+#region
+
+using System;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using ECommons.Logging;
+
+#endregion
+
+namespace WrathCombo.Core;
+
+public partial class Configuration
+{
+    public enum ConfigChangeSource
+    {
+        UI,
+        Command,
+        IPC,
+        Other,
+    }
+
+    public enum ConfigChangeType
+    {
+        Setting,
+        Preset,
+        UserData,
+    }
+
+    /// <summary>
+    ///     Fired when a user/config setting is changed in any way.
+    /// </summary>
+    /// <remarks>
+    ///     TODO: Trigger on preset change in ui, preset change via cmd, config change,
+    ///     ipc stuff(?), setting change via ui, etc.
+    ///     (replacing the DebugFile.logs)
+    ///     TODO: Add Retarget-Clearing if it's a preset or config change.
+    ///     (fix hanging Retargets)
+    ///     TODO: Add DebugFile logging.
+    /// </remarks>
+    public static event EventHandler<ConfigChangeEventArgs>? ConfigChanged;
+
+    /// <summary>
+    ///     Safely invoke the <see cref="ConfigChanged" /> event,
+    ///     Isolating subscriber exceptions.
+    /// </summary>
+    private static void RaiseUserConfigChanged(ConfigChangeEventArgs args)
+    {
+        var handlers = ConfigChanged;
+        if (handlers == null) return;
+
+        // Invoke each subscriber separately so one exception won't stop others.
+        foreach (var d in handlers.GetInvocationList())
+        {
+            try
+            {
+                ((EventHandler<ConfigChangeEventArgs>)d).Invoke(null, args);
+            }
+            catch (Exception ex)
+            {
+                // Log but continue.
+                PluginLog.Error($"UserConfigChanged handler threw: {ex}");
+            }
+        }
+    }
+
+    /// <summary>
+    ///     Triggers the <see cref="ConfigChanged" /> event.
+    /// </summary>
+    [SuppressMessage("Performance", "CA1822:Mark members as static")]
+    public void TriggerUserConfigChanged
+    (ConfigChangeType type,
+        ConfigChangeSource source,
+        string key,
+        object newValue,
+        object? oldValue = null)
+    {
+        var trace = new StackTrace().ToString();
+        var args = new ConfigChangeEventArgs(type, source, key,
+            newValue, trace);
+        RaiseUserConfigChanged(args);
+    }
+
+    /// <summary>
+    ///     Event Data for UserConfig/Setting Changes.
+    /// </summary>
+    public sealed class ConfigChangeEventArgs(
+        ConfigChangeType type,
+        ConfigChangeSource source,
+        string key,
+        object newValue,
+        string stack)
+        : EventArgs
+    {
+        /// Type of change
+        /// (e.g. Preset, Config, Setting, etc.).
+        public ConfigChangeType Type { get; } = type;
+
+        /// Source of change
+        /// (e.g. UI, Command, IPC, etc.).
+        public ConfigChangeSource Source { get; } = source;
+
+        /// Identifier of the setting that changed.
+        public string Key { get; } = key;
+
+        /// New value, if known.
+        public object NewValue { get; } = newValue;
+
+        /// Stack trace for diagnostics.
+        public string Stack { get; } = stack;
+    }
+}

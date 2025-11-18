@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using ECommons.DalamudServices;
@@ -267,89 +266,6 @@ public partial class Configuration
     public static void SetCustomBoolArrayValue(string config, bool[] value) => CustomBoolArrayValues[config] = value;
 
     #endregion
-
-    #endregion
-
-    #region Setting Change Event
-
-    /// <summary>
-    ///     Fired when a user/config setting is changed in any way.
-    /// </summary>
-    /// <remarks>
-    ///     TODO: Trigger on preset change in ui, preset change via cmd, config change,
-    ///           ipc stuff(?), setting change via ui, etc.
-    ///           (replacing the DebugFile.logs)
-    ///     TODO: Add Retarget-Clearing if it's a preset or config change.
-    ///           (fix hanging Retargets)
-    ///     TODO: Add DebugFile logging.
-    /// </remarks>
-    public static event EventHandler<SettingChangeEventArgs>? ConfigChanged;
-
-    /// <summary>
-    ///     Safely invoke the <see cref="ConfigChanged" /> event,
-    ///     Isolating subscriber exceptions.
-    /// </summary>
-    private static void RaiseUserConfigChanged(SettingChangeEventArgs args)
-    {
-        var handlers = ConfigChanged;
-        if (handlers == null) return;
-
-        // Invoke each subscriber separately so one exception won't stop others.
-        foreach (var d in handlers.GetInvocationList())
-        {
-            try
-            {
-                ((EventHandler<SettingChangeEventArgs>)d).Invoke(null, args);
-            }
-            catch (Exception ex)
-            {
-                // Log but continue.
-                PluginLog.Error($"UserConfigChanged handler threw: {ex}");
-            }
-        }
-    }
-
-    /// <summary>
-    ///     Triggers the <see cref="ConfigChanged" /> event.
-    /// </summary>
-    [SuppressMessage("Performance", "CA1822:Mark members as static")]
-    public void TriggerUserConfigChanged
-        (string source, string key, object newValue, object? oldValue = null)
-    {
-        var trace = new StackTrace().ToString();
-        var args = new SettingChangeEventArgs(source, key,
-            newValue, oldValue,
-            trace);
-        RaiseUserConfigChanged(args);
-    }
-
-    /// <summary>
-    ///     Event Data for UserConfig/Setting Changes.
-    /// </summary>
-    public sealed class SettingChangeEventArgs(
-        string type,
-        string key,
-        object newValue,
-        object? oldValue = null,
-        string? stack = null)
-        : EventArgs
-    {
-        /// Type of change
-        /// (e.g. Preset, Config, Setting, Preset [via Command]).
-        public string Type { get; } = type;
-
-        /// Identifier of the setting that changed.
-        public string Key { get; } = key;
-
-        /// Previous value, if known.
-        public object? OldValue { get; } = oldValue;
-
-        /// New value, if known.
-        public object NewValue { get; } = newValue;
-
-        /// Optional stack trace for diagnostics.
-        public string? Stack { get; } = stack;
-    }
 
     #endregion
 }
