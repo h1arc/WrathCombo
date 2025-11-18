@@ -31,10 +31,12 @@ public partial class Configuration
     /// </summary>
     /// <remarks>
     ///     TODO: Trigger on preset change in ui, preset change via cmd, config change,
-    ///     ipc stuff(?), setting change via ui, etc.
-    ///     (replacing the DebugFile.logs)
+    ///           ipc stuff(?), setting change via ui, etc.
+    ///           (replacing the DebugFile.logs)
+    ///     <br/>
     ///     TODO: Add Retarget-Clearing if it's a preset or config change.
-    ///     (fix hanging Retargets)
+    ///           (fix hanging Retargets)
+    ///     <br/>
     ///     TODO: Add DebugFile logging.
     /// </remarks>
     public static event EventHandler<ConfigChangeEventArgs>? ConfigChanged;
@@ -80,9 +82,6 @@ public partial class Configuration
         RaiseUserConfigChanged(args);
     }
 
-    /// <summary>
-    ///     Event Data for UserConfig/Setting Changes.
-    /// </summary>
     public sealed class ConfigChangeEventArgs(
         ConfigChangeType type,
         ConfigChangeSource source,
@@ -91,21 +90,14 @@ public partial class Configuration
         string stack)
         : EventArgs
     {
-        /// Type of change
-        /// (e.g. Preset, Config, Setting, etc.).
         public ConfigChangeType Type { get; } = type;
 
-        /// Source of change
-        /// (e.g. UI, Command, IPC, etc.).
         public ConfigChangeSource Source { get; } = source;
 
-        /// Identifier of the setting that changed.
         public string Key { get; } = key;
 
-        /// New value, if known.
         public object NewValue { get; } = newValue;
 
-        /// Stack trace for diagnostics.
         public string Stack { get; } = stack;
     }
 }
