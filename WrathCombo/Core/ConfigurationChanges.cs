@@ -11,6 +11,42 @@ namespace WrathCombo.Core;
 
 public partial class Configuration
 {
+    /// <summary>
+    ///     Fired when a user/config setting is changed in any way.
+    /// </summary>
+    /// <remarks>
+    ///     TODO: Trigger on preset change in ui, preset change via cmd, config change,
+    ///     ipc stuff(?), setting change via ui, etc.
+    ///     (replacing the DebugFile.logs)
+    ///     <br />
+    ///     TODO: Add Retarget-Clearing if it's a preset or config change.
+    ///     (fix hanging Retargets)
+    ///     <br />
+    ///     TODO: Add DebugFile logging.
+    /// </remarks>
+    public static event EventHandler<ConfigChangeEventArgs>? ConfigChanged;
+
+    public sealed class ConfigChangeEventArgs(
+        ConfigChangeType type,
+        ConfigChangeSource source,
+        string key,
+        object newValue,
+        string stack)
+        : EventArgs
+    {
+        public ConfigChangeType Type { get; } = type;
+
+        public ConfigChangeSource Source { get; } = source;
+
+        public string Key { get; } = key;
+
+        public object NewValue { get; } = newValue;
+
+        public string Stack { get; } = stack;
+    }
+
+    #region Event Enums
+
     public enum ConfigChangeSource
     {
         UI,
@@ -22,24 +58,14 @@ public partial class Configuration
     public enum ConfigChangeType
     {
         Setting,
+        AutoRotSetting,
         Preset,
         UserData,
     }
 
-    /// <summary>
-    ///     Fired when a user/config setting is changed in any way.
-    /// </summary>
-    /// <remarks>
-    ///     TODO: Trigger on preset change in ui, preset change via cmd, config change,
-    ///           ipc stuff(?), setting change via ui, etc.
-    ///           (replacing the DebugFile.logs)
-    ///     <br/>
-    ///     TODO: Add Retarget-Clearing if it's a preset or config change.
-    ///           (fix hanging Retargets)
-    ///     <br/>
-    ///     TODO: Add DebugFile logging.
-    /// </remarks>
-    public static event EventHandler<ConfigChangeEventArgs>? ConfigChanged;
+    #endregion
+
+    #region Event Methods
 
     /// <summary>
     ///     Safely invoke the <see cref="ConfigChanged" /> event,
@@ -82,22 +108,5 @@ public partial class Configuration
         RaiseUserConfigChanged(args);
     }
 
-    public sealed class ConfigChangeEventArgs(
-        ConfigChangeType type,
-        ConfigChangeSource source,
-        string key,
-        object newValue,
-        string stack)
-        : EventArgs
-    {
-        public ConfigChangeType Type { get; } = type;
-
-        public ConfigChangeSource Source { get; } = source;
-
-        public string Key { get; } = key;
-
-        public object NewValue { get; } = newValue;
-
-        public string Stack { get; } = stack;
-    }
+    #endregion
 }
