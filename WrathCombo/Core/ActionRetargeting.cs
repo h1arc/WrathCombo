@@ -1,11 +1,11 @@
 #region
 
-using Dalamud.Game.ClientState.Objects.Types;
-using ECommons.DalamudServices;
-using ECommons.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dalamud.Game.ClientState.Objects.Types;
+using ECommons.DalamudServices;
+using ECommons.Logging;
 using WrathCombo.Combos.PvE;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Extensions;
@@ -93,9 +93,9 @@ public class ActionRetargeting : IDisposable
 
         #region Replace existing Retargets
 
-        var partialOverwrite = false;
-        string[] overwriting = [];
-        Retargeting? oldRetarget = null;
+        var          partialOverwrite = false;
+        string[]     overwriting      = [];
+        Retargeting? oldRetarget      = null;
         foreach (var replacedAction in replacedActions.Concat([action]))
         {
             if (!Retargets.TryGetValue(replacedAction, out oldRetarget))
@@ -107,7 +107,7 @@ public class ActionRetargeting : IDisposable
 
             overwriting = [oldRetarget.ResolverName, retarget.ResolverName];
         }
-       
+
         // Remove the old Retarget
         if (overwriting.Length != 0)
         {
@@ -152,14 +152,15 @@ public class ActionRetargeting : IDisposable
     /// <returns>
     ///     Whether the action is registered for Retargeting.
     /// </returns>
-    public bool TryGetTargetFor(uint action, out IGameObject? target, out uint replacedWith)
+    public bool TryGetTargetFor(uint action, out IGameObject? target,
+        out uint replacedWith)
     {
-        target = null;
+        target       = null;
         replacedWith = action;
         // Find the Retarget object
-        if (!Retargets.TryGetValue(action, out var retarget) || 
+        if (!Retargets.TryGetValue(action, out var retarget) ||
             !Service.ActionReplacer.LastActionInvokeFor
-            .TryGetValue(action, out var lastAction) ||
+                .TryGetValue(action, out var lastAction) ||
             lastAction != retarget.Action)
             return false;
 
@@ -238,7 +239,7 @@ public class ActionRetargeting : IDisposable
         /// </returns>
         private static string GetMethodName(Func<IGameObject?> resolver)
         {
-            var resolverName = resolver.Method.Name;
+            var resolverName  = resolver.Method.Name;
             var resolverClass = resolver.Method.DeclaringType?.Name ?? "";
 
             // Standardize the names, and if a custom resolver is used,
@@ -282,7 +283,9 @@ public class ActionRetargeting : IDisposable
     ///     DNC.DancePartnerResolver
     /// </seealso>
     [AttributeUsage(AttributeTargets.Method)]
-    public class TargetResolverAttribute : Attribute { }
+    public class TargetResolverAttribute : Attribute
+    {
+    }
 
     /// <summary>
     ///     Prevents the action itself from being retargeted unless excepted,
@@ -451,7 +454,8 @@ internal static class FuncIGameObjectExtensions
         (this Func<IGameObject?> target)
     {
         var hasTargetResolverAttr = target.Method
-            .GetCustomAttributes(typeof(ActionRetargeting.TargetResolverAttribute), false)
+            .GetCustomAttributes(typeof(ActionRetargeting.TargetResolverAttribute),
+                false)
             .Length > 0;
         if (!hasTargetResolverAttr &&
             EZ.Throttle("retargetAttributeWarning", TS.FromSeconds(15)))
@@ -471,120 +475,115 @@ internal static class UIntExtensions
     // and "multiple replaced actions specified" (complex combos, like healers),
     // each accepting a direct target or a target resolver.
 
-    /// <summary>
-    ///     Retargets the action to the target specified.<br />
-    ///     Only works if the <paramref name="action" /> is the Replaced Action
-    ///     for the combo (i.e. Features, not generally main Combos).
-    /// </summary>
     /// <param name="action">The action ID to Retarget.</param>
-    /// <param name="target">
-    ///     The target to Retarget the action onto.<br />
-    ///     Should be a <see cref="SimpleTarget" /> property.
-    /// </param>
-    /// <returns>The <paramref name="action" />.</returns>
-    internal static uint Retarget
-        (this uint action, IGameObject? target) =>
-        P.ActionRetargeting.Register(action, [action], () => target);
+    extension(uint action)
+    {
+        /// <summary>
+        ///     Retargets the action to the target specified.<br />
+        ///     Only works if the <paramref name="action" /> is the Replaced Action
+        ///     for the combo (i.e. Features, not generally main Combos).
+        /// </summary>
+        /// <param name="target">
+        ///     The target to Retarget the action onto.<br />
+        ///     Should be a <see cref="SimpleTarget" /> property.
+        /// </param>
+        /// <returns>The <paramref name="action" />.</returns>
+        internal uint Retarget
+            (IGameObject? target) =>
+            P.ActionRetargeting.Register(action, [action], () => target);
 
-    /// <summary>
-    ///     Retargets the action to the target specified.<br />
-    ///     Only works if the <paramref name="action" /> is the Replaced Action
-    ///     for the combo (i.e. Features, not generally main Combos).
-    /// </summary>
-    /// <param name="action">The action ID to Retarget.</param>
-    /// <param name="target">
-    ///     The
-    ///     <see cref="ActionRetargeting.TargetResolverAttribute">
-    ///         Target Resolver
-    ///     </see> that provides the <see cref="IGameObject">target</see> you want.
-    /// </param>
-    /// <returns>The <paramref name="action" />.</returns>
-    internal static uint Retarget
-        (this uint action, Func<IGameObject?> target) =>
-        P.ActionRetargeting.Register(action, [action],
-            target.CheckForAttribute());
+        /// <summary>
+        ///     Retargets the action to the target specified.<br />
+        ///     Only works if the <paramref name="action" /> is the Replaced Action
+        ///     for the combo (i.e. Features, not generally main Combos).
+        /// </summary>
+        /// <param name="target">
+        ///     The
+        ///     <see cref="ActionRetargeting.TargetResolverAttribute">
+        ///         Target Resolver
+        ///     </see>
+        ///     that provides the <see cref="IGameObject">target</see> you want.
+        /// </param>
+        /// <returns>The <paramref name="action" />.</returns>
+        internal uint Retarget
+            (Func<IGameObject?> target) =>
+            P.ActionRetargeting.Register(action, [action],
+                target.CheckForAttribute());
 
-    /// <summary>
-    ///     Retargets the action to the target specified.
-    /// </summary>
-    /// <param name="action">The action ID to retarget.</param>
-    /// <param name="replaced">The action ID of the combo's Replaced Action.</param>
-    /// <param name="target">
-    ///     The target to Retarget the action onto.<br />
-    ///     Should be a <see cref="SimpleTarget" /> property.
-    /// </param>
-    /// <returns>The <paramref name="action" />.</returns>
-    /// <remarks>
-    ///     Used when the <paramref name="action" /> is not the same as the
-    ///     combo's Replaced Action (i.e. main Combos, not usually Features).
-    /// </remarks>
-    internal static uint Retarget
-    (this uint action,
-        uint replaced,
-        IGameObject? target) =>
-        P.ActionRetargeting.Register(action, [replaced], () => target);
+        /// <summary>
+        ///     Retargets the action to the target specified.
+        /// </summary>
+        /// <param name="replaced">The action ID of the combo's Replaced Action.</param>
+        /// <param name="target">
+        ///     The target to Retarget the action onto.<br />
+        ///     Should be a <see cref="SimpleTarget" /> property.
+        /// </param>
+        /// <returns>The <paramref name="action" />.</returns>
+        /// <remarks>
+        ///     Used when the <paramref name="action" /> is not the same as the
+        ///     combo's Replaced Action (i.e. main Combos, not usually Features).
+        /// </remarks>
+        internal uint Retarget
+        (uint replaced,
+            IGameObject? target) =>
+            P.ActionRetargeting.Register(action, [replaced], () => target);
 
-    /// <summary>
-    ///     Retargets the action to the target specified.
-    /// </summary>
-    /// <param name="action">The action ID to retarget.</param>
-    /// <param name="replaced">The action ID of the combo's Replaced Action.</param>
-    /// <param name="target">
-    ///     The target to Retarget the action onto.<br />
-    ///     Should be a <see cref="SimpleTarget" /> property.
-    /// </param>
-    /// <returns>The <paramref name="action" />.</returns>
-    /// <remarks>
-    ///     Used when the <paramref name="action" /> is not the same as the
-    ///     combo's Replaced Action (i.e. main Combos, not usually Features).
-    /// </remarks>
-    internal static uint Retarget
-    (this uint action,
-        uint replaced,
-        Func<IGameObject?>  target) =>
-        P.ActionRetargeting.Register(action, [replaced],
-            target.CheckForAttribute());
+        /// <summary>
+        ///     Retargets the action to the target specified.
+        /// </summary>
+        /// <param name="replaced">The action ID of the combo's Replaced Action.</param>
+        /// <param name="target">
+        ///     The target to Retarget the action onto.<br />
+        ///     Should be a <see cref="SimpleTarget" /> property.
+        /// </param>
+        /// <returns>The <paramref name="action" />.</returns>
+        /// <remarks>
+        ///     Used when the <paramref name="action" /> is not the same as the
+        ///     combo's Replaced Action (i.e. main Combos, not usually Features).
+        /// </remarks>
+        internal uint Retarget
+        (uint replaced,
+            Func<IGameObject?> target) =>
+            P.ActionRetargeting.Register(action, [replaced],
+                target.CheckForAttribute());
 
-    /// <summary>
-    ///     Retargets the action to the target specified.
-    /// </summary>
-    /// <param name="action">The action ID to retarget.</param>
-    /// <param name="replaced">The action ID of the combo's Replaced Action.</param>
-    /// <param name="target">
-    ///     The target to Retarget the action onto.<br />
-    ///     Should be a <see cref="SimpleTarget" /> property.
-    /// </param>
-    /// <returns>The <paramref name="action" />.</returns>
-    /// <remarks>
-    ///     Used when the <paramref name="action" /> is not the same as the
-    ///     combo's Replaced Actions, and there are multiple options for which
-    ///     actions to replace (i.e. main combos on healers, not usually features).
-    /// </remarks>
-    internal static uint Retarget
-    (this uint action,
-        uint[] replaced,
-        IGameObject? target) =>
-        P.ActionRetargeting.Register(action, replaced, () => target);
+        /// <summary>
+        ///     Retargets the action to the target specified.
+        /// </summary>
+        /// <param name="replaced">The action ID of the combo's Replaced Action.</param>
+        /// <param name="target">
+        ///     The target to Retarget the action onto.<br />
+        ///     Should be a <see cref="SimpleTarget" /> property.
+        /// </param>
+        /// <returns>The <paramref name="action" />.</returns>
+        /// <remarks>
+        ///     Used when the <paramref name="action" /> is not the same as the
+        ///     combo's Replaced Actions, and there are multiple options for which
+        ///     actions to replace (i.e. main combos on healers, not usually features).
+        /// </remarks>
+        internal uint Retarget
+        (uint[] replaced,
+            IGameObject? target) =>
+            P.ActionRetargeting.Register(action, replaced, () => target);
 
-    /// <summary>
-    ///     Retargets the action to the target specified.
-    /// </summary>
-    /// <param name="action">The action ID to retarget.</param>
-    /// <param name="replaced">The action ID of the combo's Replaced Action.</param>
-    /// <param name="target">
-    ///     The target to Retarget the action onto.<br />
-    ///     Should be a <see cref="SimpleTarget" /> property.
-    /// </param>
-    /// <returns>The <paramref name="action" />.</returns>
-    /// <remarks>
-    ///     Used when the <paramref name="action" /> is not the same as the
-    ///     combo's Replaced Actions, and there are multiple options for which
-    ///     actions to replace (i.e. main combos on healers, not usually features).
-    /// </remarks>
-    internal static uint Retarget
-    (this uint action,
-        uint[] replaced,
-        Func<IGameObject?> target) =>
-        P.ActionRetargeting.Register(action, replaced,
-            target.CheckForAttribute());
+        /// <summary>
+        ///     Retargets the action to the target specified.
+        /// </summary>
+        /// <param name="replaced">The action ID of the combo's Replaced Action.</param>
+        /// <param name="target">
+        ///     The target to Retarget the action onto.<br />
+        ///     Should be a <see cref="SimpleTarget" /> property.
+        /// </param>
+        /// <returns>The <paramref name="action" />.</returns>
+        /// <remarks>
+        ///     Used when the <paramref name="action" /> is not the same as the
+        ///     combo's Replaced Actions, and there are multiple options for which
+        ///     actions to replace (i.e. main combos on healers, not usually features).
+        /// </remarks>
+        internal uint Retarget
+        (uint[] replaced,
+            Func<IGameObject?> target) =>
+            P.ActionRetargeting.Register(action, replaced,
+                target.CheckForAttribute());
+    }
 }
