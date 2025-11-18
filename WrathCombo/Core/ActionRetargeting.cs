@@ -26,13 +26,13 @@ namespace WrathCombo.Core;
 ///     Action Retargeting capabilities, to remove any dependence on Redirect or
 ///     Reaction.<br /><br />
 ///     See
-///     <see cref="UIntExtensions.Retarget(uint,IGameObject?,bool)">
+///     <see cref="UIntExtensions.Retarget(uint,IGameObject?)">
 ///         Retarget(uint,IGameObject)
 ///     </see>
 ///     for simple Feature Retargeting.
 ///     <br />
 ///     See
-///     <see cref="UIntExtensions.Retarget(uint,uint,Func{IGameObject?},bool)">
+///     <see cref="UIntExtensions.Retarget(uint,uint,Func{IGameObject?})">
 ///         Retarget(uint,uint,TargetResolverDelegate)
 ///     </see>
 ///     for more advanced Retargeting in a full combo.
@@ -60,21 +60,17 @@ public class ActionRetargeting : IDisposable
     ///     a <see cref="TargetResolverAttribute">custom method</see> (like:
     ///     <see cref="AST.CardResolver">AST.CardsResolver</see>)
     /// </param>
-    /// <param name="dontCull">
-    ///     Whether this method should be exempt from periodic culls.<br />
-    ///     <see cref="Retargeting" /> params for further explanation.
-    /// </param>
     /// <returns>
     ///     The <paramref name="action" /> that was registered.<br />
     ///     This only really returns to make
-    ///     <see cref="UIntExtensions.Retarget(uint,Func{IGameObject?},bool)">
+    ///     <see cref="UIntExtensions.Retarget(uint,Func{IGameObject?})">
     ///         (uint).Retarget()
     ///     </see>
     ///     simpler.
     /// </returns>
     /// <remarks>
     ///     Should only be called by
-    ///     <see cref="UIntExtensions.Retarget(uint,Func{IGameObject?},bool)">
+    ///     <see cref="UIntExtensions.Retarget(uint,Func{IGameObject?})">
     ///         (uint).Retarget()
     ///     </see>
     ///     .
@@ -82,15 +78,14 @@ public class ActionRetargeting : IDisposable
     internal uint Register
     (uint action,
         uint[] replacedActions,
-        Func<IGameObject?> resolver,
-        bool dontCull = false)
+        Func<IGameObject?> resolver)
     {
         // Make sure the action is not in replaced actions,
         // and there are no duplicates
         replacedActions = replacedActions.Distinct().ToArray();
 
         // Build the Retarget object
-        var retarget = new Retargeting(action, replacedActions, resolver, dontCull);
+        var retarget = new Retargeting(action, replacedActions, resolver);
 
         //// Limit spam from the same actionID, mostly for debugging
         //if (!EZ.Throttle($"retargetFor{retarget.ID}", TS.FromSeconds(1)))
@@ -173,8 +168,7 @@ public class ActionRetargeting : IDisposable
             showResolver: true, retarget: retarget);
 
         // Run the target resolver
-        if (!retarget.DontCull)
-            RemoveRetarget(retarget.ID);
+        RemoveRetarget(retarget.ID);
         try
         {
             target = retarget.Resolver.Invoke();
@@ -207,19 +201,13 @@ public class ActionRetargeting : IDisposable
     ///     The <see cref="TargetResolverAttribute">TargetResolver</see> that
     ///     resolves the target for the action.<br />
     ///     Can be a <see cref="SimpleTarget" />, but it gets wrapped in a delegate
-    ///     in <see cref="UIntExtensions.Retarget(uint,IGameObject?,bool)" />, or its
+    ///     in <see cref="UIntExtensions.Retarget(uint,IGameObject?)" />, or its
     ///     two overloads.
-    /// </param>
-    /// <param name="dontCull">
-    ///     Whether this Retarget should be exempt from periodic culls.<br />
-    ///     Should only be set (to <see langword="true" />) for Features; combo
-    ///     Retargets should always be marked for culling.
     /// </param>
     internal class Retargeting(
         uint action,
         uint[] replacedActions,
-        Func<IGameObject?> resolver,
-        bool dontCull = false)
+        Func<IGameObject?> resolver)
     {
         /// A unique identifier for the Retarget, to help with overwrites and removal.
         public int ID { get; } = HashCode.Combine(action, replacedActions);
@@ -235,10 +223,6 @@ public class ActionRetargeting : IDisposable
 
         /// The name of the resolver method, to help with debugging.
         public string ResolverName { get; } = GetMethodName(resolver);
-
-        /// Whether this Retarget should be removed by periodic culls.
-        /// <see cref="ClearOldRetargets" />
-        public bool DontCull { get; } = dontCull;
 
         /// When this was created, to help with age-outs.
         public DateTime Created { get; } = DateTime.Now;
@@ -382,8 +366,7 @@ public class ActionRetargeting : IDisposable
 
         // Find old Retargets that are allowed to be culled
         var oldRetargets = P.ActionRetargeting.Retargets.Values
-            .Where(x => !x.DontCull &&
-                        (DateTime.Now - x.Created) > TS.FromSeconds(20))
+            .Where(x => (DateTime.Now - x.Created) > TS.FromSeconds(20))
             .ToList();
 
         // Cull each unique Retarget
@@ -498,15 +481,10 @@ internal static class UIntExtensions
     ///     The target to Retarget the action onto.<br />
     ///     Should be a <see cref="SimpleTarget" /> property.
     /// </param>
-    /// <param name="dontCull">
-    ///     Whether this method should be exempt from periodic culls.<br />
-    ///     See <see cref="ActionRetargeting.Retargeting" /> params for further
-    ///     explanation.
-    /// </param>
     /// <returns>The <paramref name="action" />.</returns>
     internal static uint Retarget
-        (this uint action, IGameObject? target, bool dontCull = false) =>
-        P.ActionRetargeting.Register(action, [action], () => target, dontCull);
+        (this uint action, IGameObject? target) =>
+        P.ActionRetargeting.Register(action, [action], () => target);
 
     /// <summary>
     ///     Retargets the action to the target specified.<br />
@@ -520,16 +498,11 @@ internal static class UIntExtensions
     ///         Target Resolver
     ///     </see> that provides the <see cref="IGameObject">target</see> you want.
     /// </param>
-    /// <param name="dontCull">
-    ///     Whether this method should be exempt from periodic culls.<br />
-    ///     See <see cref="ActionRetargeting.Retargeting" /> params for further
-    ///     explanation.
-    /// </param>
     /// <returns>The <paramref name="action" />.</returns>
     internal static uint Retarget
-        (this uint action, Func<IGameObject?> target, bool dontCull = false) =>
+        (this uint action, Func<IGameObject?> target) =>
         P.ActionRetargeting.Register(action, [action],
-            target.CheckForAttribute(), dontCull);
+            target.CheckForAttribute());
 
     /// <summary>
     ///     Retargets the action to the target specified.
@@ -540,11 +513,6 @@ internal static class UIntExtensions
     ///     The target to Retarget the action onto.<br />
     ///     Should be a <see cref="SimpleTarget" /> property.
     /// </param>
-    /// <param name="dontCull">
-    ///     Whether this method should be exempt from periodic culls.<br />
-    ///     See <see cref="ActionRetargeting.Retargeting" /> params for further
-    ///     explanation.
-    /// </param>
     /// <returns>The <paramref name="action" />.</returns>
     /// <remarks>
     ///     Used when the <paramref name="action" /> is not the same as the
@@ -553,9 +521,8 @@ internal static class UIntExtensions
     internal static uint Retarget
     (this uint action,
         uint replaced,
-        IGameObject? target,
-        bool dontCull = false) =>
-        P.ActionRetargeting.Register(action, [replaced], () => target, dontCull);
+        IGameObject? target) =>
+        P.ActionRetargeting.Register(action, [replaced], () => target);
 
     /// <summary>
     ///     Retargets the action to the target specified.
@@ -566,11 +533,6 @@ internal static class UIntExtensions
     ///     The target to Retarget the action onto.<br />
     ///     Should be a <see cref="SimpleTarget" /> property.
     /// </param>
-    /// <param name="dontCull">
-    ///     Whether this method should be exempt from periodic culls.<br />
-    ///     See <see cref="ActionRetargeting.Retargeting" /> params for further
-    ///     explanation.
-    /// </param>
     /// <returns>The <paramref name="action" />.</returns>
     /// <remarks>
     ///     Used when the <paramref name="action" /> is not the same as the
@@ -579,10 +541,9 @@ internal static class UIntExtensions
     internal static uint Retarget
     (this uint action,
         uint replaced,
-        Func<IGameObject?>  target,
-        bool dontCull = false) =>
+        Func<IGameObject?>  target) =>
         P.ActionRetargeting.Register(action, [replaced],
-            target.CheckForAttribute(), dontCull);
+            target.CheckForAttribute());
 
     /// <summary>
     ///     Retargets the action to the target specified.
@@ -593,11 +554,6 @@ internal static class UIntExtensions
     ///     The target to Retarget the action onto.<br />
     ///     Should be a <see cref="SimpleTarget" /> property.
     /// </param>
-    /// <param name="dontCull">
-    ///     Whether this method should be exempt from periodic culls.<br />
-    ///     See <see cref="ActionRetargeting.Retargeting" /> params for further
-    ///     explanation.
-    /// </param>
     /// <returns>The <paramref name="action" />.</returns>
     /// <remarks>
     ///     Used when the <paramref name="action" /> is not the same as the
@@ -607,9 +563,8 @@ internal static class UIntExtensions
     internal static uint Retarget
     (this uint action,
         uint[] replaced,
-        IGameObject? target,
-        bool dontCull = false) =>
-        P.ActionRetargeting.Register(action, replaced, () => target, dontCull);
+        IGameObject? target) =>
+        P.ActionRetargeting.Register(action, replaced, () => target);
 
     /// <summary>
     ///     Retargets the action to the target specified.
@@ -620,11 +575,6 @@ internal static class UIntExtensions
     ///     The target to Retarget the action onto.<br />
     ///     Should be a <see cref="SimpleTarget" /> property.
     /// </param>
-    /// <param name="dontCull">
-    ///     Whether this method should be exempt from periodic culls.<br />
-    ///     See <see cref="ActionRetargeting.Retargeting" /> params for further
-    ///     explanation.
-    /// </param>
     /// <returns>The <paramref name="action" />.</returns>
     /// <remarks>
     ///     Used when the <paramref name="action" /> is not the same as the
@@ -634,8 +584,7 @@ internal static class UIntExtensions
     internal static uint Retarget
     (this uint action,
         uint[] replaced,
-        Func<IGameObject?> target,
-        bool dontCull = false) =>
+        Func<IGameObject?> target) =>
         P.ActionRetargeting.Register(action, replaced,
-            target.CheckForAttribute(), dontCull);
+            target.CheckForAttribute());
 }
