@@ -192,11 +192,11 @@ public partial class Configuration
         (string config, float value, bool shouldBatch = false)
     {
         CustomFloatValues[config] = value;
-        
+
         Service.Configuration.TriggerUserConfigChanged(
             ConfigChangeType.UserData, ConfigChangeSource.UI,
             config, value);
-        
+
         // todo: add batching logic, for initial plugin loading
 
         Service.Configuration.Save();
@@ -225,11 +225,11 @@ public partial class Configuration
         (string config, int value, bool shouldBatch = false)
     {
         CustomIntValues[config] = value;
-        
+
         Service.Configuration.TriggerUserConfigChanged(
             ConfigChangeType.UserData, ConfigChangeSource.UI,
             config, value);
-        
+
         // todo: add batching logic, for initial plugin loading
 
         Service.Configuration.Save();
@@ -258,11 +258,11 @@ public partial class Configuration
         (string config, bool value, bool shouldBatch = false)
     {
         CustomBoolValues[config] = value;
-        
+
         Service.Configuration.TriggerUserConfigChanged(
             ConfigChangeType.UserData, ConfigChangeSource.UI,
             config, value);
-        
+
         // todo: add batching logic, for initial plugin loading
 
         Service.Configuration.Save();
@@ -291,11 +291,11 @@ public partial class Configuration
         (string config, int[] value, bool shouldBatch = false)
     {
         CustomIntArrayValues[config] = value;
-        
+
         Service.Configuration.TriggerUserConfigChanged(
             ConfigChangeType.UserData, ConfigChangeSource.UI,
             config, value);
-        
+
         // todo: add batching logic, for initial plugin loading
 
         Service.Configuration.Save();
@@ -324,11 +324,11 @@ public partial class Configuration
         (string config, bool[] value, bool shouldBatch = false)
     {
         CustomBoolArrayValues[config] = value;
-        
+
         Service.Configuration.TriggerUserConfigChanged(
             ConfigChangeType.UserData, ConfigChangeSource.UI,
             config, value);
-        
+
         // todo: add batching logic, for initial plugin loading
 
         Service.Configuration.Save();
