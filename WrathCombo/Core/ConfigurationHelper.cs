@@ -187,7 +187,8 @@ public partial class Configuration
     }
 
     /// <summary> Sets a custom float value. </summary>
-    public static void SetCustomFloatValue
+    /// <returns> The Set value.</returns>
+    public static float SetCustomFloatValue
         (string config, float value, bool shouldBatch = false)
     {
         CustomFloatValues[config] = value;
@@ -197,7 +198,9 @@ public partial class Configuration
             config, value);
         
         // todo: add batching logic, for initial plugin loading
+
         Service.Configuration.Save();
+        return value;
     }
 
     #endregion
@@ -217,7 +220,8 @@ public partial class Configuration
     }
 
     /// <summary> Sets a custom integer value. </summary>
-    public static void SetCustomIntValue
+    /// <returns> The Set value.</returns>
+    public static int SetCustomIntValue
         (string config, int value, bool shouldBatch = false)
     {
         CustomIntValues[config] = value;
@@ -227,7 +231,9 @@ public partial class Configuration
             config, value);
         
         // todo: add batching logic, for initial plugin loading
+
         Service.Configuration.Save();
+        return value;
     }
 
     #endregion
@@ -247,7 +253,8 @@ public partial class Configuration
     }
 
     /// <summary> Sets a custom boolean value. </summary>
-    public static void SetCustomBoolValue
+    /// <returns> The Set value.</returns>
+    public static bool SetCustomBoolValue
         (string config, bool value, bool shouldBatch = false)
     {
         CustomBoolValues[config] = value;
@@ -257,7 +264,9 @@ public partial class Configuration
             config, value);
         
         // todo: add batching logic, for initial plugin loading
+
         Service.Configuration.Save();
+        return value;
     }
 
     #endregion
@@ -277,7 +286,8 @@ public partial class Configuration
     }
 
     /// <summary> Sets a custom integer array value. </summary>
-    public static void SetCustomIntArrayValue
+    /// <returns> The Set value.</returns>
+    public static int[] SetCustomIntArrayValue
         (string config, int[] value, bool shouldBatch = false)
     {
         CustomIntArrayValues[config] = value;
@@ -287,7 +297,9 @@ public partial class Configuration
             config, value);
         
         // todo: add batching logic, for initial plugin loading
+
         Service.Configuration.Save();
+        return value;
     }
 
     #endregion
@@ -307,7 +319,8 @@ public partial class Configuration
     }
 
     /// <summary> Sets a custom boolean array value. </summary>
-    public static void SetCustomBoolArrayValue
+    /// <returns> The Set value.</returns>
+    public static bool[] SetCustomBoolArrayValue
         (string config, bool[] value, bool shouldBatch = false)
     {
         CustomBoolArrayValues[config] = value;
@@ -317,7 +330,9 @@ public partial class Configuration
             config, value);
         
         // todo: add batching logic, for initial plugin loading
+
         Service.Configuration.Save();
+        return value;
     }
 
     #endregion

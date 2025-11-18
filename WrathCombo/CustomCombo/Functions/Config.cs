@@ -143,9 +143,7 @@ internal class UserIntArray : UserData
             var array = Configuration.GetCustomIntArrayValue(ConfigName);
             Array.Resize(ref array, index + 1);
             array[index] = 0;
-            Configuration.SetCustomIntArrayValue(ConfigName, array);
-
-            return Configuration.GetCustomIntArrayValue(ConfigName)[index];
+            return Configuration.SetCustomIntArrayValue(ConfigName, array)[index];
         }
         set
         {
@@ -205,9 +203,7 @@ internal class UserBoolArray : UserData
             var array = Configuration.GetCustomBoolArrayValue(ConfigName);
             Array.Resize(ref array, index + 1);
             array[index] = false;
-            Configuration.SetCustomBoolArrayValue(ConfigName, array);
-
-            return Configuration.GetCustomBoolArrayValue(ConfigName)[index];
+            return Configuration.SetCustomBoolArrayValue(ConfigName, array)[index];
         }
         set
         {
