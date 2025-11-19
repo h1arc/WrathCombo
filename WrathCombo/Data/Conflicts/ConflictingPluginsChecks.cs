@@ -92,7 +92,8 @@ public static class ConflictingPluginsChecks
         private int _conflictsInARow;
         private int _maxConflictsInARow = 4;
 
-        public bool SettingConflicted;
+        public bool TargetingSettingConflicted;
+        public bool QueueSettingConflicted;
 
         protected override BossModIPC IPC => (BossModIPC)_ipc;
 
@@ -129,9 +130,12 @@ public static class ConflictingPluginsChecks
             }
 
             // Check for a targeting conflict
-            SettingConflicted =
+            TargetingSettingConflicted =
                 IPC.IsAutoTargetingEnabled() &&
                 AutoRotationController.cfg.DPSRotationMode != DPSRotationMode.Manual;
+
+            // Check for a queue conflict
+            QueueSettingConflicted = IPC.IsUsingCustomQueuing();
 
             // Check for a combo conflict
             if (IPC.HasAutomaticActionsQueued())

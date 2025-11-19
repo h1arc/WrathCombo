@@ -335,7 +335,7 @@ public static class ConflictingPlugins
 
         #region BossMod
 
-        if (ConflictingPluginsChecks.BossMod.SettingConflicted)
+        if (ConflictingPluginsChecks.BossMod.TargetingSettingConflicted)
         {
             conflicts = conflicts.Append(new Conflict(
                     "BossMod", ConflictType.Settings,
@@ -343,15 +343,31 @@ public static class ConflictingPlugins
                 .ToArray();
         }
 
+        if (ConflictingPluginsChecks.BossMod.QueueSettingConflicted)
+        {
+            conflicts = conflicts.Append(new Conflict(
+                    "BossMod", ConflictType.Settings,
+                    "Manual Queueing is Enabled [uncheck 'Use custom queueing']"))
+                .ToArray();
+        }
+
         #endregion
 
         #region BossModReborn
 
-        if (ConflictingPluginsChecks.BossModReborn.SettingConflicted)
+        if (ConflictingPluginsChecks.BossModReborn.TargetingSettingConflicted)
         {
             conflicts = conflicts.Append(new Conflict(
                     "BossModReborn", ConflictType.Settings,
                     "AI is enabled WITH targeting [check 'Manual targeting']"))
+                .ToArray();
+        }
+
+        if (ConflictingPluginsChecks.BossModReborn.QueueSettingConflicted)
+        {
+            conflicts = conflicts.Append(new Conflict(
+                    "BossModReborn", ConflictType.Settings,
+                    "Manual Queueing is Enabled [uncheck 'Use custom queueing']"))
                 .ToArray();
         }
 
