@@ -179,7 +179,7 @@ public static class DebugFile
         var conflicts = conflictsObj.ToArray();
         var conflictingPluginsCount = conflicts.Length;
 
-        AddLine($"Conflicting Plugins: {conflictingPluginsCount}");
+        AddLine($"Conflicts: {conflictingPluginsCount}");
 
         if (!hasConflicts)
         {
