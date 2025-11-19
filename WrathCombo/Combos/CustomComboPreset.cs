@@ -4959,7 +4959,7 @@ public enum Preset
     PLD_RetargetShieldBash = 11073,
     
     [ReplaceSkill(PLD.Cover)]
-    [CustomComboInfo("Retarget Cover Feature", "Will retarget Cover according to the following following." +
+    [CustomComboInfo("Retarget Cover Feature", "Will retarget Cover according to the following." +
                                                "\n- UI Mouseover > Field Mouseover > Hard target", Job.PLD)]
     [Retargeted(PLD.Cover)]
     PLD_RetargetCover = 11075,
