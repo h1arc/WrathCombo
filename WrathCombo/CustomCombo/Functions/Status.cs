@@ -197,6 +197,11 @@ internal abstract partial class CustomComboFunctions
         // for specified areas
         switch (Svc.ClientState.TerritoryType)
         {
+            case 281:
+                if ((targetID is 2663 && Player.Job.IsPhysicalRangedDps() && targetStatuses.Contains(478)) ||
+                    (targetID is 2694 && (Player.Job.IsMagicalRangedDps() || Player.Job.IsHealer()) && targetStatuses.Contains(477)))
+                    return true;
+                return StatusCache.CompareLists(StatusCache.InvincibleStatuses, targetStatuses);
             case 174: // Labyrinth of the Ancients
                 // Thanatos, Spooky Ghosts Only
                 if (targetID is 2350) return !HasStatusEffect(398);
