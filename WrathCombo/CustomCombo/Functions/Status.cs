@@ -197,7 +197,7 @@ internal abstract partial class CustomComboFunctions
         // for specified areas
         switch (Svc.ClientState.TerritoryType)
         {
-            case 281:
+            case 281: //Whorleater (Hard)
                 if ((targetID is 2663 && Player.Job.IsPhysicalRangedDps() && targetStatuses.Contains(478)) ||
                     (targetID is 2694 && (Player.Job.IsMagicalRangedDps() || Player.Job.IsHealer()) && targetStatuses.Contains(477)))
                     return true;
