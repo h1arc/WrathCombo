@@ -17,10 +17,10 @@ internal partial class MCH
 
                 case Preset.MCH_ST_Adv_Opener:
                     DrawHorizontalRadioButton(MCH_SelectedOpener,
-                        "Standard opener", "Uses Standard opener", 0);
+                        "Standard opener", "Uses Standard Lvl 100 opener", 0);
 
                     DrawHorizontalRadioButton(MCH_SelectedOpener,
-                        $"Early {Wildfire.ActionName()} opener", $"Uses Early {Wildfire.ActionName()} opener", 1);
+                        $"Early {Wildfire.ActionName()} opener", $"Uses Early {Wildfire.ActionName()} Lvl 100 opener", 1);
 
                     DrawBossOnlyChoice(MCH_Balance_Content);
                     break;
