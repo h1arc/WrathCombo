@@ -281,6 +281,7 @@ internal partial class SAM
             {
                 if (GetCooldownRemainingTime(Senei) < gcd * 2)
                     return true;
+                
                 if (JustUsed(Senei, 15f) &&
                     !JustUsed(Ikishoten))
                     return true;
