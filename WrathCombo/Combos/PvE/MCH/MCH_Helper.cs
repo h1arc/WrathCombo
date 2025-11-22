@@ -326,13 +326,15 @@ internal partial class MCH
 
     internal static WrathOpener Opener()
     {
-        if (Lvl100StandardOpener.LevelChecked && MCH_SelectedOpener == 0)
+        if (Lvl100StandardOpener.LevelChecked &&
+            MCH_SelectedOpener == 0)
             return Lvl100StandardOpener;
 
-        if (Lvl100EarlyWFOpener.LevelChecked && MCH_SelectedOpener == 1)
+        if (Lvl100EarlyWFOpener.LevelChecked &&
+            MCH_SelectedOpener == 1)
             return Lvl100EarlyWFOpener;
 
-        if (Lvl90EarlyTools.LevelChecked && (MCH_SelectedOpener == 0 || MCH_SelectedOpener == 1))
+        if (Lvl90EarlyTools.LevelChecked)
             return Lvl90EarlyTools;
 
         return WrathOpener.Dummy;
