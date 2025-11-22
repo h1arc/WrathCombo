@@ -257,7 +257,8 @@ internal partial class SAM
     private static bool CanShoha() =>
         ActionReady(Shoha) && MeditationStacks is 3 &&
         InActionRange(Shoha) &&
-        (EnhancedSenei && JustUsed(Senei, 20f) ||
+        (MeditationStacks is 3 && SenCount is 3 ||
+         EnhancedSenei && JustUsed(Senei, 20f) ||
          !EnhancedSenei && JustUsed(KaeshiSetsugekka, 10f));
 
     //TODO Buffcheck
