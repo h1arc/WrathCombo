@@ -166,7 +166,7 @@ internal class Debug : ConfigWindow, IDisposable
         ImGuiEx.Spacing(new Vector2(0f, SpacingMedium));
 
         var target = Svc.Targets.Target;
-        var player = Svc.ClientState.LocalPlayer;
+        var player = Player.Object;
 
         // Custom 2-Column Styling
         static void CustomStyleText(string firstColumn, object? secondColumn, bool useMonofont = false, Vector4? optionalColor = null)
