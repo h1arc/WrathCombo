@@ -99,7 +99,7 @@ internal sealed class ActionReplacer : IDisposable
             // Bail if not wanting to replace actions in this manner
             if (Service.Configuration.PerformanceMode)
                 return OriginalHook(actionID);
-            if (Svc.ClientState.LocalPlayer == null)
+            if (!Player.Available)
                 return OriginalHook(actionID);
 
             // Only refresh every so often

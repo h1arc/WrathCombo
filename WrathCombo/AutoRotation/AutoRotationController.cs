@@ -129,7 +129,7 @@ internal unsafe static class AutoRotationController
                || Svc.Condition[ConditionFlag.PreparingToCraft]
                || Svc.Condition[ConditionFlag.Fishing]
                || Svc.Condition[ConditionFlag.UsingHousingFunctions]
-               || Svc.ClientState.LocalPlayer?.IsTargetable != true;
+               || !Player.Interactable;
     }
 
     internal static void Run()
