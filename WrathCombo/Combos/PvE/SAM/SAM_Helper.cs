@@ -139,6 +139,9 @@ internal partial class SAM
 
     private static bool CanMeikyo(bool simpleMode = false)
     {
+        int meikyoUsed = CombatActions.Count(x => x == MeikyoShisui);
+        float gcd = GetAdjustedRecastTime(ActionType.Action, Hakaze) / 100f;
+
         if (ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.Tendo) && !HasStatusEffect(Buffs.MeikyoShisui) &&
             (JustUsed(Gekko) || JustUsed(Kasha) || JustUsed(Yukikaze)))
         {
@@ -255,6 +258,7 @@ internal partial class SAM
         ActionReady(Shoha) && MeditationStacks is 3 &&
         InActionRange(Shoha) &&
         (MeditationStacks is 3 && SenCount is 3 ||
+         MeditationStacks is 3 && HasStatusEffect(Buffs.OgiNamikiriReady) ||
          EnhancedSenei && JustUsed(Senei, 20f) ||
          !EnhancedSenei && JustUsed(KaeshiSetsugekka, 10f));
 
@@ -267,6 +271,7 @@ internal partial class SAM
     private static bool CanShinten()
     {
         int shintenTreshhold = SAM_ST_ExecuteThreshold;
+        float GCD = GetCooldown(OriginalHook(Hakaze)).CooldownTotal;
 
         if (ActionReady(Shinten) && Kenki >= SAMKenki.Shinten && InActionRange(Shinten))
         {
@@ -279,9 +284,9 @@ internal partial class SAM
             if (EnhancedSenei &&
                 !HasStatusEffect(Buffs.ZanshinReady))
             {
-                if (GetCooldownRemainingTime(Senei) < gcd * 2)
+                if (GetCooldownRemainingTime(Senei) < GCD * 2)
                     return true;
-                
+
                 if (JustUsed(Senei, 15f) &&
                     !JustUsed(Ikishoten))
                     return true;
@@ -567,10 +572,6 @@ internal partial class SAM
     private static Kaeshi Kaeshi => Gauge.Kaeshi;
 
     private static bool NamikiriReady => Kaeshi is Kaeshi.Namikiri;
-
-    private static int meikyoUsed = CombatActions.Count(x => x == MeikyoShisui);
-
-    private static float gcd = GetAdjustedRecastTime(ActionType.Action, Hakaze) / 100f;
 
     private static int GetSenCount()
     {
