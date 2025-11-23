@@ -934,16 +934,7 @@ internal partial class PLD : Tank
             if (actionID != Cover)
                 return actionID;
 
-            var target =
-                //Mouseover
-                SimpleTarget.UIMouseOverTarget.IfNotThePlayer().IfInParty() ??
-
-                //Field mouseover
-                SimpleTarget.ModelMouseOverTarget.IfNotThePlayer().IfInParty();
-
-            return target != null
-                ? actionID.Retarget(target)
-                : actionID;
+            return actionID.Retarget(SimpleTarget.Stack.MouseOver ?? SimpleTarget.HardTarget);
         }
     }
 }
