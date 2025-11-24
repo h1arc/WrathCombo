@@ -47,6 +47,7 @@ internal partial class PLD
             PLD_ST_MitsOptions = new("PLD_ST_MitsOptions", 0),
             PLD_AoE_MitsOptions = new("PLD_AoE_MitsOptions", 0),
             PLD_RetargetShieldBash_Strength = new("PLD_RetargetShieldBash_Strength", 3),
+            PLD_RetargetCover_Health = new("PLD_RetargetCover_Health", 30),
 
             //One-Button Mitigation
             PLD_Mit_HallowedGround_Max_Health = new("PLD_Mit_HallowedGround_Max_Health", 20),
@@ -61,9 +62,8 @@ internal partial class PLD
 
 
         public static UserBool
-            PLD_RetargetStunLockout = new("PLD_RetargetStunLockout"),
-            PLD_RetargetCover_FieldMouseover = new("PLD_RetargetCover_FieldMouseover");
-
+            PLD_RetargetStunLockout = new("PLD_RetargetStunLockout");
+        
         public static UserIntArray
             PLD_Mit_Priorities = new("PLD_Mit_Priorities");
 
@@ -260,8 +260,8 @@ internal partial class PLD
                     break;
                 
                 // Retarget Cover Feature
-                case Preset.PLD_RetargetCover:
-                    DrawAdditionalBoolChoice(PLD_RetargetCover_FieldMouseover, "Add Field Mouseover", "Adds Field mouseover targeting.");
+                case Preset.PLD_RetargetCover_LowHP:
+                    DrawSliderInt(1, 100, PLD_RetargetCover_Health, "Player HP%", 200);
                     break;
 
                 // Simple ST Mitigations Option
