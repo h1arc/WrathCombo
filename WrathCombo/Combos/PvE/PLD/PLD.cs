@@ -934,7 +934,10 @@ internal partial class PLD : Tank
             if (actionID != Cover)
                 return actionID;
 
-            return actionID.Retarget(SimpleTarget.Stack.MouseOver ?? SimpleTarget.HardTarget);
+            return PLD_RetargetCover_FieldMouseover ?
+                actionID.Retarget(SimpleTarget.Stack.MouseOver ?? SimpleTarget.HardTarget) :
+                actionID.Retarget(SimpleTarget.UIMouseOverTarget ?? SimpleTarget.HardTarget);
+                
         }
     }
 }

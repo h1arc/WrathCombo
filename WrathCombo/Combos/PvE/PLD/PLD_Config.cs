@@ -61,7 +61,8 @@ internal partial class PLD
 
 
         public static UserBool
-            PLD_RetargetStunLockout = new("PLD_RetargetStunLockout");
+            PLD_RetargetStunLockout = new("PLD_RetargetStunLockout"),
+            PLD_RetargetCover_FieldMouseover = new("PLD_RetargetCover_FieldMouseover");
 
         public static UserIntArray
             PLD_Mit_Priorities = new("PLD_Mit_Priorities");
@@ -256,7 +257,11 @@ internal partial class PLD
                 // Retarget Clemency Feature
                 case Preset.PLD_RetargetClemency_LowHP:
                     DrawSliderInt(1, 100, PLD_RetargetClemency_Health, "Player HP%", 200);
-
+                    break;
+                
+                // Retarget Cover Feature
+                case Preset.PLD_RetargetCover:
+                    DrawAdditionalBoolChoice(PLD_RetargetCover_FieldMouseover, "Add Field Mouseover", "Adds Field mouseover targeting.");
                     break;
 
                 // Simple ST Mitigations Option
