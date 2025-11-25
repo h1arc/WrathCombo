@@ -278,7 +278,8 @@ internal partial class SAM
             if (GetTargetHPPercent() < shintenTreshhold)
                 return true;
 
-            if (Kenki >= 95)
+            if (Kenki is 100 && ComboAction == OriginalHook(Gyofu) ||
+                Kenki >= 95 && ComboAction is Jinpu or Shifu)
                 return true;
 
             if (EnhancedSenei &&
