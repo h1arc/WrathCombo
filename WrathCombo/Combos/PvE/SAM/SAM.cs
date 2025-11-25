@@ -468,7 +468,8 @@ internal partial class SAM : Melee
             {
                 if (ComboAction is Hakaze or Gyofu)
                 {
-                    if (!HasSetsu && LevelChecked(Yukikaze) &&
+                    if (LevelChecked(Yukikaze) &&
+                        (SenCount is 3 || !HasSetsu) &&
                         (HasStatusEffect(Buffs.Fugetsu) || !SAM_Yukaze_Gekko) &&
                         (HasStatusEffect(Buffs.Fuka) || !SAM_Yukaze_Kasha))
                         return Yukikaze;
