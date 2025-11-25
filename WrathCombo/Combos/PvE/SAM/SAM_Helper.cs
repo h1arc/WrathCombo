@@ -284,7 +284,8 @@ internal partial class SAM
             if (EnhancedSenei &&
                 !HasStatusEffect(Buffs.ZanshinReady))
             {
-                if (GetCooldownRemainingTime(Senei) < GCD * 2)
+                if (GetCooldownRemainingTime(Senei) < GCD * 2 &&
+                    Kenki >= 95)
                     return true;
 
                 if (JustUsed(Senei, 15f) &&
