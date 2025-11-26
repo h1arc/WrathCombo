@@ -1244,10 +1244,6 @@ public enum Preset
     BLM_ST_Movement = 2113,
 
     [ParentCombo(BLM_ST_AdvancedMode)]
-    [CustomComboInfo("Scathe Option", "Add Scathe while moving and below lvl 66.", Job.BLM)]
-    BLM_ST_UseScathe = 2116,
-
-    [ParentCombo(BLM_ST_AdvancedMode)]
     [CustomComboInfo("Manaward Option", "Adds Manaward to the rotation when below HP Treshold and when raidwide is casting.", Job.BLM)]
     BLM_ST_Manaward = 2199,
 
@@ -2706,28 +2702,8 @@ public enum Preset
     [Hidden]
     DRK_Hidden = 5200,
 
-    [ParentCombo(DRK_Hidden)]
-    [CustomComboInfo("R6S: Hold Burst on Squirrels", "When you're targeting Squirrels in R6S add phase, hold burst.\n(until about the time the first manta is dying)", Job.DRK)]
-    [Hidden]
-    DRK_Hid_R6SHoldSquirrelBurst = 5201,
-
-    [ParentCombo(DRK_Hidden)]
-    [CustomComboInfo("R6S: Only Stun Jabberwock", "When in R6S, stun will only ever be used on the Jabberwock.", Job.DRK)]
-    [Hidden]
-    DRK_Hid_R6SStunJabberOnly = 5202,
-
-    [ParentCombo(DRK_Hidden)]
-    [CustomComboInfo("R6S: Save Reprisal and Dark Missionary", "When in R6S, never try use Reprisal or Dark Missionary automatically.", Job.DRK)]
-    [Hidden]
-    DRK_Hid_R6SNoAutoGroupMits = 5203,
-
-    [ParentCombo(DRK_Hidden)]
-    [CustomComboInfo("R7S: Only Interrupt the adds casting Circle AoEs", "When you're in R7S, Interrupting will only work when you're targeting an add casting the circle AoE.", Job.DRK)]
-    [Hidden]
-    DRK_Hid_R7SCircleCastOnly = 5204,
-
     #endregion
-    // Last value = 5204
+    // Last value = 5200
 
     #endregion
 
@@ -3607,6 +3583,8 @@ public enum Preset
     [ParentCombo(MCH_ST_AdvancedMode)]
     [CustomComboInfo("Balance Opener (Level 90/100)", "Adds the Balance opener at lvl 90/100.", Job.MCH)]
     MCH_ST_Adv_Opener = 8101,
+    
+    #region BS
 
     [ParentCombo(MCH_ST_AdvancedMode)]
     [CustomComboInfo("Barrel Stabilizer Option", "Adds Barrel Stabilizer to the rotation.", Job.MCH)]
@@ -3615,14 +3593,14 @@ public enum Preset
     [ParentCombo(MCH_ST_AdvancedMode)]
     [CustomComboInfo("Full Metal Field Option", "Adds Full Metal Field to the rotation.", Job.MCH)]
     MCH_ST_Adv_Stabilizer_FullMetalField = 8111,
-
-    [ParentCombo(MCH_ST_AdvancedMode)]
-    [CustomComboInfo("Gauss Round / Ricochet \nDouble Check / Checkmate option", "Adds Gauss Round and Ricochet or Double Check and Checkmate to the rotation. Will prevent overcapping.", Job.MCH)]
-    MCH_ST_Adv_GaussRicochet = 8104,
-
+    
+    #endregion
+    
     [ParentCombo(MCH_ST_AdvancedMode)]
     [CustomComboInfo("Wildfire Option", "Adds Wildfire to the rotation.", Job.MCH)]
     MCH_ST_Adv_WildFire = 8108,
+    
+    #region Hypercharge
 
     [ParentCombo(MCH_ST_AdvancedMode)]
     [CustomComboInfo("Hypercharge Option", "Adds Hypercharge to the rotation.", Job.MCH)]
@@ -3631,7 +3609,43 @@ public enum Preset
     [ParentCombo(MCH_ST_AdvancedMode)]
     [CustomComboInfo("Heat Blast / Blazing Shot Option", "Adds Heat Blast or Blazing Shot to the rotation", Job.MCH)]
     MCH_ST_Adv_Heatblast = 8106,
+    
+    #endregion
 
+    [ParentCombo(MCH_ST_AdvancedMode)]
+    [CustomComboInfo("Gauss Round / Ricochet \nDouble Check / Checkmate option", "Adds Gauss Round and Ricochet or Double Check and Checkmate to the rotation. Will prevent overcapping.", Job.MCH)]
+    MCH_ST_Adv_GaussRicochet = 8104,
+    
+    [ParentCombo(MCH_ST_AdvancedMode)]
+    [CustomComboInfo("Reassemble Option", "Adds Reassemble to the rotation.\nWill be used priority based.\nOrder from highest to lowest priority :\nExcavator - Chainsaw - Air Anchor - Drill - Clean Shot", Job.MCH)]
+    MCH_ST_Adv_Reassemble = 8103,
+    
+    #region Tools
+
+    [ParentCombo(MCH_ST_AdvancedMode)]
+    [CustomComboInfo("Tools", "Adds Hotshot, Drill, Air Anchor, Chainsaw and Excavator to the rotation.", Job.MCH)]
+    MCH_ST_Adv_Tools = 8119,
+
+    [ParentCombo(MCH_ST_Adv_Tools)]
+    [CustomComboInfo("Drill Option", "Adds Drill to the rotation.", Job.MCH)]
+    MCH_ST_Adv_Drill = 8109,
+
+    [ParentCombo(MCH_ST_Adv_Tools)]
+    [CustomComboInfo("Hot Shot / Air Anchor Option", "Adds Hot Shot/Air Anchor to the rotation.", Job.MCH)]
+    MCH_ST_Adv_AirAnchor = 8102,
+
+    [ParentCombo(MCH_ST_Adv_Tools)]
+    [CustomComboInfo("Chain Saw Option", "Adds Chain Saw to the rotation.", Job.MCH)]
+    MCH_ST_Adv_Chainsaw = 8112,
+
+    [ParentCombo(MCH_ST_Adv_Tools)]
+    [CustomComboInfo("Excavator Option", "Adds Excavator to the rotation.\nWill follow Balance logic if selected on Turret/Queen.", Job.MCH)]
+    MCH_ST_Adv_Excavator = 8116,
+
+    #endregion
+
+    #region Queen
+    
     [ParentCombo(MCH_ST_AdvancedMode)]
     [CustomComboInfo("Rook Autoturret/Automaton Queen Option", "Adds Rook Autoturret or Automaton Queen to the rotation.", Job.MCH)]
     MCH_ST_Adv_TurretQueen = 8107,
@@ -3639,31 +3653,9 @@ public enum Preset
     [ParentCombo(MCH_ST_AdvancedMode)]
     [CustomComboInfo("Rook / Queen Overdrive Option", "Adds Rook or Queen Overdrive to the rotation.", Job.MCH)]
     MCH_ST_Adv_QueenOverdrive = 8115,
-
-    [ParentCombo(MCH_ST_AdvancedMode)]
-    [CustomComboInfo("Reassemble Option", "Adds Reassemble to the rotation.\nWill be used priority based.\nOrder from highest to lowest priority :\nExcavator - Chainsaw - Air Anchor - Drill - Clean Shot", Job.MCH)]
-    MCH_ST_Adv_Reassemble = 8103,
-
-    [ParentCombo(MCH_ST_AdvancedMode)]
-    [CustomComboInfo("Drill Option", "Adds Drill to the rotation.", Job.MCH)]
-    MCH_ST_Adv_Drill = 8109,
-
-    [ParentCombo(MCH_ST_AdvancedMode)]
-    [CustomComboInfo("Hot Shot / Air Anchor Option", "Adds Hot Shot/Air Anchor to the rotation.", Job.MCH)]
-    MCH_ST_Adv_AirAnchor = 8102,
-
-    [ParentCombo(MCH_ST_AdvancedMode)]
-    [CustomComboInfo("Chain Saw Option", "Adds Chain Saw to the rotation.", Job.MCH)]
-    MCH_ST_Adv_Chainsaw = 8112,
-
-    [ParentCombo(MCH_ST_AdvancedMode)]
-    [CustomComboInfo("Excavator Option", "Adds Excavator to the rotation.\nWill follow Balance logic if selected on Turret/Queen.", Job.MCH)]
-    MCH_ST_Adv_Excavator = 8116,
-
-    [ParentCombo(MCH_ST_AdvancedMode)]
-    [CustomComboInfo("Tactician Raidwide Option", "Adds Tactician when Raidwide is detected casting.", Job.MCH)]
-    MCH_ST_Adv_Tactician = 8118,
-
+    
+    #endregion
+    
     [ParentCombo(MCH_ST_AdvancedMode)]
     [CustomComboInfo("Head Graze Option", "Uses Head Graze to interrupt during the rotation, where applicable.", Job.MCH)]
     MCH_ST_Adv_Interrupt = 8113,
@@ -3671,10 +3663,18 @@ public enum Preset
     [ParentCombo(MCH_ST_AdvancedMode)]
     [CustomComboInfo("Second Wind Option", "Use Second Wind when below the set HP percentage.", Job.MCH)]
     MCH_ST_Adv_SecondWind = 8114,
+    
+    #region Raidwides
 
     [ParentCombo(MCH_ST_AdvancedMode)]
     [CustomComboInfo("Dismantle Raidwide Option", "Adds Dismantle when Raidwide is detected casting.", Job.MCH)]
     MCH_ST_Dismantle = 8195,
+
+    [ParentCombo(MCH_ST_AdvancedMode)]
+    [CustomComboInfo("Tactician Raidwide Option", "Adds Tactician when Raidwide is detected casting.", Job.MCH)]
+    MCH_ST_Adv_Tactician = 8118,
+    
+    #endregion
 
     #endregion
 
@@ -3690,6 +3690,8 @@ public enum Preset
     [ParentCombo(MCH_AoE_AdvancedMode)]
     [CustomComboInfo("Flamethrower Option", "Adds Flamethrower to the rotation.\n Changes to Savage blade when in use to prevent cancelling.", Job.MCH)]
     MCH_AoE_Adv_FlameThrower = 8305,
+    
+    #region BS
 
     [ParentCombo(MCH_AoE_AdvancedMode)]
     [CustomComboInfo("Barrel Stabilizer Option", "Adds Barrel Stabilizer to the rotation.", Job.MCH)]
@@ -3698,6 +3700,8 @@ public enum Preset
     [ParentCombo(MCH_AoE_AdvancedMode)]
     [CustomComboInfo("Full Metal Field Option", "Adds Full Metal Field to the rotation.", Job.MCH)]
     MCH_AoE_Adv_Stabilizer_FullMetalField = 8308,
+    
+    #endregion
 
     [ParentCombo(MCH_AoE_AdvancedMode)]
     [CustomComboInfo("Gauss Round / Ricochet \nDouble Check / Checkmate option", "Adds Gauss Round and Ricochet or Double Check and Checkmate to the rotation.", Job.MCH)]
@@ -3706,6 +3710,8 @@ public enum Preset
     [ParentCombo(MCH_AoE_AdvancedMode)]
     [CustomComboInfo("Hypercharge Option", "Adds Hypercharge to the rotation.", Job.MCH)]
     MCH_AoE_Adv_Hypercharge = 8303,
+    
+    #region Queen
 
     [ParentCombo(MCH_AoE_AdvancedMode)]
     [CustomComboInfo("Rook Autoturret/Automaton Queen Option", "Adds Rook Autoturret or Automaton Queen to the rotation.", Job.MCH)]
@@ -3714,26 +3720,36 @@ public enum Preset
     [ParentCombo(MCH_AoE_AdvancedMode)]
     [CustomComboInfo("Rook / Queen Overdrive Option", "Adds Rook or Queen Overdrive to the rotation.", Job.MCH)]
     MCH_AoE_Adv_QueenOverdrive = 8314,
+    
+    #endregion
 
     [ParentCombo(MCH_AoE_AdvancedMode)]
     [CustomComboInfo("Reassemble Option", "Adds Reassemble to the rotation.", Job.MCH)]
     MCH_AoE_Adv_Reassemble = 8301,
+    
+    #region Tools
 
     [ParentCombo(MCH_AoE_AdvancedMode)]
+    [CustomComboInfo("Tools", "Adds Bioblaster, Air Anchor, Chainsaw and Excavator to the rotation.", Job.MCH)]
+    MCH_AoE_Adv_Tools = 8315,
+
+    [ParentCombo(MCH_AoE_Adv_Tools)]
     [CustomComboInfo("Bioblaster Option", "Adds Bioblaster to the rotation.", Job.MCH)]
     MCH_AoE_Adv_Bioblaster = 8306,
 
-    [ParentCombo(MCH_AoE_AdvancedMode)]
+    [ParentCombo(MCH_AoE_Adv_Tools)]
     [CustomComboInfo("Air Anchor Option", "Adds Air Anchor to the the rotation.", Job.MCH)]
     MCH_AoE_Adv_AirAnchor = 8313,
 
-    [ParentCombo(MCH_AoE_AdvancedMode)]
+    [ParentCombo(MCH_AoE_Adv_Tools)]
     [CustomComboInfo("Chain Saw Option", "Adds Chain Saw to the the rotation.", Job.MCH)]
     MCH_AoE_Adv_Chainsaw = 8309,
 
-    [ParentCombo(MCH_AoE_AdvancedMode)]
+    [ParentCombo(MCH_AoE_Adv_Tools)]
     [CustomComboInfo("Excavator Option", "Adds Excavator to the rotation.", Job.MCH)]
     MCH_AoE_Adv_Excavator = 8310,
+    
+    #endregion
 
     [ParentCombo(MCH_AoE_AdvancedMode)]
     [CustomComboInfo("Head Graze Option", "Uses Head Graze to interrupt during the rotation, where applicable.", Job.MCH)]
@@ -3812,8 +3828,8 @@ public enum Preset
     [CustomComboInfo("Gauss Round / Ricochet \nDouble Check / Checkmate Feature", "Replace Gauss Round and Ricochet or Double Check and Checkmate with one or the other depending on which has more charges.", Job.MCH)]
     MCH_GaussRoundRicochet = 8003,
 
-    // Last value ST = 8117
-    // Last value AoE = 8314
+    // Last value ST = 8119
+    // Last value AoE = 8315
     // Last value Misc = 8058
 
     #endregion
@@ -3875,7 +3891,7 @@ public enum Preset
     [CustomComboInfo("Riddle of Fire Option", "Adds Riddle of Fire to the rotation", Job.MNK)]
     MNK_STUseROF = 9011,
 
-    [ParentCombo(MNK_STUseBuffs)]
+    [ParentCombo(MNK_ST_AdvancedMode)]
     [CustomComboInfo("Fire's Reply Option", "Adds Fire's Reply to the rotation", Job.MNK)]
     MNK_STUseFiresReply = 9016,
 
@@ -3883,7 +3899,7 @@ public enum Preset
     [CustomComboInfo("Riddle of Wind Option", "Adds Riddle of Wind to the rotation", Job.MNK)]
     MNK_STUseROW = 9010,
 
-    [ParentCombo(MNK_STUseBuffs)]
+    [ParentCombo(MNK_ST_AdvancedMode)]
     [CustomComboInfo("Wind's Reply Option", "Adds Wind's Reply to the rotation", Job.MNK)]
     MNK_STUseWindsReply = 9015,
 
@@ -3892,7 +3908,7 @@ public enum Preset
     MNK_STUsePerfectBalance = 9013,
 
     [ParentCombo(MNK_ST_AdvancedMode)]
-    [CustomComboInfo(" Masterful Blitz Option", "Adds Masterful Blitz to the rotation", Job.MNK)]
+    [CustomComboInfo(" Masterful Blitz Option", "Adds Masterful Blitz to the rotation.\nwill use it only under RoF when unlocked.", Job.MNK)]
     MNK_STUseMasterfulBlitz = 9039,
 
     [ParentCombo(MNK_ST_AdvancedMode)]
@@ -3954,7 +3970,7 @@ public enum Preset
     [CustomComboInfo("Riddle of Fire Option", "Adds Riddle of Fire to the rotation", Job.MNK)]
     MNK_AoEUseROF = 9032,
 
-    [ParentCombo(MNK_AoEUseROF)]
+    [ParentCombo(MNK_AOE_AdvancedMode)]
     [CustomComboInfo("Fire's Reply Option", "Adds Fire's Reply to the rotation", Job.MNK)]
     MNK_AoEUseFiresReply = 9036,
 
@@ -3962,7 +3978,7 @@ public enum Preset
     [CustomComboInfo("Riddle of Wind Option", "Adds Riddle of Wind to the rotation", Job.MNK)]
     MNK_AoEUseROW = 9031,
 
-    [ParentCombo(MNK_AoEUseROW)]
+    [ParentCombo(MNK_AOE_AdvancedMode)]
     [CustomComboInfo("Wind's Reply Option", "Adds Wind's Reply to the rotation", Job.MNK)]
     MNK_AoEUseWindsReply = 9035,
 
@@ -4023,15 +4039,11 @@ public enum Preset
     [Hidden]
     [CustomComboInfo("Hidden Options", "Collection of cheeky or encounter-specific extra options only available to those in the know.\nDo not expect these options to be maintained, or even kept, after they are no longer Current.", Job.MNK)]
     MNK_Hidden = 9300,
-
-    [ParentCombo(MNK_Hidden)]
-    [Hidden]
-    [CustomComboInfo("M6S: Hold Burst on Squirrels", "When you're targeting Squirrels in M6S add phase, hold burst.\n(until about the time the first manta is dying)", Job.MNK)]
-    MNK_Hid_M6SHoldSquirrelBurst = 9301,
-
+    
     #endregion
 
     // Last value = 9045
+    // Hidden = 9300
 
     #endregion
 
@@ -4825,8 +4837,8 @@ public enum Preset
 
     #region Basic combo
 
-    [ReplaceSkill(PLD.RageOfHalone)]
-    [CustomComboInfo("Basic Combo", "Replace Rage Of Halone with its combo chain.", Job.PLD)]
+    [ReplaceSkill(PLD.RageOfHalone, PLD.RoyalAuthority)]
+    [CustomComboInfo("Basic Combo", "Replace Rage Of Halone or Royal Authority with its combo chain.", Job.PLD)]
     [BasicCombo]
     PLD_ST_BasicCombo = 11061,
 
@@ -4927,7 +4939,7 @@ public enum Preset
 
     [ReplaceSkill(PLD.Sheltron)]
     [CustomComboInfo("Sheltron to Intervention Feature", "Will use intervention on your Hard Target if target is a friendly party member, if not then Sheltron." +
-                                                         "\n- UI Mousover > Hard target > Target's target > Self Sheltron", Job.PLD)]
+                                                         "\n- UI Mouseover > Hard target > Target's target > Self Sheltron", Job.PLD)]
     [Retargeted(PLD.Sheltron)]
     PLD_RetargetSheltron = 11068,
 
@@ -4945,10 +4957,16 @@ public enum Preset
     [ConflictingCombos(ALL_Tank_Interrupt)]
     [CustomComboInfo("Retarget Shield Bash", "Redirects your Shield Bash to a stunnable enemy if your current target cannot be stunned.", Job.PLD)]
     PLD_RetargetShieldBash = 11073,
+    
+    [ReplaceSkill(PLD.Cover)]
+    [CustomComboInfo("Retarget Cover Feature", "Will retarget Cover according to the following." +
+                                               "\n- UI Mouseover > Field Mouseover > Hard target", Job.PLD)]
+    [Retargeted(PLD.Cover)]
+    PLD_RetargetCover = 11075,
 
     #endregion
 
-    //// Last value = 11074
+    //// Last value = 11075
 
     #endregion
 
@@ -4982,7 +5000,7 @@ public enum Preset
     RPR_ST_AdvancedMode = 12001,
 
     [ParentCombo(RPR_ST_AdvancedMode)]
-    [CustomComboInfo("Balance Opener (Level 100)", "Adds the Balance opener at level 100.", Job.RPR)]
+    [CustomComboInfo("Balance Opener (Level 90/100)", "Adds the Balance opener at level 90/100.", Job.RPR)]
     RPR_ST_Opener = 12002,
 
     [ParentCombo(RPR_ST_AdvancedMode)]
@@ -6367,19 +6385,14 @@ public enum Preset
     [CustomComboInfo("Hidden Options", "Collection of cheeky or encounter-specific extra options only available to those in the know.\nDo not expect these options to be maintained, or even kept, after they are no longer Current.", Job.SAM)]
     [Hidden]
     SAM_Hidden = 15300,
-
-    [ParentCombo(SAM_Hidden)]
-    [CustomComboInfo("M6S: Hold Burst on Squirrels", "When you're targeting Squirrels in M6S add phase, hold burst.\n(until about the time the first manta is dying)", Job.SAM)]
-    [Hidden]
-    SAM_Hid_M6SHoldSquirrelBurst = 15301,
+    
 
     #endregion
 
     // Last Value ST = 15027
     // Last Value AoE = 15113
     // Last Value Misc = 15257
-    // Last Value Hidden = 15301
-
+    // Last Value Hidden = 153010
     #endregion
 
     #region SCHOLAR
@@ -8042,7 +8055,7 @@ public enum Preset
 
     [ParentCombo(WHM_STHeals)]
     [CustomComboInfo("Afflatus Solace Option", "Adds Afflatus Solace.", Job.WHM)]
-    [PossiblyRetargeted]
+    [PossiblyRetargeted(WHM.AfflatusSolace)]
     WHM_STHeals_Solace = 19303,
 
     [ParentCombo(WHM_STHeals)]
@@ -8062,21 +8075,21 @@ public enum Preset
 
     [ParentCombo(WHM_STHeals)]
     [CustomComboInfo("Benediction Option", "Adds Benediciton.", Job.WHM)]
-    [PossiblyRetargeted]
+    [PossiblyRetargeted(WHM.Benediction)]
     WHM_STHeals_Benediction = 19302,
 
     [ParentCombo(WHM_STHeals)]
     [CustomComboInfo("Temperance Option", "Adds Temperance and it's followup Divine Caress.", Job.WHM)]
-    [PossiblyRetargeted]
     WHM_STHeals_Temperance = 19310,
 
     [ParentCombo(WHM_STHeals)]
     [CustomComboInfo("Asylum Option", "Adds Asylum.", Job.WHM)]
+    [Retargeted(WHM.Asylum)]
     WHM_STHeals_Asylum = 19311,
 
     [ParentCombo(WHM_STHeals)]
     [CustomComboInfo("LiturgyOfTheBell Option", "Adds LiturgyOfTheBell.", Job.WHM)]
-    [PossiblyRetargeted]
+    [PossiblyRetargeted(WHM.LiturgyOfTheBell, WHM.LiturgyOfTheBellRecast)]
     WHM_STHeals_LiturgyOfTheBell = 19312,
 
     #endregion
@@ -8122,7 +8135,7 @@ public enum Preset
 
     [ParentCombo(WHM_AoEHeals)]
     [CustomComboInfo("Asylum Option", "Adds Asylum placement, when standing still, to the rotation.\nWill Retarget it onto yourself.", Job.WHM)]
-    [Retargeted]
+    [Retargeted(WHM.Asylum)]
     WHM_AoEHeals_Asylum = 19028,
 
     [ParentCombo(WHM_AoEHeals)]

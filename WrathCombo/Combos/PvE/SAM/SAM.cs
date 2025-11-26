@@ -27,17 +27,17 @@ internal partial class SAM : Melee
             if (CanWeave())
             {
                 //Meikyo Feature
-                if (UseMeikyo())
+                if (CanMeikyo(true))
                     return MeikyoShisui;
 
                 //Ikishoten Feature
-                if (UseIkishoten())
+                if (CanIkishoten())
                     return Ikishoten;
 
                 //Senei Feature
                 if (Kenki >= SAMKenki.Senei)
                 {
-                    if (UseSenei())
+                    if (CanSenei())
                         return Senei;
 
                     //Guren if no Senei
@@ -47,15 +47,15 @@ internal partial class SAM : Melee
                 }
 
                 //Zanshin Usage
-                if (UseZanshin())
+                if (CanZanshin())
                     return Zanshin;
 
                 //Shoha Usage
-                if (UseShoha())
+                if (CanShoha())
                     return Shoha;
 
                 //Shinten Usage
-                if (UseShinten())
+                if (CanShinten())
                     return Shinten;
 
                 // healing
@@ -69,69 +69,25 @@ internal partial class SAM : Melee
                     return Role.LegSweep;
             }
 
-            if (UseTsubame())
+            if (CanTsubame())
                 return OriginalHook(TsubameGaeshi);
 
             //Ogi Namikiri feature
-            if (!IsMoving() && UseOgi())
+            if (!IsMoving() && CanOgi(true))
                 return OriginalHook(OgiNamikiri);
 
             // Iaijutsu feature
             if (!IsMoving() &&
-                UseIaijutsu(true, true, true))
+                CanUseIaijutsu(true, true, true, true))
                 return OriginalHook(Iaijutsu);
 
             //Ranged
             if (ActionReady(Enpi) && !InMeleeRange() && HasBattleTarget())
                 return Enpi;
 
-            if (HasStatusEffect(Buffs.MeikyoShisui))
-            {
-                if (LevelChecked(Gekko) &&
-                    (RefreshFugetsu && !HasGetsu || !HasStatusEffect(Buffs.Fugetsu)))
-                    return Role.CanTrueNorth() && !OnTargetsRear()
-                        ? Role.TrueNorth
-                        : Gekko;
-
-                if (LevelChecked(Kasha) &&
-                    (RefreshFuka && !HasKa || !HasStatusEffect(Buffs.Fuka)))
-                    return Role.CanTrueNorth() && !OnTargetsFlank()
-                        ? Role.TrueNorth
-                        : Kasha;
-
-                if (LevelChecked(Yukikaze) && !HasSetsu)
-                    return Yukikaze;
-            }
-
-            if (ComboTimer > 0)
-            {
-                if (ComboAction is Hakaze or Gyofu)
-                {
-                    if (!HasSetsu && LevelChecked(Yukikaze) &&
-                        HasStatusEffect(Buffs.Fugetsu) && HasStatusEffect(Buffs.Fuka))
-                        return Yukikaze;
-
-                    if (LevelChecked(Jinpu) &&
-                        (RefreshFugetsu && !HasGetsu ||
-                         !HasStatusEffect(Buffs.Fugetsu) ||
-                         SenCount is 3 && RefreshFugetsu))
-                        return Jinpu;
-
-                    if (LevelChecked(Shifu) &&
-                        (RefreshFuka && !HasKa ||
-                         !HasStatusEffect(Buffs.Fuka) ||
-                         SenCount is 3 && RefreshFuka))
-                        return Shifu;
-                }
-
-                if (ComboAction is Jinpu && LevelChecked(Gekko))
-                    return Gekko;
-
-                if (ComboAction is Shifu && LevelChecked(Kasha))
-                    return Kasha;
-            }
-
-            return actionID;
+            return HasStatusEffect(Buffs.MeikyoShisui)
+                ? DoMeikyoCombo(actionID, true, true)
+                : DoBasicCombo(actionID, true, true);
         }
     }
 
@@ -205,29 +161,17 @@ internal partial class SAM : Melee
                     return OriginalHook(Iaijutsu);
             }
 
-            if (HasStatusEffect(Buffs.MeikyoShisui))
+            if (ComboTimer > 0 && ComboAction is Fuko or Fuga ||
+                HasStatusEffect(Buffs.MeikyoShisui))
             {
-                if (!HasGetsu && HasStatusEffect(Buffs.Fuka) ||
+                if (LevelChecked(Mangetsu) &&
+                    !HasGetsu ||
                     !HasStatusEffect(Buffs.Fugetsu))
                     return Mangetsu;
 
-                if (!HasKa && HasStatusEffect(Buffs.Fugetsu) ||
-                    !HasStatusEffect(Buffs.Fuka))
-                    return Oka;
-            }
-
-            if (ComboTimer > 0 &&
-                ComboAction is Fuko or Fuga)
-            {
-                if (LevelChecked(Mangetsu) &&
-                    (RefreshFugetsu && !HasGetsu ||
-                     !HasStatusEffect(Buffs.Fugetsu) ||
-                     !LevelChecked(Oka)))
-                    return Mangetsu;
-
                 if (LevelChecked(Oka) &&
-                    (RefreshFuka && !HasKa ||
-                     !HasStatusEffect(Buffs.Fuka)))
+                    !HasKa ||
+                    !HasStatusEffect(Buffs.Fuka))
                     return Oka;
             }
 
@@ -261,7 +205,7 @@ internal partial class SAM : Melee
                 return contentAction;
 
             //oGCDs
-            if (CanWeave() && M6SReady)
+            if (CanWeave())
             {
                 if (IsEnabled(Preset.SAM_ST_CDs))
                 {
@@ -280,12 +224,12 @@ internal partial class SAM : Melee
 
                     //Meikyo feature
                     if (IsEnabled(Preset.SAM_ST_CDs_MeikyoShisui) &&
-                        UseMeikyo())
+                        CanMeikyo())
                         return MeikyoShisui;
 
                     //Ikishoten feature
                     if (IsEnabled(Preset.SAM_ST_CDs_Ikishoten) &&
-                        UseIkishoten())
+                        CanIkishoten())
                         return Ikishoten;
                 }
 
@@ -295,7 +239,7 @@ internal partial class SAM : Melee
                     if (IsEnabled(Preset.SAM_ST_CDs_Senei)
                         && Kenki >= SAMKenki.Senei)
                     {
-                        if (UseSenei())
+                        if (CanSenei())
                             return Senei;
 
                         //Guren if no Senei
@@ -307,15 +251,15 @@ internal partial class SAM : Melee
 
                     //Zanshin Usage
                     if (IsEnabled(Preset.SAM_ST_CDs_Zanshin) &&
-                        UseZanshin())
+                        CanZanshin())
                         return Zanshin;
 
                     if (IsEnabled(Preset.SAM_ST_CDs_Shoha) &&
-                        UseShoha())
+                        CanShoha())
                         return Shoha;
                 }
                 if (IsEnabled(Preset.SAM_ST_Shinten) &&
-                    UseShinten())
+                    CanShinten())
                     return Shinten;
 
                 if (IsEnabled(Preset.SAM_ST_Feint) &&
@@ -342,19 +286,18 @@ internal partial class SAM : Melee
             {
                 if (IsEnabled(Preset.SAM_ST_CDs_Iaijutsu) &&
                     IsEnabled(Preset.SAM_ST_CDs_UseTsubame) &&
-                    UseTsubame())
+                    CanTsubame())
                     return OriginalHook(TsubameGaeshi);
 
                 //Ogi Namikiri Feature
                 if (IsEnabled(Preset.SAM_ST_CDs_OgiNamikiri) &&
-                    (!SAM_ST_CDs_OgiNamikiri_Movement || !IsMoving()) &&
-                    M6SReady && UseOgi())
+                    (!SAM_ST_CDs_OgiNamikiri_Movement || !IsMoving()) && CanOgi())
                     return OriginalHook(OgiNamikiri);
 
                 // Iaijutsu Feature
                 if (IsEnabled(Preset.SAM_ST_CDs_Iaijutsu) &&
                     (!IsEnabled(Preset.SAM_ST_CDs_Iaijutsu_Movement) || !IsMoving()) &&
-                    UseIaijutsu(IsEnabled(Preset.SAM_ST_CDs_UseHiganbana), IsEnabled(Preset.SAM_ST_CDs_UseTenkaGoken), IsEnabled(Preset.SAM_ST_CDs_UseMidare)))
+                    CanUseIaijutsu(IsEnabled(Preset.SAM_ST_CDs_UseHiganbana), IsEnabled(Preset.SAM_ST_CDs_UseTenkaGoken), IsEnabled(Preset.SAM_ST_CDs_UseMidare)))
                     return OriginalHook(Iaijutsu);
 
                 //Ranged
@@ -363,62 +306,10 @@ internal partial class SAM : Melee
                     return Enpi;
             }
 
-            if (HasStatusEffect(Buffs.MeikyoShisui))
-            {
-                if (IsEnabled(Preset.SAM_ST_Gekko) &&
-                    LevelChecked(Gekko) &&
-                    (RefreshFugetsu && !HasGetsu || !HasStatusEffect(Buffs.Fugetsu)))
-                    return IsEnabled(Preset.SAM_ST_TrueNorth) &&
-                           Role.CanTrueNorth() && !OnTargetsRear()
-                        ? Role.TrueNorth
-                        : Gekko;
+            return HasStatusEffect(Buffs.MeikyoShisui)
+                ? DoMeikyoCombo(actionID, IsEnabled(Preset.SAM_ST_TrueNorth))
+                : DoBasicCombo(actionID, IsEnabled(Preset.SAM_ST_TrueNorth));
 
-                if (IsEnabled(Preset.SAM_ST_Kasha) &&
-                    LevelChecked(Kasha) &&
-                    (RefreshFuka && !HasKa || !HasStatusEffect(Buffs.Fuka)))
-                    return IsEnabled(Preset.SAM_ST_TrueNorth) &&
-                           Role.CanTrueNorth() && !OnTargetsFlank()
-                        ? Role.TrueNorth
-                        : Kasha;
-
-                if (IsEnabled(Preset.SAM_ST_Yukikaze) &&
-                    LevelChecked(Yukikaze) && !HasSetsu)
-                    return Yukikaze;
-            }
-
-            if (ComboTimer > 0)
-            {
-                if (ComboAction is Hakaze or Gyofu)
-                {
-                    if (IsEnabled(Preset.SAM_ST_Yukikaze) &&
-                        !HasSetsu && LevelChecked(Yukikaze) &&
-                        HasStatusEffect(Buffs.Fugetsu) && HasStatusEffect(Buffs.Fuka))
-                        return Yukikaze;
-
-                    if (IsEnabled(Preset.SAM_ST_Gekko) &&
-                        LevelChecked(Jinpu) &&
-                        (RefreshFugetsu && !HasGetsu ||
-                         !HasStatusEffect(Buffs.Fugetsu) ||
-                         SenCount is 3 && RefreshFugetsu))
-                        return Jinpu;
-
-                    if (IsEnabled(Preset.SAM_ST_Kasha) &&
-                        LevelChecked(Shifu) &&
-                        (RefreshFuka && !HasKa ||
-                         !HasStatusEffect(Buffs.Fuka) ||
-                         SenCount is 3 && RefreshFuka))
-                        return Shifu;
-                }
-
-                if (ComboAction is Jinpu && LevelChecked(Gekko))
-                    return Gekko;
-
-                if (IsEnabled(Preset.SAM_ST_Kasha) &&
-                    ComboAction is Shifu && LevelChecked(Kasha))
-                    return Kasha;
-            }
-
-            return actionID;
         }
     }
 
@@ -437,7 +328,7 @@ internal partial class SAM : Melee
                 return contentAction;
 
             //oGCD feature
-            if (CanWeave() && M6SReady)
+            if (CanWeave())
             {
                 if (IsEnabled(Preset.SAM_AoE_Hagakure) &&
                     OriginalHook(Iaijutsu) is MidareSetsugekka && LevelChecked(Hagakure))
@@ -499,7 +390,7 @@ internal partial class SAM : Melee
             if (IsEnabled(Preset.SAM_AoE_Damage))
             {
                 if (IsEnabled(Preset.SAM_AoE_OgiNamikiri) &&
-                    ActionReady(OgiNamikiri) && M6SReady &&
+                    ActionReady(OgiNamikiri) &&
                     (!IsMoving() && HasStatusEffect(Buffs.OgiNamikiriReady) || NamikiriReady))
                     return OriginalHook(OgiNamikiri);
 
@@ -518,32 +409,19 @@ internal partial class SAM : Melee
                 }
             }
 
-            if (HasStatusEffect(Buffs.MeikyoShisui))
+            if (ComboTimer > 0 && ComboAction is Fuko or Fuga ||
+                HasStatusEffect(Buffs.MeikyoShisui))
             {
-                if (!HasGetsu && HasStatusEffect(Buffs.Fuka) ||
+                if (LevelChecked(Mangetsu) &&
+                    !HasGetsu ||
+                    IsNotEnabled(Preset.SAM_AoE_Oka) ||
                     !HasStatusEffect(Buffs.Fugetsu))
                     return Mangetsu;
 
                 if (IsEnabled(Preset.SAM_AoE_Oka) &&
-                    (!HasKa && HasStatusEffect(Buffs.Fugetsu) ||
-                     !HasStatusEffect(Buffs.Fuka)))
-                    return Oka;
-            }
-
-            if (ComboTimer > 0 &&
-                ComboAction is Fuko or Fuga)
-            {
-                if (LevelChecked(Mangetsu) &&
-                    (RefreshFugetsu && !HasGetsu ||
-                     !HasStatusEffect(Buffs.Fugetsu) ||
-                     IsNotEnabled(Preset.SAM_AoE_Oka) ||
-                     !LevelChecked(Oka)))
-                    return Mangetsu;
-
-                if (IsEnabled(Preset.SAM_AoE_Oka) &&
                     LevelChecked(Oka) &&
-                    (RefreshFuka && !HasKa ||
-                     !HasStatusEffect(Buffs.Fuka)))
+                    !HasKa ||
+                    !HasStatusEffect(Buffs.Fuka))
                     return Oka;
             }
 
@@ -566,40 +444,50 @@ internal partial class SAM : Melee
 
             if (HasStatusEffect(Buffs.MeikyoShisui))
             {
+                if (LevelChecked(Yukikaze) && !HasSetsu &&
+                    (HasKa || !SAM_Yukaze_Gekko) &&
+                    (HasGetsu || !SAM_Yukaze_Kasha))
+                    return Yukikaze;
+
                 if (SAM_Yukaze_Gekko &&
                     LevelChecked(Gekko) &&
-                    (RefreshFugetsu && !HasGetsu ||
-                     !HasStatusEffect(Buffs.Fugetsu)))
+                    ((OnTargetsRear() || OnTargetsFront()) && !HasGetsu ||
+                     OnTargetsFlank() && HasKa ||
+                     !HasStatusEffect(Buffs.Fugetsu) && !HasGetsu))
                     return Gekko;
 
                 if (SAM_Yukaze_Kasha &&
                     LevelChecked(Kasha) &&
-                    (RefreshFuka && !HasKa ||
-                     !HasStatusEffect(Buffs.Fuka)))
+                    ((OnTargetsFlank() || OnTargetsFront()) && !HasKa ||
+                     OnTargetsRear() && HasGetsu ||
+                     !HasStatusEffect(Buffs.Fuka) && !HasKa))
                     return Kasha;
-
-                if (LevelChecked(Yukikaze) && !HasSetsu)
-                    return Yukikaze;
             }
 
             if (ComboTimer > 0)
             {
                 if (ComboAction is Hakaze or Gyofu)
                 {
+                    if (!HasSetsu && LevelChecked(Yukikaze) &&
+                        (HasStatusEffect(Buffs.Fugetsu) || !SAM_Yukaze_Gekko) &&
+                        (HasStatusEffect(Buffs.Fuka) || !SAM_Yukaze_Kasha))
+                        return Yukikaze;
+
                     if (SAM_Yukaze_Gekko &&
                         LevelChecked(Jinpu) &&
-                        (RefreshFugetsu && !HasGetsu ||
-                         !HasStatusEffect(Buffs.Fugetsu)))
+                        ((OnTargetsRear() || OnTargetsFront()) && !HasGetsu ||
+                         OnTargetsFlank() && HasKa ||
+                         !HasStatusEffect(Buffs.Fugetsu) ||
+                         SenCount is 3 && RefreshFugetsu))
                         return Jinpu;
 
                     if (SAM_Yukaze_Kasha &&
                         LevelChecked(Shifu) &&
-                        (RefreshFuka && !HasKa ||
-                         !HasStatusEffect(Buffs.Fuka)))
+                        ((OnTargetsFlank() || OnTargetsFront()) && !HasKa ||
+                         OnTargetsRear() && HasGetsu ||
+                         !HasStatusEffect(Buffs.Fuka) ||
+                         SenCount is 3 && RefreshFuka))
                         return Shifu;
-
-                    if (LevelChecked(Yukikaze))
-                        return OriginalHook(Yukikaze);
                 }
 
                 if (SAM_Yukaze_Gekko &&
@@ -709,32 +597,19 @@ internal partial class SAM : Melee
                 LevelChecked(Kyuten) && CanWeave())
                 return Kyuten;
 
-            if (HasStatusEffect(Buffs.MeikyoShisui))
-            {
-                if (!HasStatusEffect(Buffs.Fugetsu) ||
-                    RefreshFugetsu)
-                    return Mangetsu;
-
-                if (SAM_Mangetsu_Oka &&
-                    (!HasStatusEffect(Buffs.Fuka) ||
-                     RefreshFuka))
-                    return Oka;
-            }
-
-            if (ComboTimer > 0 &&
-                ComboAction is Fuko or Fuga)
+            if (ComboTimer > 0 && ComboAction is Fuko or Fuga ||
+                HasStatusEffect(Buffs.MeikyoShisui))
             {
                 if (LevelChecked(Mangetsu) &&
-                    (RefreshFugetsu ||
-                     !HasStatusEffect(Buffs.Fugetsu) ||
-                     !SAM_Mangetsu_Oka ||
-                     !LevelChecked(Oka)))
+                    !HasGetsu ||
+                    !SAM_Mangetsu_Oka ||
+                    !HasStatusEffect(Buffs.Fugetsu))
                     return Mangetsu;
 
                 if (SAM_Mangetsu_Oka &&
                     LevelChecked(Oka) &&
-                    (RefreshFuka ||
-                     !HasStatusEffect(Buffs.Fuka)))
+                    !HasKa ||
+                    !HasStatusEffect(Buffs.Fuka))
                     return Oka;
             }
 

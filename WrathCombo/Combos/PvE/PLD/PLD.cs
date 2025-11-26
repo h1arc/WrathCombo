@@ -15,7 +15,7 @@ internal partial class PLD : Tank
 
         protected override uint Invoke(uint actionID)
         {
-            if (actionID is not RageOfHalone)
+            if (actionID is not (RageOfHalone or RoyalAuthority))
                 return actionID;
 
             if (ComboTimer > 0)
@@ -891,6 +891,9 @@ internal partial class PLD : Tank
             if (ActionReady(Role.Reprisal))
                 return Role.Reprisal;
 
+            if (ActionReady(DivineVeil))
+                return DivineVeil;
+
             if (ActionReady(PassageOfArms) &&
                 IsEnabled(Preset.PLD_Mit_Party_Wings) &&
                 !HasStatusEffect(Buffs.PassageOfArms, anyOwner: true))
@@ -919,6 +922,19 @@ internal partial class PLD : Tank
                 return All.SavageBlade;
 
             return actionID;
+        }
+    }
+    
+    internal class PLD_RetargetCover : CustomCombo
+    {
+        protected internal override Preset Preset => Preset.PLD_RetargetCover;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID != Cover)
+                return actionID;
+
+            return actionID.Retarget(SimpleTarget.Stack.MouseOver ?? SimpleTarget.HardTarget);
         }
     }
 }

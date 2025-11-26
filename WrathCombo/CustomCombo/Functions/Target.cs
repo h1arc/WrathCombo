@@ -38,7 +38,8 @@ internal abstract partial class CustomComboFunctions
         if ((optionalTarget ?? CurrentTarget) is not IBattleChara chara)
             return false;
 
-        return ActionWatching.BNPCSheet.TryGetValue(chara.BaseId, out var charaSheet) && charaSheet.Rank is 2 or 6;
+        return chara.NameId == 541 //541	striking dummy	0	striking dummies	0	0	1	0	0
+            || ActionWatching.BossesBaseIds.Contains(chara.BaseId);
     }
 
     /// <summary> Checks if an object is quest-related. Defaults to CurrentTarget unless specified. </summary>
@@ -57,8 +58,15 @@ internal abstract partial class CustomComboFunctions
             return false;
 
         //This is a glorified universal check for friendly targets. Will return a correct value regardless of role, level or whatever.
-        var ret = ActionManager.CanUseActionOnTarget(Healer.Role.Esuna, chara.Struct());
-        return ret;
+        var isFriendly = chara.CanUseOn(Healer.Role.Esuna);
+        
+        // Try to handle heal-able job NPCs being difficult
+        if (!isFriendly && chara.ObjectKind == ObjectKind.EventNpc)
+        {
+            isFriendly = chara.CanUseOn(WHM.Cure);
+        }
+        
+        return isFriendly;
     }
 
     /// <summary> Checks if the player's current target is hostile. </summary>

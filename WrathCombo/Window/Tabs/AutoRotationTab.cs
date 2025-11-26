@@ -43,7 +43,7 @@ internal class AutoRotationTab : ConfigWindow
             {
                 ImGuiExtensions.Prefix(false);
                 changed |= ImGui.Checkbox($"Bypass When Combo Suggests Self-Use Action", ref cfg.BypassBuffs);
-                ImGuiComponents.HelpMarker($"Many jobs have an out of combat action that can be used, for example, {RPR.Soulsow.ActionName()} or {MNK.ForbiddenMeditation.ActionName()}. This will allow these to be used without being in combnat.");
+                ImGuiComponents.HelpMarker($"Many jobs have an out of combat action that can be used, for example, {RPR.Soulsow.ActionName()} or {MNK.ForbiddenMeditation.ActionName()}. This will allow these to be used without being in combat.");
 
                 ImGuiExtensions.Prefix(false);
                 changed |= ImGui.Checkbox($"Bypass Only in Combat for Quest Targets", ref cfg.BypassQuest);

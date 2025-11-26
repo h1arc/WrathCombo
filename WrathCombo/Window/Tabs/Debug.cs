@@ -34,6 +34,7 @@ using Action = Lumina.Excel.Sheets.Action;
 using BattleNPCSubKind = Dalamud.Game.ClientState.Objects.Enums.BattleNpcSubKind;
 using ObjectKind = Dalamud.Game.ClientState.Objects.Enums.ObjectKind;
 using Status = Dalamud.Game.ClientState.Statuses.Status;
+using WrathCombo.Combos.PvE;
 
 #endregion
 
@@ -92,7 +93,42 @@ internal class Debug : ConfigWindow, IDisposable
         {
             try
             {
-                var base64 = Convert.FromBase64String(_debugConfig);
+                // Trim off anything extra copied from that section of the file
+                var stripped = _debugConfig;
+                const string startMarker = "START DEBUG CODE";
+                const string endMarker = "END DEBUG CODE";
+                var startIdx = stripped.IndexOf(startMarker, StringComparison.OrdinalIgnoreCase);
+                if (startIdx >= 0)
+                {
+                    startIdx += startMarker.Length;
+                    var endIdx = stripped.IndexOf(endMarker, startIdx, StringComparison.OrdinalIgnoreCase);
+                    stripped = endIdx >= 0 ? stripped.Substring(startIdx, endIdx - startIdx) : stripped[startIdx..];
+                }
+                // Remove all whitespace characters (spaces, tabs, newlines)
+                stripped = new string(stripped
+                    .Where(c => !char.IsWhiteSpace(c)).ToArray());
+
+                // Try to load the data from the string
+                byte[] base64;
+                try
+                {
+                    base64 = Convert.FromBase64String(stripped);
+                }
+                // Fix when editors don't want to copy the padding at the end
+                catch (FormatException)
+                {
+                    // If there's not a padding issue, re-throw the error
+                    if (stripped.Length % 4 == 0)
+                        throw;
+                    
+                    // Try to fix padding issues
+                    var paddingNeeded = 4 - (stripped.Length % 4);
+                    stripped = stripped
+                        .PadRight(stripped.Length + paddingNeeded, '=');
+                    base64 = Convert.FromBase64String(stripped);
+                }
+
+                // Decode the data
                 var decode = Encoding.UTF8.GetString(base64);
                 var config = JsonConvert.DeserializeObject<PluginConfiguration>(decode);
                 if (config != null)
@@ -117,7 +153,9 @@ internal class Debug : ConfigWindow, IDisposable
             "Paste a base64 encoded configuration here to load it into the plugin." +
             "\nThis comes from a debug file." +
             "\nThis will overwrite your current configuration temporarily, restoring your own configuration when you disable debug mode." +
-            "\nDebug mode will also be disabled if you unload the plugin.");
+            "\nDebug mode will also be disabled if you unload the plugin." +
+            "\n\nTip: To make it easier to copy from the file, you can select 'Start Debug Code' thru 'End Debug Code'" +
+            "(the extra stuff will be trimmed off)");
 
         if (DebugConfig)
             if (ImGui.Button("Disable Debug Config Mode"))
@@ -128,7 +166,7 @@ internal class Debug : ConfigWindow, IDisposable
         ImGuiEx.Spacing(new Vector2(0f, SpacingMedium));
 
         var target = Svc.Targets.Target;
-        var player = Svc.ClientState.LocalPlayer;
+        var player = Player.Object;
 
         // Custom 2-Column Styling
         static void CustomStyleText(string firstColumn, object? secondColumn, bool useMonofont = false, Vector4? optionalColor = null)
@@ -362,8 +400,22 @@ internal class Debug : ConfigWindow, IDisposable
 
         if (ImGui.CollapsingHeader("Target Data"))
         {
-            if (target is not null) {
+            if (target is not null)
+            {
+                bool? foundSheet = null;
+                BNpcBase? battleNPCRow = null;
+                if (ActionWatching.BNPCSheet.TryGetValue(target.BaseId,
+                        out var sheetRow))
+                {
+                    battleNPCRow = sheetRow;
+                    foundSheet = true;
+                }
+                else
+                    foundSheet = false;
+                
                 CustomStyleText("Name:", target?.Name);
+                CustomStyleText("Nameplate:", target?.GetNameplateKind().ToString());
+                CustomStyleText("Rank:", $"{battleNPCRow?.Rank.ToString() ?? "null"} (found sheet: {(foundSheet is true ? "yes" : "no")})");
                 CustomStyleText("Health:", $"{GetTargetCurrentHP():N0} / {GetTargetMaxHP():N0} ({MathF.Round(GetTargetHPPercent(), 2)}%)");
                 CustomStyleText("Distance:", $"{MathF.Round(GetTargetDistance(), 2)}y");
                 CustomStyleText("Hitbox Radius:", target?.HitboxRadius);
@@ -372,7 +424,10 @@ internal class Debug : ConfigWindow, IDisposable
                 CustomStyleText("Relative Position:", AngleToTarget().ToString());
                 CustomStyleText("Requires Positionals:", TargetNeedsPositionals());
                 CustomStyleText("Is Invincible:", TargetIsInvincible(target!));
+                CustomStyleText("Is Hostile:", target?.IsHostile());
                 CustomStyleText("Is Friendly:", target?.IsFriendly());
+                CustomStyleText("Is Boss:", target?.IsBoss());
+                CustomStyleText("In Boss Encounter:", InBossEncounter());
 
                 ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
 
@@ -407,7 +462,7 @@ internal class Debug : ConfigWindow, IDisposable
 
             if (ImGui.TreeNode("Object Data"))
             {
-                CustomStyleText("DataId:", target?.BaseId);
+                CustomStyleText("Data/BaseId:", target?.BaseId);
 
                 // Display 'EntityId' only if it differs from 'GameObjectId'
                 if (target is not null && target.EntityId != target.GameObjectId)
@@ -417,6 +472,7 @@ internal class Debug : ConfigWindow, IDisposable
                 }
 
                 CustomStyleText("ObjectId:", target?.GameObjectId);
+                CustomStyleText("NameId:", target?.GetNameId());
                 CustomStyleText("ObjectKind:", target?.ObjectKind);
                 CustomStyleText("ObjectSubKind:", target?.SubKind);
                 CustomStyleText("ObjectType:", target?.GetType()?.Name);
@@ -601,6 +657,7 @@ internal class Debug : ConfigWindow, IDisposable
             CustomStyleText($"Duty Action 3:", $"{Action3.ActionName()}");
             CustomStyleText($"Duty Action 4:", $"{Action4.ActionName()}");
             CustomStyleText($"Duty Action 5:", $"{Action5.ActionName()}");
+            CustomStyleText($"In Mudra:", NIN.InMudra);
 
             ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
 
@@ -897,7 +954,7 @@ internal class Debug : ConfigWindow, IDisposable
 
                     var createdTimeString = retarget.Created.ToString(@"HH\:mm\:ss");
                     CustomStyleText($"Created: {createdTimeString}",
-                        $"Don't Cull Setting: {(retarget.DontCull ? "On" : "Off")}");
+                        $"");
 
                     ImGui.Unindent();
 

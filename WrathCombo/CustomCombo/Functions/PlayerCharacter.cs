@@ -19,7 +19,7 @@ namespace WrathCombo.CustomComboNS.Functions;
 internal abstract partial class CustomComboFunctions
 {
     /// <summary> Gets the player or null. </summary>
-    public static IPlayerCharacter? LocalPlayer => Svc.ClientState.LocalPlayer;
+    public static IPlayerCharacter? LocalPlayer => Player.Object;
 
     /// <summary> Find if the player has a certain condition. </summary>
     /// <param name="flag"> Condition flag. </param>
@@ -80,7 +80,16 @@ internal abstract partial class CustomComboFunctions
 
         foreach (var boss in NearbyBosses)
         {
-            if (boss.Struct()->InCombat && boss.GetNameplateKind() == NameplateKind.HostileEngagedSelfDamaged)
+            var plate = boss.GetNameplateKind();
+            if (boss.Struct()->InCombat &&
+                plate is NameplateKind.HostileEngagedSelfDamaged or
+                    NameplateKind.HostileEngagedSelfUndamaged)
+                return true;
+
+            if ((Player.Available &&
+                 Player.BattleChara->TargetId == boss.GameObjectId) ||
+                ((int)(Content.ContentType ?? 0) > (int)ContentType.PVP &&
+                 boss.GetNameplateKind().ToString().Contains("HostileEngaged")))
                 return true;
         }
 
