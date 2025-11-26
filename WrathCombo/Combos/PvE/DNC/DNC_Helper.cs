@@ -188,8 +188,8 @@ internal partial class DNC
 
             field = GetPartyMembers()
                 .Where(HasMyPartner)
-                .Select(x => (ulong?)x.GameObjectId)
-                .FirstOrDefault();
+                .FirstOrDefault()?
+                .GameObjectId;
             return field;
         }
     }
