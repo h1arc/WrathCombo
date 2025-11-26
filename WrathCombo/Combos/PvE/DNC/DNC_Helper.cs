@@ -211,11 +211,14 @@ internal partial class DNC
 
     private static bool CurrentPartnerNonOptimal =>
         DesiredDancePartner is not null &&
-        (!HasStatusEffect(Buffs.ClosedPosition) &&
-         (IsInParty() ||
-          HasCompanionPresent())) ||
-        (CurrentDancePartner is not null &&
-         DesiredDancePartner != CurrentDancePartner);
+        (
+            // Have no partner and one is theoretically available
+            (!HasStatusEffect(Buffs.ClosedPosition) &&
+             (IsInParty() || HasCompanionPresent())) ||
+            // Have a partner, but it's not the optimal one
+            (CurrentDancePartner is not null &&
+             DesiredDancePartner != CurrentDancePartner)
+        );
 
     [ActionRetargeting.TargetResolver]
     internal static IGameObject? DancePartnerResolver () =>
