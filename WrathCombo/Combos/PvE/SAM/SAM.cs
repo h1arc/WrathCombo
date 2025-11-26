@@ -152,11 +152,13 @@ internal partial class SAM : Melee
             {
                 if (LevelChecked(TsubameGaeshi) &&
                     (HasStatusEffect(Buffs.KaeshiGokenReady) ||
+                     HasStatusEffect(Buffs.TsubameReady) ||
                      HasStatusEffect(Buffs.TendoKaeshiGokenReady)))
                     return OriginalHook(TsubameGaeshi);
 
                 if (!IsMoving() &&
                     (OriginalHook(Iaijutsu) is TenkaGoken ||
+                     OriginalHook(Iaijutsu) is MidareSetsugekka ||
                      OriginalHook(Iaijutsu) is TendoGoken))
                     return OriginalHook(Iaijutsu);
             }
@@ -399,11 +401,13 @@ internal partial class SAM : Melee
                 {
                     if (LevelChecked(TsubameGaeshi) &&
                         (HasStatusEffect(Buffs.KaeshiGokenReady) ||
+                         HasStatusEffect(Buffs.TsubameReady) ||
                          HasStatusEffect(Buffs.TendoKaeshiGokenReady)))
                         return OriginalHook(TsubameGaeshi);
 
                     if (!IsMoving() &&
                         (OriginalHook(Iaijutsu) is TenkaGoken ||
+                         OriginalHook(Iaijutsu) is MidareSetsugekka ||
                          OriginalHook(Iaijutsu) is TendoGoken))
                         return OriginalHook(Iaijutsu);
                 }
