@@ -691,8 +691,6 @@ internal unsafe static class AutoRotationController
             bool switched = SwitchOnDChole(attributes, outAct, ref target);
             if (outAct is DNC.ClosedPosition && DNC.DancePartnerResolver() is IBattleChara dp)
                 target = dp;
-            if (outAct is DNC.Ending)
-                target = Player.Object;
 
             var canUseSelf = NIN.MudraSigns.Contains(outAct)
                 ? target is not null && target.IsHostile()
