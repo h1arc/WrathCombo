@@ -350,7 +350,7 @@ public static class ActionWatching
         try
         {
 
-            if (actionType is ActionType.Action or ActionType.Ability)
+            if (actionType is ActionType.Action)
             {
                 var original = actionId; //Save the original action, do not modify
                 var originalTargetId = targetId; //Save the original target, do not modify
