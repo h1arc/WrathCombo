@@ -72,6 +72,16 @@ public partial class Configuration : IPluginConfiguration
     /// Hides the message of the day. Default: false.
     /// <seealso cref="WrathCombo.PrintLoginMessage"/>
     [SettingCategory(Main_UI_Options)]
+    [Setting("Suppress Set and Unset commands feedback",
+        "Will hide chat feedback for /wrath set and /wrath unset commands.\n" +
+        "(Will still show feedback if the command is being overriden by IPC, or fails)",
+        recommendedValue: "Preference",
+        defaultValue: "Off")]
+    public bool SuppressSetCommands = false;
+
+    /// Hides the message of the day. Default: false.
+    /// <seealso cref="WrathCombo.PrintLoginMessage"/>
+    [SettingCategory(Main_UI_Options)]
     [Setting("Hide Message of the Day",
         "Will prevent the Message of the Day from being shown in your chat upon login.",
         recommendedValue: "Preference",
