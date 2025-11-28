@@ -348,10 +348,15 @@ internal partial class DRK : Tank
     {
         protected internal override Preset Preset => Preset.DRK_Mit_Party;
 
-        protected override uint Invoke(uint action) =>
-            action is not DarkMissionary
-                ? action
-                : ActionReady(Role.Reprisal) ? Role.Reprisal : action;
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not DarkMissionary) return actionID;
+
+            if (Role.CanReprisal())
+                return Role.Reprisal;
+
+            return actionID;
+        }
     }
 
     #endregion
@@ -374,7 +379,7 @@ internal partial class DRK : Tank
 
             if (target is not null &&
                 CanApplyStatus(target, Buffs.BlackestNightShield))
-                return actionID.Retarget(target, dontCull: true);
+                return actionID.Retarget(target);
 
             return actionID;
         }
@@ -403,7 +408,7 @@ internal partial class DRK : Tank
 
             if (target is not null &&
                 CanApplyStatus(target, Buffs.Oblation))
-                return actionID.Retarget(target, dontCull: true);
+                return actionID.Retarget(target);
 
             return actionID;
         }

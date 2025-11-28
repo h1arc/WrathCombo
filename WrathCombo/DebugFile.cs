@@ -101,7 +101,7 @@ public static class DebugFile
                 throw new InvalidOperationException();
             }
 
-            job = Svc.ClientState.LocalPlayer.ClassJob.Value;
+            job = Player.Object.ClassJob.Value;
         }
 
         using (_file = new StreamWriter(GetDebugFilePath(), append: false))
@@ -181,7 +181,7 @@ public static class DebugFile
         var conflicts = conflictsObj.ToArray();
         var conflictingPluginsCount = conflicts.Length;
 
-        AddLine($"Conflicting Plugins: {conflictingPluginsCount}");
+        AddLine($"Conflicts: {conflictingPluginsCount}");
 
         if (!hasConflicts)
         {
@@ -189,20 +189,20 @@ public static class DebugFile
             return;
         }
 
-        AddLine("START CONFLICTING PLUGINS");
+        AddLine("START CONFLICTS");
         foreach (var plugin in conflicts)
-            AddLine($"- {plugin.Name} v{plugin.Version} ({plugin.ConflictType}) " +
+            AddLine($"- {plugin.Name} {plugin.Version} ({plugin.ConflictType}) " +
                     (string.IsNullOrEmpty(plugin.Reason)
                         ? ""
-                        : "reason: " + plugin.Reason));
-        AddLine("END CONFLICTING PLUGINS");
+                        : "reason: " + plugin.Reason.Split("    ")[0]));
+        AddLine("END CONFLICTS");
 
         AddLine();
     }
 
     private static void AddPlayerInfo()
     {
-        var player = Svc.ClientState.LocalPlayer;
+        var player = Player.Object;
         var job = player.ClassJob.Value;
         var currentZone = Content.ContentName ?? "Unknown";
 
@@ -214,9 +214,9 @@ public static class DebugFile
         AddLine($"Current Zone: {currentZone}");
         AddLine($"Current Party Size: {GetPartyMembers().Count}");
         AddLine();
-        AddLine($"HP: {(player.CurrentHp / player.MaxHp * 100):F0}%");
+        AddLine($"HP: {(float)(player.CurrentHp) / player.MaxHp * 100:F0}%");
         AddLine($"+Shield: {player.ShieldPercentage:F0}%");
-        AddLine($"MP: {(player.CurrentMp / player.MaxMp * 100):F0}%");
+        AddLine($"MP: {(float)(player.CurrentMp) / player.MaxMp * 100:F0}%");
         AddLine("END PLAYER INFO");
 
         AddLine();
@@ -224,7 +224,7 @@ public static class DebugFile
 
     private static void AddTargetInfo()
     {
-        var target = Svc.ClientState.LocalPlayer.TargetObject;
+        var target = Player.Object.TargetObject;
 
         AddLine($"Target: {target?.GameObjectId.ToString() ?? "None"}");
 
@@ -251,6 +251,8 @@ public static class DebugFile
         }
 
         AddLine("START TARGET INFO");
+        AddLine($"IDs: (<entity>/<data or base>): {target?.EntityId} / {target?.BaseId}");
+        AddLine($"Is Friendly: {target.IsFriendly()}");
         AddLine($"Is Hostile: {target.IsHostile()}");
         AddLine($"In Combat: {target.IsInCombat()}");
         AddLine($"Is Boss: {battleTarget.IsBoss()}");
@@ -258,6 +260,7 @@ public static class DebugFile
         AddLine($"Is Dead: {target.IsDead}");
         AddLine($"Distance: {GetTargetDistance(target):F1}y");
         AddLine($"Nameplate: {target.GetNameplateKind()}");
+        AddLine($"Name ID: {target.GetNameId()}");
         if (battleTarget is not null)
         {
             AddLine($"IDs: entity:{battleTarget.EntityId}, " +
@@ -356,9 +359,6 @@ public static class DebugFile
                                         value = gameVal;
                                     break;
                                 }
-                                default:
-                                    value = null;
-                                    break;
                             }
                         }
                         catch
@@ -642,8 +642,8 @@ public static class DebugFile
 
     private static void AddStatusEffects()
     {
-        var playerID = Svc.ClientState.LocalPlayer.GameObjectId;
-        var statusEffects = Svc.ClientState.LocalPlayer.StatusList;
+        var playerID = Player.Object.GameObjectId;
+        var statusEffects = Player.Object.StatusList;
 
         var statusEffectsCount = 0;
         foreach (var _ in statusEffects)

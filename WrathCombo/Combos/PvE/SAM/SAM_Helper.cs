@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
-using WrathCombo.Data;
 using static FFXIVClientStructs.FFXIV.Client.Game.ActionManager;
 using static WrathCombo.Combos.PvE.SAM.Config;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
@@ -26,11 +25,6 @@ internal partial class SAM
 
     private static int SenCount =>
         GetSenCount();
-
-    private static bool M6SReady =>
-        !HiddenFeaturesData.IsEnabledWith(Preset.SAM_Hid_M6SHoldSquirrelBurst, () =>
-            HiddenFeaturesData.Targeting.R6SSquirrel && CombatEngageDuration().TotalSeconds < 275);
-
 
     #region Basic Combo
 
@@ -263,7 +257,9 @@ internal partial class SAM
     private static bool CanShoha() =>
         ActionReady(Shoha) && MeditationStacks is 3 &&
         InActionRange(Shoha) &&
-        (EnhancedSenei && JustUsed(Senei, 20f) ||
+        (MeditationStacks is 3 && SenCount is 3 ||
+         MeditationStacks is 3 && HasStatusEffect(Buffs.OgiNamikiriReady) ||
+         EnhancedSenei && JustUsed(Senei, 20f) ||
          !EnhancedSenei && JustUsed(KaeshiSetsugekka, 10f));
 
     //TODO Buffcheck
@@ -275,6 +271,7 @@ internal partial class SAM
     private static bool CanShinten()
     {
         int shintenTreshhold = SAM_ST_ExecuteThreshold;
+        float GCD = GetCooldown(OriginalHook(Hakaze)).CooldownTotal;
 
         if (ActionReady(Shinten) && Kenki >= SAMKenki.Shinten && InActionRange(Shinten))
         {
@@ -287,11 +284,14 @@ internal partial class SAM
             if (EnhancedSenei &&
                 !HasStatusEffect(Buffs.ZanshinReady))
             {
+                if (GetCooldownRemainingTime(Senei) < GCD * 2)
+                    return true;
+
                 if (JustUsed(Senei, 15f) &&
                     !JustUsed(Ikishoten))
                     return true;
 
-                if (GetCooldownRemainingTime(Senei) >= 25 &&
+                if (GetCooldownRemainingTime(Senei) >= 20 &&
                     Kenki >= SAM_ST_KenkiOvercapAmount)
                     return true;
             }

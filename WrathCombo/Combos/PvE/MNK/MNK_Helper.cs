@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
-using WrathCombo.Data;
 using static WrathCombo.Combos.PvE.MNK.Config;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 namespace WrathCombo.Combos.PvE;
@@ -17,10 +16,6 @@ internal partial class MNK
     private static int HPThresholdBuffs =>
         MNK_ST_BuffsBossOption == 1 ||
         !InBossEncounter() ? MNK_ST_BuffsHPThreshold : 0;
-
-    private static bool M6SReady =>
-        !HiddenFeaturesData.IsEnabledWith(Preset.MNK_Hid_M6SHoldSquirrelBurst, () =>
-            HiddenFeaturesData.Targeting.R6SSquirrel && CombatEngageDuration().TotalSeconds < 300);
 
     #region Basic Combo
 
@@ -65,6 +60,7 @@ internal partial class MNK
 
     private static bool CanPerfectBalance(bool onAoE = false)
     {
+        var targetCheck = onAoE || HasBattleTarget();
         switch (onAoE)
         {
             case false when
@@ -97,7 +93,7 @@ internal partial class MNK
 
             case true when
                 ActionReady(PerfectBalance) && !HasStatusEffect(Buffs.PerfectBalance) &&
-                !HasStatusEffect(Buffs.FormlessFist) && HasBattleTarget() &&
+                !HasStatusEffect(Buffs.FormlessFist) && targetCheck && IsOriginal(MasterfulBlitz) &&
                 GetTargetHPPercent() >= MNK_AoE_PerfectBalanceHPThreshold:
             {
                 //Initial/Failsafe

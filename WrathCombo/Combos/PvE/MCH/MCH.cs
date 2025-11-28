@@ -31,8 +31,11 @@ internal partial class MCH : PhysicalRanged
             // All weaves
             if (CanWeave())
             {
-                if (OvercapLowlevelGaussRound)
-                    return GaussRound;
+                if (OvercapGaussRound)
+                    return OriginalHook(GaussRound);
+
+                if (OvercapRicochet)
+                    return OriginalHook(Ricochet);
 
                 if (RobotActive && ActionReady(RookOverdrive) &&
                     GetTargetHPPercent() <= 1)
@@ -152,8 +155,11 @@ internal partial class MCH : PhysicalRanged
             // All weaves
             if (CanWeave())
             {
-                if (OvercapLowlevelGaussRound)
-                    return GaussRound;
+                if (OvercapGaussRound)
+                    return OriginalHook(GaussRound);
+
+                if (OvercapRicochet)
+                    return OriginalHook(Ricochet);
 
                 //AutoCrossbow, Gauss, Rico
                 if (IsOverheated && !HasWeaved() &&
@@ -283,9 +289,14 @@ internal partial class MCH : PhysicalRanged
             // All weaves
             if (CanWeave())
             {
-                if (IsEnabled(Preset.MCH_ST_Adv_GaussRicochet) &&
-                    OvercapLowlevelGaussRound)
-                    return GaussRound;
+                if (IsEnabled(Preset.MCH_ST_Adv_GaussRicochet))
+                {
+                    if (OvercapGaussRound)
+                        return OriginalHook(GaussRound);
+
+                    if (OvercapRicochet)
+                        return OriginalHook(Ricochet);
+                }
 
                 if (IsEnabled(Preset.MCH_ST_Adv_QueenOverdrive) &&
                     RobotActive && ActionReady(RookOverdrive) &&
@@ -436,9 +447,14 @@ internal partial class MCH : PhysicalRanged
             // All weaves
             if (CanWeave())
             {
-                if (IsEnabled(Preset.MCH_AoE_Adv_GaussRicochet) &&
-                    OvercapLowlevelGaussRound)
-                    return GaussRound;
+                if (IsEnabled(Preset.MCH_AoE_Adv_GaussRicochet))
+                {
+                    if (OvercapGaussRound)
+                        return OriginalHook(GaussRound);
+
+                    if (OvercapRicochet)
+                        return OriginalHook(Ricochet);
+                }
 
                 if (IsEnabled(Preset.MCH_AoE_Adv_QueenOverdrive) &&
                     Gauge.IsRobotActive && ActionReady(RookOverdrive) &&
