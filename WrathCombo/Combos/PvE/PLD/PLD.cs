@@ -943,12 +943,12 @@ internal partial class PLD : Tank
                     : null) ??
 
                 //Hard target
-                SimpleTarget.HardTarget.IfFriendly() ??
+                SimpleTarget.HardTarget.IfNotThePlayer().IfInParty() ??
 
                 //Lowest HP option
                 (IsEnabled(Preset.PLD_RetargetCover_LowHP)
                  && PlayerHealthPercentageHp() > healthThreshold
-                    ? SimpleTarget.LowestHPAlly.IfNotThePlayer().IfAlive()
+                    ? SimpleTarget.LowestHPAlly.IfNotThePlayer().IfInParty()
                     : null);
 
             return target != null
