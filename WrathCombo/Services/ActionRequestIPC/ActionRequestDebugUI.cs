@@ -17,13 +17,16 @@ using Action = Lumina.Excel.Sheets.Action;
 namespace WrathCombo.Services.ActionRequestIPC;
 public static class ActionRequestDebugUI
 {
+    static bool? IsGCD;
     public static void Draw()
     {
         DrawList(ActionRequestIPCProvider.ActionBlacklist, "Blacklist", 
             (a, t) => ActionRequestIPCProvider.RequestBlacklist(a.ActionType, a.ActionID, t),
             a => ActionRequestIPCProvider.ResetBlacklist(a.ActionType, a.ActionID));
+        ImGui.Separator();
+        ImGuiEx.Checkbox("Is GCD", ref IsGCD);
         DrawList(ActionRequestIPCProvider.ActionRequests, "Requests", 
-            (a, t) => ActionRequestIPCProvider.RequestActionUse(a.ActionType, a.ActionID, t),
+            (a, t) => ActionRequestIPCProvider.RequestActionUse(a.ActionType, a.ActionID, t, IsGCD),
             a => ActionRequestIPCProvider.ResetRequest(a.ActionType, a.ActionID));
     }
 

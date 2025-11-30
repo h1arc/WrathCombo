@@ -27,20 +27,25 @@ public readonly record struct ActionRequest
     /// </summary>
     public readonly Vector3 TargetLocation;
     /// <summary>
-    /// Only applicable to action requests and only to OGCDs. If set to true, OGCD will be cast no matter what, otherwise - during next OGCD window only.
+    /// Whether to cast action at GCD window:
+    /// true - only cast during GCD window
+    /// false - only cast during OGCD window
+    /// null - cast asap any time
     /// </summary>
-    public readonly bool Forced;
+    public readonly bool? IsGCD;
 
-    public ActionRequest(ActionType actionType, uint actionID, long deadline) : this()
+    public ActionRequest(ActionType actionType, uint actionID, long deadline, bool? isGCD) : this()
     {
         Descriptor = new(actionType, actionID);
         Deadline = deadline;
+        IsGCD = isGCD;
     }
 
-    public ActionRequest(ActionDescriptor descriptor, long deadline) : this()
+    public ActionRequest(ActionDescriptor descriptor, long deadline, bool? isGCD) : this()
     {
         Descriptor = descriptor;
         Deadline = deadline;
+        IsGCD = isGCD;
     }
 
     public bool IsActive => Environment.TickCount64 < Deadline;

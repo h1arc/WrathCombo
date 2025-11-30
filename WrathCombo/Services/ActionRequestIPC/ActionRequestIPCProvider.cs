@@ -3,6 +3,8 @@ using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.EzIpcManager;
 using ECommons.GameHelpers;
+using ECommons.Logging;
+using ECommons.Throttlers;
 using FFXIVClientStructs;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using System;
@@ -32,7 +34,7 @@ public static class ActionRequestIPCProvider
     public static void RequestBlacklist(ActionType actionType, uint actionID, int timeMs)
     {
         ActionDescriptor descriptor = new(actionType, actionID);
-        ActionBlacklist.Add(new(descriptor, Environment.TickCount64 + timeMs));
+        ActionBlacklist.Add(new(descriptor, Environment.TickCount64 + timeMs, default));
     }
 
     /// <summary>
@@ -45,15 +47,6 @@ public static class ActionRequestIPCProvider
     {
         var descriptor = new ActionDescriptor(actionType, actionID);
         ActionBlacklist.RemoveAll(item => item.Descriptor == descriptor);
-    }
-
-    /// <summary>
-    /// Clears entire blacklist
-    /// </summary>
-    [EzIPC]
-    public static void ResetAllBlacklist()
-    {
-        ActionBlacklist.Clear();
     }
 
     /// <summary>
@@ -100,10 +93,10 @@ public static class ActionRequestIPCProvider
     }
 
     [EzIPC]
-    public static void RequestActionUse(ActionType actionType, uint actionID, int timeMs)
+    public static void RequestActionUse(ActionType actionType, uint actionID, int timeMs, bool? isGcd)
     {
         ActionDescriptor descriptor = new(actionType, actionID);
-        ActionRequests.Add(new(descriptor, Environment.TickCount64 + timeMs));
+        ActionRequests.Add(new(descriptor, Environment.TickCount64 + timeMs, isGcd));
     }
 
     [EzIPC]
@@ -119,7 +112,7 @@ public static class ActionRequestIPCProvider
         ActionRequests.Clear();
     }
 
-    public static IEnumerable<ActionDescriptor> GetRequestedActions()
+    public static IEnumerable<ActionRequest> GetRequestedActions()
     {
         if(ActionRequests.Count == 0)
         {
@@ -134,21 +127,33 @@ public static class ActionRequestIPCProvider
             }
             else
             {
-                yield return currentRequest.Descriptor;
+                yield return currentRequest;
             }
         }
     }
 
     private static uint InvokeRequest(uint originalActionId)
     {
-        foreach(var action in GetRequestedActions())
+        foreach(var actionRequest in GetRequestedActions())
         {
+            if(actionRequest.IsGCD != null)
+            {
+                if(CustomComboFunctions.CanWeave() == actionRequest.IsGCD.Value)
+                {
+                    continue;
+                }
+            }
+            var action = actionRequest.Descriptor;
             if(action.ActionType == ActionType.Action)
             {
                 if(CustomComboFunctions.ActionReady(action.ActionID))
                 {
                     return action.ActionID;
                 }
+            }
+            else
+            {
+                if(EzThrottler.Throttle("InformUnsupportedIPC")) PluginLog.Warning($"Action types different from Action can not be requested for now (Requested: {action})");
             }
         }
         return originalActionId;
