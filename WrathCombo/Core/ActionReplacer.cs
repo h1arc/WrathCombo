@@ -136,7 +136,7 @@ internal sealed class ActionReplacer : IDisposable
                 return OriginalHook(actionID);
 
             {
-                if(ActionRequestIPCProvider.TryInvoke(actionID, out var newActionID))
+                /*if(ActionRequestIPCProvider.TryInvoke(actionID, out var newActionID))
                 {
                     if(Service.Configuration.BlockSpellOnMove &&
                             ActionManager.GetAdjustedCastTime(ActionType.Action, newActionID) > 0 &&
@@ -146,7 +146,7 @@ internal sealed class ActionReplacer : IDisposable
                     }
 
                     return newActionID;
-                }
+                }*/
             }
 
             foreach (CustomCombo? combo in FilteredCombos)

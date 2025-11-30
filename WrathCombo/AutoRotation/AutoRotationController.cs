@@ -771,12 +771,12 @@ internal unsafe static class AutoRotationController
             var outAct = attributes.ReplaceSkill.ActionIDs.FirstOrDefault();
             foreach (var actToCheck in attributes.ReplaceSkill.ActionIDs)
             {
-                if(ActionRequestIPCProvider.TryInvoke(actToCheck, out var newActionID))
+                /*if(ActionRequestIPCProvider.TryInvoke(actToCheck, out var newActionID))
                 {
                     originalAct = actToCheck;
                     outAct = newActionID;
                 }
-                else
+                else*/
                 {
                     var customCombo = Service.ActionReplacer.CustomCombos.FirstOrDefault(x => x.Preset == preset);
                     if(customCombo != null)

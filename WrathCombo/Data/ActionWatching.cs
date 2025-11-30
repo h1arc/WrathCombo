@@ -360,11 +360,11 @@ public static class ActionWatching
                 {
                     var result = actionId;
 
-                    if(ActionRequestIPCProvider.TryInvoke(actionId, out var newActionID))
+                    /*if(ActionRequestIPCProvider.TryInvoke(actionId, out var newActionID))
                     {
                         actionId = Service.ActionReplacer.LastActionInvokeFor[actionId] = newActionID; //Sets actionId and the LastActionInvokeFor dictionary entry to the result of the combo
                     }
-                    else
+                    else*/
                     {
                         foreach(var combo in ActionReplacer.FilteredCombos)
                         {

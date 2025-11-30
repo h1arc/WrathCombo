@@ -132,6 +132,35 @@ public static class ActionRequestIPCProvider
         }
     }
 
+    public static bool TryGetRequestedAction(out uint actionId)
+    {
+        actionId = default;
+        foreach(var actionRequest in GetRequestedActions())
+        {
+            if(actionRequest.IsGCD != null)
+            {
+                if(CustomComboFunctions.CanWeave() == actionRequest.IsGCD.Value)
+                {
+                    continue;
+                }
+            }
+            var action = actionRequest.Descriptor;
+            if(action.ActionType == ActionType.Action)
+            {
+                if(CustomComboFunctions.ActionReady(action.ActionID))
+                {
+                    actionId = action.ActionID;
+                    return true;
+                }
+            }
+            else
+            {
+                if(EzThrottler.Throttle("InformUnsupportedIPC")) PluginLog.Warning($"Action types different from Action can not be requested for now (Requested: {action})");
+            }
+        }
+        return false;
+    }
+
     private static uint InvokeRequest(uint originalActionId)
     {
         foreach(var actionRequest in GetRequestedActions())
@@ -159,6 +188,7 @@ public static class ActionRequestIPCProvider
         return originalActionId;
     }
 
+    [Obsolete("", true)]
     public unsafe static bool TryInvoke(uint actionID, out uint newActionID, IGameObject? targetOverride = null)
     {
         newActionID = 0;
