@@ -360,19 +360,12 @@ public static class ActionWatching
                 {
                     var result = actionId;
 
-                    /*if(ActionRequestIPCProvider.TryInvoke(actionId, out var newActionID))
+                    foreach(var combo in ActionReplacer.FilteredCombos)
                     {
-                        actionId = Service.ActionReplacer.LastActionInvokeFor[actionId] = newActionID; //Sets actionId and the LastActionInvokeFor dictionary entry to the result of the combo
-                    }
-                    else*/
-                    {
-                        foreach(var combo in ActionReplacer.FilteredCombos)
+                        if(combo.TryInvoke(actionId, out result))
                         {
-                            if(combo.TryInvoke(actionId, out result))
-                            {
-                                actionId = Service.ActionReplacer.LastActionInvokeFor[actionId] = result; //Sets actionId and the LastActionInvokeFor dictionary entry to the result of the combo
-                                break;
-                            }
+                            actionId = Service.ActionReplacer.LastActionInvokeFor[actionId] = result; //Sets actionId and the LastActionInvokeFor dictionary entry to the result of the combo
+                            break;
                         }
                     }
                 }

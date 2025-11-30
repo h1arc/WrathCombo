@@ -135,20 +135,6 @@ internal sealed class ActionReplacer : IDisposable
                 (DisabledJobsPVP.Any(x => x == Player.Job) && Svc.ClientState.IsPvP))
                 return OriginalHook(actionID);
 
-            {
-                /*if(ActionRequestIPCProvider.TryInvoke(actionID, out var newActionID))
-                {
-                    if(Service.Configuration.BlockSpellOnMove &&
-                            ActionManager.GetAdjustedCastTime(ActionType.Action, newActionID) > 0 &&
-                            CustomComboFunctions.TimeMoving.Ticks > 0)
-                    {
-                        return All.SavageBlade;
-                    }
-
-                    return newActionID;
-                }*/
-            }
-
             foreach (CustomCombo? combo in FilteredCombos)
             {
                 if (combo.TryInvoke(actionID, out uint newActionID))
