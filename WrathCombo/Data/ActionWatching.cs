@@ -362,7 +362,7 @@ public static class ActionWatching
 
                     if(ActionRequestIPCProvider.TryInvoke(actionId, out var newActionID))
                     {
-                        actionId = Service.ActionReplacer.LastActionInvokeFor[actionId] = result; //Sets actionId and the LastActionInvokeFor dictionary entry to the result of the combo
+                        actionId = Service.ActionReplacer.LastActionInvokeFor[actionId] = newActionID; //Sets actionId and the LastActionInvokeFor dictionary entry to the result of the combo
                     }
                     else
                     {
