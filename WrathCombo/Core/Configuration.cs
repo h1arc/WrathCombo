@@ -64,7 +64,7 @@ public partial class Configuration : IPluginConfiguration
         "By default the Server Info Bar shows:\n" +
         "- Whether Auto-Rotation is on or off\n" +
         "- (if on) The number of active Auto-Mode Combos\n" +
-        "- (if applicable) If another plugin is controlling the state of Auto-Rotation.",
+        "- (if applicable) Whether another plugin is controlling the state of Auto-Rotation.",
         recommendedValue: "Preference",
         defaultValue: "Off")]
     public bool ShortDTRText = false;
