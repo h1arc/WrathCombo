@@ -649,7 +649,10 @@ internal partial class NIN
             Raiton, //32
             FleetingRaiju, //33
         ];
-
+       
+        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps 
+        { get; set; } = [([1,2,3], () => OriginalHook(Ninjutsu) == Suiton)];
+       
         public override List<int> DelayedWeaveSteps { get; set; } =
         [
             12
@@ -714,7 +717,10 @@ internal partial class NIN
             Bhavacakra, //33
             SpinningEdge //34
         ];
-
+        
+        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps 
+        { get; set; } = [([1,2,3], () => OriginalHook(Ninjutsu) == Suiton)];
+        
         public override List<int> DelayedWeaveSteps { get; set; } =
         [
             12
@@ -776,7 +782,10 @@ internal partial class NIN
             Raiton, //32
             FleetingRaiju, //33
         ];
-
+        
+        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps 
+        { get; set; } = [([1,2,3], () => OriginalHook(Ninjutsu) == Suiton)];
+        
         public override List<int> DelayedWeaveSteps { get; set; } =
         [
             11
