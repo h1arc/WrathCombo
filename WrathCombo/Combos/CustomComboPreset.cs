@@ -3876,7 +3876,7 @@ public enum Preset
     MNK_STUseFormShift = 9017,
 
     [ParentCombo(MNK_ST_AdvancedMode)]
-    [CustomComboInfo("Opener Option", "Uses selected opener", Job.MNK)]
+    [CustomComboInfo("Opener Option", "Adds the selected Balance opener at lvl 90/100.", Job.MNK)]
     MNK_STUseOpener = 9006,
 
     [ParentCombo(MNK_ST_AdvancedMode)]
@@ -4959,14 +4959,23 @@ public enum Preset
     PLD_RetargetShieldBash = 11073,
     
     [ReplaceSkill(PLD.Cover)]
-    [CustomComboInfo("Retarget Cover Feature", "Will retarget Cover according to the following." +
-                                               "\n- UI Mouseover > Field Mouseover > Hard target", Job.PLD)]
+    [CustomComboInfo("Retarget Cover Feature", "Will retarget Cover according to the following options", Job.PLD)]
     [Retargeted(PLD.Cover)]
     PLD_RetargetCover = 11075,
+    
+    [ParentCombo(PLD_RetargetCover)]
+    [CustomComboInfo("Mouseover Cover Option", "Adds UI mouseover to the priority. Above LowHP option.", Job.PLD)]
+    [Retargeted]
+    PLD_RetargetCover_MO = 11076,
+
+    [ParentCombo(PLD_RetargetCover)]
+    [CustomComboInfo("Low hp Cover Option", "Will Heal Lowest Health Party member until you fall below set threshold", Job.PLD)]
+    [Retargeted]
+    PLD_RetargetCover_LowHP = 11077,
 
     #endregion
 
-    //// Last value = 11075
+    //// Last value = 11077
 
     #endregion
 
