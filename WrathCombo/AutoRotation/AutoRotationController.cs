@@ -13,6 +13,7 @@ using System.Linq;
 using System.Numerics;
 using WrathCombo.Attributes;
 using WrathCombo.Combos.PvE;
+using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
 using WrathCombo.Services;
@@ -425,7 +426,14 @@ internal unsafe static class AutoRotationController
 
         if (resSpell == 0)
             return;
+        
+        var deadPeople = DeadPeople;
 
+        if (cfg.HealerSettings.AutoRezDPSJobsHealersOnly && Player.Job is Job.RDM or Job.SMN)
+        { 
+            deadPeople = (List<WrathPartyMember>)deadPeople.Where(x => x.GetRole() is CombatRole.Healer || x.RealJob?.GetJob() is Job.SMN or Job.RDM);
+        }
+       
         if (ActionManager.Instance()->QueuedActionId == resSpell)
             ActionManager.Instance()->QueuedActionId = 0;
 
@@ -435,7 +443,7 @@ internal unsafe static class AutoRotationController
             if ((timeSinceLastRez != -1f && timeSinceLastRez < 4f) || Player.Object.IsCasting())
                 return;
 
-            if (DeadPeople.Where(RezQuery).FindFirst(x => x is not null, out var member))
+            if (deadPeople.Where(RezQuery).FindFirst(x => x is not null, out var member))
             {
                 if (resSpell == OccultCrescent.Revive)
                 {
