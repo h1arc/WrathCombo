@@ -144,9 +144,12 @@ internal unsafe static class AutoRotationController
         uint _ = 0;
         var autoActions = Presets.GetJobAutorots;
 
-        // Pre-emptive HoT for healers
+        // Pre-emptive HoT/Shield for healers
         if (cfg.HealerSettings.PreEmptiveHoT && Player.Job is Job.CNJ or Job.WHM or Job.AST)
             PreEmptiveHot();
+        
+        if (cfg.HealerSettings.PreEmptiveHoT && Player.Job is Job.SGE or Job.SCH)
+            PreEmptiveShield();
 
         // Bypass buffs logic
         if (cfg.BypassBuffs && NotInCombat)
@@ -319,6 +322,74 @@ internal unsafe static class AutoRotationController
                 {
                     CurrentActIsAutorot = true;
                     ActionManager.Instance()->UseAction(ActionType.Action, regenSpell, Svc.Targets.FocusTarget.GameObjectId);
+                    CurrentActIsAutorot = false;
+                    return;
+                }
+            }
+        }
+    }
+    
+    private static void PreEmptiveShield()
+    {
+        if (PartyInCombat() || Svc.Targets.FocusTarget is null || (InDuty() && !Svc.DutyState.IsDutyStarted))
+            return;
+       
+        ushort shieldBuff = Player.Job switch
+        {
+            Job.SGE => SGE.Buffs.EukrasianDiagnosis,
+            Job.SCH => SCH.Buffs.Galvanize,
+            _ => 0
+        };
+
+        uint shieldSpell = Player.Job switch
+        {
+            Job.SGE => SGE.EukrasianDiagnosis,
+            Job.SCH => SCH.Adloquium,
+            _ => 0
+        };
+        
+        uint prepSpell = Player.Job switch
+        {
+            Job.SGE => SGE.Eukrasia,
+            _ => 0
+        };
+
+        if (shieldSpell != 0 && !JustUsed(shieldSpell, 4) && Svc.Targets.FocusTarget != null && (!HasStatusEffect(shieldBuff, out var shield, Svc.Targets.FocusTarget) || shield?.RemainingTime <= 1f))
+        {
+            if (prepSpell != 0 && !JustUsed(prepSpell, 4) && !HasStatusEffect(SGE.Buffs.Eukrasia))
+            {
+                var spell = ActionManager.Instance()->GetAdjustedActionId(prepSpell);
+
+                if (!ActionReady(prepSpell))
+                    return;
+
+                if (ActionManager.Instance()->GetActionStatus(ActionType.Action, spell) == 0)
+                {
+                    CurrentActIsAutorot = true;
+                    ActionManager.Instance()->UseAction(ActionType.Action, prepSpell);
+                    CurrentActIsAutorot = false;
+                    return;
+                }
+            }
+            
+            var query = Svc.Objects.Where(x => !x.IsDead && x.IsTargetable && x.IsHostile());
+            if (!query.Any())
+                return;
+
+            if (query.Min(x => GetTargetDistance(x, Svc.Targets.FocusTarget)) <= QueryRange)
+            {
+                var spell = ActionManager.Instance()->GetAdjustedActionId(shieldSpell);
+                
+                if (Svc.Targets.FocusTarget.IsDead)
+                    return;
+
+                if (!ActionReady(spell))
+                    return;
+
+                if (ActionManager.CanUseActionOnTarget(spell, Svc.Targets.FocusTarget.Struct()) && !OutOfRange(spell, Player.Object, Svc.Targets.FocusTarget) && ActionManager.Instance()->GetActionStatus(ActionType.Action, spell) == 0)
+                {
+                    CurrentActIsAutorot = true;
+                    ActionManager.Instance()->UseAction(ActionType.Action, shieldSpell, Svc.Targets.FocusTarget.GameObjectId);
                     CurrentActIsAutorot = false;
                     return;
                 }
