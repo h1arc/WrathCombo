@@ -489,10 +489,10 @@ internal partial class NIN : Melee
             {
                 if (IsEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus_Goka) &&
                     CanUseGokaMekkyaku && MudraState.CastGokaMekkyaku(ref actionID) ||
-                    IsEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus_Doton) &&
-                    CanUseDoton && GetTargetHPPercent() >= NIN_AoE_AdvancedMode_Ninjitsus_Doton_Threshold && MudraState.CastDoton(ref actionID) ||
                     IsEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus_Huton) &&
                     CanUseHuton && TrickCD <= NIN_AoE_AdvancedMode_Ninjitsus_Huton_Setup && MudraState.CastHuton(ref actionID) ||
+                    IsEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus_Doton) &&
+                    CanUseDoton && GetTargetHPPercent() >= NIN_AoE_AdvancedMode_Ninjitsus_Doton_Threshold && MudraState.CastDoton(ref actionID) ||
                     IsEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus_Katon) &&
                     CanUseKaton && MudraState.CastKaton(ref actionID) ||
                     IsEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus_Katon) &&

@@ -56,9 +56,8 @@ internal partial class NIN
                                           GetCooldownChargeRemainingTime(Ten) <= TrickCD - 10); //Uptime option
 
     internal static bool CanUseDoton => LevelChecked(Doton) && MudraReady && DotonStoppedMoving && !JustUsed(Doton) &&
-                                        (!HasDoton || DotonRemaining <= 2) &&
-                                        (TrickDebuff || //Buff Window
-                                         GetCooldownChargeRemainingTime(Ten) < 3); // Use if you have Kassatsu before you get Hosho Ranryu
+                                        (!HasDoton || DotonRemaining <= 2) && //No doton down
+                                        (TrickDebuff || GetCooldownChargeRemainingTime(Ten) < 3); //Pool for buff window
 
     internal static bool CanUseSuiton => LevelChecked(Suiton) && MudraReady && !HasStatusEffect(Buffs.ShadowWalker);
 
