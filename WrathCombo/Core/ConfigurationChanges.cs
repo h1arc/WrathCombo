@@ -60,6 +60,7 @@ public partial class Configuration
         Setting,
         AutoRotSetting,
         Preset,
+        PresetAutoMode,
         UserData,
     }
 
