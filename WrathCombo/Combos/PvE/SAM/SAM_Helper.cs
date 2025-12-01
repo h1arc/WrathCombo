@@ -15,10 +15,12 @@ namespace WrathCombo.Combos.PvE;
 internal partial class SAM
 {
     private static bool RefreshFugetsu =>
-        GetStatusEffectRemainingTime(Buffs.Fugetsu) < 8;
+        GetStatusEffectRemainingTime(Buffs.Fugetsu) <=
+        GetStatusEffectRemainingTime(Buffs.Fuka);
 
     private static bool RefreshFuka =>
-        GetStatusEffectRemainingTime(Buffs.Fuka) < 8;
+        GetStatusEffectRemainingTime(Buffs.Fuka) <=
+        GetStatusEffectRemainingTime(Buffs.Fugetsu);
 
     private static bool EnhancedSenei =>
         TraitLevelChecked(Traits.EnhancedHissatsu);

@@ -483,8 +483,7 @@ internal partial class SAM : Melee
                         ((OnTargetsRear() || OnTargetsFront()) && !HasGetsu ||
                          !HasStatusEffect(Buffs.Fugetsu) ||
                          SenCount is 3 &&
-                         GetStatusEffectRemainingTime(Buffs.Fugetsu) <=
-                         GetStatusEffectRemainingTime(Buffs.Fuka)))
+                         RefreshFugetsu))
                         return Jinpu;
 
                     if (SAM_Yukaze_Kasha &&
@@ -492,8 +491,7 @@ internal partial class SAM : Melee
                         ((OnTargetsFlank() || OnTargetsFront()) && !HasKa ||
                          !HasStatusEffect(Buffs.Fuka) ||
                          SenCount is 3 &&
-                         GetStatusEffectRemainingTime(Buffs.Fuka) <=
-                         GetStatusEffectRemainingTime(Buffs.Fugetsu)))
+                         RefreshFuka))
                         return Shifu;
                 }
 
@@ -610,13 +608,15 @@ internal partial class SAM : Melee
                 if (LevelChecked(Mangetsu) &&
                     !HasGetsu ||
                     !SAM_Mangetsu_Oka ||
-                    !HasStatusEffect(Buffs.Fugetsu))
+                    !HasStatusEffect(Buffs.Fugetsu) ||
+                    SenCount is 2 or 3 && RefreshFugetsu)
                     return Mangetsu;
 
                 if (SAM_Mangetsu_Oka &&
                     LevelChecked(Oka) &&
                     !HasKa ||
-                    !HasStatusEffect(Buffs.Fuka))
+                    !HasStatusEffect(Buffs.Fuka) ||
+                    SenCount is 2 or 3 && RefreshFuka)
                     return Oka;
             }
 
