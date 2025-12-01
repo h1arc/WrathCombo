@@ -10,16 +10,15 @@ using Lumina.Excel.Sheets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using WrathCombo.AutoRotation;
 using WrathCombo.Core;
-using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 using WrathCombo.Data.Conflicts;
 using WrathCombo.Extensions;
 using WrathCombo.Services;
 using WrathCombo.Window;
 using WrathCombo.Window.Tabs;
+using static WrathCombo.Core.Configuration;
 using static ECommons.ExcelServices.ExcelJobHelper;
 
 #endregion
@@ -216,7 +215,7 @@ public partial class WrathCombo
         }
 
         // Give the correct method for the action
-        Func<Preset, bool, bool> method = action switch
+        Func<Preset, ConfigChangeSource?, bool> method = action switch
         {
             toggle => PresetStorage.TogglePreset,
             set => PresetStorage.EnablePreset,
@@ -234,7 +233,7 @@ public partial class WrathCombo
         else
         {
             var usablePreset = (Preset)preset!;
-            method(usablePreset, false);
+            method(usablePreset, ConfigChangeSource.Command);
 
             if (action == toggle)
                 action =

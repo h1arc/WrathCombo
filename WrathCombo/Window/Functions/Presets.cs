@@ -189,18 +189,8 @@ internal class Presets : ConfigWindow
         if (P.UIHelper.ShowIPCControlledCheckboxIfNeeded
             ($"{presetName}###{preset}", ref enabled, preset, true))
         {
-            if (enabled)
-            {
-                PresetStorage.EnablePreset(preset);
-            }
-            else
-            {
-                PresetStorage.DisablePreset(preset);
-            }
-            P.IPCSearch.UpdateActiveJobPresets();
+            PresetStorage.TogglePreset(preset);
             DebugFile.AddSettingLog($"Set {preset} to {enabled}");
-
-            Service.Configuration.Save();
         }
 
         DrawReplaceAttribute(preset);
