@@ -19,41 +19,6 @@ namespace WrathCombo.Extensions;
 
 public static class GameObjectExtensions
 {
-    /// <summary>
-    ///     Converts a GameObject pointer to an IGameObject from the object table.
-    /// </summary>
-    /// <param name="ptr">The GameObject pointer to convert.</param>
-    /// <returns>An IGameObject if found in the object table; otherwise, null.</returns>
-    public static unsafe IGameObject? GetObjectFrom(GameObject* ptr) =>
-        ptr == null
-            ? null
-            : Svc.Objects
-                .FirstOrDefault(x => x.Address == (IntPtr)ptr);
-
-    /// <summary>
-    ///     Converts a GameObjectID to an IGameObject from the object table.
-    /// </summary>
-    /// <param name="id">The GameObjectID to convert.</param>
-    /// <returns>An IGameObject if found in the object table; otherwise, null.</returns>
-    public static IGameObject? GetObjectFrom(ulong id) =>
-        Svc.Objects.FirstOrDefault(x => x.GameObjectId == id);
-
-    /// <summary>
-    ///     Converts a GameObjectID to an IGameObject from the object table.
-    /// </summary>
-    /// <param name="id">The GameObjectID to convert.</param>
-    /// <returns>An IGameObject if found in the object table; otherwise, null.</returns>
-    public static IGameObject? GetObject(this ulong id) =>
-        GetObjectFrom(id);
-
-    /// <summary>
-    ///     Converts a GameObjectID(?) to an IGameObject from the object table.
-    /// </summary>
-    /// <param name="id">The GameObjectID to convert.</param>
-    /// <returns>An IGameObject if found in the object table; otherwise, null.</returns>
-    public static IGameObject? GetObject(this ulong? id) =>
-        id == null ? null : GetObjectFrom((ulong)id);
-
     extension(IGameObject? obj)
     {
         public CombatRole GetRole()
@@ -363,4 +328,43 @@ public static class GameObjectExtensions
 
         #endregion
     }
+
+    #region Get Objects more conveniently
+
+    /// <summary>
+    ///     Converts a GameObject pointer to an IGameObject from the object table.
+    /// </summary>
+    /// <param name="ptr">The GameObject pointer to convert.</param>
+    /// <returns>An IGameObject if found in the object table; otherwise, null.</returns>
+    public static unsafe IGameObject? GetObjectFrom(GameObject* ptr) =>
+        ptr == null
+            ? null
+            : Svc.Objects
+                .FirstOrDefault(x => x.Address == (IntPtr)ptr);
+
+    /// <summary>
+    ///     Converts a GameObjectID to an IGameObject from the object table.
+    /// </summary>
+    /// <param name="id">The GameObjectID to convert.</param>
+    /// <returns>An IGameObject if found in the object table; otherwise, null.</returns>
+    public static IGameObject? GetObjectFrom(ulong id) =>
+        Svc.Objects.FirstOrDefault(x => x.GameObjectId == id);
+
+    /// <summary>
+    ///     Converts a GameObjectID to an IGameObject from the object table.
+    /// </summary>
+    /// <param name="id">The GameObjectID to convert.</param>
+    /// <returns>An IGameObject if found in the object table; otherwise, null.</returns>
+    public static IGameObject? GetObject(this ulong id) =>
+        GetObjectFrom(id);
+
+    /// <summary>
+    ///     Converts a GameObjectID(?) to an IGameObject from the object table.
+    /// </summary>
+    /// <param name="id">The GameObjectID to convert.</param>
+    /// <returns>An IGameObject if found in the object table; otherwise, null.</returns>
+    public static IGameObject? GetObject(this ulong? id) =>
+        id == null ? null : GetObjectFrom((ulong)id);
+
+    #endregion
 }
