@@ -1048,31 +1048,22 @@ internal unsafe static class AutoRotationController
             if (target is null) return false;
             return JobID switch
             {
-                Job.AST => HasStatusEffect(AST.Buffs.AspectedBenefic, target, true),
-                Job.WHM => HasStatusEffect(WHM.Buffs.Regen, target, true),
+                Job.AST => HasStatusEffect(AST.Buffs.AspectedBenefic, target),
+                Job.WHM => HasStatusEffect(WHM.Buffs.Regen, target),
                 _ => false,
             };
         }
         private static bool TargetHasExcog(IGameObject? target)
         {
-            if (target is null) return false;
-            return JobID switch
-            {
-                Job.SCH or Job.AST or Job.WHM or Job.SGE => HasStatusEffect(SCH.Buffs.Excogitation, target, true),
-                _ => false,
-            };
+            return target is not null && HasStatusEffect(SCH.Buffs.Excogitation, target, true);
         }
         private static bool TargetHasImmortality(IGameObject? target)
         {
             if (target is null) return false;
-            return JobID switch
-            {
-                Job.SCH or Job.AST or Job.WHM or Job.SGE => 
-                    GetStatusEffectRemainingTime(DRK.Buffs.LivingDead, target, true) >=3 || 
-                    GetStatusEffectRemainingTime(DRK.Buffs.WalkingDead, target, true) >=5 ||
-                    GetStatusEffectRemainingTime(WAR.Buffs.Holmgang, target, true) >=5,
-                _ => false,
-            };
+            
+            return GetStatusEffectRemainingTime(DRK.Buffs.LivingDead, target, true) >= 3 ||
+                   GetStatusEffectRemainingTime(DRK.Buffs.WalkingDead, target, true) >= 5 ||
+                   GetStatusEffectRemainingTime(WAR.Buffs.Holmgang, target, true) >= 5;
         }
     }
 
