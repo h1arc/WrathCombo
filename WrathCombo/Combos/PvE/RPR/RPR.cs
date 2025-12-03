@@ -288,6 +288,12 @@ internal partial class RPR : Melee
             //All Weaves
             if (CanWeave())
             {
+                //Auto Arcane Crest
+                if (IsEnabled(Preset.RPR_ST_ArcaneCrest) &&
+                    ActionReady(ArcaneCrest) &&
+                    (RaidWideCasting(3f) || !IsInParty()))
+                    return ArcaneCrest;
+
                 //Arcane Cirlce
                 if (IsEnabled(Preset.RPR_ST_ArcaneCircle) &&
                     ActionReady(ArcaneCircle) &&

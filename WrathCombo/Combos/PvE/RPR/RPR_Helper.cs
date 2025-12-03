@@ -339,6 +339,7 @@ internal partial class RPR
         HellsIngress = 24401,
         HellsEgress = 24402,
         Regress = 24403,
+        ArcaneCrest = 24404,
         Harpe = 24386,
         Soulsow = 24387,
         HarvestMoon = 24388;
