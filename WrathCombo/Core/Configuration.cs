@@ -479,7 +479,7 @@ public partial class Configuration : IPluginConfiguration
     /// <seealso cref="CustomComboNS.SimpleTarget.Stack.AllyToHeal"/>
     [SettingParent(nameof(UseCustomHealStack))]
     [SettingCategory(Targeting_Options)]
-    [Setting("",
+    [Setting("Custom Heal Stack",
         "The priority goes from top to bottom.\n" +
         "Scroll down to see all of your items.\n" +
         "Click the Up and Down buttons to move items in the list.\n" +
