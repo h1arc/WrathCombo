@@ -157,8 +157,7 @@ internal class Presets : ConfigWindow
 
         if (auto != null)
         {
-            if (!Service.Configuration.AutoActions.ContainsKey(preset))
-                Service.Configuration.AutoActions[preset] = false;
+            Service.Configuration.AutoActions.TryAdd(preset, false);
 
             var label = "Auto-Mode";
             var labelSize = ImGui.CalcTextSize(label);
@@ -167,10 +166,8 @@ internal class Presets : ConfigWindow
             if (P.UIHelper.ShowIPCControlledCheckboxIfNeeded
                 ($"###AutoAction{preset}", ref autoOn, preset, false))
             {
+                PresetStorage.ToggleAutoModeForPreset(preset);
                 DebugFile.AddSettingLog($"Set Auto-Mode for {preset} to {autoOn}");
-                P.IPCSearch.UpdateActiveJobPresets();
-                Service.Configuration.AutoActions[preset] = autoOn;
-                Service.Configuration.Save();
             }
             ImGui.SameLine();
             ImGui.Text(label);

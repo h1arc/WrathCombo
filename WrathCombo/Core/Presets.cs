@@ -229,7 +229,7 @@ internal static class PresetStorage
     #region Toggling Presets
 
     /// <summary> Iterates up a preset's parent tree, enabling each of them. </summary>
-    /// <param name="preset"> Combo preset to enabled. </param>
+    /// <param name="preset"> Combo preset to enable. </param>
     public static void EnableParentPresets(Preset preset)
     {
         var parentMaybe = GetParent(preset);
@@ -328,6 +328,94 @@ internal static class PresetStorage
         (int preset, ConfigChangeSource? source = null) =>
         GetPresetByInt(preset) is { } pre &&
         TogglePreset(pre, source);
+
+    #region Auto-Mode
+    
+    public static bool EnableAutoModeForPreset
+        (Preset preset, ConfigChangeSource? source = null)
+    {
+        // Ensure the preset exists in the dictionary
+        Service.Configuration.AutoActions.TryAdd(preset, false);
+
+        Service.Configuration.AutoActions[preset] = true;
+
+        // Notify of change and save
+        Service.Configuration.TriggerUserConfigChanged(
+            ConfigChangeType.PresetAutoMode, source ?? ConfigChangeSource.UI,
+            preset.ToString(), true);
+        P.IPCSearch.UpdateActiveJobPresets();
+        Service.Configuration.Save();
+
+        return true;
+    }
+
+    public static bool EnableAutoModeForPreset
+        (string preset, ConfigChangeSource? source = null) =>
+        GetPresetByString(preset) is { } pre &&
+        EnableAutoModeForPreset(pre, source);
+
+    public static bool EnableAutoModeForPreset
+        (int preset, ConfigChangeSource? source = null) =>
+        GetPresetByInt(preset) is { } pre &&
+        EnableAutoModeForPreset(pre, source);
+    
+    public static bool DisableAutoModeForPreset
+        (Preset preset, ConfigChangeSource? source = null)
+    {
+        // Ensure the preset exists in the dictionary
+        Service.Configuration.AutoActions.TryAdd(preset, false);
+
+        Service.Configuration.AutoActions[preset] = false;
+
+        // Notify of change and save
+        Service.Configuration.TriggerUserConfigChanged(
+            ConfigChangeType.PresetAutoMode, source ?? ConfigChangeSource.UI,
+            preset.ToString(), false);
+        P.IPCSearch.UpdateActiveJobPresets();
+        Service.Configuration.Save();
+
+        return true;
+    }
+
+    public static bool DisableAutoModeForPreset
+        (string preset, ConfigChangeSource? source = null) =>
+        GetPresetByString(preset) is { } pre &&
+        DisableAutoModeForPreset(pre, source);
+
+    public static bool DisableAutoModeForPreset
+        (int preset, ConfigChangeSource? source = null) =>
+        GetPresetByInt(preset) is { } pre &&
+        DisableAutoModeForPreset(pre, source);
+
+    public static bool ToggleAutoModeForPreset
+        (Preset preset, ConfigChangeSource? source = null)
+    {
+        // Ensure the preset exists in the dictionary
+        Service.Configuration.AutoActions.TryAdd(preset, false);
+
+        var newValue = Service.Configuration.AutoActions[preset] =
+            !Service.Configuration.AutoActions[preset];
+
+        // Notify of change and save
+        Service.Configuration.TriggerUserConfigChanged(
+            ConfigChangeType.PresetAutoMode, source ?? ConfigChangeSource.UI,
+            preset.ToString(), newValue);
+        P.IPCSearch.UpdateActiveJobPresets();
+        Service.Configuration.Save();
+        return true;
+    }
+
+    public static bool ToggleAutoModeForPreset
+        (string preset, ConfigChangeSource? source = null) =>
+        GetPresetByString(preset) is { } pre &&
+        ToggleAutoModeForPreset(pre, source);
+
+    public static bool ToggleAutoModeForPreset
+        (int preset, ConfigChangeSource? source = null) =>
+        GetPresetByInt(preset) is { } pre &&
+        ToggleAutoModeForPreset(pre, source);
+
+    #endregion
 
     #endregion
 
