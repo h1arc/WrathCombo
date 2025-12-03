@@ -199,8 +199,7 @@ internal static class PresetStorage
         if (!EZ.Throttle("PeriodicPresetDeconflicting", TS.FromSeconds(7)))
             return;
 
-        Preset[] enabledPresets = [];
-        Service.Configuration.EnabledActions.CopyTo(enabledPresets);
+        var enabledPresets = Service.Configuration.EnabledActions.ToArray();
         List<Preset> removedPresets = [];
 
         foreach (var preset in enabledPresets)
