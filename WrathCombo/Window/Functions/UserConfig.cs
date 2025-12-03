@@ -105,7 +105,6 @@ public static class UserConfig
                         if (output > maxValue) output = maxValue;
                     }
 
-                    DebugFile.AddSettingLog($"Set Config {config} to {output}");
                     Configuration.SetCustomIntValue(config, output);
                 }
 
@@ -213,10 +212,7 @@ public static class UserConfig
                 inputChanged |= ImGui.SliderFloat($"{newLines}###{config}", ref output, minValue, maxValue, format);
 
                 if (inputChanged)
-                {
-                    DebugFile.AddSettingLog($"Set Config {config} to {output}");
                     Configuration.SetCustomFloatValue(config, output);
-                }
             }
         };
 
@@ -303,10 +299,7 @@ public static class UserConfig
                 inputChanged |= ImGui.SliderFloat($"{newLines}###{config}", ref output, minValue, maxValue, $"%.{digits}f");
 
                 if (inputChanged)
-                {
-                    DebugFile.AddSettingLog($"Set Config {config} to {output}");
                     Configuration.SetCustomFloatValue(config, output);
-                }
             }
         };
 
@@ -334,10 +327,7 @@ public static class UserConfig
         bool enabled = output == outputValue;
 
         if (ImGui.RadioButton($"{checkBoxName}###{config}{outputValue}", enabled))
-        {
-            DebugFile.AddSettingLog($"Set Config {config} to {output}");
             Configuration.SetCustomIntValue(config, outputValue);
-        }
 
         if (!checkboxDescription.IsNullOrEmpty())
         {
@@ -387,7 +377,6 @@ public static class UserConfig
         {
             if (ImGui.RadioButton($"{checkBoxName}###{config}{outputValue}", enabled))
             {
-                DebugFile.AddSettingLog($"Set Config {config} to {output}");
                 Configuration.SetCustomIntValue(config, outputValue);
                 o = true;
             }
@@ -430,7 +419,6 @@ public static class UserConfig
                 for (var i = 0; i < values.Length; i++)
                     values[i] = false;
                 values[choice] = true;
-                DebugFile.AddSettingLog($"Set Config {config} to {string.Join(", ", values)}");
                 Configuration.SetCustomBoolArrayValue(config, values);
             }
 
@@ -475,10 +463,7 @@ public static class UserConfig
             if (isConditionalChoice) ImGui.Indent(); //Align checkbox after the + symbol
         }
         if (ImGui.Checkbox($"{checkBoxName}##{config}", ref output))
-        {
-            DebugFile.AddSettingLog($"Set Config {config} to {output}");
             Configuration.SetCustomBoolValue(config, output);
-        }
 
         DrawResetContextMenu(config);
 
@@ -532,10 +517,7 @@ public static class UserConfig
                 ImGui.NewLine();
 
             if (ImGui.Checkbox($"{checkBoxName}###{config}{choice}", ref values[choice]))
-            {
-                DebugFile.AddSettingLog($"Set Config {config} to {string.Join(", ", values)}");
                 Configuration.SetCustomBoolArrayValue(config, values);
-            }
 
             if (!checkboxDescription.IsNullOrEmpty() && ImGui.IsItemHovered())
             {
@@ -567,10 +549,7 @@ public static class UserConfig
         {
             var status = PvPCommon.QuickPurify.Statuses[i];
             if (ImGui.Checkbox($"{status.label}###{config}{i}", ref values[i]))
-            {
-                DebugFile.AddSettingLog($"Set Config {config} to {string.Join(", ", values)}");
                 Configuration.SetCustomBoolArrayValue(config, values);
-            }
 
             ImGui.NextColumn();
         }
@@ -917,11 +896,9 @@ public static class UserConfig
         return ((int)Math.Round(i / sliderAsDouble)) * (int)sliderIncrement;
     }
 
-    private static void ResetToDefault(string config)
-    {
-        DebugFile.AddSettingLog($"Set Config {config} to default");
+    private static void ResetToDefault(string config) =>
         UserData.MasterList[config].ResetToDefault();
-    }
+
     #region Custom Stack Manager
 
     private static bool _customStackIconGroupWidthSet = false;

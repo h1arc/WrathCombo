@@ -12,17 +12,14 @@ namespace WrathCombo.Core;
 public partial class Configuration
 {
     /// <summary>
-    ///     Fired when a user/config setting is changed in any way.
+    ///     Fired when a plugin setting, preset, or job setting is changed
+    ///     in any way.
     /// </summary>
     /// <remarks>
-    ///     TODO: Trigger on preset change in ui, preset change via cmd, config change,
-    ///     ipc stuff(?), setting change via ui, etc.
-    ///     (replacing the DebugFile.logs)
+    ///     TODO: Trigger on ipc stuff(?) and setting change via ui, etc.
     ///     <br />
     ///     TODO: Add Retarget-Clearing if it's a preset or config change.
-    ///     (fix hanging Retargets)
-    ///     <br />
-    ///     TODO: Add DebugFile logging.
+    ///      (fix hanging Retargets)
     /// </remarks>
     public static event EventHandler<ConfigChangeEventArgs>? ConfigChanged;
 

@@ -67,6 +67,19 @@ public static class DebugFile
     /// </summary>
     internal static List<string> DebugLog = [];
 
+    internal static void LoggingConfigChanges
+        (object? _, Configuration.ConfigChangeEventArgs argument) {
+        var displayValue = argument.NewValue switch
+        {
+            Array arr => string.Join(", ", arr.Cast<object?>()),
+            _         => argument.NewValue.ToString(),
+        };
+        
+        DebugLog.Add($"{DateTime.Now} | [{argument.Source}] " +
+                     $"Changed {argument.Type} `{argument.Key}` to " +
+                     $"'{displayValue}'");
+    }
+
     /// Get the path to the debug file.
     public static string GetDebugFilePath() {
         var separator = DesktopPath?.Contains('\\') == true ? "\\" : "/";
@@ -109,7 +122,8 @@ public static class DebugFile
             AddLine("START DEBUG LOG");
             AddLine();
             
-            AddLine($"Log at: {DateTimeOffset.UtcNow:yyyy-MM-ddTHH:mm:sszzz}");
+            AddLine($"Log at: {DateTimeOffset.Now:yyyy-MM-ddTHH:mm:sszzz}     " +
+                    $"(everything in user's timezone)");
             AddLine();
 
             AddPluginInfo();
@@ -881,7 +895,7 @@ public static class DebugFile
             return;
         }
         
-        AddLine("START DALAMUD LOG HISTORY (most recent first) (user time)");
+        AddLine("START DALAMUD LOG HISTORY (most recent first)");
         AddLine(string.Join("\n", logs));
         AddLine("END DALAMUD LOG HISTORY");
 

@@ -165,10 +165,7 @@ internal class Presets : ConfigWindow
             bool autoOn = Service.Configuration.AutoActions[preset];
             if (P.UIHelper.ShowIPCControlledCheckboxIfNeeded
                 ($"###AutoAction{preset}", ref autoOn, preset, false))
-            {
                 PresetStorage.ToggleAutoModeForPreset(preset);
-                DebugFile.AddSettingLog($"Set Auto-Mode for {preset} to {autoOn}");
-            }
             ImGui.SameLine();
             ImGui.Text(label);
             ImGuiComponents.HelpMarker($"Add this feature to Auto-Rotation.\n" +
@@ -185,10 +182,7 @@ internal class Presets : ConfigWindow
 
         if (P.UIHelper.ShowIPCControlledCheckboxIfNeeded
             ($"{presetName}###{preset}", ref enabled, preset, true))
-        {
             PresetStorage.TogglePreset(preset);
-            DebugFile.AddSettingLog($"Set {preset} to {enabled}");
-        }
 
         DrawReplaceAttribute(preset);
 

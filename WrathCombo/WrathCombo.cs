@@ -188,6 +188,8 @@ public sealed partial class WrathCombo : IDalamudPlugin
         ws.AddWindow(ConfigWindow);
         ws.AddWindow(_majorChangesWindow);
         ws.AddWindow(TargetHelper);
+        
+        Configuration.ConfigChanged += DebugFile.LoggingConfigChanges;
 
         Svc.PluginInterface.UiBuilder.Draw += ws.Draw;
         Svc.PluginInterface.UiBuilder.OpenMainUi += OnOpenMainUi;
@@ -385,6 +387,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
 
         ws.RemoveAllWindows();
         Svc.DtrBar.Remove("Wrath Combo");
+        Configuration.ConfigChanged -= DebugFile.LoggingConfigChanges;
         Svc.Framework.Update -= OnFrameworkUpdate;
         Svc.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
         Svc.PluginInterface.UiBuilder.OpenConfigUi -= OnOpenConfigUi;
