@@ -56,7 +56,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
     internal Provider IPC;
     internal Search IPCSearch = null!;
     internal UIHelper UIHelper = null!;
-    internal ActionRetargeting ActionRetargeting = new();
+    internal ActionRetargeting ActionRetargeting = null!;
     internal MovementHook MoveHook;
 
     private readonly TextPayload starterMotd = new("[Wrath Message of the Day] ");
@@ -177,6 +177,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
 
         Service.ComboCache = new CustomComboCache();
         Service.ActionReplacer = new ActionReplacer();
+        ActionRetargeting = new ActionRetargeting();
         ActionWatching.Enable();
         IPC = Provider.Init();
         ConflictingPluginsChecks.Begin();
