@@ -24,7 +24,6 @@ using WrathCombo.Data.Conflicts;
 using WrathCombo.Extensions;
 using WrathCombo.Services;
 using WrathCombo.Window.Functions;
-using Dalamud.Game.Config;
 using ECommons;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using UIConfig = Dalamud.Game.Config.UiConfigOption;
@@ -569,7 +568,7 @@ public static class DebugFile
                 var val1 = field.GetValue(null);
                 if (val1.GetType().BaseType == typeof(UserData))
                 {
-                    key = val1.GetType().BaseType.GetField("pName")
+                    key = val1.GetType().BaseType.GetField("ConfigName")
                         .GetValue(val1).ToString()!;
                 }
 
@@ -736,11 +735,6 @@ public static class DebugFile
         AddLine("END SETTINGS CHANGES HISTORY");
 
         AddLine();
-    }
-
-    public static void AddSettingLog(string log)
-    {
-        DebugLog.Add($"{DateTime.UtcNow} | {log}");
     }
     
     /// <summary>
