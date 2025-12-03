@@ -17,7 +17,6 @@ using WrathCombo.Services;
 using static WrathCombo.Combos.PvE.DNC.Config;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using EZ = ECommons.Throttlers.EzThrottler;
-using Options = WrathCombo.Combos.Preset;
 using TS = System.TimeSpan;
 
 // ReSharper disable ReturnTypeCanBeNotNullable
@@ -116,11 +115,11 @@ internal partial class DNC
         P.IPC.GetAutoRotationState() && P.IPC.GetComboState(
             (singleTarget
                 ? (simpleMode
-                    ? Options.DNC_ST_SimpleMode
-                    : Options.DNC_ST_AdvancedMode)
+                    ? Preset.DNC_ST_SimpleMode
+                    : Preset.DNC_ST_AdvancedMode)
                 : (simpleMode
-                    ? Options.DNC_AoE_SimpleMode
-                    : Options.DNC_AoE_AdvancedMode)
+                    ? Preset.DNC_AoE_SimpleMode
+                    : Preset.DNC_AoE_AdvancedMode)
             ).ToString()
         )!.Values.Last();
 
@@ -140,7 +139,7 @@ internal partial class DNC
     private static uint FinishOrHold(uint desiredFinish)
     {
         // If the option to hold is not enabled
-        if (IsNotEnabled(Options.DNC_ST_BlockFinishes))
+        if (IsNotEnabled(Preset.DNC_ST_BlockFinishes))
             return desiredFinish;
 
         // Return the Finish if the dance is about to expire
@@ -500,8 +499,8 @@ internal partial class DNC
     ///     Consolidating a few checks to reduce duplicate code.
     /// </summary>
     private static bool WantsCustomStepsOnSmallerFeatures =>
-        IsEnabled(Options.DNC_CustomDanceSteps) &&
-        IsEnabled(Options.DNC_CustomDanceSteps_Conflicts) &&
+        IsEnabled(Preset.DNC_CustomDanceSteps) &&
+        IsEnabled(Preset.DNC_CustomDanceSteps_Conflicts) &&
         Gauge.IsDancing;
 
     /// <summary>
