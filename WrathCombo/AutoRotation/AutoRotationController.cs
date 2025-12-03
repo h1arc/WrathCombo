@@ -384,7 +384,8 @@ internal unsafe static class AutoRotationController
                 if (Svc.Targets.FocusTarget.IsDead)
                     return;
 
-                if (!ActionReady(spell))
+                if (!ActionReady(spell) || 
+                    ActionManager.GetAdjustedCastTime(ActionType.Action, spell) > 0 && TimeStoodStill < TimeSpan.FromSeconds(1))
                     return;
 
                 if (ActionManager.CanUseActionOnTarget(spell, Svc.Targets.FocusTarget.Struct()) && !OutOfRange(spell, Player.Object, Svc.Targets.FocusTarget) && ActionManager.Instance()->GetActionStatus(ActionType.Action, spell) == 0)

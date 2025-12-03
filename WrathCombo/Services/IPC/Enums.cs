@@ -238,7 +238,7 @@ public enum AutoRotationConfigOption
 
     [ConfigValueType(typeof(int))] SingleTargetExcogHPP = 17,
     
-    [ConfigValueType(typeof(int))] AutoRezDPSJobsHealersOnly = 18,
+    [ConfigValueType(typeof(bool))] AutoRezDPSJobsHealersOnly = 18,
 }
 
 #region Type Attribute
