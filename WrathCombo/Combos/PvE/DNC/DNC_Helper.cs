@@ -230,8 +230,7 @@ internal partial class DNC
 
     [ActionRetargeting.TargetResolver]
     internal static IGameObject? DancePartnerResolver () =>
-        Svc.Objects.FirstOrDefault(x =>
-            x.GameObjectId == DesiredDancePartner) ??
+        DesiredDancePartner.GetObject() ??
         (!HasStatusEffect(Buffs.ClosedPosition)
             ? SimpleTarget.AnySelfishDPS ?? SimpleTarget.AnyMeleeDPS ?? SimpleTarget.AnyDPS
             : null);
@@ -246,8 +245,7 @@ internal partial class DNC
         #region Skip a new check, if the current partner is just out of range
         if (CurrentDancePartner is not null)
         {
-            var currentPartner = Svc.Objects.FirstOrDefault(
-                x => x.GameObjectId == CurrentDancePartner);
+            var currentPartner = CurrentDancePartner.GetObject();
             if (currentPartner is not null &&
                 !currentPartner.IsWithinRange(30) &&
                 !currentPartner.IsDead &&
@@ -271,11 +269,13 @@ internal partial class DNC
         }
 
         var party = GetPartyMembers()
-            .Where(member => member.GameObjectId != Player.Object.GameObjectId)
-            .Where(member => member.BattleChara is not null && !member.BattleChara.IsDead)
-            .Where(member => IsInRange(member.BattleChara, 30))
-            .Where(member => !HasAnyPartner(member) || HasMyPartner(member))
-            .Select(member => member.BattleChara)
+            .Where(member => member.GameObject.IsNotThePlayer() &&
+                             member.BattleChara is not null &&
+                             !member.BattleChara.IsDead &&
+                             member.GameObject.IsWithinRange(30) &&
+                             (!HasAnyPartner(member) ||
+                              HasMyPartner(member)))
+            .Select(member => member.BattleChara!)
             .ToList();
 
         if (party.Count < 1 && !HasCompanionPresent())
