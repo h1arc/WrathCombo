@@ -18,6 +18,8 @@ using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using Lumina.Excel.Sheets;
 using Newtonsoft.Json;
 using System;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -128,10 +130,37 @@ internal class Debug : ConfigWindow, IDisposable
                         .PadRight(stripped.Length + paddingNeeded, '=');
                     base64 = Convert.FromBase64String(stripped);
                 }
+                
+                // Decompress the data
+                byte[] decompressedBytes;
+                try
+                {
+                    // Attempt Brotli decompression (new format)
+                    using var compressedStream = new MemoryStream(base64);
+                    using var brotliStream = new BrotliStream(compressedStream, CompressionMode.Decompress);
+                    using var decompressedStream = new MemoryStream();
+                    brotliStream.CopyTo(decompressedStream);
+                    decompressedBytes = decompressedStream.ToArray();
+                }
+                catch (InvalidDataException)
+                {
+                    // Old format, no compression
+                    decompressedBytes = base64;
+                }
 
                 // Decode the data
-                var decode = Encoding.UTF8.GetString(base64);
-                var config = JsonConvert.DeserializeObject<Configuration>(decode);
+                Configuration? config;
+                try
+                {
+                    var decode = Encoding.UTF8.GetString(decompressedBytes);
+                    config = JsonConvert.DeserializeObject<Configuration>(decode);
+                }
+                // Fallback to decoding the non-decompressed data
+                catch (Exception)
+                {
+                    var decode = Encoding.UTF8.GetString(base64);
+                    config = JsonConvert.DeserializeObject<Configuration>(decode);
+                }
                 if (config != null)
                 {
                     DebugConfig = true;

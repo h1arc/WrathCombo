@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -704,9 +705,21 @@ public static class DebugFile
     /// Get the debug code by itself.
     public static string GetDebugCode()
     {
-        var bytes = Encoding.UTF8.GetBytes(
-            JsonConvert.SerializeObject(Service.Configuration));
-        return Convert.ToBase64String(bytes);
+        var json  = JsonConvert.SerializeObject(
+            Service.Configuration, Formatting.None);
+        var bytes = Encoding.UTF8.GetBytes(json);
+
+        // Compress the config
+        using var output = new MemoryStream();
+        using (var brotli = new BrotliStream(output, CompressionLevel.SmallestSize, leaveOpen: true))
+        {
+            brotli.Write(bytes);
+        }
+        output.Position = 0;
+        var compressed = output.ToArray();
+
+        // Base64 encode the compressed config
+        return Convert.ToBase64String(compressed);
     }
 
     private static void AddDebugCode()
