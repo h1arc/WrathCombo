@@ -49,6 +49,8 @@ public partial class Configuration
         UI,
         Command,
         IPC,
+        Task,
+        AutomaticReaction,
         Other,
     }
 
@@ -100,6 +102,9 @@ public partial class Configuration
         object newValue,
         object? oldValue = null)
     {
+        PluginLog.Verbose(
+            $"Config Changed: Type={type}, Source={source}, Key={key}, " +
+            $"NewValue={newValue}, OldValue={oldValue}");
         var trace = new StackTrace().ToString();
         var args = new ConfigChangeEventArgs(type, source, key,
             newValue, trace);

@@ -212,7 +212,7 @@ internal static class PresetStorage
                 if (!IsEnabled(conflict))
                     continue;
                 
-                if (DisablePreset(conflict, ConfigChangeSource.Other))
+                if (DisablePreset(conflict, ConfigChangeSource.Task))
                     removedPresets.Add(conflict);
             }
         }
@@ -222,7 +222,7 @@ internal static class PresetStorage
     {
         var conflicts = GetConflicts(preset);
         foreach (var conflict in conflicts)
-            DisablePreset(conflict, ConfigChangeSource.Other);
+            DisablePreset(conflict, ConfigChangeSource.AutomaticReaction);
     }
 
     #region Toggling Presets
