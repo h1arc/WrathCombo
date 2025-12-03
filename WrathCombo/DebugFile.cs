@@ -881,7 +881,7 @@ public static class DebugFile
             return;
         }
         
-        AddLine("START DALAMUD LOG HISTORY (most recent first)");
+        AddLine("START DALAMUD LOG HISTORY (most recent first) (user time)");
         AddLine(string.Join("\n", logs));
         AddLine("END DALAMUD LOG HISTORY");
 
