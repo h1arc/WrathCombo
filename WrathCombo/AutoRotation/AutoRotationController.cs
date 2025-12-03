@@ -999,7 +999,9 @@ internal unsafe static class AutoRotationController
                                 TargetHasRegen(x.BattleChara) ? cfg.HealerSettings.SingleTargetRegenHPP :
                                 cfg.HealerSettings.SingleTargetHPP) &&
                             IsInLineOfSight(x.BattleChara))
-                .OrderByDescending(x => GetTargetHPPercent(x.BattleChara)).FirstOrDefault();
+                .OrderBy(x => TargetHasTrueInvuln(x.BattleChara))
+                .ThenByDescending(x => GetTargetHPPercent(x.BattleChara))
+                .FirstOrDefault();
             return target?.BattleChara;
         }
 
@@ -1016,7 +1018,9 @@ internal unsafe static class AutoRotationController
                                 TargetHasRegen(x.BattleChara) ? cfg.HealerSettings.SingleTargetRegenHPP :
                                 cfg.HealerSettings.SingleTargetHPP) &&
                             IsInLineOfSight(x.BattleChara))
-                .OrderBy(x => GetTargetHPPercent(x.BattleChara)).FirstOrDefault();
+                .OrderBy(x => TargetHasTrueInvuln(x.BattleChara))
+                .ThenBy(x => GetTargetHPPercent(x.BattleChara))
+                .FirstOrDefault();
             return target?.BattleChara;
         }
 
@@ -1057,6 +1061,7 @@ internal unsafe static class AutoRotationController
         {
             return target is not null && HasStatusEffect(SCH.Buffs.Excogitation, target, true);
         }
+        /// Used to skip the healing of tanks that are invuln but still receive damage
         private static bool TargetHasImmortality(IGameObject? target)
         {
             if (target is null) return false;
@@ -1064,6 +1069,14 @@ internal unsafe static class AutoRotationController
             return GetStatusEffectRemainingTime(DRK.Buffs.LivingDead, target, true) >= 3 ||
                    GetStatusEffectRemainingTime(DRK.Buffs.WalkingDead, target, true) >= 5 ||
                    GetStatusEffectRemainingTime(WAR.Buffs.Holmgang, target, true) >= 5;
+        }
+        /// Used to de-prioritize (not skip) the healing of invuln tanks
+        private static bool TargetHasTrueInvuln(IGameObject? target)
+        {
+            if (target is null) return false;
+
+            return GetStatusEffectRemainingTime(GNB.Buffs.Superbolide, target) >= 5||
+                   GetStatusEffectRemainingTime(PLD.Buffs.HallowedGround, target) >= 5;
         }
     }
 
