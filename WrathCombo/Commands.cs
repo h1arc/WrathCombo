@@ -117,8 +117,6 @@ public partial class WrathCombo
             default:
                 HandleOpenCommand(argumentParts); break;
         }
-
-        Service.Configuration.Save();
     }
 
     /// <summary>
@@ -540,6 +538,7 @@ public partial class WrathCombo
         if (Service.Configuration.IgnoredNPCs.All(x => x.Key != target.BaseId))
         {
             Service.Configuration.IgnoredNPCs.Add(target.BaseId, target.GetNameId());
+            Service.Configuration.Save();
 
             DuoLog.Information(
                 $"Successfully added {target.Name} (ID: {target.BaseId}) to ignored list");
