@@ -993,7 +993,7 @@ internal unsafe static class AutoRotationController
                 .Where(x => !x.BattleChara.IsDead &&
                             x.BattleChara.IsTargetable &&
                             GetTargetDistance(x.BattleChara) <= QueryRange &&
-                            !TargetHasLiving(x.BattleChara) &&
+                            !TargetHasImmortality(x.BattleChara) &&
                             GetTargetHPPercent(x.BattleChara) <=
                             (TargetHasExcog(x.BattleChara) ? cfg.HealerSettings.SingleTargetExcogHPP :
                                 TargetHasRegen(x.BattleChara) ? cfg.HealerSettings.SingleTargetRegenHPP :
@@ -1010,7 +1010,7 @@ internal unsafe static class AutoRotationController
                 .Where(x => !x.BattleChara.IsDead &&
                             x.BattleChara.IsTargetable &&
                             GetTargetDistance(x.BattleChara) <= QueryRange &&
-                            !TargetHasLiving(x.BattleChara) &&
+                            !TargetHasImmortality(x.BattleChara) &&
                             GetTargetHPPercent(x.BattleChara) <=
                             (TargetHasExcog(x.BattleChara) ? cfg.HealerSettings.SingleTargetExcogHPP :
                                 TargetHasRegen(x.BattleChara) ? cfg.HealerSettings.SingleTargetRegenHPP :
@@ -1062,12 +1062,15 @@ internal unsafe static class AutoRotationController
                 _ => false,
             };
         }
-        private static bool TargetHasLiving(IGameObject? target)
+        private static bool TargetHasImmortality(IGameObject? target)
         {
             if (target is null) return false;
             return JobID switch
             {
-                Job.SCH or Job.AST or Job.WHM or Job.SGE => GetStatusEffectRemainingTime(DRK.Buffs.LivingDead, target, true) >=3,
+                Job.SCH or Job.AST or Job.WHM or Job.SGE => 
+                    GetStatusEffectRemainingTime(DRK.Buffs.LivingDead, target, true) >=3 || 
+                    GetStatusEffectRemainingTime(DRK.Buffs.WalkingDead, target, true) >=5 ||
+                    GetStatusEffectRemainingTime(WAR.Buffs.Holmgang, target, true) >=5,
                 _ => false,
             };
         }
