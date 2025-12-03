@@ -427,11 +427,11 @@ internal unsafe static class AutoRotationController
         if (resSpell == 0)
             return;
         
-        var deadPeople = DeadPeople;
+        IEnumerable<WrathPartyMember> deadPeople = DeadPeople;
 
         if (cfg.HealerSettings.AutoRezDPSJobsHealersOnly && Player.Job is Job.RDM or Job.SMN)
         { 
-            deadPeople = (List<WrathPartyMember>)deadPeople.Where(x => x.GetRole() is CombatRole.Healer || x.RealJob?.GetJob() is Job.SMN or Job.RDM);
+            deadPeople = deadPeople.Where(x => x.GetRole() is CombatRole.Healer || x.RealJob?.GetJob() is Job.SMN or Job.RDM);
         }
        
         if (ActionManager.Instance()->QueuedActionId == resSpell)
@@ -993,6 +993,7 @@ internal unsafe static class AutoRotationController
                 .Where(x => !x.BattleChara.IsDead &&
                             x.BattleChara.IsTargetable &&
                             GetTargetDistance(x.BattleChara) <= QueryRange &&
+                            !TargetHasLiving(x.BattleChara) &&
                             GetTargetHPPercent(x.BattleChara) <=
                             (TargetHasExcog(x.BattleChara) ? cfg.HealerSettings.SingleTargetExcogHPP :
                                 TargetHasRegen(x.BattleChara) ? cfg.HealerSettings.SingleTargetRegenHPP :
@@ -1009,6 +1010,7 @@ internal unsafe static class AutoRotationController
                 .Where(x => !x.BattleChara.IsDead &&
                             x.BattleChara.IsTargetable &&
                             GetTargetDistance(x.BattleChara) <= QueryRange &&
+                            !TargetHasLiving(x.BattleChara) &&
                             GetTargetHPPercent(x.BattleChara) <=
                             (TargetHasExcog(x.BattleChara) ? cfg.HealerSettings.SingleTargetExcogHPP :
                                 TargetHasRegen(x.BattleChara) ? cfg.HealerSettings.SingleTargetRegenHPP :
@@ -1056,7 +1058,16 @@ internal unsafe static class AutoRotationController
             if (target is null) return false;
             return JobID switch
             {
-                Job.SCH => HasStatusEffect(SCH.Buffs.Excogitation, target, true),
+                Job.SCH or Job.AST or Job.WHM or Job.SGE => HasStatusEffect(SCH.Buffs.Excogitation, target, true),
+                _ => false,
+            };
+        }
+        private static bool TargetHasLiving(IGameObject? target)
+        {
+            if (target is null) return false;
+            return JobID switch
+            {
+                Job.SCH or Job.AST or Job.WHM or Job.SGE => GetStatusEffectRemainingTime(DRK.Buffs.LivingDead, target, true) >=3,
                 _ => false,
             };
         }
