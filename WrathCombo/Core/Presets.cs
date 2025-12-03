@@ -182,6 +182,43 @@ internal static class PresetStorage
         return ctrlText;
     }
 
+    public static void HandleDuplicatePresets()
+    {
+        if (!EZ.Throttle("PeriodicPresetDeDuplicating", TS.FromSeconds(15)))
+            return;
+
+        var redundantIDs = Service.Configuration.EnabledActions.Where(x => int.TryParse(x.ToString(), out _)).OrderBy(x => x).Cast<int>().ToList();
+        foreach (var id in redundantIDs)
+            Service.Configuration.EnabledActions.RemoveWhere(x => (int)x == id);
+
+        Service.Configuration.Save();
+    }
+
+    public static void HandleCurrentConflicts()
+    {
+        if (!EZ.Throttle("PeriodicPresetDeconflicting", TS.FromSeconds(7)))
+            return;
+
+        Preset[] enabledPresets = [];
+        Service.Configuration.EnabledActions.CopyTo(enabledPresets);
+        List<Preset> removedPresets = [];
+
+        foreach (var preset in enabledPresets)
+        {
+            if (removedPresets.Contains(preset))
+                continue;
+
+            foreach (var conflict in preset.Attributes().Conflicts)
+            {
+                if (!IsEnabled(conflict))
+                    continue;
+                
+                if (DisablePreset(conflict, ConfigChangeSource.Other))
+                    removedPresets.Add(conflict);
+            }
+        }
+    }
+
     public static void DisableAllConflicts(Preset preset)
     {
         var conflicts = GetConflicts(preset);

@@ -432,20 +432,9 @@ internal class Presets : ConfigWindow
 
                         if (conflictOriginals.Any(PresetStorage.IsEnabled))
                         {
-                            if (DateTime.UtcNow - LastPresetDeconflictTime > TimeSpan.FromSeconds(3))
-                            {
-                                if (Service.Configuration.EnabledActions.Remove(childPreset))
-                                {
-                                    PluginLog.Debug($"Removed {childPreset} due to conflict with {preset}");
-                                    Service.Configuration.Save();
-                                }
-                                LastPresetDeconflictTime = DateTime.UtcNow;
-                            }
-
-                            // Keep removed items in the counter
+                            // Keep conflicted items in the counter
                             FeaturesWindow.CurrentPreset += 1 + AllChildren(presetChildren[childPreset]);
                         }
-
                         else
                         {
                             draw();

@@ -44,7 +44,6 @@ public sealed partial class WrathCombo : IDalamudPlugin
     internal readonly ConfigWindow ConfigWindow;
     private readonly MajorChangesWindow _majorChangesWindow;
     private readonly TargetHelper TargetHelper;
-    internal static DateTime LastPresetDeconflictTime = DateTime.MinValue;
     internal static WrathCombo? P;
     private readonly WindowSystem ws;
     private static readonly SocketsHttpHandler httpHandler = new()
@@ -210,13 +209,9 @@ public sealed partial class WrathCombo : IDalamudPlugin
 
         Svc.Framework.Update += OnFrameworkUpdate;
         Svc.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
-
-        if (DateTime.UtcNow - LastPresetDeconflictTime > TimeSpan.FromSeconds(3))
-        {
-            KillRedundantIDs();
-            HandleConflictedCombos();
-            LastPresetDeconflictTime = DateTime.UtcNow;
-        }
+        
+        PresetStorage.HandleDuplicatePresets();
+        PresetStorage.HandleCurrentConflicts();
         CustomComboFunctions.TimerSetup();
 
         // Starts Retarget list cleaning process after a delay
@@ -276,26 +271,6 @@ public sealed partial class WrathCombo : IDalamudPlugin
     public const string OptionControlledByIPC =
         "(being overwritten by another plugin, check the setting in /wrath)";
 
-    private static void HandleConflictedCombos()
-    {
-        var enabledCopy = Service.Configuration.EnabledActions.ToHashSet(); //Prevents issues later removing during enumeration
-        foreach (var preset in enabledCopy)
-        {
-            if (!PresetStorage.IsEnabled(preset)) continue;
-
-            var conflictingCombos = preset.GetAttribute<ConflictingCombosAttribute>();
-            if (conflictingCombos == null) continue;
-
-            foreach (var conflict in conflictingCombos.ConflictingPresets)
-                if (PresetStorage.IsEnabled(conflict))
-                    if (Service.Configuration.EnabledActions.Remove(conflict))
-                    {
-                        PluginLog.Debug($"Removed {conflict} due to conflict with {preset}");
-                        Service.Configuration.Save();
-                    }
-        }
-    }
-
     private void OnFrameworkUpdate(IFramework framework)
     {
         if (Player.Object is not null)
@@ -332,15 +307,6 @@ public sealed partial class WrathCombo : IDalamudPlugin
 
         var payloadText = new TextPayload(text + ipcControlledText);
         DtrBarEntry.Text = new SeString(icon, payloadText);
-    }
-
-    private static void KillRedundantIDs()
-    {
-        var redundantIDs = Service.Configuration.EnabledActions.Where(x => int.TryParse(x.ToString(), out _)).OrderBy(x => x).Cast<int>().ToList();
-        foreach (var id in redundantIDs)
-            Service.Configuration.EnabledActions.RemoveWhere(x => (int)x == id);
-
-        Service.Configuration.Save();
     }
 
     private static void ResetFeatures()
