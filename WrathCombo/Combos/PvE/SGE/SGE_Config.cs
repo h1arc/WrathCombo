@@ -28,8 +28,8 @@ internal partial class SGE
                     break;
 
                 case Preset.SGE_ST_DPS:
-                    DrawAdditionalBoolChoice(SGE_ST_DPS_Adv,
-                        $"Apply all selected options to {Dosis2.ActionName()}", $"{Dosis.ActionName()} & {Dosis3.ActionName()} will behave normally.");
+                    DrawHorizontalRadioButton(SGE_ST_DPS_Adv, $"On All {Dosis.ActionName()}", "Applies options to all Dosis.", 0);
+                    DrawHorizontalRadioButton(SGE_ST_DPS_Adv, $"On {Dosis2.ActionName()}", "Applies options to ONLY Dosis 2.", 1);
                     break;
 
                 case Preset.SGE_ST_DPS_EDosis:
@@ -397,13 +397,13 @@ internal partial class SGE
         #region DPS
 
         public static UserBool
-            SGE_ST_DPS_Adv = new("SGE_ST_DPS_Adv"),
             SGE_ST_DPS_Phlegma_Burst = new("SGE_ST_DPS_Phlegma_Burst");
 
         public static UserBoolArray
             SGE_ST_DPS_Movement = new("SGE_ST_DPS_Movement");
 
         public static UserInt
+            SGE_ST_DPS_Adv = new("SGE_ST_DPS_Adv", 0),
             SGE_Eukrasia_Mode = new("SGE_Eukrasia_Mode", 1),
             SGE_SelectedOpener = new("SGE_SelectedOpener", 0),
             SGE_ST_DPS_Lucid = new("SGE_ST_DPS_Lucid", 6500),

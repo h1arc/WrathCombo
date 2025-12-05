@@ -112,8 +112,9 @@ internal partial class AST
                     break;
 
                 case Preset.AST_ST_DPS:
-                    DrawRadioButton(AST_ST_DPS_AltMode, $"On {Malefic.ActionName()}", "", 0);
-                    DrawRadioButton(AST_ST_DPS_AltMode, $"On {Combust.ActionName()}", $"Alternative DPS Mode. Leaves {Malefic.ActionName()} alone for pure DPS, becomes {Malefic.ActionName()} when features are on cooldown", 1);
+                    DrawHorizontalRadioButton(AST_ST_DPS_AltMode, $"On {Malefic.ActionName()}", "Applies options to all Malefics.", 0);
+                    DrawHorizontalRadioButton(AST_ST_DPS_AltMode, $"On {Combust.ActionName()}", "Applies options to all Combusts.", 1);
+                    DrawHorizontalRadioButton(AST_ST_DPS_AltMode, $"On {Malefic2.ActionName()}", "Applies options to Malefic 2 only.", 2);
                     break;
 
                 case Preset.AST_DPS_Lucid:

@@ -189,14 +189,16 @@ internal partial class SGE : Healer
 
     internal class SGE_ST_DPS_AdvancedMode : CustomCombo
     {
-        private static uint[] DosisActions => SGE_ST_DPS_Adv
-            ? [Dosis2]
-            : [.. DosisList.Keys];
-
         protected internal override Preset Preset => Preset.SGE_ST_DPS;
 
         protected override uint Invoke(uint actionID)
         {
+            var DosisActions = (int)SGE_ST_DPS_Adv switch
+            {
+                1 => [Dosis2],
+                _ => DosisList.Keys.ToArray(),
+            };
+
             if (!DosisActions.Contains(actionID))
                 return actionID;
 
