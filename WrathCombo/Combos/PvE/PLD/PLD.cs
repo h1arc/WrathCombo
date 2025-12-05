@@ -81,12 +81,12 @@ internal partial class PLD : Tank
                 // Weavables
                 if (CanWeave())
                 {
+                    // Requiescat
+                    if (ActionReady(Requiescat) && CooldownFightOrFlight > 50 && InActionRange(OriginalHook(Requiescat))) //Moved out of melee range check bc Imperator is 25y but req is melee range. 
+                        return OriginalHook(Requiescat);
+                    
                     if (InMeleeRange())
                     {
-                        // Requiescat
-                        if (ActionReady(Requiescat) && CooldownFightOrFlight > 50)
-                            return OriginalHook(Requiescat);
-
                         // Fight or Flight
                         if (CanFightOrFlight)
                         {
@@ -246,12 +246,12 @@ internal partial class PLD : Tank
                 // Weavables
                 if (CanWeave())
                 {
+                    // Requiescat
+                    if (ActionReady(Requiescat) && CooldownFightOrFlight > 50 && InActionRange(OriginalHook(Requiescat)))
+                        return OriginalHook(Requiescat);
+                    
                     if (InMeleeRange())
                     {
-                        // Requiescat
-                        if (ActionReady(Requiescat) && CooldownFightOrFlight > 50)
-                            return OriginalHook(Requiescat);
-
                         // Fight or Flight
                         if (CanFightOrFlight)
                         {
@@ -334,12 +334,11 @@ internal partial class PLD : Tank
                 // Weavables
                 if (CanWeave())
                 {
+                    // Requiescat
+                    if (IsEnabled(Preset.PLD_ST_AdvancedMode_Requiescat) && ActionReady(Requiescat) && CooldownFightOrFlight > 50 && InActionRange(OriginalHook(Requiescat)))
+                        return OriginalHook(Requiescat);
                     if (InMeleeRange())
                     {
-                        // Requiescat
-                        if (IsEnabled(Preset.PLD_ST_AdvancedMode_Requiescat) && ActionReady(Requiescat) && CooldownFightOrFlight > 50)
-                            return OriginalHook(Requiescat);
-
                         // Fight or Flight
                         if (IsEnabled(Preset.PLD_ST_AdvancedMode_FoF) && CanFightOrFlight && GetTargetHPPercent() >= PLD_ST_FoF_Trigger)
                         {
@@ -510,12 +509,12 @@ internal partial class PLD : Tank
                 // Weavables
                 if (CanWeave())
                 {
+                    // Requiescat
+                    if (IsEnabled(Preset.PLD_AoE_AdvancedMode_Requiescat) && ActionReady(Requiescat) && CooldownFightOrFlight > 50 && InActionRange(OriginalHook(Requiescat)))
+                        return OriginalHook(Requiescat);
+                    
                     if (InMeleeRange())
                     {
-                        // Requiescat
-                        if (IsEnabled(Preset.PLD_AoE_AdvancedMode_Requiescat) && ActionReady(Requiescat) && CooldownFightOrFlight > 50)
-                            return OriginalHook(Requiescat);
-
                         // Fight or Flight
                         if (IsEnabled(Preset.PLD_AoE_AdvancedMode_FoF) && CanFightOrFlight && GetTargetHPPercent() >= PLD_AoE_FoF_Trigger)
                         {
