@@ -250,6 +250,7 @@ internal partial class SAM : Melee
                         CanShoha())
                         return Shoha;
                 }
+                
                 if (IsEnabled(Preset.SAM_ST_Shinten) &&
                     CanShinten())
                     return Shinten;
