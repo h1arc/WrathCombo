@@ -107,7 +107,7 @@ public static class ActionRequestIPCProvider
     }
 
     [EzIPC]
-    public static void ResetAllRequests(ActionType actionType, uint actionID)
+    public static void ResetAllRequests()
     {
         ActionRequests.Clear();
     }
