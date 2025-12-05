@@ -12,6 +12,15 @@ namespace WrathCombo.Combos.PvE;
 internal partial class RPR
 {
 
+    #region Misc
+
+    //Auto Arcane Crest
+    private static bool UseArcaneCrest =>
+        ActionReady(ArcaneCrest) &&
+        (RaidWideCasting(3f) || !IsInParty());
+
+    #endregion
+
     #region Enshroud
 
     private static bool CanEnshroud()

@@ -70,6 +70,10 @@ internal partial class RPR : Melee
                         return OriginalHook(BloodStalk);
                 }
 
+                //Auto Arcane Crest
+                if (UseArcaneCrest)
+                    return ArcaneCrest;
+
                 //Healing
                 if (Role.CanSecondWind(25))
                     return Role.SecondWind;
@@ -288,12 +292,6 @@ internal partial class RPR : Melee
             //All Weaves
             if (CanWeave())
             {
-                //Auto Arcane Crest
-                if (IsEnabled(Preset.RPR_ST_ArcaneCrest) &&
-                    ActionReady(ArcaneCrest) &&
-                    (RaidWideCasting(3f) || !IsInParty()))
-                    return ArcaneCrest;
-
                 //Arcane Cirlce
                 if (IsEnabled(Preset.RPR_ST_ArcaneCircle) &&
                     ActionReady(ArcaneCircle) &&
@@ -352,10 +350,16 @@ internal partial class RPR : Melee
                         return OriginalHook(BloodStalk);
                 }
 
+                //Auto Feint
                 if (IsEnabled(Preset.RPR_ST_Feint) &&
                     Role.CanFeint() &&
                     RaidWideCasting())
                     return Role.Feint;
+
+                //Auto Arcane Crest
+                if (IsEnabled(Preset.RPR_ST_ArcaneCrest) &&
+                    UseArcaneCrest)
+                    return ArcaneCrest;
 
                 //Healing
                 if (IsEnabled(Preset.RPR_ST_ComboHeals))
