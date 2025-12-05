@@ -71,7 +71,7 @@ internal partial class RPR : Melee
                 }
 
                 //Auto Arcane Crest
-                if (UseArcaneCrest)
+                if (CanUseArcaneCrest)
                     return ArcaneCrest;
 
                 //Healing
@@ -358,7 +358,7 @@ internal partial class RPR : Melee
 
                 //Auto Arcane Crest
                 if (IsEnabled(Preset.RPR_ST_ArcaneCrest) &&
-                    UseArcaneCrest)
+                    CanUseArcaneCrest)
                     return ArcaneCrest;
 
                 //Healing
