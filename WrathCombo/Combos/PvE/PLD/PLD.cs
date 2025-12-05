@@ -105,7 +105,7 @@ internal partial class PLD : Tank
                             }
 
                             // Level 68+
-                            else if (CooldownRequiescat < 0.5f && HasRequiescatMPSimple && CanWeave(1.5f) && (ComboAction is RoyalAuthority || LevelChecked(BladeOfFaith) && RoyalAuthorityCount > 0))
+                            else if (CooldownRequiescat < 0.5f && HasRequiescatMPSimple && !HasWeaved() && (ComboAction is RoyalAuthority || LevelChecked(BladeOfFaith) && RoyalAuthorityCount > 0))
                                 return OriginalHook(FightOrFlight);
                         }
 
@@ -258,7 +258,7 @@ internal partial class PLD : Tank
                             if (!LevelChecked(Requiescat))
                                 return OriginalHook(FightOrFlight);
 
-                            if (CooldownRequiescat < 0.5f && HasRequiescatMPSimple && CanWeave(1.5f))
+                            if (CooldownRequiescat < 0.5f && HasRequiescatMPSimple && !HasWeaved())
                                 return OriginalHook(FightOrFlight);
                         }
 
@@ -357,7 +357,7 @@ internal partial class PLD : Tank
                             }
 
                             // Level 68+
-                            else if (CooldownRequiescat < 0.5f && HasRequiescatMPAdv && CanWeave(1.5f) && (ComboAction is RoyalAuthority || LevelChecked(BladeOfFaith) && RoyalAuthorityCount > 0))
+                            else if (CooldownRequiescat < 0.5f && HasRequiescatMPAdv && !HasWeaved() && (ComboAction is RoyalAuthority || LevelChecked(BladeOfFaith) && RoyalAuthorityCount > 0))
                                 return OriginalHook(FightOrFlight);
                         }
 
@@ -521,7 +521,7 @@ internal partial class PLD : Tank
                             if (!LevelChecked(Requiescat))
                                 return OriginalHook(FightOrFlight);
 
-                            else if (CooldownRequiescat < 0.5f && HasRequiescatMPAdvAoE && CanWeave(1.5f))
+                            else if (CooldownRequiescat < 0.5f && HasRequiescatMPAdvAoE && !HasWeaved())
                                 return OriginalHook(FightOrFlight);
                         }
 
