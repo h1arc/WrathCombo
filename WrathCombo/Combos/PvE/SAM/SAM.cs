@@ -1,4 +1,3 @@
-using System;
 using WrathCombo.CustomComboNS;
 using static WrathCombo.Combos.PvE.SAM.Config;
 namespace WrathCombo.Combos.PvE;
@@ -57,6 +56,10 @@ internal partial class SAM : Melee
                 //Shinten Usage
                 if (CanShinten())
                     return Shinten;
+
+                //Auto Third Eye
+                if (CanUseThirdEye)
+                    return OriginalHook(ThirdEye);
 
                 // healing
                 if (Role.CanSecondWind(SAM_STSecondWindHPThreshold))
@@ -211,19 +214,6 @@ internal partial class SAM : Melee
             {
                 if (IsEnabled(Preset.SAM_ST_CDs))
                 {
-                    //Auto Third Eye
-                    if (IsEnabled(Preset.SAM_ST_ThirdEye) &&
-                        ActionReady(OriginalHook(ThirdEye)) &&
-                        (RaidWideCasting(2f) || !IsInParty()))
-                        return OriginalHook(ThirdEye);
-
-                    //Auto Meditate
-                    if (IsEnabled(Preset.SAM_ST_Meditate) &&
-                        ActionReady(Meditate) &&
-                        !IsMoving() && TimeStoodStill > TimeSpan.FromSeconds(SAM_ST_MeditateTimeStill) &&
-                        InCombat() && !HasBattleTarget())
-                        return Meditate;
-
                     //Meikyo feature
                     if (IsEnabled(Preset.SAM_ST_CDs_MeikyoShisui) &&
                         CanMeikyo())
@@ -268,6 +258,16 @@ internal partial class SAM : Melee
                     Role.CanFeint() &&
                     RaidWideCasting())
                     return Role.Feint;
+
+                //Auto Third Eye
+                if (IsEnabled(Preset.SAM_ST_ThirdEye) &&
+                    CanUseThirdEye)
+                    return OriginalHook(ThirdEye);
+
+                //Auto Meditate
+                if (IsEnabled(Preset.SAM_ST_Meditate) &&
+                    CanUseMEditate)
+                    return Meditate;
 
                 // healing
                 if (IsEnabled(Preset.SAM_ST_ComboHeals))
