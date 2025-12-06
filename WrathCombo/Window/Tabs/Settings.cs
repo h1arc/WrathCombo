@@ -56,14 +56,14 @@ internal class Settings : ConfigWindow
 
             SettingCategory.Category? currentCategory = null;
             var                       settingCount    = 0;
-            int?                      longestLabel    = null;
+            string?                   longestLabel    = null;
             foreach (var setting in settings)
             {
                 settingCount++;
-                var     changed     = false;
-                object? newValue    = null;
-                var     label       = setting.Name;
-                var     labelPrefix = string.Empty;
+                var     changed           = false;
+                object? newValue          = null;
+                var     label             = setting.Name;
+                float?  cursorXAfterInput = null;
 
                 #region Hiding Child Settings
 
@@ -87,16 +87,12 @@ internal class Settings : ConfigWindow
                     longestLabel = null;
                 else
                 {
-                    labelPrefix = setting.UnitLabel;
-                    // Pad the label
-                    if (longestLabel is not null)
-                        labelPrefix = labelPrefix.PadLeft(longestLabel.Value);
-                    labelPrefix += " - ";
+                    label = "";
 
                     // Save the label length count
                     if (longestLabel is null ||
-                        setting.UnitLabel.Length > longestLabel)
-                        longestLabel = setting.UnitLabel.Length;
+                        setting.UnitLabel.Length > longestLabel.Length)
+                        longestLabel = setting.UnitLabel;
                 }
 
                 #endregion
@@ -131,7 +127,7 @@ internal class Settings : ConfigWindow
 
                 #region Input Labels
 
-                label = $"{labelPrefix}{label}" +
+                label = $"{label}" +
                         $"##{setting.FieldName}{settingCount}";
 
                 #endregion
@@ -143,7 +139,7 @@ internal class Settings : ConfigWindow
                     case Attributes.Setting.Type.Toggle:
                     {
                         var value = (bool)setting.Value;
-                        changed |= ImGui.Checkbox(label, ref value);
+                        changed = ImGui.Checkbox(label, ref value);
                         if (changed)
                             newValue = setting.Value = value;
 
@@ -152,7 +148,7 @@ internal class Settings : ConfigWindow
                     case Attributes.Setting.Type.Color:
                     {
                         var value = (Vector4)setting.Value;
-                        changed |= ImGui.ColorEdit4(label, ref value,
+                        changed = ImGui.ColorEdit4(label, ref value,
                             ImGuiColorEditFlags.NoInputs |
                             ImGuiColorEditFlags.AlphaPreview |
                             ImGuiColorEditFlags.AlphaBar);
@@ -165,9 +161,12 @@ internal class Settings : ConfigWindow
                     {
                         var value = Convert.ToInt32(setting.Value);
                         ImGui.PushItemWidth(75);
-                        changed |= ImGui.InputInt(label, ref value);
+                        changed = ImGui.InputInt(label, ref value);
                         if (changed)
                             newValue = setting.Value = value;
+                        ImGui.SameLine();
+                        cursorXAfterInput = ImGui.GetCursorPosX();
+                        ImGui.Text(setting.UnitLabel ?? setting.Name);
 
                         break;
                     }
@@ -175,9 +174,12 @@ internal class Settings : ConfigWindow
                     {
                         var value = (float)setting.Value;
                         ImGui.PushItemWidth(75);
-                        changed |= ImGui.InputFloat(label, ref value);
+                        changed = ImGui.InputFloat(label, ref value);
                         if (changed)
                             newValue = setting.Value = value;
+                        ImGui.SameLine();
+                        cursorXAfterInput = ImGui.GetCursorPosX();
+                        ImGui.Text(setting.UnitLabel ?? setting.Name);
 
                         break;
                     }
@@ -187,14 +189,17 @@ internal class Settings : ConfigWindow
                         ImGui.PushItemWidth(75);
                         if (setting.SliderMin is null ||
                             setting.SliderMax is null)
-                            changed |= ImGui.SliderInt(label, ref value);
+                            changed = ImGui.SliderInt(label, ref value);
                         else
-                            changed |= ImGui.SliderInt(label,
+                            changed = ImGui.SliderInt(label,
                                 ref value,
                                 (int)setting.SliderMin,
                                 (int)setting.SliderMax);
                         if (changed)
                             newValue = setting.Value = value;
+                        ImGui.SameLine();
+                        cursorXAfterInput = ImGui.GetCursorPosX();
+                        ImGui.Text(setting.UnitLabel ?? setting.Name);
 
                         break;
                     }
@@ -204,14 +209,17 @@ internal class Settings : ConfigWindow
                         ImGui.PushItemWidth(75);
                         if (setting.SliderMin is null ||
                             setting.SliderMax is null)
-                            changed |= ImGui.SliderFloat(label, ref value);
+                            changed = ImGui.SliderFloat(label, ref value);
                         else
-                            changed |= ImGui.SliderFloat(label,
+                            changed = ImGui.SliderFloat(label,
                                 ref value,
                                 (float)setting.SliderMin,
                                 (float)setting.SliderMax);
                         if (changed)
                             newValue = setting.Value = value;
+                        ImGui.SameLine();
+                        cursorXAfterInput = ImGui.GetCursorPosX();
+                        ImGui.Text(setting.UnitLabel ?? setting.Name);
 
                         break;
                     }
@@ -226,9 +234,16 @@ internal class Settings : ConfigWindow
 
                 #endregion
 
-                #region MyRegion
+                #region Labels after Unit Labels
 
-                
+                if (setting.UnitLabel is not null)
+                {
+                    ImGui.SameLine(
+                        cursorXAfterInput!.Value +
+                        ImGui.CalcTextSize(longestLabel!).X
+                    );
+                    ImGui.Text($"   -   {setting.Name}");
+                }
 
                 #endregion
 
