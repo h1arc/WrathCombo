@@ -709,14 +709,25 @@ public static class DebugFile
             Service.Configuration, Formatting.None);
         var bytes = Encoding.UTF8.GetBytes(json);
 
-        // Compress the config
-        using var output = new MemoryStream();
-        using (var brotli = new BrotliStream(output, CompressionLevel.SmallestSize, leaveOpen: true))
+        byte[] compressed;
+        try
         {
-            brotli.Write(bytes);
+            // Compress the config
+            using var output = new MemoryStream();
+            using (var brotli = new BrotliStream(output,
+                       CompressionLevel.SmallestSize, leaveOpen: true))
+            {
+                brotli.Write(bytes);
+            }
+
+            output.Position = 0;
+            compressed      = output.ToArray();
         }
-        output.Position = 0;
-        var compressed = output.ToArray();
+        catch
+        {
+            // If compression fails, fall back to uncompressed
+            compressed = bytes;
+        }
 
         // Base64 encode the compressed config
         return Convert.ToBase64String(compressed);
