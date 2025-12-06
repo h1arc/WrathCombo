@@ -65,6 +65,22 @@ internal class Settings : ConfigWindow
                 var     label       = setting.Name;
                 var     labelPrefix = string.Empty;
 
+                #region Hiding Child Settings
+
+                if (setting.Parent is not null)
+                {
+                    var parentValue = false;
+                    var parentSetting = settings
+                        .First(s => s.FieldName == setting.Parent);
+                    if (parentSetting?.Value is true)
+                        parentValue = true;
+
+                    if (!parentValue)
+                        continue;
+                }
+
+                #endregion
+
                 #region Unit Labels
 
                 if (setting.UnitLabel is null)
@@ -155,6 +171,24 @@ internal class Settings : ConfigWindow
                     ImGuiComponents.HelpMarker(setting.ExtraHelpMark);
                 if (setting.WarningMark is not null)
                     WarningMarkerComponent.WarningMarker(setting.WarningMark);
+
+                #endregion
+
+                #region Extra Symbols
+
+                if (setting.ShowRetarget is not null)
+                    Presets.DrawRetargetedSymbolForSettingsPage();
+
+                #endregion
+
+                #region Extra Text Label
+
+                if (setting.ExtraText is not null)
+                {
+                    ImGui.SameLine();
+                    ImGui.TextColored(ImGuiColors.DalamudGrey,
+                        setting.ExtraText);
+                }
 
                 #endregion
 
