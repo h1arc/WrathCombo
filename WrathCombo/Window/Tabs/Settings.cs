@@ -100,8 +100,9 @@ internal class Settings : ConfigWindow
                 }
 
                 #endregion
-                
+
                 #region Category Headings
+
                 if (setting.Category != currentCategory)
                 {
                     ImGuiEx.Spacing(new Vector2(0, 20));
@@ -111,16 +112,21 @@ internal class Settings : ConfigWindow
 
                     currentCategory = setting.Category;
                 }
+
                 #endregion
 
                 #region Spacer
+
                 if (setting.ShowSpace == true)
                     ImGuiEx.Spacing(new Vector2(0, 10));
+
                 #endregion
 
                 #region Indentation
+
                 if (setting.Parent is not null)
                     ImGui.Indent();
+
                 #endregion
 
                 #region Input Labels
@@ -131,6 +137,7 @@ internal class Settings : ConfigWindow
                 #endregion
 
                 #region Input
+
                 switch (setting.Type)
                 {
                     case Attributes.Setting.Type.Toggle:
@@ -162,6 +169,7 @@ internal class Settings : ConfigWindow
                             ImGui.Unindent();
                         continue;
                 }
+
                 #endregion
 
                 #region Help Marks
@@ -193,11 +201,14 @@ internal class Settings : ConfigWindow
                 #endregion
 
                 #region Indentation
+
                 if (setting.Parent is not null)
                     ImGui.Unindent();
+
                 #endregion
 
                 #region Saving
+
                 if (changed)
                 {
                     Service.Configuration.TriggerUserConfigChanged(
@@ -207,6 +218,7 @@ internal class Settings : ConfigWindow
 
                     Service.Configuration.Save();
                 }
+
                 #endregion
             }
             
