@@ -10,11 +10,13 @@ using System;
 using System.Linq;
 using System.Numerics;
 using ECommons.Logging;
+using WrathCombo.Attributes;
 using WrathCombo.Core;
 using WrathCombo.Extensions;
 using WrathCombo.Services;
 using WrathCombo.Window.Functions;
 using EZ = ECommons.Throttlers.EzThrottler;
+using Setting = WrathCombo.Window.Functions.Setting;
 using TS = System.TimeSpan;
 
 #endregion
@@ -52,9 +54,126 @@ internal class Settings : ConfigWindow
 
             #endregion
 
+            SettingCategory.Category? currentCategory = null;
+            var                       settingCount    = 0;
+            int?                      longestLabel    = null;
             foreach (var setting in settings)
             {
-                ImGui.Text($"Setting: {setting.Name}");
+                settingCount++;
+                var     changed     = false;
+                object? newValue    = null;
+                var     label       = setting.Name;
+                var     labelPrefix = string.Empty;
+
+                #region Unit Labels
+
+                if (setting.UnitLabel is null)
+                    longestLabel = null;
+                else
+                {
+                    labelPrefix = setting.UnitLabel;
+                    // Pad the label
+                    if (longestLabel is not null)
+                        labelPrefix = labelPrefix.PadLeft(longestLabel.Value);
+                    labelPrefix += " - ";
+
+                    // Save the label length count
+                    if (longestLabel is null ||
+                        setting.UnitLabel.Length > longestLabel)
+                        longestLabel = setting.UnitLabel.Length;
+                }
+
+                #endregion
+                
+                #region Category Headings
+                if (setting.Category != currentCategory)
+                {
+                    ImGuiEx.Spacing(new Vector2(0, 20));
+
+                    ImGuiEx.TextUnderlined(
+                        setting.Category.ToString().Replace("_", " "));
+
+                    currentCategory = setting.Category;
+                }
+                #endregion
+
+                #region Spacer
+                if (setting.ShowSpace == true)
+                    ImGuiEx.Spacing(new Vector2(0, 10));
+                #endregion
+
+                #region Indentation
+                if (setting.Parent is not null)
+                    ImGui.Indent();
+                #endregion
+
+                #region Input Labels
+
+                label = $"{labelPrefix}{label}" +
+                        $"##{setting.FieldName}{settingCount}";
+
+                #endregion
+
+                #region Input
+                switch (setting.Type)
+                {
+                    case Attributes.Setting.Type.Toggle:
+                    {
+                        var value = (bool)setting.Value;
+                        changed |= ImGui.Checkbox(label, ref value);
+                        if (changed)
+                            newValue = setting.Value = value;
+
+                        break;
+                    }
+                    case Attributes.Setting.Type.Color:
+                    {
+                        var value = (Vector4)setting.Value;
+                        changed |= ImGui.ColorEdit4(label, ref value,
+                            ImGuiColorEditFlags.NoInputs |
+                            ImGuiColorEditFlags.AlphaPreview |
+                            ImGuiColorEditFlags.AlphaBar);
+                        if (changed)
+                            newValue = setting.Value = value;
+
+                        break;
+                    }
+                    default:
+                        PluginLog.Warning(
+                            $"Unsupported setting type `{setting.Type}` " +
+                            $"for setting `{setting.Name}`.");
+                        if (setting.Parent is not null)
+                            ImGui.Unindent();
+                        continue;
+                }
+                #endregion
+
+                #region Help Marks
+
+                ImGuiComponents.HelpMarker(setting.HelpMark);
+                if (setting.ExtraHelpMark is not null)
+                    ImGuiComponents.HelpMarker(setting.ExtraHelpMark);
+                if (setting.WarningMark is not null)
+                    WarningMarkerComponent.WarningMarker(setting.WarningMark);
+
+                #endregion
+
+                #region Indentation
+                if (setting.Parent is not null)
+                    ImGui.Unindent();
+                #endregion
+
+                #region Saving
+                if (changed)
+                {
+                    Service.Configuration.TriggerUserConfigChanged(
+                        Configuration.ConfigChangeType.Setting,
+                        Configuration.ConfigChangeSource.UI,
+                        setting.Name, newValue!);
+
+                    Service.Configuration.Save();
+                }
+                #endregion
             }
             
             ImGui.NewLine();
