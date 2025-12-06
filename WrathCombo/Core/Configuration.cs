@@ -262,7 +262,6 @@ public partial class Configuration : IPluginConfiguration
         "- This prevents your hotbars 'flashing', that is the only real benefit.\n" +
         "- This does however allow Combos to conflict with each other, if one combo returns an action that another combo has as its Replaced Action.\n" +
         "We do NOT mark these types of conflicts, and we do NOT try to avoid them as we add new features.\n\n" +
-        "It is STRONGLY recommended to keep this setting On.\n" +
         "If the 'flashing' bothers you it is MUCH more advised to use Performance Mode, instead of turning this off.",
         recommendedValue: "On (NO SUPPORT if off)",
         defaultValue: "On",

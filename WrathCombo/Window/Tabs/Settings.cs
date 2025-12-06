@@ -249,7 +249,11 @@ internal class Settings : ConfigWindow
 
                 #region Help Marks
 
-                ImGuiComponents.HelpMarker(setting.HelpMark);
+                ImGuiComponents.HelpMarker(
+                    setting.HelpMark +
+                    $"\n\nRecommended Value: {setting.RecommendedValue}\n" +
+                    $"Default Value: {setting.DefaultValue}"
+                );
                 if (setting.ExtraHelpMark is not null)
                     ImGuiComponents.HelpMarker(setting.ExtraHelpMark);
                 if (setting.WarningMark is not null)
