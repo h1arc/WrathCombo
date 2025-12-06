@@ -302,7 +302,9 @@ public partial class Configuration : IPluginConfiguration
         recommendedValue: "20-200 (More substantial performance issues should be handled with Performance Mode instead)",
         defaultValue: "50",
         unitLabel: "milliseconds",
-        type: Setting.Type.Slider_Int)]
+        type: Setting.Type.Number_Int,
+        sliderMin: 0,
+        sliderMax: 500)]
     public int Throttle = 50;
 
     /// Delay before recognizing movement. Default: 0.
@@ -314,7 +316,9 @@ public partial class Configuration : IPluginConfiguration
         recommendedValue: "0.0-1.0 (Above that gets into the territory of breaking any Movement Options in your Job)",
         defaultValue: "0.0",
         unitLabel: "seconds",
-        type: Setting.Type.Slider_Float)]
+        type: Setting.Type.Number_Float,
+        sliderMin: 0,
+        sliderMax: 10)]
     public float MovementLeeway = 0f;
 
     /// The timeout for opener failure. Default: 4.
@@ -326,7 +330,9 @@ public partial class Configuration : IPluginConfiguration
         recommendedValue: "4.0-7.0 (Above that can really screw Openers)",
         defaultValue: "4.0",
         unitLabel: "seconds",
-        type: Setting.Type.Slider_Float)]
+        type: Setting.Type.Number_Float,
+        sliderMin: 0,
+        sliderMax: 20)]
     public float OpenerTimeout = 4f;
 
     /// The offset of the melee range check. Default: 0.
@@ -341,7 +347,9 @@ public partial class Configuration : IPluginConfiguration
         recommendedValue: "0",
         defaultValue: "0",
         unitLabel: "yalms",
-        type: Setting.Type.Slider_Float)]
+        type: Setting.Type.Number_Float,
+        sliderMin: -3,
+        sliderMax: 30)]
     public float MeleeOffset = 0;
 
     /// The % through a cast before interrupting. Default: 0.
@@ -370,7 +378,7 @@ public partial class Configuration : IPluginConfiguration
         "Triple weaving is already done in a manner where we try to avoid clipping GCDs, and as such doesn't happen particularly often even if you have good latency, and is a valid thing to do, so it is a safe option if you want.",
         recommendedValue: "2-3",
         defaultValue: "2",
-        unitLabel: "oGCDs",
+        unitLabel: "# of oGCDs",
         type: Setting.Type.Slider_Int,
         sliderMin: 1,
         sliderMax: 3)]

@@ -63,6 +63,8 @@ public class Setting(
     {
         Toggle,
         Color,
+        Number_Int,
+        Number_Float,
         Slider_Int,
         Slider_Float,
         Stack,

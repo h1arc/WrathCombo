@@ -161,6 +161,60 @@ internal class Settings : ConfigWindow
 
                         break;
                     }
+                    case Attributes.Setting.Type.Number_Int:
+                    {
+                        var value = Convert.ToInt32(setting.Value);
+                        ImGui.PushItemWidth(75);
+                        changed |= ImGui.InputInt(label, ref value);
+                        if (changed)
+                            newValue = setting.Value = value;
+
+                        break;
+                    }
+                    case Attributes.Setting.Type.Number_Float:
+                    {
+                        var value = (float)setting.Value;
+                        ImGui.PushItemWidth(75);
+                        changed |= ImGui.InputFloat(label, ref value);
+                        if (changed)
+                            newValue = setting.Value = value;
+
+                        break;
+                    }
+                    case Attributes.Setting.Type.Slider_Int:
+                    {
+                        var value = Convert.ToInt32(setting.Value);
+                        ImGui.PushItemWidth(75);
+                        if (setting.SliderMin is null ||
+                            setting.SliderMax is null)
+                            changed |= ImGui.SliderInt(label, ref value);
+                        else
+                            changed |= ImGui.SliderInt(label,
+                                ref value,
+                                (int)setting.SliderMin,
+                                (int)setting.SliderMax);
+                        if (changed)
+                            newValue = setting.Value = value;
+
+                        break;
+                    }
+                    case Attributes.Setting.Type.Slider_Float:
+                    {
+                        var value = (float)setting.Value;
+                        ImGui.PushItemWidth(75);
+                        if (setting.SliderMin is null ||
+                            setting.SliderMax is null)
+                            changed |= ImGui.SliderFloat(label, ref value);
+                        else
+                            changed |= ImGui.SliderFloat(label,
+                                ref value,
+                                (float)setting.SliderMin,
+                                (float)setting.SliderMax);
+                        if (changed)
+                            newValue = setting.Value = value;
+
+                        break;
+                    }
                     default:
                         PluginLog.Warning(
                             $"Unsupported setting type `{setting.Type}` " +
@@ -169,6 +223,12 @@ internal class Settings : ConfigWindow
                             ImGui.Unindent();
                         continue;
                 }
+
+                #endregion
+
+                #region MyRegion
+
+                
 
                 #endregion
 
