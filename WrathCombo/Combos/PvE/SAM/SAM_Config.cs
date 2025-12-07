@@ -30,8 +30,10 @@ internal partial class SAM
                     DrawSliderInt(0, 100, SAM_ST_HiganbanaBossThrashOption,
                         "Non boss encounter. Stop using at Enemy HP %.");
 
+                    ImGui.Indent();
                     DrawSliderInt(0, 15, SAM_ST_HiganbanaRefresh,
                         $"Seconds remaining before reapplying {Higanbana.ActionName()}. Set to Zero to disable this check.");
+                    ImGui.Unindent();
                     break;
 
                 case Preset.SAM_ST_CDs_MeikyoShisui:
