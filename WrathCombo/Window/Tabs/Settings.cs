@@ -88,54 +88,6 @@ internal class Settings : ConfigWindow
                 else
                     DrawSetting(setting);
             }
-            
-            ImGui.NewLine();
-            ImGuiEx.Spacing(new Vector2(5,20));
-            ImGui.Separator();
-            ImGui.Separator();
-            ImGuiEx.Spacing(new Vector2(5,20));
-
-            #region Troubleshooting Options
-
-            ImGuiEx.Spacing(new Vector2(0, 20));
-            ImGuiEx.TextUnderlined("Troubleshooting / Analysis Options");
-
-            #region Combat Log
-
-            bool showCombatLog = Service.Configuration.EnabledOutputLog;
-
-            if (ImGui.Checkbox("Output Log to Chat", ref showCombatLog))
-            {
-                Service.Configuration.EnabledOutputLog = showCombatLog;
-                Service.Configuration.Save();
-            }
-
-            ImGuiComponents.HelpMarker("Every time you use an action, the plugin will print it to the chat.");
-            #endregion
-
-            #region Opener Log
-
-            if (ImGui.Checkbox($"Output opener status to chat", ref Service.Configuration.OutputOpenerLogs))
-                Service.Configuration.Save();
-
-            ImGuiComponents.HelpMarker("Every time your class's opener is ready, fails, or finishes as expected, it will print to the chat.");
-            #endregion
-
-            #region Debug File
-
-            if (ImGui.Button("Create Debug File"))
-            {
-                if (Player.Available)
-                    DebugFile.MakeDebugFile();
-                else
-                    DebugFile.MakeDebugFile(allJobs: true);
-            }
-
-            ImGuiComponents.HelpMarker("Will generate a debug file on your desktop.\nUseful to give developers to help troubleshoot issues.\nThe same as using the following command: /wrath debug");
-
-            #endregion
-
-            #endregion
         }
     }
 
@@ -455,6 +407,24 @@ internal class Settings : ConfigWindow
 
         if (setting.Parent is not null)
             ImGui.Unindent();
+
+        #endregion
+
+        #region Debug File Button
+        
+        if (setting.FieldName == "OutputOpenerLogs")
+        {
+            if (ImGui.Button("Create Debug File"))
+            {
+                if (Player.Available)
+                    DebugFile.MakeDebugFile();
+                else
+                    DebugFile.MakeDebugFile(allJobs: true);
+            }
+
+            ImGuiComponents.HelpMarker(
+                "Will generate a debug file on your desktop.\nUseful to give developers to help troubleshoot issues.\nThe same as using the following command: /wrath debug");
+        }
 
         #endregion
     }
