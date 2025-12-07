@@ -29,12 +29,28 @@ internal class Settings : ConfigWindow
     private static SettingCategory.Category? _currentCategory;
     private static int                       _settingCount;
     private static string?                   _longestLabel;
-    private static Dictionary<string, bool>  _unCollapsedGroup = [];
-    private static Dictionary<string, float>  _unCollapsedGroupHeight = [];
+    private static Dictionary<string, bool>  _unCollapsedGroup       = [];
+    private static Dictionary<string, float> _unCollapsedGroupHeight = [];
+    private static string[]                  _drawnCollapseGroups    = [];
+
+    /// <summary>
+    ///     A set of dictionaries to store the latest value for grouped settings,
+    ///     so groups of settings can be disabled based on the value the other group
+    ///     in the namespace.
+    /// </summary>
+    /// <value>
+    ///     <c>NameSpace</c>: The namespace that several groups may share.<br />
+    ///     then<br />
+    ///     <c>GroupName</c>: The name of the group within that namespace.<br />
+    ///     then<br />
+    ///     <c>Value</c>: The latest boolean value within the group.
+    /// </value>
+    /// <remarks>Note: Not related to Collapsible Groups.</remarks>
+    private static Dictionary<string, Dictionary<string, bool>> _groupValues = [];
 
     #region Loading Settings
 
-    private static List<Setting> SettingsList = typeof(Configuration)
+    private static readonly List<Setting> SettingsList = typeof(Configuration)
         .GetFields()
         .Select(rawSetting =>
         {
@@ -54,260 +70,24 @@ internal class Settings : ConfigWindow
         .ToList();
 
     #endregion
-
-    private static void DrawSetting(Setting setting)
-    {
-        _settingCount++;
-        var     changed           = false;
-        object? newValue          = null;
-        var     label             = setting.Name;
-        float?  cursorXAfterInput = null;
-
-        #region Hiding Child Settings
-
-        if (setting.Parent is not null)
-        {
-            var parentValue = false;
-            var parentSetting = SettingsList
-                .First(s => s.FieldName == setting.Parent);
-            if (parentSetting?.Value is true)
-                parentValue = true;
-
-            if (!parentValue)
-                return;
-        }
-
-        #endregion
-
-        #region Unit Labels
-
-        if (setting.UnitLabel is null)
-            _longestLabel = null;
-        else
-        {
-            label = "";
-
-            // Save the label length count
-            if (_longestLabel is null ||
-                setting.UnitLabel.Length > _longestLabel.Length)
-                _longestLabel = setting.UnitLabel;
-        }
-
-        #endregion
-
-        #region Category Headings
-
-        if (setting.Category != _currentCategory)
-        {
-            ImGuiEx.Spacing(new Vector2(0, 20));
-
-            ImGuiEx.TextUnderlined(
-                setting.Category.ToString().Replace("_", " "));
-
-            _currentCategory = setting.Category;
-        }
-
-        #endregion
-
-        #region Spacer
-
-        if (setting.ShowSpace == true)
-            ImGuiEx.Spacing(new Vector2(0, 10));
-
-        #endregion
-
-        #region Indentation
-
-        if (setting.Parent is not null)
-            ImGui.Indent();
-
-        #endregion
-
-        #region Input Labels
-
-        label = $"{label}" +
-                $"##{setting.FieldName}{_settingCount}";
-
-        #endregion
-
-        #region Input
-
-        switch (setting.Type)
-        {
-            case Attributes.Setting.Type.Toggle:
-            {
-                var value = (bool)setting.Value;
-                changed = ImGui.Checkbox(label, ref value);
-                if (changed)
-                    newValue = setting.Value = value;
-
-                break;
-            }
-            case Attributes.Setting.Type.Color:
-            {
-                var value = (Vector4)setting.Value;
-                changed = ImGui.ColorEdit4(label, ref value,
-                    ImGuiColorEditFlags.NoInputs |
-                    ImGuiColorEditFlags.AlphaPreview |
-                    ImGuiColorEditFlags.AlphaBar);
-                if (changed)
-                    newValue = setting.Value = value;
-
-                break;
-            }
-            case Attributes.Setting.Type.Number_Int:
-            {
-                var value = Convert.ToInt32(setting.Value);
-                ImGui.PushItemWidth(75);
-                changed = ImGui.InputInt(label, ref value);
-                if (changed)
-                    newValue = setting.Value = value;
-                ImGui.SameLine();
-                cursorXAfterInput = ImGui.GetCursorPosX();
-                ImGui.Text(setting.UnitLabel ?? setting.Name);
-
-                break;
-            }
-            case Attributes.Setting.Type.Number_Float:
-            {
-                var value = (float)setting.Value;
-                ImGui.PushItemWidth(75);
-                changed = ImGui.InputFloat(label, ref value);
-                if (changed)
-                    newValue = setting.Value = value;
-                ImGui.SameLine();
-                cursorXAfterInput = ImGui.GetCursorPosX();
-                ImGui.Text(setting.UnitLabel ?? setting.Name);
-
-                break;
-            }
-            case Attributes.Setting.Type.Slider_Int:
-            {
-                var value = Convert.ToInt32(setting.Value);
-                ImGui.PushItemWidth(75);
-                if (setting.SliderMin is null ||
-                    setting.SliderMax is null)
-                    changed = ImGui.SliderInt(label, ref value);
-                else
-                    changed = ImGui.SliderInt(label,
-                        ref value,
-                        (int)setting.SliderMin,
-                        (int)setting.SliderMax);
-                if (changed)
-                    newValue = setting.Value = value;
-                ImGui.SameLine();
-                cursorXAfterInput = ImGui.GetCursorPosX();
-                ImGui.Text(setting.UnitLabel ?? setting.Name);
-
-                break;
-            }
-            case Attributes.Setting.Type.Slider_Float:
-            {
-                var value = (float)setting.Value;
-                ImGui.PushItemWidth(75);
-                if (setting.SliderMin is null ||
-                    setting.SliderMax is null)
-                    changed = ImGui.SliderFloat(label, ref value);
-                else
-                    changed = ImGui.SliderFloat(label,
-                        ref value,
-                        (float)setting.SliderMin,
-                        (float)setting.SliderMax);
-                if (changed)
-                    newValue = setting.Value = value;
-                ImGui.SameLine();
-                cursorXAfterInput = ImGui.GetCursorPosX();
-                ImGui.Text(setting.UnitLabel ?? setting.Name);
-
-                break;
-            }
-            default:
-                PluginLog.Warning(
-                    $"Unsupported setting type `{setting.Type}` " +
-                    $"for setting `{setting.Name}`.");
-                if (setting.Parent is not null)
-                    ImGui.Unindent();
-                return;
-        }
-
-        #endregion
-
-        #region Labels after Unit Labels
-
-        if (setting.UnitLabel is not null)
-        {
-            ImGui.SameLine(
-                cursorXAfterInput!.Value +
-                ImGui.CalcTextSize(_longestLabel!).X
-            );
-            ImGui.Text($"   -   {setting.Name}");
-        }
-
-        #endregion
-
-        #region Help Marks
-
-        ImGuiComponents.HelpMarker(
-            setting.HelpMark +
-            $"\n\nRecommended Value: {setting.RecommendedValue}\n" +
-            $"Default Value: {setting.DefaultValue}"
-        );
-        if (setting.ExtraHelpMark is not null)
-            ImGuiComponents.HelpMarker(setting.ExtraHelpMark);
-        if (setting.WarningMark is not null)
-            WarningMarkerComponent.WarningMarker(setting.WarningMark);
-
-        #endregion
-
-        #region Extra Symbols
-
-        if (setting.ShowRetarget is not null)
-            Presets.DrawRetargetedSymbolForSettingsPage();
-
-        #endregion
-
-        #region Extra Text Label
-
-        if (setting.ExtraText is not null)
-        {
-            ImGui.SameLine();
-            ImGui.TextColored(ImGuiColors.DalamudGrey,
-                setting.ExtraText);
-        }
-
-        #endregion
-
-        #region Indentation
-
-        if (setting.Parent is not null)
-            ImGui.Unindent();
-
-        #endregion
-
-        #region Saving
-
-        if (changed)
-        {
-            Service.Configuration.TriggerUserConfigChanged(
-                Configuration.ConfigChangeType.Setting,
-                Configuration.ConfigChangeSource.UI,
-                setting.Name, newValue!);
-
-            Service.Configuration.Save();
-        }
-
-        #endregion
-    }
     
     internal new static void Draw()
     {
         using (ImRaii.Child("main", new Vector2(0, 0), true))
         {
             ImGui.Text("This tab allows you to customise your options for Wrath Combo.");
+            
+            _currentCategory = null;
+            _settingCount   = 0;
+            _drawnCollapseGroups = [];
 
             foreach (var setting in SettingsList)
             {
-                DrawSetting(setting);
+                if (setting.CollapsibleGroupName is not null &&
+                    !_drawnCollapseGroups.Contains(setting.CollapsibleGroupName))
+                    DrawCollapseGroup(setting.CollapsibleGroupName);
+                else
+                    DrawSetting(setting);
             }
             
             ImGui.NewLine();
@@ -610,6 +390,255 @@ internal class Settings : ConfigWindow
 
             #endregion
         }
+    }
+
+    private static void DrawSetting(Setting setting)
+    {
+        _settingCount++;
+        var     changed           = false;
+        object? newValue          = null;
+        var     label             = setting.Name;
+        float?  cursorXAfterInput = null;
+
+        #region Hiding Child Settings
+
+        if (setting.Parent is not null)
+        {
+            var parentValue = false;
+            var parentSetting = SettingsList
+                .First(s => s.FieldName == setting.Parent);
+            if (parentSetting?.Value is true)
+                parentValue = true;
+
+            if (!parentValue)
+                return;
+        }
+
+        #endregion
+
+        #region Unit Labels
+
+        if (setting.UnitLabel is null)
+            _longestLabel = null;
+        else
+        {
+            label = "";
+
+            // Save the label length count
+            if (_longestLabel is null ||
+                setting.UnitLabel.Length > _longestLabel.Length)
+                _longestLabel = setting.UnitLabel;
+        }
+
+        #endregion
+
+        #region Category Headings
+
+        if (setting.Category != _currentCategory)
+        {
+            ImGuiEx.Spacing(new Vector2(0, 20));
+
+            ImGuiEx.TextUnderlined(
+                setting.Category.ToString().Replace("_", " "));
+
+            _currentCategory = setting.Category;
+        }
+
+        #endregion
+
+        #region Spacer
+
+        if (setting.ShowSpace == true)
+            ImGuiEx.Spacing(new Vector2(0, 10));
+
+        #endregion
+
+        #region Indentation
+
+        if (setting.Parent is not null)
+            ImGui.Indent();
+
+        #endregion
+
+        #region Input Labels
+
+        label = $"{label}" +
+                $"##{setting.FieldName}{_settingCount}";
+
+        #endregion
+
+        #region Input
+
+        switch (setting.Type)
+        {
+            case Attributes.Setting.Type.Toggle:
+            {
+                var value = (bool)setting.Value;
+                changed = ImGui.Checkbox(label, ref value);
+                if (changed)
+                    newValue = setting.Value = value;
+
+                break;
+            }
+            case Attributes.Setting.Type.Color:
+            {
+                var value = (Vector4)setting.Value;
+                changed = ImGui.ColorEdit4(label, ref value,
+                    ImGuiColorEditFlags.NoInputs |
+                    ImGuiColorEditFlags.AlphaPreview |
+                    ImGuiColorEditFlags.AlphaBar);
+                if (changed)
+                    newValue = setting.Value = value;
+
+                break;
+            }
+            case Attributes.Setting.Type.Number_Int:
+            {
+                var value = Convert.ToInt32(setting.Value);
+                ImGui.PushItemWidth(75);
+                changed = ImGui.InputInt(label, ref value);
+                if (changed)
+                    newValue = setting.Value = value;
+                ImGui.SameLine();
+                cursorXAfterInput = ImGui.GetCursorPosX();
+                ImGui.Text(setting.UnitLabel ?? setting.Name);
+
+                break;
+            }
+            case Attributes.Setting.Type.Number_Float:
+            {
+                var value = (float)setting.Value;
+                ImGui.PushItemWidth(75);
+                changed = ImGui.InputFloat(label, ref value);
+                if (changed)
+                    newValue = setting.Value = value;
+                ImGui.SameLine();
+                cursorXAfterInput = ImGui.GetCursorPosX();
+                ImGui.Text(setting.UnitLabel ?? setting.Name);
+
+                break;
+            }
+            case Attributes.Setting.Type.Slider_Int:
+            {
+                var value = Convert.ToInt32(setting.Value);
+                ImGui.PushItemWidth(75);
+                if (setting.SliderMin is null ||
+                    setting.SliderMax is null)
+                    changed = ImGui.SliderInt(label, ref value);
+                else
+                    changed = ImGui.SliderInt(label,
+                        ref value,
+                        (int)setting.SliderMin,
+                        (int)setting.SliderMax);
+                if (changed)
+                    newValue = setting.Value = value;
+                ImGui.SameLine();
+                cursorXAfterInput = ImGui.GetCursorPosX();
+                ImGui.Text(setting.UnitLabel ?? setting.Name);
+
+                break;
+            }
+            case Attributes.Setting.Type.Slider_Float:
+            {
+                var value = (float)setting.Value;
+                ImGui.PushItemWidth(75);
+                if (setting.SliderMin is null ||
+                    setting.SliderMax is null)
+                    changed = ImGui.SliderFloat(label, ref value);
+                else
+                    changed = ImGui.SliderFloat(label,
+                        ref value,
+                        (float)setting.SliderMin,
+                        (float)setting.SliderMax);
+                if (changed)
+                    newValue = setting.Value = value;
+                ImGui.SameLine();
+                cursorXAfterInput = ImGui.GetCursorPosX();
+                ImGui.Text(setting.UnitLabel ?? setting.Name);
+
+                break;
+            }
+            default:
+                PluginLog.Warning(
+                    $"Unsupported setting type `{setting.Type}` " +
+                    $"for setting `{setting.Name}`.");
+                if (setting.Parent is not null)
+                    ImGui.Unindent();
+                return;
+        }
+
+        #endregion
+
+        #region Labels after Unit Labels
+
+        if (setting.UnitLabel is not null)
+        {
+            ImGui.SameLine(
+                cursorXAfterInput!.Value +
+                ImGui.CalcTextSize(_longestLabel!).X
+            );
+            ImGui.Text($"   -   {setting.Name}");
+        }
+
+        #endregion
+
+        #region Help Marks
+
+        ImGuiComponents.HelpMarker(
+            setting.HelpMark +
+            $"\n\nRecommended Value: {setting.RecommendedValue}\n" +
+            $"Default Value: {setting.DefaultValue}"
+        );
+        if (setting.ExtraHelpMark is not null)
+            ImGuiComponents.HelpMarker(setting.ExtraHelpMark);
+        if (setting.WarningMark is not null)
+            WarningMarkerComponent.WarningMarker(setting.WarningMark);
+
+        #endregion
+
+        #region Extra Symbols
+
+        if (setting.ShowRetarget is not null)
+            Presets.DrawRetargetedSymbolForSettingsPage();
+
+        #endregion
+
+        #region Extra Text Label
+
+        if (setting.ExtraText is not null)
+        {
+            ImGui.SameLine();
+            ImGui.TextColored(ImGuiColors.DalamudGrey,
+                setting.ExtraText);
+        }
+
+        #endregion
+
+        #region Indentation
+
+        if (setting.Parent is not null)
+            ImGui.Unindent();
+
+        #endregion
+
+        #region Saving
+
+        if (changed)
+        {
+            Service.Configuration.TriggerUserConfigChanged(
+                Configuration.ConfigChangeType.Setting,
+                Configuration.ConfigChangeSource.UI,
+                setting.Name, newValue!);
+
+            Service.Configuration.Save();
+        }
+
+        #endregion
+    }
+
+    private static void DrawCollapseGroup(string groupName)
+    {
+        _drawnCollapseGroups = _drawnCollapseGroups.Append(groupName).ToArray();
     }
 
     #region Custom Heal Stack Manager Methods
