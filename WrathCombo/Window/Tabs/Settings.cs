@@ -83,8 +83,7 @@ internal class Settings : ConfigWindow
 
             foreach (var setting in SettingsList)
             {
-                if (setting.CollapsibleGroupName is not null &&
-                    !_drawnCollapseGroups.Contains(setting.CollapsibleGroupName))
+                if (setting.CollapsibleGroupName is not null)
                     DrawCollapseGroup(setting.CollapsibleGroupName);
                 else
                     DrawSetting(setting);
@@ -416,6 +415,16 @@ internal class Settings : ConfigWindow
 
         #endregion
 
+        #region Group Value Setup
+
+        if (setting.GroupName is not null)
+        {
+            _groupValues.TryAdd(setting.GroupNameSpace!, []);
+            _groupValues[setting.GroupNameSpace!].TryAdd(setting.GroupName!, false);
+        }
+
+        #endregion
+
         #region Unit Labels
 
         if (setting.UnitLabel is null)
@@ -474,6 +483,12 @@ internal class Settings : ConfigWindow
             case Attributes.Setting.Type.Toggle:
             {
                 var value = (bool)setting.Value;
+
+                // Update group value if applicable
+                if (setting.GroupName is not null)
+                    _groupValues[setting.GroupNameSpace!][setting.GroupName!] =
+                        value;
+
                 changed = ImGui.Checkbox(label, ref value);
                 if (changed)
                     newValue = setting.Value = value;
@@ -638,6 +653,9 @@ internal class Settings : ConfigWindow
 
     private static void DrawCollapseGroup(string groupName)
     {
+        if (_drawnCollapseGroups.Contains(groupName))
+            return;
+        
         _drawnCollapseGroups = _drawnCollapseGroups.Append(groupName).ToArray();
     }
 
