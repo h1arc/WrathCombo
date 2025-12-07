@@ -11,23 +11,25 @@ namespace WrathCombo.Services.IPC;
 public partial class Provider
 {
     [EzIPC]
-    public bool CanWeave(float? estimatedWeaveTime, int? maxWeaves)
+    public bool CanWeave(float? estimatedWeaveTime)
     {
         estimatedWeaveTime ??= CustomComboFunctions.BaseAnimationLock;
-        return CustomComboFunctions.CanWeave(estimatedWeaveTime.Value, maxWeaves);
+        return CustomComboFunctions.CanWeave(estimatedWeaveTime.Value);
     }
 
     [EzIPC]
-    public bool CanDelayedWeave(float? weaveStart, float? weaveEnd, int? maxWeaves)
+    public bool CanDelayedWeave(float? weaveStart, float? weaveEnd)
     {
         weaveStart ??= 1.25f;
         weaveEnd ??= CustomComboFunctions.BaseAnimationLock;
-        return CustomComboFunctions.CanDelayedWeave(weaveStart.Value, weaveEnd.Value, maxWeaves);
+        return CustomComboFunctions.CanDelayedWeave(weaveStart.Value, weaveEnd.Value);
     }
 
     [EzIPC]
-    public bool ActionReady(uint actionId, bool recastCheck, bool castCheck)
+    public bool ActionReady(uint actionId, bool? recastCheck, bool? castCheck)
     {
-        return CustomComboFunctions.ActionReady(actionId, recastCheck, castCheck);
+        recastCheck ??= false;
+        castCheck ??= false;
+        return CustomComboFunctions.ActionReady(actionId, recastCheck.Value, castCheck.Value);
     }
 }
