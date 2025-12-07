@@ -65,12 +65,24 @@ internal partial class SAM
 
     #endregion
 
+    #region Higanbana
+
+    internal static int computeHpThreshold()
+    {
+        if (InBossEncounter())
+            return TargetIsBoss() ? SAM_ST_HiganbanaBossOption : SAM_ST_HiganbanaBossAddsOption;
+
+        return SAM_ST_HiganbanaBossThrashOption;
+    }
+
+    #endregion
+
     #region Iaijutsu
 
     private static bool CanUseIaijutsu(bool useHiganbana, bool useTenkaGoken, bool useMidare, bool simpleMode = false)
     {
-        int higanbanaHPThreshold = SAM_ST_HiganbanaHPThreshold;
         int higanbanaRefresh = SAM_ST_HiganbanaRefresh;
+        int higanbanaHPThreshold = IsNotEnabled(Preset.AST_ST_Simple_DPS) ? computeHpThreshold() : 0;
 
         if (LevelChecked(Iaijutsu) && InActionRange(OriginalHook(Iaijutsu)))
         {
