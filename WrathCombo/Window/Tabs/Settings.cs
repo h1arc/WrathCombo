@@ -88,20 +88,6 @@ internal class Settings : ConfigWindow
                 if (setting.CollapsibleGroupName is not null)
                     DrawCollapseGroup(setting.CollapsibleGroupName);
                 
-                // Draw settings disabled if they should be disabled
-                // (when the opposing group's value is true)
-                else if (setting.GroupShouldBeDisabled == true &&
-                         _groupValues.TryGetValue(setting.GroupNameSpace!,
-                             out var namespaceDict) &&
-                         namespaceDict
-                             .FirstOrNull(x => x.Key != setting.GroupName)?.Value ==
-                         true)
-                {
-                    ImGui.BeginDisabled();
-                    DrawSetting(setting);
-                    ImGui.EndDisabled();
-                }
-                
                 // Draw normally
                 else
                     DrawSetting(setting);
@@ -413,6 +399,7 @@ internal class Settings : ConfigWindow
     {
         _settingCount++;
         var     changed           = false;
+        var     disabled          = false;
         object? newValue          = null;
         var     label             = setting.Name;
         float?  cursorXAfterInput = null;
@@ -491,6 +478,21 @@ internal class Settings : ConfigWindow
 
         label = $"{label}" +
                 $"##{setting.FieldName}{_settingCount}";
+
+        #endregion
+
+        #region Disabled Options
+
+        // If this setting is on the side of a group that should be disabled,
+        // check if the other group in the namespace is true.
+        if (setting.GroupShouldBeDisabled == true &&
+            _groupValues.TryGetValue(setting.GroupNameSpace!, out var nameSpace) &&
+            nameSpace.FirstOrNull(x =>
+                x.Key != setting.GroupName)?.Value == true)
+        {
+            disabled = true;
+            ImGui.BeginDisabled();
+        }
 
         #endregion
 
@@ -595,6 +597,8 @@ internal class Settings : ConfigWindow
                 PluginLog.Warning(
                     $"Unsupported setting type `{setting.Type}` " +
                     $"for setting `{setting.Name}`.");
+                if (disabled)
+                    ImGui.EndDisabled();
                 if (setting.Parent is not null)
                     ImGui.Unindent();
                 return;
@@ -612,6 +616,13 @@ internal class Settings : ConfigWindow
             );
             ImGui.Text($"   -   {setting.Name}");
         }
+
+        #endregion
+
+        #region Un-Disable
+        
+        if (disabled)
+            ImGui.EndDisabled();
 
         #endregion
 
