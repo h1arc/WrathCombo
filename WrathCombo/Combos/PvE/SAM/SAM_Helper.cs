@@ -134,7 +134,7 @@ internal partial class SAM
         if (InBossEncounter())
             return TargetIsBoss() ? SAM_ST_HiganbanaBossOption : SAM_ST_HiganbanaBossAddsOption;
 
-        return SAM_ST_HiganbanaBossThrashOption;
+        return SAM_ST_HiganbanaThrashOption;
     }
 
     #endregion
