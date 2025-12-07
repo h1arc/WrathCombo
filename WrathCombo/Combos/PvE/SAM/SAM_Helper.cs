@@ -65,53 +65,31 @@ internal partial class SAM
 
     #endregion
 
-    #region Higanbana
-
-    internal static int computeHpThreshold()
-    {
-        if (InBossEncounter())
-            return TargetIsBoss() ? SAM_ST_HiganbanaBossOption : SAM_ST_HiganbanaBossAddsOption;
-
-        return SAM_ST_HiganbanaBossThrashOption;
-    }
-
-    #endregion
-
     #region Iaijutsu
 
-    private static bool CanUseIaijutsu(bool useHiganbana, bool useTenkaGoken, bool useMidare, bool simpleMode = false)
+    private static bool CanUseIaijutsu(bool useHiganbana, bool useTenkaGoken, bool useMidare)
     {
         int higanbanaRefresh = SAM_ST_HiganbanaRefresh;
-        int higanbanaHPThreshold = IsNotEnabled(Preset.AST_ST_Simple_DPS) ? computeHpThreshold() : 0;
 
         if (LevelChecked(Iaijutsu) && InActionRange(OriginalHook(Iaijutsu)))
         {
             //Higanbana
-            if (!simpleMode &&
-                useHiganbana &&
-                SenCount is 1 && GetTargetHPPercent() > higanbanaHPThreshold &&
-                (SAM_ST_HiganbanaBossOption == 0 || TargetIsBoss()) &&
-                CanApplyStatus(CurrentTarget, Debuffs.Higanbana) &&
+            if (useHiganbana &&
+                SenCount is 1 && CanUseHiganbana() &&
                 (JustUsed(MeikyoShisui, 15f) && GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) <= higanbanaRefresh ||
                  !HasStatusEffect(Debuffs.Higanbana, CurrentTarget)))
                 return true;
 
             //Tenka Goken
-            if (useTenkaGoken && SenCount is 2 &&
+            if (useTenkaGoken &&
+                SenCount is 2 &&
                 !LevelChecked(MidareSetsugekka))
                 return true;
 
             //Midare Setsugekka
-            if (useMidare && SenCount is 3 &&
+            if (useMidare &&
+                SenCount is 3 &&
                 LevelChecked(MidareSetsugekka) && !HasStatusEffect(Buffs.TsubameReady))
-                return true;
-
-            //Higanbana Simple Mode
-            if (simpleMode && useHiganbana &&
-                SenCount is 1 && GetTargetHPPercent() > 1 && TargetIsBoss() &&
-                CanApplyStatus(CurrentTarget, Debuffs.Higanbana) &&
-                (JustUsed(MeikyoShisui, 15f) && GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) <= 15 ||
-                 !HasStatusEffect(Debuffs.Higanbana, CurrentTarget)))
                 return true;
         }
         return false;
@@ -132,6 +110,31 @@ internal partial class SAM
         internal static int Guren => GetResourceCost(SAM.Guren);
 
         internal static int Shinten => GetResourceCost(SAM.Shinten);
+    }
+
+    #endregion
+
+    #region Higanbana
+
+    private static bool CanUseHiganbana()
+    {
+        int hpThreshold = IsNotEnabled(Preset.SAM_ST_SimpleMode) ? computeHpThreshold() : 0;
+        double dotRefresh = IsNotEnabled(Preset.SAM_ST_SimpleMode) ? SAM_ST_HiganbanaRefresh : 15;
+        float dotRemaining = GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget);
+
+        return ActionReady(Higanbana) && SenCount is 1 &&
+               CanApplyStatus(CurrentTarget, Debuffs.Higanbana) &&
+               HasBattleTarget() &&
+               GetTargetHPPercent() > hpThreshold &&
+               dotRemaining <= dotRefresh;
+    }
+
+    private static int computeHpThreshold()
+    {
+        if (InBossEncounter())
+            return TargetIsBoss() ? SAM_ST_HiganbanaBossOption : SAM_ST_HiganbanaBossAddsOption;
+
+        return SAM_ST_HiganbanaBossThrashOption;
     }
 
     #endregion

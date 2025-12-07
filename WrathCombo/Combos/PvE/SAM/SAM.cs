@@ -81,7 +81,7 @@ internal partial class SAM : Melee
 
             // Iaijutsu feature
             if (!IsMoving() &&
-                CanUseIaijutsu(true, true, true, true))
+                CanUseIaijutsu(true, true, true))
                 return OriginalHook(Iaijutsu);
 
             //Ranged
