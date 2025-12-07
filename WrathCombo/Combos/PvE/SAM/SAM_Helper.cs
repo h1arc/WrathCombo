@@ -118,7 +118,7 @@ internal partial class SAM
 
     private static bool CanUseHiganbana()
     {
-        int hpThreshold = IsNotEnabled(Preset.SAM_ST_SimpleMode) ? computeHpThreshold() : 0;
+        int hpThreshold = IsNotEnabled(Preset.SAM_ST_SimpleMode) ? computeHpThresholdHiganbana() : 0;
         double dotRefresh = IsNotEnabled(Preset.SAM_ST_SimpleMode) ? SAM_ST_HiganbanaRefresh : 15;
         float dotRemaining = GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget);
 
@@ -129,7 +129,7 @@ internal partial class SAM
                dotRemaining <= dotRefresh;
     }
 
-    private static int computeHpThreshold()
+    private static int computeHpThresholdHiganbana()
     {
         if (InBossEncounter())
             return TargetIsBoss() ? SAM_ST_HiganbanaBossOption : SAM_ST_HiganbanaBossAddsOption;
@@ -160,7 +160,7 @@ internal partial class SAM
         (RaidWideCasting(2f) || !IsInParty());
 
     //Auto Meditate
-    private static bool CanUseMEditate =>
+    private static bool CanUseMeditate =>
         ActionReady(Meditate) &&
         !IsMoving() && TimeStoodStill > TimeSpan.FromSeconds(SAM_ST_MeditateTimeStill) &&
         InCombat() && !HasBattleTarget();

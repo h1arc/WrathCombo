@@ -267,7 +267,7 @@ internal partial class SAM : Melee
 
                 //Auto Meditate
                 if (IsEnabled(Preset.SAM_ST_Meditate) &&
-                    CanUseMEditate)
+                    CanUseMeditate)
                     return Meditate;
 
                 // healing
