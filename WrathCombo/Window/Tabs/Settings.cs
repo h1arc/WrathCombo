@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using ECommons;
 using ECommons.Logging;
 using WrathCombo.Attributes;
 using WrathCombo.Core;
@@ -83,8 +84,25 @@ internal class Settings : ConfigWindow
 
             foreach (var setting in SettingsList)
             {
+                // Draw collapsible group only once
                 if (setting.CollapsibleGroupName is not null)
                     DrawCollapseGroup(setting.CollapsibleGroupName);
+                
+                // Draw settings disabled if they should be disabled
+                // (when the opposing group's value is true)
+                else if (setting.GroupShouldBeDisabled == true &&
+                         _groupValues.TryGetValue(setting.GroupNameSpace!,
+                             out var namespaceDict) &&
+                         namespaceDict
+                             .FirstOrNull(x => x.Key != setting.GroupName)?.Value ==
+                         true)
+                {
+                    ImGui.BeginDisabled();
+                    DrawSetting(setting);
+                    ImGui.EndDisabled();
+                }
+                
+                // Draw normally
                 else
                     DrawSetting(setting);
             }
