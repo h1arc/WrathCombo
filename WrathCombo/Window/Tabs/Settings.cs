@@ -102,6 +102,24 @@ internal class Settings : ConfigWindow
                 else
                     DrawSetting(setting);
             }
+
+            #region Debug File Button
+        
+            if (!IsSearching)
+            {
+                if (ImGui.Button("Create Debug File"))
+                {
+                    if (Player.Available)
+                        DebugFile.MakeDebugFile();
+                    else
+                        DebugFile.MakeDebugFile(allJobs: true);
+                }
+
+                ImGuiComponents.HelpMarker(
+                    "Will generate a debug file on your desktop.\nUseful to give developers to help troubleshoot issues.\nThe same as using the following command: /wrath debug");
+            }
+
+            #endregion
         }
     }
 
@@ -422,24 +440,6 @@ internal class Settings : ConfigWindow
 
         if (setting.Parent is not null)
             ImGui.Unindent();
-
-        #endregion
-
-        #region Debug File Button
-        
-        if (setting.FieldName == "OutputOpenerLogs" && !IsSearching)
-        {
-            if (ImGui.Button("Create Debug File"))
-            {
-                if (Player.Available)
-                    DebugFile.MakeDebugFile();
-                else
-                    DebugFile.MakeDebugFile(allJobs: true);
-            }
-
-            ImGuiComponents.HelpMarker(
-                "Will generate a debug file on your desktop.\nUseful to give developers to help troubleshoot issues.\nThe same as using the following command: /wrath debug");
-        }
 
         #endregion
     }
