@@ -72,13 +72,27 @@ internal class Settings : ConfigWindow
     {
         using (ImRaii.Child("main", new Vector2(0, 0), true))
         {
-            ImGui.Text("This tab allows you to customise your options for Wrath Combo.");
+            ImGui.Text("This tab allows you to customise global settings for Wrath Combo.");
+            
+            DrawSearchBar();
             
             _currentCategory = null;
             _settingCount   = 0;
             _drawnCollapseGroups = [];
 
-            foreach (var setting in SettingsList)
+            var settings = SettingsList;
+            const StringComparison lower =
+                StringComparison.InvariantCultureIgnoreCase;
+            if (IsSearching)
+                settings = settings
+                    .Where(s =>
+                        s.Name.Contains(Search, lower) ||
+                        s.FieldName.Contains(Search, lower) ||
+                        s.Category.ToString().Contains(Search, lower) ||
+                        (s.ExtraText?.ToString().Contains(Search, lower) ?? false))
+                    .ToList();
+
+            foreach (var setting in settings)
             {
                 // Draw collapsible group only once
                 if (setting.CollapsibleGroupName is not null)
@@ -518,5 +532,32 @@ internal class Settings : ConfigWindow
             ImGuiEx.Spacing(new Vector2(0, 10));
 
         _drawnCollapseGroups = _drawnCollapseGroups.Append(groupName).ToArray();
+    }
+
+    public static void DrawSearchBar()
+    {
+        if (!Service.Configuration.UIShowSearchBar)
+            return;
+
+        var availableWidth = ImGui.GetContentRegionAvail().X;
+        var letterWidth    = ImGui.CalcTextSize("W").X.Scale();
+
+        using var id = ImRaii.Child("SearchBar",
+            new Vector2(availableWidth, 22f.Scale()));
+        if (!id)
+            return;
+
+        var searchLabelText = "Search:";
+        var searchHintText = "Category name, Setting name, Internal Name, etc";
+
+        var searchWidth = letterWidth * 30f + 4f.Scale();
+
+        ImGui.Text(searchLabelText);
+        ImGui.SameLine();
+        ImGui.SetNextItemWidth(searchWidth);
+        ImGui.InputTextWithHint(
+            "", searchHintText,
+            ref Search, 30,
+            ImGuiInputTextFlags.AutoSelectAll);
     }
 }
