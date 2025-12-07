@@ -455,6 +455,48 @@ internal class Settings : ConfigWindow
         if (_drawnCollapseGroups.Contains(groupName))
             return;
 
+        #region Stack Display
+
+        if (groupName.Contains("Stack"))
+        {
+            if (groupName.Contains("Heal"))
+            {
+                ImGuiEx.Spacing(new Vector2(0, 10));
+                ImGui.TextUnformatted("Current Heal Stack:");
+
+                ImGuiComponents.HelpMarker(
+                    "This is the order in which Wrath will try to select a healing target.\n\n" +
+                    "If the 'Retarget Healing Actions' option is disabled, that is just the target that will be used for checking the HP threshold to trigger different healing actions to show up in their rotations.\n" +
+                    "That means that if your own retargeting solution (Redirect, Reaction, etc) does not match this then Wrath can stick you in a loop of healing the wrong target!!!\n\n" +
+                    "If the 'Retarget Healing Actions' option is enabled, that target is also the one that healing actions will be targeted onto (even when the action does not first check the HP of that target, like the combo's Replaced Action, for example).");
+
+                if (!Service.Configuration.RetargetHealingActionsToStack)
+                {
+                    WarningMarkerComponent.WarningMarker(
+                        "YOU are responsible for making sure your retargeting solution matches this heal stack!\n" +
+                        "If it does not then Wrath can get stuck in a loop where X player is checked and needs healing, but Y player is who gets healed!");
+                }
+
+                ImGuiEx.Spacing(new Vector2(10, 0));
+                ImGuiEx.TextWrapped(ImGuiColors.DalamudGrey,
+                    Service.Configuration.UseCustomHealStack.DisplayStack());
+            }
+            if (groupName.Contains("Raise"))
+            {
+                ImGuiEx.Spacing(new Vector2(0, 10));
+                ImGui.TextUnformatted("Current Raise Stack:");
+
+                ImGuiComponents.HelpMarker(
+                    "This is the order in which Wrath will try to select a raise target,\nif Retargeting of any Raise Feature is enabled.");
+
+                ImGuiEx.Spacing(new Vector2(10, 0));
+                ImGuiEx.TextWrapped(ImGuiColors.DalamudGrey,
+                    Service.Configuration.RaiseStack.StackString());
+            }
+        }
+
+        #endregion
+
         #region Setup Collapse
 
         var collapsedHeight = ImGui.CalcTextSize("I").Y + 5f.Scale();
