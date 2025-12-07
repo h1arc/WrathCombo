@@ -364,6 +364,13 @@ internal class Settings : ConfigWindow
                 ref string[] t = ref Service.Configuration.CustomHealStack;
                 if (setting.Name.Contains("Raise"))
                     t = ref Service.Configuration.RaiseStack;
+                ImGui.Text($"{setting.Name}:");
+                if (setting.ExtraText is not null)
+                {
+                    ImGui.SameLine();
+                    ImGui.TextColored(ImGuiColors.DalamudGrey,
+                        setting.ExtraText);
+                }
                 UserConfig.DrawCustomStackManager(
                     setting.Name,
                     ref t,
@@ -371,7 +378,8 @@ internal class Settings : ConfigWindow
                     setting.HelpMark +
                     $"\n\nRecommended Value: {setting.RecommendedValue}\n" +
                     $"Default Value: {setting.DefaultValue}" +
-                    $"\n\n{stackHelp}"
+                    $"\n\n{stackHelp}",
+                    setting.Name.Contains("Raise")
                 );
 
                 break;
@@ -433,7 +441,8 @@ internal class Settings : ConfigWindow
 
         #region Extra Text Label
 
-        if (setting.ExtraText is not null)
+        if (setting.ExtraText is not null &&
+            setting.Type != Attributes.Setting.Type.Stack)
         {
             ImGui.SameLine();
             ImGui.TextColored(ImGuiColors.DalamudGrey,
@@ -491,7 +500,7 @@ internal class Settings : ConfigWindow
 
                 ImGuiEx.Spacing(new Vector2(10, 0));
                 ImGuiEx.TextWrapped(ImGuiColors.DalamudGrey,
-                    Service.Configuration.RaiseStack.StackString());
+                    Service.Configuration.RaiseStack.StackString(raiseStack: true));
             }
         }
 
