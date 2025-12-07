@@ -125,7 +125,8 @@ internal class Settings : ConfigWindow
 
         #region Hiding Child Settings
 
-        if (setting.Parent is not null)
+        if (setting.Parent is not null &&
+            !IsSearching)
         {
             var parentValue = false;
             var parentSetting = SettingsList
@@ -426,7 +427,7 @@ internal class Settings : ConfigWindow
 
         #region Debug File Button
         
-        if (setting.FieldName == "OutputOpenerLogs")
+        if (setting.FieldName == "OutputOpenerLogs" && !IsSearching)
         {
             if (ImGui.Button("Create Debug File"))
             {
