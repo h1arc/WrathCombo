@@ -684,7 +684,48 @@ internal class Settings : ConfigWindow
     {
         if (_drawnCollapseGroups.Contains(groupName))
             return;
+
+        #region Setup Collapse
+
+        var collapsedHeight = ImGui.CalcTextSize("I").Y + 5f.Scale();
         
+        _unCollapsedGroup.TryAdd(groupName, false);
+        _unCollapsedGroupHeight.TryAdd(groupName, collapsedHeight);
+        
+        var dynamicHeight = _unCollapsedGroup[groupName]
+            ? _unCollapsedGroupHeight[groupName]
+            : ImGui.CalcTextSize("I").Y + 5f.Scale();
+        
+        ImGui.BeginChild($"##{groupName}",
+            new Vector2(ImGui.CalcTextSize(groupName).X * 2.2f, dynamicHeight),
+            false,
+            ImGuiWindowFlags.NoScrollbar);
+        _unCollapsedGroup[groupName] = ImGui.CollapsingHeader(groupName,
+            ImGuiTreeNodeFlags.SpanAvailWidth);
+        var collapsibleHeight = ImGui.GetItemRectSize().Y;
+
+        #endregion
+
+        if (_unCollapsedGroup[groupName])
+        {
+            ImGui.BeginGroup();
+            
+            var settings = SettingsList
+                .Where(s => s.CollapsibleGroupName == groupName).ToList();
+            
+            foreach (var setting in settings)
+                DrawSetting(setting);
+            
+            ImGui.EndGroup();
+            _unCollapsedGroupHeight[groupName] =
+                ImGui.GetItemRectSize().Y + collapsibleHeight + 5f.Scale();
+        }
+
+        ImGui.EndChild();
+
+        if (_unCollapsed)
+            ImGuiEx.Spacing(new Vector2(0, 10));
+
         _drawnCollapseGroups = _drawnCollapseGroups.Append(groupName).ToArray();
     }
 

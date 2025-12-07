@@ -416,7 +416,8 @@ public partial class Configuration : IPluginConfiguration
     /// Whether to include UI Mouseover in 'default' Heal Stack. Default: false.
     /// <seealso cref="CustomComboNS.SimpleTarget.Stack.GetStack"/>
     [SettingCategory(Targeting_Options)]
-    [SettingCollapsibleGroup("Heal Stack Customization Options")]
+    // The spaces make it align better with the raise stack collapsible group
+    [SettingCollapsibleGroup("Heal Stack Customization Options  ")]
     [SettingGroup("defaultPlus", "healStackPlus")]
     [Setting("Add UI MouseOver to the Default Healing Stack",
         "Will add any UI MouseOver targets to the top of the Default Heal Stack, overriding the rest of the stack if you are mousing over any party member UI.\n\n" +
@@ -428,7 +429,7 @@ public partial class Configuration : IPluginConfiguration
     /// Whether to include UI Mouseover in 'default' Heal Stack. Default: false.
     /// <seealso cref="CustomComboNS.SimpleTarget.Stack.GetStack"/>
     [SettingCategory(Targeting_Options)]
-    [SettingCollapsibleGroup("Heal Stack Customization Options")]
+    [SettingCollapsibleGroup("Heal Stack Customization Options  ")]
     [SettingGroup("defaultPlus", "healStackPlus")]
     [Setting("Add Field MouseOver to the Default Healing Stack",
         "Will add any MouseOver targets to the top of the Default Heal Stack, overriding the rest of the stack if you are mousing over any party member UI.\n\n" +
@@ -440,7 +441,7 @@ public partial class Configuration : IPluginConfiguration
     /// Whether to include Focus Target in 'default' Heal Stack. Default: false.
     /// <seealso cref="CustomComboNS.SimpleTarget.Stack.GetStack"/>
     [SettingCategory(Targeting_Options)]
-    [SettingCollapsibleGroup("Heal Stack Customization Options")]
+    [SettingCollapsibleGroup("Heal Stack Customization Options  ")]
     [SettingGroup("defaultPlus", "healStackPlus")]
     [Setting("Add Focus Target to the Default Healing Stack",
         "This will add your focus target under your hard and soft targets in the Default Heal Stack, overriding the rest of the stack if you have a living focus target.",
@@ -451,7 +452,7 @@ public partial class Configuration : IPluginConfiguration
     /// Whether to include Lowest HP% in 'default' Heal Stack. Default: false.
     /// <seealso cref="CustomComboNS.SimpleTarget.Stack.GetStack"/>
     [SettingCategory(Targeting_Options)]
-    [SettingCollapsibleGroup("Heal Stack Customization Options")]
+    [SettingCollapsibleGroup("Heal Stack Customization Options  ")]
     [SettingGroup("defaultPlus", "healStackPlus")]
     [Setting("Add Lowest HP% Ally to the Default Healing Stack",
         "This will add a nearby party member with the lowest HP% to bottom of the Default Heal Stack, overriding only yourself.",
@@ -470,7 +471,7 @@ public partial class Configuration : IPluginConfiguration
     /// <seealso cref="CustomComboNS.SimpleTarget.Stack.GetStack"/>
     /// <seealso cref="HealRetargeting.RetargetSettingOn"/>
     [Or]
-    [SettingCollapsibleGroup("Heal Stack Customization Options")]
+    [SettingCollapsibleGroup("Heal Stack Customization Options  ")]
     [SettingGroup("custom", "healStackPlus", false)]
     [SettingCategory(Targeting_Options)]
     [Setting("Use a Custom Heal Stack Instead",
@@ -511,8 +512,9 @@ public partial class Configuration : IPluginConfiguration
     /// The Custom Raise Stack.
     /// <seealso cref="CustomComboNS.SimpleTarget.Stack.GetStack"/>
     /// <seealso cref="CustomComboNS.SimpleTarget.Stack.AllyToRaise"/>
+    [SettingCollapsibleGroup("Raise Stack Customization Options")]
     [SettingCategory(Targeting_Options)]
-    [Setting("Current Raise Stack:",
+    [Setting("Custom Raise Stack",
         "The priority goes from top to bottom.\n" +
         "Scroll down to see all of your items.\n" +
         "Click the Up and Down buttons to move items in the list.\n" +
