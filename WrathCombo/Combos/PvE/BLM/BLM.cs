@@ -78,11 +78,7 @@ internal partial class BLM : Caster
                     ? Xenoglossy
                     : Foul;
 
-            if (ActionReady(OriginalHook(Thunder)) && HasStatusEffect(Buffs.Thunderhead) &&
-                CanApplyStatus(CurrentTarget, ThunderList[OriginalHook(Thunder)]) &&
-                (ThunderDebuffST is null && ThunderDebuffAoE is null ||
-                 ThunderDebuffST?.RemainingTime <= RefreshTimerThunder ||
-                 ThunderDebuffAoE?.RemainingTime <= RefreshTimerThunder))
+            if (CanUseThunder())
                 return OriginalHook(Thunder);
 
             if (LevelChecked(Amplifier) &&
@@ -390,12 +386,7 @@ internal partial class BLM : Caster
                     : Foul;
 
             if (IsEnabled(Preset.BLM_ST_Thunder) &&
-                ActionReady(OriginalHook(Thunder)) && HasStatusEffect(Buffs.Thunderhead) &&
-                CanApplyStatus(CurrentTarget, ThunderList[OriginalHook(Thunder)]) &&
-                (ThunderDebuffST is null && ThunderDebuffAoE is null ||
-                 ThunderDebuffST?.RemainingTime <= RefreshTimerThunder ||
-                 ThunderDebuffAoE?.RemainingTime <= RefreshTimerThunder) &&
-                GetTargetHPPercent() > HPThresholdThunder)
+                CanUseThunder())
                 return OriginalHook(Thunder);
 
             if (IsEnabled(Preset.BLM_ST_Amplifier) &&
