@@ -1041,6 +1041,11 @@ public static class UserConfig
                 (stack[index - 1], stack[index]) =
                     (stack[index], stack[index - 1]);
 
+                Service.Configuration.TriggerUserConfigChanged(
+                    Configuration.ConfigChangeType.Setting,
+                    Configuration.ConfigChangeSource.UI,
+                    stackName, stack);
+
                 // Save
                 customStackSetting = stack;
                 Service.Configuration.Save();
@@ -1058,6 +1063,11 @@ public static class UserConfig
                 // Swap with the next item
                 (stack[index], stack[index + 1]) =
                     (stack[index + 1], stack[index]);
+
+                Service.Configuration.TriggerUserConfigChanged(
+                    Configuration.ConfigChangeType.Setting,
+                    Configuration.ConfigChangeSource.UI,
+                    stackName, stack);
 
                 // Save
                 customStackSetting = stack;
@@ -1077,6 +1087,11 @@ public static class UserConfig
                 var newList = stack.ToList();
                 newList.RemoveAt(index);
                 var newArray = newList.ToArray();
+
+                Service.Configuration.TriggerUserConfigChanged(
+                    Configuration.ConfigChangeType.Setting,
+                    Configuration.ConfigChangeSource.UI,
+                    stackName, newArray);
 
                 // Save
                 customStackSetting = newArray;
@@ -1169,6 +1184,11 @@ public static class UserConfig
             var tempList = customStackSetting.ToList();
             tempList.Add(targetToAddToStack);
             customStackSetting = tempList.ToArray();
+
+            Service.Configuration.TriggerUserConfigChanged(
+                Configuration.ConfigChangeType.Setting,
+                Configuration.ConfigChangeSource.UI,
+                stackName, customStackSetting);
 
             // Save, and reset for another add
             Service.Configuration.Save();
