@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using Dalamud.Configuration;
 using Newtonsoft.Json;
@@ -485,21 +486,20 @@ public partial class Configuration : IPluginConfiguration
     /// <seealso cref="CustomComboNS.SimpleTarget.Stack.GetStack"/>
     /// <seealso cref="HealRetargeting.HealStack"/>
     /// <seealso cref="CustomComboNS.SimpleTarget.Stack.AllyToHeal"/>
+    [SettingCollapsibleGroup("Heal Stack Customization Options  ")]
     [SettingParent(nameof(UseCustomHealStack))]
     [SettingCategory(Targeting_Options)]
     [Setting("Custom Heal Stack",
-        "The priority goes from top to bottom.\n" +
-        "Scroll down to see all of your items.\n" +
-        "Click the Up and Down buttons to move items in the list.\n" +
-        "Click the X button to remove an item from the list.\n\n" +
         "If there are fewer than 4 items, and all return nothing when checked, will fall back to Self.\n\n" +
         "These targets will only be considered valid if they are friendly and within 25y.\n\n" +
         "When applied to something like Esuna, " +
         "these targets will be checked for having a Cleansable Debuff, etc.\n" +
-        "So adding 'Any Cleansable Ally' or similar is not strictly necessary.",
+        "So adding 'Any Cleansable Ally' or similar is not necessary.",
         recommendedValue: "Preference",
         defaultValue: "Focus Target > Hard Target > Self",
-        type: Setting.Type.Stack)]
+        type: Setting.Type.Stack,
+        stackStringsToExclude:
+        ["Enemy", "Attack", "Dead", "Living"])]
     public string[] CustomHealStack =
     [
         "FocusTarget",
@@ -515,17 +515,19 @@ public partial class Configuration : IPluginConfiguration
     [SettingCollapsibleGroup("Raise Stack Customization Options")]
     [SettingCategory(Targeting_Options)]
     [Setting("Custom Raise Stack",
-        "The priority goes from top to bottom.\n" +
-        "Scroll down to see all of your items.\n" +
-        "Click the Up and Down buttons to move items in the list.\n" +
-        "Click the X button to remove an item from the list.\n\n" +
+        "This is the order in which Wrath will try to select a " +
+        "target to Raise,\nif Retargeting of any Raise Feature is enabled.\n\n" +
+        "You can find Raise Features under PvE>General,\n" +
+        "or under each caster that has a Raise.\n\n" +
         "If there are fewer than 5 items, and all return nothing when checked, will fall back to:\n" +
         "your Hard Target if they're dead, or <Any Dead Party Member>.\n\n"+
         "These targets will only be considered valid if they are friendly, dead, and within 30y.\n",
         recommendedValue: "Preference",
         defaultValue: "Any Healer > Any Tank > Any Raiser > Any Dead Party Member",
         type: Setting.Type.Stack,
-        extraText: "(all targets are checked for rezz-ability)")]
+        extraText: "(all targets are checked for rezz-ability)",
+        stackStringsToExclude:
+        ["Enemy", "Attack", "MissingHP", "Lowest", "Chocobo", "Living"])]
     public string[] RaiseStack =
     [
         "AnyHealer",

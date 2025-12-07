@@ -57,7 +57,8 @@ public class Setting(
     string warningMark = "DEFAULT",
     string extraText = "DEFAULT",
     float sliderMin = float.NaN,
-    float sliderMax = float.NaN) : Attribute
+    float sliderMax = float.NaN,
+    string[]? stackStringsToExclude = null) : Attribute
 {
     public enum Type
     {
@@ -87,6 +88,7 @@ public class Setting(
         float.IsNaN(sliderMin) ? null : sliderMin;
     internal float? SliderMax { get; } = 
         float.IsNaN(sliderMax) ? null : sliderMax;
+    internal string[]? StackStringsToExclude { get; } = stackStringsToExclude;
 }
 
 [AttributeUsage(AttributeTargets.Field)]

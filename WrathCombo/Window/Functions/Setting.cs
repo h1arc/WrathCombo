@@ -41,6 +41,7 @@ public class Setting
             ExtraText             = cachedSetting.ExtraText;
             SliderMin             = cachedSetting.SliderMin;
             SliderMax             = cachedSetting.SliderMax;
+            StackStringsToExclude = cachedSetting.StackStringsToExclude;
             GroupName             = cachedSetting.GroupName;
             GroupNameSpace        = cachedSetting.GroupNameSpace;
             GroupShouldBeDisabled = cachedSetting.GroupShouldBeDisabled;
@@ -64,17 +65,18 @@ public class Setting
                       throw new ArgumentException(
                           $"Setting `{settingName}` is missing required " +
                           $"`Setting` attribute.");
-        Name             = setting.Name;
-        HelpMark         = setting.HelpMark;
-        RecommendedValue = setting.RecommendedValue;
-        DefaultValue     = setting.DefaultValue;
-        Type             = setting.TheType;
-        UnitLabel        = setting.UnitLabel;
-        ExtraHelpMark    = setting.ExtraHelpMark;
-        WarningMark      = setting.WarningMark;
-        ExtraText        = setting.ExtraText;
-        SliderMin        = setting.SliderMin;
-        SliderMax        = setting.SliderMax;
+        Name                  = setting.Name;
+        HelpMark              = setting.HelpMark;
+        RecommendedValue      = setting.RecommendedValue;
+        DefaultValue          = setting.DefaultValue;
+        Type                  = setting.TheType;
+        UnitLabel             = setting.UnitLabel;
+        ExtraHelpMark         = setting.ExtraHelpMark;
+        WarningMark           = setting.WarningMark;
+        ExtraText             = setting.ExtraText;
+        SliderMin             = setting.SliderMin;
+        SliderMax             = setting.SliderMax;
+        StackStringsToExclude = setting.StackStringsToExclude;
 
         var group = _field.GetCustomAttribute<SettingGroup>();
         GroupName             = group?.GroupName;
@@ -123,6 +125,12 @@ public class Setting
             }
 
             var typedValue = Convert.ChangeType(value, targetType);
+
+            Service.Configuration.TriggerUserConfigChanged(
+                Configuration.ConfigChangeType.Setting,
+                Configuration.ConfigChangeSource.UI,
+                FieldName, typedValue);
+
             ConfigurationValues.SetFoP(FieldName, typedValue);
             ConfigurationValues.Save();
         }
@@ -149,14 +157,15 @@ public class Setting
 
     #region Optional Attribute Fields
 
-    public string? GroupName;
-    public string? GroupNameSpace;
-    public bool?   GroupShouldBeDisabled;
-    public string? CollapsibleGroupName;
-    public string? Parent;
-    public bool?   ShowSpace;
-    public bool?   ShowOr;
-    public bool?   ShowRetarget;
+    public string?   GroupName;
+    public string?   GroupNameSpace;
+    public bool?     GroupShouldBeDisabled;
+    public string?   CollapsibleGroupName;
+    public string?   Parent;
+    public bool?     ShowSpace;
+    public bool?     ShowOr;
+    public bool?     ShowRetarget;
+    public string[]? StackStringsToExclude;
 
     #endregion
 
