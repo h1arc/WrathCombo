@@ -27,7 +27,7 @@ internal partial class SAM
                     DrawSliderInt(0, 100, SAM_ST_HiganbanaBossAddsOption,
                         "Boss Encounter Non Bosses. Stop using at Enemy HP %.");
 
-                    DrawSliderInt(0, 100, SAM_ST_HiganbanaThrashOption,
+                    DrawSliderInt(0, 100, SAM_ST_HiganbanaTrashOption,
                         "Non boss encounter. Stop using at Enemy HP %.");
 
                     ImGui.Indent();
@@ -166,7 +166,7 @@ internal partial class SAM
             SAM_ST_MeikyoLogic = new("SAM_ST_MeikyoLogic", 1),
             SAM_ST_HiganbanaBossOption = new("SAM_ST_HiganbanaBossOption", 0),
             SAM_ST_HiganbanaBossAddsOption = new("SAM_ST_HiganbanaBossAddsOption", 50),
-            SAM_ST_HiganbanaThrashOption = new("SAM_ST_HiganbanaThrashOption", 100),
+            SAM_ST_HiganbanaTrashOption = new("SAM_ST_HiganbanaTrashOption", 100),
             SAM_ST_MeikyoBossOption = new("SAM_ST_Meikyo_Suboption", 1),
             SAM_ST_HiganbanaRefresh = new("SAM_ST_Higanbana_Refresh", 15),
             SAM_ST_KenkiOvercapAmount = new("SAM_ST_KenkiOvercapAmount", 65),
