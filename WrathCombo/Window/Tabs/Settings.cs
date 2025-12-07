@@ -467,6 +467,17 @@ internal class Settings : ConfigWindow
 
         #endregion
 
+        #region Or
+
+        if (setting.ShowOr == true)
+        {
+            ImGuiEx.Spacing(new Vector2(5, 5));
+            ImGui.TextUnformatted("Or");
+            ImGuiEx.Spacing(new Vector2(0, 5));
+        }
+
+        #endregion
+
         #region Indentation
 
         if (setting.Parent is not null)
