@@ -156,7 +156,8 @@ internal class MajorChangesWindow : Dalamud.Interface.Windowing.Window
     #region Specific Info to Display for Update
 
     private static bool _getConfigValue(string config) =>
-        Configuration.GetCustomBoolValue(config);
+        Configuration.GetCustomBoolArrayValue(config) != Array.Empty<bool>() ||
+        Configuration.GetCustomIntValue(config) > 0;
 
     /// <summary>
     ///     If the user was using MNK's old Burst Configs
