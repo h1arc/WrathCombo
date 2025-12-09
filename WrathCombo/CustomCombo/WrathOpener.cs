@@ -239,7 +239,7 @@ public abstract class WrathOpener
                 }
 
                 while (OpenerStep > 1 && !ActionReady(CurrentOpenerAction) &&
-                       !SkipSteps.Any(x => x.Steps.Any(y => y == OpenerStep - 1)) &&
+                       !SkipSteps.Any(x => x.Steps.Any(y => y == OpenerStep)) &&
                        ActionWatching.TimeSinceLastAction.TotalSeconds > Math.Max(1.5, Math.Max(GCDTotal, Player.Object.TotalCastTime + 0.2f)))
                 {
                     if (OpenerStep >= OpenerActions.Count)
