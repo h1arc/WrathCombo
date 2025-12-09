@@ -142,7 +142,7 @@ public abstract class WrathOpener
 
     internal abstract UserData? ContentCheckConfig { get; }
 
-    public bool LevelChecked => Player.Level >= MinOpenerLevel && Player.Level <= MaxOpenerLevel;
+    public bool LevelChecked => Player.SyncedLevel >= MinOpenerLevel && Player.SyncedLevel <= MaxOpenerLevel;
 
     public abstract bool HasCooldowns();
 
