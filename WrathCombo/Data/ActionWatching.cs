@@ -180,7 +180,7 @@ public static class ActionWatching
                 }
             }
 
-            if (ActionSheet.TryGetValue(actionId, out var actionSheet) && actionSheet.TargetArea)
+            if (casterEntityId == Player.Object.EntityId && ActionSheet.TryGetValue(actionId, out var actionSheet) && actionSheet.TargetArea)
             {
                 UpdateLastUsedAction(actionId, 1, 0, 0);
             }
