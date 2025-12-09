@@ -123,7 +123,9 @@ internal partial class SAM : Melee
                     };
                 }
 
-                if (ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.MeikyoShisui))
+                if (ActionReady(MeikyoShisui) &&
+                    !HasStatusEffect(Buffs.MeikyoShisui) &&
+                    (!InCombat() || ComboTimer is 0))
                     return MeikyoShisui;
 
                 if (ActionReady(Zanshin) && HasStatusEffect(Buffs.ZanshinReady) && Kenki >= 50)
@@ -340,7 +342,8 @@ internal partial class SAM : Melee
                 if (IsEnabled(Preset.SAM_AoE_CDs))
                 {
                     if (IsEnabled(Preset.SAM_AoE_MeikyoShisui) &&
-                        ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.MeikyoShisui))
+                        ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.MeikyoShisui) &&
+                        (!InCombat() || ComboTimer is 0))
                         return MeikyoShisui;
 
                     if (IsEnabled(Preset.SAM_AOE_CDs_Ikishoten) &&
