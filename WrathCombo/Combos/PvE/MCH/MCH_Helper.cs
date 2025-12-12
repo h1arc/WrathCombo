@@ -170,6 +170,9 @@ internal partial class MCH
 
     private static bool CanReassemble()
     {
+        if (HasStatusEffect(Buffs.Reassembled))
+            return false;
+
         var maxCharges = GetMaxCharges(Reassemble);
         var remainingCharges = GetRemainingCharges(Reassemble);
         
