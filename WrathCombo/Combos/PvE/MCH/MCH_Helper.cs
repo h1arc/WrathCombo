@@ -227,24 +227,24 @@ internal partial class MCH
 
     private static bool CanUseTools(ref uint actionID)
     {
-        if (ActionReady(Excavator))
-        {
-            actionID = Excavator;
-            return true;
-        }
-
-        if (ActionReady(Chainsaw))
-        {
-            actionID = Chainsaw;
-            return true;
-        }
-
         if (LevelChecked(AirAnchor) && ActionReady(AirAnchor))
         {
             actionID = AirAnchor;
             return true;
         }
-
+        
+        if (ActionReady(Chainsaw))
+        {
+            actionID = Chainsaw;
+            return true;
+        }
+        
+        if (ActionReady(Excavator))
+        {
+            actionID = Excavator;
+            return true;
+        }
+        
         if (ActionReady(Drill))
         {
             actionID = Drill;
