@@ -178,7 +178,7 @@ internal partial class MCH
 
         if (maxCharges == 1)
         {
-            if (remainingCharges == 1 && (ActionReady(Drill) || ActionReady(AirAnchor)))
+            if (remainingCharges == 1 && (ActionReady(Drill) || LevelChecked(AirAnchor) && ActionReady(AirAnchor)))
                 return true;
         }
 
@@ -251,7 +251,7 @@ internal partial class MCH
             return true;
         }
 
-        if (ActionReady(HotShot) && !LevelChecked(CleanShot))
+        if (ActionReady(HotShot))
         {
             actionID = HotShot;
             return true;
