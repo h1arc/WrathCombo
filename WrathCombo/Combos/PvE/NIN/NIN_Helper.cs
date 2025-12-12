@@ -185,7 +185,6 @@ internal partial class NIN
             _ => actionID,
         };
 
-        Svc.Log.Debug($"{ActionWatching.LastAction is not TCJSuiton && original != actionID}");
         return ActionWatching.LastAction is not TCJSuiton && original != actionID;
     }
     internal static bool AoETenChiJinDoton(ref uint actionID)
