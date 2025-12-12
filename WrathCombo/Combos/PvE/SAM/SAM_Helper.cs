@@ -591,7 +591,7 @@ internal partial class SAM
 
     #region Gauge
 
-    private static SAMGauge Gauge = GetJobGauge<SAMGauge>();
+    private static SAMGauge Gauge => GetJobGauge<SAMGauge>();
 
     private static bool HasGetsu => Gauge.HasGetsu;
 
