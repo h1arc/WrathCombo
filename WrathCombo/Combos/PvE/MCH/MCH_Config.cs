@@ -128,11 +128,6 @@ internal partial class MCH
                     DrawSliderInt(0, 1, MCH_ST_ReassemblePool,
                         "Number of Charges to Save for Manual Use");
 
-                    DrawHorizontalMultiChoice(MCH_ST_Reassembled, $"Use on {Excavator.ActionName()}", "", 5, 0);
-                    DrawHorizontalMultiChoice(MCH_ST_Reassembled, $"Use on {Chainsaw.ActionName()}", "", 5, 1);
-                    DrawHorizontalMultiChoice(MCH_ST_Reassembled, $"Use on {AirAnchor.ActionName()}", "", 5, 2);
-                    DrawHorizontalMultiChoice(MCH_ST_Reassembled, $"Use on {Drill.ActionName()}", "", 5, 3);
-                    DrawHorizontalMultiChoice(MCH_ST_Reassembled, $"Use on {CleanShot.ActionName()}", "", 5, 4);
                     break;
 
                 case Preset.MCH_ST_Adv_Tools:
@@ -285,7 +280,6 @@ internal partial class MCH
         public static UserFloat
             MCH_AoE_FlamethrowerTimeStill = new("MCH_AoE_FlamethrowerTimeStill", 2.5f);
         public static UserBoolArray
-            MCH_ST_Reassembled = new("MCH_ST_Reassembled"),
             MCH_AoE_Reassembled = new("MCH_AoE_Reassembled");
 
         #endregion

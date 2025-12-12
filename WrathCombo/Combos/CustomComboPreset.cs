@@ -3626,22 +3626,6 @@ public enum Preset
     [CustomComboInfo("Tools", "Adds Hotshot, Drill, Air Anchor, Chainsaw and Excavator to the rotation.", Job.MCH)]
     MCH_ST_Adv_Tools = 8119,
 
-    [ParentCombo(MCH_ST_Adv_Tools)]
-    [CustomComboInfo("Drill Option", "Adds Drill to the rotation.", Job.MCH)]
-    MCH_ST_Adv_Drill = 8109,
-
-    [ParentCombo(MCH_ST_Adv_Tools)]
-    [CustomComboInfo("Hot Shot / Air Anchor Option", "Adds Hot Shot/Air Anchor to the rotation.", Job.MCH)]
-    MCH_ST_Adv_AirAnchor = 8102,
-
-    [ParentCombo(MCH_ST_Adv_Tools)]
-    [CustomComboInfo("Chain Saw Option", "Adds Chain Saw to the rotation.", Job.MCH)]
-    MCH_ST_Adv_Chainsaw = 8112,
-
-    [ParentCombo(MCH_ST_Adv_Tools)]
-    [CustomComboInfo("Excavator Option", "Adds Excavator to the rotation.\nWill follow Balance logic if selected on Turret/Queen.", Job.MCH)]
-    MCH_ST_Adv_Excavator = 8116,
-
     #endregion
 
     #region Queen

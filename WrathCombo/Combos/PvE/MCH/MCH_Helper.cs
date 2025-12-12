@@ -1,5 +1,4 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
-using ECommons.MathHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using System;
 using System.Collections.Generic;
@@ -146,36 +145,6 @@ internal partial class MCH
 
     #region Variables
 
-    private static bool ReassembledExcavatorST =>
-        IsEnabled(Preset.MCH_ST_Adv_Reassemble) && MCH_ST_Reassembled[0] && (HasStatusEffect(Buffs.Reassembled) || !HasStatusEffect(Buffs.Reassembled)) ||
-        IsEnabled(Preset.MCH_ST_Adv_Reassemble) && !MCH_ST_Reassembled[0] && !HasStatusEffect(Buffs.Reassembled) ||
-        !HasStatusEffect(Buffs.Reassembled) && GetRemainingCharges(Reassemble) <= MCH_ST_ReassemblePool ||
-        !IsEnabled(Preset.MCH_ST_Adv_Reassemble);
-
-    private static bool ReassembledChainsawST =>
-        IsEnabled(Preset.MCH_ST_Adv_Reassemble) && MCH_ST_Reassembled[1] && (HasStatusEffect(Buffs.Reassembled) || !HasStatusEffect(Buffs.Reassembled)) ||
-        IsEnabled(Preset.MCH_ST_Adv_Reassemble) && !MCH_ST_Reassembled[1] && !HasStatusEffect(Buffs.Reassembled) ||
-        !HasStatusEffect(Buffs.Reassembled) && GetRemainingCharges(Reassemble) <= MCH_ST_ReassemblePool ||
-        !IsEnabled(Preset.MCH_ST_Adv_Reassemble);
-
-    private static bool ReassembledAnchorST =>
-        IsEnabled(Preset.MCH_ST_Adv_Reassemble) && MCH_ST_Reassembled[2] && (HasStatusEffect(Buffs.Reassembled) || !HasStatusEffect(Buffs.Reassembled)) ||
-        IsEnabled(Preset.MCH_ST_Adv_Reassemble) && !MCH_ST_Reassembled[2] && !HasStatusEffect(Buffs.Reassembled) ||
-        !HasStatusEffect(Buffs.Reassembled) && GetRemainingCharges(Reassemble) <= MCH_ST_ReassemblePool ||
-        !IsEnabled(Preset.MCH_ST_Adv_Reassemble);
-
-    private static bool ReassembledDrillST =>
-        IsEnabled(Preset.MCH_ST_Adv_Reassemble) && MCH_ST_Reassembled[3] && (HasStatusEffect(Buffs.Reassembled) || !HasStatusEffect(Buffs.Reassembled)) ||
-        IsEnabled(Preset.MCH_ST_Adv_Reassemble) && !MCH_ST_Reassembled[3] && !HasStatusEffect(Buffs.Reassembled) ||
-        !HasStatusEffect(Buffs.Reassembled) && GetRemainingCharges(Reassemble) <= MCH_ST_ReassemblePool ||
-        !IsEnabled(Preset.MCH_ST_Adv_Reassemble);
-
-    private static bool ReassembledHotShotST =>
-        IsEnabled(Preset.MCH_ST_Adv_Reassemble) && MCH_ST_Reassembled[2] && (HasStatusEffect(Buffs.Reassembled) || !HasStatusEffect(Buffs.Reassembled)) ||
-        IsEnabled(Preset.MCH_ST_Adv_Reassemble) && !MCH_ST_Reassembled[2] && !HasStatusEffect(Buffs.Reassembled) ||
-        !HasStatusEffect(Buffs.Reassembled) && GetRemainingCharges(Reassemble) <= MCH_ST_ReassemblePool ||
-        !IsEnabled(Preset.MCH_ST_Adv_Reassemble);
-
     private static bool ReassembledExcavatorAoE =>
         IsEnabled(Preset.MCH_AoE_Adv_Reassemble) && MCH_AoE_Reassembled[3] && HasStatusEffect(Buffs.Reassembled) ||
         IsEnabled(Preset.MCH_AoE_Adv_Reassemble) && !MCH_AoE_Reassembled[3] && !HasStatusEffect(Buffs.Reassembled) ||
@@ -199,46 +168,32 @@ internal partial class MCH
 
     #endregion
 
-    private static bool CanReassemble(bool onExcavator, bool onChainsaw, bool onAirAnchor, bool onDrill)
+    private static bool CanReassemble()
     {
-        if (!JustUsed(OriginalHook(Heatblast)) &&
-            !HasStatusEffect(Buffs.Reassembled) && ActionReady(Reassemble))
+        var maxCharges = GetMaxCharges(Reassemble);
+        var remainingCharges = GetRemainingCharges(Reassemble);
+        
+        if (maxCharges == 1)
         {
-            if (onExcavator &&
-                LevelChecked(Excavator) && Battery < 90 &&
-                HasStatusEffect(Buffs.ExcavatorReady) &&
-                InActionRange(Excavator))
+            if (remainingCharges == 1 && (ActionReady(Drill) || ActionReady(AirAnchor)))
+                return true;
+        }
+        if (maxCharges == 2)
+        {
+            var numberOfReadyTools = 0;
+            if (ActionReady(Drill))
+                numberOfReadyTools++;
+            if (ActionReady(Chainsaw))
+                numberOfReadyTools++;
+            if (ActionReady(AirAnchor))
+                numberOfReadyTools++;
+            if (ActionReady(Excavator))
+                numberOfReadyTools++;
+
+            if (remainingCharges == 2 && numberOfReadyTools >= 2)
                 return true;
 
-            if (onChainsaw &&
-                LevelChecked(Chainsaw) && Battery < 90 &&
-                GetCooldownRemainingTime(Chainsaw) < GCD &&
-                InActionRange(Chainsaw) &&
-                (!LevelChecked(Excavator) || !MCH_ST_Reassembled[0]))
-                return true;
-
-            if (onAirAnchor &&
-                LevelChecked(AirAnchor) && Battery < 90 &&
-                GetCooldownRemainingTime(AirAnchor) < GCD &&
-                InActionRange(AirAnchor) &&
-                (!LevelChecked(Excavator) || MCH_ST_Reassembled[0] && GetCooldownRemainingTime(Chainsaw) > 40 || !MCH_ST_Reassembled[0]))
-                return true;
-
-            if (onDrill &&
-                LevelChecked(Drill) &&
-                (TraitLevelChecked(Traits.EnhancedMultiWeapon) && GetRemainingCharges(Drill) is 1 or 2 ||
-                 GetCooldownRemainingTime(Drill) < GCD) &&
-                InActionRange(Drill) &&
-                !WFCD.InRange(11, 21) &&
-                (!LevelChecked(AirAnchor) || MCH_ST_Reassembled[2] && GetCooldownRemainingTime(AirAnchor) > 20 || !MCH_ST_Reassembled[2]) &&
-                (!LevelChecked(Chainsaw) || MCH_ST_Reassembled[1] && GetCooldownRemainingTime(Chainsaw) > 40 || !MCH_ST_Reassembled[1]) &&
-                (!LevelChecked(Excavator) || MCH_ST_Reassembled[0] && GetCooldownRemainingTime(Chainsaw) > 40 || !MCH_ST_Reassembled[0]))
-                return true;
-
-            if (onAirAnchor && Battery < 90 &&
-                !LevelChecked(CleanShot) &&
-                GetCooldownRemainingTime(HotShot) < GCD &&
-                InActionRange(HotShot))
+            if (remainingCharges == 1 && numberOfReadyTools >= 1 && GetCooldownChargeRemainingTime(Reassemble) >= 45) //Kage tweak this last number if needed, it could maybe go to 50
                 return true;
         }
 
@@ -262,53 +217,34 @@ internal partial class MCH
         !LevelChecked(Chainsaw) ||
         LevelChecked(Chainsaw) && GetCooldownRemainingTime(Chainsaw) >= 9;
 
-    private static bool CanUseTools(ref uint actionID, bool useExcavator, bool useChainsaw, bool useAirAnchor, bool useDrill)
+    private static bool CanUseTools(ref uint actionID)
     {
-        if (useExcavator &&
-            ReassembledExcavatorST &&
-            LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady))
-        {
-            actionID = Excavator;
-            return true;
-        }
-
-        if (useChainsaw &&
-            ReassembledChainsawST &&
-            !HasStatusEffect(Buffs.ExcavatorReady) && LevelChecked(Chainsaw) &&
-            GetCooldownRemainingTime(Chainsaw) <= GCD / 2)
-        {
-            actionID = Chainsaw;
-            return true;
-        }
-
-        if (useAirAnchor &&
-            ReassembledAnchorST &&
-            LevelChecked(AirAnchor) &&
-            GetCooldownRemainingTime(AirAnchor) <= GCD / 2)
+        if (LevelChecked(AirAnchor) && ActionReady(AirAnchor))
         {
             actionID = AirAnchor;
             return true;
         }
-
-        if (useDrill &&
-            ReassembledDrillST &&
-            LevelChecked(Drill) &&
-            (TraitLevelChecked(Traits.EnhancedMultiWeapon) && GetRemainingCharges(Drill) is 1 or 2 ||
-             GetCooldownRemainingTime(Drill) < GCD / 2) &&
-            !WFCD.InRange(11, 21))
+        if (ActionReady(Chainsaw))
+        {
+            actionID = Chainsaw;
+            return true;
+        }
+        if (ActionReady(Excavator))
+        {
+            actionID = Excavator;
+            return true;
+        }
+        if (ActionReady(Drill))
         {
             actionID = Drill;
             return true;
         }
-
-        if (useAirAnchor &&
-            ReassembledHotShotST &&
-            LevelChecked(HotShot) && !LevelChecked(AirAnchor) &&
-            GetCooldownRemainingTime(HotShot) <= GCD / 2)
+        if (ActionReady(HotShot))
         {
             actionID = HotShot;
             return true;
         }
+
         return false;
     }
 

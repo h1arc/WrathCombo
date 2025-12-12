@@ -15,14 +15,8 @@ internal partial class MCH : PhysicalRanged
             if (actionID is not (SplitShot or HeatedSplitShot))
                 return actionID;
 
-            //Reassemble to start before combat
-            if (!HasStatusEffect(Buffs.Reassembled) && ActionReady(Reassemble) &&
-                !InCombat() && HasBattleTarget() &&
-                (HasStatusEffect(Buffs.ExcavatorReady) && InActionRange(Excavator) ||
-                 ActionReady(Chainsaw) && InActionRange(Chainsaw) ||
-                 LevelChecked(AirAnchor) && IsOffCooldown(AirAnchor) && InActionRange(AirAnchor) ||
-                 ActionReady(Drill) && InActionRange(Drill) ||
-                 !LevelChecked(CleanShot) && ActionReady(HotShot) && InActionRange(HotShot)))
+            //Reassemble
+            if (CanReassemble())
                 return Reassemble;
 
             if (ContentSpecificActions.TryGet(out uint contentAction))
@@ -73,7 +67,7 @@ internal partial class MCH : PhysicalRanged
                         return OriginalHook(RookAutoturret);
 
                     // Reassemble
-                    if (CanReassemble(true, true, true, true))
+                    if (CanReassemble())
                         return Reassemble;
 
                     // Hypercharge
@@ -112,7 +106,7 @@ internal partial class MCH : PhysicalRanged
                 return FullMetalField;
 
             //Tools
-            if (CanUseTools(ref actionID, true, true, true, true) && !IsOverheated)
+            if (CanUseTools(ref actionID) && !IsOverheated)
                 return actionID;
 
             // Heatblast
@@ -274,13 +268,7 @@ internal partial class MCH : PhysicalRanged
 
             //Reassemble to start before combat
             if (IsEnabled(Preset.MCH_ST_Adv_Reassemble) &&
-                !HasStatusEffect(Buffs.Reassembled) && ActionReady(Reassemble) &&
-                !InCombat() && HasBattleTarget() &&
-                (MCH_ST_Reassembled[0] && HasStatusEffect(Buffs.ExcavatorReady) && InActionRange(Excavator) ||
-                 MCH_ST_Reassembled[1] && ActionReady(Chainsaw) && InActionRange(Chainsaw) ||
-                 MCH_ST_Reassembled[2] && LevelChecked(AirAnchor) && IsOffCooldown(AirAnchor) && InActionRange(AirAnchor) ||
-                 MCH_ST_Reassembled[3] && ActionReady(Drill) && InActionRange(Drill) ||
-                 MCH_ST_Reassembled[4] && !LevelChecked(CleanShot) && ActionReady(HotShot) && InActionRange(HotShot)))
+                CanReassemble())
                 return Reassemble;
 
             if (ContentSpecificActions.TryGet(out uint contentAction))
@@ -342,7 +330,7 @@ internal partial class MCH : PhysicalRanged
                     if (IsEnabled(Preset.MCH_ST_Adv_Reassemble) &&
                         GetRemainingCharges(Reassemble) > MCH_ST_ReassemblePool &&
                         GetTargetHPPercent() > HPThresholdReassemble &&
-                        CanReassemble(MCH_ST_Reassembled[0], MCH_ST_Reassembled[1], MCH_ST_Reassembled[2], MCH_ST_Reassembled[3]))
+                        CanReassemble())
                         return Reassemble;
 
                     // Hypercharge
@@ -402,8 +390,7 @@ internal partial class MCH : PhysicalRanged
 
             //Tools
             if (IsEnabled(Preset.MCH_ST_Adv_Tools) && GetTargetHPPercent() > HPThresholdTools &&
-                CanUseTools(ref actionID, IsEnabled(Preset.MCH_ST_Adv_Excavator), IsEnabled(Preset.MCH_ST_Adv_Chainsaw),
-                    IsEnabled(Preset.MCH_ST_Adv_AirAnchor), IsEnabled(Preset.MCH_ST_Adv_Drill)) && !IsOverheated)
+                CanUseTools(ref actionID) && !IsOverheated)
                 return actionID;
 
             // Heatblast
@@ -417,7 +404,7 @@ internal partial class MCH : PhysicalRanged
                 if (ComboAction is SplitShot && LevelChecked(SlugShot))
                     return OriginalHook(SlugShot);
 
-                if (IsEnabled(Preset.MCH_ST_Adv_Reassemble) && MCH_ST_Reassembled[4] &&
+                if (IsEnabled(Preset.MCH_ST_Adv_Reassemble) &&
                     ComboAction is SlugShot && !LevelChecked(Drill) && LevelChecked(CleanShot) &&
                     !HasStatusEffect(Buffs.Reassembled) && ActionReady(Reassemble))
                     return Reassemble;
