@@ -182,7 +182,7 @@ internal partial class MCH
         {
             var numberOfReadyTools = 0;
             if (ActionReady(Drill))
-                numberOfReadyTools++;
+                numberOfReadyTools += (int)GetRemainingCharges(Drill);
             if (ActionReady(Chainsaw))
                 numberOfReadyTools++;
             if (ActionReady(AirAnchor))
