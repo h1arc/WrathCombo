@@ -173,23 +173,28 @@ internal partial class MCH
         if (HasStatusEffect(Buffs.Reassembled) && !JustUsed(Reassemble, 1.5f))
             return false;
 
-        var maxCharges = GetMaxCharges(Reassemble);
-        var remainingCharges = GetRemainingCharges(Reassemble);
-        
+        ushort maxCharges = GetMaxCharges(Reassemble);
+        uint remainingCharges = GetRemainingCharges(Reassemble);
+
         if (maxCharges == 1)
         {
-            if (remainingCharges == 1 && (ActionReady(Drill) || ActionReady(AirAnchor)))
+            if (remainingCharges == 1 && (ActionReady(Drill) || LevelChecked(AirAnchor) && ActionReady(AirAnchor)))
                 return true;
         }
+
         if (maxCharges == 2)
         {
-            var numberOfReadyTools = 0;
+            int numberOfReadyTools = 0;
+
             if (ActionReady(Drill))
                 numberOfReadyTools += (int)GetRemainingCharges(Drill);
+
             if (ActionReady(Chainsaw))
                 numberOfReadyTools++;
+
             if (ActionReady(AirAnchor))
                 numberOfReadyTools++;
+
             if (ActionReady(Excavator))
                 numberOfReadyTools++;
 
@@ -227,21 +232,25 @@ internal partial class MCH
             actionID = AirAnchor;
             return true;
         }
+
         if (ActionReady(Chainsaw))
         {
             actionID = Chainsaw;
             return true;
         }
+
         if (ActionReady(Excavator))
         {
             actionID = Excavator;
             return true;
         }
+
         if (ActionReady(Drill))
         {
             actionID = Drill;
             return true;
         }
+
         if (ActionReady(HotShot))
         {
             actionID = HotShot;
@@ -473,7 +482,7 @@ internal partial class MCH
 
     #region Gauge
 
-    private static MCHGauge Gauge = GetJobGauge<MCHGauge>();
+    private static MCHGauge Gauge => GetJobGauge<MCHGauge>();
 
     private static bool IsOverheated => Gauge.IsOverheated;
 
