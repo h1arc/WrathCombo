@@ -232,19 +232,19 @@ internal partial class MCH
             actionID = AirAnchor;
             return true;
         }
-        
+
         if (ActionReady(Chainsaw))
         {
             actionID = Chainsaw;
             return true;
         }
-        
+
         if (ActionReady(Excavator))
         {
             actionID = Excavator;
             return true;
         }
-        
+
         if (ActionReady(Drill))
         {
             actionID = Drill;
