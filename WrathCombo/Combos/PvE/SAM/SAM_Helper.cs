@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
-using WrathCombo.Data;
 using static FFXIVClientStructs.FFXIV.Client.Game.ActionManager;
 using static WrathCombo.Combos.PvE.SAM.Config;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
@@ -15,22 +14,6 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class SAM
 {
-    private static bool RefreshFugetsu =>
-        GetStatusEffectRemainingTime(Buffs.Fugetsu) < 8;
-
-    private static bool RefreshFuka =>
-        GetStatusEffectRemainingTime(Buffs.Fuka) < 8;
-
-    private static bool EnhancedSenei =>
-        TraitLevelChecked(Traits.EnhancedHissatsu);
-
-    private static int SenCount =>
-        GetSenCount();
-
-    private static bool M6SReady =>
-        !HiddenFeaturesData.IsEnabledWith(Preset.SAM_Hid_M6SHoldSquirrelBurst, () =>
-            HiddenFeaturesData.Targeting.R6SSquirrel && CombatEngageDuration().TotalSeconds < 275);
-
 
     #region Basic Combo
 
@@ -42,7 +25,8 @@ internal partial class SAM
             {
                 if ((SimpleMode || IsEnabled(Preset.SAM_ST_Yukikaze)) &&
                     !HasSetsu && LevelChecked(Yukikaze) &&
-                    HasStatusEffect(Buffs.Fugetsu) && HasStatusEffect(Buffs.Fuka))
+                    (HasStatusEffect(Buffs.Fugetsu) || IsNotEnabled(Preset.SAM_ST_Gekko)) &&
+                    (HasStatusEffect(Buffs.Fuka) || IsNotEnabled(Preset.SAM_ST_Kasha)))
                     return Yukikaze;
 
                 if ((SimpleMode || IsEnabled(Preset.SAM_ST_Gekko)) &&
@@ -83,39 +67,29 @@ internal partial class SAM
 
     #region Iaijutsu
 
-    private static bool CanUseIaijutsu(bool useHiganbana, bool useTenkaGoken, bool useMidare, bool simpleMode = false)
+    private static bool CanUseIaijutsu(bool useHiganbana, bool useTenkaGoken, bool useMidare)
     {
-        int higanbanaHPThreshold = SAM_ST_HiganbanaHPThreshold;
         int higanbanaRefresh = SAM_ST_HiganbanaRefresh;
 
         if (LevelChecked(Iaijutsu) && InActionRange(OriginalHook(Iaijutsu)))
         {
             //Higanbana
-            if (!simpleMode &&
-                useHiganbana &&
-                SenCount is 1 && GetTargetHPPercent() > higanbanaHPThreshold &&
-                (SAM_ST_HiganbanaBossOption == 0 || TargetIsBoss()) &&
-                CanApplyStatus(CurrentTarget, Debuffs.Higanbana) &&
+            if (useHiganbana &&
+                SenCount is 1 && CanUseHiganbana() &&
                 (JustUsed(MeikyoShisui, 15f) && GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) <= higanbanaRefresh ||
                  !HasStatusEffect(Debuffs.Higanbana, CurrentTarget)))
                 return true;
 
             //Tenka Goken
-            if (useTenkaGoken && SenCount is 2 &&
+            if (useTenkaGoken &&
+                SenCount is 2 &&
                 !LevelChecked(MidareSetsugekka))
                 return true;
 
             //Midare Setsugekka
-            if (useMidare && SenCount is 3 &&
+            if (useMidare &&
+                SenCount is 3 &&
                 LevelChecked(MidareSetsugekka) && !HasStatusEffect(Buffs.TsubameReady))
-                return true;
-
-            //Higanbana Simple Mode
-            if (simpleMode && useHiganbana &&
-                SenCount is 1 && GetTargetHPPercent() > 1 && TargetIsBoss() &&
-                CanApplyStatus(CurrentTarget, Debuffs.Higanbana) &&
-                (JustUsed(MeikyoShisui, 15f) && GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) <= 15 ||
-                 !HasStatusEffect(Debuffs.Higanbana, CurrentTarget)))
                 return true;
         }
         return false;
@@ -137,6 +111,59 @@ internal partial class SAM
 
         internal static int Shinten => GetResourceCost(SAM.Shinten);
     }
+
+    #endregion
+
+    #region Higanbana
+
+    private static bool CanUseHiganbana()
+    {
+        int hpThreshold = IsNotEnabled(Preset.SAM_ST_SimpleMode) ? computeHpThresholdHiganbana() : 0;
+        double dotRefresh = IsNotEnabled(Preset.SAM_ST_SimpleMode) ? SAM_ST_HiganbanaRefresh : 15;
+        float dotRemaining = GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget);
+
+        return ActionReady(Higanbana) && SenCount is 1 &&
+               CanApplyStatus(CurrentTarget, Debuffs.Higanbana) &&
+               HasBattleTarget() &&
+               GetTargetHPPercent() > hpThreshold &&
+               dotRemaining <= dotRefresh;
+    }
+
+    private static int computeHpThresholdHiganbana()
+    {
+        if (InBossEncounter())
+            return TargetIsBoss() ? SAM_ST_HiganbanaBossOption : SAM_ST_HiganbanaBossAddsOption;
+
+        return SAM_ST_HiganbanaTrashOption;
+    }
+
+    #endregion
+
+    #region Misc
+
+    private static bool RefreshFugetsu =>
+        GetStatusEffectRemainingTime(Buffs.Fugetsu) <=
+        GetStatusEffectRemainingTime(Buffs.Fuka);
+
+    private static bool RefreshFuka =>
+        GetStatusEffectRemainingTime(Buffs.Fuka) <=
+        GetStatusEffectRemainingTime(Buffs.Fugetsu);
+
+    private static bool EnhancedSenei =>
+        TraitLevelChecked(Traits.EnhancedHissatsu);
+
+    private static int SenCount =>
+        GetSenCount();
+
+    private static bool CanUseThirdEye =>
+        ActionReady(OriginalHook(ThirdEye)) &&
+        (RaidWideCasting(2f) || !IsInParty());
+
+    //Auto Meditate
+    private static bool CanUseMeditate =>
+        ActionReady(Meditate) &&
+        !IsMoving() && TimeStoodStill > TimeSpan.FromSeconds(SAM_ST_MeditateTimeStill) &&
+        InCombat() && !HasBattleTarget();
 
     #endregion
 
@@ -204,11 +231,17 @@ internal partial class SAM
 
     private static uint DoMeikyoCombo(uint actionId, bool useTrueNorthIfEnabled = true, bool SimpleMode = false)
     {
+        if ((SimpleMode || IsEnabled(Preset.SAM_ST_Yukikaze)) &&
+            LevelChecked(Yukikaze) && !HasSetsu &&
+            (HasKa || IsNotEnabled(Preset.SAM_ST_Gekko)) &&
+            (HasGetsu || IsNotEnabled(Preset.SAM_ST_Kasha)))
+            return Yukikaze;
+
         if ((SimpleMode || IsEnabled(Preset.SAM_ST_Gekko)) &&
-            LevelChecked(Jinpu) &&
+            LevelChecked(Gekko) &&
             ((OnTargetsRear() || OnTargetsFront()) && !HasGetsu ||
              OnTargetsFlank() && HasKa ||
-             !HasStatusEffect(Buffs.Fugetsu)))
+             !HasStatusEffect(Buffs.Fugetsu) && !HasGetsu))
             return !OnTargetsRear() &&
                    Role.CanTrueNorth() &&
                    useTrueNorthIfEnabled
@@ -216,20 +249,15 @@ internal partial class SAM
                 : Gekko;
 
         if ((SimpleMode || IsEnabled(Preset.SAM_ST_Kasha)) &&
-            LevelChecked(Shifu) &&
+            LevelChecked(Kasha) &&
             ((OnTargetsFlank() || OnTargetsFront()) && !HasKa ||
              OnTargetsRear() && HasGetsu ||
-             !HasStatusEffect(Buffs.Fuka)))
+             !HasStatusEffect(Buffs.Fuka) && !HasKa))
             return !OnTargetsFlank() &&
                    Role.CanTrueNorth() &&
                    useTrueNorthIfEnabled
                 ? Role.TrueNorth
                 : Kasha;
-
-        if ((SimpleMode || IsEnabled(Preset.SAM_ST_Yukikaze)) &&
-            !HasSetsu && LevelChecked(Yukikaze) &&
-            HasStatusEffect(Buffs.Fugetsu) && HasStatusEffect(Buffs.Fuka))
-            return Yukikaze;
 
         return actionId;
     }
@@ -261,7 +289,9 @@ internal partial class SAM
     private static bool CanShoha() =>
         ActionReady(Shoha) && MeditationStacks is 3 &&
         InActionRange(Shoha) &&
-        (EnhancedSenei && JustUsed(Senei, 20f) ||
+        (MeditationStacks is 3 && SenCount is 3 ||
+         MeditationStacks is 3 && HasStatusEffect(Buffs.OgiNamikiriReady) ||
+         EnhancedSenei && JustUsed(Senei, 20f) ||
          !EnhancedSenei && JustUsed(KaeshiSetsugekka, 10f));
 
     //TODO Buffcheck
@@ -273,23 +303,29 @@ internal partial class SAM
     private static bool CanShinten()
     {
         int shintenTreshhold = SAM_ST_ExecuteThreshold;
+        float GCD = GetCooldown(OriginalHook(Hakaze)).CooldownTotal;
 
         if (ActionReady(Shinten) && Kenki >= SAMKenki.Shinten && InActionRange(Shinten))
         {
             if (GetTargetHPPercent() < shintenTreshhold)
                 return true;
 
-            if (Kenki >= 95)
+            if (Kenki is 100 && ComboAction == OriginalHook(Gyofu) ||
+                Kenki >= 95 && ComboAction is Jinpu or Shifu)
                 return true;
 
             if (EnhancedSenei &&
                 !HasStatusEffect(Buffs.ZanshinReady))
             {
+                if (GetCooldownRemainingTime(Senei) < GCD * 2 &&
+                    Kenki >= 95)
+                    return true;
+
                 if (JustUsed(Senei, 15f) &&
                     !JustUsed(Ikishoten))
                     return true;
 
-                if (GetCooldownRemainingTime(Senei) >= 25 &&
+                if (GetCooldownRemainingTime(Senei) >= 20 &&
                     Kenki >= SAM_ST_KenkiOvercapAmount)
                     return true;
             }

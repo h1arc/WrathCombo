@@ -11,6 +11,9 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class VPR
 {
+
+    #region Misc
+
     private static float IreCD =>
         GetCooldownRemainingTime(SerpentsIre);
 
@@ -43,6 +46,8 @@ internal partial class VPR
         !HasStatusEffect(Buffs.FlankstungVenom) &&
         !HasStatusEffect(Buffs.HindsbaneVenom) &&
         !HasStatusEffect(Buffs.HindstungVenom);
+
+    #endregion
 
     #region Reawaken
 
@@ -358,8 +363,12 @@ internal partial class VPR
 
     private static SerpentCombo SerpentCombo => Gauge.SerpentCombo;
 
-    private static bool Legacyweaves => SerpentCombo.HasFlag(SerpentCombo.FirstLegacy) || SerpentCombo.HasFlag(SerpentCombo.SecondLegacy) ||
-                                        SerpentCombo.HasFlag(SerpentCombo.ThirdLegacy) || SerpentCombo.HasFlag(SerpentCombo.FourthLegacy);
+    private static bool Legacyweaves =>
+        HasStatusEffect(Buffs.Reawakened) &&
+        (SerpentCombo.HasFlag(SerpentCombo.FirstLegacy) ||
+         SerpentCombo.HasFlag(SerpentCombo.SecondLegacy) ||
+         SerpentCombo.HasFlag(SerpentCombo.ThirdLegacy) ||
+         SerpentCombo.HasFlag(SerpentCombo.FourthLegacy));
 
     private static bool DeathRattleWeave => Gauge.SerpentCombo is SerpentCombo.DeathRattle;
 

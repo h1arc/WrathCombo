@@ -8,7 +8,7 @@ using static WrathCombo.Combos.PvE.WAR.Config;
 
 namespace WrathCombo.Combos.PvE;
 
-internal partial class WAR : Tank
+internal partial class WAR
 {
     #region Simple Mode - Single Target
     internal class WAR_ST_Simple : CustomCombo
@@ -351,7 +351,7 @@ internal partial class WAR : Tank
                 PlayerHealthPercentageHp() <= WAR_Mit_Holmgang_Health &&
                 ContentCheck.IsInConfiguredContent(WAR_Mit_Holmgang_Difficulty, WAR_Mit_Holmgang_DifficultyListSet))
                 return Holmgang;
-            foreach(int priority in WAR_Mit_Priorities.Items.OrderBy(x => x))
+            foreach(int priority in WAR_Mit_Priorities.OrderBy(x => x))
             {
                 int index = WAR_Mit_Priorities.IndexOf(priority);
                 if (CheckMitigationConfigMeetsRequirements(index, out uint actionID))
@@ -485,7 +485,7 @@ internal partial class WAR : Tank
     {
         protected internal override Preset Preset => Preset.WAR_RetargetHolmgang;
 
-        protected override uint Invoke(uint actionID) => actionID != Holmgang ? actionID : actionID.Retarget(SimpleTarget.Self, dontCull: true);
+        protected override uint Invoke(uint actionID) => actionID != Holmgang ? actionID : actionID.Retarget(SimpleTarget.Self);
     }
     #endregion
 

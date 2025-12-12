@@ -666,6 +666,10 @@ internal partial class VPR : Melee
             if (actionID is not ReavingFangs)
                 return actionID;
 
+            if (DeathRattleWeave &&
+                LevelChecked(SerpentsTail) && InRange())
+                return OriginalHook(SerpentsTail);
+
             if (ComboTimer > 0 && !HasStatusEffect(Buffs.Reawakened))
             {
                 if (ComboAction is ReavingFangs or SteelFangs)
@@ -714,8 +718,8 @@ internal partial class VPR : Melee
                 return actionID;
 
             return VPR_Slither_FieldMouseover
-                ? Slither.Retarget(SimpleTarget.UIMouseOverTarget ?? SimpleTarget.ModelMouseOverTarget ?? SimpleTarget.HardTarget, true)
-                : Slither.Retarget(SimpleTarget.UIMouseOverTarget ?? SimpleTarget.HardTarget, true);
+                ? Slither.Retarget(SimpleTarget.UIMouseOverTarget ?? SimpleTarget.ModelMouseOverTarget ?? SimpleTarget.HardTarget)
+                : Slither.Retarget(SimpleTarget.UIMouseOverTarget ?? SimpleTarget.HardTarget);
         }
     }
 

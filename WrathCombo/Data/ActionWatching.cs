@@ -24,6 +24,7 @@ using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
 using WrathCombo.Services;
+using WrathCombo.Services.ActionRequestIPC;
 using static FFXIVClientStructs.FFXIV.Client.Game.Character.ActionEffectHandler;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using Action = Lumina.Excel.Sheets.Action;
@@ -179,7 +180,7 @@ public static class ActionWatching
                 }
             }
 
-            if (ActionSheet.TryGetValue(actionId, out var actionSheet) && actionSheet.TargetArea)
+            if (casterEntityId == Player.Object.EntityId && ActionSheet.TryGetValue(actionId, out var actionSheet) && actionSheet.TargetArea)
             {
                 UpdateLastUsedAction(actionId, 1, 0, 0);
             }
@@ -350,7 +351,7 @@ public static class ActionWatching
         try
         {
 
-            if (actionType is ActionType.Action or ActionType.Ability)
+            if (actionType is ActionType.Action)
             {
                 var original = actionId; //Save the original action, do not modify
                 var originalTargetId = targetId; //Save the original target, do not modify
@@ -358,9 +359,10 @@ public static class ActionWatching
                 if (Service.Configuration.ActionChanging && Service.Configuration.PerformanceMode) //Performance mode only logic, to modify the actionId
                 {
                     var result = actionId;
-                    foreach (var combo in ActionReplacer.FilteredCombos)
+
+                    foreach(var combo in ActionReplacer.FilteredCombos)
                     {
-                        if (combo.TryInvoke(actionId, out result))
+                        if(combo.TryInvoke(actionId, out result))
                         {
                             actionId = Service.ActionReplacer.LastActionInvokeFor[actionId] = result; //Sets actionId and the LastActionInvokeFor dictionary entry to the result of the combo
                             break;
@@ -368,6 +370,7 @@ public static class ActionWatching
                     }
                 }
 
+                var modifiedAction = Service.ActionReplacer.LastActionInvokeFor.ContainsKey(actionId) ? Service.ActionReplacer.LastActionInvokeFor[actionId] : actionId;
                 var changed = CheckForChangedTarget(original, ref targetId,
                     out var replacedWith); //Passes the original action to the retargeting framework, outputs a targetId and a replaced action
 
@@ -405,6 +408,14 @@ public static class ActionWatching
                 if (changed && areaTargeted)
                     ActionManager.Instance()->AreaTargetingExecuteAtObject =
                         targetId;
+
+                var success = hookResult && !(mode == ActionManager.UseActionMode.None && actionManager->QueuedActionId > 0);
+
+                if (NIN.MudraSigns.Contains(modifiedAction) && success)
+                {
+                    NIN.InMudra = true;
+                    TimeLastActionUsed = DateTime.Now;
+                }
 
                 return hookResult;
             }
