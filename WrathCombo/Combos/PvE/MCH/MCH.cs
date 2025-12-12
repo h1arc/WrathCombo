@@ -268,7 +268,7 @@ internal partial class MCH : PhysicalRanged
 
             //Reassemble to start before combat
             if (IsEnabled(Preset.MCH_ST_Adv_Reassemble) &&
-                CanReassemble())
+                CanReassemble() && !HasStatusEffect(Buffs.Reassembled))
                 return Reassemble;
 
             if (ContentSpecificActions.TryGet(out uint contentAction))

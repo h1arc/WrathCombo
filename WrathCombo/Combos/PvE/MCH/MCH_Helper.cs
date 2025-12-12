@@ -170,23 +170,28 @@ internal partial class MCH
 
     private static bool CanReassemble()
     {
-        var maxCharges = GetMaxCharges(Reassemble);
-        var remainingCharges = GetRemainingCharges(Reassemble);
-        
+        ushort maxCharges = GetMaxCharges(Reassemble);
+        uint remainingCharges = GetRemainingCharges(Reassemble);
+
         if (maxCharges == 1)
         {
             if (remainingCharges == 1 && (ActionReady(Drill) || ActionReady(AirAnchor)))
                 return true;
         }
+
         if (maxCharges == 2)
         {
-            var numberOfReadyTools = 0;
+            int numberOfReadyTools = 0;
+
             if (ActionReady(Drill))
                 numberOfReadyTools += (int)GetRemainingCharges(Drill);
+
             if (ActionReady(Chainsaw))
                 numberOfReadyTools++;
+
             if (ActionReady(AirAnchor))
                 numberOfReadyTools++;
+
             if (ActionReady(Excavator))
                 numberOfReadyTools++;
 
@@ -219,27 +224,31 @@ internal partial class MCH
 
     private static bool CanUseTools(ref uint actionID)
     {
-        if (LevelChecked(AirAnchor) && ActionReady(AirAnchor))
-        {
-            actionID = AirAnchor;
-            return true;
-        }
-        if (ActionReady(Chainsaw))
-        {
-            actionID = Chainsaw;
-            return true;
-        }
         if (ActionReady(Excavator))
         {
             actionID = Excavator;
             return true;
         }
+
+        if (ActionReady(Chainsaw))
+        {
+            actionID = Chainsaw;
+            return true;
+        }
+
+        if (LevelChecked(AirAnchor) && ActionReady(AirAnchor))
+        {
+            actionID = AirAnchor;
+            return true;
+        }
+
         if (ActionReady(Drill))
         {
             actionID = Drill;
             return true;
         }
-        if (ActionReady(HotShot))
+
+        if (ActionReady(HotShot) && !LevelChecked(CleanShot))
         {
             actionID = HotShot;
             return true;
@@ -470,7 +479,7 @@ internal partial class MCH
 
     #region Gauge
 
-    private static MCHGauge Gauge = GetJobGauge<MCHGauge>();
+    private static MCHGauge Gauge => GetJobGauge<MCHGauge>();
 
     private static bool IsOverheated => Gauge.IsOverheated;
 
