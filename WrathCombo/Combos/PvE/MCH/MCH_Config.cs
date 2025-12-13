@@ -273,8 +273,6 @@ internal partial class MCH
 
         public static UserFloat
             MCH_AoE_FlamethrowerTimeStill = new("MCH_AoE_FlamethrowerTimeStill", 2.5f);
-        public static UserBoolArray
-            MCH_AoE_Reassembled = new("MCH_AoE_Reassembled");
 
         #endregion
     }
