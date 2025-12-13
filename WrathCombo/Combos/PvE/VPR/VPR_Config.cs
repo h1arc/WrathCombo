@@ -149,6 +149,5 @@ internal partial class VPR
             VPR_Slither_FieldMouseover = new("VPR_Slither_FieldMouseover");
 
         #endregion
-
     }
 }
