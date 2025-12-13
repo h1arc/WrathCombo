@@ -413,7 +413,9 @@ public static class ActionWatching
 
                 if (NIN.MudraSigns.Contains(modifiedAction) && success)
                 {
+                    Svc.Log.Debug($"Mudra used: {modifiedAction.ActionName()}");
                     NIN.InMudra = true;
+                    LastAction = modifiedAction;
                     TimeLastActionUsed = DateTime.Now;
                 }
 
