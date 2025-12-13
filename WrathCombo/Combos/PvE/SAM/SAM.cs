@@ -178,13 +178,13 @@ internal partial class SAM : Melee
                 HasStatusEffect(Buffs.MeikyoShisui))
             {
                 if (LevelChecked(Mangetsu) &&
-                    !HasGetsu ||
-                    !HasStatusEffect(Buffs.Fugetsu))
+                    (!HasGetsu ||
+                     !HasStatusEffect(Buffs.Fugetsu)))
                     return Mangetsu;
 
                 if (LevelChecked(Oka) &&
-                    !HasKa ||
-                    !HasStatusEffect(Buffs.Fuka))
+                    (!HasKa ||
+                     !HasStatusEffect(Buffs.Fuka)))
                     return Oka;
             }
 
@@ -435,15 +435,15 @@ internal partial class SAM : Melee
                 HasStatusEffect(Buffs.MeikyoShisui))
             {
                 if (LevelChecked(Mangetsu) &&
-                    !HasGetsu ||
-                    IsNotEnabled(Preset.SAM_AoE_Oka) ||
-                    !HasStatusEffect(Buffs.Fugetsu))
+                    (!HasGetsu ||
+                     IsNotEnabled(Preset.SAM_AoE_Oka) ||
+                     !HasStatusEffect(Buffs.Fugetsu)))
                     return Mangetsu;
 
                 if (IsEnabled(Preset.SAM_AoE_Oka) &&
                     LevelChecked(Oka) &&
-                    !HasKa ||
-                    !HasStatusEffect(Buffs.Fuka))
+                    (!HasKa ||
+                     !HasStatusEffect(Buffs.Fuka)))
                     return Oka;
             }
 
@@ -624,17 +624,17 @@ internal partial class SAM : Melee
                 HasStatusEffect(Buffs.MeikyoShisui))
             {
                 if (LevelChecked(Mangetsu) &&
-                    !HasGetsu ||
-                    !SAM_Mangetsu_Oka ||
-                    !HasStatusEffect(Buffs.Fugetsu) ||
-                    SenCount is 2 or 3 && RefreshFugetsu)
+                    (!HasGetsu ||
+                     !SAM_Mangetsu_Oka ||
+                     !HasStatusEffect(Buffs.Fugetsu) ||
+                     SenCount is 2 or 3 && RefreshFugetsu))
                     return Mangetsu;
 
                 if (SAM_Mangetsu_Oka &&
                     LevelChecked(Oka) &&
-                    !HasKa ||
-                    !HasStatusEffect(Buffs.Fuka) ||
-                    SenCount is 2 or 3 && RefreshFuka)
+                    (!HasKa ||
+                     !HasStatusEffect(Buffs.Fuka) ||
+                     SenCount is 2 or 3 && RefreshFuka))
                     return Oka;
             }
 
