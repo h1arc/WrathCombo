@@ -131,6 +131,5 @@ internal partial class MNK
             MNK_BasicCombo = new("MNK_BasicCombo");
 
         #endregion
-
     }
 }
