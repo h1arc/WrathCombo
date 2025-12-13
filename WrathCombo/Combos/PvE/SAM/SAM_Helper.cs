@@ -16,19 +16,19 @@ internal partial class SAM
 {
     #region Basic Combo
 
-    private static uint DoBasicCombo(uint actionId, bool useTrueNorthIfEnabled = true, bool SimpleMode = false)
+    private static uint DoBasicCombo(uint actionId, bool useTrueNorthIfEnabled = true, bool simpleMode = false)
     {
         if (ComboTimer > 0)
         {
             if (ComboAction is Hakaze or Gyofu)
             {
-                if ((SimpleMode || IsEnabled(Preset.SAM_ST_Yukikaze)) &&
+                if ((simpleMode || IsEnabled(Preset.SAM_ST_Yukikaze)) &&
                     !HasSetsu && LevelChecked(Yukikaze) &&
                     (HasStatusEffect(Buffs.Fugetsu) || IsNotEnabled(Preset.SAM_ST_Gekko)) &&
                     (HasStatusEffect(Buffs.Fuka) || IsNotEnabled(Preset.SAM_ST_Kasha)))
                     return Yukikaze;
 
-                if ((SimpleMode || IsEnabled(Preset.SAM_ST_Gekko)) &&
+                if ((simpleMode || IsEnabled(Preset.SAM_ST_Gekko)) &&
                     LevelChecked(Jinpu) &&
                     ((OnTargetsRear() || OnTargetsFront()) && !HasGetsu ||
                      OnTargetsFlank() && HasKa ||
@@ -36,7 +36,7 @@ internal partial class SAM
                      SenCount is 3 && RefreshFugetsu))
                     return Jinpu;
 
-                if ((SimpleMode || IsEnabled(Preset.SAM_ST_Kasha)) &&
+                if ((simpleMode || IsEnabled(Preset.SAM_ST_Kasha)) &&
                     LevelChecked(Shifu) &&
                     ((OnTargetsFlank() || OnTargetsFront()) && !HasKa ||
                      OnTargetsRear() && HasGetsu ||
@@ -68,8 +68,6 @@ internal partial class SAM
 
     private static bool CanUseIaijutsu(bool useHiganbana, bool useTenkaGoken, bool useMidare)
     {
-        int higanbanaRefresh = SAM_ST_HiganbanaRefresh;
-
         if (LevelChecked(Iaijutsu) && InActionRange(OriginalHook(Iaijutsu)))
         {
             //Higanbana
@@ -99,13 +97,9 @@ internal partial class SAM
 
     private static class SAMKenki
     {
-        internal const int MaxKenki = 100;
-
         internal static int Zanshin => GetResourceCost(SAM.Zanshin);
 
         internal static int Senei => GetResourceCost(SAM.Senei);
-
-        internal static int Guren => GetResourceCost(SAM.Guren);
 
         internal static int Shinten => GetResourceCost(SAM.Shinten);
     }
@@ -116,7 +110,7 @@ internal partial class SAM
 
     private static bool CanUseHiganbana()
     {
-        int hpThreshold = IsNotEnabled(Preset.SAM_ST_SimpleMode) ? computeHpThresholdHiganbana() : 0;
+        int hpThreshold = IsNotEnabled(Preset.SAM_ST_SimpleMode) ? ComputeHpThresholdHiganbana() : 0;
         double dotRefresh = IsNotEnabled(Preset.SAM_ST_SimpleMode) ? SAM_ST_HiganbanaRefresh : 15;
         float dotRemaining = GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget);
 
@@ -129,7 +123,7 @@ internal partial class SAM
                 GetStatusEffectRemainingTime(Debuffs.Higanbana) <= 15);
     }
 
-    private static int computeHpThresholdHiganbana()
+    private static int ComputeHpThresholdHiganbana()
     {
         if (InBossEncounter())
             return TargetIsBoss() ? SAM_ST_HiganbanaBossOption : SAM_ST_HiganbanaBossAddsOption;
@@ -228,15 +222,15 @@ internal partial class SAM
         return false;
     }
 
-    private static uint DoMeikyoCombo(uint actionId, bool useTrueNorthIfEnabled = true, bool SimpleMode = false)
+    private static uint DoMeikyoCombo(uint actionId, bool useTrueNorthIfEnabled = true, bool simpleMode = false)
     {
-        if ((SimpleMode || IsEnabled(Preset.SAM_ST_Yukikaze)) &&
+        if ((simpleMode || IsEnabled(Preset.SAM_ST_Yukikaze)) &&
             LevelChecked(Yukikaze) && !HasSetsu &&
             (HasKa || IsNotEnabled(Preset.SAM_ST_Gekko)) &&
             (HasGetsu || IsNotEnabled(Preset.SAM_ST_Kasha)))
             return Yukikaze;
 
-        if ((SimpleMode || IsEnabled(Preset.SAM_ST_Gekko)) &&
+        if ((simpleMode || IsEnabled(Preset.SAM_ST_Gekko)) &&
             LevelChecked(Gekko) &&
             ((OnTargetsRear() || OnTargetsFront()) && !HasGetsu ||
              OnTargetsFlank() && HasKa ||
@@ -247,7 +241,7 @@ internal partial class SAM
                 ? Role.TrueNorth
                 : Gekko;
 
-        if ((SimpleMode || IsEnabled(Preset.SAM_ST_Kasha)) &&
+        if ((simpleMode || IsEnabled(Preset.SAM_ST_Kasha)) &&
             LevelChecked(Kasha) &&
             ((OnTargetsFlank() || OnTargetsFront()) && !HasKa ||
              OnTargetsRear() && HasGetsu ||
@@ -302,7 +296,7 @@ internal partial class SAM
     private static bool CanShinten()
     {
         int shintenTreshhold = SAM_ST_ExecuteThreshold;
-        float GCD = GetCooldown(OriginalHook(Hakaze)).CooldownTotal;
+        float gcd = GetCooldown(OriginalHook(Hakaze)).CooldownTotal;
 
         if (ActionReady(Shinten) && Kenki >= SAMKenki.Shinten && InActionRange(Shinten))
         {
@@ -316,7 +310,7 @@ internal partial class SAM
             if (EnhancedSenei &&
                 !HasStatusEffect(Buffs.ZanshinReady))
             {
-                if (GetCooldownRemainingTime(Senei) < GCD * 2 &&
+                if (GetCooldownRemainingTime(Senei) < gcd * 2 &&
                     Kenki >= 95)
                     return true;
 
