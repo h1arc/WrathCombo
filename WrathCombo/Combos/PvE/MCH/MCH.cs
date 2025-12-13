@@ -16,7 +16,9 @@ internal partial class MCH : PhysicalRanged
                 return actionID;
 
             //Reassemble
-            if (CanReassemble())
+            if (CanReassemble() &&
+                !InCombat() &&
+                HasBattleTarget())
                 return Reassemble;
 
             if (ContentSpecificActions.TryGet(out uint contentAction))
@@ -268,6 +270,7 @@ internal partial class MCH : PhysicalRanged
 
             //Reassemble to start before combat
             if (IsEnabled(Preset.MCH_ST_Adv_Reassemble) &&
+                !InCombat() && HasBattleTarget() &&
                 CanReassemble())
                 return Reassemble;
 
@@ -389,7 +392,8 @@ internal partial class MCH : PhysicalRanged
                 return FullMetalField;
 
             //Tools
-            if (IsEnabled(Preset.MCH_ST_Adv_Tools) && GetTargetHPPercent() > HPThresholdTools &&
+            if (IsEnabled(Preset.MCH_ST_Adv_Tools) && 
+                GetTargetHPPercent() > HPThresholdTools &&
                 CanUseTools(ref actionID) && !IsOverheated)
                 return actionID;
 

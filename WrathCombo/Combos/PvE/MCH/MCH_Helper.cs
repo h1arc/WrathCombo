@@ -10,14 +10,6 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class MCH
 {
-
-    #region Misc
-
-    private static float WFCD =>
-        GetCooldownRemainingTime(Wildfire);
-
-    #endregion
-
     #region Hypercharge
 
     private static bool CanHypercharge(bool onAoE = false)
@@ -44,7 +36,6 @@ internal partial class MCH
                 (LevelChecked(Flamethrower) && GetCooldownRemainingTime(Flamethrower) > 10 ||
                  !LevelChecked(Flamethrower) || IsNotEnabled(Preset.MCH_AoE_Adv_FlameThrower)):
                 return true;
-
         }
 
         return false;
@@ -77,7 +68,6 @@ internal partial class MCH
 
                         case > 90 when ComboAction == OriginalHook(SlugShot):
                             return true;
-
                     }
                 }
 
@@ -564,5 +554,4 @@ internal partial class MCH
     }
 
     #endregion
-
 }
