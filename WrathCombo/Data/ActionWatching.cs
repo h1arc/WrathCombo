@@ -235,9 +235,6 @@ public static class ActionWatching
             }
         }
 
-        if (castTime == 0)
-            WrathOpener.CurrentOpener?.ProgressOpener(actionId);
-
         if (Service.Configuration.EnabledOutputLog)
             OutputLog();
     }
