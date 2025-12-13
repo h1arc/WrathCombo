@@ -12,7 +12,6 @@ internal partial class MCH
         {
             switch (preset)
             {
-
                 #region ST
 
                 case Preset.MCH_ST_Adv_Opener:
@@ -169,11 +168,6 @@ internal partial class MCH
 
                     DrawSliderInt(0, 2, MCH_AoE_ReassemblePool,
                         "Number of Charges to Save for Manual Use");
-
-                    DrawHorizontalMultiChoice(MCH_AoE_Reassembled, $"Use on {SpreadShot.ActionName()}/{Scattergun.ActionName()}", "", 4, 0);
-                    DrawHorizontalMultiChoice(MCH_AoE_Reassembled, $"Use on {AirAnchor.ActionName()}", "", 4, 1);
-                    DrawHorizontalMultiChoice(MCH_AoE_Reassembled, $"Use on {Chainsaw.ActionName()}", "", 4, 2);
-                    DrawHorizontalMultiChoice(MCH_AoE_Reassembled, $"Use on {Excavator.ActionName()}", "", 4, 3);
                     break;
 
                 case Preset.MCH_AoE_Adv_QueenOverdrive:
@@ -279,10 +273,7 @@ internal partial class MCH
 
         public static UserFloat
             MCH_AoE_FlamethrowerTimeStill = new("MCH_AoE_FlamethrowerTimeStill", 2.5f);
-        public static UserBoolArray
-            MCH_AoE_Reassembled = new("MCH_AoE_Reassembled");
 
         #endregion
-
     }
 }

@@ -10,14 +10,6 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class MCH
 {
-
-    #region Misc
-
-    private static float WFCD =>
-        GetCooldownRemainingTime(Wildfire);
-
-    #endregion
-
     #region Hypercharge
 
     private static bool CanHypercharge(bool onAoE = false)
@@ -40,11 +32,10 @@ internal partial class MCH
                 (Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) && LevelChecked(Hypercharge) &&
                 LevelChecked(AutoCrossbow) &&
                 (LevelChecked(BioBlaster) && GetCooldownRemainingTime(BioBlaster) > 10 ||
-                 !LevelChecked(BioBlaster) || IsNotEnabled(Preset.MCH_AoE_Adv_Bioblaster)) &&
+                 !LevelChecked(BioBlaster)) &&
                 (LevelChecked(Flamethrower) && GetCooldownRemainingTime(Flamethrower) > 10 ||
                  !LevelChecked(Flamethrower) || IsNotEnabled(Preset.MCH_AoE_Adv_FlameThrower)):
                 return true;
-
         }
 
         return false;
@@ -77,7 +68,6 @@ internal partial class MCH
 
                         case > 90 when ComboAction == OriginalHook(SlugShot):
                             return true;
-
                     }
                 }
 
@@ -87,6 +77,55 @@ internal partial class MCH
 
             if (!LevelChecked(Wildfire) && Battery >= MCH_ST_TurretUsage)
                 return true;
+        }
+
+        return false;
+    }
+
+    #endregion
+
+    #region Reassembled
+
+    private static bool CanReassemble()
+    {
+        if (HasStatusEffect(Buffs.Reassembled) && !JustUsed(Reassemble, 1.5f))
+            return false;
+
+        ushort maxCharges = GetMaxCharges(Reassemble);
+        uint remainingCharges = GetRemainingCharges(Reassemble);
+
+        switch (maxCharges)
+        {
+            case 1 when remainingCharges == 1 && (ActionReady(Drill) || LevelChecked(AirAnchor) && ActionReady(AirAnchor)):
+                return true;
+
+            case 2:
+            {
+                int numberOfReadyTools = 0;
+
+                if (ActionReady(Drill))
+                    numberOfReadyTools += (int)GetRemainingCharges(Drill);
+
+                if (ActionReady(Chainsaw))
+                    numberOfReadyTools++;
+
+                if (ActionReady(AirAnchor))
+                    numberOfReadyTools++;
+
+                if (ActionReady(Excavator))
+                    numberOfReadyTools++;
+
+                switch (remainingCharges)
+                {
+                    case 2 when numberOfReadyTools >= 2:
+
+                    //Kage tweak this last number if needed, it could maybe go to 50
+                    case 1 when numberOfReadyTools >= 1 && GetCooldownChargeRemainingTime(Reassemble) >= 45:
+                        return true;
+                }
+
+                break;
+            }
         }
 
         return false;
@@ -138,75 +177,6 @@ internal partial class MCH
     private static int HPThresholdWildFire =>
         MCH_ST_WildfireBossHPOption == 1 ||
         !TargetIsBoss() ? MCH_ST_WildfireBossHPOption : 0;
-
-    #endregion
-
-    #region Reassembled
-
-    #region Variables
-
-    private static bool ReassembledExcavatorAoE =>
-        IsEnabled(Preset.MCH_AoE_Adv_Reassemble) && MCH_AoE_Reassembled[3] && HasStatusEffect(Buffs.Reassembled) ||
-        IsEnabled(Preset.MCH_AoE_Adv_Reassemble) && !MCH_AoE_Reassembled[3] && !HasStatusEffect(Buffs.Reassembled) ||
-        !HasStatusEffect(Buffs.Reassembled) && GetRemainingCharges(Reassemble) <= MCH_AoE_ReassemblePool ||
-        !IsEnabled(Preset.MCH_AoE_Adv_Reassemble);
-
-    private static bool ReassembledChainsawAoE =>
-        IsEnabled(Preset.MCH_AoE_Adv_Reassemble) && MCH_AoE_Reassembled[2] && HasStatusEffect(Buffs.Reassembled) ||
-        IsEnabled(Preset.MCH_AoE_Adv_Reassemble) && !MCH_AoE_Reassembled[2] && !HasStatusEffect(Buffs.Reassembled) ||
-        !HasStatusEffect(Buffs.Reassembled) && GetRemainingCharges(Reassemble) <= MCH_AoE_ReassemblePool ||
-        !IsEnabled(Preset.MCH_AoE_Adv_Reassemble);
-
-    private static bool ReassembledAirAnchorAoE =>
-        IsEnabled(Preset.MCH_AoE_Adv_Reassemble) && MCH_AoE_Reassembled[1] && HasStatusEffect(Buffs.Reassembled) ||
-        IsEnabled(Preset.MCH_AoE_Adv_Reassemble) && !MCH_AoE_Reassembled[1] && !HasStatusEffect(Buffs.Reassembled) ||
-        !HasStatusEffect(Buffs.Reassembled) && GetRemainingCharges(Reassemble) <= MCH_AoE_ReassemblePool ||
-        !IsEnabled(Preset.MCH_AoE_Adv_Reassemble);
-
-    private static bool ReassembledScattergunAoE =>
-        IsEnabled(Preset.MCH_AoE_Adv_Reassemble) && MCH_AoE_Reassembled[0] && HasStatusEffect(Buffs.Reassembled);
-
-    #endregion
-
-    private static bool CanReassemble()
-    {
-        if (HasStatusEffect(Buffs.Reassembled) && !JustUsed(Reassemble, 1.5f))
-            return false;
-
-        ushort maxCharges = GetMaxCharges(Reassemble);
-        uint remainingCharges = GetRemainingCharges(Reassemble);
-
-        if (maxCharges == 1)
-        {
-            if (remainingCharges == 1 && (ActionReady(Drill) || LevelChecked(AirAnchor) && ActionReady(AirAnchor)))
-                return true;
-        }
-
-        if (maxCharges == 2)
-        {
-            int numberOfReadyTools = 0;
-
-            if (ActionReady(Drill))
-                numberOfReadyTools += (int)GetRemainingCharges(Drill);
-
-            if (ActionReady(Chainsaw))
-                numberOfReadyTools++;
-
-            if (ActionReady(AirAnchor))
-                numberOfReadyTools++;
-
-            if (ActionReady(Excavator))
-                numberOfReadyTools++;
-
-            if (remainingCharges == 2 && numberOfReadyTools >= 2)
-                return true;
-
-            if (remainingCharges == 1 && numberOfReadyTools >= 1 && GetCooldownChargeRemainingTime(Reassemble) >= 45) //Kage tweak this last number if needed, it could maybe go to 50
-                return true;
-        }
-
-        return false;
-    }
 
     #endregion
 
@@ -273,7 +243,7 @@ internal partial class MCH
         return ActionManager.Instance()->Combo.Timer != 0 && ActionManager.Instance()->Combo.Timer < gcd;
     }
 
-  #endregion
+    #endregion
 
     #region Openers
 
@@ -488,13 +458,9 @@ internal partial class MCH
 
     private static bool RobotActive => Gauge.IsRobotActive;
 
-    private static byte LastSummonBattery => Gauge.LastSummonBatteryPower;
-
     private static byte Heat => Gauge.Heat;
 
     private static byte Battery => Gauge.Battery;
-
-    private static bool MaxBattery => Battery >= 90;
 
     #endregion
 
@@ -564,5 +530,4 @@ internal partial class MCH
     }
 
     #endregion
-
 }
