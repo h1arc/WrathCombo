@@ -326,8 +326,8 @@ internal partial class RPR : Melee
                     if (IsEnabled(Preset.RPR_ST_Bloodstalk) &&
                         LevelChecked(BloodStalk) &&
                         (LevelChecked(Gluttony) &&
-                         (IsEnabled(Preset.RPR_ST_Gluttony) && 
-                          (Soul is 100 && IsOnCooldown(Gluttony) || 
+                         (IsEnabled(Preset.RPR_ST_Gluttony) &&
+                          (Soul is 100 && IsOnCooldown(Gluttony) ||
                            GetCooldownRemainingTime(Gluttony) > GCD * 4) ||
                           !IsEnabled(Preset.RPR_ST_Gluttony) && Soul is 100) ||
                          !LevelChecked(Gluttony)))
