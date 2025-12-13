@@ -14,7 +14,6 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class SGE
 {
-
     private static Status? DosisDebuff =>
         GetStatusEffect(DosisList[OriginalHook(Dosis)].Debuff, CurrentTarget);
 
@@ -79,7 +78,7 @@ internal partial class SGE
     internal static bool NeedsDoT()
     {
         uint dotAction = OriginalHook(Dosis);
-        int hpThreshold = IsNotEnabled(Preset.SGE_ST_Simple_DPS) ? computeHpThreshold() : 0;
+        int hpThreshold = IsNotEnabled(Preset.SGE_ST_Simple_DPS) ? ComputeHpThreshold() : 0;
         EukrasianDosisList.TryGetValue(dotAction, out ushort dotDebuffID);
         double dotRefresh = IsNotEnabled(Preset.SGE_ST_Simple_DPS) ? SGE_ST_DPS_EukrasianDosisUptime_Threshold : 2.5;
         float dotRemaining = GetStatusEffectRemainingTime(dotDebuffID, CurrentTarget);
@@ -91,12 +90,11 @@ internal partial class SGE
                dotRemaining <= dotRefresh;
     }
 
-    internal static int computeHpThreshold()
+    internal static int ComputeHpThreshold()
     {
         if (InBossEncounter())
-        {
             return TargetIsBoss() ? SGE_ST_DPS_EukrasianDosisBossOption : SGE_ST_DPS_EukrasianDosisBossAddsOption;
-        }
+
         return SGE_ST_DPS_EukrasianDosisTrashOption;
     }
 
@@ -298,7 +296,7 @@ internal partial class SGE
 
     #region Movement Prio
 
-    private static (uint Action, Preset Preset, System.Func<bool> Logic)[]
+    private static (uint Action, Preset Preset, Func<bool> Logic)[]
         PrioritizedMovement =>
     [
         //Toxikon
@@ -525,5 +523,4 @@ internal partial class SGE
     }
 
     #endregion
-
 }

@@ -12,7 +12,6 @@ internal partial class SGE
         {
             switch (preset)
             {
-
                 #region DPS
 
                 case Preset.SGE_ST_DPS_Opener:
@@ -375,7 +374,6 @@ internal partial class SGE
                     break;
 
                     #endregion
-
             }
         }
 
@@ -471,6 +469,5 @@ internal partial class SGE
         #endregion
 
         #endregion
-
     }
 }
