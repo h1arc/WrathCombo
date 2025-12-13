@@ -14,7 +14,6 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class SAM
 {
-
     #region Basic Combo
 
     private static uint DoBasicCombo(uint actionId, bool useTrueNorthIfEnabled = true, bool SimpleMode = false)
@@ -75,9 +74,8 @@ internal partial class SAM
         {
             //Higanbana
             if (useHiganbana &&
-                SenCount is 1 && CanUseHiganbana() &&
-                (JustUsed(MeikyoShisui, 15f) && GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) <= higanbanaRefresh ||
-                 !HasStatusEffect(Debuffs.Higanbana, CurrentTarget)))
+                SenCount is 1 &&
+                CanUseHiganbana())
                 return true;
 
             //Tenka Goken
@@ -126,7 +124,9 @@ internal partial class SAM
                CanApplyStatus(CurrentTarget, Debuffs.Higanbana) &&
                HasBattleTarget() &&
                GetTargetHPPercent() > hpThreshold &&
-               dotRemaining <= dotRefresh;
+               (dotRemaining <= dotRefresh ||
+                JustUsed(MeikyoShisui, 15f) &&
+                GetStatusEffectRemainingTime(Debuffs.Higanbana) <= 15);
     }
 
     private static int computeHpThresholdHiganbana()
@@ -203,7 +203,6 @@ internal partial class SAM
                                 (gcd <= 2.08f || IsNotEnabled(Preset.SAM_ST_CDs_UseHiganbana)) &&
                                 GetCooldownRemainingTime(Senei) <= 10 && SenCount is 3)
                                 return true;
-
                         }
 
                         // reset meikyo
@@ -332,7 +331,7 @@ internal partial class SAM
 
             if (!EnhancedSenei)
             {
-                if ( GetCooldownRemainingTime(Ikishoten) > 10 && Kenki >= SAM_ST_KenkiOvercapAmount)
+                if (GetCooldownRemainingTime(Ikishoten) > 10 && Kenki >= SAM_ST_KenkiOvercapAmount)
                     return true;
 
                 if (GetCooldownRemainingTime(Ikishoten) <= 10 && Kenki > 50)
@@ -708,5 +707,4 @@ internal partial class SAM
     }
 
     #endregion
-
 }

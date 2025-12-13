@@ -320,7 +320,6 @@ internal partial class SAM : Melee
             return HasStatusEffect(Buffs.MeikyoShisui)
                 ? DoMeikyoCombo(actionID, IsEnabled(Preset.SAM_ST_TrueNorth))
                 : DoBasicCombo(actionID, IsEnabled(Preset.SAM_ST_TrueNorth));
-
         }
     }
 
