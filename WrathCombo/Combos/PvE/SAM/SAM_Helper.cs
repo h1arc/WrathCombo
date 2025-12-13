@@ -330,8 +330,14 @@ internal partial class SAM
                     return true;
             }
 
-            if (!EnhancedSenei && Kenki >= SAM_ST_KenkiOvercapAmount)
-                return true;
+            if (!EnhancedSenei)
+            {
+                if ( GetCooldownRemainingTime(Ikishoten) > 10 && Kenki >= SAM_ST_KenkiOvercapAmount)
+                    return true;
+
+                if (GetCooldownRemainingTime(Ikishoten) <= 10 && Kenki > 50)
+                    return true;
+            }
         }
         return false;
     }
