@@ -23,7 +23,7 @@ internal abstract partial class CustomComboFunctions
     {
         get
         {
-            if (Svc.Objects.Any(x => x.GameObjectId == field?.GameObjectId))
+            if (field.IsStillAround())
                 return field;
             else
                 return null;
