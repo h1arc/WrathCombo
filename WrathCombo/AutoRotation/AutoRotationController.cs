@@ -717,10 +717,16 @@ internal unsafe static class AutoRotationController
                 if (outAct is All.SavageBlade) return true;
                 if (!CanQueue(outAct)) return false;
                 if (!ActionReady(outAct, true, true))
+                {
+                    OverrideTarget = null;
                     return false;
+                }
 
                 if (ActionManager.Instance()->GetActionStatus(ActionType.Action, outAct) != 0)
+                {
+                    OverrideTarget = null;
                     return false;
+                }
 
                 var sheet = ActionSheet[outAct];
                 var mustTarget = sheet.CanTargetHostile;
@@ -729,7 +735,10 @@ internal unsafe static class AutoRotationController
                 var castTime = ActionManager.GetAdjustedCastTime(ActionType.Action, outAct);
                 bool orbwalking = cfg.OrbwalkerIntegration && OrbwalkerIPC.CanOrbwalk;
                 if (TimeMoving.TotalMilliseconds > 0 && castTime > 0 && !orbwalking)
+                {
+                    OverrideTarget = null;
                     return false;
+                }
 
                 if (cfg.DPSSettings.AlwaysSelectTarget)
                     Svc.Targets.Target = target;
@@ -782,10 +791,16 @@ internal unsafe static class AutoRotationController
             var blockedSelfBuffs = GetCooldown(outAct).CooldownTotal >= 5;
 
             if (cfg.InCombatOnly && NotInCombat && !CombatBypass && !(canUseSelf && cfg.BypassBuffs && !blockedSelfBuffs))
+            {
+                OverrideTarget = null;
                 return false;
+            }
 
             if (target is null && !canUseSelf)
+            {
+                OverrideTarget = null;
                 return false;
+            }
 
             var areaTargeted = ActionSheet[outAct].TargetArea;
             var canUseTarget = target is not null && ActionManager.CanUseActionOnTarget(outAct, target.Struct());
@@ -804,7 +819,10 @@ internal unsafe static class AutoRotationController
             var castTime = ActionManager.GetAdjustedCastTime(ActionType.Action, outAct);
             bool orbwalking = cfg.OrbwalkerIntegration && OrbwalkerIPC.CanOrbwalk;
             if (TimeMoving.TotalMilliseconds > 0 && castTime > 0 && !orbwalking)
+            {
+                OverrideTarget = null;
                 return false;
+            } 
 
             if (canUse && (inRange || areaTargeted))
             {
