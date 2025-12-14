@@ -749,6 +749,7 @@ internal unsafe static class AutoRotationController
                     Service.ActionReplacer.getActionHook.IsEnabled ? gameAct : outAct,
                     (mustTarget && target != null) || switched ? target.GameObjectId : Player.Object.GameObjectId);
 
+                OverrideTarget = null;
                 if (NIN.MudraSigns.Contains(outAct))
                     _lockedAoE = true;
                 else
@@ -811,6 +812,7 @@ internal unsafe static class AutoRotationController
                 if (isHeal) CurrentActIsAutorot = true;
                 var ret = ActionManager.Instance()->UseAction(ActionType.Action, Service.ActionReplacer.getActionHook.IsEnabled ? gameAct : outAct, canUseTarget || areaTargeted ? target.GameObjectId : Player.Object.GameObjectId);
                 CurrentActIsAutorot = false;
+                OverrideTarget = null;
 
                 if (isHeal && !ret)
                     LastHealAt = Environment.TickCount64 + castTime;
