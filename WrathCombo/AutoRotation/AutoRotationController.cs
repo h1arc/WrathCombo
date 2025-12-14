@@ -712,7 +712,8 @@ internal unsafe static class AutoRotationController
                         LockedST = false;
                     }
                 }
-                uint outAct = OriginalHook(InvokeCombo(preset, attributes, ref gameAct));
+                OverrideTarget = target;
+                uint outAct = OriginalHook(InvokeCombo(preset, attributes, ref gameAct, target));
                 if (outAct is All.SavageBlade) return true;
                 if (!CanQueue(outAct)) return false;
                 if (!ActionReady(outAct, true, true))
@@ -729,8 +730,6 @@ internal unsafe static class AutoRotationController
                 bool orbwalking = cfg.OrbwalkerIntegration && OrbwalkerIPC.CanOrbwalk;
                 if (TimeMoving.TotalMilliseconds > 0 && castTime > 0 && !orbwalking)
                     return false;
-
-                FallbackTarget = target;
 
                 if (cfg.DPSSettings.AlwaysSelectTarget)
                     Svc.Targets.Target = target;
@@ -764,7 +763,7 @@ internal unsafe static class AutoRotationController
         public static bool ExecuteST(Enum mode, Preset preset, Presets.PresetAttributes attributes, uint gameAct)
         {
             var target = GetSingleTarget(mode);
-
+            OverrideTarget = target;
             var outAct = OriginalHook(InvokeCombo(preset, attributes, ref gameAct, target));
             if (!CanQueue(outAct))
             {
@@ -797,8 +796,6 @@ internal unsafe static class AutoRotationController
                     : InActionRange(outAct, target));
 
             var canUse = (canUseSelf || canUseTarget || areaTargeted) && outAct.ActionAttackType() is { } type && (type is ActionAttackType.Ability || type is not ActionAttackType.Ability && RemainingGCD == 0);
-
-            FallbackTarget = target;
 
             if (cfg.DPSSettings.AlwaysSelectTarget)
                 Svc.Targets.Target = target;

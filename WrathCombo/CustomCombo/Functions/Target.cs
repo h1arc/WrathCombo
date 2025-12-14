@@ -17,9 +17,9 @@ namespace WrathCombo.CustomComboNS.Functions;
 
 internal abstract partial class CustomComboFunctions
 {
-    /// <summary> Will be checked if CurrentTarget is null.
+    /// <summary> Will be checked at CurrentTarget, if set then this takes priority otherwise hard target.
     /// <br />Main use will be for Autorotation so we don't have to enforce actual targeting. </summary>
-    public static IGameObject? FallbackTarget
+    public static IGameObject? OverrideTarget
     {
         get
         {
@@ -32,7 +32,7 @@ internal abstract partial class CustomComboFunctions
     } = null;
 
     /// <summary> Gets the current target or null. </summary>
-    public static IGameObject? CurrentTarget => Svc.Targets.Target ?? FallbackTarget;
+    public static IGameObject? CurrentTarget => OverrideTarget ?? Svc.Targets.Target;
 
     #region Target Checks
 

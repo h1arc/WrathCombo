@@ -176,7 +176,7 @@ internal abstract partial class CustomComboFunctions
         if (hasActionPenalty)
         {
             Svc.Targets.Target = null;
-            FallbackTarget = null;
+            OverrideTarget = null;
         }
 
         return hasActionPenalty;
