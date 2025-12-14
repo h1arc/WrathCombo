@@ -730,7 +730,9 @@ internal unsafe static class AutoRotationController
                 if (TimeMoving.TotalMilliseconds > 0 && castTime > 0 && !orbwalking)
                     return false;
 
-                if (mustTarget || cfg.DPSSettings.AlwaysSelectTarget)
+                FallbackTarget = target;
+
+                if (cfg.DPSSettings.AlwaysSelectTarget)
                     Svc.Targets.Target = target;
 
                 if (mustTarget && target is not null)
@@ -796,7 +798,9 @@ internal unsafe static class AutoRotationController
 
             var canUse = (canUseSelf || canUseTarget || areaTargeted) && outAct.ActionAttackType() is { } type && (type is ActionAttackType.Ability || type is not ActionAttackType.Ability && RemainingGCD == 0);
 
-            if (canUse || cfg.DPSSettings.AlwaysSelectTarget)
+            FallbackTarget = target;
+
+            if (cfg.DPSSettings.AlwaysSelectTarget)
                 Svc.Targets.Target = target;
 
             var castTime = ActionManager.GetAdjustedCastTime(ActionType.Action, outAct);
