@@ -438,7 +438,7 @@ internal partial class SGE : Healer
                 !InBossEncounter())
                 return Kerachole;
 
-            if (healTarget.IsInParty() && healTarget.GetRole() is CombatRole.Tank || !IsInParty())
+            if (healTarget.IsInParty() && healTarget.Role is CombatRole.Tank || !IsInParty())
             {
                 if (ActionReady(Krasis))
                     return Krasis.RetargetIfEnabled(OptionalTarget, Diagnosis);

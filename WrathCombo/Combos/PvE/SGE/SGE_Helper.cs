@@ -134,7 +134,7 @@ internal partial class SGE
 
         bool scholarShieldCheck = !SGE_ST_Heal_EDiagnosisOpts[1] ||
                                   !HasStatusEffect(SCH.Buffs.Galvanize);
-        bool tankCheck = healTarget.IsInParty() && healTarget.GetRole() is CombatRole.Tank;
+        bool tankCheck = healTarget.IsInParty() && healTarget.Role is CombatRole.Tank;
 
         switch (i)
         {

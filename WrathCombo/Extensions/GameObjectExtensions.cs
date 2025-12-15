@@ -21,14 +21,20 @@ public static class GameObjectExtensions
 {
     extension(IGameObject? obj)
     {
-        public CombatRole GetRole()
-        {
-            if (obj is not IBattleChara battleChara ||
-                battleChara.ClassJob.ValueNullable is null)
-                return CombatRole.NonCombat;
 
-            var role = battleChara.ClassJob.Value.Role;
-            return (CombatRole)role;
+        public CombatRole Role
+        {
+            get
+            {
+                if (obj is not IBattleChara battleChara ||
+                    battleChara.ClassJob.ValueNullable is null)
+                    return CombatRole.NonCombat;
+
+                var role = battleChara.ClassJob.Value.Role;
+                return (CombatRole)role;
+            }
+        }
+        
         }
 
         /// <summary>

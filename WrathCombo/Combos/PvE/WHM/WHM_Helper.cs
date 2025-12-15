@@ -63,7 +63,7 @@ internal partial class WHM
                        GetTargetHPPercent(healTarget,
                            WHM_STHeals_IncludeShields);
         float refreshTime = WHM_STHeals_RegenTimer;
-        bool tankCheck = healTarget.IsInParty() && healTarget.GetRole() is CombatRole.Tank;
+        bool tankCheck = healTarget.IsInParty() && healTarget.Role is CombatRole.Tank;
         Status? regenHoT = GetStatusEffect(Buffs.Regen, healTarget);
         Status? BenisonShield = GetStatusEffect(Buffs.DivineBenison, healTarget);
 
