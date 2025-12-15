@@ -88,7 +88,7 @@ internal partial class MCH
 
     private static bool CanReassemble()
     {
-        if (HasStatusEffect(Buffs.Reassembled) && !JustUsed(Reassemble, 1.5f))
+        if (HasStatusEffect(Buffs.Reassembled) || JustUsed(Reassemble, 1.5f))
             return false;
 
         ushort maxCharges = GetMaxCharges(Reassemble);
