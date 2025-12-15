@@ -4921,7 +4921,7 @@ public enum Preset
     PLD_Mit_Bulwark = 11055,
 
     [ParentCombo(PLD_Mit_OneButton)]
-    [CustomComboInfo("Hallowed Ground Option", "Adds Hallowed Ground to the one-button mitigation.", Job.PLD)]
+    [CustomComboInfo("Hallowed Ground Option", "Adds Hallowed Ground to the one-button mitigation (not at max priority).", Job.PLD)]
     PLD_Mit_HallowedGround = 11056,
 
     [ParentCombo(PLD_Mit_OneButton)]
