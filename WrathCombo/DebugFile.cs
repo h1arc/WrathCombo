@@ -144,6 +144,7 @@ public static class DebugFile
 
             AddDebugCode();
             AddSettingsHistory();
+            AddPluginList();
             AddDalamudLog();
 
             AddLine("END DEBUG LOG");
@@ -760,7 +761,23 @@ public static class DebugFile
 
         AddLine();
     }
-    
+
+    private static void AddPluginList()
+    {
+        var plugins = Svc.PluginInterface.InstalledPlugins
+            .Where(x => x.IsLoaded).ToArray();
+        AddLine($"Total Plugins Loaded: {plugins.Length}");
+
+        AddLine("START PLUGIN LIST");
+        foreach (var plugin in plugins)
+        {
+            AddLine($"- {plugin.InternalName} ({plugin.Name}) v{plugin.Version}");
+        }
+        AddLine("END PLUGIN LIST");
+
+        AddLine();
+    }
+
     /// <summary>
     ///     Gets the last lines of the dalamud log file.
     /// </summary>
