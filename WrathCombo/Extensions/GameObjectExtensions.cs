@@ -35,6 +35,14 @@ public static class GameObjectExtensions
             }
         }
         
+        public float HPP
+        {
+            get {
+                if (obj is not IBattleChara battleChara)
+                    return float.NaN;
+
+                return (float)battleChara.CurrentHp / battleChara.MaxHp * 100f;
+            }
         }
 
         /// <summary>
