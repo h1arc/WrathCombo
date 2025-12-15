@@ -4960,53 +4960,53 @@ public enum Preset
 
     [ReplaceSkill(PLD.Clemency)]
     [CustomComboInfo("Retarget Clemency Feature", "Will retarget Clemency according to following Suboptions", Job.PLD)]
-    [Retargeted(PLD.Clemency)]
+    [Retargeted]
     PLD_RetargetClemency = 11067,
 
     [ParentCombo(PLD_RetargetClemency)]
     [CustomComboInfo("Mouseover Clemency Option", "Adds UI mouseover to the priority. Above LowHP option.", Job.PLD)]
-    [Retargeted]
+    [Retargeted(PLD.Clemency)]
     PLD_RetargetClemency_MO = 11071,
 
     [ParentCombo(PLD_RetargetClemency)]
     [CustomComboInfo("Low hp Clemency Option", "Will Heal Lowest Health Party member until you fall below set threshold", Job.PLD)]
-    [Retargeted]
+    [Retargeted(PLD.Clemency)]
     PLD_RetargetClemency_LowHP = 11072,
 
     [ReplaceSkill(PLD.Sheltron)]
     [CustomComboInfo("Sheltron to Intervention Feature", "Will use intervention on your Hard Target if target is a friendly party member, if not then Sheltron." +
                                                          "\n- UI Mouseover > Hard target > Target's target > Self Sheltron", Job.PLD)]
-    [Retargeted(PLD.Sheltron)]
+    [Retargeted]
     PLD_RetargetSheltron = 11068,
 
     [ParentCombo(PLD_RetargetSheltron)]
     [CustomComboInfo("Mouseover Intervention Option", "Adds UI mouseover to the priority.", Job.PLD)]
-    [Retargeted]
+    [Retargeted(PLD.Sheltron)]
     PLD_RetargetSheltron_MO = 11069,
 
     [ParentCombo(PLD_RetargetSheltron)]
     [CustomComboInfo("Target's Target Intervention Option", "Adds Target's Target to the priority when you do not have agro.", Job.PLD)]
-    [Retargeted]
+    [Retargeted(PLD.Sheltron)]
     PLD_RetargetSheltron_TT = 11070,
 
-    [Retargeted(PLD.ShieldBash)]
     [ConflictingCombos(ALL_Tank_Interrupt)]
     [CustomComboInfo("Retarget Shield Bash", "Redirects your Shield Bash to a stunnable enemy if your current target cannot be stunned.", Job.PLD)]
+    [Retargeted(PLD.ShieldBash)]
     PLD_RetargetShieldBash = 11073,
     
     [ReplaceSkill(PLD.Cover)]
     [CustomComboInfo("Retarget Cover Feature", "Will retarget Cover according to the following options", Job.PLD)]
-    [Retargeted(PLD.Cover)]
+    [Retargeted]
     PLD_RetargetCover = 11075,
     
     [ParentCombo(PLD_RetargetCover)]
     [CustomComboInfo("Mouseover Cover Option", "Adds UI mouseover to the priority. Above LowHP option.", Job.PLD)]
-    [Retargeted]
+    [Retargeted(PLD.Cover)]
     PLD_RetargetCover_MO = 11076,
 
     [ParentCombo(PLD_RetargetCover)]
-    [CustomComboInfo("Low hp Cover Option", "Will Heal Lowest Health Party member until you fall below set threshold", Job.PLD)]
-    [Retargeted]
+    [CustomComboInfo("Low HP% Cover Option", "Will Cover the Lowest Health (by percentage) Party member they fall below set threshold", Job.PLD)]
+    [Retargeted(PLD.Cover)]
     PLD_RetargetCover_LowHP = 11077,
 
     #endregion

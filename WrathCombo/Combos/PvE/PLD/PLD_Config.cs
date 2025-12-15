@@ -261,7 +261,7 @@ internal partial class PLD
                 
                 // Retarget Cover Feature
                 case Preset.PLD_RetargetCover_LowHP:
-                    DrawSliderInt(1, 100, PLD_RetargetCover_Health, "Player HP%", 200);
+                    DrawSliderInt(1, 100, PLD_RetargetCover_Health, "Ally HP%", 200);
                     break;
 
                 // Simple ST Mitigations Option
