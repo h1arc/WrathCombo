@@ -542,14 +542,14 @@ internal partial class GNB : Tank
                   IsInParty()),
         //Rampart
         (Role.Rampart, Preset.GNB_Mit_Rampart,
-            () => Role.CanRampart(GNB_Mit_Rampart_Health)),
+            () => Role.CanRampart()),
         //Arm's Length
         (Role.ArmsLength, Preset.GNB_Mit_ArmsLength,
             () => Role.CanArmsLength(GNB_Mit_ArmsLength_EnemyCount,
                 GNB_Mit_ArmsLength_Boss)),
         //Nebula
         (OriginalHook(Nebula), Preset.GNB_Mit_Nebula,
-            () => PlayerHealthPercentageHp() <= GNB_Mit_Nebula_Health)
+            () => true)
     ];
 
     ///<summary>

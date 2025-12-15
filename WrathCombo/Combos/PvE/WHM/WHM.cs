@@ -412,7 +412,7 @@ internal partial class WHM : Healer
                 GetStatusEffect(Buffs.DivineBenison, healTarget) == null)
                 return DivineBenison.RetargetIfEnabled(OptionalTarget, Cure);
 
-            if (ActionReady(Aquaveil) && IsOffCooldown(Aquaveil) && (healTarget.IsInParty() && healTarget.GetRole() is CombatRole.Tank || !IsInParty()))
+            if (ActionReady(Aquaveil) && IsOffCooldown(Aquaveil) && (healTarget.IsInParty() && healTarget.Role is CombatRole.Tank || !IsInParty()))
                 return Aquaveil.RetargetIfEnabled(OptionalTarget, Cure);
 
             if (ActionReady(OriginalHook(Temperance)) && 

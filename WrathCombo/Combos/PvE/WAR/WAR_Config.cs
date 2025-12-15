@@ -81,11 +81,9 @@ internal partial class WAR
             WAR_Mit_Bloodwhetting_Health = new("WAR_Mit_Bloodwhetting_Health", 70),
             WAR_Mit_Equilibrium_Health = new("WAR_Mit_Equilibrium_Health", 45),
             WAR_Mit_ThrillOfBattle_Health = new("WAR_Mit_ThrillOfBattle_Health", 60),
-            WAR_Mit_Rampart_Health = new("WAR_Mit_Rampart_Health", 65),
             WAR_Mit_ShakeItOff_PartyRequirement = new("WAR_Mit_ShakeItOff_PartyRequirement", (int)PartyRequirement.Yes),
             WAR_Mit_ArmsLength_Boss = new("WAR_Mit_ArmsLength_Boss", (int)BossAvoidance.On),
             WAR_Mit_ArmsLength_EnemyCount = new("WAR_Mit_ArmsLength_EnemyCount", 0),
-            WAR_Mit_Vengeance_Health = new("WAR_Mit_Vengeance_Health", 50),
             WAR_Bozja_LostCure_Health = new("WAR_Bozja_LostCure_Health", 50),
             WAR_Bozja_LostCure2_Health = new("WAR_Bozja_LostCure2_Health", 50),
             WAR_Bozja_LostCure3_Health = new("WAR_Bozja_LostCure3_Health", 50),
@@ -436,9 +434,6 @@ internal partial class WAR
                     break;
 
                 case Preset.WAR_Mit_Rampart:
-                    DrawSliderInt(1, 100, WAR_Mit_Rampart_Health,
-                        "HP% to use at or below (100 = Disable check)", sliderIncrement: SliderIncrements.Ones);
-
                     DrawPriorityInput(WAR_Mit_Priorities, NumMitigationOptions, 4,
                         "Rampart Priority:");
                     break;
@@ -452,8 +447,6 @@ internal partial class WAR
                         "Use Always", "Will not require a party for Shake It Off.",
                         outputValue: (int)PartyRequirement.No);
                     ImGui.Unindent();
-
-                    ImGui.NewLine();
                     DrawPriorityInput(WAR_Mit_Priorities, NumMitigationOptions, 5,
                         "Shake It Off Priority:");
                     break;
@@ -467,16 +460,12 @@ internal partial class WAR
                         "Avoid Bosses", "Will try not to use Arm's Length when in a boss fight.",
                         outputValue: (int)BossAvoidance.On, itemWidth: 125f);
                     ImGui.Unindent();
-                    ImGui.NewLine();
                     DrawSliderInt(0, 3, WAR_Mit_ArmsLength_EnemyCount,
                         "How many enemies should be nearby? (0 = No Requirement)");
                     DrawPriorityInput(WAR_Mit_Priorities, NumMitigationOptions, 6, "Arm's Length Priority:");
                     break;
 
                 case Preset.WAR_Mit_Vengeance:
-                    DrawSliderInt(1, 100, WAR_Mit_Vengeance_Health,
-                        "HP% to use at or below (100 = Disable check)",
-                        sliderIncrement: SliderIncrements.Ones);
                     DrawPriorityInput(WAR_Mit_Priorities, NumMitigationOptions, 7, "Vengeance Priority:");
                     break;
                 #endregion
