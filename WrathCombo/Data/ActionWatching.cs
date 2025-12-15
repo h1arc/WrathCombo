@@ -235,6 +235,9 @@ public static class ActionWatching
             }
         }
 
+        if (castTime == 0)
+            WrathOpener.CurrentOpener?.ProgressOpener(actionId);
+
         if (Service.Configuration.EnabledOutputLog)
             OutputLog();
     }
@@ -418,8 +421,6 @@ public static class ActionWatching
                     var castTime = ActionManager.GetAdjustedCastTime(actionType, modifiedAction);
                     LastAction = modifiedAction;
                     TimeLastActionUsed = DateTime.Now;
-                    if (castTime == 0)
-                        WrathOpener.CurrentOpener?.ProgressOpener(modifiedAction);
                 }
 
                 return hookResult;
