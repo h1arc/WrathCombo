@@ -5000,12 +5000,12 @@ public enum Preset
     PLD_RetargetCover = 11075,
     
     [ParentCombo(PLD_RetargetCover)]
-    [CustomComboInfo("Mouseover Cover Option", "Adds UI mouseover to the priority. Above LowHP option.", Job.PLD)]
+    [CustomComboInfo("Mouseover Cover Option", "Adds UI mouseover to the priority, above Low HP option in priority.", Job.PLD)]
     [Retargeted(PLD.Cover)]
     PLD_RetargetCover_MO = 11076,
 
     [ParentCombo(PLD_RetargetCover)]
-    [CustomComboInfo("Low HP% Cover Option", "Will Cover the Lowest Health (by percentage) Party member they fall below set threshold", Job.PLD)]
+    [CustomComboInfo("Low HP% Cover Option", "Will Cover the Lowest Health (by percentage) Party member when they fall below set threshold", Job.PLD)]
     [Retargeted(PLD.Cover)]
     PLD_RetargetCover_LowHP = 11077,
 
