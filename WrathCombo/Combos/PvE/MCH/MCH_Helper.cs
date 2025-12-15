@@ -203,13 +203,13 @@ internal partial class MCH
             return true;
         }
 
-        if (ActionReady(Chainsaw))
+        if (ActionReady(Chainsaw) && !HasStatusEffect(Buffs.ExcavatorReady))
         {
             actionID = Chainsaw;
             return true;
         }
 
-        if (ActionReady(Excavator))
+        if (ActionReady(Excavator) && HasStatusEffect(Buffs.ExcavatorReady))
         {
             actionID = Excavator;
             return true;
