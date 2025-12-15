@@ -398,7 +398,6 @@ internal partial class DRK
                         outputValue: (int)PartyRequirement.No, itemWidth: medium);
                     ImGui.Unindent();
 
-                    ImGui.NewLine();
                     UserConfig.DrawPriorityInput(DRK_Mit_Priorities,
                         numberMitigationOptions, 3,
                         "Dark Missionary Priority:");
@@ -431,7 +430,6 @@ internal partial class DRK
                         outputValue: (int)BossAvoidance.On, itemWidth: 125f);
                     ImGui.Unindent();
 
-                    ImGui.NewLine();
                     UserConfig.DrawSliderInt(0, 3, DRK_Mit_ArmsLength_EnemyCount,
                         "How many enemies should be nearby? (0 = No Requirement)",
                         itemWidth: little, sliderIncrement: SliderIncrements.Ones);
