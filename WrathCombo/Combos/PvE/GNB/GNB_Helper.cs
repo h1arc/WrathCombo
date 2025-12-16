@@ -478,7 +478,7 @@ internal partial class GNB : Tank
             ReadyToRaze = 3839, //applied by Fated Circle to self
             ReadyToBreak = 3886, //applied by No mercy to self
             ReadyToReign = 3840, //applied by Bloodfest to target
-            Bloodfest = ; //applied by Bloodfest to target
+            Bloodfest = 5051; //applied by Bloodfest to target
     }
     public static class Debuffs
     {
