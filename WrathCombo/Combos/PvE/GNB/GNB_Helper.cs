@@ -24,8 +24,8 @@ internal partial class GNB : Tank
     internal static bool HasNM => NMcd is >= 39.5f and <= 60;
     internal static bool HasReign => HasStatusEffect(Buffs.ReadyToReign);
     internal static bool CanBS => LevelChecked(BurstStrike) && Ammo > 0;
-    internal static bool CanGF => LevelChecked(GnashingFang) && GetCooldownRemainingTime(GnashingFang) < 0.6f && !HasStatusEffect(Buffs.ReadyToBlast) && GunStep == 0 && Ammo > 0;
-    internal static bool CanDD => LevelChecked(DoubleDown) && GetCooldownRemainingTime(DoubleDown) < 0.6f && Ammo > 0;
+    internal static bool CanGF => LevelChecked(GnashingFang) && GetCooldownChargeRemainingTime(GnashingFang) < 0.6f && !HasStatusEffect(Buffs.ReadyToBlast) && GunStep == 0 && Ammo > 0;
+    internal static bool CanDD => LevelChecked(DoubleDown) && GetCooldownRemainingTime(DoubleDown) < 0.6f && Ammo >= 2;
     internal static bool CanBF => LevelChecked(Bloodfest) && BFcd < 0.6f;
     internal static bool CanZone => LevelChecked(DangerZone) && GetCooldownRemainingTime(OriginalHook(DangerZone)) < 0.6f;
     internal static bool CanSB => LevelChecked(SonicBreak) && HasStatusEffect(Buffs.ReadyToBreak);
@@ -297,7 +297,13 @@ internal partial class GNB : Tank
     #endregion
 
     #region Helpers
-    internal static int MaxCartridges() => TraitLevelChecked(Traits.CartridgeChargeII) ? 3 : TraitLevelChecked(Traits.CartridgeCharge) ? 2 : 0;
+    internal static int MaxCartridges() => 
+        TraitLevelChecked(Traits.CartridgeChargeII) ? 
+            HasStatusEffect(Buffs.Bloodfest) ? 6 : 3 : 
+        TraitLevelChecked(Traits.CartridgeCharge) ?
+            HasStatusEffect(Buffs.Bloodfest) ? 4 : 2 : 0;
+
+    //TODO: revise Bozja stuff - this shit looks crazy
     internal static uint GetBozjaAction()
     {
         if (!Bozja.IsInBozja)
@@ -471,7 +477,8 @@ internal partial class GNB : Tank
             GreatNebula = 3838, //applied by Nebula to self
             ReadyToRaze = 3839, //applied by Fated Circle to self
             ReadyToBreak = 3886, //applied by No mercy to self
-            ReadyToReign = 3840; //applied by Bloodfest to target
+            ReadyToReign = 3840, //applied by Bloodfest to target
+            Bloodfest = ; //applied by Bloodfest to target
     }
     public static class Debuffs
     {
