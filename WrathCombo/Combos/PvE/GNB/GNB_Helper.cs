@@ -84,14 +84,13 @@ internal partial class GNB : Tank
         public override List<uint> OpenerActions { get; set; } =
         [
             LightningShot,
+            Bloodfest, //+3 (3)
             KeenEdge,
             BrutalShell,
-            SolidBarrel, //+1 (1)
             NoMercy, //LateWeave
-            GnashingFang, //-1 (0)
-            Bloodfest, //+3 (3)
+            GnashingFang, //-1 (2)
             JugularRip,
-            DoubleDown, //-1 (2)
+            DoubleDown, //-1 (0)
             BlastingZone,
             BowShock,
             SonicBreak,
@@ -99,10 +98,13 @@ internal partial class GNB : Tank
             AbdomenTear,
             WickedTalon,
             EyeGouge,
-            BurstStrike, //-1 (1)
-            Hypervelocity,
-            BurstStrike, //-1 (0)
-            Hypervelocity
+            SolidBarrel, //+1 (1)
+            GnashingFang, //-1 (0)
+            JugularRip,
+            SavageClaw,
+            AbdomenTear,
+            WickedTalon,
+            EyeGouge
         ];
 
         public override List<int> VeryDelayedWeaveSteps { get; set; } = [5];
@@ -112,25 +114,27 @@ internal partial class GNB : Tank
         public override List<uint> OpenerActions { get; set; } =
         [
             LightningShot,
+            Bloodfest, //+3 (3)
             KeenEdge,
             BrutalShell,
             NoMercy,
-            Bloodfest, //+3 (3)
             GnashingFang, //-1 (2)
             JugularRip,
-            BowShock,
-            DoubleDown, //-1 (1)
+            DoubleDown, //-1 (0)
             BlastingZone,
+            BowShock,
             SonicBreak,
             SavageClaw,
             AbdomenTear,
             WickedTalon,
             EyeGouge,
-            BurstStrike, //-1 (0)
-            Hypervelocity,
             SolidBarrel, //+1 (1)
-            BurstStrike, //-1 (0)
-            Hypervelocity
+            GnashingFang, //-1 (0)
+            JugularRip,
+            SavageClaw,
+            AbdomenTear,
+            WickedTalon,
+            EyeGouge
         ];
     }
     internal class Lv90FastEarlyNM : GNBOpenerLv90Base
@@ -143,7 +147,7 @@ internal partial class GNB : Tank
             NoMercy, //LateWeave
             GnashingFang, //-1 (2)
             JugularRip,
-            DoubleDown, //-1 (1)
+            DoubleDown, //-1 (0)
             BlastingZone,
             BowShock,
             SonicBreak,
@@ -151,8 +155,14 @@ internal partial class GNB : Tank
             AbdomenTear,
             WickedTalon,
             EyeGouge,
-            BurstStrike, //-1 (0)
-            Hypervelocity,
+            BrutalShell,
+            SolidBarrel, //+1 (1)
+            GnashingFang, //-1 (0)
+            JugularRip,
+            SavageClaw,
+            AbdomenTear,
+            WickedTalon,
+            EyeGouge
         ];
 
         public override List<int> VeryDelayedWeaveSteps { get; set; } = [4];
@@ -162,21 +172,27 @@ internal partial class GNB : Tank
         public override List<uint> OpenerActions { get; set; } =
         [
             LightningShot,
-            KeenEdge,
             Bloodfest, //+3 (3)
+            KeenEdge,
             NoMercy,
             GnashingFang, //-1 (2)
             JugularRip,
-            BowShock,
-            DoubleDown, //-1 (1)
+            DoubleDown, //-1 (0)
             BlastingZone,
+            BowShock,
             SonicBreak,
             SavageClaw,
             AbdomenTear,
             WickedTalon,
             EyeGouge,
-            BurstStrike, //-1 (0)
-            Hypervelocity,
+            BrutalShell,
+            SolidBarrel, //+1 (1)
+            GnashingFang, //-1 (0)
+            JugularRip,
+            SavageClaw,
+            AbdomenTear,
+            WickedTalon,
+            EyeGouge
         ];
     }
     #endregion
@@ -203,7 +219,7 @@ internal partial class GNB : Tank
             GnashingFang, //-1 (2)
             JugularRip,
             BowShock,
-            DoubleDown, //-1 (1)
+            DoubleDown, //-1 (0)
             BlastingZone,
             SonicBreak,
             SavageClaw,
@@ -213,8 +229,13 @@ internal partial class GNB : Tank
             ReignOfBeasts,
             NobleBlood,
             LionHeart,
-            BurstStrike, //-1 (0)
-            Hypervelocity
+            SolidBarrel, //+1 (1)
+            GnashingFang, //-1 (0)
+            JugularRip,
+            SavageClaw,
+            AbdomenTear,
+            WickedTalon,
+            EyeGouge
         ];
         public override List<int> VeryDelayedWeaveSteps { get; set; } = [5];
     }
@@ -225,10 +246,9 @@ internal partial class GNB : Tank
             LightningShot,
             Bloodfest, //+3 (3)
             KeenEdge,
-            BurstStrike, //-1 (2)
+            BrutalShell,
             NoMercy,
-            Hypervelocity,
-            GnashingFang, //-1 (1)
+            GnashingFang, //-1 (2)
             JugularRip,
             BowShock,
             DoubleDown, //-1 (0)
@@ -240,7 +260,14 @@ internal partial class GNB : Tank
             EyeGouge,
             ReignOfBeasts,
             NobleBlood,
-            LionHeart
+            LionHeart,
+            SolidBarrel, //+1 (1)
+            GnashingFang, //-1 (0)
+            JugularRip,
+            SavageClaw,
+            AbdomenTear,
+            WickedTalon,
+            EyeGouge
         ];
     }
     internal class Lv100FastEarlyNM : GNBOpenerLv100Base
@@ -253,7 +280,7 @@ internal partial class GNB : Tank
             GnashingFang, //-1 (2)
             JugularRip,
             BowShock,
-            DoubleDown, //-1 (1)
+            DoubleDown, //-1 (0)
             BlastingZone,
             SonicBreak,
             SavageClaw,
@@ -263,8 +290,15 @@ internal partial class GNB : Tank
             ReignOfBeasts,
             NobleBlood,
             LionHeart,
-            BurstStrike, //-1 (0)
-            Hypervelocity,
+            KeenEdge,
+            BrutalShell,
+            SolidBarrel, //+1 (1)
+            GnashingFang, //-1 (0)
+            JugularRip,
+            SavageClaw,
+            AbdomenTear,
+            WickedTalon,
+            EyeGouge
         ];
         public override List<int> VeryDelayedWeaveSteps { get; set; } = [3];
     }
@@ -274,10 +308,8 @@ internal partial class GNB : Tank
         [
             LightningShot,
             Bloodfest, //+3 (3)
-            BurstStrike, //-1 (2)
-            NoMercy, //LateWeave
-            Hypervelocity,
-            GnashingFang, //-1 (1)
+            NoMercy,
+            GnashingFang, //-1 (2)
             JugularRip,
             BowShock,
             DoubleDown, //-1 (0)
@@ -289,7 +321,16 @@ internal partial class GNB : Tank
             EyeGouge,
             ReignOfBeasts,
             NobleBlood,
-            LionHeart
+            LionHeart,
+            KeenEdge,
+            BrutalShell,
+            SolidBarrel, //+1 (1)
+            GnashingFang, //-1 (0)
+            JugularRip,
+            SavageClaw,
+            AbdomenTear,
+            WickedTalon,
+            EyeGouge
         ];
     }
     #endregion
