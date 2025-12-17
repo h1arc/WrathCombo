@@ -227,7 +227,7 @@ internal class AutoRotationTab : ConfigWindow
             P.UIHelper.ShowIPCControlledIndicatorIfNeeded("AutoRez");
             changed |= P.UIHelper.ShowIPCControlledCheckboxIfNeeded(
                 "Auto-Resurrect", ref cfg.HealerSettings.AutoRez, "AutoRez");
-            ImGuiComponents.HelpMarker($"Will attempt to resurrect dead party members. Applies to {Job.CNJ.Shorthand()}, {Job.WHM.Shorthand()}, {Job.SCH.Shorthand()}, {Job.AST.Shorthand()}, {Job.SGE.Shorthand()} and {OccultCrescent.ContentName} {Svc.Data.GetExcelSheet<MKDSupportJob>().GetRow(10).Name} {OccultCrescent.Revive.ActionName()}");
+            ImGuiComponents.HelpMarker($"Will attempt to resurrect dead party members. Applies to {Job.CNJ.Shorthand()}, {Job.WHM.Shorthand()}, {Job.SCH.Shorthand()}, {Job.AST.Shorthand()}, {Job.SGE.Shorthand()} and {OccultCrescent.ContentName} {Svc.Data.GetExcelSheet<MKDSupportJob>().GetRow(10).Unknown0} {OccultCrescent.Revive.ActionName()}");
             var autoRez = (bool)P.IPC.GetAutoRotationConfigState(AutoRotationConfigOption.AutoRez)!;
             if (autoRez)
             {
