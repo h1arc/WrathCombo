@@ -100,7 +100,7 @@ internal partial class MCH : PhysicalRanged
             }
 
             // Full Metal Field
-            if (HasStatusEffect(Buffs.FullMetalMachinist, out Status? fullMetal) &&
+            if (HasStatusEffect(Buffs.FullMetalMachinist, out IStatus? fullMetal) &&
                 !IsOverheated &&
                 (ActionReady(Wildfire) ||
                  GetCooldownRemainingTime(Wildfire) > 90 ||
@@ -384,7 +384,7 @@ internal partial class MCH : PhysicalRanged
 
             // Full Metal Field
             if (IsEnabled(Preset.MCH_ST_Adv_Stabilizer_FullMetalField) &&
-                HasStatusEffect(Buffs.FullMetalMachinist, out Status? fullMetal) &&
+                HasStatusEffect(Buffs.FullMetalMachinist, out IStatus? fullMetal) &&
                 !IsOverheated &&
                 (ActionReady(Wildfire) ||
                  GetCooldownRemainingTime(Wildfire) > 90 ||

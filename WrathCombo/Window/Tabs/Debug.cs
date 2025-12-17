@@ -37,7 +37,7 @@ using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using Action = Lumina.Excel.Sheets.Action;
 using BattleNPCSubKind = Dalamud.Game.ClientState.Objects.Enums.BattleNpcSubKind;
 using ObjectKind = Dalamud.Game.ClientState.Objects.Enums.ObjectKind;
-using Status = Dalamud.Game.ClientState.Statuses.Status;
+using Status = Dalamud.Game.ClientState.Statuses.IStatus;
 
 #endregion
 
