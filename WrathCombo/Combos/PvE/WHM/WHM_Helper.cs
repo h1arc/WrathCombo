@@ -262,6 +262,13 @@ internal partial class WHM
                !HasStatusEffect(Buffs.LiturgyOfTheBell) &&
                RaidWideCasting() && CanWeave();
     }
+    internal static bool RaidwidePlenaryIndulgence()
+    {
+        return IsEnabled(Preset.WHM_Raidwide_PlenaryIndulgence) &&
+               ActionReady(PlenaryIndulgence) &&
+               RaidWideCasting() && CanWeave();
+    }
+
 
     #endregion
 

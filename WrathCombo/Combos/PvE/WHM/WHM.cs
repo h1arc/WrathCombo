@@ -195,6 +195,8 @@ internal partial class WHM : Healer
 
             #region Special Feature Raidwide
 
+            if (RaidwidePlenaryIndulgence())
+                return OriginalHook(PlenaryIndulgence);
             if (RaidwideTemperance())
                 return OriginalHook(Temperance);
             if (RaidwideAsylum())
@@ -302,6 +304,8 @@ internal partial class WHM : Healer
 
             #region Special Feature Raidwide
 
+            if (RaidwidePlenaryIndulgence())
+                return OriginalHook(PlenaryIndulgence);
             if (RaidwideTemperance())
                 return OriginalHook(Temperance);
             if (RaidwideAsylum())
@@ -514,6 +518,8 @@ internal partial class WHM : Healer
 
             #region Special Feature Raidwide
 
+            if (RaidwidePlenaryIndulgence())
+                return OriginalHook(PlenaryIndulgence);
             if (RaidwideTemperance())
                 return OriginalHook(Temperance);
             if (RaidwideAsylum())
@@ -593,6 +599,8 @@ internal partial class WHM : Healer
 
             #region Special Feature Raidwide
 
+            if (RaidwidePlenaryIndulgence())
+                return OriginalHook(PlenaryIndulgence);
             if (RaidwideTemperance())
                 return OriginalHook(Temperance);
             if (RaidwideAsylum())
