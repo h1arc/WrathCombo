@@ -344,6 +344,7 @@ internal class Debug : ConfigWindow, IDisposable
             CustomStyleText("Health:", $"{player.CurrentHp:N0} / {player.MaxHp:N0} ({MathF.Round(PlayerHealthPercentageHp(), 2)}%)");
             CustomStyleText("MP:", $"{player.CurrentMp:N0} / {player.MaxMp:N0}");
             CustomStyleText("Job:", $"{player.ClassJob.Value.NameEnglish} (ID: {player.ClassJob.RowId})");
+            CustomStyleText($"Level (synced):", $"{Player.Level} ({Svc.PlayerState.EffectiveLevel})");
             CustomStyleText("Zone:", $"{Svc.Data.GetExcelSheet<TerritoryType>().FirstOrDefault(x => x.RowId == Svc.ClientState.TerritoryType).PlaceName.Value.Name} (ID: {Svc.ClientState.TerritoryType})");
             CustomStyleText("In PvP:", InPvP());
             CustomStyleText("In FATE:", InFATE());
@@ -696,6 +697,8 @@ internal class Debug : ConfigWindow, IDisposable
                 if (WrathOpener.CurrentOpener is not null)
                 {
                     CustomStyleText("Current Opener", WrathOpener.CurrentOpener.GetType().Name);
+                    CustomStyleText($"Cache:", WrathOpener.CurrentOpener?.CacheReady);
+                    CustomStyleText($"Pre-Checks:", $"Level: {WrathOpener.CurrentOpener?.LevelChecked}({Svc.PlayerState.EffectiveLevel}), CDs: {WrathOpener.CurrentOpener?.HasCooldowns()}");
                     CustomStyleText("Opener State:", WrathOpener.CurrentOpener.CurrentState);
                     CustomStyleText("Current Opener Action:", WrathOpener.CurrentOpener.CurrentOpenerAction.ActionName());
                     CustomStyleText("Current Opener Step:", WrathOpener.CurrentOpener.OpenerStep);
