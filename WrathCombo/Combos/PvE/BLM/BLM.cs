@@ -799,7 +799,7 @@ internal partial class BLM : Caster
                 return actionID;
 
             return BLM_AmplifierXenoCD && IsOnCooldown(Amplifier) && HasPolyglotStacks() || HasMaxPolyglotStacks
-                ? Xenoglossy
+                ? (!LevelChecked(Xenoglossy) ? Foul : Xenoglossy)  
                 : actionID;
         }
     }
