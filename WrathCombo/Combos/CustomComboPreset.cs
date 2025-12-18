@@ -5299,7 +5299,7 @@ public enum Preset
 
     [ParentCombo(RDM_ST_DPS)]
     [CustomComboInfo("Opener (Level 100)",
-        "Adds the opener at level 100.\n**Must move into melee range before melee combo for standard**", Job.RDM)]
+        "Adds the opener at level 100.\n**Standard Opener must move into melee range to use Corps/Engagement**", Job.RDM)]
     RDM_Balance_Opener = 13002,
 
     [ParentCombo(RDM_ST_DPS)]
@@ -5331,7 +5331,7 @@ public enum Preset
 
     [ParentCombo(RDM_ST_MeleeCombo)]
     [CustomComboInfo("Gap-Close with Corps-a-corps Option",
-        "Use Corp-a-corps when out of melee range and you have enough mana to start the melee combo or starting Manafication Burst.", Job.RDM)]
+        "Use Corp-a-corps when out of melee range and you have enough mana to start the melee combo.", Job.RDM)]
     RDM_ST_MeleeCombo_GapCloser = 13008,
 
     [ParentCombo(RDM_ST_MeleeCombo)]
