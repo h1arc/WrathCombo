@@ -233,6 +233,12 @@ public enum Preset
     [CustomComboInfo("Variant Spirit Dart", "Use Variant Spirit Dart whenever the debuff is not present or less than 3s", Job.ADV)]
     Variant_Tank_SpiritDart = 200004,
 
+    [Variant]
+    [Role(JobRole.Tank)]
+    [ParentCombo(Variant_Tank)]
+    [CustomComboInfo("Variant Eagle Eye Shot", "Use Variant Eagle Eye Shot on cooldown.", Job.ADV)]
+    Variant_Tank_EagleEyeShot = 200024,
+
 
     [Variant]
     [Role(JobRole.Healer)]
@@ -258,6 +264,12 @@ public enum Preset
     [ParentCombo(Variant_Healer)]
     [CustomComboInfo("Variant Rampart", "Use Variant Rampart on cooldown.", Job.ADV)]
     Variant_Healer_Rampart = 200008,
+
+    [Variant]
+    [Role(JobRole.Healer)]
+    [ParentCombo(Variant_Healer)]
+    [CustomComboInfo("Variant Eagle Eye Shot", "Use Variant Eagle Eye Shot on cooldown.", Job.ADV)]
+    Variant_Healer_EagleEyeShot = 200025,
 
 
     [Variant]
@@ -292,6 +304,12 @@ public enum Preset
     [CustomComboInfo("Variant Rampart", "Use Variant Rampart on cooldown.", Job.ADV)]
     Variant_Melee_Rampart = 200013,
 
+    [Variant]
+    [Role(JobRole.MeleeDPS)]
+    [ParentCombo(Variant_Melee)]
+    [CustomComboInfo("Variant Eagle Eye Shot", "Use Variant Eagle Eye Shot on cooldown.", Job.ADV)]
+    Variant_Melee_EagleEyeShot = 200026,
+
 
     [Variant]
     [Role(JobRole.RangedDPS)]
@@ -325,6 +343,12 @@ public enum Preset
     [CustomComboInfo("Variant Rampart", "Use Variant Rampart on cooldown.", Job.ADV)]
     Variant_PhysRanged_Rampart = 200018,
 
+    [Variant]
+    [Role(JobRole.RangedDPS)]
+    [ParentCombo(Variant_PhysRanged)]
+    [CustomComboInfo("Variant Eagle Eye Shot", "Use Variant Eagle Eye Shot on cooldown.", Job.ADV)]
+    Variant_PhysRanged_EagleEyeShot = 200027,
+
 
     [Variant]
     [Role(JobRole.MagicalDPS)]
@@ -357,6 +381,14 @@ public enum Preset
     [ParentCombo(Variant_Magic)]
     [CustomComboInfo("Variant Rampart", "Use Variant Rampart on cooldown.", Job.ADV)]
     Variant_Magic_Rampart = 200023,
+
+    [Variant]
+    [Role(JobRole.MagicalDPS)]
+    [ParentCombo(Variant_Magic)]
+    [CustomComboInfo("Variant Eagle Eye Shot", "Use Variant Eagle Eye Shot on cooldown.", Job.ADV)]
+    Variant_Magic_EagleEyeShot = 200028,
+
+    // last value = 200028
 
     #endregion
 
