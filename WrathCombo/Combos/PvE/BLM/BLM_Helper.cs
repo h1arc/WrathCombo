@@ -27,10 +27,10 @@ internal partial class BLM
     private static bool CanFlarestar =>
         LevelChecked(FlareStar) && AstralSoulStacks is 6;
 
-    private static Status? ThunderDebuffST =>
-        GetStatusEffect(ThunderList[OriginalHook(Thunder)], CurrentTarget);
+    private static IStatus? ThunderDebuffST =>
+        GetStatusEffect(ThunderList[OriginalHook(Thunder)],CurrentTarget);
 
-    private static Status? ThunderDebuffAoE =>
+    private static IStatus? ThunderDebuffAoE =>
         GetStatusEffect(ThunderList[OriginalHook(Thunder2)], CurrentTarget);
 
     private static float TimeSinceFirestarterBuff =>

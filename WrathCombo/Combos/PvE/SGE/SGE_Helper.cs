@@ -14,10 +14,10 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class SGE
 {
-    private static Status? DosisDebuff =>
+    private static IStatus? DosisDebuff =>
         GetStatusEffect(DosisList[OriginalHook(Dosis)].Debuff, CurrentTarget);
 
-    private static Status? DyskrasiaDebuff =>
+    private static IStatus? DyskrasiaDebuff =>
         GetStatusEffect(Debuffs.EukrasianDyskrasia, CurrentTarget);
 
     private static bool MaxPhlegma =>
