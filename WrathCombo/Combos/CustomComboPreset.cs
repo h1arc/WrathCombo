@@ -1408,12 +1408,31 @@ public enum Preset
     [ConflictingCombos(BLM_Retargetting_Aetherial_Manipulation)]
     [CustomComboInfo("Aetherial Manipulation Feature", "Replaces Aetherial Manipulation with Between the Lines when you are out of active Ley Lines and standing still.", Job.BLM)]
     BLM_Aetherial_Manipulation = 2055,
+    
+    [CustomComboInfo("Toshi Tweaks", "Collection of tweaks by Toshi.", Job.BLM)]
+    BLM_Toshi_Tweaks = 2070,
+    
+    [ParentCombo(BLM_Toshi_Tweaks)]
+    [ReplaceSkill(BLM.Fire4)]
+    [ConflictingCombos(BLM_Fire4)]
+    [CustomComboInfo("Toshi's Fire 4 Tweaks", "Collection of Fire 4 Tweaks by Toshi.", Job.BLM)]
+    BLM_Toshi_Fire4 = 2071,
 
+    [ParentCombo(BLM_Toshi_Tweaks)]
+    [ReplaceSkill(BLM.Blizzard4)]
+    [ConflictingCombos(BLM_Blizzard4toDespair)]
+    [CustomComboInfo("Toshi's Blizzard 4 Tweaks", "Collection of Blizzard 4 Tweaks by Toshi.", Job.BLM)]
+    BLM_Toshi_Blizzard4 = 2072,
+    
+    [ParentCombo(BLM_Toshi_Tweaks)]
+    [ReplaceSkill(BLM.Blizzard3)]
+    [CustomComboInfo("Toshi's Blizzard 3 Tweaks", "Collection of Blizzard 3 Tweaks by Toshi.", Job.BLM)]
+    BLM_Toshi_Blizzard3 = 2073,
     #endregion
 
     // Last value ST = 2117
     //Last Value AoE = 2213
-    //Last Value misc = 2069
+    //Last Value misc = 2073
 
     #endregion
 
@@ -9203,8 +9222,18 @@ public enum Preset
     [PvPCustomCombo]
     [CustomComboInfo("Phantom Dart Option", "Uses Phantom Dart (if selected) when available at or below set health threshold.", Job.PCT)]
     PCTPvP_PhantomDart = 140009,
+    
+    [PvPCustomCombo]
+    [CustomComboInfo("Toshi Tweaks", "Random collection of tweaks by Toshi", Job.PCT)]
+    PCTPvP_Toshitweaks = 140010,
+    
+    [ParentCombo(PCTPvP_Toshitweaks)]
+    [PvPCustomCombo]
+    [ReplaceSkill(PCTPvP.LivingMuse)]
+    [CustomComboInfo("1 Button Motifs", "Replaces Living Muse with 1 button Motifs", Job.PCT)]
+    PCTPvP_Toshimotifs = 140011,
 
-    // Last value = 140009
+    // Last value = 140011
 
     #endregion
 
@@ -9717,8 +9746,18 @@ public enum Preset
     [ParentCombo(WHMPvP_Heals)]
     [CustomComboInfo("Aquaveil Option", "Adds Aquaviel to Cure II when available.", Job.WHM)]
     WHMPvP_Aquaveil = 129007,
+    
+    [PvPCustomCombo]
+    [CustomComboInfo("Toshi Tweaks", "Random collection of tweaks by Toshi", Job.WHM)]
+    WHMPvP_Toshitweaks = 129011,
+        
+    [PvPCustomCombo]
+    [ParentCombo(WHMPvP_Toshitweaks)]
+    [ReplaceSkill(WHMPvP.SeraphStrike)]
+    [CustomComboInfo("Seraph Strike Option", "Replaces Seraph Strike with Glare 4", Job.WHM)]
+    WHMPvP_Toshiseraphstrike = 129012,
 
-    // Last value = 129010
+    // Last value = 129012
 
     #endregion
 
