@@ -88,7 +88,7 @@ internal partial class MCH
 
     private static bool CanReassemble()
     {
-        if (HasStatusEffect(Buffs.Reassembled) && !JustUsed(Reassemble, 1.5f))
+        if (HasStatusEffect(Buffs.Reassembled) || !HasBattleTarget())
             return false;
 
         ushort maxCharges = GetMaxCharges(Reassemble);
@@ -96,7 +96,8 @@ internal partial class MCH
 
         switch (maxCharges)
         {
-            case 1 when remainingCharges == 1 && (ActionReady(Drill) || LevelChecked(AirAnchor) && ActionReady(AirAnchor)):
+            case 1 when remainingCharges == 1 && InActionRange(Drill) &&
+                (ActionReady(Drill) || LevelChecked(AirAnchor) && ActionReady(AirAnchor)):
                 return true;
 
             case 2:
@@ -117,10 +118,10 @@ internal partial class MCH
 
                 switch (remainingCharges)
                 {
-                    case 2 when numberOfReadyTools >= 2:
+                    case 2 when numberOfReadyTools >= 2 && InActionRange(Drill):
 
                     //Kage tweak this last number if needed, it could maybe go to 50
-                    case 1 when numberOfReadyTools >= 1 && GetCooldownChargeRemainingTime(Reassemble) >= 45:
+                    case 1 when numberOfReadyTools >= 1 && GetCooldownChargeRemainingTime(Reassemble) >= 45 && InActionRange(Drill):
                         return true;
                 }
 
@@ -203,13 +204,13 @@ internal partial class MCH
             return true;
         }
 
-        if (ActionReady(Chainsaw))
+        if (ActionReady(Chainsaw) && !HasStatusEffect(Buffs.ExcavatorReady))
         {
             actionID = Chainsaw;
             return true;
         }
 
-        if (ActionReady(Excavator))
+        if (ActionReady(Excavator) && HasStatusEffect(Buffs.ExcavatorReady))
         {
             actionID = Excavator;
             return true;

@@ -17,8 +17,7 @@ internal partial class MCH : PhysicalRanged
 
             //Reassemble
             if (CanReassemble() &&
-                !InCombat() &&
-                HasBattleTarget())
+                !InCombat())
                 return Reassemble;
 
             if (ContentSpecificActions.TryGet(out uint contentAction))
@@ -270,8 +269,7 @@ internal partial class MCH : PhysicalRanged
 
             //Reassemble to start before combat
             if (IsEnabled(Preset.MCH_ST_Adv_Reassemble) &&
-                !InCombat() && HasBattleTarget() &&
-                CanReassemble())
+                !InCombat() && CanReassemble())
                 return Reassemble;
 
             if (ContentSpecificActions.TryGet(out uint contentAction))
