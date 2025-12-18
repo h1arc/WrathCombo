@@ -8308,6 +8308,12 @@ public enum Preset
         "Will try to weave LiturgyOfTheBell when a raidwide casting. " +
         "\nWill be used in all 4 main combos.", Job.WHM)]
     WHM_Raidwide_LiturgyOfTheBell = 19223,
+    
+    [ParentCombo(WHM_Raidwide)]
+    [CustomComboInfo("RaidWide Plenary Indulgence Option",
+        "Will try to weave Plenary Indulgence when a raidwide casting. " +
+        "\nWill be used in all 4 main combos.", Job.WHM)]
+    WHM_Raidwide_PlenaryIndulgence = 19224,
 
     #endregion
 
