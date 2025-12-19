@@ -12,132 +12,48 @@ internal partial class PLD
 {
     internal static class Config
     {
-        private const int numberMitigationOptions = 9;
-
-        public static UserInt
-            PLD_ST_FoF_Trigger = new("PLD_ST_FoF_Trigger", 0),
-            PLD_AoE_FoF_Trigger = new("PLD_AoE_FoF_Trigger", 0),
-            PLD_ST_SheltronOption = new("PLD_ST_SheltronOption", 50),
-            PLD_ST_Sheltron_SubOption = new("PLD_ST_Sheltron_SubOption", 1),
-            PLD_ST_Rampart_Health = new("PLD_ST_Rampart_Health", 80),
-            PLD_ST_Rampart_SubOption = new("PLD_ST_Rampart_SubOption", 1),
-            PLD_ST_Sentinel_Health = new("PLD_ST_Sentinel_Health", 60),
-            PLD_ST_Sentinel_SubOption = new("PLD_ST_Sentinel_SubOption", 1),
-            PLD_ST_HallowedGround_Health = new("PLD_ST_HallowedGround_Health", 30),
-            PLD_ST_HallowedGround_SubOption = new("PLD_ST_HallowedGround_SubOption", 1),
-            PLD_AoE_SheltronOption = new("PLD_AoE_SheltronOption", 50),
-            PLD_AoE_Sheltron_SubOption = new("PLD_AoE_Sheltron_SubOption", 1),
-            PLD_AoE_Rampart_Health = new("PLD_AoE_Rampart_Health", 80),
-            PLD_AoE_Rampart_SubOption = new("PLD_AoE_Rampart_SubOption", 1),
-            PLD_AoE_Sentinel_Health = new("PLD_AoE_Sentinel_Health", 60),
-            PLD_AoE_Sentinel_SubOption = new("PLD_AoE_Sentinel_SubOption", 1),
-            PLD_AoE_HallowedGround_Health = new("PLD_AoE_HallowedGround_Health", 30),
-            PLD_AoE_HallowedGround_SubOption = new("PLD_AoE_HallowedGround_SubOption", 1),
-            PLD_Intervene_HoldCharges = new("PLD_Intervene_HoldCharges", 1),
-            PLD_AoE_Intervene_HoldCharges = new("PLD_AoE_Intervene_HoldCharges", 1),
-            PLD_Intervene_MeleeOnly = new("PLD_Intervene_MeleeOnly", 1),
-            PLD_AoE_Intervene_MeleeOnly = new("PLD_AoE_Intervene_MeleeOnly", 1),
-            PLD_ST_MP_Reserve = new("PLD_ST_MP_Reserve", 1000),
-            PLD_AoE_MP_Reserve = new("PLD_AoE_MP_Reserve", 1000),
-            PLD_ShieldLob_SubOption = new("PLD_ShieldLob_SubOption", 1),
-            PLD_Requiescat_SubOption = new("PLD_Requiescat_SubOption", 1),
-            PLD_SpiritsWithin_SubOption = new("PLD_SpiritsWithin_SubOption", 1),
-            PLD_RetargetClemency_Health = new("PLD_RetargetClemency_Health", 30),
-            PLD_Balance_Content = new("PLD_Balance_Content", 1),
-            PLD_ST_MitsOptions = new("PLD_ST_MitsOptions", 0),
-            PLD_AoE_MitsOptions = new("PLD_AoE_MitsOptions", 0),
-            PLD_RetargetShieldBash_Strength = new("PLD_RetargetShieldBash_Strength", 3),
-            PLD_RetargetCover_Health = new("PLD_RetargetCover_Health", 30),
-
-            //One-Button Mitigation
-            PLD_Mit_HallowedGround_Max_Health = new("PLD_Mit_HallowedGround_Max_Health", 20),
-            PLD_Mit_DivineVeil_PartyRequirement = new("PLD_Mit_DivineVeil_PartyRequirement", (int)PartyRequirement.Yes),
-            PLD_Mit_ArmsLength_Boss = new("PLD_Mit_ArmsLength_Boss", (int)BossAvoidance.On),
-            PLD_Mit_ArmsLength_EnemyCount = new("PLD_Mit_ArmsLength_EnemyCount", 0),
-            PLD_Mit_HallowedGround_Health = new("PLD_Mit_HallowedGround_Health", 35),
-            PLD_Mit_Clemency_Health = new("PLD_Mit_Clemency_Health", 40);
-
-
-        public static UserBool
-            PLD_RetargetStunLockout = new("PLD_RetargetStunLockout");
-        
-        public static UserIntArray
-            PLD_Mit_Priorities = new("PLD_Mit_Priorities");
-
-        public static UserBoolArray
-            PLD_Mit_HallowedGround_Max_Difficulty = new(
-                "PLD_Mit_HallowedGround_Max_Difficulty",
-                [true, true]),
-            PLD_Mit_HallowedGround_Difficulty = new(
-                "PLD_Mit_HallowedGround_Difficulty",
-                [true, false]);
-
-        public static readonly ContentCheck.ListSet
-            PLD_Mit_HallowedGround_Max_DifficultyListSet = ContentCheck.ListSet.Halved,
-            PLD_Mit_HallowedGround_DifficultyListSet = ContentCheck.ListSet.Halved;
-
         internal static void Draw(Preset preset)
         {
             switch (preset)
             {
+                #region ST
+
                 case Preset.PLD_ST_AdvancedMode_BalanceOpener:
                     DrawBossOnlyChoice(PLD_Balance_Content);
                     break;
 
                 // Fight or Flight
                 case Preset.PLD_ST_AdvancedMode_FoF:
-                    DrawSliderInt(0, 50, PLD_ST_FoF_Trigger, "Target HP%", 200);
+                    DrawSliderInt(0, 50, PLD_ST_FoF_HPOption,
+                        "Stop using at Enemy HP %. Set to Zero to disable this check.");
 
+                    ImGui.Indent();
+
+                    ImGui.TextColored(ImGuiColors.DalamudYellow,
+                        "Select what kind of enemies the HP check should be applied to:");
+
+                    DrawHorizontalRadioButton(PLD_ST_FoF_BossOption,
+                        "Non-Bosses", "Only apply the HP check above to non-bosses.", 0);
+
+                    DrawHorizontalRadioButton(PLD_ST_FoF_BossOption,
+                        "All Enemies", "Apply the HP check above to all enemies.", 1);
+                    ImGui.Unindent();
                     break;
 
-                case Preset.PLD_AoE_AdvancedMode_FoF:
-                    DrawSliderInt(0, 50, PLD_AoE_FoF_Trigger, "Target HP%", 200);
-
+                case Preset.PLD_ST_AdvancedMode_Mitigation:
+                    DrawDifficultyMultiChoice(PLD_Mit_Difficulty, PLD_Mit_DifficultyListSet,
+                        "Select what difficulties mitigations should be used in:");
                     break;
 
                 // Sheltron
                 case Preset.PLD_ST_AdvancedMode_Sheltron:
                     DrawSliderInt(50, 100, PLD_ST_SheltronOption, "Oath Gauge", 200, 5);
 
-                    DrawHorizontalRadioButton(PLD_ST_Sheltron_SubOption, "All Enemies",
-                        "Uses Sheltron regardless of targeted enemy type.", 1);
+                    DrawHorizontalRadioButton(PLD_ST_Mit_Sheltron_Boss,
+                        "All Enemies", "Will use Sheltron regardless of the type of enemy.", (int)BossAvoidance.Off, 125f);
 
-                    DrawHorizontalRadioButton(PLD_ST_Sheltron_SubOption, "Bosses Only",
-                        "Only uses Sheltron when the targeted enemy is a boss.", 2);
-
-                    break;
-
-                case Preset.PLD_AoE_AdvancedMode_Sheltron:
-                    DrawSliderInt(50, 100, PLD_AoE_SheltronOption, "Oath Gauge", 200, 5);
-
-                    DrawHorizontalRadioButton(PLD_AoE_Sheltron_SubOption, "All Enemies",
-                        "Uses Sheltron regardless of targeted enemy type.", 1);
-
-                    DrawHorizontalRadioButton(PLD_AoE_Sheltron_SubOption, "Bosses Only",
-                        "Only uses Sheltron when the targeted enemy is a boss.", 2);
-
-                    break;
-
-                // Rampart
-                case Preset.PLD_ST_AdvancedMode_Rampart:
-                    DrawSliderInt(1, 100, PLD_ST_Rampart_Health, "Player HP%", 200);
-
-                    DrawHorizontalRadioButton(PLD_ST_Rampart_SubOption, "All Enemies",
-                        "Uses Rampart regardless of targeted enemy type.", 1);
-
-                    DrawHorizontalRadioButton(PLD_ST_Rampart_SubOption, "Bosses Only",
-                        "Only uses Rampart when the targeted enemy is a boss.", 2);
-
-                    break;
-
-                case Preset.PLD_AoE_AdvancedMode_Rampart:
-                    DrawSliderInt(1, 100, PLD_AoE_Rampart_Health, "Player HP%", 200);
-
-                    DrawHorizontalRadioButton(PLD_AoE_Rampart_SubOption, "All Enemies",
-                        "Uses Rampart regardless of targeted enemy type.", 1);
-
-                    DrawHorizontalRadioButton(PLD_AoE_Rampart_SubOption, "Bosses Only",
-                        "Only uses Rampart when the targeted enemy is a boss.", 2);
+                    DrawHorizontalRadioButton(PLD_ST_Mit_Sheltron_Boss,
+                        "Avoid Bosses", "Will try not to use Sheltron when in a boss fight.", (int)BossAvoidance.On, 125f);
 
                     break;
 
@@ -145,22 +61,11 @@ internal partial class PLD
                 case Preset.PLD_ST_AdvancedMode_Sentinel:
                     DrawSliderInt(1, 100, PLD_ST_Sentinel_Health, "Player HP%", 200);
 
-                    DrawHorizontalRadioButton(PLD_ST_Sentinel_SubOption, "All Enemies",
-                        "Uses Sentinel regardless of targeted enemy type.", 1);
-
-                    DrawHorizontalRadioButton(PLD_ST_Sentinel_SubOption, "Bosses Only",
-                        "Only uses Sentinel when the targeted enemy is a boss.", 2);
-
                     break;
 
-                case Preset.PLD_AoE_AdvancedMode_Sentinel:
-                    DrawSliderInt(1, 100, PLD_AoE_Sentinel_Health, "Player HP%", 200);
-
-                    DrawHorizontalRadioButton(PLD_AoE_Sentinel_SubOption, "All Enemies",
-                        "Uses Sentinel regardless of targeted enemy type.", 1);
-
-                    DrawHorizontalRadioButton(PLD_AoE_Sentinel_SubOption, "Bosses Only",
-                        "Only uses Sentinel when the targeted enemy is a boss.", 2);
+                // Bulwark
+                case Preset.PLD_ST_AdvancedMode_Bulwark:
+                    DrawSliderInt(1, 100, PLD_ST_Bulwark_Health, "Player HP%", 200);
 
                     break;
 
@@ -168,22 +73,11 @@ internal partial class PLD
                 case Preset.PLD_ST_AdvancedMode_HallowedGround:
                     DrawSliderInt(1, 100, PLD_ST_HallowedGround_Health, "Player HP%", 200);
 
-                    DrawHorizontalRadioButton(PLD_ST_HallowedGround_SubOption, "All Enemies",
-                        "Uses Hallowed Ground regardless of targeted enemy type.", 1);
+                    DrawHorizontalRadioButton(PLD_ST_Mit_HallowedGround_Boss,
+                        "All Enemies", "Will use Hallowed Ground regardless of the type of enemy.", (int)BossAvoidance.Off, 125f);
 
-                    DrawHorizontalRadioButton(PLD_ST_HallowedGround_SubOption, "Bosses Only",
-                        "Only uses Hallowed Ground when the targeted enemy is a boss.", 2);
-
-                    break;
-
-                case Preset.PLD_AoE_AdvancedMode_HallowedGround:
-                    DrawSliderInt(1, 100, PLD_AoE_HallowedGround_Health, "Player HP%", 200);
-
-                    DrawHorizontalRadioButton(PLD_AoE_HallowedGround_SubOption, "All Enemies",
-                        "Uses Hallowed Ground regardless of targeted enemy type.", 1);
-
-                    DrawHorizontalRadioButton(PLD_AoE_HallowedGround_SubOption, "Bosses Only",
-                        "Only uses Hallowed Ground when the targeted enemy is a boss.", 2);
+                    DrawHorizontalRadioButton(PLD_ST_Mit_HallowedGround_Boss,
+                        "Avoid Bosses", "Will try not to use Hallowed Ground when in a boss fight.", (int)BossAvoidance.On, 125f);
 
                     break;
 
@@ -192,31 +86,20 @@ internal partial class PLD
                     DrawSliderInt(0, 1, PLD_Intervene_HoldCharges, "Charges", 200);
 
                     DrawHorizontalRadioButton(PLD_Intervene_MeleeOnly, "Melee Range",
-                        "Uses Intervene while within melee range.\n- May result in minor movement.", 1);
+                        "Uses Intervene while within melee range.\n- May result in minor movement.", 0);
 
                     DrawHorizontalRadioButton(PLD_Intervene_MeleeOnly, "No Movement",
-                        "Only uses Intervene when it would not result in movement.\n- Requires target to be within zero distance.", 2);
-
-                    break;
-
-                case Preset.PLD_AoE_AdvancedMode_Intervene:
-                    DrawSliderInt(0, 1, PLD_AoE_Intervene_HoldCharges, "Charges", 200);
-
-                    DrawHorizontalRadioButton(PLD_AoE_Intervene_MeleeOnly, "Melee Range",
-                        "Uses Intervene while within melee range.\n- May result in minor movement.", 1);
-
-                    DrawHorizontalRadioButton(PLD_AoE_Intervene_MeleeOnly, "No Movement",
-                        "Only uses Intervene when it would not result in movement.\n- Requires target to be within zero distance.", 2);
+                        "Only uses Intervene when it would not result in movement.\n- Requires target to be within zero distance.", 1);
 
                     break;
 
                 // Shield Lob
                 case Preset.PLD_ST_AdvancedMode_ShieldLob:
                     DrawHorizontalRadioButton(PLD_ShieldLob_SubOption, "Shield Lob Only",
-                        "", 1);
+                        "", 0);
 
                     DrawHorizontalRadioButton(PLD_ShieldLob_SubOption, "Add Holy Spirit",
-                        "Attempts to hardcast Holy Spirit when not moving.\n- Requires sufficient MP to cast.", 2);
+                        "Attempts to hardcast Holy Spirit when not moving.\n- Requires sufficient MP to cast.", 1);
 
                     break;
 
@@ -226,40 +109,59 @@ internal partial class PLD
 
                     break;
 
+                #endregion
+
+                #region AoE
+
+                case Preset.PLD_AoE_AdvancedMode_Sheltron:
+                    DrawSliderInt(50, 100, PLD_AoE_SheltronOption, "Oath Gauge", 200, 5);
+
+                    break;
+
+                case Preset.PLD_AoE_AdvancedMode_Rampart:
+                    DrawSliderInt(1, 100, PLD_AoE_Rampart_Health, "Player HP%", 200);
+
+                    break;
+
+                case Preset.PLD_AoE_AdvancedMode_Sentinel:
+                    DrawSliderInt(1, 100, PLD_AoE_Sentinel_Health, "Player HP%", 200);
+
+                    break;
+
+                case Preset.PLD_AoE_AdvancedMode_Bulwark:
+                    DrawSliderInt(1, 100, PLD_AoE_Bulwark_Health, "Player HP%", 200);
+
+                    break;
+
+                case Preset.PLD_AoE_AdvancedMode_FoF:
+                    DrawSliderInt(0, 50, PLD_AoE_FoF_Trigger, "Target HP%", 200);
+
+                    break;
+
+                case Preset.PLD_AoE_AdvancedMode_HallowedGround:
+                    DrawSliderInt(1, 100, PLD_AoE_HallowedGround_Health, "Player HP%", 200);
+
+                    break;
+
+                case Preset.PLD_AoE_AdvancedMode_Intervene:
+                    DrawSliderInt(0, 1, PLD_AoE_Intervene_HoldCharges, "Charges", 200);
+
+                    DrawHorizontalRadioButton(PLD_AoE_Intervene_MeleeOnly, "Melee Range",
+                        "Uses Intervene while within melee range.\n- May result in minor movement.", 0);
+
+                    DrawHorizontalRadioButton(PLD_AoE_Intervene_MeleeOnly, "No Movement",
+                        "Only uses Intervene when it would not result in movement.\n- Requires target to be within zero distance.", 1);
+
+                    break;
+
                 case Preset.PLD_AoE_AdvancedMode_MP_Reserve:
                     DrawSliderInt(1000, 5000, PLD_AoE_MP_Reserve, "Minimum MP", sliderIncrement: 100);
 
                     break;
 
-                // Requiescat Spender Feature
-                case Preset.PLD_Requiescat_Options:
-                    DrawHorizontalRadioButton(PLD_Requiescat_SubOption, "Normal Behavior",
-                        "", 1);
+                #endregion
 
-                    DrawHorizontalRadioButton(PLD_Requiescat_SubOption, "Add Fight or Flight",
-                        "Adds Fight or Flight to the normal logic.\n- Requires Resquiescat to be ready.", 2);
-
-                    break;
-
-                // Spirits Within / Circle of Scorn Feature
-                case Preset.PLD_SpiritsWithin:
-                    DrawHorizontalRadioButton(PLD_SpiritsWithin_SubOption, "Normal Behavior",
-                        "", 1);
-
-                    DrawHorizontalRadioButton(PLD_SpiritsWithin_SubOption, "Add Drift Prevention",
-                        "Prevents Spirits Within and Circle of Scorn from drifting.\n- Actions must be used within 5 seconds of each other.", 2);
-
-                    break;
-
-                // Retarget Clemency Feature
-                case Preset.PLD_RetargetClemency_LowHP:
-                    DrawSliderInt(1, 100, PLD_RetargetClemency_Health, "Player HP%", 200);
-                    break;
-                
-                // Retarget Cover Feature
-                case Preset.PLD_RetargetCover_LowHP:
-                    DrawSliderInt(1, 100, PLD_RetargetCover_Health, "Ally HP%", 200);
-                    break;
+                #region Simple Modes
 
                 // Simple ST Mitigations Option
                 case Preset.PLD_ST_SimpleMode:
@@ -283,6 +185,41 @@ internal partial class PLD
                         "Disables the use of mitigations in Simple Mode.", 1);
                     break;
 
+                #endregion
+
+                #region Standalones
+
+                // Requiescat Spender Feature
+                case Preset.PLD_Requiescat_Options:
+                    DrawHorizontalRadioButton(PLD_Requiescat_SubOption, "Normal Behavior",
+                        "", 0);
+
+                    DrawHorizontalRadioButton(PLD_Requiescat_SubOption, "Add Fight or Flight",
+                        "Adds Fight or Flight to the normal logic.\n- Requires Resquiescat to be ready.", 1);
+
+                    break;
+
+                // Spirits Within / Circle of Scorn Feature
+                case Preset.PLD_SpiritsWithin:
+                    DrawHorizontalRadioButton(PLD_SpiritsWithin_SubOption, "Normal Behavior",
+                        "", 0);
+
+                    DrawHorizontalRadioButton(PLD_SpiritsWithin_SubOption, "Add Drift Prevention",
+                        "Prevents Spirits Within and Circle of Scorn from drifting.\n- Actions must be used within 5 seconds of each other.", 1);
+
+                    break;
+
+                // Retarget Clemency Feature
+                case Preset.PLD_RetargetClemency_LowHP:
+                    DrawSliderInt(1, 100, PLD_RetargetClemency_Health, "Player HP%", 200);
+                    break;
+
+                // Retarget Cover Feature
+                case Preset.PLD_RetargetCover_LowHP:
+                    DrawSliderInt(1, 100, PLD_RetargetCover_Health, "Ally HP%", 200);
+                    break;
+
+
                 case Preset.PLD_RetargetSheltron_TT:
                     ImGui.Indent();
                     ImGuiEx.TextWrapped(ImGuiColors.DalamudGrey,
@@ -297,6 +234,8 @@ internal partial class PLD
                     if (PLD_RetargetStunLockout)
                         DrawSliderInt(1, 3, PLD_RetargetShieldBash_Strength, "Lockout when stun has been applied this many times");
                     break;
+
+                #endregion
 
                 #region One-Button Mitigation
 
@@ -314,13 +253,13 @@ internal partial class PLD
 
                 case Preset.PLD_Mit_Sheltron:
                     DrawPriorityInput(PLD_Mit_Priorities,
-                        numberMitigationOptions, 0,
+                        NumberMitigationOptions, 0,
                         "Sheltron Priority:");
                     break;
 
                 case Preset.PLD_Mit_Reprisal:
                     DrawPriorityInput(PLD_Mit_Priorities,
-                        numberMitigationOptions, 1,
+                        NumberMitigationOptions, 1,
                         "Reprisal Priority:");
                     break;
 
@@ -330,54 +269,51 @@ internal partial class PLD
                         PLD_Mit_DivineVeil_PartyRequirement,
                         "Require party",
                         "Will not use Divine Veil unless there are 2 or more party members.",
-                        outputValue: (int)PartyRequirement.Yes);
+                        (int)PartyRequirement.Yes);
                     DrawHorizontalRadioButton(
                         PLD_Mit_DivineVeil_PartyRequirement,
                         "Use Always",
                         "Will not require a party for Divine Veil.",
-                        outputValue: (int)PartyRequirement.No);
+                        (int)PartyRequirement.No);
                     ImGui.Unindent();
 
                     DrawPriorityInput(PLD_Mit_Priorities,
-                        numberMitigationOptions, 2,
+                        NumberMitigationOptions, 2,
                         "Divine Veil Priority:");
                     break;
 
                 case Preset.PLD_Mit_Rampart:
                     DrawPriorityInput(PLD_Mit_Priorities,
-                        numberMitigationOptions, 3,
+                        NumberMitigationOptions, 3,
                         "Rampart Priority:");
                     break;
 
                 case Preset.PLD_Mit_Sentinel:
                     DrawPriorityInput(PLD_Mit_Priorities,
-                        numberMitigationOptions, 4,
+                        NumberMitigationOptions, 4,
                         "Sentinel Priority:");
                     break;
 
                 case Preset.PLD_Mit_ArmsLength:
                     ImGui.Indent();
-                    DrawHorizontalRadioButton(
-                        PLD_Mit_ArmsLength_Boss, "All Enemies",
-                        "Will use Arm's Length regardless of the type of enemy.",
-                        outputValue: (int)BossAvoidance.Off, itemWidth: 125f);
-                    DrawHorizontalRadioButton(
-                        PLD_Mit_ArmsLength_Boss, "Avoid Bosses",
-                        "Will try not to use Arm's Length when in a boss fight.",
-                        outputValue: (int)BossAvoidance.On, itemWidth: 125f);
+                    DrawHorizontalRadioButton(PLD_Mit_ArmsLength_Boss,
+                        "All Enemies", "Will use Arm's Length regardless of the type of enemy.", (int)BossAvoidance.Off, 125f);
+
+                    DrawHorizontalRadioButton(PLD_Mit_ArmsLength_Boss,
+                        "Avoid Bosses", "Will try not to use Arm's Length when in a boss fight.", (int)BossAvoidance.On, 125f);
                     ImGui.Unindent();
 
                     DrawSliderInt(0, 3, PLD_Mit_ArmsLength_EnemyCount,
                         "How many enemies should be nearby? (0 = No Requirement)");
 
                     DrawPriorityInput(PLD_Mit_Priorities,
-                        numberMitigationOptions, 5,
+                        NumberMitigationOptions, 5,
                         "Arm's Length Priority:");
                     break;
 
                 case Preset.PLD_Mit_Bulwark:
                     DrawPriorityInput(PLD_Mit_Priorities,
-                        numberMitigationOptions, 6,
+                        NumberMitigationOptions, 6,
                         "Bulwark Priority:");
                     break;
 
@@ -393,7 +329,7 @@ internal partial class PLD
                         sliderIncrement: SliderIncrements.Ones);
 
                     DrawPriorityInput(PLD_Mit_Priorities,
-                        numberMitigationOptions, 7,
+                        NumberMitigationOptions, 7,
                         "Hallowed Ground Priority:");
                     break;
 
@@ -403,12 +339,76 @@ internal partial class PLD
                         sliderIncrement: SliderIncrements.Ones);
 
                     DrawPriorityInput(PLD_Mit_Priorities,
-                        numberMitigationOptions, 8,
+                        NumberMitigationOptions, 8,
                         "Clemency Priority:");
                     break;
 
                     #endregion
             }
         }
+
+        #region Variables
+
+        private const int NumberMitigationOptions = 9;
+
+        public static UserInt
+            PLD_AoE_FoF_Trigger = new("PLD_AoE_FoF_Trigger"),
+            PLD_ST_SheltronOption = new("PLD_ST_SheltronOption", 50),
+            PLD_ST_Sentinel_Health = new("PLD_ST_Sentinel_Health", 50),
+            PLD_ST_Bulwark_Health = new("PLD_ST_Bulwark_Health", 60),
+            PLD_ST_HallowedGround_Health = new("PLD_ST_HallowedGround_Health", 30),
+            PLD_ST_HallowedGround_SubOption = new("PLD_ST_HallowedGround_SubOption"),
+            PLD_AoE_SheltronOption = new("PLD_AoE_SheltronOption", 50),
+            PLD_AoE_Rampart_Health = new("PLD_AoE_Rampart_Health", 80),
+            PLD_AoE_Sentinel_Health = new("PLD_AoE_Sentinel_Health", 60),
+            PLD_AoE_Bulwark_Health = new("PLD_AoE_Bulwark_Health", 60),
+            PLD_AoE_HallowedGround_Health = new("PLD_AoE_HallowedGround_Health", 30),
+            PLD_Intervene_HoldCharges = new("PLD_Intervene_HoldCharges"),
+            PLD_AoE_Intervene_HoldCharges = new("PLD_AoE_Intervene_HoldCharges"),
+            PLD_Intervene_MeleeOnly = new("PLD_Intervene_MeleeOnly"),
+            PLD_AoE_Intervene_MeleeOnly = new("PLD_AoE_Intervene_MeleeOnly"),
+            PLD_ST_MP_Reserve = new("PLD_ST_MP_Reserve", 1000),
+            PLD_AoE_MP_Reserve = new("PLD_AoE_MP_Reserve", 1000),
+            PLD_ShieldLob_SubOption = new("PLD_ShieldLob_SubOption"),
+            PLD_Requiescat_SubOption = new("PLD_Requiescat_SubOption"),
+            PLD_SpiritsWithin_SubOption = new("PLD_SpiritsWithin_SubOption", 1),
+            PLD_RetargetClemency_Health = new("PLD_RetargetClemency_Health", 30),
+            PLD_Balance_Content = new("PLD_Balance_Content", 1),
+            PLD_ST_MitsOptions = new("PLD_ST_MitsOptions"),
+            PLD_AoE_MitsOptions = new("PLD_AoE_MitsOptions"),
+            PLD_RetargetShieldBash_Strength = new("PLD_RetargetShieldBash_Strength", 3),
+            PLD_RetargetCover_Health = new("PLD_RetargetCover_Health", 30),
+            PLD_ST_FoF_BossOption = new("PLD_ST_FoF_BossOption"),
+            PLD_ST_FoF_HPOption = new("PLD_ST_FoF_HPOption", 10),
+            PLD_ST_Mit_HallowedGround_Boss = new("PLD_ST_Mit_HallowedGround_Boss", (int)BossAvoidance.On),
+            PLD_ST_Mit_Sheltron_Boss = new("PLD_ST_Mit_Sheltron_Boss", (int)BossAvoidance.Off),
+
+            //One-Button Mitigation
+            PLD_Mit_HallowedGround_Max_Health = new("PLD_Mit_HallowedGround_Max_Health", 20),
+            PLD_Mit_DivineVeil_PartyRequirement = new("PLD_Mit_DivineVeil_PartyRequirement", (int)PartyRequirement.Yes),
+            PLD_Mit_ArmsLength_Boss = new("PLD_Mit_ArmsLength_Boss", (int)BossAvoidance.On),
+            PLD_Mit_ArmsLength_EnemyCount = new("PLD_Mit_ArmsLength_EnemyCount"),
+            PLD_Mit_HallowedGround_Health = new("PLD_Mit_HallowedGround_Health", 35),
+            PLD_Mit_Clemency_Health = new("PLD_Mit_Clemency_Health", 40);
+
+        public static UserBool
+            PLD_RetargetStunLockout = new("PLD_RetargetStunLockout");
+
+        public static UserIntArray
+            PLD_Mit_Priorities = new("PLD_Mit_Priorities");
+
+        public static UserBoolArray
+            PLD_Mit_HallowedGround_Max_Difficulty = new("PLD_Mit_HallowedGround_Max_Difficulty", [true, true]),
+            PLD_Mit_HallowedGround_Difficulty = new("PLD_Mit_HallowedGround_Difficulty", [true, false]),
+            PLD_Mit_Difficulty = new("PLD_Mit_Difficulty", [true, false]),
+            PLD_ST_Mit_Difficulty = new("PLD_ST_Mit_Difficulty", [true, false]);
+
+        public static readonly ContentCheck.ListSet
+            PLD_Mit_HallowedGround_Max_DifficultyListSet = ContentCheck.ListSet.Halved,
+            PLD_Mit_HallowedGround_DifficultyListSet = ContentCheck.ListSet.Halved,
+            PLD_Mit_DifficultyListSet = ContentCheck.ListSet.Halved,
+            PLD_ST_Mit_DifficultyListSet = ContentCheck.ListSet.Halved;
+
+        #endregion
     }
 }

@@ -4754,8 +4754,20 @@ public enum Preset
     PLD_ST_AdvancedMode_Sheltron = 11007,
 
     [ParentCombo(PLD_ST_AdvancedMode_Mitigation)]
-    [CustomComboInfo("Rampart Option", "Adds Rampart.\n- Player HP must be under:", Job.PLD)]
-    PLD_ST_AdvancedMode_Rampart = 11039,
+    [CustomComboInfo("Reprisal Option", "Uses Reprisal when a raidwide is in the process of casting.", Job.PLD)]
+    PLD_ST_AdvancedMode_Reprisal = 11080,
+
+    [ParentCombo(PLD_ST_AdvancedMode_Mitigation)]
+    [CustomComboInfo("Divine Veil Option", "Uses Divine Veil when a raidwide is in the process of casting.", Job.PLD)]
+    PLD_ST_AdvancedMode_DivineVeil = 11081,
+
+    [ParentCombo(PLD_ST_AdvancedMode_DivineVeil)]
+    [CustomComboInfo("Avoid Doubling up on Group Mit", "Won't use Divine Veil if your own Reprisal is on the target.", Job.PLD)]
+    PLD_ST_AdvancedMode_DivineVeilAvoid = 11082,
+
+    [ParentCombo(PLD_ST_AdvancedMode_Mitigation)]
+    [CustomComboInfo("Bulwark Option", "Adds Bulwark.\n- Player HP must be under:", Job.PLD)]
+    PLD_ST_AdvancedMode_Bulwark = 11079,
 
     [ParentCombo(PLD_ST_AdvancedMode_Mitigation)]
     [CustomComboInfo("Sentinel Option", "Adds Sentinel.\n- Player HP must be under:", Job.PLD)]
@@ -4856,7 +4868,7 @@ public enum Preset
     [ParentCombo(PLD_AoE_AdvancedMode_Mitigation)]
     [CustomComboInfo("Sheltron Option", "Adds Sheltron.\n- Required gauge threshold:", Job.PLD)]
     PLD_AoE_AdvancedMode_Sheltron = 11023,
-
+    
     [ParentCombo(PLD_AoE_AdvancedMode_Mitigation)]
     [CustomComboInfo("Rampart Option", "Adds Rampart.\n- Player HP must be under:", Job.PLD)]
     PLD_AoE_AdvancedMode_Rampart = 11043,
@@ -4864,6 +4876,10 @@ public enum Preset
     [ParentCombo(PLD_AoE_AdvancedMode_Mitigation)]
     [CustomComboInfo("Sentinel Option", "Adds Sentinel.\n- Player HP must be under:", Job.PLD)]
     PLD_AoE_AdvancedMode_Sentinel = 11044,
+
+    [ParentCombo(PLD_AoE_AdvancedMode_Mitigation)]
+    [CustomComboInfo("Bulwark Option", "Adds Bulwark.\n- Player HP must be under:", Job.PLD)]
+    PLD_AoE_AdvancedMode_Bulwark = 11078,
 
     [ParentCombo(PLD_AoE_AdvancedMode_Mitigation)]
     [CustomComboInfo("Hallowed Ground Option", "Adds Hallowed Ground.\n- Player HP must be under:", Job.PLD)]
@@ -5011,7 +5027,7 @@ public enum Preset
 
     #endregion
 
-    //// Last value = 11077
+    //// Last value = 11079
 
     #endregion
 

@@ -1,15 +1,18 @@
-﻿using System.Linq;
+﻿using Dalamud.Game.ClientState.Objects.Types;
+using System.Linq;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
 using WrathCombo.Extensions;
 using static WrathCombo.Combos.PvE.PLD.Config;
+using BossAvoidance = WrathCombo.Combos.PvE.All.Enums.BossAvoidance;
 
 namespace WrathCombo.Combos.PvE;
 
 internal partial class PLD : Tank
 {
     #region Simple Modes
+
     internal class PLD_ST_SimpleMode : CustomCombo
     {
         protected internal override Preset Preset => Preset.PLD_ST_SimpleMode;
@@ -19,7 +22,7 @@ internal partial class PLD : Tank
         {
             if (actionID is not FastBlade)
                 return actionID;
-            
+
             if (IsEnabled(Preset.PLD_BlockForWings) && (HasStatusEffect(Buffs.PassageOfArms) || JustUsed(PassageOfArms)))
                 return All.SavageBlade;
 
@@ -31,7 +34,7 @@ internal partial class PLD : Tank
             if (Role.CanLowBlow())
                 return Role.LowBlow;
 
-            if (ContentSpecificActions.TryGet(out var contentAction))
+            if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
 
             #region Mitigations
@@ -84,7 +87,7 @@ internal partial class PLD : Tank
                     // Requiescat
                     if (ActionReady(Requiescat) && CooldownFightOrFlight > 50 && InActionRange(OriginalHook(Requiescat))) //Moved out of melee range check bc Imperator is 25y but req is melee range. 
                         return OriginalHook(Requiescat);
-                    
+
                     if (InMeleeRange())
                     {
                         // Fight or Flight
@@ -188,7 +191,7 @@ internal partial class PLD : Tank
         {
             if (actionID is not TotalEclipse)
                 return actionID;
-            
+
             if (IsEnabled(Preset.PLD_BlockForWings) && (HasStatusEffect(Buffs.PassageOfArms) || JustUsed(PassageOfArms)))
                 return All.SavageBlade;
 
@@ -200,7 +203,7 @@ internal partial class PLD : Tank
             if (Role.CanLowBlow())
                 return Role.LowBlow;
 
-            if (ContentSpecificActions.TryGet(out var contentAction))
+            if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
 
             if (PLD_AoE_MitsOptions != 1)
@@ -249,7 +252,7 @@ internal partial class PLD : Tank
                     // Requiescat
                     if (ActionReady(Requiescat) && CooldownFightOrFlight > 50 && InActionRange(OriginalHook(Requiescat)))
                         return OriginalHook(Requiescat);
-                    
+
                     if (InMeleeRange())
                     {
                         // Fight or Flight
@@ -293,9 +296,11 @@ internal partial class PLD : Tank
             return actionID;
         }
     }
+
     #endregion
-    
+
     #region Advanced Modes
+
     internal class PLD_ST_AdvancedMode : CustomCombo
     {
         protected internal override Preset Preset => Preset.PLD_ST_AdvancedMode;
@@ -305,7 +310,7 @@ internal partial class PLD : Tank
         {
             if (actionID is not FastBlade)
                 return actionID;
-            
+
             if (IsEnabled(Preset.PLD_BlockForWings) && (HasStatusEffect(Buffs.PassageOfArms) || JustUsed(PassageOfArms)))
                 return All.SavageBlade;
 
@@ -326,7 +331,7 @@ internal partial class PLD : Tank
                 else if (IsEnabled(Preset.PLD_ST_LowBlow) && Role.CanLowBlow())
                     return Role.LowBlow;
 
-            if (ContentSpecificActions.TryGet(out var contentAction))
+            if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
 
             if (HasBattleTarget())
@@ -335,12 +340,14 @@ internal partial class PLD : Tank
                 if (CanWeave())
                 {
                     // Requiescat
-                    if (IsEnabled(Preset.PLD_ST_AdvancedMode_Requiescat) && ActionReady(Requiescat) && CooldownFightOrFlight > 50 && InActionRange(OriginalHook(Requiescat)))
+                    if (IsEnabled(Preset.PLD_ST_AdvancedMode_Requiescat) &&
+                        ActionReady(Requiescat) && CooldownFightOrFlight > 50 && InActionRange(OriginalHook(Requiescat)))
                         return OriginalHook(Requiescat);
                     if (InMeleeRange())
                     {
                         // Fight or Flight
-                        if (IsEnabled(Preset.PLD_ST_AdvancedMode_FoF) && CanFightOrFlight && GetTargetHPPercent() >= PLD_ST_FoF_Trigger)
+                        if (IsEnabled(Preset.PLD_ST_AdvancedMode_FoF) &&
+                            CanFightOrFlight && GetTargetHPPercent() > HPThresholdFoF)
                         {
                             if (!LevelChecked(Requiescat))
                             {
@@ -379,35 +386,55 @@ internal partial class PLD : Tank
                         return Intervene;
 
                     // Blade of Honor
-                    if (IsEnabled(Preset.PLD_ST_AdvancedMode_BladeOfHonor) && LevelChecked(BladeOfHonor) && OriginalHook(Requiescat) == BladeOfHonor)
+                    if (IsEnabled(Preset.PLD_ST_AdvancedMode_BladeOfHonor) &&
+                        LevelChecked(BladeOfHonor) && OriginalHook(Requiescat) == BladeOfHonor)
                         return OriginalHook(Requiescat);
 
                     // Mitigation
-                    if (IsEnabled(Preset.PLD_ST_AdvancedMode_Mitigation) && IsPlayerTargeted() && !JustMitted && InCombat())
+                    if (IsEnabled(Preset.PLD_ST_AdvancedMode_Mitigation) &&
+                        InMitigationContent && IsPlayerTargeted() &&
+                        !JustMitted && InCombat())
                     {
                         // Hallowed Ground
-                        if (IsEnabled(Preset.PLD_ST_AdvancedMode_HallowedGround) && ActionReady(HallowedGround) &&
-                            PlayerHealthPercentageHp() < PLD_ST_HallowedGround_Health && (PLD_ST_HallowedGround_SubOption == 1 ||
-                                                                                                 TargetIsBoss() && PLD_ST_HallowedGround_SubOption == 2))
+                        if (IsEnabled(Preset.PLD_ST_AdvancedMode_HallowedGround) &&
+                            ActionReady(HallowedGround) &&
+                            PlayerHealthPercentageHp() < PLD_ST_HallowedGround_Health &&
+                            (PLD_ST_Mit_HallowedGround_Boss == (int)BossAvoidance.On && InBossEncounter() ||
+                             PLD_ST_Mit_HallowedGround_Boss == (int)BossAvoidance.Off))
                             return HallowedGround;
 
-                        // Sentinel / Guardian
-                        if (IsEnabled(Preset.PLD_ST_AdvancedMode_Sentinel) && ActionReady(OriginalHook(Sentinel)) &&
-                            PlayerHealthPercentageHp() < PLD_ST_Sentinel_Health && (PLD_ST_Sentinel_SubOption == 1 ||
-                                                                                           TargetIsBoss() && PLD_ST_Sentinel_SubOption == 2))
+                        // Sheltron
+                        if (IsEnabled(Preset.PLD_ST_AdvancedMode_Sheltron) &&
+                            LevelChecked(Sheltron) &&
+                            Gauge.OathGauge >= PLD_ST_SheltronOption && PlayerHealthPercentageHp() < 95 &&
+                            !HasStatusEffect(Buffs.Sheltron) && !HasStatusEffect(Buffs.HolySheltron) &&
+                            (PLD_ST_Mit_Sheltron_Boss == (int)BossAvoidance.On && InBossEncounter() ||
+                             PLD_ST_Mit_Sheltron_Boss == (int)BossAvoidance.Off))
+                            return OriginalHook(Sheltron);
+
+                        // Reprisal
+                        if (IsEnabled(Preset.PLD_ST_AdvancedMode_Reprisal) &&
+                            Role.CanReprisal() && RaidWideCasting(5f))
+                            return Role.Reprisal;
+
+                        // Divine Veil
+                        if (IsEnabled(Preset.PLD_ST_AdvancedMode_DivineVeil) &&
+                            ActionReady(DivineVeil) && RaidWideCasting(5f) &&
+                            (IsNotEnabled(Preset.PLD_ST_AdvancedMode_DivineVeilAvoid) ||
+                             !HasStatusEffect(Role.Debuffs.Reprisal, CurrentTarget, true)))
                             return OriginalHook(Sentinel);
 
-                        // Rampart
-                        if (IsEnabled(Preset.PLD_ST_AdvancedMode_Rampart) &&
-                            Role.CanRampart(PLD_ST_Rampart_Health) && (PLD_ST_Rampart_SubOption == 1 ||
-                                                                              TargetIsBoss() && PLD_ST_Rampart_SubOption == 2))
-                            return Role.Rampart;
+                        // Sentinel / Guardian
+                        if (IsEnabled(Preset.PLD_ST_AdvancedMode_Sentinel) &&
+                            ActionReady(OriginalHook(Sentinel)) &&
+                            PlayerHealthPercentageHp() < PLD_ST_Sentinel_Health)
+                            return OriginalHook(Sentinel);
 
-                        // Sheltron
-                        if (IsEnabled(Preset.PLD_ST_AdvancedMode_Sheltron) && LevelChecked(Sheltron) &&
-                            Gauge.OathGauge >= PLD_ST_SheltronOption && PlayerHealthPercentageHp() < 95 &&
-                            !HasStatusEffect(Buffs.Sheltron) && !HasStatusEffect(Buffs.HolySheltron))
-                            return OriginalHook(Sheltron);
+                        // Bulwark
+                        if (IsEnabled(Preset.PLD_ST_AdvancedMode_Bulwark) &&
+                            ActionReady(Bulwark) &&
+                            PlayerHealthPercentageHp() < PLD_ST_Bulwark_Health)
+                            return Bulwark;
                     }
                 }
 
@@ -485,7 +512,7 @@ internal partial class PLD : Tank
         {
             if (actionID is not TotalEclipse)
                 return actionID;
-            
+
             if (IsEnabled(Preset.PLD_BlockForWings) && (HasStatusEffect(Buffs.PassageOfArms) || JustUsed(PassageOfArms, 0.5f)))
                 return All.SavageBlade;
 
@@ -501,7 +528,7 @@ internal partial class PLD : Tank
                 else if (IsEnabled(Preset.PLD_AoE_LowBlow) && Role.CanLowBlow())
                     return Role.LowBlow;
 
-            if (ContentSpecificActions.TryGet(out var contentAction))
+            if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
 
             if (HasBattleTarget())
@@ -510,20 +537,17 @@ internal partial class PLD : Tank
                 if (CanWeave())
                 {
                     // Requiescat
-                    if (IsEnabled(Preset.PLD_AoE_AdvancedMode_Requiescat) && ActionReady(Requiescat) && CooldownFightOrFlight > 50 && InActionRange(OriginalHook(Requiescat)))
+                    if (IsEnabled(Preset.PLD_AoE_AdvancedMode_Requiescat) &&
+                        ActionReady(Requiescat) && CooldownFightOrFlight > 50 && InActionRange(OriginalHook(Requiescat)))
                         return OriginalHook(Requiescat);
-                    
+
                     if (InMeleeRange())
                     {
                         // Fight or Flight
-                        if (IsEnabled(Preset.PLD_AoE_AdvancedMode_FoF) && CanFightOrFlight && GetTargetHPPercent() >= PLD_AoE_FoF_Trigger)
-                        {
-                            if (!LevelChecked(Requiescat))
-                                return OriginalHook(FightOrFlight);
-
-                            else if (CooldownRequiescat < 0.5f && HasRequiescatMPAdvAoE && !HasWeaved())
-                                return OriginalHook(FightOrFlight);
-                        }
+                        if (IsEnabled(Preset.PLD_AoE_AdvancedMode_FoF) &&
+                            CanFightOrFlight && GetTargetHPPercent() >= PLD_AoE_FoF_Trigger &&
+                            (!LevelChecked(Requiescat) || CooldownRequiescat < 0.5f && HasRequiescatMPAdvAoE && !HasWeaved()))
+                            return OriginalHook(FightOrFlight);
 
                         // Circle of Scorn / Spirits Within
                         if (CooldownFightOrFlight > 15)
@@ -551,20 +575,22 @@ internal partial class PLD : Tank
                     {
                         // Hallowed Ground
                         if (IsEnabled(Preset.PLD_AoE_AdvancedMode_HallowedGround) && ActionReady(HallowedGround) &&
-                            PlayerHealthPercentageHp() < PLD_AoE_HallowedGround_Health && (PLD_AoE_HallowedGround_SubOption == 1 ||
-                                                                                                  TargetIsBoss() && PLD_AoE_HallowedGround_SubOption == 2))
+                            PlayerHealthPercentageHp() < PLD_AoE_HallowedGround_Health)
                             return HallowedGround;
 
                         // Sentinel / Guardian
                         if (IsEnabled(Preset.PLD_AoE_AdvancedMode_Sentinel) && ActionReady(OriginalHook(Sentinel)) &&
-                            PlayerHealthPercentageHp() < PLD_AoE_Sentinel_Health && (PLD_AoE_Sentinel_SubOption == 1 ||
-                                                                                            TargetIsBoss() && PLD_AoE_Sentinel_SubOption == 2))
+                            PlayerHealthPercentageHp() < PLD_AoE_Sentinel_Health)
                             return OriginalHook(Sentinel);
+
+                        // Bulwark
+                        if (IsEnabled(Preset.PLD_AoE_AdvancedMode_Bulwark) && ActionReady(Bulwark) &&
+                            PlayerHealthPercentageHp() < PLD_AoE_Bulwark_Health)
+                            return Bulwark;
 
                         // Rampart
                         if (IsEnabled(Preset.PLD_AoE_AdvancedMode_Rampart) &&
-                            Role.CanRampart(PLD_AoE_Rampart_Health) && (PLD_AoE_Rampart_SubOption == 1 ||
-                                                                               TargetIsBoss() && PLD_AoE_Rampart_SubOption == 2))
+                            Role.CanRampart(PLD_AoE_Rampart_Health))
                             return Role.Rampart;
 
                         // Sheltron
@@ -582,8 +608,9 @@ internal partial class PLD : Tank
             }
 
             // Holy Circle
-            if (LevelChecked(HolyCircle) && HasDivineMagicMP && (IsEnabled(Preset.PLD_AoE_AdvancedMode_HolyCircle) && IsAboveMPReserveAoE && HasDivineMight ||
-                                                                 (IsEnabled(Preset.PLD_AoE_AdvancedMode_Confiteor) || IsEnabled(Preset.PLD_AoE_AdvancedMode_Blades)) && HasRequiescat))
+            if (LevelChecked(HolyCircle) && HasDivineMagicMP &&
+                (IsEnabled(Preset.PLD_AoE_AdvancedMode_HolyCircle) && IsAboveMPReserveAoE && HasDivineMight ||
+                 (IsEnabled(Preset.PLD_AoE_AdvancedMode_Confiteor) || IsEnabled(Preset.PLD_AoE_AdvancedMode_Blades)) && HasRequiescat))
                 return HolyCircle;
 
             // Basic Combo
@@ -593,10 +620,11 @@ internal partial class PLD : Tank
             return actionID;
         }
     }
+
     #endregion
-    
+
     #region Standalone Features
-    
+
     internal class PLD_ST_BasicCombo : CustomCombo
     {
         protected internal override Preset Preset => Preset.PLD_ST_BasicCombo;
@@ -628,7 +656,7 @@ internal partial class PLD : Tank
             if (actionID is not (Requiescat or Imperator))
                 return actionID;
 
-            var canFightOrFlight = OriginalHook(FightOrFlight) is FightOrFlight && ActionReady(FightOrFlight);
+            bool canFightOrFlight = OriginalHook(FightOrFlight) is FightOrFlight && ActionReady(FightOrFlight);
 
             // Fight or Flight
             if (PLD_Requiescat_SubOption == 2 && (!LevelChecked(Requiescat) || (canFightOrFlight && ActionReady(Requiescat))))
@@ -698,7 +726,7 @@ internal partial class PLD : Tank
 
             int healthThreshold = PLD_RetargetClemency_Health;
 
-            var target =
+            IGameObject? target =
                 //Mouseover retarget option
                 (IsEnabled(Preset.PLD_RetargetClemency_MO)
                     ? SimpleTarget.UIMouseOverTarget.IfNotThePlayer().IfInParty()
@@ -718,7 +746,7 @@ internal partial class PLD : Tank
                 : actionID;
         }
     }
-    
+
     internal class PLD_RetargetSheltron : CustomCombo
     {
         protected internal override Preset Preset => Preset.PLD_RetargetSheltron;
@@ -728,7 +756,7 @@ internal partial class PLD : Tank
             if (action is not (Sheltron or HolySheltron))
                 return action;
 
-            var target =
+            IGameObject? target =
                 //Mouseover retarget option
                 (IsEnabled(Preset.PLD_RetargetSheltron_MO)
                     ? SimpleTarget.UIMouseOverTarget.IfNotThePlayer().IfInParty()
@@ -739,7 +767,7 @@ internal partial class PLD : Tank
 
                 //Targets target retarget option
                 (IsEnabled(Preset.PLD_RetargetSheltron_TT)
-                    && !PlayerHasAggro
+                 && !PlayerHasAggro
                     ? SimpleTarget.TargetsTarget.IfNotThePlayer().IfInParty()
                     : null);
 
@@ -752,7 +780,7 @@ internal partial class PLD : Tank
             return action;
         }
     }
-    
+
     #region One-Button Mitigation
 
     internal class PLD_Mit_OneButton : CustomCombo
@@ -773,7 +801,7 @@ internal partial class PLD : Tank
                 ))
                 return HallowedGround;
 
-            foreach (int priority in PLD_Mit_Priorities.OrderBy(x => x))
+            foreach(int priority in PLD_Mit_Priorities.OrderBy(x => x))
             {
                 int index = PLD_Mit_Priorities.IndexOf(priority);
                 if (CheckMitigationConfigMeetsRequirements(index, out uint action))
@@ -819,17 +847,18 @@ internal partial class PLD : Tank
             if (actionID is not ShieldBash)
                 return actionID;
 
-            var tar = SimpleTarget.StunnableEnemy(PLD_RetargetStunLockout ? PLD_RetargetShieldBash_Strength : 3);
+            IGameObject? tar = SimpleTarget.StunnableEnemy(PLD_RetargetStunLockout ? PLD_RetargetShieldBash_Strength : 3);
 
             if (tar is not null)
                 return ShieldBash.Retarget(actionID, tar);
-            else if (PLD_RetargetStunLockout)
+
+            if (PLD_RetargetStunLockout)
                 return All.SavageBlade;
 
             return actionID;
         }
     }
-    
+
     internal class PLD_RetargetCover : CustomCombo
     {
         protected internal override Preset Preset => Preset.PLD_RetargetCover;
@@ -841,7 +870,7 @@ internal partial class PLD : Tank
 
             int healthThreshold = PLD_RetargetCover_Health;
 
-            var target =
+            IGameObject? target =
                 //Mouseover retarget option
                 (IsEnabled(Preset.PLD_RetargetCover_MO)
                     ? SimpleTarget.UIMouseOverTarget.IfNotThePlayer().IfInParty()
@@ -861,5 +890,6 @@ internal partial class PLD : Tank
                 : actionID;
         }
     }
+
     #endregion
 }

@@ -10,43 +10,84 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class PLD
 {
-    
-    internal static PLDGauge Gauge = GetJobGauge<PLDGauge>();
+    private static PLDGauge Gauge => GetJobGauge<PLDGauge>();
 
-    internal static float DurationFightOrFlight => GetStatusEffectRemainingTime(Buffs.FightOrFlight);
-    internal static float CooldownFightOrFlight => GetCooldownRemainingTime(FightOrFlight);
-    internal static float CooldownRequiescat => GetCooldownRemainingTime(Requiescat);
-    
-    internal static bool CanFightOrFlight => OriginalHook(FightOrFlight) is FightOrFlight && ActionReady(FightOrFlight);
-    internal static bool HasRequiescat => HasStatusEffect(Buffs.Requiescat);
-    internal static bool HasDivineMight => HasStatusEffect(Buffs.DivineMight);
-    internal static bool HasFightOrFlight => HasStatusEffect(Buffs.FightOrFlight);
-    internal static bool HasDivineMagicMP => LocalPlayer.CurrentMp >= GetResourceCost(HolySpirit);
-    internal static bool HasRequiescatMPSimple => LocalPlayer.CurrentMp >= GetResourceCost(HolySpirit) * 3.6;
-    internal static bool HasRequiescatMPAdv => IsNotEnabled(Preset.PLD_ST_AdvancedMode_MP_Reserve) && LocalPlayer.CurrentMp >= GetResourceCost(HolySpirit) * 3.6 ||
-                            IsEnabled(Preset.PLD_ST_AdvancedMode_MP_Reserve) && LocalPlayer.CurrentMp >= GetResourceCost(HolySpirit) * 3.6 + PLD_ST_MP_Reserve;
-    internal static bool HasRequiescatMPAdvAoE => IsNotEnabled(Preset.PLD_AoE_AdvancedMode_MP_Reserve) && LocalPlayer.CurrentMp >= GetResourceCost(HolySpirit) * 3.6 ||
-                           IsEnabled(Preset.PLD_AoE_AdvancedMode_MP_Reserve) && LocalPlayer.CurrentMp >= GetResourceCost(HolySpirit) * 3.6 + PLD_AoE_MP_Reserve;
-    internal static bool InBurstWindow => JustUsed(FightOrFlight, 30f);
-    internal static bool InAtonementStarter => HasStatusEffect(Buffs.AtonementReady);
-    internal static bool InAtonementFinisher => HasStatusEffect(Buffs.SepulchreReady);
-    internal static bool InAtonementPhase => HasStatusEffect(Buffs.AtonementReady) || HasStatusEffect(Buffs.SupplicationReady) || HasStatusEffect(Buffs.SepulchreReady);
-    internal static bool IsDivineMightExpiring => GetStatusEffectRemainingTime(Buffs.DivineMight) < 6;
-    internal static bool IsAtonementExpiring => HasStatusEffect(Buffs.AtonementReady) && GetStatusEffectRemainingTime(Buffs.AtonementReady) < 6 ||
-                                              HasStatusEffect(Buffs.SupplicationReady) && GetStatusEffectRemainingTime(Buffs.SupplicationReady) < 6 ||
-                                              HasStatusEffect(Buffs.SepulchreReady) && GetStatusEffectRemainingTime(Buffs.SepulchreReady) < 6;
-    internal static bool JustMitted => JustUsed(OriginalHook(Sheltron)) ||
-                                     JustUsed(OriginalHook(Sentinel), 4f) ||
-                                     JustUsed(DivineVeil, 4f) ||
-                                     JustUsed(Role.Rampart, 4f) ||
-                                     JustUsed(HallowedGround, 9f);
-    
-    
-    internal static bool IsAboveMPReserveAoE => IsNotEnabled(Preset.PLD_AoE_AdvancedMode_MP_Reserve) ||
-                            IsEnabled(Preset.PLD_AoE_AdvancedMode_MP_Reserve) && LocalPlayer.CurrentMp >= GetResourceCost(HolySpirit) + PLD_AoE_MP_Reserve;
-    
-    internal static bool IsAboveMPReserveST => IsNotEnabled(Preset.PLD_ST_AdvancedMode_MP_Reserve) ||
-                                                 IsEnabled(Preset.PLD_ST_AdvancedMode_MP_Reserve) && LocalPlayer.CurrentMp >= GetResourceCost(HolySpirit) + PLD_ST_MP_Reserve;
+    private static float DurationFightOrFlight =>
+        GetStatusEffectRemainingTime(Buffs.FightOrFlight);
+
+    private static float CooldownFightOrFlight =>
+        GetCooldownRemainingTime(FightOrFlight);
+
+    private static float CooldownRequiescat =>
+        GetCooldownRemainingTime(Requiescat);
+
+    private static bool CanFightOrFlight =>
+        OriginalHook(FightOrFlight) is FightOrFlight && ActionReady(FightOrFlight);
+
+    private static bool HasRequiescat =>
+        HasStatusEffect(Buffs.Requiescat);
+
+    private static bool HasDivineMight =>
+        HasStatusEffect(Buffs.DivineMight);
+
+    private static bool HasFightOrFlight =>
+        HasStatusEffect(Buffs.FightOrFlight);
+
+    private static bool HasDivineMagicMP =>
+        LocalPlayer.CurrentMp >= GetResourceCost(HolySpirit);
+
+    private static bool HasRequiescatMPSimple =>
+        LocalPlayer.CurrentMp >= GetResourceCost(HolySpirit) * 3.6;
+
+    private static bool HasRequiescatMPAdv =>
+        IsNotEnabled(Preset.PLD_ST_AdvancedMode_MP_Reserve) && LocalPlayer.CurrentMp >= GetResourceCost(HolySpirit) * 3.6 ||
+        IsEnabled(Preset.PLD_ST_AdvancedMode_MP_Reserve) && LocalPlayer.CurrentMp >= GetResourceCost(HolySpirit) * 3.6 + PLD_ST_MP_Reserve;
+
+    private static bool HasRequiescatMPAdvAoE =>
+        IsNotEnabled(Preset.PLD_AoE_AdvancedMode_MP_Reserve) && LocalPlayer.CurrentMp >= GetResourceCost(HolySpirit) * 3.6 ||
+        IsEnabled(Preset.PLD_AoE_AdvancedMode_MP_Reserve) && LocalPlayer.CurrentMp >= GetResourceCost(HolySpirit) * 3.6 + PLD_AoE_MP_Reserve;
+
+    private static bool InBurstWindow =>
+        JustUsed(FightOrFlight, 30f);
+
+    private static bool InAtonementStarter =>
+        HasStatusEffect(Buffs.AtonementReady);
+
+    private static bool InAtonementFinisher =>
+        HasStatusEffect(Buffs.SepulchreReady);
+
+    private static bool InAtonementPhase =>
+        HasStatusEffect(Buffs.AtonementReady) || HasStatusEffect(Buffs.SupplicationReady) || HasStatusEffect(Buffs.SepulchreReady);
+
+    private static bool IsDivineMightExpiring =>
+        GetStatusEffectRemainingTime(Buffs.DivineMight) < 6;
+
+    private static bool IsAtonementExpiring =>
+        HasStatusEffect(Buffs.AtonementReady) && GetStatusEffectRemainingTime(Buffs.AtonementReady) < 6 ||
+        HasStatusEffect(Buffs.SupplicationReady) && GetStatusEffectRemainingTime(Buffs.SupplicationReady) < 6 ||
+        HasStatusEffect(Buffs.SepulchreReady) && GetStatusEffectRemainingTime(Buffs.SepulchreReady) < 6;
+
+    private static bool JustMitted =>
+        JustUsed(OriginalHook(Sheltron)) ||
+        JustUsed(OriginalHook(Sentinel), 4f) ||
+        JustUsed(DivineVeil, 4f) ||
+        JustUsed(Role.Rampart, 4f) ||
+        JustUsed(HallowedGround, 9f);
+
+    private static bool IsAboveMPReserveAoE =>
+        IsNotEnabled(Preset.PLD_AoE_AdvancedMode_MP_Reserve) ||
+        IsEnabled(Preset.PLD_AoE_AdvancedMode_MP_Reserve) && LocalPlayer.CurrentMp >= GetResourceCost(HolySpirit) + PLD_AoE_MP_Reserve;
+
+    private static bool IsAboveMPReserveST =>
+        IsNotEnabled(Preset.PLD_ST_AdvancedMode_MP_Reserve) ||
+        IsEnabled(Preset.PLD_ST_AdvancedMode_MP_Reserve) && LocalPlayer.CurrentMp >= GetResourceCost(HolySpirit) + PLD_ST_MP_Reserve;
+
+    private static bool InMitigationContent =>
+        ContentCheck.IsInConfiguredContent(PLD_ST_Mit_Difficulty, PLD_ST_Mit_DifficultyListSet);
+
+    private static int HPThresholdFoF =>
+        PLD_ST_FoF_BossOption == 1 ||
+        !TargetIsBoss() ? PLD_ST_FoF_HPOption : 0;
 
     #region Mitigation Priority
 
@@ -135,6 +176,7 @@ internal partial class PLD
     #endregion
 
     #region Openers
+
     internal static PLDOpenerMaxLevel1 Opener1 = new();
 
     internal static WrathOpener Opener()
