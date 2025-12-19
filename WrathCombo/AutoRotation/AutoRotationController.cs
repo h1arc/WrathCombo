@@ -13,6 +13,7 @@ using System.Linq;
 using System.Numerics;
 using WrathCombo.Attributes;
 using WrathCombo.Combos.PvE;
+using WrathCombo.Combos.PvE.Enums;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
@@ -202,7 +203,8 @@ internal unsafe static class AutoRotationController
             OccultCrescent.IsEnabledAndUsable(Preset.Phantom_Chemist_Revive, OccultCrescent.Revive) ||
             Variant.CanRaise())
         {
-            if (!needsHeal)
+            if (!needsHeal && WrathOpener.CurrentOpener.CurrentState is not 
+                OpenerState.InOpener)
             {
                 if (cfg.HealerSettings.AutoCleanse && isHealer)
                     CleanseParty();
