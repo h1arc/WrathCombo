@@ -298,7 +298,7 @@ internal partial class DRK
                     UserConfig.DrawSliderInt(20, 100, DRK_AoE_Mit_ReprisalThreshold,
                         startUsingAtDescriptionPlusDisable,
                         itemWidth: medium, sliderIncrement: SliderIncrements.Fives);
-                    UserConfig.DrawSliderInt(1, 10, DRK_AoE_ReprisalEnemyCount,
+                    UserConfig.DrawSliderInt(1, 5, DRK_AoE_ReprisalEnemyCount,
                         "# enemies in range",
                         itemWidth: little, sliderIncrement: SliderIncrements.Ones);
 
@@ -318,7 +318,7 @@ internal partial class DRK
                     break;
 
                 case Preset.DRK_AoE_Mit_ArmsLength:
-                    UserConfig.DrawSliderInt(1, 10, DRK_AoE_ArmsLengthEnemyCount,
+                    UserConfig.DrawSliderInt(1, 5, DRK_AoE_ArmsLengthEnemyCount,
                         "# enemies in range",
                         itemWidth: little, sliderIncrement: SliderIncrements.Ones);
 
@@ -430,7 +430,7 @@ internal partial class DRK
                         outputValue: (int)BossAvoidance.On, itemWidth: 125f);
                     ImGui.Unindent();
 
-                    UserConfig.DrawSliderInt(0, 3, DRK_Mit_ArmsLength_EnemyCount,
+                    UserConfig.DrawSliderInt(0, 5, DRK_Mit_ArmsLength_EnemyCount,
                         "How many enemies should be nearby? (0 = No Requirement)",
                         itemWidth: little, sliderIncrement: SliderIncrements.Ones);
 
