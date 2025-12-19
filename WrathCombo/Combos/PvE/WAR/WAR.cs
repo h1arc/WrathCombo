@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
@@ -476,7 +475,7 @@ internal partial class WAR
     internal class WAR_Mit_Party : CustomCombo
     {
         protected internal override Preset Preset => Preset.WAR_Mit_Party;
-        protected override uint Invoke(uint action) => action != ShakeItOff ? action : ActionReady(Role.Reprisal) ? Role.Reprisal : action;
+        protected override uint Invoke(uint action) => action != ShakeItOff ? action : Role.CanReprisal() ? Role.Reprisal : action;
     }
     #endregion
 

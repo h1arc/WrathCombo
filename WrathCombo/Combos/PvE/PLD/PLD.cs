@@ -642,7 +642,7 @@ internal partial class PLD : Tank
             if (HasStatusEffect(Buffs.Requiescat))
             {
                 // AoE
-                if (LevelChecked(HolyCircle) && NumberOfEnemiesInRange(HolyCircle, null) > 2)
+                if (LevelChecked(HolyCircle) && NumberOfEnemiesInRange(HolyCircle) > 2)
                     return HolyCircle;
 
                 return HolySpirit;
@@ -793,7 +793,7 @@ internal partial class PLD : Tank
             if (action is not DivineVeil)
                 return action;
 
-            if (ActionReady(Role.Reprisal))
+            if (Role.CanReprisal())
                 return Role.Reprisal;
 
             if (ActionReady(DivineVeil))
