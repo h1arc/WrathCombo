@@ -97,10 +97,10 @@ internal partial class PLD
 
                 // Shield Lob
                 case Preset.PLD_ST_AdvancedMode_ShieldLob:
-                    DrawHorizontalRadioButton(PLD_ShieldLob_SubOption, "Shield Lob Only",
+                    DrawHorizontalRadioButton(PLD_ST_ShieldLob_SubOption, "Shield Lob Only",
                         "", 0);
 
-                    DrawHorizontalRadioButton(PLD_ShieldLob_SubOption, "Add Holy Spirit",
+                    DrawHorizontalRadioButton(PLD_ST_ShieldLob_SubOption, "Add Holy Spirit",
                         "Attempts to hardcast Holy Spirit when not moving.\n- Requires sufficient MP to cast.", 1);
 
                     break;
@@ -391,10 +391,10 @@ internal partial class PLD
             PLD_AoE_HallowedGround_Health = new("PLD_AoE_HallowedGround_Health", 30),
             PLD_AoE_Intervene_HoldCharges = new("PLD_AoE_Intervene_HoldCharges"),
             PLD_AoE_Intervene_MeleeOnly = new("PLD_AoE_Intervene_MeleeOnly"),
+            PLD_ST_ShieldLob_SubOption = new("PLD_ST_ShieldLob_SubOption"),
             PLD_AoE_MP_Reserve = new("PLD_AoE_MP_Reserve", 1000),
 
             //Standalone
-            PLD_ShieldLob_SubOption = new("PLD_ShieldLob_SubOption"),
             PLD_Requiescat_SubOption = new("PLD_Requiescat_SubOption"),
             PLD_SpiritsWithin_SubOption = new("PLD_SpiritsWithin_SubOption", 1),
 
