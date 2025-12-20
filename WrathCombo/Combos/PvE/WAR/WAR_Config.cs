@@ -460,7 +460,7 @@ internal partial class WAR
                         "Avoid Bosses", "Will try not to use Arm's Length when in a boss fight.",
                         outputValue: (int)BossAvoidance.On, itemWidth: 125f);
                     ImGui.Unindent();
-                    DrawSliderInt(0, 3, WAR_Mit_ArmsLength_EnemyCount,
+                    DrawSliderInt(0, 5, WAR_Mit_ArmsLength_EnemyCount,
                         "How many enemies should be nearby? (0 = No Requirement)");
                     DrawPriorityInput(WAR_Mit_Priorities, NumMitigationOptions, 6, "Arm's Length Priority:");
                     break;
