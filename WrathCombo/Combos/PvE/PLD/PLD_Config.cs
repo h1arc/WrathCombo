@@ -41,7 +41,7 @@ internal partial class PLD
                     break;
 
                 case Preset.PLD_ST_AdvancedMode_Mitigation:
-                    DrawDifficultyMultiChoice(PLD_Mit_Difficulty, PLD_Mit_DifficultyListSet,
+                    DrawDifficultyMultiChoice(PLD_ST_Mit_Difficulty, PLD_ST_Mit_DifficultyListSet,
                         "Select what difficulties mitigations should be used in:");
                     break;
 
@@ -347,7 +347,7 @@ internal partial class PLD
                         sliderIncrement: SliderIncrements.Ones);
 
                     DrawPriorityInput(PLD_Mit_Priorities,
-                        NumberMitigationOptions, 8,
+                        NumberMitigationOptions, 7,
                         "Clemency Priority:");
                     break;
 
@@ -357,7 +357,7 @@ internal partial class PLD
 
         #region Variables
 
-        private const int NumberMitigationOptions = 9;
+        private const int NumberMitigationOptions = 8;
 
         public static UserInt
             //ST
@@ -407,8 +407,7 @@ internal partial class PLD
             PLD_Mit_HallowedGround_Max_Health = new("PLD_Mit_HallowedGround_Max_Health", 20),
             PLD_Mit_DivineVeil_PartyRequirement = new("PLD_Mit_DivineVeil_PartyRequirement", (int)PartyRequirement.Yes),
             PLD_Mit_ArmsLength_Boss = new("PLD_Mit_ArmsLength_Boss", (int)BossAvoidance.On),
-            PLD_Mit_ArmsLength_EnemyCount = new("PLD_Mit_ArmsLength_EnemyCount"),
-            PLD_Mit_HallowedGround_Health = new("PLD_Mit_HallowedGround_Health", 35),
+            PLD_Mit_ArmsLength_EnemyCount = new("PLD_Mit_ArmsLength_EnemyCount", 5),
             PLD_Mit_Clemency_Health = new("PLD_Mit_Clemency_Health", 40);
 
         public static UserBool
@@ -419,14 +418,10 @@ internal partial class PLD
 
         public static UserBoolArray
             PLD_Mit_HallowedGround_Max_Difficulty = new("PLD_Mit_HallowedGround_Max_Difficulty", [true, false]),
-            PLD_Mit_HallowedGround_Difficulty = new("PLD_Mit_HallowedGround_Difficulty", [true, false]),
-            PLD_Mit_Difficulty = new("PLD_Mit_Difficulty", [true, false]),
             PLD_ST_Mit_Difficulty = new("PLD_ST_Mit_Difficulty", [true, false]);
 
         public static readonly ContentCheck.ListSet
             PLD_Mit_HallowedGround_Max_DifficultyListSet = ContentCheck.ListSet.Halved,
-            PLD_Mit_HallowedGround_DifficultyListSet = ContentCheck.ListSet.Halved,
-            PLD_Mit_DifficultyListSet = ContentCheck.ListSet.Halved,
             PLD_ST_Mit_DifficultyListSet = ContentCheck.ListSet.Halved;
 
         #endregion

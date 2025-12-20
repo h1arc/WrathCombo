@@ -142,14 +142,6 @@ internal partial class PLD
         (OriginalHook(Sentinel), Preset.PLD_Mit_Sentinel,
             () => true),
 
-        //Hallowed Ground
-        (HallowedGround, Preset.PLD_Mit_HallowedGround,
-            () => PlayerHealthPercentageHp() <= PLD_Mit_HallowedGround_Health &&
-                  ContentCheck.IsInConfiguredContent(
-                      PLD_Mit_HallowedGround_Difficulty,
-                      PLD_Mit_HallowedGround_DifficultyListSet
-                  )),
-
         //Clemency
         (Clemency, Preset.PLD_Mit_Clemency,
             () => LocalPlayer.CurrentMp >= 2000 &&

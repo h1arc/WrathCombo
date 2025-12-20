@@ -4935,23 +4935,19 @@ public enum Preset
     PLD_Mit_Rampart = 11052,
 
     [ParentCombo(PLD_Mit_OneButton)]
-    [CustomComboInfo("Sentinel Option", "Adds Sentinel / Guardian to the one-button mitigation.", Job.PLD)]
-    PLD_Mit_Sentinel = 11053,
-
+    [CustomComboInfo("Bulwark Option",
+        "Adds Bulwark to the one-button mitigation." +
+        "\nNOTE: even if disabled, will still try to use Bulwark as the lowest priority.", Job.PLD)]
+    PLD_Mit_Bulwark = 11055,
+    
     [ParentCombo(PLD_Mit_OneButton)]
     [CustomComboInfo("Arm's Length Option", "Adds Arm's Length to the one-button mitigation.", Job.PLD)]
     PLD_Mit_ArmsLength = 11054,
 
     [ParentCombo(PLD_Mit_OneButton)]
-    [CustomComboInfo("Bulwark Option",
-        "Adds Bulwark to the one-button mitigation." +
-        "\nNOTE: even if disabled, will still try to use Bulwark as the lowest priority.", Job.PLD)]
-    PLD_Mit_Bulwark = 11055,
-
-    [ParentCombo(PLD_Mit_OneButton)]
-    [CustomComboInfo("Hallowed Ground Option", "Adds Hallowed Ground to the one-button mitigation (not at max priority).", Job.PLD)]
-    PLD_Mit_HallowedGround = 11056,
-
+    [CustomComboInfo("Sentinel Option", "Adds Sentinel / Guardian to the one-button mitigation.", Job.PLD)]
+    PLD_Mit_Sentinel = 11053,
+    
     [ParentCombo(PLD_Mit_OneButton)]
     [CustomComboInfo("Clemency Option", "Adds Clemency to the one-button mitigation.", Job.PLD)]
     PLD_Mit_Clemency = 11057,
