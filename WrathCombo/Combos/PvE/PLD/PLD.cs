@@ -334,7 +334,9 @@ internal partial class PLD : Tank
 
             // Stun
             if (CanStunToInterruptEnemy())
-                if (IsEnabled(Preset.PLD_ST_ShieldBash) && ActionReady(ShieldBash) && !JustUsedOn(ShieldBash, CurrentTarget, 10))
+                if (IsEnabled(Preset.PLD_ST_ShieldBash) &&
+                    ActionReady(ShieldBash) &&
+                    !JustUsedOn(ShieldBash, CurrentTarget, 10))
                     return ShieldBash;
 
                 else if (IsEnabled(Preset.PLD_ST_LowBlow) && Role.CanLowBlow())
@@ -392,9 +394,10 @@ internal partial class PLD : Tank
                     }
 
                     // Intervene
-                    if (IsEnabled(Preset.PLD_ST_AdvancedMode_Intervene) && LevelChecked(Intervene) && TimeMoving.Ticks == 0 &&
+                    if (IsEnabled(Preset.PLD_ST_AdvancedMode_Intervene) &&
+                        LevelChecked(Intervene) && TimeMoving.Ticks == 0 &&
                         CooldownFightOrFlight > 40 && GetRemainingCharges(Intervene) > PLD_ST_Intervene_HoldCharges && !WasLastAction(Intervene) &&
-                        (PLD_ST_Intervene_MeleeOnly == 1 && InMeleeRange() || GetTargetDistance() == 0 && PLD_ST_Intervene_MeleeOnly == 2))
+                        (PLD_ST_Intervene_MeleeOnly == 0 && InMeleeRange() || GetTargetDistance() == 0 && PLD_ST_Intervene_MeleeOnly == 1))
                         return Intervene;
 
                     // Blade of Honor
@@ -587,7 +590,7 @@ internal partial class PLD : Tank
                     if (IsEnabled(Preset.PLD_AoE_AdvancedMode_Intervene) &&
                         LevelChecked(Intervene) && TimeMoving.Ticks == 0 &&
                         CooldownFightOrFlight > 40 && GetRemainingCharges(Intervene) > PLD_AoE_Intervene_HoldCharges && !WasLastAction(Intervene) &&
-                        (PLD_AoE_Intervene_MeleeOnly == 1 && InMeleeRange() || GetTargetDistance() == 0 && PLD_AoE_Intervene_MeleeOnly == 2))
+                        (PLD_AoE_Intervene_MeleeOnly == 0 && InMeleeRange() || GetTargetDistance() == 0 && PLD_AoE_Intervene_MeleeOnly == 1))
                         return Intervene;
 
                     // Blade of Honor
