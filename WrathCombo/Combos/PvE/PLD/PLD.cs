@@ -39,7 +39,7 @@ internal partial class PLD : Tank
 
             #region Mitigations
 
-            if (PLD_ST_MitsOptions != 1)
+            if (PLD_ST_MitOptions == 0)
             {
                 if (InCombat() && //Player is in combat
                     !JustMitted) //Player has not used a mitigation ability in the last 4-9 seconds
@@ -56,12 +56,9 @@ internal partial class PLD : Tank
                             PlayerHealthPercentageHp() < 60) //Player's health is below 60%
                             return OriginalHook(Sentinel);
 
-                        //Rampart
-                        if (Role.CanRampart(80)) //Player's health is below 80%
-                            return Role.Rampart;
-
                         //Reprisal
-                        if (Role.CanReprisal(90)) //Player's health is below 80%
+                        if (Role.CanReprisal()
+                            && RaidWideCasting(5f))
                             return Role.Reprisal;
                     }
 
@@ -72,7 +69,8 @@ internal partial class PLD : Tank
 
                     //Sheltron
                     if (ActionReady(OriginalHook(Sheltron)) && //Sheltron
-                        PlayerHealthPercentageHp() < 90) //Player's health is below 95%
+                        PlayerHealthPercentageHp() < 85 && //Player's health is below 95%
+                        Gauge.OathGauge >= 50)
                         return OriginalHook(Sheltron);
                 }
             }
@@ -85,7 +83,8 @@ internal partial class PLD : Tank
                 if (CanWeave())
                 {
                     // Requiescat
-                    if (ActionReady(Requiescat) && CooldownFightOrFlight > 50 && InActionRange(OriginalHook(Requiescat))) //Moved out of melee range check bc Imperator is 25y but req is melee range. 
+                    if (ActionReady(Requiescat) && CooldownFightOrFlight > 50 &&
+                        InActionRange(OriginalHook(Requiescat))) //Moved out of melee range check bc Imperator is 25y but req is melee range. 
                         return OriginalHook(Requiescat);
 
                     if (InMeleeRange())
@@ -108,23 +107,25 @@ internal partial class PLD : Tank
                             }
 
                             // Level 68+
-                            else if (CooldownRequiescat < 0.5f && HasRequiescatMPSimple && !HasWeaved() && (ComboAction is RoyalAuthority || LevelChecked(BladeOfFaith) && RoyalAuthorityCount > 0))
+                            else if (CooldownRequiescat < 0.5f && HasRequiescatMPSimple &&
+                                     !HasWeaved() && (ComboAction is RoyalAuthority || LevelChecked(BladeOfFaith) && RoyalAuthorityCount > 0))
                                 return OriginalHook(FightOrFlight);
                         }
 
                         // Circle of Scorn / Spirits Within
-                        if (CooldownFightOrFlight > 15)
+                        switch (CooldownFightOrFlight)
                         {
-                            if (ActionReady(CircleOfScorn))
+                            case > 15 when ActionReady(CircleOfScorn):
                                 return CircleOfScorn;
 
-                            if (ActionReady(SpiritsWithin))
+                            case > 15 when ActionReady(SpiritsWithin):
                                 return OriginalHook(SpiritsWithin);
                         }
                     }
 
                     // Blade of Honor
-                    if (LevelChecked(BladeOfHonor) && OriginalHook(Requiescat) == BladeOfHonor)
+                    if (LevelChecked(BladeOfHonor) &&
+                        OriginalHook(Requiescat) == BladeOfHonor)
                         return OriginalHook(Requiescat);
                 }
 
@@ -144,24 +145,30 @@ internal partial class PLD : Tank
                 if (HasStatusEffect(Buffs.GoringBladeReady) && InMeleeRange())
                     return GoringBlade;
 
-                // Holy Spirit Prioritization
-                if (HasDivineMight && HasDivineMagicMP)
+                switch (HasDivineMight)
                 {
-                    // Delay Sepulchre / Prefer Sepulchre
-                    if (InAtonementFinisher && (CooldownFightOrFlight < 3 || DurationFightOrFlight > 3))
-                        return HolySpirit;
+                    // Holy Spirit Prioritization
+                    case true when HasDivineMagicMP:
+                    {
+                        // Delay Sepulchre / Prefer Sepulchre
+                        if (InAtonementFinisher && (CooldownFightOrFlight < 3 || DurationFightOrFlight > 3))
+                            return HolySpirit;
 
-                    // Fit in Burst
-                    if (!InAtonementFinisher && HasFightOrFlight && DurationFightOrFlight < 3)
-                        return HolySpirit;
+                        // Fit in Burst
+                        if (!InAtonementFinisher && HasFightOrFlight && DurationFightOrFlight < 3)
+                            return HolySpirit;
+                        break;
+                    }
                 }
 
                 // Atonement: During Burst / Before Expiring / Spend Starter / Before Refreshing
-                if (InAtonementPhase && InMeleeRange() && (InBurstWindow || IsAtonementExpiring || InAtonementStarter || ComboAction is RiotBlade))
+                if (InAtonementPhase && InMeleeRange() &&
+                    (InBurstWindow || IsAtonementExpiring || InAtonementStarter || ComboAction is RiotBlade))
                     return OriginalHook(Atonement);
 
                 // Holy Spirit: During Burst / Before Expiring / Outside Melee / Before Refreshing
-                if (HasDivineMight && HasDivineMagicMP && (InBurstWindow || IsDivineMightExpiring || !InMeleeRange() || ComboAction is RiotBlade))
+                if (HasDivineMight && HasDivineMagicMP &&
+                    (InBurstWindow || IsDivineMightExpiring || !InMeleeRange() || ComboAction is RiotBlade))
                     return HolySpirit;
 
                 // Out of Range
@@ -206,7 +213,7 @@ internal partial class PLD : Tank
             if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
 
-            if (PLD_AoE_MitsOptions != 1)
+            if (PLD_AoE_MitOptions == 0)
             {
                 if (InCombat() && //Player is in combat
                     !JustMitted) //Player has not used a mitigation ability in the last 4-9 seconds
@@ -228,7 +235,7 @@ internal partial class PLD : Tank
                             return Role.Rampart;
 
                         //Reprisal
-                        if (Role.CanReprisal(90, checkTargetForDebuff: false))
+                        if (Role.CanReprisal(90, 3, false))
                             return Role.Reprisal;
                     }
 
@@ -239,7 +246,8 @@ internal partial class PLD : Tank
 
                     //Sheltron
                     if (ActionReady(OriginalHook(Sheltron)) && //Sheltron
-                        PlayerHealthPercentageHp() < 90) //Player's health is below 95%
+                        PlayerHealthPercentageHp() < 85 && //Player's health is below 95%
+                        Gauge.OathGauge >= 50)
                         return OriginalHook(Sheltron);
                 }
             }
@@ -256,37 +264,37 @@ internal partial class PLD : Tank
                     if (InMeleeRange())
                     {
                         // Fight or Flight
-                        if (CanFightOrFlight)
-                        {
-                            if (!LevelChecked(Requiescat))
-                                return OriginalHook(FightOrFlight);
+                        if (CanFightOrFlight &&
+                            (!LevelChecked(Requiescat) ||
+                             CooldownRequiescat < 0.5f && HasRequiescatMPSimple && !HasWeaved()))
+                            return OriginalHook(FightOrFlight);
 
-                            if (CooldownRequiescat < 0.5f && HasRequiescatMPSimple && !HasWeaved())
-                                return OriginalHook(FightOrFlight);
-                        }
-
-                        if (CooldownFightOrFlight > 15)
+                        switch (CooldownFightOrFlight)
                         {
-                            if (ActionReady(CircleOfScorn))
+                            case > 15 when ActionReady(CircleOfScorn):
                                 return CircleOfScorn;
 
-                            if (ActionReady(SpiritsWithin))
+                            case > 15 when ActionReady(SpiritsWithin):
                                 return OriginalHook(SpiritsWithin);
                         }
                     }
 
                     // Blade of Honor
-                    if (LevelChecked(BladeOfHonor) && OriginalHook(Requiescat) == BladeOfHonor)
+                    if (LevelChecked(BladeOfHonor) &&
+                        OriginalHook(Requiescat) == BladeOfHonor)
                         return OriginalHook(Requiescat);
                 }
 
                 // Confiteor & Blades
-                if (HasDivineMagicMP && (HasStatusEffect(Buffs.ConfiteorReady) || LevelChecked(BladeOfFaith) && OriginalHook(Confiteor) != Confiteor))
+                if (HasDivineMagicMP &&
+                    (HasStatusEffect(Buffs.ConfiteorReady) ||
+                     LevelChecked(BladeOfFaith) && OriginalHook(Confiteor) != Confiteor))
                     return OriginalHook(Confiteor);
             }
 
             // Holy Circle
-            if (LevelChecked(HolyCircle) && HasDivineMagicMP && (HasDivineMight || HasRequiescat))
+            if (LevelChecked(HolyCircle) &&
+                HasDivineMagicMP && (HasDivineMight || HasRequiescat))
                 return HolyCircle;
 
             // Basic Combo
@@ -328,6 +336,7 @@ internal partial class PLD : Tank
             if (CanStunToInterruptEnemy())
                 if (IsEnabled(Preset.PLD_ST_ShieldBash) && ActionReady(ShieldBash) && !JustUsedOn(ShieldBash, CurrentTarget, 10))
                     return ShieldBash;
+
                 else if (IsEnabled(Preset.PLD_ST_LowBlow) && Role.CanLowBlow())
                     return Role.LowBlow;
 
@@ -364,25 +373,28 @@ internal partial class PLD : Tank
                             }
 
                             // Level 68+
-                            else if (CooldownRequiescat < 0.5f && HasRequiescatMPAdv && !HasWeaved() && (ComboAction is RoyalAuthority || LevelChecked(BladeOfFaith) && RoyalAuthorityCount > 0))
+                            else if (CooldownRequiescat < 0.5f && HasRequiescatMPAdv && !HasWeaved() &&
+                                     (ComboAction is RoyalAuthority || LevelChecked(BladeOfFaith) && RoyalAuthorityCount > 0))
                                 return OriginalHook(FightOrFlight);
                         }
 
-                        // Circle of Scorn / Spirits Within
-                        if (CooldownFightOrFlight > 15)
+                        switch (CooldownFightOrFlight)
                         {
-                            if (IsEnabled(Preset.PLD_ST_AdvancedMode_CircleOfScorn) && ActionReady(CircleOfScorn))
+                            // Circle of Scorn / Spirits Within
+                            case > 15 when IsEnabled(Preset.PLD_ST_AdvancedMode_CircleOfScorn) &&
+                                           ActionReady(CircleOfScorn):
                                 return CircleOfScorn;
 
-                            if (IsEnabled(Preset.PLD_ST_AdvancedMode_SpiritsWithin) && ActionReady(SpiritsWithin))
+                            case > 15 when IsEnabled(Preset.PLD_ST_AdvancedMode_SpiritsWithin) &&
+                                           ActionReady(SpiritsWithin):
                                 return OriginalHook(SpiritsWithin);
                         }
                     }
 
                     // Intervene
                     if (IsEnabled(Preset.PLD_ST_AdvancedMode_Intervene) && LevelChecked(Intervene) && TimeMoving.Ticks == 0 &&
-                        CooldownFightOrFlight > 40 && GetRemainingCharges(Intervene) > PLD_Intervene_HoldCharges && !WasLastAction(Intervene) &&
-                        (PLD_Intervene_MeleeOnly == 1 && InMeleeRange() || GetTargetDistance() == 0 && PLD_Intervene_MeleeOnly == 2))
+                        CooldownFightOrFlight > 40 && GetRemainingCharges(Intervene) > PLD_ST_Intervene_HoldCharges && !WasLastAction(Intervene) &&
+                        (PLD_ST_Intervene_MeleeOnly == 1 && InMeleeRange() || GetTargetDistance() == 0 && PLD_ST_Intervene_MeleeOnly == 2))
                         return Intervene;
 
                     // Blade of Honor
@@ -399,17 +411,18 @@ internal partial class PLD : Tank
                         if (IsEnabled(Preset.PLD_ST_AdvancedMode_HallowedGround) &&
                             ActionReady(HallowedGround) &&
                             PlayerHealthPercentageHp() < PLD_ST_HallowedGround_Health &&
-                            (PLD_ST_Mit_HallowedGround_Boss == (int)BossAvoidance.On && InBossEncounter() ||
-                             PLD_ST_Mit_HallowedGround_Boss == (int)BossAvoidance.Off))
+                            (PLD_ST_MitHallowedGroundBoss == (int)BossAvoidance.On && InBossEncounter() ||
+                             PLD_ST_MitHallowedGroundBoss == (int)BossAvoidance.Off))
                             return HallowedGround;
 
                         // Sheltron
                         if (IsEnabled(Preset.PLD_ST_AdvancedMode_Sheltron) &&
                             LevelChecked(Sheltron) &&
-                            Gauge.OathGauge >= PLD_ST_SheltronOption && PlayerHealthPercentageHp() < 95 &&
+                            Gauge.OathGauge >= PLD_ST_SheltronOption &&
+                            PlayerHealthPercentageHp() < PLD_ST_Sheltron_Health &&
                             !HasStatusEffect(Buffs.Sheltron) && !HasStatusEffect(Buffs.HolySheltron) &&
-                            (PLD_ST_Mit_Sheltron_Boss == (int)BossAvoidance.On && InBossEncounter() ||
-                             PLD_ST_Mit_Sheltron_Boss == (int)BossAvoidance.Off))
+                            (PLD_ST_MitSheltronBoss == (int)BossAvoidance.On && InBossEncounter() ||
+                             PLD_ST_MitSheltronBoss == (int)BossAvoidance.Off))
                             return OriginalHook(Sheltron);
 
                         // Reprisal
@@ -439,46 +452,53 @@ internal partial class PLD : Tank
                 }
 
                 // Requiescat Phase
-                if (HasDivineMagicMP)
+                switch (HasDivineMagicMP)
                 {
                     // Confiteor & Blades
-                    if (IsEnabled(Preset.PLD_ST_AdvancedMode_Confiteor) && HasStatusEffect(Buffs.ConfiteorReady) ||
-                        IsEnabled(Preset.PLD_ST_AdvancedMode_Blades) && LevelChecked(BladeOfFaith) && OriginalHook(Confiteor) != Confiteor)
+                    case true when IsEnabled(Preset.PLD_ST_AdvancedMode_Confiteor) && HasStatusEffect(Buffs.ConfiteorReady) ||
+                                   IsEnabled(Preset.PLD_ST_AdvancedMode_Blades) && LevelChecked(BladeOfFaith) && OriginalHook(Confiteor) != Confiteor:
                         return OriginalHook(Confiteor);
 
                     // Pre-Blades
-                    if ((IsEnabled(Preset.PLD_ST_AdvancedMode_Confiteor) || IsEnabled(Preset.PLD_ST_AdvancedMode_Blades)) && HasRequiescat)
+                    case true when (IsEnabled(Preset.PLD_ST_AdvancedMode_Confiteor) || IsEnabled(Preset.PLD_ST_AdvancedMode_Blades)) && HasRequiescat:
                         return HolySpirit;
                 }
 
                 // Goring Blade
-                if (IsEnabled(Preset.PLD_ST_AdvancedMode_GoringBlade) && HasStatusEffect(Buffs.GoringBladeReady) && InMeleeRange())
+                if (IsEnabled(Preset.PLD_ST_AdvancedMode_GoringBlade) &&
+                    HasStatusEffect(Buffs.GoringBladeReady) && InMeleeRange())
                     return GoringBlade;
 
                 // Holy Spirit Prioritization
-                if (IsEnabled(Preset.PLD_ST_AdvancedMode_HolySpirit) && HasDivineMight && HasDivineMagicMP && IsAboveMPReserveST)
+                if (IsEnabled(Preset.PLD_ST_AdvancedMode_HolySpirit) &&
+                    HasDivineMight && HasDivineMagicMP && IsAboveMPReserveST)
                 {
-                    // Delay Sepulchre / Prefer Sepulchre
-                    if (InAtonementFinisher && (CooldownFightOrFlight < 3 || DurationFightOrFlight > 3))
-                        return HolySpirit;
+                    switch (InAtonementFinisher)
+                    {
+                        // Delay Sepulchre / Prefer Sepulchre
+                        case true when (CooldownFightOrFlight < 3 || DurationFightOrFlight > 3):
 
-                    // Fit in Burst
-                    if (!InAtonementFinisher && HasFightOrFlight && DurationFightOrFlight < 3)
-                        return HolySpirit;
+                        // Fit in Burst
+                        case false when HasFightOrFlight && DurationFightOrFlight < 3:
+                            return HolySpirit;
+                    }
                 }
 
                 // Atonement: During Burst / Before Expiring / Spend Starter / Before Refreshing
-                if (IsEnabled(Preset.PLD_ST_AdvancedMode_Atonement) && InAtonementPhase && InMeleeRange() &&
+                if (IsEnabled(Preset.PLD_ST_AdvancedMode_Atonement) &&
+                    InAtonementPhase && InMeleeRange() &&
                     (InBurstWindow || IsAtonementExpiring || InAtonementStarter || ComboAction is RiotBlade))
                     return OriginalHook(Atonement);
 
                 // Holy Spirit: During Burst / Before Expiring / Outside Melee / Before Refreshing
-                if (IsEnabled(Preset.PLD_ST_AdvancedMode_HolySpirit) && HasDivineMight && HasDivineMagicMP && IsAboveMPReserveST &&
+                if (IsEnabled(Preset.PLD_ST_AdvancedMode_HolySpirit) &&
+                    HasDivineMight && HasDivineMagicMP && IsAboveMPReserveST &&
                     (InBurstWindow || IsDivineMightExpiring || !InMeleeRange() || ComboAction is RiotBlade))
                     return HolySpirit;
 
                 // Out of Range
-                if (IsEnabled(Preset.PLD_ST_AdvancedMode_ShieldLob) && !InMeleeRange())
+                if (IsEnabled(Preset.PLD_ST_AdvancedMode_ShieldLob) &&
+                    !InMeleeRange())
                 {
                     // Holy Spirit (Not Moving)
                     if (LevelChecked(HolySpirit) && HasDivineMagicMP && IsAboveMPReserveST && TimeMoving.Ticks == 0 && PLD_ShieldLob_SubOption == 2)
@@ -523,9 +543,12 @@ internal partial class PLD : Tank
 
             // Stun
             if (CanStunToInterruptEnemy())
-                if (IsEnabled(Preset.PLD_AoE_ShieldBash) && ActionReady(ShieldBash) && !JustUsedOn(ShieldBash, CurrentTarget, 10))
+                if (IsEnabled(Preset.PLD_AoE_ShieldBash) &&
+                    ActionReady(ShieldBash) && !JustUsedOn(ShieldBash, CurrentTarget, 10))
                     return ShieldBash;
-                else if (IsEnabled(Preset.PLD_AoE_LowBlow) && Role.CanLowBlow())
+
+                else if (IsEnabled(Preset.PLD_AoE_LowBlow) &&
+                         Role.CanLowBlow())
                     return Role.LowBlow;
 
             if (ContentSpecificActions.TryGet(out uint contentAction))
@@ -550,54 +573,79 @@ internal partial class PLD : Tank
                             return OriginalHook(FightOrFlight);
 
                         // Circle of Scorn / Spirits Within
-                        if (CooldownFightOrFlight > 15)
+                        switch (CooldownFightOrFlight)
                         {
-                            if (IsEnabled(Preset.PLD_AoE_AdvancedMode_CircleOfScorn) && ActionReady(CircleOfScorn))
+                            case > 15 when IsEnabled(Preset.PLD_AoE_AdvancedMode_CircleOfScorn) && ActionReady(CircleOfScorn):
                                 return CircleOfScorn;
 
-                            if (IsEnabled(Preset.PLD_AoE_AdvancedMode_SpiritsWithin) && ActionReady(SpiritsWithin))
+                            case > 15 when IsEnabled(Preset.PLD_AoE_AdvancedMode_SpiritsWithin) && ActionReady(SpiritsWithin):
                                 return OriginalHook(SpiritsWithin);
                         }
                     }
 
                     // Intervene
-                    if (IsEnabled(Preset.PLD_AoE_AdvancedMode_Intervene) && LevelChecked(Intervene) && TimeMoving.Ticks == 0 &&
+                    if (IsEnabled(Preset.PLD_AoE_AdvancedMode_Intervene) &&
+                        LevelChecked(Intervene) && TimeMoving.Ticks == 0 &&
                         CooldownFightOrFlight > 40 && GetRemainingCharges(Intervene) > PLD_AoE_Intervene_HoldCharges && !WasLastAction(Intervene) &&
                         (PLD_AoE_Intervene_MeleeOnly == 1 && InMeleeRange() || GetTargetDistance() == 0 && PLD_AoE_Intervene_MeleeOnly == 2))
                         return Intervene;
 
                     // Blade of Honor
-                    if (IsEnabled(Preset.PLD_AoE_AdvancedMode_BladeOfHonor) && LevelChecked(BladeOfHonor) && OriginalHook(Requiescat) == BladeOfHonor)
+                    if (IsEnabled(Preset.PLD_AoE_AdvancedMode_BladeOfHonor) &&
+                        LevelChecked(BladeOfHonor) && OriginalHook(Requiescat) == BladeOfHonor)
                         return OriginalHook(Requiescat);
 
                     // Mitigation
-                    if (IsEnabled(Preset.PLD_AoE_AdvancedMode_Mitigation) && IsPlayerTargeted() && !JustMitted && InCombat())
+                    if (IsEnabled(Preset.PLD_AoE_AdvancedMode_Mitigation) &&
+                        IsPlayerTargeted() && !JustMitted && InCombat())
                     {
                         // Hallowed Ground
-                        if (IsEnabled(Preset.PLD_AoE_AdvancedMode_HallowedGround) && ActionReady(HallowedGround) &&
+                        if (IsEnabled(Preset.PLD_AoE_AdvancedMode_HallowedGround) &&
+                            ActionReady(HallowedGround) &&
                             PlayerHealthPercentageHp() < PLD_AoE_HallowedGround_Health)
                             return HallowedGround;
 
-                        // Sentinel / Guardian
-                        if (IsEnabled(Preset.PLD_AoE_AdvancedMode_Sentinel) && ActionReady(OriginalHook(Sentinel)) &&
-                            PlayerHealthPercentageHp() < PLD_AoE_Sentinel_Health)
-                            return OriginalHook(Sentinel);
+                        // Sheltron
+                        if (IsEnabled(Preset.PLD_AoE_AdvancedMode_Sheltron) &&
+                            LevelChecked(Sheltron) &&
+                            Gauge.OathGauge >= PLD_AoE_SheltronOption &&
+                            PlayerHealthPercentageHp() < PLD_AoE_Sheltron_Health &&
+                            !HasStatusEffect(Buffs.Sheltron) &&
+                            !HasStatusEffect(Buffs.HolySheltron))
+                            return OriginalHook(Sheltron);
 
-                        // Bulwark
-                        if (IsEnabled(Preset.PLD_AoE_AdvancedMode_Bulwark) && ActionReady(Bulwark) &&
-                            PlayerHealthPercentageHp() < PLD_AoE_Bulwark_Health)
-                            return Bulwark;
+                        // Reprisal
+                        if (IsEnabled(Preset.PLD_AoE_AdvancedMode_Reprisal) &&
+                            Role.CanReprisal(PLD_AoE_Reprisal_Health, PLD_AoE_Reprisal_Count, false))
+                            return Role.Reprisal;
+
+                        // Divine Veil
+                        if (IsEnabled(Preset.PLD_AoE_AdvancedMode_DivineVeil) &&
+                            ActionReady(DivineVeil) &&
+                            PlayerHealthPercentageHp() < PLD_AoE_DivineVeil_Health)
+                            return DivineVeil;
 
                         // Rampart
                         if (IsEnabled(Preset.PLD_AoE_AdvancedMode_Rampart) &&
                             Role.CanRampart(PLD_AoE_Rampart_Health))
                             return Role.Rampart;
 
-                        // Sheltron
-                        if (IsEnabled(Preset.PLD_AoE_AdvancedMode_Sheltron) && LevelChecked(Sheltron) &&
-                            Gauge.OathGauge >= PLD_AoE_SheltronOption && PlayerHealthPercentageHp() < 95 &&
-                            !HasStatusEffect(Buffs.Sheltron) && !HasStatusEffect(Buffs.HolySheltron))
-                            return OriginalHook(Sheltron);
+                        // Arm's Length
+                        if (IsEnabled(Preset.PLD_AoE_AdvancedMode_ArmsLength) &&
+                            Role.CanArmsLength(PLD_AoE_ArmsLength_Count))
+                            return Role.ArmsLength;
+
+                        // Bulwark
+                        if (IsEnabled(Preset.PLD_AoE_AdvancedMode_Bulwark) &&
+                            ActionReady(Bulwark) &&
+                            PlayerHealthPercentageHp() < PLD_AoE_Bulwark_Health)
+                            return Bulwark;
+
+                        // Sentinel / Guardian
+                        if (IsEnabled(Preset.PLD_AoE_AdvancedMode_Sentinel) &&
+                            ActionReady(OriginalHook(Sentinel)) &&
+                            PlayerHealthPercentageHp() < PLD_AoE_Sentinel_Health)
+                            return OriginalHook(Sentinel);
                     }
                 }
 
