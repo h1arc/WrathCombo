@@ -114,27 +114,34 @@ internal partial class PLD
         //Sheltron
         (OriginalHook(Sheltron), Preset.PLD_Mit_Sheltron,
             () => Gauge.OathGauge >= 50),
+
         // Reprisal
         (Role.Reprisal, Preset.PLD_Mit_Reprisal,
-            () => Role.CanReprisal(checkTargetForDebuff: false)),
+            () => Role.CanReprisal()),
+
         //Divine Veil
         (DivineVeil, Preset.PLD_Mit_DivineVeil,
             () => PLD_Mit_DivineVeil_PartyRequirement ==
                   (int)PartyRequirement.No ||
                   IsInParty()),
+
         //Rampart
         (Role.Rampart, Preset.PLD_Mit_Rampart,
             () => Role.CanRampart()),
-        //Sentinel
-        (OriginalHook(Sentinel), Preset.PLD_Mit_Sentinel,
+
+        //Bulwark
+        (Bulwark, Preset.PLD_Mit_Bulwark,
             () => true),
+
         //Arm's Length
         (Role.ArmsLength, Preset.PLD_Mit_ArmsLength,
             () => Role.CanArmsLength(PLD_Mit_ArmsLength_EnemyCount,
                 PLD_Mit_ArmsLength_Boss)),
-        //Bulwark
-        (Bulwark, Preset.PLD_Mit_Bulwark,
+
+        //Sentinel
+        (OriginalHook(Sentinel), Preset.PLD_Mit_Sentinel,
             () => true),
+
         //Hallowed Ground
         (HallowedGround, Preset.PLD_Mit_HallowedGround,
             () => PlayerHealthPercentageHp() <= PLD_Mit_HallowedGround_Health &&
@@ -142,6 +149,7 @@ internal partial class PLD
                       PLD_Mit_HallowedGround_Difficulty,
                       PLD_Mit_HallowedGround_DifficultyListSet
                   )),
+
         //Clemency
         (Clemency, Preset.PLD_Mit_Clemency,
             () => LocalPlayer.CurrentMp >= 2000 &&

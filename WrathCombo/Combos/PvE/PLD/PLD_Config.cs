@@ -293,6 +293,7 @@ internal partial class PLD
                         "Require party",
                         "Will not use Divine Veil unless there are 2 or more party members.",
                         (int)PartyRequirement.Yes);
+
                     DrawHorizontalRadioButton(
                         PLD_Mit_DivineVeil_PartyRequirement,
                         "Use Always",
@@ -311,10 +312,10 @@ internal partial class PLD
                         "Rampart Priority:");
                     break;
 
-                case Preset.PLD_Mit_Sentinel:
+                case Preset.PLD_Mit_Bulwark:
                     DrawPriorityInput(PLD_Mit_Priorities,
                         NumberMitigationOptions, 4,
-                        "Sentinel Priority:");
+                        "Bulwark Priority:");
                     break;
 
                 case Preset.PLD_Mit_ArmsLength:
@@ -326,7 +327,7 @@ internal partial class PLD
                         "Avoid Bosses", "Will try not to use Arm's Length when in a boss fight.", (int)BossAvoidance.On, 125f);
                     ImGui.Unindent();
 
-                    DrawSliderInt(0, 3, PLD_Mit_ArmsLength_EnemyCount,
+                    DrawSliderInt(0, 5, PLD_Mit_ArmsLength_EnemyCount,
                         "How many enemies should be nearby? (0 = No Requirement)");
 
                     DrawPriorityInput(PLD_Mit_Priorities,
@@ -334,26 +335,10 @@ internal partial class PLD
                         "Arm's Length Priority:");
                     break;
 
-                case Preset.PLD_Mit_Bulwark:
+                case Preset.PLD_Mit_Sentinel:
                     DrawPriorityInput(PLD_Mit_Priorities,
                         NumberMitigationOptions, 6,
-                        "Bulwark Priority:");
-                    break;
-
-                case Preset.PLD_Mit_HallowedGround:
-                    DrawDifficultyMultiChoice(
-                        PLD_Mit_HallowedGround_Difficulty,
-                        PLD_Mit_HallowedGround_DifficultyListSet,
-                        "Select what difficulties Hallowed Ground should be used in:"
-                    );
-
-                    DrawSliderInt(1, 100, PLD_Mit_HallowedGround_Health,
-                        "HP% to use at or below",
-                        sliderIncrement: SliderIncrements.Ones);
-
-                    DrawPriorityInput(PLD_Mit_Priorities,
-                        NumberMitigationOptions, 7,
-                        "Hallowed Ground Priority:");
+                        "Sentinel Priority:");
                     break;
 
                 case Preset.PLD_Mit_Clemency:
@@ -433,7 +418,7 @@ internal partial class PLD
             PLD_Mit_Priorities = new("PLD_Mit_Priorities");
 
         public static UserBoolArray
-            PLD_Mit_HallowedGround_Max_Difficulty = new("PLD_Mit_HallowedGround_Max_Difficulty", [true, true]),
+            PLD_Mit_HallowedGround_Max_Difficulty = new("PLD_Mit_HallowedGround_Max_Difficulty", [true, false]),
             PLD_Mit_HallowedGround_Difficulty = new("PLD_Mit_HallowedGround_Difficulty", [true, false]),
             PLD_Mit_Difficulty = new("PLD_Mit_Difficulty", [true, false]),
             PLD_ST_Mit_Difficulty = new("PLD_ST_Mit_Difficulty", [true, false]);
