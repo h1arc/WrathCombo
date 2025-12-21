@@ -3,16 +3,17 @@
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility.Raii;
-using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using ECommons;
+using ECommons.DalamudServices;
 using ECommons.Logging;
 using WrathCombo.Attributes;
 using WrathCombo.Core;
+using WrathCombo.Data.Conflicts;
 using WrathCombo.Services;
 using WrathCombo.Window.Functions;
 using Setting = WrathCombo.Window.Functions.Setting;
