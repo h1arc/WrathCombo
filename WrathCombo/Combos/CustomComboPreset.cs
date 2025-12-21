@@ -4754,8 +4754,20 @@ public enum Preset
     PLD_ST_AdvancedMode_Sheltron = 11007,
 
     [ParentCombo(PLD_ST_AdvancedMode_Mitigation)]
-    [CustomComboInfo("Rampart Option", "Adds Rampart.\n- Player HP must be under:", Job.PLD)]
-    PLD_ST_AdvancedMode_Rampart = 11039,
+    [CustomComboInfo("Reprisal Option", "Uses Reprisal when a raidwide is in the process of casting.", Job.PLD)]
+    PLD_ST_AdvancedMode_Reprisal = 11080,
+
+    [ParentCombo(PLD_ST_AdvancedMode_Mitigation)]
+    [CustomComboInfo("Divine Veil Option", "Uses Divine Veil when a raidwide is in the process of casting.", Job.PLD)]
+    PLD_ST_AdvancedMode_DivineVeil = 11081,
+
+    [ParentCombo(PLD_ST_AdvancedMode_DivineVeil)]
+    [CustomComboInfo("Avoid Doubling up on Group Mit", "Won't use Divine Veil if your own Reprisal is on the target.", Job.PLD)]
+    PLD_ST_AdvancedMode_DivineVeilAvoid = 11082,
+
+    [ParentCombo(PLD_ST_AdvancedMode_Mitigation)]
+    [CustomComboInfo("Bulwark Option", "Adds Bulwark.\n- Player HP must be under:", Job.PLD)]
+    PLD_ST_AdvancedMode_Bulwark = 11079,
 
     [ParentCombo(PLD_ST_AdvancedMode_Mitigation)]
     [CustomComboInfo("Sentinel Option", "Adds Sentinel.\n- Player HP must be under:", Job.PLD)]
@@ -4858,8 +4870,24 @@ public enum Preset
     PLD_AoE_AdvancedMode_Sheltron = 11023,
 
     [ParentCombo(PLD_AoE_AdvancedMode_Mitigation)]
+    [CustomComboInfo("Reprisal Option", "Adds Reprisal.\n- Required gauge threshold:", Job.PLD)]
+    PLD_AoE_AdvancedMode_Reprisal = 11083,
+
+    [ParentCombo(PLD_AoE_AdvancedMode_Mitigation)]
+    [CustomComboInfo("Divine Veil Option", "Adds Divine Veil.\n- Required gauge threshold:", Job.PLD)]
+    PLD_AoE_AdvancedMode_DivineVeil = 11084,
+    
+    [ParentCombo(PLD_AoE_AdvancedMode_Mitigation)]
     [CustomComboInfo("Rampart Option", "Adds Rampart.\n- Player HP must be under:", Job.PLD)]
     PLD_AoE_AdvancedMode_Rampart = 11043,
+
+    [ParentCombo(PLD_AoE_AdvancedMode_Mitigation)]
+    [CustomComboInfo("Arms's Length Option", "Adds Arm's Length.\n- Required gauge threshold:", Job.PLD)]
+    PLD_AoE_AdvancedMode_ArmsLength = 11085,
+    
+    [ParentCombo(PLD_AoE_AdvancedMode_Mitigation)]
+    [CustomComboInfo("Bulwark Option", "Adds Bulwark.\n- Player HP must be under:", Job.PLD)]
+    PLD_AoE_AdvancedMode_Bulwark = 11078,
 
     [ParentCombo(PLD_AoE_AdvancedMode_Mitigation)]
     [CustomComboInfo("Sentinel Option", "Adds Sentinel.\n- Player HP must be under:", Job.PLD)]
@@ -4907,23 +4935,19 @@ public enum Preset
     PLD_Mit_Rampart = 11052,
 
     [ParentCombo(PLD_Mit_OneButton)]
-    [CustomComboInfo("Sentinel Option", "Adds Sentinel / Guardian to the one-button mitigation.", Job.PLD)]
-    PLD_Mit_Sentinel = 11053,
-
+    [CustomComboInfo("Bulwark Option",
+        "Adds Bulwark to the one-button mitigation." +
+        "\nNOTE: even if disabled, will still try to use Bulwark as the lowest priority.", Job.PLD)]
+    PLD_Mit_Bulwark = 11055,
+    
     [ParentCombo(PLD_Mit_OneButton)]
     [CustomComboInfo("Arm's Length Option", "Adds Arm's Length to the one-button mitigation.", Job.PLD)]
     PLD_Mit_ArmsLength = 11054,
 
     [ParentCombo(PLD_Mit_OneButton)]
-    [CustomComboInfo("Bulwark Option",
-        "Adds Bulwark to the one-button mitigation." +
-        "\nNOTE: even if disabled, will still try to use Bulwark as the lowest priority.", Job.PLD)]
-    PLD_Mit_Bulwark = 11055,
-
-    [ParentCombo(PLD_Mit_OneButton)]
-    [CustomComboInfo("Hallowed Ground Option", "Adds Hallowed Ground to the one-button mitigation (not at max priority).", Job.PLD)]
-    PLD_Mit_HallowedGround = 11056,
-
+    [CustomComboInfo("Sentinel Option", "Adds Sentinel / Guardian to the one-button mitigation.", Job.PLD)]
+    PLD_Mit_Sentinel = 11053,
+    
     [ParentCombo(PLD_Mit_OneButton)]
     [CustomComboInfo("Clemency Option", "Adds Clemency to the one-button mitigation.", Job.PLD)]
     PLD_Mit_Clemency = 11057,
@@ -5011,7 +5035,7 @@ public enum Preset
 
     #endregion
 
-    //// Last value = 11077
+    //// Last value = 11085
 
     #endregion
 
