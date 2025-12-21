@@ -378,7 +378,7 @@ internal partial class PLD
             PLD_ST_MitSheltronBoss = new("PLD_ST_MitSheltronBoss", (int)BossAvoidance.Off),
 
             //AoE
-            PLD_AoE_FoF_Trigger = new("PLD_AoE_FoF_Trigger",25),
+            PLD_AoE_FoF_Trigger = new("PLD_AoE_FoF_Trigger", 25),
             PLD_AoE_MitOptions = new("PLD_AoE_MitOptions"),
             PLD_AoE_SheltronOption = new("PLD_AoE_SheltronOption", 50),
             PLD_AoE_Sheltron_Health = new("PLD_AoE_Sheltron_Health", 85),

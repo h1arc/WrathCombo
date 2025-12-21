@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
+using System;
 using System.Collections.Generic;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
@@ -10,6 +11,8 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class PLD
 {
+    #region Variables
+
     private static PLDGauge Gauge => GetJobGauge<PLDGauge>();
 
     private static float DurationFightOrFlight =>
@@ -88,6 +91,8 @@ internal partial class PLD
     private static int HPThresholdFoF =>
         PLD_ST_FoF_BossOption == 1 ||
         !TargetIsBoss() ? PLD_ST_FoF_HPOption : 0;
+
+    #endregion
 
     #region Mitigation Priority
 
@@ -177,18 +182,21 @@ internal partial class PLD
 
     #region Openers
 
-    internal static PLDOpenerMaxLevel1 Opener1 = new();
+    internal static PLDLvl100StandardOpener Lvl100StandardOpener = new();
 
     internal static WrathOpener Opener()
     {
-        if (Opener1.LevelChecked)
-            return Opener1;
+        if (Lvl100StandardOpener.LevelChecked)
+            return Lvl100StandardOpener;
 
         return WrathOpener.Dummy;
     }
 
-    internal class PLDOpenerMaxLevel1 : WrathOpener
+    internal class PLDLvl100StandardOpener : WrathOpener
     {
+        public override int MinOpenerLevel => 100;
+        public override int MaxOpenerLevel => 109;
+
         public override List<uint> OpenerActions { get; set; } =
         [
             HolySpirit,
@@ -201,9 +209,9 @@ internal partial class PLD
             CircleOfScorn,
             Expiacion,
             BladeOfFaith,
-            Intervene,
+            Intervene, //11
             BladeOfTruth,
-            Intervene,
+            Intervene, //13
             BladeOfValor,
             BladeOfHonor,
             GoringBlade,
@@ -213,8 +221,11 @@ internal partial class PLD
             HolySpirit
         ];
 
-        public override int MinOpenerLevel => 100;
-        public override int MaxOpenerLevel => 109;
+        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } =
+        [
+            ([11, 13], () => !HasCharges(Intervene))
+        ];
+
 
         internal override UserData ContentCheckConfig => PLD_Balance_Content;
 

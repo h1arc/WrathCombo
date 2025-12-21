@@ -504,9 +504,9 @@ internal partial class PLD : Tank
                     !InMeleeRange())
                 {
                     // Holy Spirit (Not Moving)
-                    if (LevelChecked(HolySpirit) && 
-                        HasDivineMagicMP && IsAboveMPReserveST && 
-                        TimeMoving.Ticks == 0 && 
+                    if (LevelChecked(HolySpirit) &&
+                        HasDivineMagicMP && IsAboveMPReserveST &&
+                        TimeMoving.Ticks == 0 &&
                         PLD_ST_ShieldLob_SubOption == 1)
                         return HolySpirit;
 
