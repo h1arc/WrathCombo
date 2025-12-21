@@ -135,7 +135,8 @@ internal partial class WAR
                 // Raw Intuition/Bloodwhetting
                 if (IsEnabled(Preset.WAR_ST_Bloodwhetting) &&
                     ActionReady(OriginalHook(RawIntuition)) &&
-                    PlayerHealthPercentageHp() <= WAR_ST_Bloodwhetting_Health)
+                    PlayerHealthPercentageHp() <= WAR_ST_Bloodwhetting_Health &&
+                    (WAR_ST_Bloodwhetting_Boss == 0 || TargetIsBoss()))
                     return OriginalHook(RawIntuition);
 
                 // Reprisal
