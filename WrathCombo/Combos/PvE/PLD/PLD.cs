@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
+using System;
 using System.Linq;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
@@ -66,7 +67,7 @@ internal partial class PLD : Tank
                     if (ActionReady(DivineVeil) && RaidWideCasting(5f) &&
                         NumberOfAlliesInRange(DivineVeil) >= GetPartyMembers().Count * .75 &&
                         !HasStatusEffect(Role.Debuffs.Reprisal, CurrentTarget, true))
-                        return OriginalHook(Sentinel);
+                        return OriginalHook(DivineVeil);
 
                     // Sentinel / Guardian
                     if (ActionReady(OriginalHook(Sentinel)) &&
@@ -410,9 +411,11 @@ internal partial class PLD : Tank
 
                     // Intervene
                     if (IsEnabled(Preset.PLD_ST_AdvancedMode_Intervene) &&
-                        LevelChecked(Intervene) && TimeMoving.Ticks == 0 &&
-                        CooldownFightOrFlight > 40 && GetRemainingCharges(Intervene) > PLD_ST_Intervene_HoldCharges && !WasLastAction(Intervene) &&
-                        (PLD_ST_Intervene_MeleeOnly == 0 && InMeleeRange() || GetTargetDistance() == 0 && PLD_ST_Intervene_MeleeOnly == 1))
+                        ActionReady(Intervene) && CooldownFightOrFlight > 40 &&
+                        GetRemainingCharges(Intervene) > PLD_ST_Intervene_Charges && !JustUsed(Intervene) &&
+                        (PLD_ST_Intervene_Movement == 1 ||
+                         PLD_ST_Intervene_Movement == 0 && !IsMoving() && TimeStoodStill > TimeSpan.FromSeconds(PLD_ST_InterveneTimeStill)) &&
+                        GetTargetDistance() <= PLD_ST_Intervene_Distance)
                         return Intervene;
 
                     // Blade of Honor
@@ -454,7 +457,7 @@ internal partial class PLD : Tank
                             NumberOfAlliesInRange(DivineVeil) >= GetPartyMembers().Count * .75 &&
                             (IsNotEnabled(Preset.PLD_ST_AdvancedMode_DivineVeilAvoid) ||
                              !HasStatusEffect(Role.Debuffs.Reprisal, CurrentTarget, true)))
-                            return OriginalHook(Sentinel);
+                            return OriginalHook(DivineVeil);
 
                         // Sentinel / Guardian
                         if (IsEnabled(Preset.PLD_ST_AdvancedMode_Sentinel) &&
@@ -607,9 +610,11 @@ internal partial class PLD : Tank
 
                     // Intervene
                     if (IsEnabled(Preset.PLD_AoE_AdvancedMode_Intervene) &&
-                        LevelChecked(Intervene) && TimeMoving.Ticks == 0 &&
-                        CooldownFightOrFlight > 40 && GetRemainingCharges(Intervene) > PLD_AoE_Intervene_HoldCharges && !WasLastAction(Intervene) &&
-                        (PLD_AoE_Intervene_MeleeOnly == 0 && InMeleeRange() || GetTargetDistance() == 0 && PLD_AoE_Intervene_MeleeOnly == 1))
+                        ActionReady(Intervene) && CooldownFightOrFlight > 40 &&
+                        GetRemainingCharges(Intervene) > PLD_AoE_Intervene_Charges && !JustUsed(Intervene) &&
+                        (PLD_AoE_Intervene_Movement == 1 ||
+                         PLD_AoE_Intervene_Movement == 0 && !IsMoving() && TimeStoodStill > TimeSpan.FromSeconds(PLD_AoE_InterveneTimeStill)) &&
+                        GetTargetDistance() <= PLD_AoE_Intervene_Distance)
                         return Intervene;
 
                     // Blade of Honor
