@@ -361,7 +361,6 @@ internal partial class PLD
 
         public static UserInt
             //ST
-            PLD_AoE_FoF_Trigger = new("PLD_AoE_FoF_Trigger"),
             PLD_Balance_Content = new("PLD_Balance_Content", 1),
             PLD_ST_Intervene_HoldCharges = new("PLD_ST_Intervene_HoldCharges"),
             PLD_ST_Intervene_MeleeOnly = new("PLD_ST_Intervene_MeleeOnly"),
@@ -374,10 +373,12 @@ internal partial class PLD
             PLD_ST_HallowedGround_Health = new("PLD_ST_HallowedGround_Health", 30),
             PLD_ST_FoF_BossOption = new("PLD_ST_FoF_BossOption"),
             PLD_ST_FoF_HPOption = new("PLD_ST_FoF_HPOption", 10),
+            PLD_ST_ShieldLob_SubOption = new("PLD_ST_ShieldLob_SubOption"),
             PLD_ST_MitHallowedGroundBoss = new("PLD_ST_MitHallowedGroundBoss", (int)BossAvoidance.On),
             PLD_ST_MitSheltronBoss = new("PLD_ST_MitSheltronBoss", (int)BossAvoidance.Off),
 
             //AoE
+            PLD_AoE_FoF_Trigger = new("PLD_AoE_FoF_Trigger",25),
             PLD_AoE_MitOptions = new("PLD_AoE_MitOptions"),
             PLD_AoE_SheltronOption = new("PLD_AoE_SheltronOption", 50),
             PLD_AoE_Sheltron_Health = new("PLD_AoE_Sheltron_Health", 85),
@@ -391,7 +392,6 @@ internal partial class PLD
             PLD_AoE_HallowedGround_Health = new("PLD_AoE_HallowedGround_Health", 30),
             PLD_AoE_Intervene_HoldCharges = new("PLD_AoE_Intervene_HoldCharges"),
             PLD_AoE_Intervene_MeleeOnly = new("PLD_AoE_Intervene_MeleeOnly"),
-            PLD_ST_ShieldLob_SubOption = new("PLD_ST_ShieldLob_SubOption"),
             PLD_AoE_MP_Reserve = new("PLD_AoE_MP_Reserve", 1000),
 
             //Standalone
