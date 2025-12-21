@@ -71,7 +71,7 @@ internal partial class PLD
         HasStatusEffect(Buffs.SepulchreReady) && GetStatusEffectRemainingTime(Buffs.SepulchreReady) < 6;
 
     private static bool JustMitted =>
-        JustUsed(OriginalHook(Sheltron)) ||
+        JustUsed(OriginalHook(Bulwark)) ||
         JustUsed(OriginalHook(Sentinel), 4f) ||
         JustUsed(DivineVeil, 4f) ||
         JustUsed(Role.Rampart, 4f) ||

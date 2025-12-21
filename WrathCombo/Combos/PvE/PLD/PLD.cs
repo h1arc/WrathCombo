@@ -220,40 +220,50 @@ internal partial class PLD : Tank
 
             if (PLD_AoE_MitOptions == 0)
             {
-                if (InCombat() && //Player is in combat
-                    !JustMitted) //Player has not used a mitigation ability in the last 4-9 seconds
+                // Mitigation
+                if (IsEnabled(Preset.PLD_AoE_AdvancedMode_Mitigation) &&
+                    IsPlayerTargeted() && !JustMitted && InCombat())
                 {
-                    //Hallowed Ground
-                    if (ActionReady(HallowedGround) && //Hallowed Ground is ready
-                        PlayerHealthPercentageHp() < 30) //Player's health is below 30%
+                    // Hallowed Ground
+                    if (ActionReady(HallowedGround) &&
+                        PlayerHealthPercentageHp() < PLD_AoE_HallowedGround_Health)
                         return HallowedGround;
 
-                    if (IsPlayerTargeted())
-                    {
-                        //Sentinel / Guardian
-                        if (ActionReady(OriginalHook(Sentinel)) && //Sentinel is ready
-                            PlayerHealthPercentageHp() < 60) //Player's health is below 60%
-                            return OriginalHook(Sentinel);
+                    // Sheltron
+                    if (LevelChecked(Sheltron) &&
+                        Gauge.OathGauge >= 50 &&
+                        PlayerHealthPercentageHp() < 95 &&
+                        !HasStatusEffect(Buffs.Sheltron) &&
+                        !HasStatusEffect(Buffs.HolySheltron))
+                        return OriginalHook(Sheltron);
 
-                        //Rampart
-                        if (Role.CanRampart(80))
-                            return Role.Rampart;
+                    // Reprisal
+                    if (Role.CanReprisal(80, 3, false))
+                        return Role.Reprisal;
 
-                        //Reprisal
-                        if (Role.CanReprisal(90, 3, false))
-                            return Role.Reprisal;
-                    }
+                    // Divine Veil
+                    if (ActionReady(DivineVeil) &&
+                        NumberOfAlliesInRange(DivineVeil) >= GetPartyMembers().Count * .75 &&
+                        PlayerHealthPercentageHp() < 75)
+                        return DivineVeil;
 
-                    //Bulwark
-                    if (ActionReady(Bulwark) && //Bulwark is ready
-                        PlayerHealthPercentageHp() < 70) //Player's health is below 80%
+                    // Rampart
+                    if (Role.CanRampart(50))
+                        return Role.Rampart;
+
+                    // Arm's Length
+                    if (Role.CanArmsLength(3))
+                        return Role.ArmsLength;
+
+                    // Bulwark
+                    if (ActionReady(Bulwark) &&
+                        PlayerHealthPercentageHp() < 60)
                         return Bulwark;
 
-                    //Sheltron
-                    if (ActionReady(OriginalHook(Sheltron)) && //Sheltron
-                        PlayerHealthPercentageHp() < 85 && //Player's health is below 95%
-                        Gauge.OathGauge >= 50)
-                        return OriginalHook(Sheltron);
+                    // Sentinel / Guardian
+                    if (ActionReady(OriginalHook(Sentinel)) &&
+                        PlayerHealthPercentageHp() < 50)
+                        return OriginalHook(Sentinel);
                 }
             }
 
