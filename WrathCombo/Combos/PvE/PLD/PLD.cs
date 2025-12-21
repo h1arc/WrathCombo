@@ -41,37 +41,42 @@ internal partial class PLD : Tank
 
             if (PLD_ST_MitOptions == 0)
             {
-                if (InCombat() && //Player is in combat
-                    !JustMitted) //Player has not used a mitigation ability in the last 4-9 seconds
+                // Mitigation
+                if (IsPlayerTargeted() &&
+                    !JustMitted && InCombat())
                 {
-                    //HallowedGround
-                    if (ActionReady(HallowedGround) && //HallowedGround is ready
-                        PlayerHealthPercentageHp() < 30) //Player's health is below 30%
+                    // Hallowed Ground
+                    if (ActionReady(HallowedGround) &&
+                        PlayerHealthPercentageHp() < 30)
                         return HallowedGround;
 
-                    if (IsPlayerTargeted())
-                    {
-                        //Sentinel / Damnation
-                        if (ActionReady(OriginalHook(Sentinel)) && //Sentinel is ready
-                            PlayerHealthPercentageHp() < 60) //Player's health is below 60%
-                            return OriginalHook(Sentinel);
-
-                        //Reprisal
-                        if (Role.CanReprisal()
-                            && RaidWideCasting(5f))
-                            return Role.Reprisal;
-                    }
-
-                    //Bulwark
-                    if (ActionReady(Bulwark) && //Bulwark is ready
-                        PlayerHealthPercentageHp() < 70) //Player's health is below 80%
-                        return Bulwark;
-
-                    //Sheltron
-                    if (ActionReady(OriginalHook(Sheltron)) && //Sheltron
-                        PlayerHealthPercentageHp() < 85 && //Player's health is below 95%
-                        Gauge.OathGauge >= 50)
+                    // Sheltron
+                    if (LevelChecked(Sheltron) &&
+                        Gauge.OathGauge >= 50 &&
+                        PlayerHealthPercentageHp() < 95 &&
+                        !HasStatusEffect(Buffs.Sheltron) &&
+                        !HasStatusEffect(Buffs.HolySheltron))
                         return OriginalHook(Sheltron);
+
+                    // Reprisal
+                    if (Role.CanReprisal() && RaidWideCasting(5f))
+                        return Role.Reprisal;
+
+                    // Divine Veil
+                    if (ActionReady(DivineVeil) && RaidWideCasting(5f) &&
+                        NumberOfAlliesInRange(DivineVeil) >= GetPartyMembers().Count * .75 &&
+                        !HasStatusEffect(Role.Debuffs.Reprisal, CurrentTarget, true))
+                        return OriginalHook(Sentinel);
+
+                    // Sentinel / Guardian
+                    if (ActionReady(OriginalHook(Sentinel)) &&
+                        PlayerHealthPercentageHp() < 50)
+                        return OriginalHook(Sentinel);
+
+                    // Bulwark
+                    if (ActionReady(Bulwark) &&
+                        PlayerHealthPercentageHp() < 60)
+                        return Bulwark;
                 }
             }
 
@@ -436,6 +441,7 @@ internal partial class PLD : Tank
                         // Divine Veil
                         if (IsEnabled(Preset.PLD_ST_AdvancedMode_DivineVeil) &&
                             ActionReady(DivineVeil) && RaidWideCasting(5f) &&
+                            NumberOfAlliesInRange(DivineVeil) >= GetPartyMembers().Count * .75 &&
                             (IsNotEnabled(Preset.PLD_ST_AdvancedMode_DivineVeilAvoid) ||
                              !HasStatusEffect(Role.Debuffs.Reprisal, CurrentTarget, true)))
                             return OriginalHook(Sentinel);
@@ -628,6 +634,7 @@ internal partial class PLD : Tank
                         // Divine Veil
                         if (IsEnabled(Preset.PLD_AoE_AdvancedMode_DivineVeil) &&
                             ActionReady(DivineVeil) &&
+                            NumberOfAlliesInRange(DivineVeil) >= GetPartyMembers().Count * .75 &&
                             PlayerHealthPercentageHp() < PLD_AoE_DivineVeil_Health)
                             return DivineVeil;
 
