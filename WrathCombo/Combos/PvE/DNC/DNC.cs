@@ -339,6 +339,13 @@ internal partial class DNC : PhysicalRanged
                 GetStatusEffectRemainingTime(Buffs.FlourishingStarfall) < 4)
                 return StarfallDance;
 
+            // ST Tillana (Emergency Use)
+            if (GetStatusEffectRemainingTime(Buffs.FlourishingFinish) < GCD * 3 &&
+                Gauge.Esprit < 100 &&
+                //IsEnabled(Preset.DNC_ST_Adv_Tillana) && // todo: add option for this
+                EnemyIn15Yalms)
+                return Tillana;
+
             // ST Dance of the Dawn
             if (IsEnabled(Preset.DNC_ST_Adv_DawnDance) &&
                 HasStatusEffect(Buffs.DanceOfTheDawnReady) &&
