@@ -1,5 +1,6 @@
 ﻿#region Dependencies
 using Dalamud.Game.ClientState.JobGauge.Types;
+using System;
 using System.Collections.Generic;
 using WrathCombo.Combos.PvE.Content;
 using WrathCombo.CustomComboNS;
@@ -58,9 +59,9 @@ internal partial class WAR : Tank
             InnerRelease,
             InnerChaos,
             Upheaval,
-            Onslaught,
+            Onslaught, //9
             FellCleave,
-            Onslaught,
+            Onslaught, //11
             FellCleave,
             Onslaught,
             FellCleave,
@@ -78,6 +79,12 @@ internal partial class WAR : Tank
         ];
         public override int MinOpenerLevel => 100;
         public override int MaxOpenerLevel => 109;
+
+        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } =
+        [
+            ([9, 11], () => !HasCharges(Onslaught))
+        ];
+        
         internal override UserData ContentCheckConfig => WAR_BalanceOpener_Content;
         public override bool HasCooldowns() => IsOffCooldown(InnerRelease) && IsOffCooldown(Upheaval) && GetRemainingCharges(Infuriate) >= 2 && GetRemainingCharges(Onslaught) >= 3;
     }
