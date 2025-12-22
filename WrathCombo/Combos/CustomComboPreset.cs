@@ -766,7 +766,7 @@ public enum Preset
 
     [OccultCrescent]
     [ParentCombo(Phantom_Dancer)]
-    [CustomComboInfo("Dance", "Adds Dance into the rotation.", Job.ADV)]
+    [CustomComboInfo("Dance", "Adds Dance and its followup GCD attacks into the rotation.", Job.ADV)]
     Phantom_Dancer_Dance = 110077,
     
     [OccultCrescent]
@@ -778,8 +778,32 @@ public enum Preset
     [ParentCombo(Phantom_Dancer)]
     [CustomComboInfo("Mesmermize", "Adds Mesmerize into the rotation.", Job.ADV)]
     Phantom_Dancer_Mesmerize = 110079,
+    
+    [OccultCrescent(OccultCrescent.JobIDs.MysticKnight)]
+    [CustomComboInfo("Mystic Knight Job Actions", "Enable this to add Dancer-specific actions into the rotation.", Job.ADV)]
+    Phantom_MysticKnight = 110080,
 
-    //Last Value = 110079
+    [OccultCrescent]
+    [ParentCombo(Phantom_MysticKnight)]
+    [CustomComboInfo("Sundering Spellblade", "Adds Sundering Spellblade into the rotation.", Job.ADV)]
+    Phantom_MysticKnight_SunderingSpellblade = 110081,
+    
+    [OccultCrescent]
+    [ParentCombo(Phantom_MysticKnight)]
+    [CustomComboInfo("Holy Spellblade", "Adds Holy Spellblade into the rotation.", Job.ADV)]
+    Phantom_MysticKnight_HolySpellblade = 110082,
+    
+    [OccultCrescent]
+    [ParentCombo(Phantom_MysticKnight)]
+    [CustomComboInfo("Blazing Spellblade", "Adds Blazing Spellblade into the rotation when the buff is not present.", Job.ADV)]
+    Phantom_MysticKnight_BlazingSpellblade = 110083,
+    
+    [OccultCrescent]
+    [ParentCombo(Phantom_MysticKnight)]
+    [CustomComboInfo("Magic Shell", "Adds Magic Shell into the rotation.", Job.ADV)]
+    Phantom_MysticKnight_MagicShell = 110084,
+
+    //Last Value = 110084
     #endregion
 
     // Jobs

@@ -48,6 +48,7 @@ internal partial class OccultCrescent
         if (TryGetCannoneerAction(ref actionID)) return true;
         if (TryGetGeomancerAction(ref actionID)) return true;
         if (TryGetDancerAction(ref actionID)) return true;
+        if (TryGetMysticKnightAction(ref actionID)) return true;
 
         return false;
     }
@@ -594,38 +595,33 @@ internal partial class OccultCrescent
     
     private static bool TryGetMysticKnightAction(ref uint actionID)
     {
-        if (!IsEnabled(Preset.Phantom_Bard))
+        if (!IsEnabled(Preset.Phantom_MysticKnight))
             return false;
-
-        if (!CanWeaveNow) return false;
         
-        if (IsEnabledAndUsable(Preset.Phantom_Bard_HerosRime, HerosRime))
+        if (IsEnabledAndUsable(Preset.Phantom_MysticKnight_MagicShell, MagicShell) && CanWeave() && InCombat())
         {
-            actionID = HerosRime; // burst song
+            actionID = MagicShell;
+            return true;
+        }
+        
+        if (IsEnabledAndUsable(Preset.Phantom_MysticKnight_BlazingSpellblade, BlazingSpellblade) && !HasStatusEffect(Buffs.BlazingSpellblade) && !CanWeave())
+        {
+            actionID = BlazingSpellblade;
             return true;
         }
 
-        if (IsEnabledAndUsable(Preset.Phantom_Bard_OffensiveAria, OffensiveAria) &&
-            !HasStatusEffect(Buffs.OffensiveAria) && !HasStatusEffect(Buffs.HerosRime, anyOwner: true))
+        if (IsEnabledAndUsable(Preset.Phantom_MysticKnight_HolySpellblade, HolySpellblade) && !CanWeave())
         {
-            actionID = OffensiveAria; // off-song
+            actionID = HolySpellblade;
             return true;
         }
 
-        if (IsEnabledAndUsable(Preset.Phantom_Bard_RomeosBallad, RomeosBallad) &&
-            CanInterruptEnemy())
+        if (IsEnabledAndUsable(Preset.Phantom_MysticKnight_SunderingSpellblade, SunderingSpellblade) && !CanWeave())
         {
-            actionID = RomeosBallad; // interrupt
+            actionID = SunderingSpellblade;
             return true;
         }
-
-        if (IsEnabledAndUsable(Preset.Phantom_Bard_MightyMarch, MightyMarch) &&
-            !HasStatusEffect(Buffs.MightyMarch) && PlayerHP <= Phantom_Bard_MightyMarch_Health)
-        {
-            actionID = MightyMarch; // aoe heal
-            return true;
-        }
-
+        
         return false;
     }
     
@@ -679,9 +675,6 @@ internal partial class OccultCrescent
     
     private static bool TryGetGladiatorAction(ref uint actionID)
     {
-        if (!IsEnabled(Preset.Phantom_Bard))
-            return false;
-
         return false;
     }
 }

@@ -192,7 +192,8 @@ internal partial class OccultCrescent
             Invulnerability = 4275,
             Shirahadori = 4245,
             Vigilance = 4277,
-            CloudyCaress = 4280;
+            CloudyCaress = 4280,
+            BlazingSpellblade = 4790;
     }
 
     public static class Debuffs
