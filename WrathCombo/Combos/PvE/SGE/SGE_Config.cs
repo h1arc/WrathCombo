@@ -359,7 +359,7 @@ internal partial class SGE
 
                 case Preset.SGE_Mit_AoE:
                     DrawSliderInt(0, 100, SGE_Mit_AoE_PrognosisOption,
-                        "Shield Check: Percentage of Party Members without shields to check for.", sliderIncrement: 25);
+                        "Shield Check: Percentage of Party Members to get Prognosis shields. \n 0 = Dont use, 100 = everyone needs shields", sliderIncrement: 25);
                     DrawHorizontalMultiChoice(SGE_Mit_AoE_Options,
                         "Include Philosophia", "Will add Philosophia before Eukrasian Prognosis for the Healing Boost", 3, 0);
                     DrawHorizontalMultiChoice(SGE_Mit_AoE_Options,
