@@ -1032,12 +1032,17 @@ internal class Debug : ConfigWindow, IDisposable
                 ImGui.Text("Icons in `ui/uld/MKDSupportJob.uld`");
                 ImGui.NewLine();
                 var counter = 0;
-                for (var icon = 0; icon <= 15; icon++)
+                for (var icon = 0; icon <= 25; icon++)
                 {
+                    if (!JobIDExtensions.GetActiveFromValue(icon))
+                        continue;
+                    
                     counter++;
                     ImGui.BeginGroup();
                     
-                    ImGui.Text($"{icon}: {GetJobName(icon) ?? "Unknown"}");
+                    ImGui.Text(
+                        $"{icon}: " +
+                        $"{JobIDExtensions.GetNameFromValue(icon) ?? "Unknown"}");
                     ImGui.NewLine();
                     Presets.DrawOccultJobIcon(icon);
                     ImGui.EndGroup();
@@ -1049,17 +1054,6 @@ internal class Debug : ConfigWindow, IDisposable
                     }
                     else
                         ImGui.SameLine();
-                }
-                
-                string? GetJobName(int icon)
-                {
-                    return typeof(OccultCrescent.JobIDs)
-                        .GetFields(BindingFlags.Public | BindingFlags.Static)
-                        .FirstOrDefault(field =>
-                            field is { IsLiteral: true, IsInitOnly: false } &&
-                            field.GetValue(null) is int value &&
-                            value == icon)
-                        ?.Name;
                 }
             }
             ImGui.Unindent();
