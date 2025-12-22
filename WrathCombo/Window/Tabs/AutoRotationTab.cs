@@ -1,4 +1,6 @@
-﻿using Dalamud.Interface.Components;
+﻿#region
+
+using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility.Raii;
 using ECommons;
 using ECommons.DalamudServices;
@@ -12,6 +14,10 @@ using WrathCombo.Extensions;
 using WrathCombo.Services;
 using WrathCombo.Services.IPC;
 using WrathCombo.Services.IPC_Subscriber;
+using WrathCombo.API.Enum;
+
+#endregion
+
 namespace WrathCombo.Window.Tabs;
 
 internal class AutoRotationTab : ConfigWindow
@@ -84,7 +90,7 @@ internal class AutoRotationTab : ConfigWindow
                                        "Furthest - Prioritises the furthest target from you.");
             ImGui.Spacing();
 
-            if (cfg.DPSRotationMode == AutoRotation.DPSRotationMode.Manual)
+            if (cfg.DPSRotationMode is DPSRotationMode.Manual)
             {
                 changed |= ImGui.Checkbox("Enforce Best AoE Target Selection", ref cfg.DPSSettings.AoEIgnoreManual);
 
