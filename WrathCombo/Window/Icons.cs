@@ -17,7 +17,7 @@ internal static class Icons
     
     public static class Occult
     {
-        private const int MaxJobId = 12; // Change later when new Occult classes have sprites
+        private const int MaxJobId = 15; // Change later when new Occult classes have sprites
         private const int AnimationOffset = 30;
 
         public static readonly Lazy<FrozenDictionary<int, IDalamudTextureWrap?[]>> JobSprites =
