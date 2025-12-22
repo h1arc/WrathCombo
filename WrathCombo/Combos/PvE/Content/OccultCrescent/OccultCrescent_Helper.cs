@@ -153,9 +153,9 @@ internal partial class OccultCrescent
         Thief = 12,
 
         // 7.4
-        Dancer = 15,
         MysticKnight = 13,
         Gladiator = 14,
+        Dancer = 15,
 
         [NotYetImplemented] Ninja = 16,
         [NotYetImplemented] Summoner = 17,
