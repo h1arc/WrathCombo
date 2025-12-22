@@ -111,8 +111,14 @@ internal partial class OccultCrescent
         WillingToWaltz = 46602,
         Quickstep = 46603,
         SteadfastStance = 46604,
-        Mesmerize = 46605;
+        Mesmerize = 46605,
+    
         //Gladiator
+        Finisher = 46594,
+        Defend = 46595,
+        LongReach = 46596,
+        BladeBlitz = 46597;
+            
         
     internal static bool IsEnabledAndUsable(Preset preset, uint action) => IsEnabled(preset) && HasActionEquipped(action) && ActionReady(action);
 
@@ -194,7 +200,8 @@ internal partial class OccultCrescent
             Shirahadori = 4245,
             Vigilance = 4277,
             CloudyCaress = 4280,
-            BlazingSpellblade = 4790;
+            BlazingSpellblade = 4790,
+            Quickstep = 4798;
     }
 
     public static class Debuffs

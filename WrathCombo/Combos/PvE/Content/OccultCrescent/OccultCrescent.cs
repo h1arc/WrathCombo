@@ -49,6 +49,7 @@ internal partial class OccultCrescent
         if (TryGetGeomancerAction(ref actionID)) return true;
         if (TryGetDancerAction(ref actionID)) return true;
         if (TryGetMysticKnightAction(ref actionID)) return true;
+        if (TryGetGladiatorAction(ref actionID)) return true;
 
         return false;
     }
@@ -603,6 +604,8 @@ internal partial class OccultCrescent
             actionID = MagicShell;
             return true;
         }
+      
+        if (CanWeaveNow) return false;
         
         if (IsEnabledAndUsable(Preset.Phantom_MysticKnight_BlazingSpellblade, BlazingSpellblade) && !HasStatusEffect(Buffs.BlazingSpellblade) && !CanWeave())
         {
@@ -630,12 +633,21 @@ internal partial class OccultCrescent
         if (!IsEnabled(Preset.Phantom_Dancer))
             return false;
         
-        #region Dances
         if (IsEnabledAndUsable(Preset.Phantom_Dancer_Dance, Dance) && CanWeave())
         {
             actionID = Dance;
             return true;
         }
+        
+        if (IsEnabledAndUsable(Preset.Phantom_Dancer_Mesmerize, Mesmerize) && InCombat() && CanWeave())
+        {
+            actionID = Mesmerize; //Damage Debuff
+            return true;
+        }
+        
+        if (CanWeaveNow) return false;
+        
+        #region Dances
         if (IsEnabledAndUsable(Preset.Phantom_Dancer_Dance, PoisedToSwordDance))
         {
             actionID = PoisedToSwordDance;
@@ -658,15 +670,9 @@ internal partial class OccultCrescent
         }
         #endregion
         
-        if (IsEnabledAndUsable(Preset.Phantom_Dancer_QuickStep, Quickstep) && IsPlayerTargeted() && InCombat() && CanWeave())
+        if (IsEnabledAndUsable(Preset.Phantom_Dancer_QuickStep, Quickstep) && !HasStatusEffect(Buffs.Quickstep))
         {
             actionID = Quickstep; //Evasion self buff
-            return true;
-        }
-        
-        if (IsEnabledAndUsable(Preset.Phantom_Dancer_Mesmerize, Mesmerize) && InCombat() && CanWeave())
-        {
-            actionID = Mesmerize; //Damage Debuff
             return true;
         }
         
@@ -675,6 +681,29 @@ internal partial class OccultCrescent
     
     private static bool TryGetGladiatorAction(ref uint actionID)
     {
+        if (CanWeaveNow) return false;
+        
+        if (IsEnabledAndUsable(Preset.Phantom_Gladiator_Finisher, Finisher) && HasBattleTarget() && InMeleeRange())
+        {
+            actionID = Finisher;
+            return true;
+        }
+        if (IsEnabledAndUsable(Preset.Phantom_Gladiator_Defend, Defend))
+        {
+            actionID = Defend;
+            return true;
+        }
+        if (IsEnabledAndUsable(Preset.Phantom_Gladiator_LongReach, LongReach) && HasBattleTarget())
+        {
+            actionID = LongReach;
+            return true;
+        }
+        if (IsEnabledAndUsable(Preset.Phantom_Gladiator_BladeBlitz, BladeBlitz) && InCombat() && InActionRange(BladeBlitz))
+        {
+            actionID = BladeBlitz;
+            return true;
+        }
+        
         return false;
     }
 }

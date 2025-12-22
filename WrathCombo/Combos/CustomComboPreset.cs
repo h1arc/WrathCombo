@@ -780,7 +780,7 @@ public enum Preset
     Phantom_Dancer_Mesmerize = 110079,
     
     [OccultCrescent(OccultCrescent.JobIDs.MysticKnight)]
-    [CustomComboInfo("Mystic Knight Job Actions", "Enable this to add Dancer-specific actions into the rotation.", Job.ADV)]
+    [CustomComboInfo("Mystic Knight Job Actions", "Enable this to add Mystic Knight-specific actions into the rotation.", Job.ADV)]
     Phantom_MysticKnight = 110080,
 
     [OccultCrescent]
@@ -802,8 +802,32 @@ public enum Preset
     [ParentCombo(Phantom_MysticKnight)]
     [CustomComboInfo("Magic Shell", "Adds Magic Shell into the rotation.", Job.ADV)]
     Phantom_MysticKnight_MagicShell = 110084,
+    
+    [OccultCrescent(OccultCrescent.JobIDs.Gladiator)]
+    [CustomComboInfo("Gladiator Job Actions", "Enable this to add Gladiator-specific actions into the rotation.", Job.ADV)]
+    Phantom_Gladiator = 110085,
 
-    //Last Value = 110084
+    [OccultCrescent]
+    [ParentCombo(Phantom_Gladiator)]
+    [CustomComboInfo("Finisher", "Adds Finisher into the rotation.", Job.ADV)]
+    Phantom_Gladiator_Finisher = 110086,
+    
+    [OccultCrescent]
+    [ParentCombo(Phantom_Gladiator)]
+    [CustomComboInfo("Defend", "Adds Defend into the rotation.", Job.ADV)]
+    Phantom_Gladiator_Defend = 110087,
+    
+    [OccultCrescent]
+    [ParentCombo(Phantom_Gladiator)]
+    [CustomComboInfo("Long Reach", "Adds Long Reach into the rotation.", Job.ADV)]
+    Phantom_Gladiator_LongReach = 110088,
+    
+    [OccultCrescent]
+    [ParentCombo(Phantom_Gladiator)]
+    [CustomComboInfo("Blade Blitz", "Adds Blade Blitz into the rotation.", Job.ADV)]
+    Phantom_Gladiator_BladeBlitz = 110089,
+
+    //Last Value = 110089
     #endregion
 
     // Jobs
