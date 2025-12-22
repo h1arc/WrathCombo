@@ -134,12 +134,12 @@ internal partial class OccultCrescent
             Thief = 12,
             Dancer = 18,
             MysticKnight = 13,
-            Gladiator = 21,
+            Gladiator = 14,
             
             #region Not Yet Added
 
             Dragoon = 22,
-            WhiteMage = 14,
+            WhiteMage = 21,
             BlackMage = 15,
             Ninja = 16,
             Summoner = 17,
