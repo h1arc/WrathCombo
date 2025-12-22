@@ -95,7 +95,25 @@ internal partial class OccultCrescent
         HastyMirage = 41617,
         AetherialGain = 41618,
         RingingRespite = 41619,
-        Suspend = 41620;
+        Suspend = 41620,
+        
+        //Mystic Knight
+        MagicShell = 46590,
+        SunderingSpellblade = 46591,
+        HolySpellblade = 46592,
+        BlazingSpellblade = 46593,
+        
+        //Dancer
+        Dance = 46598,
+        PoisedToSwordDance = 46599,
+        TemptedToTango = 46600,
+        Jitterbug = 46601,
+        WillingToWaltz = 46602,
+        Quickstep = 46603,
+        SteadfastStance = 46604,
+        Mesmerize = 46605;
+        //Gladiator
+        
     internal static bool IsEnabledAndUsable(Preset preset, uint action) => IsEnabled(preset) && HasActionEquipped(action) && ActionReady(action);
 
     public static class JobIDs
@@ -114,6 +132,10 @@ internal partial class OccultCrescent
             Chemist = 10,
             Oracle = 11,
             Thief = 12,
+            Dancer = 18,
+            MysticKnight = 22,
+            Gladiator = 21,
+            
             #region Not Yet Added
 
             Dragoon = 13,
@@ -121,11 +143,8 @@ internal partial class OccultCrescent
             BlackMage = 15,
             Ninja = 16,
             Summoner = 17,
-            Dancer = 18,
             RedMage = 19,
             BlueMage = 20,
-            Gladiator = 21,
-            MysticKnight = 22,
             BeastMaster = 23,
             Necromancer = 24,
             Mime = 25;

@@ -47,6 +47,7 @@ internal partial class OccultCrescent
         if (TryGetOracleAction(ref actionID)) return true;
         if (TryGetCannoneerAction(ref actionID)) return true;
         if (TryGetGeomancerAction(ref actionID)) return true;
+        if (TryGetDancerAction(ref actionID)) return true;
 
         return false;
     }
@@ -587,6 +588,99 @@ internal partial class OccultCrescent
         }
 
         // GCDs
+
+        return false;
+    }
+    
+    private static bool TryGetMysticKnightAction(ref uint actionID)
+    {
+        if (!IsEnabled(Preset.Phantom_Bard))
+            return false;
+
+        if (!CanWeaveNow) return false;
+        
+        if (IsEnabledAndUsable(Preset.Phantom_Bard_HerosRime, HerosRime))
+        {
+            actionID = HerosRime; // burst song
+            return true;
+        }
+
+        if (IsEnabledAndUsable(Preset.Phantom_Bard_OffensiveAria, OffensiveAria) &&
+            !HasStatusEffect(Buffs.OffensiveAria) && !HasStatusEffect(Buffs.HerosRime, anyOwner: true))
+        {
+            actionID = OffensiveAria; // off-song
+            return true;
+        }
+
+        if (IsEnabledAndUsable(Preset.Phantom_Bard_RomeosBallad, RomeosBallad) &&
+            CanInterruptEnemy())
+        {
+            actionID = RomeosBallad; // interrupt
+            return true;
+        }
+
+        if (IsEnabledAndUsable(Preset.Phantom_Bard_MightyMarch, MightyMarch) &&
+            !HasStatusEffect(Buffs.MightyMarch) && PlayerHP <= Phantom_Bard_MightyMarch_Health)
+        {
+            actionID = MightyMarch; // aoe heal
+            return true;
+        }
+
+        return false;
+    }
+    
+    private static bool TryGetDancerAction(ref uint actionID)
+    {
+        if (!IsEnabled(Preset.Phantom_Dancer))
+            return false;
+        
+        #region Dances
+        if (IsEnabledAndUsable(Preset.Phantom_Dancer_Dance, Dance) && CanWeave())
+        {
+            actionID = Dance;
+            return true;
+        }
+        if (IsEnabledAndUsable(Preset.Phantom_Dancer_Dance, PoisedToSwordDance))
+        {
+            actionID = PoisedToSwordDance;
+            return true;
+        }
+        if (IsEnabledAndUsable(Preset.Phantom_Dancer_Dance, TemptedToTango))
+        {
+            actionID = TemptedToTango;
+            return true;
+        }
+        if (IsEnabledAndUsable(Preset.Phantom_Dancer_Dance, Jitterbug))
+        {
+            actionID = Jitterbug;
+            return true;
+        }
+        if (IsEnabledAndUsable(Preset.Phantom_Dancer_Dance, WillingToWaltz))
+        {
+            actionID = WillingToWaltz;
+            return true;
+        }
+        #endregion
+        
+        if (IsEnabledAndUsable(Preset.Phantom_Dancer_QuickStep, Quickstep) && IsPlayerTargeted() && InCombat() && CanWeave())
+        {
+            actionID = Quickstep; //Evasion self buff
+            return true;
+        }
+        
+        if (IsEnabledAndUsable(Preset.Phantom_Dancer_Mesmerize, Mesmerize) && InCombat() && CanWeave())
+        {
+            actionID = Mesmerize; //Damage Debuff
+            return true;
+        }
+        
+        return false;
+    }
+    
+    private static bool TryGetGladiatorAction(ref uint actionID)
+    {
+        if (!IsEnabled(Preset.Phantom_Bard))
+            return false;
 
         return false;
     }

@@ -759,8 +759,27 @@ public enum Preset
     [ParentCombo(Phantom_Geomancer_Weather)]
     [CustomComboInfo("Aetherial Gain", "Adds Aetherial Gain into the rotation.", Job.ADV)]
     Phantom_Geomancer_AetherialGain = 110072,
+    
+    [OccultCrescent(OccultCrescent.JobIDs.Dancer)]
+    [CustomComboInfo("Dancer Job Actions", "Enable this to add Dancer-specific actions into the rotation.", Job.ADV)]
+    Phantom_Dancer = 110076,
 
-    //Last Value = 110075
+    [OccultCrescent]
+    [ParentCombo(Phantom_Dancer)]
+    [CustomComboInfo("Dance", "Adds Dance into the rotation.", Job.ADV)]
+    Phantom_Dancer_Dance = 110077,
+    
+    [OccultCrescent]
+    [ParentCombo(Phantom_Dancer)]
+    [CustomComboInfo("Quickstep", "Adds Quickstep into the rotation when targetted by an enemy.", Job.ADV)]
+    Phantom_Dancer_QuickStep = 110078,
+    
+    [OccultCrescent]
+    [ParentCombo(Phantom_Dancer)]
+    [CustomComboInfo("Mesmermize", "Adds Mesmerize into the rotation.", Job.ADV)]
+    Phantom_Dancer_Mesmerize = 110079,
+
+    //Last Value = 110079
     #endregion
 
     // Jobs
