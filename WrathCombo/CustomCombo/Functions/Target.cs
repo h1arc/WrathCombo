@@ -226,7 +226,14 @@ internal abstract partial class CustomComboFunctions
         if ((optionalTarget ?? CurrentTarget) is not { } chara)
             return false;
 
-        return GetTargetDistance(chara) <= (InPvP() ? 5f : 3f) + Service.Configuration.MeleeOffset;
+        var distance = GetTargetDistance(chara);
+        var height   = GetTargetHeightDifference(optionalTarget);
+
+        // Override for objects right above/beneath you
+        if (height > distance * 1.5)
+            distance = height;
+
+        return distance <= (InPvP() ? 5f : 3f) + Service.Configuration.MeleeOffset;
     }
 
     /// <summary> Checks if an object is within a given range. Defaults to CurrentTarget unless specified. </summary>
@@ -235,7 +242,14 @@ internal abstract partial class CustomComboFunctions
         if ((optionalTarget ?? CurrentTarget) is not { } chara)
             return false;
 
-        return GetTargetDistance(chara) <= range;
+        var distance = GetTargetDistance(chara);
+        var height   = GetTargetHeightDifference(optionalTarget);
+
+        // Override for objects right above/beneath you
+        if (height > distance * 1.5)
+            distance = height;
+
+        return distance <= range;
     }
 
     /// <summary>
