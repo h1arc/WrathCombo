@@ -118,6 +118,7 @@ internal partial class OccultCrescent
 
     public static class JobIDs
     {
+        // matched to a job with https://finalfantasy.fandom.com/wiki/Final_Fantasy_V_jobs
         public const int
             Freelancer = 0,
             Knight = 1,
@@ -138,13 +139,13 @@ internal partial class OccultCrescent
             
             #region Not Yet Added
 
-            Dragoon = 22,
-            WhiteMage = 21,
-            BlackMage = 18,
             Ninja = 16,
             Summoner = 17,
+            BlackMage = 18,
             RedMage = 19,
             BlueMage = 20,
+            WhiteMage = 21,
+            Dragoon = 22,
             BeastMaster = 23,
             Necromancer = 24,
             Mime = 25;
