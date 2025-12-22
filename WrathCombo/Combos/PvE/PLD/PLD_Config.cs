@@ -382,7 +382,6 @@ internal partial class PLD
             PLD_Balance_Content = new("PLD_Balance_Content", 1),
             PLD_ST_Intervene_Charges = new("PLD_ST_Intervene_Charges"),
             PLD_ST_Intervene_Movement = new("PLD_ST_Intervene_Movement"),
-            PLD_ST_Intervene_Distance = new("PLD_ST_Intervene_Distance", 3),
             PLD_ST_MP_Reserve = new("PLD_ST_MP_Reserve", 1000),
             PLD_ST_MitOptions = new("PLD_ST_MitOptions"),
             PLD_ST_SheltronOption = new("PLD_ST_SheltronOption", 50),
@@ -411,7 +410,6 @@ internal partial class PLD
             PLD_AoE_HallowedGround_Health = new("PLD_AoE_HallowedGround_Health", 30),
             PLD_AoE_Intervene_Charges = new("PLD_AoE_Intervene_Charges"),
             PLD_AoE_Intervene_Movement = new("PLD_AoE_Intervene_Movement"),
-            PLD_AoE_Intervene_Distance = new("PLD_AoE_Intervene_Distance", 3),
             PLD_AoE_MP_Reserve = new("PLD_AoE_MP_Reserve", 1000),
 
             //Standalone
@@ -431,7 +429,12 @@ internal partial class PLD
             PLD_Mit_Clemency_Health = new("PLD_Mit_Clemency_Health", 40);
 
         public static UserFloat
+            // ST
+            PLD_ST_Intervene_Distance = new("PLD_ST_Intervene_Distance", 3f),
             PLD_ST_InterveneTimeStill = new("PLD_ST_InterveneTimeStill", 2.5f),
+            
+            // AoE
+            PLD_AoE_Intervene_Distance = new("PLD_AoE_Intervene_Distance", 3f),
             PLD_AoE_InterveneTimeStill = new("PLD_AoE_InterveneTimeStill", 2.5f);
 
         public static UserBool
