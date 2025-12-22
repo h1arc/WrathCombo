@@ -159,6 +159,8 @@ internal partial class SAM
         !IsMoving() && TimeStoodStill > TimeSpan.FromSeconds(SAM_ST_MeditateTimeStill) &&
         InCombat() && !HasBattleTarget();
 
+    private static bool HasMaxMeikyoCharges =>
+        GetRemainingCharges(MeikyoShisui) == GetMaxCharges(MeikyoShisui);
     #endregion
 
     #region Meikyo
@@ -168,7 +170,8 @@ internal partial class SAM
         int meikyoUsed = CombatActions.Count(x => x == MeikyoShisui);
         float gcd = GetAdjustedRecastTime(ActionType.Action, Hakaze) / 100f;
 
-        if (ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.Tendo) && !HasStatusEffect(Buffs.MeikyoShisui) &&
+        if (ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.Tendo) && 
+            !HasStatusEffect(Buffs.MeikyoShisui) && InActionRange(OriginalHook(Hakaze)) &&
             (JustUsed(Gekko) || JustUsed(Kasha) || JustUsed(Yukikaze)))
         {
             if (SAM_ST_MeikyoLogic == 1 && (SAM_ST_MeikyoBossOption == 0 || InBossEncounter()) ||
@@ -180,6 +183,14 @@ internal partial class SAM
                     case true when (IsEnabled(Preset.SAM_ST_Opener) && SAM_Balance_Content == 1 && !InBossEncounter() ||
                                     IsNotEnabled(Preset.SAM_ST_Opener)) &&
                                    meikyoUsed < 1 && !HasStatusEffect(Buffs.TsubameReady):
+                        return true;
+                    
+                    // Gut Meikyo
+                    case true when GetCooldownRemainingTime(Senei) <= gcd:
+                        return true;
+
+                    // overcap protection
+                    case true when GetCooldownRemainingTime(Senei) > 30 && HasMaxMeikyoCharges:
                         return true;
 
                     case true:
@@ -206,6 +217,10 @@ internal partial class SAM
                     }
                 }
 
+                // Gut Meikyo
+                if( GetCooldownRemainingTime(Senei) <= gcd || GetCooldownRemainingTime(Senei) is > 50 and < 65 )
+                    return true;
+                
                 //Pre Enhanced Senei
                 if (!EnhancedSenei && ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.TsubameReady))
                     return true;
