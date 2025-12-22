@@ -157,6 +157,9 @@ internal partial class OccultCrescent
         Gladiator = 14,
         Dancer = 15,
 
+        // (if they follow what they did in 7.4)
+        // Any future jobs should directly follow the ID of the last-active job.
+        // Remove NotYetImplemented from all of them to get icons to show in Debug.
         [NotYetImplemented] Ninja = 16,
         [NotYetImplemented] Summoner = 17,
         [NotYetImplemented] BlackMage = 18,
