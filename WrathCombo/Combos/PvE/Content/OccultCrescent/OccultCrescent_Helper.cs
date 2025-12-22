@@ -132,7 +132,7 @@ internal partial class OccultCrescent
             Chemist = 10,
             Oracle = 11,
             Thief = 12,
-            Dancer = 18,
+            Dancer = 15,
             MysticKnight = 13,
             Gladiator = 14,
             
@@ -140,7 +140,7 @@ internal partial class OccultCrescent
 
             Dragoon = 22,
             WhiteMage = 21,
-            BlackMage = 15,
+            BlackMage = 18,
             Ninja = 16,
             Summoner = 17,
             RedMage = 19,
