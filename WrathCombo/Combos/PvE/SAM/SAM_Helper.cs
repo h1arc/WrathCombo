@@ -175,15 +175,13 @@ internal partial class SAM
             if (SAM_ST_MeikyoLogic == 1 && (SAM_ST_MeikyoBossOption == 0 || InBossEncounter()) ||
                 simpleMode && InBossEncounter())
             {
-                switch (EnhancedSenei)
-                {
-                    case true when SenCount is 0 && GetCooldownRemainingTime(Senei) <= gcd * 6 && JustUsed(MidareSetsugekka, 5f) ||
-                                   SenCount is 0 && GetCooldownRemainingTime(Senei) <= gcd * 5 && JustUsed(Higanbana, 5f) ||
-                                   SenCount is 1 && GetCooldownRemainingTime(Senei) <= gcd * 4 ||
-                                   SenCount is 2 && GetCooldownRemainingTime(Senei) <= gcd * 3 ||
-                                   SenCount is 3 && GetCooldownRemainingTime(Senei) <= gcd * 2:
-                        return true;
-                }
+                if (EnhancedSenei &&
+                    (SenCount is 0 && GetCooldownRemainingTime(Senei) <= gcd * 6 && JustUsed(MidareSetsugekka, 5f) ||
+                     SenCount is 0 && GetCooldownRemainingTime(Senei) <= gcd * 5 && JustUsed(Higanbana, 5f) ||
+                     SenCount is 1 && GetCooldownRemainingTime(Senei) <= gcd * 4 ||
+                     SenCount is 2 && GetCooldownRemainingTime(Senei) <= gcd * 3 ||
+                     SenCount is 3 && GetCooldownRemainingTime(Senei) <= gcd * 2))
+                    return true;
 
                 // Pre 94
                 if (!EnhancedSenei &&
