@@ -228,12 +228,9 @@ internal abstract partial class CustomComboFunctions
 
         var distance = GetTargetDistance(chara);
         var height   = GetTargetHeightDifference(optionalTarget);
+        var largest = Math.Max(distance, height);
 
-        // Override for objects right above/beneath you
-        if (height > distance * 1.5)
-            distance = height;
-
-        return distance <= (InPvP() ? 5f : 3f) + Service.Configuration.MeleeOffset;
+        return largest <= (InPvP() ? 5f : 3f) + Service.Configuration.MeleeOffset;
     }
 
     /// <summary> Checks if an object is within a given range. Defaults to CurrentTarget unless specified. </summary>
@@ -244,12 +241,9 @@ internal abstract partial class CustomComboFunctions
 
         var distance = GetTargetDistance(chara);
         var height   = GetTargetHeightDifference(optionalTarget);
+        var largest = Math.Max(distance, height);
 
-        // Override for objects right above/beneath you
-        if (height > distance * 1.5)
-            distance = height;
-
-        return distance <= range;
+        return largest <= range;
     }
 
     /// <summary>
