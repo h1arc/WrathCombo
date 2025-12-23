@@ -176,7 +176,8 @@ internal partial class SAM
             {
                 switch (EnhancedSenei)
                 {
-                    case true when GetRemainingCharges(MeikyoShisui) is 1 && GetCooldownChargeRemainingTime(MeikyoShisui) < GetCooldownRemainingTime(Senei) - 10:
+                    case true when GetRemainingCharges(MeikyoShisui) is 1 &&
+                                   GetCooldownChargeRemainingTime(MeikyoShisui) < GetCooldownRemainingTime(Senei) - 10:
 
                     case true when SenCount is 0 && GetCooldownRemainingTime(Senei) <= 14 && JustUsed(MidareSetsugekka, 5f) ||
                                    SenCount is 0 && GetCooldownRemainingTime(Senei) <= 10 && JustUsed(Higanbana, 5f) ||
