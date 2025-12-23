@@ -117,9 +117,8 @@ internal partial class SAM
                CanApplyStatus(CurrentTarget, Debuffs.Higanbana) &&
                HasBattleTarget() &&
                GetTargetHPPercent() > hpThreshold &&
-               (dotRemaining <= dotRefresh ||
-                JustUsed(MeikyoShisui, 15f) &&
-                dotRemaining <= 15);
+               dotRemaining <= dotRefresh &&
+               JustUsed(MeikyoShisui, 15f);
     }
 
     private static int ComputeHpThresholdHiganbana()
@@ -175,19 +174,22 @@ internal partial class SAM
             if (SAM_ST_MeikyoLogic == 1 && (SAM_ST_MeikyoBossOption == 0 || InBossEncounter()) ||
                 simpleMode && InBossEncounter())
             {
-                if (EnhancedSenei &&
-                    (SenCount is 0 && GetCooldownRemainingTime(Senei) <= gcd * 6 && JustUsed(MidareSetsugekka, 5f) ||
-                     SenCount is 0 && GetCooldownRemainingTime(Senei) <= gcd * 5 && JustUsed(Higanbana, 5f) ||
-                     SenCount is 1 && GetCooldownRemainingTime(Senei) <= gcd * 4 ||
-                     SenCount is 2 && GetCooldownRemainingTime(Senei) <= gcd * 3 ||
-                     SenCount is 3 && GetCooldownRemainingTime(Senei) <= gcd * 2))
-                    return true;
+                switch (EnhancedSenei)
+                {
+                    case true when GetRemainingCharges(MeikyoShisui) is 1 && GetCooldownChargeRemainingTime(MeikyoShisui) < GetCooldownRemainingTime(Senei) - 10:
 
-                // Pre 94
-                if (!EnhancedSenei &&
-                    (GetCooldownRemainingTime(Senei) <= gcd ||
-                     GetCooldownRemainingTime(Senei) is > 50 and < 65))
-                    return true;
+                    case true when SenCount is 0 && GetCooldownRemainingTime(Senei) <= 14 && JustUsed(MidareSetsugekka, 5f) ||
+                                   SenCount is 0 && GetCooldownRemainingTime(Senei) <= 10 && JustUsed(Higanbana, 5f) ||
+                                   SenCount is 1 && GetCooldownRemainingTime(Senei) <= 8 ||
+                                   SenCount is 2 && GetCooldownRemainingTime(Senei) <= 6 ||
+                                   SenCount is 3 && GetCooldownRemainingTime(Senei) <= 4:
+
+                    // Pre 94
+                    case false when
+                        GetCooldownRemainingTime(Senei) <= gcd ||
+                        GetCooldownRemainingTime(Senei) is > 50 and < 65:
+                        return true;
+                }
             }
 
             if (SAM_ST_MeikyoLogic == 0 && SenCount is 3)
