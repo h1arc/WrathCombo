@@ -221,8 +221,7 @@ internal partial class PLD : Tank
                 return All.SavageBlade;
 
             // Interrupt
-            if (IsEnabled(Preset.PLD_AoE_Interrupt)
-                && Role.CanInterject())
+            if (Role.CanInterject())
                 return Role.Interject;
 
             // Stun
@@ -582,8 +581,8 @@ internal partial class PLD : Tank
                 return All.SavageBlade;
 
             // Interrupt
-            if (IsEnabled(Preset.PLD_AoE_Interrupt)
-                && Role.CanInterject())
+            if (IsEnabled(Preset.PLD_AoE_Interrupt) &&
+                Role.CanInterject())
                 return Role.Interject;
 
             // Stun
