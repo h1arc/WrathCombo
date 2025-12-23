@@ -2,7 +2,6 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using static FFXIVClientStructs.FFXIV.Client.Game.ActionManager;
@@ -159,76 +158,39 @@ internal partial class SAM
         !IsMoving() && TimeStoodStill > TimeSpan.FromSeconds(SAM_ST_MeditateTimeStill) &&
         InCombat() && !HasBattleTarget();
 
-    private static bool HasMaxMeikyoCharges =>
-        GetRemainingCharges(MeikyoShisui) == GetMaxCharges(MeikyoShisui);
+    //  private static bool HasMaxMeikyoCharges =>
+    //    GetRemainingCharges(MeikyoShisui) == GetMaxCharges(MeikyoShisui);
+
     #endregion
 
     #region Meikyo
 
     private static bool CanMeikyo(bool simpleMode = false)
     {
-        int meikyoUsed = CombatActions.Count(x => x == MeikyoShisui);
         float gcd = GetAdjustedRecastTime(ActionType.Action, Hakaze) / 100f;
 
-        if (ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.Tendo) && 
-            !HasStatusEffect(Buffs.MeikyoShisui) && InActionRange(OriginalHook(Hakaze)) &&
-            (JustUsed(Gekko) || JustUsed(Kasha) || JustUsed(Yukikaze)))
+        if (ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.Tendo) &&
+            !HasStatusEffect(Buffs.MeikyoShisui) && InActionRange(OriginalHook(Hakaze)))
         {
             if (SAM_ST_MeikyoLogic == 1 && (SAM_ST_MeikyoBossOption == 0 || InBossEncounter()) ||
                 simpleMode && InBossEncounter())
             {
                 switch (EnhancedSenei)
                 {
-                    //if no opener
-                    case true when (IsEnabled(Preset.SAM_ST_Opener) && SAM_Balance_Content == 1 && !InBossEncounter() ||
-                                    IsNotEnabled(Preset.SAM_ST_Opener)) &&
-                                   meikyoUsed < 1 && !HasStatusEffect(Buffs.TsubameReady):
+                    case true when SenCount is 0 && GetCooldownRemainingTime(Senei) <= gcd * 6 && JustUsed(MidareSetsugekka, 5f) ||
+                                   SenCount is 0 && GetCooldownRemainingTime(Senei) <= gcd * 5 && JustUsed(Higanbana, 5f) ||
+                                   SenCount is 1 && GetCooldownRemainingTime(Senei) <= gcd * 4 ||
+                                   SenCount is 2 && GetCooldownRemainingTime(Senei) <= gcd * 3 ||
+                                   SenCount is 3 && GetCooldownRemainingTime(Senei) <= gcd * 2:
                         return true;
-                    
-                    // Gut Meikyo
-                    case true when GetCooldownRemainingTime(Senei) <= gcd:
-                        return true;
-
-                    // overcap protection
-                    case true when GetCooldownRemainingTime(Senei) > 30 && HasMaxMeikyoCharges:
-                        return true;
-
-                    case true:
-                    {
-                        if (HasStatusEffect(Buffs.TsubameReady))
-                        {
-                            //2.14 GCD
-                            if (gcd >= 2.09f && IsEnabled(Preset.SAM_ST_CDs_UseHiganbana) &&
-                                GetCooldownRemainingTime(Senei) <= 10 &&
-                                (meikyoUsed % 7 is 1 or 2 && SenCount is 3 ||
-                                 meikyoUsed % 7 is 3 or 4 && SenCount is 2 ||
-                                 meikyoUsed % 7 is 5 or 6 && SenCount is 1) ||
-
-                                //2.08 gcd
-                                (gcd <= 2.08f || IsNotEnabled(Preset.SAM_ST_CDs_UseHiganbana)) &&
-                                GetCooldownRemainingTime(Senei) <= 10 && SenCount is 3)
-                                return true;
-                        }
-
-                        // reset meikyo
-                        if (gcd >= 2.09f && meikyoUsed % 7 is 0 && JustUsed(Yukikaze))
-                            return true;
-                        break;
-                    }
                 }
 
-                // Gut Meikyo
-                if( GetCooldownRemainingTime(Senei) <= gcd || GetCooldownRemainingTime(Senei) is > 50 and < 65 )
-                    return true;
-                
-                //Pre Enhanced Senei
-                if (!EnhancedSenei && ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.TsubameReady))
+                // Pre 94
+                if (!EnhancedSenei &&
+                    (GetCooldownRemainingTime(Senei) <= gcd ||
+                     GetCooldownRemainingTime(Senei) is > 50 and < 65))
                     return true;
             }
-
-            if (simpleMode && !InBossEncounter() ||
-                SAM_ST_MeikyoLogic == 1 && SAM_ST_MeikyoBossOption == 1 && !InBossEncounter())
-                return true;
 
             if (SAM_ST_MeikyoLogic == 0 && SenCount is 3)
                 return true;
@@ -292,7 +254,8 @@ internal partial class SAM
     private static bool CanTsubame() =>
         LevelChecked(TsubameGaeshi) &&
         (HasStatusEffect(Buffs.TendoKaeshiSetsugekkaReady) ||
-         HasStatusEffect(Buffs.TsubameReady) && (SenCount is 3 || GetCooldownRemainingTime(Senei) > 33));
+         HasStatusEffect(Buffs.TsubameReady) && (SenCount is 3 ||
+                                                 EnhancedSenei && GetCooldownRemainingTime(Senei) > 33));
 
     private static bool CanShoha() =>
         ActionReady(Shoha) && MeditationStacks is 3 &&
@@ -365,7 +328,7 @@ internal partial class SAM
                 IsNotEnabled(Preset.SAM_ST_CDs_UseHiganbana) && JustUsed(Ikishoten, 15f))
                 return true;
 
-            if (JustUsed(Higanbana, 15f))
+            if (JustUsed(TendoKaeshiSetsugekka, 15f))
                 return true;
 
             if (!simpleMode &&
