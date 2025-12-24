@@ -49,6 +49,21 @@ internal class PvPFeatures : FeaturesWindow
                     ImGuiEx.TextWrapped(ImGuiColors.DalamudYellow, $"{FontAwesomeIcon.ExclamationTriangle.ToIconString()}");
                     ImGui.PopFont();
                 });
+                if (!Service.Configuration.ActionChanging)
+                {
+                    ImGuiEx.LineCentered($"pvpWarning2", () =>
+                    {
+                        ImGui.PushFont(UiBuilder.IconFont);
+                        ImGuiEx.TextWrapped(ImGuiColors.DalamudRed, $"{FontAwesomeIcon.ExclamationTriangle.ToIconString()}");
+                        ImGui.PopFont();
+                        ImGui.SameLine();
+                        ImGuiEx.TextWrapped(ImGuiColors.DalamudRed, "Action Replacing is Disabled in Settings! Please Re-enable!");
+                        ImGui.SameLine();
+                        ImGui.PushFont(UiBuilder.IconFont);
+                        ImGuiEx.TextWrapped(ImGuiColors.DalamudRed, $"{FontAwesomeIcon.ExclamationTriangle.ToIconString()}");
+                        ImGui.PopFont();
+                    });
+                }
                 ImGuiEx.LineCentered($"pvpDesc2", () =>
                 {
                     ImGuiEx.TextUnderlined("Select a job from below to enable and configure features for it.");
@@ -111,7 +126,7 @@ internal class PvPFeatures : FeaturesWindow
                 DrawHeader(id, true);
                 DrawSearchBar();
                 ImGuiEx.Spacing(new Vector2(0, 10));
-                
+
                 using var content = ImRaii.Child("PvPContent", Vector2.Zero);
                 if (!content)
                     return;
@@ -145,7 +160,7 @@ internal class PvPFeatures : FeaturesWindow
         foreach (var (preset, info) in groupedPresets[job].Where(x => PresetStorage.IsPvP(x.Preset)))
         {
             InfoBox presetBox = new() { ContentsOffset = 5f.Scale(), ContentsAction = () => { Presets.DrawPreset(preset, info); } };
-            
+
             if (IsSearching && !PvEFeatures.PresetMatchesSearch(preset))
                 continue;
 
@@ -179,7 +194,7 @@ internal class PvPFeatures : FeaturesWindow
                 ImGuiEx.Spacing(new Vector2(0, 12));
             }
         }
-        
+
         // Search for children if nothing was found at the root
         if (CurrentPreset == 1 && IsSearching)
         {
@@ -189,7 +204,7 @@ internal class PvPFeatures : FeaturesWindow
                          x.Attributes().CustomComboInfo.Job == job))
             {
                 var attributes = preset.Attributes();
-                
+
                 if (!PvEFeatures.PresetMatchesSearch(preset))
                     continue;
                 // Don't show things that were already shown under another preset
@@ -197,7 +212,7 @@ internal class PvPFeatures : FeaturesWindow
                     alreadyShown.Any(y => y == attributes.GrandParent) ||
                     alreadyShown.Any(y => y == attributes.GreatGrandParent))
                     continue;
-                
+
                 var info = attributes.CustomComboInfo;
                 InfoBox presetBox = new() { ContentsOffset = 5f.Scale(), ContentsAction = () => { Presets.DrawPreset(preset, info!); } };
                 presetBox.Draw();
