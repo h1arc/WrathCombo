@@ -476,8 +476,7 @@ internal partial class GNB : Tank
                 InCombat() && //in combat
                 NMcd < 0.5f && //off cooldown
                 HasBattleTarget() && //has a battle target
-                GetTargetDistance() <= 5 && //not far from target
-                (BrutalShellCount > 0 || DemonSlaughterCount > 0); //either after one Brutal Shell or Demon Slaughter execution
+                GetTargetDistance() <= 5 //not far from target
                 ;
 
             return 
@@ -502,7 +501,7 @@ internal partial class GNB : Tank
     private static bool ShouldUseGnashingFang =>
         CanGF && //can use
         (HasNM || JustUsed(NoMercy, 2.5f)) || //has No Mercy buff or just used it within 2.5s
-        GetRemainingCharges(GnashingFang) > 1 || //overcap
+        GetRemainingCharges(GnashingFang) > 0 || //overcap
         (ComboTimer == 0 && NMcd is <= 7.5f and >= 5.0f) //opti
         ;
     private static bool ShouldUseBurstStrike =>

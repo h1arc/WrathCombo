@@ -86,7 +86,8 @@ internal partial class GNB : Tank
             if (ShouldUseBloodfest)
                 return Bloodfest;
 
-            if (ShouldUseNoMercy)
+            if (ShouldUseNoMercy && 
+                BrutalShellCount > 0)
                 return NoMercy;
 
             if (JustUsed(BurstStrike, 5f) && //just used Burst Strike
@@ -211,7 +212,8 @@ internal partial class GNB : Tank
                 IsEnabled(Preset.GNB_ST_Bloodfest))
 				return Bloodfest;
 
-			if (ShouldUseNoMercy && 
+			if (ShouldUseNoMercy &&
+                BrutalShellCount > 0 &&
                 IsEnabled(Preset.GNB_ST_NoMercy) &&
                 GetTargetHPPercent() > STStopNM &&
 				(GNB_ST_NoMercy_SubOption == 0 || GNB_ST_NoMercy_SubOption == 1 && InBossEncounter()))
@@ -334,7 +336,8 @@ internal partial class GNB : Tank
             {
                 if (CanWeave())
                 {
-                    if (ShouldUseNoMercy && 
+                    if (ShouldUseNoMercy &&
+                        DemonSlaughterCount > 0 && 
                         GetTargetHPPercent() > 10)
                         return NoMercy;
 
@@ -437,7 +440,7 @@ internal partial class GNB : Tank
             {
                 if (CanWeave())
                 {
-                    if (IsEnabled(Preset.GNB_AoE_NoMercy) && ShouldUseNoMercy && GetTargetHPPercent() > AoEStopNM)
+                    if (IsEnabled(Preset.GNB_AoE_NoMercy) && ShouldUseNoMercy && DemonSlaughterCount > 0 && GetTargetHPPercent() > AoEStopNM)
                         return NoMercy;
                     if (IsEnabled(Preset.GNB_AoE_BowShock) && ShouldUseBowShock)
                         return BowShock;
