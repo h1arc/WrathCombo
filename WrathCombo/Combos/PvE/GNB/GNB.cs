@@ -291,13 +291,15 @@ internal partial class GNB : Tank
             if (actionID != DemonSlice)
                 return actionID;
 
-            #region Non-Rotation
             if (Role.CanInterject())
                 return Role.Interject;
+
             if (Role.CanLowBlow())
                 return Role.LowBlow;
+
             if (ShouldUseOther)
                 return OtherAction;
+
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
@@ -327,9 +329,7 @@ internal partial class GNB : Tank
             }
             #endregion
 
-            #endregion
 
-            #region Rotation
             if (InCombat())
             {
                 if (CanWeave())
@@ -368,8 +368,8 @@ internal partial class GNB : Tank
                     (ComboAction == DemonSlice && Ammo == MaxCartridges)))
                     return LevelChecked(FatedCircle) ? FatedCircle : BurstStrike;
             }
+
             return AOECombo;
-            #endregion
         }
     }
     #endregion
@@ -384,14 +384,15 @@ internal partial class GNB : Tank
             if (actionID != DemonSlice)
                 return actionID;
 
-            #region Non-Rotation
-
             if (IsEnabled(Preset.GNB_AoE_Interrupt) && Role.CanInterject())
                 return Role.Interject;
+
             if (IsEnabled(Preset.GNB_AoE_Stun) && Role.CanLowBlow())
                 return Role.LowBlow;
+
             if (ShouldUseOther)
                 return OtherAction;
+
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
@@ -432,9 +433,6 @@ internal partial class GNB : Tank
 
             #endregion
 
-            #endregion
-
-            #region Rotation
             if (InCombat())
             {
                 if (CanWeave())
@@ -464,8 +462,8 @@ internal partial class GNB : Tank
                         return LevelChecked(FatedCircle) ? FatedCircle : GNB_AoE_FatedCircle_BurstStrike == 0 ? BurstStrike : LevelChecked(DemonSlaughter)  && ComboAction == DemonSlice ? DemonSlaughter : DemonSlice;
                 }
             }
+
             return AOECombo;
-            #endregion
         }
     }
     #endregion
@@ -477,8 +475,8 @@ internal partial class GNB : Tank
 
         protected override uint Invoke(uint actionID)
         {
-            bool GFchoice = GNB_GF_Features_Choice == 0; //Gnashing Fang as button
-            bool NMchoice = GNB_GF_Features_Choice == 1; //No Mercy as button
+            var GFchoice = GNB_GF_Features_Choice == 0; //Gnashing Fang as button
+			var NMchoice = GNB_GF_Features_Choice == 1; //No Mercy as button
             if ((GFchoice && actionID != GnashingFang) || (NMchoice && actionID != NoMercy))
                 return actionID;
             if (IsEnabled(Preset.GNB_GF_Features))
@@ -555,11 +553,11 @@ internal partial class GNB : Tank
             }
             if (IsEnabled(Preset.GNB_BS_Bloodfest) && ShouldUseBloodfest)
                 return Bloodfest;
-            if (useDD && Ammo == 1)
+            if (useDD && Ammo >= 2)
                 return DoubleDown;
             if (IsEnabled(Preset.GNB_BS_GnashingFang) && (CanGF || GunStep is 1 or 2))
                 return OriginalHook(GnashingFang);
-            if (useDD && Ammo > 1)
+            if (useDD && Ammo >= 2)
                 return DoubleDown;
             if (IsEnabled(Preset.GNB_BS_Reign) && (CanReign || GunStep is 3 or 4))
                 return OriginalHook(ReignOfBeasts);
@@ -610,7 +608,7 @@ internal partial class GNB : Tank
                 if (IsEnabled(Preset.GNB_NM_Continuation) && CanContinue && 
                     (HasStatusEffect(Buffs.ReadyToRip) || HasStatusEffect(Buffs.ReadyToTear) || HasStatusEffect(Buffs.ReadyToGouge) || (LevelChecked(Hypervelocity) && HasStatusEffect(Buffs.ReadyToBlast) || (LevelChecked(FatedBrand) && HasStatusEffect(Buffs.ReadyToRaze)))))
                     return OriginalHook(Continuation);
-                if (IsEnabled(Preset.GNB_NM_Bloodfest) && HasBattleTarget() && CanBF && Ammo == 0)
+                if (IsEnabled(Preset.GNB_NM_Bloodfest) && HasBattleTarget() && CanBF)
                     return Bloodfest;
                 //with SKS, we want Zone first because it can drift really bad while Bow usually remains static
                 //without SKS, we don't really care since both usually remain static
