@@ -25,18 +25,27 @@ internal class PvPFeatures : FeaturesWindow
         {
             if (OpenPvPJob is null)
             {
-                ImGuiEx.LineCentered($"pvpWarning", () =>
+                var userwarned = false;
+
+                //Auto-Rotation warning
+                if (Service.Configuration.RotationConfig.Enabled)
                 {
-                    ImGui.PushFont(UiBuilder.IconFont);
-                    ImGuiEx.TextWrapped(ImGuiColors.DalamudYellow, $"{FontAwesomeIcon.ExclamationTriangle.ToIconString()}");
-                    ImGui.PopFont();
-                    ImGui.SameLine();
-                    ImGuiEx.TextWrapped(ImGuiColors.DalamudYellow, "Auto-Rotation is unavailable for PvP.");
-                    ImGui.SameLine();
-                    ImGui.PushFont(UiBuilder.IconFont);
-                    ImGuiEx.TextWrapped(ImGuiColors.DalamudYellow, $"{FontAwesomeIcon.ExclamationTriangle.ToIconString()}");
-                    ImGui.PopFont();
-                });
+                    ImGuiEx.LineCentered($"pvpWarning", () =>
+                    {
+                        ImGui.PushFont(UiBuilder.IconFont);
+                        ImGuiEx.TextWrapped(ImGuiColors.DalamudYellow, $"{FontAwesomeIcon.ExclamationTriangle.ToIconString()}");
+                        ImGui.PopFont();
+                        ImGui.SameLine();
+                        ImGuiEx.TextWrapped(ImGuiColors.DalamudYellow, "Auto-Rotation is unavailable for PvP.");
+                        ImGui.SameLine();
+                        ImGui.PushFont(UiBuilder.IconFont);
+                        ImGuiEx.TextWrapped(ImGuiColors.DalamudYellow, $"{FontAwesomeIcon.ExclamationTriangle.ToIconString()}");
+                        ImGui.PopFont();
+                    });
+                    userwarned = true;
+                }
+
+                // Action Changing disabled warning
                 if (!Service.Configuration.ActionChanging)
                 {
                     ImGuiEx.LineCentered($"pvpWarning2", () =>
@@ -51,8 +60,12 @@ internal class PvPFeatures : FeaturesWindow
                         ImGuiEx.TextWrapped(ImGuiColors.DalamudRed, $"{FontAwesomeIcon.ExclamationTriangle.ToIconString()}");
                         ImGui.PopFont();
                     });
+                    userwarned = true;
                 }
-                ImGuiEx.Spacing(new Vector2(0, 15));
+
+                // Add spacing if any warning was shown
+                if (userwarned) ImGuiEx.Spacing(new Vector2(0, 15));
+
                 ImGuiEx.LineCentered("pvpDesc", () =>
                 {
                     ImGui.PushFont(UiBuilder.IconFont);
