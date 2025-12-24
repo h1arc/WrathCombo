@@ -3,9 +3,11 @@ using Dalamud.Game.ClientState.JobGauge.Types;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using WrathCombo.Combos.PvE.Content;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
+using WrathCombo.Data;
 using static WrathCombo.Combos.PvE.GNB.Config;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using PartyRequirement = WrathCombo.Combos.PvE.All.Enums.PartyRequirement;
@@ -16,31 +18,84 @@ namespace WrathCombo.Combos.PvE;
 internal partial class GNB : Tank
 {
     #region Variables
-    internal static byte Ammo => GetJobGauge<GNBGauge>().Ammo;
-    internal static byte GunStep => GetJobGauge<GNBGauge>().AmmoComboStep;
-    internal static float HPP => PlayerHealthPercentageHp();
-    internal static float NMcd => GetCooldownRemainingTime(NoMercy);
-    internal static float BFcd => GetCooldownRemainingTime(Bloodfest);
-    internal static bool HasNM => NMcd is >= 39.5f and <= 60;
-    internal static bool HasReign => HasStatusEffect(Buffs.ReadyToReign);
-    internal static bool CanBS => LevelChecked(BurstStrike) && Ammo > 0;
-    internal static bool CanGF => LevelChecked(GnashingFang) && GetCooldownChargeRemainingTime(GnashingFang) < 0.6f && !HasStatusEffect(Buffs.ReadyToBlast) && GunStep == 0 && Ammo > 0;
-    internal static bool CanDD => LevelChecked(DoubleDown) && GetCooldownRemainingTime(DoubleDown) < 0.6f && Ammo >= 2;
-    internal static bool CanBF => LevelChecked(Bloodfest) && BFcd < 0.6f;
-    internal static bool CanZone => LevelChecked(DangerZone) && GetCooldownRemainingTime(OriginalHook(DangerZone)) < 0.6f;
-    internal static bool CanSB => LevelChecked(SonicBreak) && HasStatusEffect(Buffs.ReadyToBreak);
-    internal static bool CanBow => LevelChecked(BowShock) && GetCooldownRemainingTime(BowShock) < 0.6f;
-    internal static bool CanContinue => LevelChecked(Continuation);
-    internal static bool CanReign => LevelChecked(ReignOfBeasts) && GunStep == 0 && HasReign;
-    internal static bool CanLateWeave => CanDelayedWeave(weaveStart: 0.9f);
-    internal static bool InOdd => BFcd is < 90 and > 20;
-    internal static bool MitUsed => JustUsed(OriginalHook(HeartOfStone), 4f) || JustUsed(OriginalHook(Nebula), 5f) || JustUsed(Camouflage, 5f) || JustUsed(Role.Rampart, 5f) || JustUsed(Aurora, 5f) || JustUsed(Superbolide, 9f);
-    internal static float GCDLength => ActionManager.GetAdjustedRecastTime(ActionType.Action, KeenEdge) / 1000f;
-    internal static bool SlowGNB => GCDLength >= 2.4800f;
-    internal static bool MidGNB => GCDLength is <= 2.4799f and >= 2.4500f;
-    internal static bool FastGNB => GCDLength is <= 2.4499f;
-    internal static int STStopNM => GNB_ST_NoMercyStop;
-    internal static int AoEStopNM => GNB_AoE_NoMercyStop;
+    private static byte Ammo => GetJobGauge<GNBGauge>().Ammo; //cartridge count
+    private static byte GunStep => GetJobGauge<GNBGauge>().AmmoComboStep; //GF & Reign combo steps
+    private static float HPP => PlayerHealthPercentageHp(); //player HP percentage
+    private static float NMcd => GetCooldownRemainingTime(NoMercy); //No Mercy cooldown
+    private static float BFcd => GetCooldownRemainingTime(Bloodfest); //Bloodfest cooldown
+    private static bool HasNM => NMcd is > 39.5f and <= 60; //Has No Mercy buff, using its cooldown instead of buff timer (for snappier reaction) with a small 0.4s leeway
+    private static float GCDLength => ActionManager.GetAdjustedRecastTime(ActionType.Action, KeenEdge) / 1000f;
+    private static bool SlowGNB => GCDLength >= 2.5;
+    private static bool FastGNB => GCDLength <= 2.5;
+    private static int STStopNM => GNB_ST_NoMercyStop;
+    private static int AoEStopNM => GNB_AoE_NoMercyStop;
+    private static int BrutalShellCount => ActionWatching.CombatActions.Count(x => x == BrutalShell);
+    private static int DemonSlaughterCount => ActionWatching.CombatActions.Count(x => x == DemonSlaughter);
+
+
+
+    private static bool CanBS =>
+        Ammo > 0 && //have at least 1 cartridge
+        LevelChecked(BurstStrike) //unlocked
+        ;
+    private static bool CanGF =>
+        Ammo > 0 && //have at least 1 cartridge
+        GunStep == 0 && //not already in GF or Reign combo
+        LevelChecked(GnashingFang) && //unlocked
+        !HasStatusEffect(Buffs.ReadyToBlast) && //Hypervelocity safety - if we just used Burst Strike, we want to use Hypervelocity first even if we clip it
+        GetCooldownChargeRemainingTime(GnashingFang) < 0.5f //off cooldown
+        ;
+    private static bool CanDD => 
+        Ammo >= 2 && //have at least 2 cartridges
+        LevelChecked(DoubleDown) && //unlocked
+        GetCooldownRemainingTime(DoubleDown) < 0.5f //off cooldown
+        ;
+
+    //
+    private static bool CanBF => 
+        BFcd < 0.5f && //off cooldown
+        LevelChecked(Bloodfest) //unlocked
+        ;
+    private static bool CanZone => 
+        LevelChecked(DangerZone) && //unlocked
+        GetCooldownRemainingTime(OriginalHook(DangerZone)) < 0.5f //off cooldown
+        ;
+    private static bool CanBow => 
+        LevelChecked(BowShock) && //unlocked
+        GetCooldownRemainingTime(BowShock) < 0.5f //off cooldown
+        ;
+    private static bool CanSB =>
+        LevelChecked(SonicBreak) && //unlocked
+        HasStatusEffect(Buffs.ReadyToBreak) //has appropriate buff needed
+        ;
+    private static bool CanContinue => 
+        LevelChecked(Continuation) && //unlocked
+        (HasStatusEffect(Buffs.ReadyToBlast) || //after Burst Strike
+        HasStatusEffect(Buffs.ReadyToRip) || //after Gnashing Fang 
+        HasStatusEffect(Buffs.ReadyToTear) || //after Savage Claw
+        HasStatusEffect(Buffs.ReadyToGouge) || //after Wicked Talon
+        HasStatusEffect(Buffs.ReadyToRaze)) //after Fated Circle
+        ;
+    private static bool CanReign =>
+        GunStep == 0 && //not in GF combo
+        LevelChecked(ReignOfBeasts) && //unlocked
+        HasStatusEffect(Buffs.ReadyToReign) //has appropriate buff needed
+        ;
+
+    private static bool CanLateWeave => CanDelayedWeave(weaveStart: 0.9f);
+    private static bool MitUsed =>
+        JustUsed(OriginalHook(HeartOfStone), 4f) || //just used Heart of Stone within 4s
+        JustUsed(OriginalHook(Nebula), 5f) || //just used Nebula within 5s
+        JustUsed(Camouflage, 5f) || //just used Camouflage within 5s
+        JustUsed(Role.Rampart, 5f) || //just used Rampart within 5s
+        JustUsed(Aurora, 3f) || //just used Aurora within 3s
+        JustUsed(Superbolide, 9f) //just used Superbolide within 9s
+        ;
+    private static int MaxCartridges => 
+        TraitLevelChecked(Traits.CartridgeChargeII) ? //3 max base, 6 max buffed
+            HasStatusEffect(Buffs.Bloodfest) ? 6 : 3 : 
+        TraitLevelChecked(Traits.CartridgeCharge) ? //2 max base, 4 max buffed
+            HasStatusEffect(Buffs.Bloodfest) ? 4 : 2 : 0;
     #endregion
 
     #region Openers
@@ -56,7 +111,7 @@ internal partial class GNB : Tank
     public static WrathOpener Opener() => (!IsEnabled(Preset.GNB_ST_Opener) || !LevelChecked(DoubleDown)) ? WrathOpener.Dummy : GetOpener(GNB_Opener_NM == 0);
     private static WrathOpener GetOpener(bool isNormal)
     {
-        if (FastGNB || MidGNB)
+        if (FastGNB)
             return isNormal
                 ? (LevelChecked(ReignOfBeasts) ? GNBLv100FastNormalNM : GNBLv90FastNormalNM)
                 : (LevelChecked(ReignOfBeasts) ? GNBLv100FastEarlyNM : GNBLv90FastEarlyNM);
@@ -338,13 +393,9 @@ internal partial class GNB : Tank
     #endregion
 
     #region Helpers
-    internal static int MaxCartridges() => 
-        TraitLevelChecked(Traits.CartridgeChargeII) ? 
-            HasStatusEffect(Buffs.Bloodfest) ? 6 : 3 : 
-        TraitLevelChecked(Traits.CartridgeCharge) ?
-            HasStatusEffect(Buffs.Bloodfest) ? 4 : 2 : 0;
 
     //TODO: revise Bozja stuff - this shit looks crazy
+    #region lol
     internal static uint GetBozjaAction()
     {
         if (!Bozja.IsInBozja)
@@ -414,30 +465,128 @@ internal partial class GNB : Tank
     internal static bool ShouldUseOther => OtherAction != 0;
     #endregion
 
+    #endregion
+
     #region Rotation
-    internal static bool ShouldUseNoMercy(bool aoeBreakpoint)
+    private static bool ShouldUseNoMercy
     {
-        var minimum = NMcd < 0.6f && InCombat() && HasBattleTarget();
-        var three = (InOdd && (Ammo >= 2 || (ComboAction is BrutalShell && Ammo == 1))) || (!InOdd && Ammo != 3);
-        var two = aoeBreakpoint ? Ammo > 0 : NMcd < 0.6f;
-        var condition = minimum && (TraitLevelChecked(Traits.CartridgeChargeII) ? three : two);
-        return (SlowGNB && condition && CanWeave()) || (MidGNB && condition && (InOdd ? CanWeave() : CanLateWeave)) || (FastGNB && condition && CanLateWeave);
+        get
+        {
+            var condition =
+                InCombat() && //in combat
+                NMcd < 0.5f && //off cooldown
+                HasBattleTarget() && //has a battle target
+                GetTargetDistance() <= 5 && //not far from target
+                (BrutalShellCount > 0 || DemonSlaughterCount > 0); //either after one Brutal Shell or Demon Slaughter execution
+                ;
+
+            return 
+                (SlowGNB && condition && CanWeave()) || //weave anywhere
+                (FastGNB && condition && CanLateWeave); //late weave only
+        }
     }
-    internal static bool ShouldUseBloodfest => HasBattleTarget() && CanWeave() && CanBF;
-    internal static bool ShouldUseZone => CanZone && CanWeave() && NMcd is < 57.5f and > 17f;
-    internal static bool ShouldUseBowShock => CanBow && CanWeave() && NMcd is < 57.5f and >= 40;
-    internal static bool ShouldUseContinuation => CanContinue && (HasStatusEffect(Buffs.ReadyToRip) || HasStatusEffect(Buffs.ReadyToTear) || HasStatusEffect(Buffs.ReadyToGouge) ||
-        (LevelChecked(Hypervelocity) && HasStatusEffect(Buffs.ReadyToBlast) && (LevelChecked(DoubleDown) ? (SlowGNB ? NMcd is > 1.5f || CanDelayedWeave(0.6f, 0) : (FastGNB || MidGNB)) : !LevelChecked(DoubleDown))));
-    internal static bool ShouldUseGnashingFang => CanGF && (NMcd is > 17 and < 35 || JustUsed(NoMercy, 6f));
-    internal static bool ShouldUseDoubleDown => CanDD && HasNM && (IsOnCooldown(GnashingFang) || Ammo == 1);
-    internal static bool ShouldUseSonicBreak => CanSB && ((IsOnCooldown(GnashingFang) || !LevelChecked(GnashingFang)) && (IsOnCooldown(DoubleDown) || !LevelChecked(DoubleDown)));
-    internal static bool ShouldUseReignOfBeasts => CanReign && IsOnCooldown(GnashingFang) && IsOnCooldown(DoubleDown) && !HasStatusEffect(Buffs.ReadyToBreak) && GunStep == 0;
-    internal static bool ShouldUseBurstStrike => (CanBS && HasNM && IsOnCooldown(GnashingFang) && (IsOnCooldown(DoubleDown) || (!LevelChecked(DoubleDown) && Ammo > 0)) && !HasReign && GunStep == 0);
-    internal static uint STCombo
-        => ComboTimer > 0 ? ComboAction == KeenEdge && LevelChecked(BrutalShell) ? BrutalShell : ComboAction == BrutalShell && LevelChecked(SolidBarrel)
-        ? (GNB_ST_Overcap_Choice == 0 && LevelChecked(BurstStrike) && Ammo == MaxCartridges() ? BurstStrike : SolidBarrel) : KeenEdge : KeenEdge;
-    internal static uint AOECombo => (ComboTimer > 0 && ComboAction == DemonSlice && LevelChecked(DemonSlaughter) && (Ammo != MaxCartridges() || GNB_AoE_Overcap_Choice == 1)) ? DemonSlaughter : DemonSlice;
-    internal static bool ShouldUseLightningShot => LevelChecked(LightningShot) && !InMeleeRange() && HasBattleTarget();
+    private static bool ShouldUseBloodfest => 
+        CanBF && //can use
+        CanWeave() && //can weave
+        HasBattleTarget() //has a target
+        ;
+    private static bool ShouldUseZone => 
+        CanZone && //can use
+        CanWeave() && //can weave
+        NMcd is < 57.5f and > 15f; //use in No Mercy but not directly after it's used and off cooldown in filler - if desynced, try to hold for NM window
+    private static bool ShouldUseBowShock => 
+        CanBow && //can use
+        CanWeave() && //can weave
+        NMcd is < 57.5f and >= 40 //use in No Mercy window but not directly after it's used
+        ;
+    private static bool ShouldUseGnashingFang =>
+        CanGF && //can use
+        (HasNM || JustUsed(NoMercy, 2.5f)) || //has No Mercy buff or just used it within 2.5s
+        GetRemainingCharges(GnashingFang) > 1 || //overcap
+        (ComboTimer == 0 && NMcd is <= 7.5f and >= 5.0f) //opti
+        ;
+    private static bool ShouldUseBurstStrike =>
+        CanBS && //can use
+        HasNM && //has No Mercy buff
+        GunStep == 0 && //not already in GF combo
+        !HasStatusEffect(Buffs.ReadyToReign) && //use after Reign
+        GetRemainingCharges(GnashingFang) == 0 && //no Gnashing Fang charges
+        (!LevelChecked(DoubleDown) || IsOnCooldown(DoubleDown)) //if Double Down is unlocked, then when it's on cooldown
+        ;
+    private static bool ShouldUseDoubleDown => 
+        CanDD && //can use
+        HasNM && //has No Mercy buff
+        (GetRemainingCharges(GnashingFang) < 2 || Ammo == 2) //if we have both GF charges then we need to use after GF for cd purposes or if we have exactly 2 carts left (which should be unlikely now)
+        ;
+    private static bool ShouldUseSonicBreak =>
+        CanSB && //can use
+        ((SlowGNB && //if slow SkS
+            (IsOnCooldown(DoubleDown) || !LevelChecked(DoubleDown)) && //if DD is unlocked and on cooldown, else just send
+            (GetRemainingCharges(GnashingFang) < 2 || !LevelChecked(GnashingFang))) || //if GF is unlocked and has less than 2 charges, else just send
+        (FastGNB && GetStatusEffectRemainingTime(Buffs.NoMercy) <= GCDLength)) //if fast SkS, use as last GCD in NM
+        ;
+    private static bool ShouldUseReignOfBeasts =>
+        CanReign && //can use
+        GunStep == 0 && //not in GF combo
+        IsOnCooldown(DoubleDown) && //DD is on cooldown
+        GetRemainingCharges(GnashingFang) < 2 && //has less than 2 GF charges
+        (!SlowGNB || !HasStatusEffect(Buffs.ReadyToBreak)) //Sonic Break safety - if we're 2.5 & we have Sonic Break, we want to use it first before Reign - otherwise just send it after everything
+        ;
+    private static bool ShouldUseLightningShot => 
+        !InMeleeRange() && //out of melee range
+        HasBattleTarget() && //has a target
+        LevelChecked(LightningShot) //unlocked 
+        ;
+
+    private static uint STCombo
+    {
+        get
+        {
+            if (ComboTimer > 0) //in combo
+            {
+                if (ComboAction == KeenEdge && //just used 1
+                    LevelChecked(BrutalShell)) //2 is unlocked
+                    return BrutalShell; //use 2
+
+                if (ComboAction == BrutalShell) //just used 2
+                {
+                    return 
+                        (LevelChecked(BurstStrike) && //Burst Strike unlocked
+                        Ammo == MaxCartridges && //at max cartridges
+                        GNB_ST_Overcap_Choice == 0) //overcap option selected
+                        ? BurstStrike //use Burst Strike
+                        : SolidBarrel; //else use 3
+                }
+            }
+            return KeenEdge; //1
+        }
+    }
+    private static uint AOECombo
+    {
+        get
+        {
+            if (ComboTimer > 0) //in combo
+            {
+                if (ComboAction == DemonSlice) //just used 1
+                {
+                    if (Ammo == MaxCartridges && //at max cartridges
+                        GNB_AoE_Overcap_Choice == 0) //overcap option selected
+                    {
+                        if (LevelChecked(FatedCircle)) //Fated Circle is unlocked
+                            return FatedCircle;
+
+                        if (!LevelChecked(FatedCircle) && //Fated Circle not unlocked
+                            GNB_AoE_FatedCircle_BurstStrike == 0) //Burst Strike option selected
+                            return BurstStrike; //use Burst Strike
+                    }
+
+                    if (LevelChecked(DemonSlaughter)) //2 is unlocked
+                        return DemonSlaughter; //use 2
+                }
+            }
+            return DemonSlice; //1
+        }
+    }
     #endregion
 
     #region IDs
