@@ -36,27 +36,6 @@ internal partial class SAM
                     ImGui.Unindent();
                     break;
 
-                case Preset.SAM_ST_CDs_MeikyoShisui:
-                    DrawHorizontalRadioButton(SAM_ST_MeikyoLogic,
-                        "Use Simple Logic", $"Uses {MeikyoShisui.ActionName()} when u have 3 sens.", 0);
-
-                    DrawHorizontalRadioButton(SAM_ST_MeikyoLogic,
-                        "Use The Balance Logic", "Uses The Balance logic.", 1);
-
-                    if (SAM_ST_MeikyoLogic == 1)
-                    {
-                        ImGui.Dummy(new(12f.Scale(), 0));
-                        ImGui.NewLine();
-
-                        DrawHorizontalRadioButton(SAM_ST_MeikyoBossOption,
-                            "All content", "Uses The Balance logic regardless of content.", 0);
-
-                        DrawHorizontalRadioButton(SAM_ST_MeikyoBossOption,
-                            "Only in Boss encounters", $"Only uses The Balance logic when in Boss encounters." +
-                                                       $"\nWill use Meikyo every minute regardless of sen count outside of boss encounters.", 1);
-                    }
-                    break;
-
                 case Preset.SAM_ST_CDs_Senei:
                     DrawAdditionalBoolChoice(SAM_ST_CDs_Guren,
                         "Guren Option", $"Adds {Guren.ActionName()} to the rotation if Senei is not unlocked.");

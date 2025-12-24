@@ -164,16 +164,14 @@ internal partial class SAM
 
     #region Meikyo
 
-    private static bool CanMeikyo(bool simpleMode = false)
+    private static bool CanMeikyo()
     {
         float gcd = GetAdjustedRecastTime(ActionType.Action, Hakaze) / 100f;
 
         if (ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.Tendo) &&
-            !HasStatusEffect(Buffs.MeikyoShisui) && InActionRange(OriginalHook(Hakaze)) &&
-            (JustUsed(Gekko) || JustUsed(Kasha) || JustUsed(Yukikaze)))
+            !HasStatusEffect(Buffs.MeikyoShisui) && InActionRange(OriginalHook(Hakaze)) && JustUsed(Yukikaze))
         {
-            if (SAM_ST_MeikyoLogic == 1 && (SAM_ST_MeikyoBossOption == 0 || InBossEncounter()) ||
-                simpleMode && InBossEncounter())
+            if (InBossEncounter())
             {
                 switch (EnhancedSenei)
                 {
@@ -194,7 +192,7 @@ internal partial class SAM
                 }
             }
 
-            if (SAM_ST_MeikyoLogic == 0 && SenCount is 3)
+            if (!InBossEncounter() && SenCount is 3)
                 return true;
         }
 
