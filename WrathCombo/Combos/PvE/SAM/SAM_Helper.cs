@@ -170,7 +170,7 @@ internal partial class SAM
 
         if (ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.Tendo) &&
             !HasStatusEffect(Buffs.MeikyoShisui) && InActionRange(OriginalHook(Hakaze)) && 
-            ComboAction is 0)
+            (JustUsed(Yukikaze) || JustUsed(Gekko) || JustUsed(Kasha)))
         {
             if (InBossEncounter())
             {
