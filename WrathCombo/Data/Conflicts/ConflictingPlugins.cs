@@ -626,7 +626,9 @@ public static class ConflictingPlugins
                         "Wrath cannot work in this state."))
                     .ToArray();
             
-            if (EZ.Throttle("conflictActionReplacingNotice", TS.FromSeconds(30)) &&
+            if ((ConflictingPluginsChecks.Wrath.ActionReplacingOffNoAutos ||
+                 ConflictingPluginsChecks.Wrath.ActionReplacingOffInPvP) &&
+                EZ.Throttle("conflictActionReplacingNotice", TS.FromSeconds(30)) &&
                 !CustomComboFunctions.InCombat())
                 DuoLog.Debug($"Combos cannot run in this configuration! " +
                              $"Open the UI for Conflict details.");
