@@ -526,6 +526,7 @@ internal partial class GNB : Tank
         ;
     private static bool ShouldUseReignOfBeasts =>
         CanReign && //can use
+        HasNM && //has No Mercy buff
         GunStep == 0 && //not in GF combo
         IsOnCooldown(DoubleDown) && //DD is on cooldown
         GetRemainingCharges(GnashingFang) < 2 && //has less than 2 GF charges
