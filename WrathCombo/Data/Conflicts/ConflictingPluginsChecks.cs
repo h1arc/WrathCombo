@@ -517,7 +517,8 @@ public static class ConflictingPluginsChecks
             
             ActionReplacingOffNoAutos =
                 !Service.Configuration.ActionChanging &&
-                wrathNumberAutoModePresetsOnJob < 1;
+                wrathNumberAutoModePresetsOnJob < 1 &&
+                !ContentCheck.IsInPVPContent;
 
             #endregion
 
