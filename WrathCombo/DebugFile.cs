@@ -221,7 +221,9 @@ public static class DebugFile
     {
         var player = Player.Object;
         var job = player.ClassJob.Value;
-        var currentZone = Content.ContentName ?? "Unknown";
+        var currentZone = Content.ContentName is null or ""
+            ? Content.TerritoryName
+            : Content.ContentName;
 
         AddLine("START PLAYER INFO");
         AddLine($"Job: {job.Abbreviation} / {job.Name} / {job.NameEnglish}");
@@ -307,7 +309,9 @@ public static class DebugFile
     private static void AddContentInfo()
     {
         AddLine("START CONTENT INFO");
-        AddLine($"Content Name: {Content.ContentName ?? "??"}");
+        AddLine($"Content Name: " +
+                $"content:{Content.ContentName ?? "??"}, " +
+                $"territory:{Content.TerritoryName ?? "??"}");
         AddLine($"Content IDs: " +
                 $"territory:{Content.TerritoryID}, " +
                 $"cfc:{Content.ContentFinderConditionRow?.RowId.ToString() ?? 
@@ -318,6 +322,7 @@ public static class DebugFile
         AddLine($"Difficulty: " +
                 $"from name:{Content.ContentDifficultyFromName ?? "??"}, " +
                 $"determined:{Content.ContentDifficulty.ToString() ?? "??"}");
+        AddLine($"CDF PVP: {ContentCheck.IsInPVPContent}");
         AddLine($"CDF Boss-Only: {ContentCheck.IsInBossOnlyContent()}");
         AddLine($"CDF Halved: " +
                 $"bottom:{ContentCheck.IsInBottomHalfContent()}, " +
