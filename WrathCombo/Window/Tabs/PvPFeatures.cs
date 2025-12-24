@@ -25,18 +25,6 @@ internal class PvPFeatures : FeaturesWindow
         {
             if (OpenPvPJob is null)
             {
-                ImGuiEx.LineCentered("pvpDesc", () =>
-                {
-                    ImGui.PushFont(UiBuilder.IconFont);
-                    ImGui.TextWrapped($"{FontAwesomeIcon.SkullCrossbones.ToIconString()}");
-                    ImGui.PopFont();
-                    ImGui.SameLine();
-                    ImGui.TextWrapped("These are PvP features. They will only work in PvP-enabled zones.");
-                    ImGui.SameLine();
-                    ImGui.PushFont(UiBuilder.IconFont);
-                    ImGui.TextWrapped($"{FontAwesomeIcon.SkullCrossbones.ToIconString()}");
-                    ImGui.PopFont();
-                });
                 ImGuiEx.LineCentered($"pvpWarning", () =>
                 {
                     ImGui.PushFont(UiBuilder.IconFont);
@@ -57,13 +45,26 @@ internal class PvPFeatures : FeaturesWindow
                         ImGuiEx.TextWrapped(ImGuiColors.DalamudRed, $"{FontAwesomeIcon.ExclamationTriangle.ToIconString()}");
                         ImGui.PopFont();
                         ImGui.SameLine();
-                        ImGuiEx.TextWrapped(ImGuiColors.DalamudRed, "Action Replacing is Disabled in Settings! Please Re-enable!");
+                        ImGuiEx.TextWrapped(ImGuiColors.DalamudRed, "Action Replacing is Disabled in Settings! PvP Combos will not work!");
                         ImGui.SameLine();
                         ImGui.PushFont(UiBuilder.IconFont);
                         ImGuiEx.TextWrapped(ImGuiColors.DalamudRed, $"{FontAwesomeIcon.ExclamationTriangle.ToIconString()}");
                         ImGui.PopFont();
                     });
                 }
+                ImGuiEx.Spacing(new Vector2(0, 15));
+                ImGuiEx.LineCentered("pvpDesc", () =>
+                {
+                    ImGui.PushFont(UiBuilder.IconFont);
+                    ImGui.TextWrapped($"{FontAwesomeIcon.SkullCrossbones.ToIconString()}");
+                    ImGui.PopFont();
+                    ImGui.SameLine();
+                    ImGui.TextWrapped("These are PvP features. They will only work in PvP-enabled zones.");
+                    ImGui.SameLine();
+                    ImGui.PushFont(UiBuilder.IconFont);
+                    ImGui.TextWrapped($"{FontAwesomeIcon.SkullCrossbones.ToIconString()}");
+                    ImGui.PopFont();
+                });
                 ImGuiEx.LineCentered($"pvpDesc2", () =>
                 {
                     ImGuiEx.TextUnderlined("Select a job from below to enable and configure features for it.");
