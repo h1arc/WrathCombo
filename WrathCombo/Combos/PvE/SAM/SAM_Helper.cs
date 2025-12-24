@@ -169,7 +169,8 @@ internal partial class SAM
         float gcd = GetAdjustedRecastTime(ActionType.Action, Hakaze) / 100f;
 
         if (ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.Tendo) &&
-            !HasStatusEffect(Buffs.MeikyoShisui) && InActionRange(OriginalHook(Hakaze)) && JustUsed(Yukikaze))
+            !HasStatusEffect(Buffs.MeikyoShisui) && InActionRange(OriginalHook(Hakaze)) && 
+            ComboAction is 0)
         {
             if (InBossEncounter())
             {
