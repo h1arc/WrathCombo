@@ -28,7 +28,7 @@ internal class PvPFeatures : FeaturesWindow
                 var userwarned = false;
 
                 //Auto-Rotation warning
-                if (Service.Configuration.RotationConfig.Enabled)
+                if (P.IPC.GetAutoRotationState())
                 {
                     ImGuiEx.LineCentered($"pvpWarning", () =>
                     {
