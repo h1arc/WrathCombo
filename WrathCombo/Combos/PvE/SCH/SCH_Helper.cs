@@ -120,7 +120,7 @@ internal partial class SCH
     internal static int GetMatchingConfigST(int i, IGameObject? OptionalTarget, out uint action, out bool enabled)
     {
         IGameObject? healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
-        bool tankCheck = healTarget.IsInParty() && healTarget.GetRole() is CombatRole.Tank;
+        bool tankCheck = healTarget.IsInParty() && healTarget.Role is CombatRole.Tank;
         bool ShieldCheck = !SCH_ST_Heal_AldoquimOpts[0] || 
                            !HasStatusEffect(Buffs.Galvanize, healTarget, true) || 
                            HasStatusEffect(Buffs.EmergencyTactics);
@@ -294,6 +294,11 @@ internal partial class SCH
         [
             ([3], Aetherflow, () => SCH_ST_DPS_OpenerOption == 1),
             ([13], Dissipation, () => SCH_ST_DPS_OpenerOption == 1)
+        ];
+
+        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } =
+        [
+            ([7,9,11,17,19,21], () => Gauge.Aetherflow == 0)
         ];
 
         public override int MinOpenerLevel => 100;

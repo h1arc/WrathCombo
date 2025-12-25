@@ -10,6 +10,7 @@ using Lumina.Excel.Sheets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WrathCombo.API.Enum;
 using WrathCombo.AutoRotation;
 using WrathCombo.Core;
 using WrathCombo.Data;
@@ -609,7 +610,7 @@ public partial class WrathCombo
                         //Retrieve final ClassJob
                         job = jobSearch.GetJob().GetUpgradedJob().GetData();
 
-                        if (job.Value.RowId != Player.JobId)
+                        if (job.Value.RowId != Player.ClassJob.RowId)
                             DuoLog.Warning($"You are not on {job.Value.Name()}");
                     }
                 }

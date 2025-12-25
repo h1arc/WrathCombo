@@ -1,4 +1,6 @@
-﻿using Dalamud.Game.ClientState.Conditions;
+﻿#region
+
+using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.Types;
 using ECommons;
 using ECommons.DalamudServices;
@@ -13,16 +15,19 @@ using System.Linq;
 using System.Numerics;
 using WrathCombo.Attributes;
 using WrathCombo.Combos.PvE;
+using WrathCombo.Combos.PvE.Enums;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
 using WrathCombo.Services;
-using WrathCombo.Services.ActionRequestIPC;
 using WrathCombo.Services.IPC_Subscriber;
 using WrathCombo.Window.Functions;
+using WrathCombo.API.Enum;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using static WrathCombo.Data.ActionWatching;
 using ActionType = FFXIVClientStructs.FFXIV.Client.Game.ActionType;
+
+#endregion
 
 #pragma warning disable CS0414 // Field is assigned but its value is never used
 
@@ -164,7 +169,7 @@ internal unsafe static class AutoRotationController
             return;
 
         // Healer logic
-        bool isHealer = Player.Object.GetRole() is CombatRole.Healer;
+        bool isHealer = Player.Object?.Role is CombatRole.Healer;
         var healTarget = isHealer ? AutoRotationHelper.GetSingleTarget(cfg.HealerRotationMode) : null;
 
         bool aoeheal = isHealer
@@ -202,7 +207,8 @@ internal unsafe static class AutoRotationController
             OccultCrescent.IsEnabledAndUsable(Preset.Phantom_Chemist_Revive, OccultCrescent.Revive) ||
             Variant.CanRaise())
         {
-            if (!needsHeal)
+            if (!needsHeal && WrathOpener.CurrentOpener.CurrentState is not 
+                OpenerState.InOpener)
             {
                 if (cfg.HealerSettings.AutoCleanse && isHealer)
                     CleanseParty();
@@ -319,7 +325,7 @@ internal unsafe static class AutoRotationController
                 if (!ActionReady(spell))
                     return;
 
-                if (ActionManager.CanUseActionOnTarget(spell, Svc.Targets.FocusTarget.Struct()) && !OutOfRange(spell, Player.Object, Svc.Targets.FocusTarget) && ActionManager.Instance()->GetActionStatus(ActionType.Action, spell) == 0)
+                if (Player.Object is not null && ActionManager.CanUseActionOnTarget(spell, Svc.Targets.FocusTarget.Struct()) && !OutOfRange(spell, Player.Object, Svc.Targets.FocusTarget) && ActionManager.Instance()->GetActionStatus(ActionType.Action, spell) == 0)
                 {
                     CurrentActIsAutorot = true;
                     ActionManager.Instance()->UseAction(ActionType.Action, regenSpell, Svc.Targets.FocusTarget.GameObjectId);
@@ -388,7 +394,7 @@ internal unsafe static class AutoRotationController
                     ActionManager.GetAdjustedCastTime(ActionType.Action, spell) > 0 && TimeStoodStill < TimeSpan.FromSeconds(1))
                     return;
 
-                if (ActionManager.CanUseActionOnTarget(spell, Svc.Targets.FocusTarget.Struct()) && !OutOfRange(spell, Player.Object, Svc.Targets.FocusTarget) && ActionManager.Instance()->GetActionStatus(ActionType.Action, spell) == 0)
+                if (Player.Object is not null && ActionManager.CanUseActionOnTarget(spell, Svc.Targets.FocusTarget.Struct()) && !OutOfRange(spell, Player.Object, Svc.Targets.FocusTarget) && ActionManager.Instance()->GetActionStatus(ActionType.Action, spell) == 0)
                 {
                     CurrentActIsAutorot = true;
                     ActionManager.Instance()->UseAction(ActionType.Action, shieldSpell, Svc.Targets.FocusTarget.GameObjectId);
@@ -595,7 +601,7 @@ internal unsafe static class AutoRotationController
     private static bool AutomateHealing(Preset preset, Presets.PresetAttributes attributes, uint gameAct)
     {
         var mode = cfg.HealerRotationMode;
-        if (Player.Object.IsCasting()) return false;
+        if (Player.Object?.IsCasting() is true) return false;
         if (Environment.TickCount64 < LastHealAt + 1200) return false;
 
         if (attributes.AutoAction!.IsAoE)
@@ -616,7 +622,7 @@ internal unsafe static class AutoRotationController
         {
             if (rotationMode is DPSRotationMode dpsmode)
             {
-                if (Player.Object.GetRole() is CombatRole.Tank)
+                if (Player.Object?.Role is CombatRole.Tank)
                 {
                     IGameObject? target = dpsmode switch
                     {
@@ -651,7 +657,7 @@ internal unsafe static class AutoRotationController
             }
             if (rotationMode is HealerRotationMode healermode)
             {
-                if (Player.Object.GetRole() != CombatRole.Healer) return null;
+                if (Player.Object?.Role != CombatRole.Healer) return null;
                 IGameObject? target = healermode switch
                 {
                     HealerRotationMode.Manual => HealerTargeting.ManualTarget(),

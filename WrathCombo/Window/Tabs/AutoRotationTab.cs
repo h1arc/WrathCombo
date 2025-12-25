@@ -1,4 +1,6 @@
-﻿using Dalamud.Interface.Components;
+﻿#region
+
+using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility.Raii;
 using ECommons;
 using ECommons.DalamudServices;
@@ -12,6 +14,10 @@ using WrathCombo.Extensions;
 using WrathCombo.Services;
 using WrathCombo.Services.IPC;
 using WrathCombo.Services.IPC_Subscriber;
+using WrathCombo.API.Enum;
+
+#endregion
+
 namespace WrathCombo.Window.Tabs;
 
 internal class AutoRotationTab : ConfigWindow
@@ -88,7 +94,7 @@ internal class AutoRotationTab : ConfigWindow
                                        "Furthest - Prioritises the furthest target from you.");
             ImGui.Spacing();
 
-            if (cfg.DPSRotationMode == AutoRotation.DPSRotationMode.Manual)
+            if (cfg.DPSRotationMode is DPSRotationMode.Manual)
             {
                 changed |= ImGui.Checkbox("Enforce Best AoE Target Selection", ref cfg.DPSSettings.AoEIgnoreManual);
 
@@ -227,7 +233,7 @@ internal class AutoRotationTab : ConfigWindow
             P.UIHelper.ShowIPCControlledIndicatorIfNeeded("AutoRez");
             changed |= P.UIHelper.ShowIPCControlledCheckboxIfNeeded(
                 "Auto-Resurrect", ref cfg.HealerSettings.AutoRez, "AutoRez");
-            ImGuiComponents.HelpMarker($"Will attempt to resurrect dead party members. Applies to {Job.CNJ.Shorthand()}, {Job.WHM.Shorthand()}, {Job.SCH.Shorthand()}, {Job.AST.Shorthand()}, {Job.SGE.Shorthand()} and {OccultCrescent.ContentName} {Svc.Data.GetExcelSheet<MKDSupportJob>().GetRow(10).Unknown0} {OccultCrescent.Revive.ActionName()}");
+            ImGuiComponents.HelpMarker($"Will attempt to resurrect dead party members. Applies to {Job.CNJ.Shorthand()}, {Job.WHM.Shorthand()}, {Job.SCH.Shorthand()}, {Job.AST.Shorthand()}, {Job.SGE.Shorthand()} and {OccultCrescent.ContentName} {Svc.Data.GetExcelSheet<MKDSupportJob>().GetRow(10).Name} {OccultCrescent.Revive.ActionName()}");
             var autoRez = (bool)P.IPC.GetAutoRotationConfigState(AutoRotationConfigOption.AutoRez)!;
             if (autoRez)
             {
