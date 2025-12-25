@@ -170,7 +170,7 @@ internal partial class SCH : Healer
             if (ActionReady(Protraction) && (healTarget.IsInParty() && healTarget.Role is CombatRole.Tank || !IsInParty())) 
                 return Protraction.RetargetIfEnabled(healTarget, Physick);
             
-            if (Gauge.FairyGauge >= 50 && IsOriginal(Aetherpact) && !FairyBusy)
+            if (Gauge.FairyGauge >= 50 && IsOriginal(Aetherpact) && ActionReady(Aetherpact))
                 return Aetherpact.RetargetIfEnabled(healTarget, Physick);
 
             if (!InBossEncounter() && HasPetPresent() && !FairyBusy)
