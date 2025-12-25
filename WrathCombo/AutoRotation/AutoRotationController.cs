@@ -207,7 +207,7 @@ internal unsafe static class AutoRotationController
             OccultCrescent.IsEnabledAndUsable(Preset.Phantom_Chemist_Revive, OccultCrescent.Revive) ||
             Variant.CanRaise())
         {
-            if (!needsHeal && WrathOpener.CurrentOpener.CurrentState is not 
+            if (!needsHeal && WrathOpener.CurrentOpener?.CurrentState is not 
                 OpenerState.InOpener)
             {
                 if (cfg.HealerSettings.AutoCleanse && isHealer)
