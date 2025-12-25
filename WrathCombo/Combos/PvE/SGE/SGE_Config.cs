@@ -109,6 +109,8 @@ internal partial class SGE
                 #region Heal
 
                 case Preset.SGE_ST_Heal:
+                    DrawSliderInt(0, 2, SGE_Heal_HoldAddersgall,
+                        "How many Addersgall to retain for Manual Usage.");
                     DrawAdditionalBoolChoice(SGE_ST_Heal_IncludeShields,
                         "Include Shields in HP Percent Sliders", "");
                     break;
@@ -243,6 +245,11 @@ internal partial class SGE
 
                     DrawPriorityInput(SGE_ST_Heals_Priority,
                         12, 11, $"{Holos.ActionName()} Priority: ");
+                    break;
+                
+                case Preset.SGE_AoE_Heal:
+                    DrawSliderInt(0, 2, SGE_Heal_HoldAddersgall,
+                        "How many Addersgall to retain for Manual Usage.");
                     break;
 
                 case Preset.SGE_AoE_Heal_Lucid:
@@ -428,6 +435,7 @@ internal partial class SGE
             SGE_AoE_Heal_KeracholeTrait = new("SGE_AoE_Heal_KeracholeTrait");
 
         public static UserInt
+            SGE_Heal_HoldAddersgall = new("SGE_Heal_HoldAddersgall", 1),
             SGE_ST_Heal_LucidOption = new("SGE_ST_Heal_LucidOption", 6500),
             SGE_ST_Heal_Zoe = new("SGE_ST_Heal_Zoe", 50),
             SGE_ST_Heal_Haima = new("SGE_ST_Heal_Haima", 50),
