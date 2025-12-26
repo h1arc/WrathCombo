@@ -101,6 +101,8 @@ internal partial class SAM
         internal static int Senei => GetResourceCost(SAM.Senei);
 
         internal static int Shinten => GetResourceCost(SAM.Shinten);
+
+        internal static int Gyoten => GetResourceCost(SAM.Gyoten);
     }
 
     #endregion
@@ -299,7 +301,7 @@ internal partial class SAM
                     !JustUsed(Ikishoten))
                     return true;
 
-                if (GetCooldownRemainingTime(Senei) >= 15 &&
+                if (GetCooldownRemainingTime(Senei) >= 20 &&
                     Kenki >= SAM_ST_KenkiOvercapAmount)
                     return true;
 
@@ -551,6 +553,7 @@ internal partial class SAM
             Yukikaze,
             Shinten,
             TendoSetsugekka,
+            Gyoten, //25
             TendoKaeshiSetsugekka
         ];
 
@@ -563,8 +566,12 @@ internal partial class SAM
 
         public override List<(int[] Steps, uint NewAction, Func<bool> Condition)> SubstitutionSteps { get; set; } =
         [
-            ([2], 11, () => !TargetNeedsPositionals()),
-            ([20], Shinten, () => Kenki >= SAMKenki.Shinten)
+            ([2], 11, () => !TargetNeedsPositionals())
+        ];
+
+        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } =
+        [
+            ([25], () => Kenki < SAMKenki.Gyoten)
         ];
 
         public override bool HasCooldowns() =>
