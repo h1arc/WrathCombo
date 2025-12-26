@@ -118,7 +118,8 @@ internal partial class SAM
                HasBattleTarget() &&
                GetTargetHPPercent() > hpThreshold &&
                dotRemaining <= dotRefresh &&
-               JustUsed(MeikyoShisui, 15f);
+               (EnhancedSenei && (JustUsed(Senei, 35f) || JustUsed(Ikishoten, 35f)) ||
+                !EnhancedSenei);
     }
 
     private static int ComputeHpThresholdHiganbana()
@@ -169,7 +170,7 @@ internal partial class SAM
         float gcd = GetAdjustedRecastTime(ActionType.Action, Hakaze) / 100f;
 
         if (ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.Tendo) &&
-            !HasStatusEffect(Buffs.MeikyoShisui) && InActionRange(OriginalHook(Hakaze)) && 
+            !HasStatusEffect(Buffs.MeikyoShisui) && InActionRange(OriginalHook(Hakaze)) &&
             (JustUsed(Yukikaze) || JustUsed(Gekko) || JustUsed(Kasha)))
         {
             if (InBossEncounter())
@@ -210,9 +211,9 @@ internal partial class SAM
 
         if ((simpleMode || IsEnabled(Preset.SAM_ST_Gekko)) &&
             LevelChecked(Gekko) &&
-            ((OnTargetsRear() || OnTargetsFront()) && !HasGetsu ||
-             OnTargetsFlank() && HasKa ||
-             !HasStatusEffect(Buffs.Fugetsu) && !HasGetsu))
+            (!HasStatusEffect(Buffs.Fugetsu) ||
+             (OnTargetsRear() || OnTargetsFront()) && !HasGetsu ||
+             OnTargetsFlank() && HasKa))
             return !OnTargetsRear() &&
                    Role.CanTrueNorth() &&
                    useTrueNorthIfEnabled
@@ -221,9 +222,9 @@ internal partial class SAM
 
         if ((simpleMode || IsEnabled(Preset.SAM_ST_Kasha)) &&
             LevelChecked(Kasha) &&
-            ((OnTargetsFlank() || OnTargetsFront()) && !HasKa ||
-             OnTargetsRear() && HasGetsu ||
-             !HasStatusEffect(Buffs.Fuka) && !HasKa))
+            (!HasStatusEffect(Buffs.Fuka) ||
+             (OnTargetsFlank() || OnTargetsFront()) && !HasKa ||
+             OnTargetsRear() && HasGetsu))
             return !OnTargetsFlank() &&
                    Role.CanTrueNorth() &&
                    useTrueNorthIfEnabled
@@ -329,7 +330,8 @@ internal partial class SAM
                 IsNotEnabled(Preset.SAM_ST_CDs_UseHiganbana) && JustUsed(Ikishoten, 15f))
                 return true;
 
-            if (JustUsed(TendoKaeshiSetsugekka, 15f))
+            if (JustUsed(TendoKaeshiSetsugekka, 15f) &&
+                GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) > 8)
                 return true;
 
             if (!simpleMode &&
