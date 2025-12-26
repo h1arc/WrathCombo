@@ -347,8 +347,8 @@ internal partial class BRD
         ];
         public override int MinOpenerLevel => 100;
         public override int MaxOpenerLevel => 109;
-        public override bool ParentPresetEnabled => IsEnabled(Preset.BRD_ST_AdvMode);
-        public override bool ThisPresetEnabled => IsEnabled(Preset.BRD_ST_Adv_Balance_Standard);
+
+        public override Preset Preset => Preset.BRD_ST_Adv_Balance_Standard;
 
         internal override UserData ContentCheckConfig => BRD_Balance_Content;
         public override bool HasCooldowns() =>
@@ -394,8 +394,8 @@ internal partial class BRD
         ];
         public override int MinOpenerLevel => 100;
         public override int MaxOpenerLevel => 109;
-        public override bool ParentPresetEnabled => IsEnabled(Preset.BRD_ST_AdvMode);
-        public override bool ThisPresetEnabled => IsEnabled(Preset.BRD_ST_Adv_Balance_Standard);
+
+        public override Preset Preset => Preset.BRD_ST_Adv_Balance_Standard;
 
         internal override UserData ContentCheckConfig => BRD_Balance_Content;
         public override bool HasCooldowns() =>
@@ -437,8 +437,7 @@ internal partial class BRD
         ];
         public override int MinOpenerLevel => 100;
         public override int MaxOpenerLevel => 109;
-        public override bool ParentPresetEnabled => IsEnabled(Preset.BRD_ST_AdvMode);
-        public override bool ThisPresetEnabled => IsEnabled(Preset.BRD_ST_Adv_Balance_Standard);
+        public override Preset Preset => Preset.BRD_ST_Adv_Balance_Standard;
         internal override UserData ContentCheckConfig => BRD_Balance_Content;
         public override bool HasCooldowns() =>
             IsOffCooldown(WanderersMinuet) &&

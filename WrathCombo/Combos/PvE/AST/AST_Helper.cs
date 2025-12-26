@@ -493,9 +493,7 @@ internal partial class AST
         public override int MinOpenerLevel => 92;
         public override int MaxOpenerLevel => 109;
 
-        public override bool ParentPresetEnabled => IsEnabled(Preset.AST_ST_DPS);
-
-        public override bool ThisPresetEnabled => IsEnabled(Preset.AST_ST_DPS_Opener);
+        public override Preset Preset => Preset.AST_ST_DPS_Opener;
 
         internal override UserData? ContentCheckConfig => AST_ST_DPS_Balance_Content;
 

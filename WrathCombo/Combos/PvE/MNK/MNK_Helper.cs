@@ -492,8 +492,7 @@ internal partial class MNK
         ];
 
         internal override UserData ContentCheckConfig => MNK_Balance_Content;
-        public override bool ParentPresetEnabled => IsEnabled(Preset.MNK_ST_AdvancedMode);
-        public override bool ThisPresetEnabled => IsEnabled(Preset.MNK_STUseOpener);
+        public override Preset Preset => Preset.MNK_STUseOpener;
         public override bool HasCooldowns() =>
             GetRemainingCharges(PerfectBalance) is 2 &&
             IsOffCooldown(Brotherhood) &&
@@ -544,8 +543,7 @@ internal partial class MNK
         ];
 
         internal override UserData ContentCheckConfig => MNK_Balance_Content;
-        public override bool ParentPresetEnabled => IsEnabled(Preset.MNK_ST_AdvancedMode);
-        public override bool ThisPresetEnabled => IsEnabled(Preset.MNK_STUseOpener);
+        public override Preset Preset => Preset.MNK_STUseOpener;
         public override bool HasCooldowns() =>
             GetRemainingCharges(PerfectBalance) is 2 &&
             IsOffCooldown(Brotherhood) &&
@@ -597,8 +595,7 @@ internal partial class MNK
         ];
 
         internal override UserData ContentCheckConfig => MNK_Balance_Content;
-        public override bool ParentPresetEnabled => IsEnabled(Preset.MNK_ST_AdvancedMode);
-        public override bool ThisPresetEnabled => IsEnabled(Preset.MNK_STUseOpener);
+        public override Preset Preset => Preset.MNK_STUseOpener;
         public override bool HasCooldowns() =>
             GetRemainingCharges(PerfectBalance) is 2 &&
             IsOffCooldown(Brotherhood) &&
@@ -650,8 +647,7 @@ internal partial class MNK
         ];
 
         internal override UserData ContentCheckConfig => MNK_Balance_Content;
-        public override bool ParentPresetEnabled => IsEnabled(Preset.MNK_ST_AdvancedMode);
-        public override bool ThisPresetEnabled => IsEnabled(Preset.MNK_STUseOpener);
+        public override Preset Preset => Preset.MNK_STUseOpener;
         public override bool HasCooldowns() =>
             GetRemainingCharges(PerfectBalance) is 2 &&
             IsOffCooldown(Brotherhood) &&

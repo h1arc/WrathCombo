@@ -316,8 +316,7 @@ internal partial class RDM
         public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } = [([13, 15, 19, 20], () => !InMeleeRange())];
 
         internal override UserData? ContentCheckConfig => RDM_BalanceOpener_Content;
-        public override bool ParentPresetEnabled => IsEnabled(Preset.RDM_ST_DPS);
-        public override bool ThisPresetEnabled => IsEnabled(Preset.RDM_Balance_Opener);
+        public override Preset Preset => Preset.RDM_Balance_Opener;
         public override bool HasCooldowns()
         {
             if (!ActionsReady([Role.Swiftcast, Fleche, Embolden, ContreSixte]) || GetRemainingCharges(Acceleration) < 2 ||
@@ -381,8 +380,7 @@ internal partial class RDM
         public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } = [([15, 20], () => !InMeleeRange())];
 
         internal override UserData? ContentCheckConfig => RDM_BalanceOpener_Content;
-        public override bool ParentPresetEnabled => IsEnabled(Preset.RDM_ST_DPS);
-        public override bool ThisPresetEnabled => IsEnabled(Preset.RDM_Balance_Opener);
+        public override Preset Preset => Preset.RDM_Balance_Opener;
         public override bool HasCooldowns()
         {
             if (!ActionsReady([Role.Swiftcast, Fleche, Embolden, ContreSixte]) || GetRemainingCharges(Acceleration) < 2 ||

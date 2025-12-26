@@ -272,8 +272,7 @@ internal partial class DRK
                 DRK_ST_OpenerAction == (int)PullAction.Unmend),
         ];
 
-        public override bool ParentPresetEnabled => IsEnabled(Preset.DRK_ST_Adv);
-        public override bool ThisPresetEnabled => IsEnabled(Preset.DRK_ST_BalanceOpener);
+        public override Preset Preset => Preset.DRK_ST_BalanceOpener;
 
         internal override UserData? ContentCheckConfig =>
             DRK_ST_OpenerDifficulty;

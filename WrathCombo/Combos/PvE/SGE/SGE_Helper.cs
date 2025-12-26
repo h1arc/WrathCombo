@@ -379,8 +379,7 @@ internal partial class SGE
         ];
 
         internal override UserData ContentCheckConfig => SGE_Balance_Content;
-        public override bool ParentPresetEnabled => IsEnabled(Preset.SGE_ST_DPS);
-        public override bool ThisPresetEnabled => IsEnabled(Preset.SGE_ST_DPS_Opener);
+        public override Preset Preset => Preset.SGE_ST_DPS_Opener;
         public override bool HasCooldowns() =>
             GetRemainingCharges(Phlegma3) is 2 &&
             IsOffCooldown(Psyche) &&
@@ -421,8 +420,7 @@ internal partial class SGE
         ];
 
         internal override UserData ContentCheckConfig => SGE_Balance_Content;
-        public override bool ParentPresetEnabled => IsEnabled(Preset.SGE_ST_DPS);
-        public override bool ThisPresetEnabled => IsEnabled(Preset.SGE_ST_DPS_Opener);
+        public override Preset Preset => Preset.SGE_ST_DPS_Opener;
         public override bool HasCooldowns() =>
             GetRemainingCharges(Phlegma3) is 2 &&
             IsOffCooldown(Psyche) &&

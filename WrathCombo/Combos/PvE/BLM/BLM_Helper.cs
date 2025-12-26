@@ -206,9 +206,7 @@ internal partial class BLM
 
         public override List<int> DelayedWeaveSteps { get; set; } = [6];
 
-        public override bool ParentPresetEnabled => IsEnabled(Preset.BLM_ST_AdvancedMode);
-
-        public override bool ThisPresetEnabled => IsEnabled(Preset.BLM_ST_Opener);
+        public override Preset Preset => Preset.BLM_ST_Opener;
 
         public override bool HasCooldowns() =>
             MP.Full &&
@@ -263,9 +261,7 @@ internal partial class BLM
 
         public override List<int> DelayedWeaveSteps { get; set; } = [6];
 
-        public override bool ParentPresetEnabled => IsEnabled(Preset.BLM_ST_AdvancedMode);
-
-        public override bool ThisPresetEnabled => IsEnabled(Preset.BLM_ST_Opener);
+        public override Preset Preset => Preset.BLM_ST_Opener;
 
         public override bool HasCooldowns() =>
             MP.Full &&

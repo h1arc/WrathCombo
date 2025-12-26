@@ -240,8 +240,7 @@ internal partial class PCT
             ClawedMuse,//20
         ];
         internal override UserData? ContentCheckConfig => PCT_Balance_Content;
-        public override bool ParentPresetEnabled => IsEnabled(Preset.PCT_ST_AdvancedMode);
-        public override bool ThisPresetEnabled => IsEnabled(Preset.PCT_ST_Advanced_Openers);
+        public override Preset Preset => Preset.PCT_ST_Advanced_Openers;
         public override List<(int[] Steps, uint NewAction, Func<bool> Condition)> SubstitutionSteps { get; set; } =
 [
             ([8, 9, 10], BlizzardinCyan, () => OriginalHook(BlizzardinCyan) == BlizzardinCyan),
@@ -317,8 +316,7 @@ internal partial class PCT
             ([9, 10, 11], ThunderinMagenta, () => OriginalHook(BlizzardinCyan) == ThunderinMagenta),
             ([12], HolyInWhite, () => !HasStatusEffect(Buffs.MonochromeTones)),
         ];
-        public override bool ParentPresetEnabled => IsEnabled(Preset.PCT_ST_AdvancedMode);
-        public override bool ThisPresetEnabled => IsEnabled(Preset.PCT_ST_Advanced_Openers);
+        public override Preset Preset => Preset.PCT_ST_Advanced_Openers;
         public override bool HasCooldowns()
         {
             if (!IsOffCooldown(StarryMuse))
@@ -379,8 +377,7 @@ internal partial class PCT
             ([13, 14, 15], ThunderinMagenta, () => OriginalHook(BlizzardinCyan) == ThunderinMagenta),
             ([16], HolyInWhite, () => !HasStatusEffect(Buffs.MonochromeTones)),
         ];
-        public override bool ParentPresetEnabled => IsEnabled(Preset.PCT_ST_AdvancedMode);
-        public override bool ThisPresetEnabled => IsEnabled(Preset.PCT_ST_Advanced_Openers);
+        public override Preset Preset => Preset.PCT_ST_Advanced_Openers;
         public override bool HasCooldowns()
         {
             if (!IsOffCooldown(StarryMuse))
@@ -440,8 +437,7 @@ internal partial class PCT
             ([14,15,16], ThunderinMagenta, () => OriginalHook(BlizzardinCyan) == ThunderinMagenta),
             ([17], HolyInWhite, () => !HasStatusEffect(Buffs.MonochromeTones)),
         ];
-        public override bool ParentPresetEnabled => IsEnabled(Preset.PCT_ST_AdvancedMode);
-        public override bool ThisPresetEnabled => IsEnabled(Preset.PCT_ST_Advanced_Openers);
+        public override Preset Preset => Preset.PCT_ST_Advanced_Openers;
         public override bool HasCooldowns()
         {
             if (!IsOffCooldown(StarryMuse))
