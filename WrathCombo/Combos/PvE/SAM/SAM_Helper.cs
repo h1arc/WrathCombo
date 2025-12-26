@@ -171,7 +171,7 @@ internal partial class SAM
 
         if (ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.Tendo) &&
             !HasStatusEffect(Buffs.MeikyoShisui) && InActionRange(OriginalHook(Hakaze)) &&
-            (JustUsed(Yukikaze) || SenCount >= 1 && HasSetsu))
+            (JustUsed(Yukikaze) || SenCount >= 1 && HasSetsu && (JustUsed(Gekko) || JustUsed(Kasha))))
         {
             if (InBossEncounter())
             {
@@ -242,22 +242,22 @@ internal partial class SAM
         ActionReady(Ikishoten) &&
         !HasStatusEffect(Buffs.ZanshinReady) && Kenki <= 50 &&
         (NumberOfGcdsUsed is 2 ||
-         JustUsed(TendoKaeshiSetsugekka, 15f) ||
-         !LevelChecked(TendoKaeshiSetsugekka));
+         JustUsed(Senei, 15f) ||
+         !LevelChecked(Senei));
 
     private static bool CanSenei() =>
         ActionReady(Senei) && NumberOfGcdsUsed >= 4 &&
         InActionRange(Senei) &&
         (!LevelChecked(KaeshiSetsugekka) ||
          LevelChecked(KaeshiSetsugekka) &&
-         (JustUsed(KaeshiSetsugekka, 5f) ||
-          JustUsed(TendoSetsugekka, 5f)));
+         (SenCount is 3 && HasStatusEffect(Buffs.Tendo) ||
+          JustUsed(TendoKaeshiSetsugekka, 15f)));
 
     private static bool CanTsubame() =>
         LevelChecked(TsubameGaeshi) &&
         (HasStatusEffect(Buffs.TendoKaeshiSetsugekkaReady) ||
-         HasStatusEffect(Buffs.TsubameReady) && (SenCount is 3 ||
-                                                 EnhancedSenei && GetCooldownRemainingTime(Senei) > 33));
+         HasStatusEffect(Buffs.TsubameReady) &&
+         (SenCount is 3 || EnhancedSenei && GetCooldownRemainingTime(Senei) > 33));
 
     private static bool CanShoha() =>
         ActionReady(Shoha) && MeditationStacks is 3 &&
@@ -284,22 +284,30 @@ internal partial class SAM
                 return true;
 
             if (Kenki is 100 && ComboAction == OriginalHook(Gyofu) ||
-                Kenki >= 95 && ComboAction is Jinpu or Shifu)
+                Kenki >= 95 && ComboAction is Jinpu or Shifu || SenCount is 3 ||
+                Kenki >= 80 && !HasSetsu && (JustUsed(MidareSetsugekka, 5f) || JustUsed(Higanbana, 5f)))
                 return true;
 
             if (EnhancedSenei &&
                 !HasStatusEffect(Buffs.ZanshinReady))
             {
-                if (GetCooldownRemainingTime(Senei) < gcd * 2 &&
-                    Kenki >= 95)
+                if (GetCooldownRemainingTime(Senei) < gcd * 3 &&
+                    Kenki >= 90)
                     return true;
 
                 if (JustUsed(Senei, 15f) &&
                     !JustUsed(Ikishoten))
                     return true;
 
-                if (GetCooldownRemainingTime(Senei) >= 20 &&
+                if (GetCooldownRemainingTime(Senei) >= 15 &&
                     Kenki >= SAM_ST_KenkiOvercapAmount)
+                    return true;
+
+                if (Kenki >= 95 && JustUsed(MeikyoShisui) ||
+                    Kenki >= 90 && JustUsed(MeikyoShisui) && ComboAction is Yukikaze)
+                    return true;
+
+                if (Kenki >= 65 && SenCount >= 2 && (HasStatusEffect(Buffs.Tendo) || JustUsed(TendoKaeshiSetsugekka, 5f)))
                     return true;
             }
 
