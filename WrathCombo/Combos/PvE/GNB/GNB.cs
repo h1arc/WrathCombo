@@ -89,11 +89,12 @@ internal partial class GNB : Tank
             //MAX PRIORITY - just clip it, it's better than just losing it altogether
             //Continuation procs (Hypervelocity, Jugular Rip, Abdomen Tear, Eye Gouge)
             if ((CanContinue || HasStatusEffect(Buffs.ReadyToBlast)) &&
-                CanDelayedWeave(0.6f, 0.0f))
+                RemainingGCD < 0.6f &&
+                IsEnabled(Preset.GNB_ST_Continuation))
                 return OriginalHook(Continuation);
 
             //No Mercy
-            if (ShouldUseNoMercy(Preset.GNB_ST_Simple, GNB_ST_NoMercyStop, GNB_ST_NoMercy_SubOption))
+            if (ShouldUseNoMercy(Preset.GNB_ST_Simple, 0, 0))
                 return NoMercy;
 
             //HIGH PRIORITY - within late weave window, send now
@@ -124,7 +125,8 @@ internal partial class GNB : Tank
 
             //NORMAL PRIORITY - within weave weave window
             //Gnashing Fang procs (Jugular Rip, Abdomen Tear, Eye Gouge)
-            if (CanContinue && CanWeave())
+            if (CanContinue &&
+                CanWeave())
                 return OriginalHook(Continuation);
 
             //Gnashing Fang - burst
@@ -430,7 +432,7 @@ internal partial class GNB : Tank
                 if (CanDD && HasNM)
                     return DoubleDown;
 
-                if (CanReign || GunStep is 3 or 4)
+                if ((CanReign && HasNM) || GunStep is 3 or 4)
                     return OriginalHook(ReignOfBeasts);
 
                 if (ShouldUseFatedCircle(Preset.GNB_AoE_Simple))
@@ -561,7 +563,7 @@ internal partial class GNB : Tank
                     return DoubleDown;
 
                 if (IsEnabled(Preset.GNB_AoE_Reign) && 
-                    (CanReign || GunStep is 3 or 4))
+                    ((CanReign && HasNM) || GunStep is 3 or 4))
                     return OriginalHook(ReignOfBeasts);
 
                 if (ShouldUseFatedCircle(Preset.GNB_AoE_FatedCircle))
