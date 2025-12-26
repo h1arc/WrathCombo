@@ -83,7 +83,7 @@ internal partial class GNB : Tank
             #region Rotation
 
             //Lightning Shot
-            if (ShouldUseLightningShot(Preset.GNB_ST_Simple))
+            if (ShouldUseLightningShot(Preset.GNB_ST_Simple, 0))
                 return LightningShot;
 
             //MAX PRIORITY - just clip it, it's better than just losing it altogether
@@ -258,14 +258,14 @@ internal partial class GNB : Tank
                 return actionID;
 
             //Lightning Shot
-			if (ShouldUseLightningShot(Preset.GNB_ST_RangedUptime))
+			if (ShouldUseLightningShot(Preset.GNB_ST_RangedUptime, GNB_ST_HoldLightningShot))
                 return LightningShot;
 
             //MAX PRIORITY - just clip it, it's better than just losing it altogether
             //Continuation procs (Hypervelocity, Jugular Rip, Abdomen Tear, Eye Gouge)
             if ((CanContinue || HasStatusEffect(Buffs.ReadyToBlast)) &&
-                CanDelayedWeave(0.6f, 0.0f) &&
-				IsEnabled(Preset.GNB_ST_Continuation))
+                RemainingGCD < 0.6f &&
+                IsEnabled(Preset.GNB_ST_Continuation))
                 return OriginalHook(Continuation);
 
             //No Mercy

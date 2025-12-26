@@ -508,9 +508,10 @@ internal partial class GNB : Tank
         GetRemainingCharges(GnashingFang) < 2 && //has less than 2 GF charges
         (!Slow || !HasStatusEffect(Buffs.ReadyToBreak)); //Sonic Break safety - if we're 2.5 & we have Sonic Break, we want to use it first before Reign - otherwise just send it after everything
 
-    private static bool ShouldUseLightningShot(Preset preset) =>
+    private static bool ShouldUseLightningShot(Preset preset, int holdforproc) =>
         IsEnabled(preset) && //option enabled
-        !InMeleeRange() && //out of melee range
+        (holdforproc == 0 || (holdforproc == 1 && !(CanContinue || HasStatusEffect(Buffs.ReadyToBlast)))) && //not holding for proc
+        ((CanContinue || HasStatusEffect(Buffs.ReadyToBlast)) ? GetTargetDistance() > 5 : !InMeleeRange()) && //out of melee range
         HasBattleTarget() && //has a target
         LevelChecked(LightningShot); //unlocked 
 
