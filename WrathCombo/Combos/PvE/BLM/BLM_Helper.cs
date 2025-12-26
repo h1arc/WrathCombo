@@ -206,6 +206,10 @@ internal partial class BLM
 
         public override List<int> DelayedWeaveSteps { get; set; } = [6];
 
+        public override bool ParentPresetEnabled => IsEnabled(Preset.BLM_ST_AdvancedMode);
+
+        public override bool ThisPresetEnabled => IsEnabled(Preset.BLM_ST_Opener);
+
         public override bool HasCooldowns() =>
             MP.Full &&
             IsOffCooldown(Manafont) &&
@@ -258,6 +262,10 @@ internal partial class BLM
         internal override UserData ContentCheckConfig => BLM_Balance_Content;
 
         public override List<int> DelayedWeaveSteps { get; set; } = [6];
+
+        public override bool ParentPresetEnabled => IsEnabled(Preset.BLM_ST_AdvancedMode);
+
+        public override bool ThisPresetEnabled => IsEnabled(Preset.BLM_ST_Opener);
 
         public override bool HasCooldowns() =>
             MP.Full &&

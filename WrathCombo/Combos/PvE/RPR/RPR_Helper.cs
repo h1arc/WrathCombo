@@ -220,7 +220,8 @@ internal partial class RPR
             ([20], UnveiledGallows, () => HasStatusEffect(Buffs.EnhancedGallows)),
             ([21], Gallows, () => HasStatusEffect(Buffs.EnhancedGallows))
         ];
-
+        public override bool ParentPresetEnabled => IsEnabled(Preset.RPR_ST_AdvancedMode);
+        public override bool ThisPresetEnabled => IsEnabled(Preset.RPR_ST_Opener);
         internal override UserData ContentCheckConfig => RPR_Balance_Content;
 
         public override bool HasCooldowns() =>
@@ -263,7 +264,8 @@ internal partial class RPR
         [
             ([1], () => RPR_Opener_StartChoice == 1)
         ];
-
+        public override bool ParentPresetEnabled => IsEnabled(Preset.RPR_ST_AdvancedMode);
+        public override bool ThisPresetEnabled => IsEnabled(Preset.RPR_ST_Opener);
         public override List<(int[], uint, Func<bool>)> SubstitutionSteps { get; set; } =
         [
             ([16], Gallows, OnTargetsRear),

@@ -106,7 +106,8 @@ internal partial class GNB : Tank
             WickedTalon,
             EyeGouge
         ];
-
+        public override bool ParentPresetEnabled => IsEnabled(Preset.GNB_ST_Advanced);
+        public override bool ThisPresetEnabled => IsEnabled(Preset.GNB_ST_Opener);
         public override List<int> VeryDelayedWeaveSteps { get; set; } = [5];
     }
     internal class Lv90SlowNormalNM : GNBOpenerLv90Base
@@ -136,6 +137,9 @@ internal partial class GNB : Tank
             WickedTalon,
             EyeGouge
         ];
+
+        public override bool ParentPresetEnabled => IsEnabled(Preset.GNB_ST_Advanced);
+        public override bool ThisPresetEnabled => IsEnabled(Preset.GNB_ST_Opener);
     }
     internal class Lv90FastEarlyNM : GNBOpenerLv90Base
     {
@@ -164,7 +168,8 @@ internal partial class GNB : Tank
             WickedTalon,
             EyeGouge
         ];
-
+        public override bool ParentPresetEnabled => IsEnabled(Preset.GNB_ST_Advanced);
+        public override bool ThisPresetEnabled => IsEnabled(Preset.GNB_ST_Opener);
         public override List<int> VeryDelayedWeaveSteps { get; set; } = [4];
     }
     internal class Lv90SlowEarlyNM : GNBOpenerLv90Base
@@ -194,6 +199,9 @@ internal partial class GNB : Tank
             WickedTalon,
             EyeGouge
         ];
+
+        public override bool ParentPresetEnabled => IsEnabled(Preset.GNB_ST_Advanced);
+        public override bool ThisPresetEnabled => IsEnabled(Preset.GNB_ST_Opener);
     }
     #endregion
 
@@ -237,6 +245,9 @@ internal partial class GNB : Tank
             WickedTalon,
             EyeGouge
         ];
+
+        public override bool ParentPresetEnabled => IsEnabled(Preset.GNB_ST_Advanced);
+        public override bool ThisPresetEnabled => IsEnabled(Preset.GNB_ST_Opener);
         public override List<int> VeryDelayedWeaveSteps { get; set; } = [5];
     }
     internal class Lv100SlowNormalNM : GNBOpenerLv100Base
@@ -269,6 +280,9 @@ internal partial class GNB : Tank
             WickedTalon,
             EyeGouge
         ];
+
+        public override bool ParentPresetEnabled => IsEnabled(Preset.GNB_ST_Advanced);
+        public override bool ThisPresetEnabled => IsEnabled(Preset.GNB_ST_Opener);
     }
     internal class Lv100FastEarlyNM : GNBOpenerLv100Base
     {
@@ -300,6 +314,9 @@ internal partial class GNB : Tank
             WickedTalon,
             EyeGouge
         ];
+
+        public override bool ParentPresetEnabled => IsEnabled(Preset.GNB_ST_Advanced);
+        public override bool ThisPresetEnabled => IsEnabled(Preset.GNB_ST_Opener);
         public override List<int> VeryDelayedWeaveSteps { get; set; } = [3];
     }
     internal class Lv100SlowEarlyNM : GNBOpenerLv100Base
@@ -332,6 +349,9 @@ internal partial class GNB : Tank
             WickedTalon,
             EyeGouge
         ];
+
+        public override bool ParentPresetEnabled => IsEnabled(Preset.GNB_ST_Advanced);
+        public override bool ThisPresetEnabled => IsEnabled(Preset.GNB_ST_Opener);
     }
     #endregion
 

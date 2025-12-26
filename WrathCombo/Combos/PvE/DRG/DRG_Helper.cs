@@ -105,6 +105,9 @@ internal partial class DRG
             WyrmwindThrust
         ];
 
+        public override bool ParentPresetEnabled => IsEnabled(Preset.DRG_ST_AdvancedMode);
+        public override bool ThisPresetEnabled => IsEnabled(Preset.DRG_ST_Opener);
+
         internal override UserData ContentCheckConfig => DRG_Balance_Content;
 
         public override bool HasCooldowns() =>
@@ -149,6 +152,8 @@ internal partial class DRG
             WyrmwindThrust
         ];
 
+        public override bool ParentPresetEnabled => IsEnabled(Preset.DRG_ST_AdvancedMode);
+        public override bool ThisPresetEnabled => IsEnabled(Preset.DRG_ST_Opener);
         internal override UserData ContentCheckConfig => DRG_Balance_Content;
 
         public override bool HasCooldowns() =>

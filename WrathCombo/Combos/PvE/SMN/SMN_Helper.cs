@@ -330,7 +330,8 @@ internal partial class SMN
         public override int MinOpenerLevel => 100;
         public override int MaxOpenerLevel => 109;
         internal override UserData? ContentCheckConfig => SMN_Balance_Content;
-
+        public override bool ParentPresetEnabled => IsEnabled(Preset.SMN_ST_Advanced_Combo);
+        public override bool ThisPresetEnabled => IsEnabled(Preset.SMN_ST_Advanced_Combo_Balance_Opener);
         public override bool HasCooldowns()
         {
             if (!HasPetPresent())

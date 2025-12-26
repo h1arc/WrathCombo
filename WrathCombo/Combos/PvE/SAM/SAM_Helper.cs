@@ -411,7 +411,8 @@ internal partial class SAM
         ];
 
         internal override UserData ContentCheckConfig => SAM_Balance_Content;
-
+        public override bool ParentPresetEnabled => IsEnabled(Preset.SAM_ST_AdvancedMode);
+        public override bool ThisPresetEnabled => IsEnabled(Preset.SAM_ST_Opener);
         public override List<(int[] Steps, Func<int> HoldDelay)> PrepullDelays { get; set; } =
         [
             ([2], () => SAM_Opener_PrePullDelay)
@@ -470,7 +471,8 @@ internal partial class SAM
         [
             ([2], 11, () => !TargetNeedsPositionals())
         ];
-
+        public override bool ParentPresetEnabled => IsEnabled(Preset.SAM_ST_AdvancedMode);
+        public override bool ThisPresetEnabled => IsEnabled(Preset.SAM_ST_Opener);
         public override bool HasCooldowns() =>
             GetRemainingCharges(MeikyoShisui) is 2 &&
             GetRemainingCharges(Role.TrueNorth) >= 1 &&
@@ -521,7 +523,8 @@ internal partial class SAM
         [
             ([2], 11, () => !TargetNeedsPositionals())
         ];
-
+        public override bool ParentPresetEnabled => IsEnabled(Preset.SAM_ST_AdvancedMode);
+        public override bool ThisPresetEnabled => IsEnabled(Preset.SAM_ST_Opener);
         public override bool HasCooldowns() =>
             GetRemainingCharges(MeikyoShisui) is 2 &&
             GetRemainingCharges(Role.TrueNorth) >= 1 &&
@@ -577,7 +580,8 @@ internal partial class SAM
             ([2], 11, () => !TargetNeedsPositionals()),
             ([20], Shinten, () => Kenki >= SAMKenki.Shinten)
         ];
-
+        public override bool ParentPresetEnabled => IsEnabled(Preset.SAM_ST_AdvancedMode);
+        public override bool ThisPresetEnabled => IsEnabled(Preset.SAM_ST_Opener);
         public override bool HasCooldowns() =>
             GetRemainingCharges(MeikyoShisui) is 2 &&
             GetRemainingCharges(Role.TrueNorth) >= 1 &&

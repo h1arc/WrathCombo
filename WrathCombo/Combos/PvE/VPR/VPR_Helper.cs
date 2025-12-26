@@ -323,7 +323,8 @@ internal partial class VPR
         ];
 
         internal override UserData ContentCheckConfig => VPR_Balance_Content;
-
+        public override bool ParentPresetEnabled => IsEnabled(Preset.VPR_ST_AdvancedMode);
+        public override bool ThisPresetEnabled => IsEnabled(Preset.VPR_ST_Opener);
         public override bool HasCooldowns() =>
             IsOriginal(ReavingFangs) &&
             GetRemainingCharges(Vicewinder) is 2 &&
