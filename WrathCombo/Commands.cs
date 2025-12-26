@@ -126,7 +126,7 @@ public partial class WrathCombo
     private void OutputOpenerStatus()
     {
         Svc.Log.Debug($"{WrathOpener.CurrentOpener.Enabled}");
-        if (WrathOpener.CurrentOpener is not null && WrathOpener.CurrentOpener != WrathOpener.Dummy && WrathOpener.CurrentOpener.Enabled) 
+        if (WrathOpener.CurrentOpener is not null && WrathOpener.CurrentOpener != WrathOpener.Dummy && WrathOpener.CurrentOpener.Enabled)
         {
             string status = WrathOpener.CurrentOpener.CurrentState switch
             {
@@ -137,10 +137,10 @@ public partial class WrathCombo
                 Combos.PvE.Enums.OpenerState.FailedOpener => "Failed",
                 _ => "Unknown"
             };
-            Svc.Chat.Print(new() { Message = $"Opener status: {status}" });
+            DuoLog.Information($"Opener status: {status}");
         }
         else
-            Svc.Chat.Print(new() { Message = $"No valid opener active." });
+            DuoLog.Warning("No valid opener active.");
     }
 
     /// <summary>
