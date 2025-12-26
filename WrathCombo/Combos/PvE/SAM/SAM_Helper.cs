@@ -250,10 +250,9 @@ internal partial class SAM
     private static bool CanSenei() =>
         ActionReady(Senei) && NumberOfGcdsUsed >= 4 &&
         InActionRange(Senei) &&
-        (!LevelChecked(KaeshiSetsugekka) ||
-         LevelChecked(KaeshiSetsugekka) &&
-         (SenCount is 3 && HasStatusEffect(Buffs.Tendo) ||
-          JustUsed(TendoKaeshiSetsugekka, 15f)));
+        (LevelChecked(TendoKaeshiSetsugekka) &&
+         (SenCount is 3 && HasStatusEffect(Buffs.Tendo) || JustUsed(TendoKaeshiSetsugekka, 15f)) ||
+         !LevelChecked(TendoKaeshiSetsugekka));
 
     private static bool CanTsubame() =>
         LevelChecked(TsubameGaeshi) &&
@@ -286,14 +285,14 @@ internal partial class SAM
                 return true;
 
             if (Kenki is 100 && ComboAction == OriginalHook(Gyofu) ||
-                Kenki >= 95 && ComboAction is Jinpu or Shifu || SenCount is 3 ||
+                Kenki >= 95 && (ComboAction is Jinpu or Shifu || SenCount is 3) ||
                 Kenki >= 80 && !HasSetsu && (JustUsed(MidareSetsugekka, 5f) || JustUsed(Higanbana, 5f)))
                 return true;
 
             if (EnhancedSenei &&
                 !HasStatusEffect(Buffs.ZanshinReady))
             {
-                if (GetCooldownRemainingTime(Senei) < gcd * 3 &&
+                if (GetCooldownRemainingTime(Senei) < gcd * 2 &&
                     Kenki >= 90)
                     return true;
 
@@ -301,15 +300,17 @@ internal partial class SAM
                     !JustUsed(Ikishoten))
                     return true;
 
-                if (GetCooldownRemainingTime(Senei) >= 20 &&
-                    Kenki >= SAM_ST_KenkiOvercapAmount)
+                if (Kenki >= 95 && JustUsed(MeikyoShisui))
                     return true;
 
-                if (Kenki >= 95 && JustUsed(MeikyoShisui) ||
-                    Kenki >= 90 && JustUsed(MeikyoShisui) && ComboAction is Yukikaze)
+                if (Kenki >= 90 && JustUsed(MeikyoShisui) && ComboAction is Yukikaze)
                     return true;
 
                 if (Kenki >= 65 && SenCount >= 2 && (HasStatusEffect(Buffs.Tendo) || JustUsed(TendoKaeshiSetsugekka, 5f)))
+                    return true;
+
+                if (GetCooldownRemainingTime(Senei) >= 25 &&
+                    Kenki >= SAM_ST_KenkiOvercapAmount)
                     return true;
             }
 
