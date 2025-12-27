@@ -27,14 +27,6 @@ internal partial class SAM
                     (HasStatusEffect(Buffs.Fuka) || IsNotEnabled(Preset.SAM_ST_Kasha)))
                     return Yukikaze;
 
-                if ((simpleMode || IsEnabled(Preset.SAM_ST_Gekko)) &&
-                    LevelChecked(Jinpu) &&
-                    ((OnTargetsRear() || OnTargetsFront()) && !HasGetsu ||
-                     OnTargetsFlank() && HasKa ||
-                     !HasStatusEffect(Buffs.Fugetsu) ||
-                     SenCount is 3 && RefreshFugetsu))
-                    return Jinpu;
-
                 if ((simpleMode || IsEnabled(Preset.SAM_ST_Kasha)) &&
                     LevelChecked(Shifu) &&
                     ((OnTargetsFlank() || OnTargetsFront()) && !HasKa ||
@@ -42,6 +34,14 @@ internal partial class SAM
                      !HasStatusEffect(Buffs.Fuka) ||
                      SenCount is 3 && RefreshFuka))
                     return Shifu;
+
+                if ((simpleMode || IsEnabled(Preset.SAM_ST_Gekko)) &&
+                    LevelChecked(Jinpu) &&
+                    ((OnTargetsRear() || OnTargetsFront()) && !HasGetsu ||
+                     OnTargetsFlank() && HasKa ||
+                     !HasStatusEffect(Buffs.Fugetsu) ||
+                     SenCount is 3 && RefreshFugetsu))
+                    return Jinpu;
             }
 
             if (ComboAction is Jinpu && LevelChecked(Gekko))
