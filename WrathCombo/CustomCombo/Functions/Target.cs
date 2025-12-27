@@ -216,6 +216,7 @@ internal abstract partial class CustomComboFunctions
     /// <summary> Gets an object's current HP. Defaults to CurrentTarget unless specified. </summary>
     public static uint GetTargetCurrentHP(IGameObject? optionalTarget = null) => (optionalTarget ?? CurrentTarget) is IBattleChara chara ? chara.CurrentHp : 0;
     
+    /// <summary> Gets the average HP percentage of all enemies within a specified range. </summary>
     public static float GetAvgEnemyHPPercentInRange(float range)
     {
         var enemies = Svc.Objects
