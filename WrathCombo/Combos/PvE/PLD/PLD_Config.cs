@@ -16,6 +16,15 @@ internal partial class PLD
         {
             switch (preset)
             {
+                #region Combo Mitigations
+                case Preset.PLD_Mitigation_NonBoss_DivineVeil:
+                    DrawSliderInt(1,100, PLD_Mitigation_NonBoss_DivineVeil_Health, "Player HP% to use Divine Veil at or below (100 = Disable check)");
+                    break;
+                case Preset.PLD_Mitigation_Boss_SheltronOvercap:
+                    DrawSliderInt(50, 100, PLD_Mitigation_Boss_SheltronOvercap_Threshold, "Oath Gauge required to Use Sheltron and prevent Overcap.");
+                    break;
+                
+                #endregion
                 #region ST
                 
                 case Preset.PLD_ST_AdvancedMode:
@@ -160,9 +169,6 @@ internal partial class PLD
                 #endregion
 
                 #region Standalones
-                case Preset.PLD_Mitigation_NonBoss_DivineVeil:
-                    DrawSliderInt(1,100, PLD_Mitigation_NonBoss_DivineVeil_Health, "Player HP% to use Divine Veil at or below (100 = Disable check)");
-                    break;
 
                 // Requiescat Spender Feature
                 case Preset.PLD_Requiescat_Options:
@@ -312,29 +318,32 @@ internal partial class PLD
         private const int NumberMitigationOptions = 8;
 
         public static UserInt
-            //ST
+            //Mitigations
+            PLD_ST_MitOptions = new("PLD_ST_MitOptions"),
+            PLD_AoE_MitOptions = new("PLD_AoE_MitOptions"),
             PLD_ST_Advanced_MitOptions = new("PLD_ST_Advanced_MitOptions"),
+            PLD_AoE_Advanced_MitOptions = new("PLD_AoE_Advanced_MitOptions"),
+            PLD_Mitigation_NonBoss_DivineVeil_Health = new("PLD_Mitigation_NonBoss_DivineVeil_Health", 80),
+            PLD_Mitigation_Boss_SheltronOvercap_Threshold = new("PLD_Mitigation_Boss_SheltronOvercap_Threshold", 100),
+            
+            //ST
             PLD_Balance_Content = new("PLD_Balance_Content", 1),
             PLD_ST_Intervene_Charges = new("PLD_ST_Intervene_Charges"),
             PLD_ST_Intervene_Movement = new("PLD_ST_Intervene_Movement"),
             PLD_ST_Intervene_Distance = new("PLD_ST_Intervene_Distance", 3),
             PLD_ST_MP_Reserve = new("PLD_ST_MP_Reserve", 1000),
-            PLD_ST_MitOptions = new("PLD_ST_MitOptions"),
             PLD_ST_FoF_BossOption = new("PLD_ST_FoF_BossOption"),
             PLD_ST_FoF_HPOption = new("PLD_ST_FoF_HPOption", 10),
             PLD_ST_ShieldLob_SubOption = new("PLD_ST_ShieldLob_SubOption"),
-
+            
             //AoE
-            PLD_AoE_Advanced_MitOptions = new("PLD_AoE_Advanced_MitOptions"),
             PLD_AoE_FoF_Trigger = new("PLD_AoE_FoF_Trigger", 25),
-            PLD_AoE_MitOptions = new("PLD_AoE_MitOptions"),
             PLD_AoE_Intervene_Charges = new("PLD_AoE_Intervene_Charges"),
             PLD_AoE_Intervene_Movement = new("PLD_AoE_Intervene_Movement"),
             PLD_AoE_Intervene_Distance = new("PLD_AoE_Intervene_Distance", 3),
             PLD_AoE_MP_Reserve = new("PLD_AoE_MP_Reserve", 1000),
 
             //Standalone
-            PLD_Mitigation_NonBoss_DivineVeil_Health = new("PLD_Mitigation_NonBoss_DivineVeil_Health", 80),
             PLD_Requiescat_SubOption = new("PLD_Requiescat_SubOption"),
             PLD_SpiritsWithin_SubOption = new("PLD_SpiritsWithin_SubOption", 1),
 

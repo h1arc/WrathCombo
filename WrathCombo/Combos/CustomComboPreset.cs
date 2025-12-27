@@ -4649,6 +4649,23 @@ public enum Preset
     PLD_Mitigation_NonBoss_DivineVeil = 11094,
     
     [ParentCombo(PLD_Mitigation)]
+    [CustomComboInfo("Boss Encounter Mitigation", "Adds Mitigation to the combos when not in a boss encounter. Will not overlap separate options unless stated.", Job.PLD)]
+    PLD_Mitigation_Boss = 11095,
+    
+    [ParentCombo(PLD_Mitigation_Boss)]
+    [CustomComboInfo("Sheltron Overcap Option", "Adds Sheltron when Above Selected Oath Gague and targetted", Job.PLD)]
+    PLD_Mitigation_Boss_SheltronOvercap = 11096,
+    
+    [ParentCombo(PLD_Mitigation_Boss)]
+    [CustomComboInfo("Raidwide Reprisal Option", "Adds Reprisal when raidwide casting is detected.", Job.PLD)]
+    PLD_Mitigation_Boss_Reprisal = 11097,
+    
+    [ParentCombo(PLD_Mitigation_Boss)]
+    [CustomComboInfo("Raidwide Divine Veil Option", "Adds Divine Veil when raidwide casting is detected.", Job.PLD)]
+    PLD_Mitigation_Boss_DivineVeil = 11098,
+    
+    
+    [ParentCombo(PLD_Mitigation)]
     [CustomComboInfo("Block Combos for Passage of Arms",
         "Will block the main Combos with Savage Blade while Passage of Arms is still active, to prevent actions from those combos cancelling Passage of Arms early.\nThis will leave it up to you to cancel Passage of Arms via other actions or movement (or letting it be used fully).", Job.PLD)]
     PLD_BlockForWings = 11074,

@@ -94,7 +94,7 @@ internal partial class PLD
 
     #endregion
 
-    #region Mitigation Priority
+    #region One Button Mitigation Priority
 
     /// <summary>
     ///     The list of Mitigations to use in the One-Button Mitigation combo.<br />
@@ -189,7 +189,7 @@ internal partial class PLD
     
     private static bool CanUseNonBossMits(ref uint actionID)
     {
-        if (!InCombat() || !CanWeave() || InBossEncounter() || JustMitted) return false;
+        if (!InCombat() || !CanWeave() || InBossEncounter() || JustMitted || IsNotEnabled(Preset.PLD_Mitigation_NonBoss)) return false;
         
         if (IsEnabled(Preset.PLD_Mitigation_NonBoss_Sheltron) && ActionReady(OriginalHook(Sheltron)) && !HasStatusEffect(Buffs.Sheltron) && Gauge.OathGauge >= 50)
         {
@@ -250,6 +250,35 @@ internal partial class PLD
                 break;
             }
         }
+        return false;
+    }
+    
+    private static bool CanUseBossMits(ref uint actionID)
+    {
+        if (!InCombat() || !CanWeave() || !InBossEncounter() || JustMitted || IsNotEnabled(Preset.PLD_Mitigation_Boss)) return false;
+        
+        if (IsEnabled(Preset.PLD_Mitigation_Boss_SheltronOvercap) && 
+            ActionReady(OriginalHook(Sheltron)) && !HasStatusEffect(Buffs.Sheltron) && Gauge.OathGauge >= PLD_Mitigation_Boss_SheltronOvercap_Threshold && IsPlayerTargeted()) //Shelltron Overcap
+        {
+            actionID = OriginalHook(Sheltron);
+            return true;
+        }
+        
+        if (IsEnabled(Preset.PLD_Mitigation_Boss_Reprisal) && 
+            Role.CanReprisal(enemyCount:1) && RaidWideCasting())
+        {
+            actionID = Role.Reprisal;
+            return true;
+        }
+        
+        if (IsEnabled(Preset.PLD_Mitigation_Boss_DivineVeil) && 
+            ActionReady(DivineVeil) && RaidWideCasting())
+        {
+            actionID = DivineVeil;
+            return true;
+        }
+       
+        //Insert Tankbuster Stuff here
         return false;
     }
 
