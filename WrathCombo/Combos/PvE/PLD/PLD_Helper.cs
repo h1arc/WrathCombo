@@ -182,7 +182,7 @@ internal partial class PLD
 
     internal static bool MitigationRunning =>
         HasStatusEffect(Role.Buffs.ArmsLength) && HasStatusEffect(Role.Debuffs.Reprisal, CurrentTarget) ||
-        HasStatusEffect(Buffs.Rampart) || 
+        HasStatusEffect(Role.Buffs.Rampart) || 
         HasStatusEffect(Buffs.HallowedGround) ||
         HasStatusEffect(Buffs.Bulwark) ||
         HasStatusEffect(Buffs.Sentinel) || HasStatusEffect(Buffs.Guardian);
@@ -215,13 +215,13 @@ internal partial class PLD
                     return true;
                 }
                     
-                if (ActionReady(Role.ArmsLength) && IsEnabled(Preset.PLD_Mitigation_NonBoss_ArmsReprisal))
+                if (Role.CanArmsLength(5) && IsEnabled(Preset.PLD_Mitigation_NonBoss_ArmsReprisal))
                 {
                     actionID = Role.ArmsLength;
                     return true;
                 }
                     
-                if (ActionReady(Role.Reprisal) && IsEnabled(Preset.PLD_Mitigation_NonBoss_ArmsReprisal))
+                if (Role.CanReprisal(enemyCount:5) && IsEnabled(Preset.PLD_Mitigation_NonBoss_ArmsReprisal))
                 {
                     actionID = Role.Reprisal;
                     return true;
@@ -232,7 +232,7 @@ internal partial class PLD
 
             case >= 3:
             {
-                if (ActionReady(Role.Rampart) && IsEnabled(Preset.PLD_Mitigation_NonBoss_Rampart))
+                if (Role.CanRampart() && IsEnabled(Preset.PLD_Mitigation_NonBoss_Rampart))
                 {
                     actionID = Role.Rampart;
                     return true;
@@ -362,7 +362,6 @@ internal partial class PLD
         public const ushort
             IronWill = 79,
             HallowedGround = 82,
-            Rampart = 1191,
             Requiescat = 1368,
             AtonementReady = 1902, // First Atonement Buff
             SupplicationReady = 3827, // Second Atonement Buff
