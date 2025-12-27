@@ -746,7 +746,7 @@ internal unsafe static class AutoRotationController
                     return false;
                 }
 
-                if (cfg.DPSSettings.AlwaysSelectTarget)
+                if (cfg.DPSSettings.AlwaysHardTarget)
                     Svc.Targets.Target = target;
 
                 if (mustTarget && target is not null)
@@ -818,8 +818,9 @@ internal unsafe static class AutoRotationController
                     : InActionRange(outAct, target));
 
             var canUse = (canUseSelf || canUseTarget || areaTargeted) && outAct.ActionAttackType() is { } type && (type is ActionAttackType.Ability || type is not ActionAttackType.Ability && RemainingGCD == 0);
+            var isHeal = attributes.AutoAction!.IsHeal;
 
-            if (cfg.DPSSettings.AlwaysSelectTarget)
+            if ((!isHeal && cfg.DPSSettings.AlwaysHardTarget) || (isHeal && cfg.HealerSettings.AlwaysHardTarget))
                 Svc.Targets.Target = target;
 
             var castTime = ActionManager.GetAdjustedCastTime(ActionType.Action, outAct);
@@ -832,7 +833,6 @@ internal unsafe static class AutoRotationController
 
             if (canUse && (inRange || areaTargeted))
             {
-                var isHeal = attributes.AutoAction!.IsHeal;
                 if (isHeal) CurrentActIsAutorot = true;
                 var ret = ActionManager.Instance()->UseAction(ActionType.Action, Service.ActionReplacer.getActionHook.IsEnabled ? gameAct : outAct, canUseTarget || areaTargeted ? target.GameObjectId : Player.Object.GameObjectId);
                 CurrentActIsAutorot = false;

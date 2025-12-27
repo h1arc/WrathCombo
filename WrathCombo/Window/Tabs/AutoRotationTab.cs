@@ -71,10 +71,6 @@ internal class AutoRotationTab : ConfigWindow
         changed |= ImGui.Checkbox("Enable Automatically in Instanced Content", ref cfg.EnableInInstance);
         changed |= ImGui.Checkbox("Disable After Leaving Instanced Content", ref cfg.DisableAfterInstance);
 
-        changed |= ImGui.Checkbox("Always Set Hard Target", ref cfg.DPSSettings.AlwaysSelectTarget);
-
-        ImGuiComponents.HelpMarker("Auto-rotation does not need to target enemies or allies to work, however with this setting enabled it will always set your hard target when it executes an action.");
-
         if (ImGui.CollapsingHeader("Damage Settings"))
         {
             ImGuiEx.TextUnderlined($"Targeting Mode");
@@ -141,6 +137,10 @@ internal class AutoRotationTab : ConfigWindow
             changed |= ImGui.Checkbox("Un-Target and Stop Actions for Pyretics", ref cfg.DPSSettings.UnTargetAndDisableForPenalty);
 
             ImGuiComponents.HelpMarker("This will un-set any current target and disable Auto-Rotation actions if there is a current detected Pyretic (or similar, like Acceleration Bomb) mechanic affecting the player, that would harm them if they took any action.");
+
+            changed |= ImGui.Checkbox("Always Set Hard Target", ref cfg.DPSSettings.AlwaysHardTarget);
+
+            ImGuiComponents.HelpMarker("Auto-rotation does not need to target enemies to work, however with this setting enabled it will always set your hard target when it executes an attack.");
 
             var npcs = Service.Configuration.IgnoredNPCs.ToList();
             var selected = npcs.FirstOrNull(x => x.Key == _selectedNpc);
@@ -287,6 +287,10 @@ internal class AutoRotationTab : ConfigWindow
             P.UIHelper.ShowIPCControlledIndicatorIfNeeded("IncludeNPCs");
             changed |= P.UIHelper.ShowIPCControlledCheckboxIfNeeded("Heal Friendly NPCs", ref cfg.HealerSettings.IncludeNPCs);
             ImGuiComponents.HelpMarker("Useful for healer quests where NPCs are expected to be healed but aren't added directly to your party.");
+
+            changed |= ImGui.Checkbox("Always Set Hard Target", ref cfg.HealerSettings.AlwaysHardTarget);
+
+            ImGuiComponents.HelpMarker("Auto-rotation does not need to target allies to work, however with this setting enabled it will always set your hard target when it executes a heal.");
 
         }
 
