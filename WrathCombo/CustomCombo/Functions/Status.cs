@@ -538,10 +538,9 @@ internal abstract partial class CustomComboFunctions
     /// Checks if the specified character has an active tank buster marker on them.
     /// </summary>
     /// <param name="targetObject">The character to check. Defaults to the local player.</param>
-    // <param name="maxAgeSeconds">Optional: Ignore VFX older than this many seconds (default 10).</param>
     /// <returns>true if the target has an active tank buster effect, false otherwise.</returns>
     public static bool HasIncomingTankBusterEffect(
-        IGameObject? targetObject = null) //,float maxAgeSeconds = 10f)
+        IGameObject? targetObject = null)
     {
         // Default to local player if none provided
         targetObject ??= Player.Object;
@@ -554,7 +553,6 @@ internal abstract partial class CustomComboFunctions
         return VfxManager.TrackedEffects
             .FilterToTarget(targetId)
             .Any(IsTankBusterEffectPath);
-            //&& vfx.AgeSeconds <= maxAgeSeconds); // Covers both styles
     }
 
 }
