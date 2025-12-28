@@ -23,8 +23,8 @@ internal partial class SAM
             {
                 if ((simpleMode || IsEnabled(Preset.SAM_ST_Yukikaze)) &&
                     !HasSetsu && LevelChecked(Yukikaze) &&
-                    (HasStatusEffect(Buffs.Fugetsu) || IsNotEnabled(Preset.SAM_ST_Gekko)) &&
-                    (HasStatusEffect(Buffs.Fuka) || IsNotEnabled(Preset.SAM_ST_Kasha)))
+                    (GetStatusEffectRemainingTime(Buffs.Fugetsu) > 7 || IsNotEnabled(Preset.SAM_ST_Gekko)) &&
+                    (GetStatusEffectRemainingTime(Buffs.Fuka) > 7 || IsNotEnabled(Preset.SAM_ST_Kasha)))
                     return Yukikaze;
 
                 if ((simpleMode || IsEnabled(Preset.SAM_ST_Kasha)) &&
