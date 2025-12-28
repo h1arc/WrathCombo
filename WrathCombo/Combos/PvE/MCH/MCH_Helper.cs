@@ -320,6 +320,8 @@ internal partial class MCH
             ([2], () => 4)
         ];
 
+        public override Preset Preset => Preset.MCH_ST_Adv_Opener;
+
         public override bool HasCooldowns() =>
             GetRemainingCharges(Reassemble) is 2 &&
             GetRemainingCharges(OriginalHook(GaussRound)) is 3 &&
@@ -380,7 +382,7 @@ internal partial class MCH
         [
             ([2], () => 4)
         ];
-
+        public override Preset Preset => Preset.MCH_ST_Adv_Opener;
         public override bool HasCooldowns() =>
             GetRemainingCharges(Reassemble) is 2 &&
             GetRemainingCharges(OriginalHook(GaussRound)) is 3 &&
@@ -441,7 +443,7 @@ internal partial class MCH
         [
             14
         ];
-
+        public override Preset Preset => Preset.MCH_ST_Adv_Opener;
         public override bool HasCooldowns() =>
             GetRemainingCharges(Reassemble) is 2 &&
             GetRemainingCharges(OriginalHook(GaussRound)) is 3 &&
