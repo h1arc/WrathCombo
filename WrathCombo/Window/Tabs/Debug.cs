@@ -456,6 +456,27 @@ internal class Debug : ConfigWindow, IDisposable
             }
 
             ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
+
+            if (ImGui.TreeNode("VFX Data"))
+            {
+                ImGui.Text($"VFX for Player (ObjectId: {player.GameObjectId}):");
+                if (VfxManager.TryGetVfxFor(player.GameObjectId, out var vfxList))
+                {
+                    foreach (var vfx in vfxList)
+                    {
+                        CustomStyleText($"Path: {vfx.Path}", $"Age: {vfx.AgeSeconds:N1}s");
+                    }
+                }
+                else
+                {
+                    ImGui.TextUnformatted("No VFX data tracked for player.");
+                }
+
+                ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
+                ImGui.TreePop();
+            }
+
+            ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
         }
 
         if (ImGui.CollapsingHeader("Target Data"))
@@ -491,85 +512,85 @@ internal class Debug : ConfigWindow, IDisposable
 
                 ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
 
-            if (ImGui.TreeNode("Cast Data"))
-            {
-                if (target is IBattleChara castChara)
+                if (ImGui.TreeNode("Cast Data"))
                 {
-                    CustomStyleText("Cast Action:", castChara.CastActionId == 0
-                        ? string.Empty
-                        : $"{(string.IsNullOrEmpty(GetActionName(castChara.CastActionId))
-                            ? "Unknown"
-                            : GetActionName(castChara.CastActionId))} (ID: {castChara.CastActionId})");
-                    CustomStyleText("Cast Time:", $"{castChara.CurrentCastTime:F2} / {castChara.TotalCastTime:F2}");
-
-                    // Extract Lumina Data
-                    var charaSpell = castChara.CastActionId > 0
-                        ? Svc.Data.GetExcelSheet<Action>()?.GetRowOrDefault(castChara.CastActionId)
-                        : null;
-
-                    CustomStyleText("Cast 100ms:", $"{charaSpell?.Cast100ms * 0.1f ?? 0f:F2} + {charaSpell?.ExtraCastTime100ms * 0.1f ?? 0f:F2}");
-                    CustomStyleText("Cast Type:", $"{charaSpell?.CastType ?? 0}");
-                    CustomStyleText("Action Type:", $"{castChara.CastActionType}");
-                    CustomStyleText("Action Range:", $"{GetActionRange(charaSpell?.RowId ?? 0)}y");
-                    CustomStyleText("Effect Range:", $"{charaSpell?.EffectRange ?? 0}y");
-                    CustomStyleText("Interruptible:", $"{castChara.IsCastInterruptible}");
-                }
-                else CustomStyleText("No valid target.", "");
-
-                ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
-                ImGui.TreePop();
-            }
-
-            if (ImGui.TreeNode("Object Data"))
-            {
-                CustomStyleText("Data/BaseId:", target?.BaseId);
-
-                // Display 'EntityId' only if it differs from 'GameObjectId'
-                if (target is not null && target.EntityId != target.GameObjectId)
-                {
-                    CustomStyleText("EntityId:", target.EntityId);
-                    ImGuiEx.InfoMarker("EntityId does not match ObjectId.\nThis object may have special interactivity rules.");
-                }
-
-                CustomStyleText("ObjectId:", target?.GameObjectId);
-                CustomStyleText("NameId:", target?.GetNameId());
-                CustomStyleText("ObjectKind:", target?.ObjectKind);
-                CustomStyleText("ObjectSubKind:", target?.SubKind);
-                CustomStyleText("ObjectType:", target?.GetType()?.Name);
-
-                ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
-                ImGui.TreePop();
-            }
-
-            if (ImGui.TreeNode("Enmity Data"))
-            {
-                CustomStyleText($"Highest Enmity DPS:", $"{StrongestDPS()?.Name}");
-
-                if (ImGui.TreeNode("Enmity Table"))
-                {
-                    foreach (var h in EnmityDictParty)
+                    if (target is IBattleChara castChara)
                     {
-                        CustomStyleText($"{Svc.Objects.First(x => x.GameObjectId == h.Key).Name}:", $"{h.Value}%");
-                    }
+                        CustomStyleText("Cast Action:", castChara.CastActionId == 0
+                            ? string.Empty
+                            : $"{(string.IsNullOrEmpty(GetActionName(castChara.CastActionId))
+                                ? "Unknown"
+                                : GetActionName(castChara.CastActionId))} (ID: {castChara.CastActionId})");
+                        CustomStyleText("Cast Time:", $"{castChara.CurrentCastTime:F2} / {castChara.TotalCastTime:F2}");
 
+                        // Extract Lumina Data
+                        var charaSpell = castChara.CastActionId > 0
+                            ? Svc.Data.GetExcelSheet<Action>()?.GetRowOrDefault(castChara.CastActionId)
+                            : null;
+
+                        CustomStyleText("Cast 100ms:", $"{charaSpell?.Cast100ms * 0.1f ?? 0f:F2} + {charaSpell?.ExtraCastTime100ms * 0.1f ?? 0f:F2}");
+                        CustomStyleText("Cast Type:", $"{charaSpell?.CastType ?? 0}");
+                        CustomStyleText("Action Type:", $"{castChara.CastActionType}");
+                        CustomStyleText("Action Range:", $"{GetActionRange(charaSpell?.RowId ?? 0)}y");
+                        CustomStyleText("Effect Range:", $"{charaSpell?.EffectRange ?? 0}y");
+                        CustomStyleText("Interruptible:", $"{castChara.IsCastInterruptible}");
+                    }
+                    else CustomStyleText("No valid target.", "");
+
+                    ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
                     ImGui.TreePop();
                 }
 
-                ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
-                ImGui.TreePop();
-            }
+                if (ImGui.TreeNode("Object Data"))
+                {
+                    CustomStyleText("Data/BaseId:", target?.BaseId);
 
-            if (ImGui.TreeNode("Heal Target Data"))
-            {
-                CustomStyleText("Current:", SimpleTarget.Stack.AllyToHeal.Name);
-                ImGuiEx.InfoMarker("Cycles from Party UI Mouseover → Soft Target → Hard Target → Player.");
+                    // Display 'EntityId' only if it differs from 'GameObjectId'
+                    if (target is not null && target.EntityId != target.GameObjectId)
+                    {
+                        CustomStyleText("EntityId:", target.EntityId);
+                        ImGuiEx.InfoMarker("EntityId does not match ObjectId.\nThis object may have special interactivity rules.");
+                    }
 
-                CustomStyleText("Shield:", $"{(SimpleTarget.Stack.AllyToHeal as ICharacter).ShieldPercentage}%");
-                CustomStyleText("Health:", $"{MathF.Round(GetTargetHPPercent(SimpleTarget.Stack.AllyToHeal), 2)}% / {MathF.Round(GetTargetHPPercent(SimpleTarget.Stack.AllyToHeal, true), 2)}% (+Shield)");
+                    CustomStyleText("ObjectId:", target?.GameObjectId);
+                    CustomStyleText("NameId:", target?.GetNameId());
+                    CustomStyleText("ObjectKind:", target?.ObjectKind);
+                    CustomStyleText("ObjectSubKind:", target?.SubKind);
+                    CustomStyleText("ObjectType:", target?.GetType()?.Name);
 
-                ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
-                ImGui.TreePop();
-            }
+                    ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
+                    ImGui.TreePop();
+                }
+
+                if (ImGui.TreeNode("Enmity Data"))
+                {
+                    CustomStyleText($"Highest Enmity DPS:", $"{StrongestDPS()?.Name}");
+
+                    if (ImGui.TreeNode("Enmity Table"))
+                    {
+                        foreach (var h in EnmityDictParty)
+                        {
+                            CustomStyleText($"{Svc.Objects.First(x => x.GameObjectId == h.Key).Name}:", $"{h.Value}%");
+                        }
+
+                        ImGui.TreePop();
+                    }
+
+                    ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
+                    ImGui.TreePop();
+                }
+
+                if (ImGui.TreeNode("Heal Target Data"))
+                {
+                    CustomStyleText("Current:", SimpleTarget.Stack.AllyToHeal.Name);
+                    ImGuiEx.InfoMarker("Cycles from Party UI Mouseover → Soft Target → Hard Target → Player.");
+
+                    CustomStyleText("Shield:", $"{(SimpleTarget.Stack.AllyToHeal as ICharacter).ShieldPercentage}%");
+                    CustomStyleText("Health:", $"{MathF.Round(GetTargetHPPercent(SimpleTarget.Stack.AllyToHeal), 2)}% / {MathF.Round(GetTargetHPPercent(SimpleTarget.Stack.AllyToHeal, true), 2)}% (+Shield)");
+
+                    ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
+                    ImGui.TreePop();
+                }
 
                 if (ImGui.TreeNode("Enemies Near Target"))
                 {
@@ -589,6 +610,27 @@ internal class Debug : ConfigWindow, IDisposable
                         CustomStyleText($"{enemy.Name} ({enemy.GameObjectId}):", $"{dist}y");
                     }
 
+                    ImGui.TreePop();
+                }
+
+                ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
+
+                if (ImGui.TreeNode("VFX Data"))
+                {
+                    ImGui.Text($"VFX for Target (ObjectId: {target!.GameObjectId}):");
+                    if (VfxManager.TryGetVfxFor(target!.GameObjectId, out var vfxList, true))
+                    {
+                        foreach (var vfx in vfxList)
+                        {
+                            CustomStyleText($"Path: {vfx.Path}", $"Age: {vfx.AgeSeconds:N1}s");
+                        }
+                    }
+                    else
+                    {
+                        ImGui.TextUnformatted("No VFX data tracked for target.");
+                    }
+
+                    ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
                     ImGui.TreePop();
                 }
             }
@@ -1086,10 +1128,10 @@ internal class Debug : ConfigWindow, IDisposable
                 {
                     if (!JobIDExtensions.GetActiveFromValue(icon))
                         continue;
-                    
+
                     counter++;
                     ImGui.BeginGroup();
-                    
+
                     ImGui.Text(
                         $"{icon}: " +
                         $"{JobIDExtensions.GetNameFromValue(icon) ?? "Unknown"}");
