@@ -655,25 +655,13 @@ internal class Debug : ConfigWindow, IDisposable
 
             if (CheckForSharedDamageEffect(out var poorsap, out bool multihit))
             {
-                CustomStyleText($"Shared Effect Detected On", $"{poorsap.Name}");
-                CustomStyleText($"Multi-Hit", $"{multihit}");
-                //if (EzThrottler.Throttle("AlertTest124412", 1000))
-                //    Svc.Chat.Print(new XivChatEntry
-                //    {
-                //        Message = $"Shared Effect Detected: {poorsap.Name} | Multi-Hit: {multihit}",
-                //        Type = XivChatType.Echo
-                //    });
+                CustomStyleText($"Shared Damage Effect Detected On", $"{poorsap.Name}");
+                CustomStyleText($"Shared Damage is Multi-Hit", $"{multihit}");
             }
 
             if (TryGetTankBusterTarget(out var tankBusterTarget))
             {
                 CustomStyleText($"Tankbuster Detected On", $"{tankBusterTarget.Name}");
-                //if (EzThrottler.Throttle("AlertTestTankBuster", 1000))
-                //    Svc.Chat.Print(new XivChatEntry
-                //    {
-                //        Message = $"Tank Buster Target Detected: {tankBusterTarget.Name}",
-                //        Type = XivChatType.Echo
-                //    });
             }
 
             ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
