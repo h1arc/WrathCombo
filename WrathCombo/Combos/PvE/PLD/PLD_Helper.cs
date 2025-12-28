@@ -189,7 +189,13 @@ internal partial class PLD
     
     private static bool CanUseNonBossMits(ref uint actionID)
     {
-        if (!InCombat() || !CanWeave() || InBossEncounter() || JustMitted || IsNotEnabled(Preset.PLD_Mitigation_NonBoss)) return false;
+        if (!InCombat() || 
+            !CanWeave() || 
+            InBossEncounter() || 
+            JustMitted || 
+            IsNotEnabled(Preset.PLD_Mitigation_NonBoss) ||
+            GetAvgEnemyHPPercentInRange(5f) <= PLD_Mitigation_NonBoss_MitigationThreshold) 
+            return false;
         
         if (IsEnabled(Preset.PLD_Mitigation_NonBoss_Sheltron) && ActionReady(OriginalHook(Sheltron)) && !HasStatusEffect(Buffs.Sheltron) && Gauge.OathGauge >= 50)
         {

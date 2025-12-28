@@ -17,6 +17,9 @@ internal partial class PLD
             switch (preset)
             {
                 #region Combo Mitigations
+                case Preset.PLD_Mitigation_NonBoss:
+                    DrawSliderFloat(0, 100, PLD_Mitigation_NonBoss_MitigationThreshold, "Stop using when average health percentage of nearby enemies is below set. \n(Set to 0 to disable this check) ", decimals: 0);
+                    break;
                 case Preset.PLD_Mitigation_NonBoss_DivineVeil:
                     DrawSliderInt(1,100, PLD_Mitigation_NonBoss_DivineVeil_Health, "Player HP% to use Divine Veil at or below (100 = Disable check)");
                     break;
@@ -360,6 +363,7 @@ internal partial class PLD
             PLD_Mit_Clemency_Health = new("PLD_Mit_Clemency_Health", 40);
 
         public static UserFloat
+            PLD_Mitigation_NonBoss_MitigationThreshold = new("PLD_Mitigation_NonBoss_MitigationThreshold", 20f),
             PLD_ST_InterveneTimeStill = new("PLD_ST_InterveneTimeStill", 2.5f),
             PLD_AoE_InterveneTimeStill = new("PLD_AoE_InterveneTimeStill", 2.5f);
 
