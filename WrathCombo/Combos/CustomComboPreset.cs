@@ -4637,8 +4637,12 @@ public enum Preset
     PLD_Mitigation_NonBoss_HallowedGround = 11091,
     
     [ParentCombo(PLD_Mitigation_NonBoss)]
-    [CustomComboInfo("Arm's Length/Reprisal Option", "Adds Arm's Length and Reprisal together when 5 or more targets", Job.PLD)]
-    PLD_Mitigation_NonBoss_ArmsReprisal = 11092,
+    [CustomComboInfo("Arm's Length Option", "Adds Arm's Length when 5 or more targets", Job.PLD)]
+    PLD_Mitigation_NonBoss_ArmsLength = 11092,
+    
+    [ParentCombo(PLD_Mitigation_NonBoss)]
+    [CustomComboInfo("Reprisal Option", "Adds Reprisal when 5 or more targets. Will overlap with others.", Job.PLD)]
+    PLD_Mitigation_NonBoss_Reprisal= 11099,
     
     [ParentCombo(PLD_Mitigation_NonBoss)]
     [CustomComboInfo("Sheltron Option", "Adds Sheltron when available. Will overlap with others.", Job.PLD)]

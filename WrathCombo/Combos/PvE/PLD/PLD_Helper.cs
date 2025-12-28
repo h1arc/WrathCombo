@@ -181,7 +181,7 @@ internal partial class PLD
     #endregion
 
     internal static bool MitigationRunning =>
-        HasStatusEffect(Role.Buffs.ArmsLength) && HasStatusEffect(Role.Debuffs.Reprisal, CurrentTarget) ||
+        HasStatusEffect(Role.Buffs.ArmsLength) ||
         HasStatusEffect(Role.Buffs.Rampart) || 
         HasStatusEffect(Buffs.HallowedGround) ||
         HasStatusEffect(Buffs.Bulwark) ||
@@ -197,7 +197,8 @@ internal partial class PLD
             GetAvgEnemyHPPercentInRange(5f) <= PLD_Mitigation_NonBoss_MitigationThreshold) 
             return false;
         
-        if (IsEnabled(Preset.PLD_Mitigation_NonBoss_Sheltron) && ActionReady(OriginalHook(Sheltron)) && !HasStatusEffect(Buffs.Sheltron) && Gauge.OathGauge >= 50)
+        if (IsEnabled(Preset.PLD_Mitigation_NonBoss_Sheltron) && ActionReady(OriginalHook(Sheltron)) && 
+            !HasStatusEffect(Buffs.Sheltron) && !HasStatusEffect(Buffs.HallowedGround) && Gauge.OathGauge >= 50)
         {
             actionID = OriginalHook(Sheltron);
             return true;
@@ -208,7 +209,13 @@ internal partial class PLD
             actionID = DivineVeil;
             return true;
         }
-         
+        
+        if (Role.CanReprisal(enemyCount:5) && IsEnabled(Preset.PLD_Mitigation_NonBoss_Reprisal) && !HasStatusEffect(Buffs.HallowedGround))
+        {
+            actionID = Role.Reprisal;
+            return true;
+        }
+        
         if (MitigationRunning) return false;
         
         switch (NumberOfEnemiesInRange(Role.Reprisal))
@@ -221,15 +228,9 @@ internal partial class PLD
                     return true;
                 }
                     
-                if (Role.CanArmsLength(5) && IsEnabled(Preset.PLD_Mitigation_NonBoss_ArmsReprisal))
+                if (Role.CanArmsLength(5) && IsEnabled(Preset.PLD_Mitigation_NonBoss_ArmsLength))
                 {
                     actionID = Role.ArmsLength;
-                    return true;
-                }
-                    
-                if (Role.CanReprisal(enemyCount:5) && IsEnabled(Preset.PLD_Mitigation_NonBoss_ArmsReprisal))
-                {
-                    actionID = Role.Reprisal;
                     return true;
                 }
 
@@ -271,6 +272,7 @@ internal partial class PLD
         }
         
         if (IsEnabled(Preset.PLD_Mitigation_Boss_Reprisal) && 
+            !JustUsed(DivineVeil, 10f) &&
             Role.CanReprisal(enemyCount:1) && RaidWideCasting())
         {
             actionID = Role.Reprisal;
@@ -278,6 +280,7 @@ internal partial class PLD
         }
         
         if (IsEnabled(Preset.PLD_Mitigation_Boss_DivineVeil) && 
+            !JustUsed(Role.Reprisal, 10f) &&
             ActionReady(DivineVeil) && RaidWideCasting())
         {
             actionID = DivineVeil;
