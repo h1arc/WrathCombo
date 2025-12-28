@@ -67,21 +67,22 @@ internal partial class PLD
                 case Preset.PLD_ST_AdvancedMode_Intervene:
                     DrawHorizontalRadioButton(PLD_ST_Intervene_Movement,
                         "Stationary Only", "Uses Intervene only while stationary", 0);
+
                     DrawHorizontalRadioButton(PLD_ST_Intervene_Movement,
                         "Any Movement", "Uses Intervene regardless of any movement conditions.\nNOTE: This could possibly get you killed", 1);
+
                     ImGui.Spacing();
                     if (PLD_ST_Intervene_Movement == 0)
                     {
-                        ImGui.SetCursorPosX(48);
                         DrawSliderFloat(0, 3, PLD_ST_InterveneTimeStill,
                             " Stationary Delay Check (in seconds):", decimals: 1);
                     }
-                    ImGui.SetCursorPosX(48);
+
                     DrawSliderInt(0, 2, PLD_ST_Intervene_Charges,
                         " How many charges to keep ready?\n (0 = Use All)");
-                    ImGui.SetCursorPosX(48);
-                    DrawSliderFloat(1, 20, PLD_ST_Intervene_Distance,
-                        " Use when Distance from target is less than or equal to:", decimals: 1);
+
+                    DrawSliderInt(1, 20, PLD_ST_Intervene_Distance,
+                        " Use when Distance from target is less than or equal to:");
                     break;
 
                 // Shield Lob
@@ -121,21 +122,22 @@ internal partial class PLD
                 case Preset.PLD_AoE_AdvancedMode_Intervene:
                     DrawHorizontalRadioButton(PLD_AoE_Intervene_Movement,
                         "Stationary Only", "Uses Intervene only while stationary", 0);
+
                     DrawHorizontalRadioButton(PLD_AoE_Intervene_Movement,
                         "Any Movement", "Uses Intervene regardless of any movement conditions.\nNOTE: This could possibly get you killed", 1);
+
                     ImGui.Spacing();
                     if (PLD_AoE_Intervene_Movement == 0)
                     {
-                        ImGui.SetCursorPosX(48);
                         DrawSliderFloat(0, 3, PLD_AoE_InterveneTimeStill,
                             " Stationary Delay Check (in seconds):", decimals: 1);
                     }
-                    ImGui.SetCursorPosX(48);
+
                     DrawSliderInt(0, 2, PLD_AoE_Intervene_Charges,
                         " How many charges to keep ready?\n (0 = Use All)");
-                    ImGui.SetCursorPosX(48);
-                    DrawSliderFloat(1, 20, PLD_AoE_Intervene_Distance,
-                        " Use when Distance from target is less than or equal to:", decimals: 1);
+
+                    DrawSliderInt(1, 20, PLD_AoE_Intervene_Distance,
+                        " Use when Distance from target is less than or equal to:");
                     break;
 
                 case Preset.PLD_AoE_AdvancedMode_MP_Reserve:
@@ -335,12 +337,29 @@ internal partial class PLD
             PLD_ST_Intervene_Movement = new("PLD_ST_Intervene_Movement"),
             PLD_ST_Intervene_Distance = new("PLD_ST_Intervene_Distance", 3),
             PLD_ST_MP_Reserve = new("PLD_ST_MP_Reserve", 1000),
+            PLD_ST_MitOptions = new("PLD_ST_MitOptions", 1),
+            PLD_ST_SheltronOption = new("PLD_ST_SheltronOption", 50),
+            PLD_ST_Sheltron_Health = new("PLD_ST_Sheltron_Health", 85),
+            PLD_ST_Sentinel_Health = new("PLD_ST_Sentinel_Health", 50),
+            PLD_ST_Bulwark_Health = new("PLD_ST_Bulwark_Health", 60),
+            PLD_ST_HallowedGround_Health = new("PLD_ST_HallowedGround_Health", 30),
             PLD_ST_FoF_BossOption = new("PLD_ST_FoF_BossOption"),
             PLD_ST_FoF_HPOption = new("PLD_ST_FoF_HPOption", 10),
             PLD_ST_ShieldLob_SubOption = new("PLD_ST_ShieldLob_SubOption"),
             
             //AoE
             PLD_AoE_FoF_Trigger = new("PLD_AoE_FoF_Trigger", 25),
+            PLD_AoE_MitOptions = new("PLD_AoE_MitOptions", 1),
+            PLD_AoE_SheltronOption = new("PLD_AoE_SheltronOption", 50),
+            PLD_AoE_Sheltron_Health = new("PLD_AoE_Sheltron_Health", 85),
+            PLD_AoE_DivineVeil_Health = new("PLD_AoE_DivineVeil_Health", 75),
+            PLD_AoE_Rampart_Health = new("PLD_AoE_Rampart_Health", 50),
+            PLD_AoE_Reprisal_Health = new("PLD_AoE_Reprisal_Health", 80),
+            PLD_AoE_Reprisal_Count = new("PLD_AoE_Reprisal_Count", 3),
+            PLD_AoE_ArmsLength_Count = new("PLD_AoE_ArmsLength_Count", 3),
+            PLD_AoE_Sentinel_Health = new("PLD_AoE_Sentinel_Health", 50),
+            PLD_AoE_Bulwark_Health = new("PLD_AoE_Bulwark_Health", 60),
+            PLD_AoE_HallowedGround_Health = new("PLD_AoE_HallowedGround_Health", 30),
             PLD_AoE_Intervene_Charges = new("PLD_AoE_Intervene_Charges"),
             PLD_AoE_Intervene_Movement = new("PLD_AoE_Intervene_Movement"),
             PLD_AoE_Intervene_Distance = new("PLD_AoE_Intervene_Distance", 3),

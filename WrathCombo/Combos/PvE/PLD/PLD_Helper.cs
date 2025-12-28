@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using static WrathCombo.Combos.PvE.PLD.Config;
@@ -96,6 +97,9 @@ internal partial class PLD
         HasStatusEffect(Buffs.Bulwark) ||
         HasStatusEffect(Buffs.Sentinel) || 
         HasStatusEffect(Buffs.Guardian);
+
+    private static int RoyalAuthorityCount =>
+        ActionWatching.CombatActions.Count(x => x == OriginalHook(RageOfHalone));
 
     #endregion
 
@@ -339,7 +343,7 @@ internal partial class PLD
             ([11, 13], () => !HasCharges(Intervene))
         ];
 
-
+        public override Preset Preset => Preset.PLD_ST_AdvancedMode_BalanceOpener;
         internal override UserData ContentCheckConfig => PLD_Balance_Content;
 
         public override bool HasCooldowns() =>
