@@ -114,6 +114,9 @@ internal partial class MCH
         ushort maxCharges = GetMaxCharges(Reassemble);
         uint remainingCharges = GetRemainingCharges(Reassemble);
 
+        if (remainingCharges == 0)
+            return false;
+
         var numberOfReadyTools = ReadyTools();
 
         bool enoughToolsForBurst = numberOfReadyTools >= remainingCharges;
