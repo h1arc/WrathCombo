@@ -121,7 +121,7 @@ internal partial class SAM
                GetTargetHPPercent() > hpThreshold &&
                dotRemaining <= dotRefresh &&
                HasStatusEffect(Buffs.Fuka) && HasStatusEffect(Buffs.Fugetsu) &&
-               (EnhancedSenei && (JustUsed(Senei, 35f) || JustUsed(Ikishoten, 35f)) ||
+               (EnhancedSenei && (JustUsed(Senei, 35f) || JustUsed(Ikishoten, 35f) || !HasStatusEffect(Debuffs.Higanbana, CurrentTarget)) ||
                 !EnhancedSenei);
     }
 
