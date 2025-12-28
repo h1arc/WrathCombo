@@ -429,7 +429,7 @@ internal abstract partial class CustomComboFunctions
     /// <seealso cref="CanApplyStatus(IGameObject?,ushort)"/>
     public static bool CanApplyStatus(IGameObject? target, ushort[] status) =>
         status.Any(statusId => CanApplyStatus(target, statusId));
-    
+
     private const StringComparison Lower = StringComparison.OrdinalIgnoreCase;
 
     /// <summary>
@@ -455,13 +455,56 @@ internal abstract partial class CustomComboFunctions
                vfx.Path.StartsWith("vfx/lockon/eff/com_share", Lower);
     }
 
-    /// <summary>
-    /// Determines whether any active visual effects correspond to a shared damage effect.
-    /// </summary>
-    /// <returns>true if at least one active visual effect is identified as a shared damage effect; otherwise, false.</returns>
-    public static bool CheckForSharedDamageEffect()
+    private static bool IsMultiHitSharedDamageEffectPath(VfxInfo vfx)
     {
-        return VfxManager.TrackedEffects.Any(IsShareDamageEffectPath);
+        return vfx.Path.StartsWith("vfx/lockon/eff/com_share5a1", Lower) ||
+            vfx.Path.StartsWith("vfx/lockon/eff/m0922trg_t2w", Lower);
+    }
+
+    /// <summary>
+    /// Checks for the presence of a shared damage effect on any party member and identifies the target and whether the
+    /// effect is multi-hit.
+    /// </summary>
+    /// <remarks>Only effects targeting party members are considered.</remarks>
+    /// <param name="target">When this method returns, contains the party member affected by the shared damage effect, or null if no such
+    /// effect is found.</param>
+    /// <param name="isMultiHit">When this method returns, contains a value indicating whether the detected shared damage effect is a multi-hit
+    /// effect.</param>
+    /// <returns>true if a shared damage effect is detected on a party member; otherwise, false.</returns>
+    public static bool CheckForSharedDamageEffect(out IBattleChara? target, out bool isMultiHit)
+    {
+        target = null;
+        isMultiHit = false;
+
+        var AoEEffects = VfxManager.TrackedEffects
+            .FilterToTargeted()
+            .Where(x => x.TargetID.GetObject().IsInParty())
+            .ToList();
+
+        if (AoEEffects.Count == 0)
+            return false;
+
+        // First: Check for multi-hit specific paths (vfx path is more specific so higher priority)
+        VfxInfo multiHitVfx = AoEEffects.FirstOrDefault(IsMultiHitSharedDamageEffectPath);
+        if (multiHitVfx.VfxID != 0)
+        {
+            target = multiHitVfx.TargetID.GetObject() as IBattleChara;
+            if (target != null)
+            {
+                isMultiHit = true;
+                return true;
+            }
+        }
+
+        // Then: Check for regular shared damage
+        VfxInfo regularVfx = AoEEffects.FirstOrDefault(IsShareDamageEffectPath);
+        if (regularVfx.VfxID != 0)
+        {
+            target = regularVfx.TargetID.GetObject() as IBattleChara;
+            return target != null;
+        }
+
+        return false;
     }
 
     /// <summary>
@@ -475,20 +518,19 @@ internal abstract partial class CustomComboFunctions
     /// <returns>true if a tank buster target is found and assigned to target; otherwise, false.</returns>
     public static bool TryGetTankBusterTarget(out IBattleChara? target)
     {
-        VfxInfo? tankBusterVfx = VfxManager.TrackedEffects
+        VfxInfo tankBusterVfx = VfxManager.TrackedEffects
             .FilterToTargeted()
             .FilterToTargetRole(CombatRole.Tank) // Ignore DPS and un-targeted
             .Where(x => x.TargetID.GetObject().IsInParty())
             .FirstOrDefault(IsTankBusterEffectPath);
 
-        // If VfxInfo is a struct: check Path or VfxID instead of null
-        if (tankBusterVfx == null || tankBusterVfx?.VfxID == 0)
+        if (tankBusterVfx.VfxID == 0)
         {
             target = null;
             return false;
         }
 
-        target = tankBusterVfx?.TargetID.GetObject() as IBattleChara;
+        target = tankBusterVfx.TargetID.GetObject() as IBattleChara;
         return target != null; // in case object ID is invalid/stale
     }
 
@@ -496,7 +538,7 @@ internal abstract partial class CustomComboFunctions
     /// Checks if the specified character has an active tank buster marker on them.
     /// </summary>
     /// <param name="targetObject">The character to check. Defaults to the local player.</param>
-    /// <param name="maxAgeSeconds">Optional: Ignore VFX older than this many seconds (default 10).</param>
+    // <param name="maxAgeSeconds">Optional: Ignore VFX older than this many seconds (default 10).</param>
     /// <returns>true if the target has an active tank buster effect, false otherwise.</returns>
     public static bool HasIncomingTankBusterEffect(
         IGameObject? targetObject = null) //,float maxAgeSeconds = 10f)

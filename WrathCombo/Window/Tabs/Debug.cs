@@ -1,6 +1,7 @@
 ﻿#region Directives
 
 using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Game.Text;
 using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
@@ -12,6 +13,7 @@ using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
 using ECommons.Logging;
+using ECommons.Throttlers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Object;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
@@ -126,14 +128,14 @@ internal class Debug : ConfigWindow, IDisposable
                     // If there's not a padding issue, re-throw the error
                     if (stripped.Length % 4 == 0)
                         throw;
-                    
+
                     // Try to fix padding issues
                     var paddingNeeded = 4 - (stripped.Length % 4);
                     stripped = stripped
                         .PadRight(stripped.Length + paddingNeeded, '=');
                     base64 = Convert.FromBase64String(stripped);
                 }
-                
+
                 // Decompress the data
                 byte[] decompressedBytes;
                 try
@@ -470,7 +472,7 @@ internal class Debug : ConfigWindow, IDisposable
                 }
                 else
                     foundSheet = false;
-                
+
                 CustomStyleText("Name:", target?.Name);
                 CustomStyleText("Nameplate:", target?.GetNameplateKind().ToString());
                 CustomStyleText("Rank:", $"{battleNPCRow?.Rank.ToString() ?? "null"} (found sheet: {(foundSheet is true ? "yes" : "no")})");
@@ -608,6 +610,29 @@ internal class Debug : ConfigWindow, IDisposable
             CustomStyleText("Party Avg. Health:", $"{MathF.Round(GetPartyAvgHPPercent(), 2)}%");
             CustomStyleText("Party Combat Time:", PartyEngageDuration().ToString("mm\\:ss\\:ff"));
             CustomStyleText("Alliance Group:", GetAllianceGroup());
+
+            if (CheckForSharedDamageEffect(out var poorsap, out bool multihit))
+            {
+                CustomStyleText($"Shared Effect Detected On", $"{poorsap.Name}");
+                CustomStyleText($"Multi-Hit", $"{multihit}");
+                //if (EzThrottler.Throttle("AlertTest124412", 1000))
+                //    Svc.Chat.Print(new XivChatEntry
+                //    {
+                //        Message = $"Shared Effect Detected: {poorsap.Name} | Multi-Hit: {multihit}",
+                //        Type = XivChatType.Echo
+                //    });
+            }
+
+            if (TryGetTankBusterTarget(out var tankBusterTarget))
+            {
+                CustomStyleText($"Tankbuster Detected On", $"{tankBusterTarget.Name}");
+                //if (EzThrottler.Throttle("AlertTestTankBuster", 1000))
+                //    Svc.Chat.Print(new XivChatEntry
+                //    {
+                //        Message = $"Tank Buster Target Detected: {tankBusterTarget.Name}",
+                //        Type = XivChatType.Echo
+                //    });
+            }
 
             ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
         }
