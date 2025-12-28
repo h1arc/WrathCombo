@@ -352,7 +352,9 @@ internal partial class BLM
         Paradox = 25797,
         HighThunder = 36986,
         HighThunder2 = 36987,
-        FlareStar = 36989;
+        FlareStar = 36989,
+        RingingRespite = 41619,
+        BattleBell = 41611;
 
     // Debuff Pairs of Actions and Debuff
     public static class Buffs
@@ -362,6 +364,8 @@ internal partial class BLM
             LeyLines = 737,
             CircleOfPower = 738,
             Triplecast = 1211,
+            BattleBell = 4251,
+            RingingRespite = 4257,
             Thunderhead = 3870;
     }
 
