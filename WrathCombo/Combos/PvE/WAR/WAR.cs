@@ -41,8 +41,7 @@ internal partial class WAR
             var mitigationsOn =
                 WAR_ST_MitsOptions != 1 ||
                 (P.UIHelper.PresetControlled(Preset)?.enabled == true);
-            if (mitigationsOn && InCombat() && !MitUsed &&
-                InMitigationContent && IsPlayerTargeted())
+            if (mitigationsOn && InCombat() && !MitUsed && IsPlayerTargeted())
             {
                 // Holmgang
                 if (ActionReady(Holmgang) &&
