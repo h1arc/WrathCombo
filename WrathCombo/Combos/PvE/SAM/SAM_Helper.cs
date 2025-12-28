@@ -120,6 +120,7 @@ internal partial class SAM
                HasBattleTarget() &&
                GetTargetHPPercent() > hpThreshold &&
                dotRemaining <= dotRefresh &&
+               HasStatusEffect(Buffs.Fuka) && HasStatusEffect(Buffs.Fugetsu) &&
                (EnhancedSenei && (JustUsed(Senei, 35f) || JustUsed(Ikishoten, 35f)) ||
                 !EnhancedSenei);
     }
@@ -258,7 +259,9 @@ internal partial class SAM
         LevelChecked(TsubameGaeshi) &&
         (HasStatusEffect(Buffs.TendoKaeshiSetsugekkaReady) ||
          HasStatusEffect(Buffs.TsubameReady) &&
-         (SenCount is 3 || EnhancedSenei && GetCooldownRemainingTime(Senei) > 33));
+         (SenCount is 3 || EnhancedSenei && GetCooldownRemainingTime(Senei) > 33) ||
+         GetStatusEffectRemainingTime(Buffs.TendoKaeshiSetsugekkaReady) < 5 ||
+         GetStatusEffectRemainingTime(Buffs.TsubameReady) < 5);
 
     private static bool CanShoha() =>
         ActionReady(Shoha) && MeditationStacks is 3 &&
