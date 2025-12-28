@@ -275,9 +275,7 @@ internal partial class PLD : Tank
 
             if (PLD_ST_Advanced_MitOptions == 0)
             {
-                if (CanUseNonBossMits(ref actionID))
-                    return actionID;
-                if (CanUseBossMits(ref actionID))
+                if (CanUseNonBossMits(ref actionID) || CanUseBossMits(ref actionID))
                     return actionID;
             }
 
