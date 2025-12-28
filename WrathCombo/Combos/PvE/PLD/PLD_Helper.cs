@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
-using WrathCombo.Data;
 using static WrathCombo.Combos.PvE.PLD.Config;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using PartyRequirement = WrathCombo.Combos.PvE.All.Enums.PartyRequirement;
@@ -74,6 +73,7 @@ internal partial class PLD
         JustUsed(OriginalHook(Bulwark)) ||
         JustUsed(OriginalHook(Sentinel)) ||
         JustUsed(OriginalHook(Sheltron)) ||
+        JustUsed(Role.ArmsLength) ||
         JustUsed(Role.Rampart) ||
         JustUsed(HallowedGround);
 
@@ -85,12 +85,17 @@ internal partial class PLD
         IsNotEnabled(Preset.PLD_ST_AdvancedMode_MP_Reserve) ||
         IsEnabled(Preset.PLD_ST_AdvancedMode_MP_Reserve) && LocalPlayer.CurrentMp >= GetResourceCost(HolySpirit) + PLD_ST_MP_Reserve;
 
-    private static bool InMitigationContent =>
-        ContentCheck.IsInConfiguredContent(PLD_ST_Mit_Difficulty, PLD_ST_Mit_DifficultyListSet);
-
     private static int HPThresholdFoF =>
         PLD_ST_FoF_BossOption == 1 ||
         !TargetIsBoss() ? PLD_ST_FoF_HPOption : 0;
+    
+    internal static bool MitigationRunning =>
+        HasStatusEffect(Role.Buffs.ArmsLength) ||
+        HasStatusEffect(Role.Buffs.Rampart) || 
+        HasStatusEffect(Buffs.HallowedGround) ||
+        HasStatusEffect(Buffs.Bulwark) ||
+        HasStatusEffect(Buffs.Sentinel) || 
+        HasStatusEffect(Buffs.Guardian);
 
     #endregion
 
@@ -180,12 +185,7 @@ internal partial class PLD
 
     #endregion
 
-    internal static bool MitigationRunning =>
-        HasStatusEffect(Role.Buffs.ArmsLength) ||
-        HasStatusEffect(Role.Buffs.Rampart) || 
-        HasStatusEffect(Buffs.HallowedGround) ||
-        HasStatusEffect(Buffs.Bulwark) ||
-        HasStatusEffect(Buffs.Sentinel) || HasStatusEffect(Buffs.Guardian);
+    #region Auto Mitigation System
     
     private static bool CanUseNonBossMits(ref uint actionID)
     {
@@ -228,7 +228,7 @@ internal partial class PLD
                     return true;
                 }
                     
-                if (Role.CanArmsLength(5) && IsEnabled(Preset.PLD_Mitigation_NonBoss_ArmsLength))
+                if (ActionReady(Role.ArmsLength) && IsEnabled(Preset.PLD_Mitigation_NonBoss_ArmsLength))
                 {
                     actionID = Role.ArmsLength;
                     return true;
@@ -290,6 +290,8 @@ internal partial class PLD
         //Insert Tankbuster Stuff here
         return false;
     }
+    
+    #endregion
 
     #region Openers
 
