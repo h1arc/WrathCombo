@@ -24,8 +24,8 @@ internal partial class GNB : Tank
     private static float NMcd => GetCooldownRemainingTime(NoMercy); //No Mercy cooldown
     private static bool HasNM => NMcd is > 39.5f and <= 60; //Has No Mercy buff, using its cooldown instead of buff timer (for snappier reaction) with a small 0.4s leeway
     private static float GCDLength => ActionManager.GetAdjustedRecastTime(ActionType.Action, KeenEdge) / 1000f; //current GCD length in seconds
-    private static bool Slow => GCDLength >= 2.5; //2.5s or higher GCD
-    private static bool Fast => GCDLength <= 2.5; //2.5s or lower GCD
+    private static bool Slow => GCDLength >= 2.5f; //2.5s or higher GCD
+    private static bool Fast => GCDLength < 2.5f; //2.5s or lower GCD
     private static int MaxCartridges =>
         TraitLevelChecked(Traits.CartridgeChargeII) ? //3 max base, 6 max buffed
             HasStatusEffect(Buffs.Bloodfest) ? 6 : 3 :
@@ -474,7 +474,7 @@ internal partial class GNB : Tank
     private static bool ShouldUseBurstStrike(Preset preset) =>
         LevelChecked(BurstStrike) && //unlocked
         Ammo > 0 && //at least 1 cartridge
-        ((Ammo > 1 && HasStatusEffect(Buffs.Bloodfest)) || //leftover extra Bloodfest carts
+        ((Ammo > 3 && NMcd > 10) || //leftover carts - try to spend them asap, but not if No Mercy is close
         (IsEnabled(preset) && LevelChecked(DoubleDown) && NMcd < 1) || //BS>NM logic
         (HasNM && GunStep == 0 && !HasStatusEffect(Buffs.ReadyToReign) && GetRemainingCharges(GnashingFang) == 0 && (!LevelChecked(DoubleDown) || IsOnCooldown(DoubleDown)))); //burst logic
 

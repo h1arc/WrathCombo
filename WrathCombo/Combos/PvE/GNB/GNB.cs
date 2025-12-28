@@ -97,15 +97,15 @@ internal partial class GNB : Tank
             if (ShouldUseNoMercy(Preset.GNB_ST_Simple, 0, 0))
                 return NoMercy;
 
+            //Bloodfest
+            if (ShouldUseBloodfest(Preset.GNB_ST_Simple))
+                return Bloodfest;
+
             //HIGH PRIORITY - within late weave window, send now
             //Continuation procs (Hypervelocity, Jugular Rip, Abdomen Tear, Eye Gouge)
             if ((CanContinue || HasStatusEffect(Buffs.ReadyToBlast)) &&
                 CanDelayedWeave())
                 return OriginalHook(Continuation);
-
-            //Bloodfest
-            if (ShouldUseBloodfest(Preset.GNB_ST_Simple))
-                return Bloodfest;
 
             //Hypervelocity
             //if No Mercy is imminent, then we want to aim for buffing HV right after using Burst Strike (BS^NM^HV>GF>etc.)
@@ -274,16 +274,16 @@ internal partial class GNB : Tank
 			if (ShouldUseNoMercy(Preset.GNB_ST_NoMercy, GNB_ST_NoMercyStop, GNB_ST_NoMercy_SubOption))
 				return NoMercy;
 
+            //Bloodfest
+            if (ShouldUseBloodfest(Preset.GNB_ST_Bloodfest))
+				return Bloodfest;
+
             //HIGH PRIORITY - within late weave window, send now
             //Continuation procs (Hypervelocity, Jugular Rip, Abdomen Tear, Eye Gouge)
             if ((CanContinue || HasStatusEffect(Buffs.ReadyToBlast)) &&
                 CanDelayedWeave() &&
                 IsEnabled(Preset.GNB_ST_Continuation))
                 return OriginalHook(Continuation);
-
-            //Bloodfest
-            if (ShouldUseBloodfest(Preset.GNB_ST_Bloodfest))
-				return Bloodfest;
 
             //Hypervelocity
             //if No Mercy is imminent, then we want to aim for buffing HV right after using Burst Strike (BS^NM^HV>GF>etc.)
@@ -603,16 +603,16 @@ internal partial class GNB : Tank
             if (ShouldUseNoMercy(Preset.GNB_GF_NoMercy, 0, 0))
                 return NoMercy;
 
+            //Bloodfest
+            if (ShouldUseBloodfest(Preset.GNB_GF_Bloodfest))
+                return Bloodfest;
+
             //HIGH PRIORITY - within late weave window, send now
             //Continuation procs (Hypervelocity, Jugular Rip, Abdomen Tear, Eye Gouge)
             if ((CanContinue || HasStatusEffect(Buffs.ReadyToBlast)) &&
                 CanDelayedWeave() &&
                 IsEnabled(Preset.GNB_GF_Continuation))
                 return OriginalHook(Continuation);
-
-            //Bloodfest
-            if (ShouldUseBloodfest(Preset.GNB_GF_Bloodfest))
-                return Bloodfest;
 
             //Hypervelocity
             //if No Mercy is imminent, then we want to aim for buffing HV right after using Burst Strike (BS^NM^HV>GF>etc.)
