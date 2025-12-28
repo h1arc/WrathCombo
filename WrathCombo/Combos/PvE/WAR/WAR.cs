@@ -38,8 +38,10 @@ internal partial class WAR
             #region Mitigations
 
             // Mitigation
-            if (WAR_ST_MitsOptions == 0 && InCombat() && !MitUsed &&
-                InMitigationContent && IsPlayerTargeted())
+            var mitigationsOn =
+                WAR_ST_MitsOptions != 1 ||
+                (P.UIHelper.PresetControlled(Preset)?.enabled == true);
+            if (mitigationsOn && InCombat() && !MitUsed && IsPlayerTargeted())
             {
                 // Holmgang
                 if (ActionReady(Holmgang) &&
@@ -247,7 +249,10 @@ internal partial class WAR
             #region Mitigations
 
             // Mitigation
-            if (WAR_AoE_MitsOptions == 0 &&
+            var mitigationsOn =
+                WAR_AoE_MitsOptions != 1 ||
+                (P.UIHelper.PresetControlled(Preset)?.enabled == true);
+            if (mitigationsOn &&
                 IsPlayerTargeted() && !MitUsed && InCombat())
             {
                 if (ActionReady(Holmgang) &&
