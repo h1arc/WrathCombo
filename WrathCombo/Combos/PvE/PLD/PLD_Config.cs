@@ -337,29 +337,12 @@ internal partial class PLD
             PLD_ST_Intervene_Movement = new("PLD_ST_Intervene_Movement"),
             PLD_ST_Intervene_Distance = new("PLD_ST_Intervene_Distance", 3),
             PLD_ST_MP_Reserve = new("PLD_ST_MP_Reserve", 1000),
-            PLD_ST_MitOptions = new("PLD_ST_MitOptions", 1),
-            PLD_ST_SheltronOption = new("PLD_ST_SheltronOption", 50),
-            PLD_ST_Sheltron_Health = new("PLD_ST_Sheltron_Health", 85),
-            PLD_ST_Sentinel_Health = new("PLD_ST_Sentinel_Health", 50),
-            PLD_ST_Bulwark_Health = new("PLD_ST_Bulwark_Health", 60),
-            PLD_ST_HallowedGround_Health = new("PLD_ST_HallowedGround_Health", 30),
             PLD_ST_FoF_BossOption = new("PLD_ST_FoF_BossOption"),
             PLD_ST_FoF_HPOption = new("PLD_ST_FoF_HPOption", 10),
             PLD_ST_ShieldLob_SubOption = new("PLD_ST_ShieldLob_SubOption"),
             
             //AoE
             PLD_AoE_FoF_Trigger = new("PLD_AoE_FoF_Trigger", 25),
-            PLD_AoE_MitOptions = new("PLD_AoE_MitOptions", 1),
-            PLD_AoE_SheltronOption = new("PLD_AoE_SheltronOption", 50),
-            PLD_AoE_Sheltron_Health = new("PLD_AoE_Sheltron_Health", 85),
-            PLD_AoE_DivineVeil_Health = new("PLD_AoE_DivineVeil_Health", 75),
-            PLD_AoE_Rampart_Health = new("PLD_AoE_Rampart_Health", 50),
-            PLD_AoE_Reprisal_Health = new("PLD_AoE_Reprisal_Health", 80),
-            PLD_AoE_Reprisal_Count = new("PLD_AoE_Reprisal_Count", 3),
-            PLD_AoE_ArmsLength_Count = new("PLD_AoE_ArmsLength_Count", 3),
-            PLD_AoE_Sentinel_Health = new("PLD_AoE_Sentinel_Health", 50),
-            PLD_AoE_Bulwark_Health = new("PLD_AoE_Bulwark_Health", 60),
-            PLD_AoE_HallowedGround_Health = new("PLD_AoE_HallowedGround_Health", 30),
             PLD_AoE_Intervene_Charges = new("PLD_AoE_Intervene_Charges"),
             PLD_AoE_Intervene_Movement = new("PLD_AoE_Intervene_Movement"),
             PLD_AoE_Intervene_Distance = new("PLD_AoE_Intervene_Distance", 3),
@@ -393,8 +376,7 @@ internal partial class PLD
             PLD_Mit_Priorities = new("PLD_Mit_Priorities");
 
         public static UserBoolArray
-            PLD_Mit_HallowedGround_Max_Difficulty = new("PLD_Mit_HallowedGround_Max_Difficulty", [true, false]),
-            PLD_ST_Mit_Difficulty = new("PLD_ST_Mit_Difficulty", [true, false]);
+            PLD_Mit_HallowedGround_Max_Difficulty = new("PLD_Mit_HallowedGround_Max_Difficulty", [true, false]);
 
         public static readonly ContentCheck.ListSet
             PLD_Mit_HallowedGround_Max_DifficultyListSet = ContentCheck.ListSet.Halved,

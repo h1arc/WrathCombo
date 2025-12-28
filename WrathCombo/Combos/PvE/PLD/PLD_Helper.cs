@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
+using WrathCombo.Data;
 using static WrathCombo.Combos.PvE.PLD.Config;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using PartyRequirement = WrathCombo.Combos.PvE.All.Enums.PartyRequirement;
