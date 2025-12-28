@@ -256,7 +256,7 @@ internal partial class SAM
          !LevelChecked(TendoKaeshiSetsugekka));
 
     private static bool CanTsubame() =>
-        LevelChecked(TsubameGaeshi) &&
+        LevelChecked(TsubameGaeshi) && ActionReady(TsubameGaeshi) &&
         (HasStatusEffect(Buffs.TendoKaeshiSetsugekkaReady) ||
          HasStatusEffect(Buffs.TsubameReady) &&
          (SenCount is 3 || EnhancedSenei && GetCooldownRemainingTime(Senei) > 33) ||
