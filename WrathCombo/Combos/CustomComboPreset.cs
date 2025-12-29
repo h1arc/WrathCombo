@@ -7507,6 +7507,10 @@ public enum Preset
     WAR_Mitigation_Boss_RawIntuition = 18143,
     
     [ParentCombo(WAR_Mitigation_Boss)]
+    [CustomComboInfo("Equilibrium Option", "Adds Equilibrium for Healing.", Job.WAR)]
+    WAR_Mitigation_Boss_Equilibrium = 18146,
+    
+    [ParentCombo(WAR_Mitigation_Boss)]
     [CustomComboInfo("Raidwide Reprisal Option", "Adds Reprisal when raidwide casting is detected.", Job.WAR)]
     WAR_Mitigation_Boss_Reprisal = 18144,
     

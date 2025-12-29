@@ -291,7 +291,7 @@ internal partial class WAR : Tank
     
     #region Auto Mitigation System
     
-    private static bool CanUseNonBossMits(ref uint action)
+    private static bool CanUseNonBossMits(ref uint actionID)
     {
         if (!InCombat() || !CanWeave() || InBossEncounter() || JustMitted || 
             IsNotEnabled(Preset.WAR_Mitigation_NonBoss) ||
@@ -301,27 +301,27 @@ internal partial class WAR : Tank
         if (IsEnabled(Preset.WAR_Mitigation_NonBoss_Holmgang) && ActionReady(Holmgang) &&
             PlayerHealthPercentageHp() <= WAR_Mitigation_NonBoss_Holmgang_Health)
         {
-            action = Holmgang;
+            actionID = Holmgang;
             return true;
         }
         
         if (IsEnabled(Preset.WAR_Mitigation_NonBoss_Equilibrium) && ActionReady(Equilibrium) &&
             PlayerHealthPercentageHp() <= WAR_Mitigation_NonBoss_Equilibrium_Health)
         {
-            action = Equilibrium;
+            actionID = Equilibrium;
             return true;
         }
         
         if (IsEnabled(Preset.WAR_Mitigation_NonBoss_RawIntuition) && ActionReady(OriginalHook(RawIntuition)))
         {
-            action = OriginalHook(RawIntuition);
+            actionID = OriginalHook(RawIntuition);
             return true;
         }
         
         if (IsEnabled(Preset.WAR_Mitigation_NonBoss_ShakeItOff) && ActionReady(ShakeItOff) && SafeToShakeItOff &&
             PlayerHealthPercentageHp() <= WAR_Mitigation_NonBoss_ShakeItOff_Health)
         {
-            action = ShakeItOff;
+            actionID = ShakeItOff;
             return true;
         }
         
@@ -332,19 +332,19 @@ internal partial class WAR : Tank
         {
             if (Role.CanReprisal(enemyCount:5) && IsEnabled(Preset.WAR_Mitigation_NonBoss_Reprisal))
             {
-                action = Role.Reprisal;
+                actionID = Role.Reprisal;
                 return true;
             }
                 
             if (ActionReady(Role.ArmsLength) && IsEnabled(Preset.WAR_Mitigation_NonBoss_ArmsLength))
             {
-                action = Role.ArmsLength;
+                actionID = Role.ArmsLength;
                 return true;
             }
             
             if (ActionReady(OriginalHook(Vengeance)) && IsEnabled(Preset.WAR_Mitigation_NonBoss_Vengeance))
             {
-                action = OriginalHook(Vengeance);
+                actionID = OriginalHook(Vengeance);
                 return true;
             }
         }
@@ -352,13 +352,13 @@ internal partial class WAR : Tank
         //Mitigations for 3 or more
         if (Role.CanRampart() && IsEnabled(Preset.WAR_Mitigation_NonBoss_Rampart))
         {
-            action = Role.Rampart;
+            actionID = Role.Rampart;
             return true;
         }
             
         if (ActionReady(ThrillOfBattle) && IsEnabled(Preset.WAR_Mitigation_NonBoss_ThrillOfBattle))
         {
-            action = ThrillOfBattle;
+            actionID = ThrillOfBattle;
             return true;
         }
         
@@ -374,6 +374,12 @@ internal partial class WAR : Tank
             PlayerHealthPercentageHp() <= WAR_Mitigation_Boss_RawIntuition_Health)
         {
             actionID = OriginalHook(RawIntuition);
+            return true;
+        }
+        if (IsEnabled(Preset.WAR_Mitigation_Boss_Equilibrium) && ActionReady(Equilibrium) &&
+            PlayerHealthPercentageHp() <= WAR_Mitigation_Boss_Equilibrium_Health)
+        {
+            actionID = Equilibrium;
             return true;
         }
         

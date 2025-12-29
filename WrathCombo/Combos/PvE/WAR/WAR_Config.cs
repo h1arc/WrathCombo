@@ -61,6 +61,10 @@ internal partial class WAR
                     DrawSliderInt(1, 100, WAR_Mitigation_Boss_RawIntuition_Health, "Player HP% to use Raw Intuition/Bloodwhetting at or below (100 = Disable check)");
                     break;
                 
+                case Preset.WAR_Mitigation_Boss_Equilibrium:
+                    DrawSliderInt(1, 100, WAR_Mitigation_Boss_Equilibrium_Health, "Player HP% to use Equilibrium at or below (100 = Disable check)");
+                    break;
+                
                 
                 #endregion
                 
@@ -388,6 +392,7 @@ internal partial class WAR
             WAR_Mitigation_NonBoss_Equilibrium_Health = new("WAR_Mitigation_NonBoss_Equilibrium_Health", 50),
             WAR_Mitigation_NonBoss_Holmgang_Health = new("WAR_Mitigation_NonBoss_Holmgang_Health", 20),
             WAR_Mitigation_Boss_RawIntuition_Health = new("WAR_Mitigation_Boss_RawIntuition_Health", 99),
+            WAR_Mitigation_Boss_Equilibrium_Health = new("WAR_Mitigation_Boss_Equilibrium_Health", 30),
             WAR_Infuriate_Charges = new("WAR_Infuriate_Charges"),
             WAR_Infuriate_Range = new("WAR_Infuriate_Range"),
             WAR_SurgingRefreshRange = new("WAR_SurgingRefreshRange", 10),
@@ -450,8 +455,7 @@ internal partial class WAR
             WAR_Mit_Priorities = new("WAR_Mit_Priorities");
 
         public static UserBoolArray
-            WAR_Mit_Holmgang_Max_Difficulty = new("WAR_Mit_Holmgang_Max_Difficulty", [true, false]),
-            WAR_ST_Mit_Difficulty = new("WAR_ST_Mit_Difficulty", [true, false]);
+            WAR_Mit_Holmgang_Max_Difficulty = new("WAR_Mit_Holmgang_Max_Difficulty", [true, false]);
 
         public static readonly ContentCheck.ListSet
             WAR_Mit_Holmgang_Max_DifficultyListSet = ContentCheck.ListSet.Halved,
