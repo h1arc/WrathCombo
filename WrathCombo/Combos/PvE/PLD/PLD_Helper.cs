@@ -101,6 +101,12 @@ internal partial class PLD
 
     private static int RoyalAuthorityCount =>
         ActionWatching.CombatActions.Count(x => x == OriginalHook(RageOfHalone));
+    
+    private static bool ReprisalInMitigationContent =>
+        ContentCheck.IsInConfiguredContent(PLD_Mitigation_Boss_Reprisal_Difficulty, PLD_Boss_Mit_DifficultyListSet);
+    
+    private static bool DivineVeilInMitigationContent =>
+        ContentCheck.IsInConfiguredContent(PLD_Mitigation_Boss_DivineVeil_Difficulty, PLD_Boss_Mit_DifficultyListSet);
 
     #endregion
 
@@ -269,7 +275,7 @@ internal partial class PLD
             return true;
         }
         
-        if (IsEnabled(Preset.PLD_Mitigation_Boss_Reprisal) && 
+        if (IsEnabled(Preset.PLD_Mitigation_Boss_Reprisal) && ReprisalInMitigationContent &&
             !JustUsed(DivineVeil, 10f) &&
             Role.CanReprisal(enemyCount:1) && RaidWideCasting())
         {
@@ -277,7 +283,7 @@ internal partial class PLD
             return true;
         }
         
-        if (IsEnabled(Preset.PLD_Mitigation_Boss_DivineVeil) && 
+        if (IsEnabled(Preset.PLD_Mitigation_Boss_DivineVeil) && DivineVeilInMitigationContent &&
             !JustUsed(Role.Reprisal, 10f) &&
             ActionReady(DivineVeil) && RaidWideCasting())
         {

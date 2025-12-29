@@ -57,12 +57,24 @@ internal partial class WAR
                     DrawSliderInt(1, 100, WAR_Mitigation_NonBoss_Holmgang_Health, "Player HP% to use Holmgang at or below (100 = Disable check)");
                     break;
                 
+                case Preset.WAR_Mitigation_Boss_Equilibrium:
+                    DrawSliderInt(1, 100, WAR_Mitigation_Boss_Equilibrium_Health, "Player HP% to use Equilibrium at or below (100 = Disable check)");
+                    break;
+                
                 case Preset.WAR_Mitigation_Boss_RawIntuition:
+                    DrawDifficultyMultiChoice(WAR_Mitigation_Boss_RawIntuition_Difficulty, WAR_Boss_Mit_DifficultyListSet ,
+                        "Select which difficulties the ability should be used in:");
                     DrawSliderInt(1, 100, WAR_Mitigation_Boss_RawIntuition_Health, "Player HP% to use Raw Intuition/Bloodwhetting at or below (100 = Disable check)");
                     break;
                 
-                case Preset.WAR_Mitigation_Boss_Equilibrium:
-                    DrawSliderInt(1, 100, WAR_Mitigation_Boss_Equilibrium_Health, "Player HP% to use Equilibrium at or below (100 = Disable check)");
+                case Preset.WAR_Mitigation_Boss_ShakeItOff:
+                    DrawDifficultyMultiChoice(WAR_Mitigation_Boss_ShakeItOff_Difficulty, WAR_Boss_Mit_DifficultyListSet ,
+                        "Select which difficulties the ability should be used in:");
+                    break;
+                    
+                case Preset.WAR_Mitigation_Boss_Reprisal:
+                    DrawDifficultyMultiChoice(WAR_Mitigation_Boss_Reprisal_Difficulty, WAR_Boss_Mit_DifficultyListSet ,
+                        "Select which difficulties the ability should be used in:");
                     break;
                 
                 
@@ -454,12 +466,15 @@ internal partial class WAR
         public static UserIntArray
             WAR_Mit_Priorities = new("WAR_Mit_Priorities");
 
-        public static UserBoolArray
+       public static UserBoolArray
+            WAR_Mitigation_Boss_RawIntuition_Difficulty = new("WAR_Mitigation_Boss_RawIntuition_Difficulty", [true, false]),
+            WAR_Mitigation_Boss_ShakeItOff_Difficulty = new("WAR_Mitigation_Boss_ShakeItOff_Difficulty", [true, false]),
+            WAR_Mitigation_Boss_Reprisal_Difficulty = new("WAR_Mitigation_Boss_Reprisal_Difficulty", [true, false]),
             WAR_Mit_Holmgang_Max_Difficulty = new("WAR_Mit_Holmgang_Max_Difficulty", [true, false]);
 
         public static readonly ContentCheck.ListSet
-            WAR_Mit_Holmgang_Max_DifficultyListSet = ContentCheck.ListSet.Halved,
-            WAR_ST_Mit_DifficultyListSet = ContentCheck.ListSet.Halved;
+            WAR_Mit_Holmgang_Max_DifficultyListSet = ContentCheck.ListSet.CasualVSHard,
+            WAR_Boss_Mit_DifficultyListSet = ContentCheck.ListSet.CasualVSHard;
 
         #endregion
     }

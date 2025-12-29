@@ -283,60 +283,10 @@ internal partial class PLD : Tank
                     // Blade of Honor
                     if (LevelChecked(BladeOfHonor) && OriginalHook(Requiescat) == BladeOfHonor)
                         return OriginalHook(Requiescat);
-
-                    // Mitigation
-                    var mitigationsOn =
-                        PLD_AoE_MitOptions != 1 ||
-                        (P.UIHelper.PresetControlled(Preset)?.enabled == true);
-                    if (mitigationsOn &&
-                        IsPlayerTargeted() && !JustMitted && InCombat())
-                    {
-                        // Hallowed Ground
-                        if (ActionReady(HallowedGround) &&
-                            PlayerHealthPercentageHp() < 30)
-                            return HallowedGround;
-
-                        // Sheltron
-                        if (LevelChecked(Sheltron) &&
-                            Gauge.OathGauge >= 50 &&
-                            PlayerHealthPercentageHp() < 95 &&
-                            !HasStatusEffect(Buffs.Sheltron) &&
-                            !HasStatusEffect(Buffs.HolySheltron))
-                            return OriginalHook(Sheltron);
-
-                        // Reprisal
-                        if (Role.CanReprisal(80, 3, false))
-                            return Role.Reprisal;
-
-                        // Divine Veil
-                        if (ActionReady(DivineVeil) &&
-                            NumberOfAlliesInRange(DivineVeil) >= GetPartyMembers().Count * .75 &&
-                            PlayerHealthPercentageHp() < 75)
-                            return DivineVeil;
-
-                        // Rampart
-                        if (Role.CanRampart(50))
-                            return Role.Rampart;
-
-                        // Arm's Length
-                        if (Role.CanArmsLength(3))
-                            return Role.ArmsLength;
-
-                        // Bulwark
-                        if (ActionReady(Bulwark) &&
-                            PlayerHealthPercentageHp() < 60)
-                            return Bulwark;
-
-                        // Sentinel / Guardian
-                        if (ActionReady(OriginalHook(Sentinel)) &&
-                            PlayerHealthPercentageHp() < 50)
-                            return OriginalHook(Sentinel);
-                    }
+                    
                 }
-
                 // Confiteor & Blades
-                if (HasDivineMagicMP && (HasStatusEffect(Buffs.ConfiteorReady) ||
-                                         LevelChecked(BladeOfFaith) && OriginalHook(Confiteor) != Confiteor))
+                if (HasDivineMagicMP && (HasStatusEffect(Buffs.ConfiteorReady) || LevelChecked(BladeOfFaith) && OriginalHook(Confiteor) != Confiteor))
                     return OriginalHook(Confiteor);
             }
 

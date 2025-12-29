@@ -27,6 +27,17 @@ internal partial class PLD
                     DrawSliderInt(50, 100, PLD_Mitigation_Boss_SheltronOvercap_Threshold, "Oath Gauge required to Use Sheltron and prevent Overcap.");
                     break;
                 
+                case Preset.PLD_Mitigation_Boss_DivineVeil:
+                    DrawDifficultyMultiChoice(PLD_Mitigation_Boss_DivineVeil_Difficulty, PLD_Boss_Mit_DifficultyListSet ,
+                        "Select which difficulties the ability should be used in:");
+                    break;
+                    
+                case Preset.PLD_Mitigation_Boss_Reprisal:
+                    DrawDifficultyMultiChoice(PLD_Mitigation_Boss_Reprisal_Difficulty, PLD_Boss_Mit_DifficultyListSet ,
+                        "Select which difficulties the ability should be used in:");
+                    break;
+                    
+                
                 #endregion
                 #region ST
                 
@@ -376,11 +387,13 @@ internal partial class PLD
             PLD_Mit_Priorities = new("PLD_Mit_Priorities");
 
         public static UserBoolArray
+            PLD_Mitigation_Boss_DivineVeil_Difficulty = new("PLD_Mitigation_Boss_DivineVeil_Difficulty", [true, false]),
+            PLD_Mitigation_Boss_Reprisal_Difficulty = new("PLD_Mitigation_Boss_Reprisal_Difficulty", [true, false]),
             PLD_Mit_HallowedGround_Max_Difficulty = new("PLD_Mit_HallowedGround_Max_Difficulty", [true, false]);
 
         public static readonly ContentCheck.ListSet
-            PLD_Mit_HallowedGround_Max_DifficultyListSet = ContentCheck.ListSet.Halved,
-            PLD_ST_Mit_DifficultyListSet = ContentCheck.ListSet.Halved;
+            PLD_Mit_HallowedGround_Max_DifficultyListSet = ContentCheck.ListSet.CasualVSHard,
+            PLD_Boss_Mit_DifficultyListSet = ContentCheck.ListSet.CasualVSHard;
 
         #endregion
     }

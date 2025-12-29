@@ -7503,12 +7503,12 @@ public enum Preset
     WAR_Mitigation_Boss = 18142,
     
     [ParentCombo(WAR_Mitigation_Boss)]
-    [CustomComboInfo("Raw Intuition/Bloodwhetting Option", "Adds Raw Intuition/Bloodwhetting on CD when targetted", Job.WAR)]
-    WAR_Mitigation_Boss_RawIntuition = 18143,
-    
-    [ParentCombo(WAR_Mitigation_Boss)]
     [CustomComboInfo("Equilibrium Option", "Adds Equilibrium for Healing.", Job.WAR)]
     WAR_Mitigation_Boss_Equilibrium = 18146,
+    
+    [ParentCombo(WAR_Mitigation_Boss)]
+    [CustomComboInfo("Raw Intuition/Bloodwhetting Option", "Adds Raw Intuition/Bloodwhetting on CD when targetted", Job.WAR)]
+    WAR_Mitigation_Boss_RawIntuition = 18143,
     
     [ParentCombo(WAR_Mitigation_Boss)]
     [CustomComboInfo("Raidwide Reprisal Option", "Adds Reprisal when raidwide casting is detected.", Job.WAR)]

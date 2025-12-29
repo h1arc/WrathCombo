@@ -40,6 +40,15 @@ internal partial class WAR : Tank
 
     internal static bool SafeToShakeItOff => !HasAnyStatusEffects([Buffs.ThrillOfBattle, Buffs.Damnation, Buffs.VengeanceDefense, Buffs.BloodwhettingDefenseLong]);
     
+    private static bool ReprisalInMitigationContent =>
+        ContentCheck.IsInConfiguredContent(WAR_Mitigation_Boss_Reprisal_Difficulty, WAR_Boss_Mit_DifficultyListSet);
+    
+    private static bool ShakeItOffInMitigationContent =>
+        ContentCheck.IsInConfiguredContent(WAR_Mitigation_Boss_ShakeItOff_Difficulty, WAR_Boss_Mit_DifficultyListSet);
+    
+    private static bool RawIntuitionInMitigationContent =>
+        ContentCheck.IsInConfiguredContent(WAR_Mitigation_Boss_RawIntuition_Difficulty, WAR_Boss_Mit_DifficultyListSet);
+    
     private static bool JustMitted =>
         JustUsed(OriginalHook(ThrillOfBattle)) ||
         JustUsed(OriginalHook(Vengeance)) ||
@@ -369,7 +378,7 @@ internal partial class WAR : Tank
     {
         if (!InCombat() || !CanWeave() || !InBossEncounter() || JustMitted || IsNotEnabled(Preset.WAR_Mitigation_Boss)) return false;
         
-        if (IsEnabled(Preset.WAR_Mitigation_Boss_RawIntuition) && 
+        if (IsEnabled(Preset.WAR_Mitigation_Boss_RawIntuition) && RawIntuitionInMitigationContent &&
             ActionReady(OriginalHook(RawIntuition)) && IsPlayerTargeted() &&
             PlayerHealthPercentageHp() <= WAR_Mitigation_Boss_RawIntuition_Health)
         {
@@ -383,7 +392,7 @@ internal partial class WAR : Tank
             return true;
         }
         
-        if (IsEnabled(Preset.WAR_Mitigation_Boss_Reprisal) && 
+        if (IsEnabled(Preset.WAR_Mitigation_Boss_Reprisal) && ReprisalInMitigationContent &&
             !JustUsed(ShakeItOff, 10f) &&
             Role.CanReprisal(enemyCount:1) && RaidWideCasting())
         {
@@ -391,7 +400,7 @@ internal partial class WAR : Tank
             return true;
         }
         
-        if (IsEnabled(Preset.WAR_Mitigation_Boss_ShakeItOff) && 
+        if (IsEnabled(Preset.WAR_Mitigation_Boss_ShakeItOff) && ShakeItOffInMitigationContent &&
             !JustUsed(Role.Reprisal, 10f) &&
             ActionReady(ShakeItOff) && RaidWideCasting())
         {
