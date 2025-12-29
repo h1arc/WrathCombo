@@ -465,7 +465,7 @@ internal partial class GNB : Tank
     private static bool ShouldUseGnashingFangBurst(Preset preset) =>
         IsEnabled(preset) && //option enabled
         CanGF && //can use
-        (((HasNM || JustUsed(NoMercy)) && GetStatusEffectRemainingTime(Buffs.NoMercy) > 8) || //has No Mercy buff or just used it within 2.5s
+        ((JustUsed(NoMercy) && GetStatusEffectRemainingTime(Buffs.NoMercy) > 10) || //has No Mercy buff or just used it within 2.5s
         (NMcd > 7 && GetCooldownRemainingTime(GnashingFang) < 0.5f)); //overcap, but wait if No Mercy is close
 
     private static bool ShouldUseGnashingFangFiller(Preset preset) =>
@@ -473,23 +473,26 @@ internal partial class GNB : Tank
         CanGF && //can use
         GetRemainingCharges(GnashingFang) != 2 && //not at max charges
         NMcd > 7 && //if No Mercy is close, then wait for it
+        ComboTimer > (GCDLength * 4) && //our combo can actually drop if we carelessly send both charges asap in burst LMAO - we will use 4 GCDs (3 base + 1 buffer) as our threshold
         !HasStatusEffect(Buffs.ReadyToReign); //no Reign buff
 
     //there is some opti for Burst Strike and Fated Circle regarding No Mercy and their relative Continuation procs
     //the idea is to use `Cart Action -> No Mercy -> Continuation Proc` to buff proc damage
     //it was substantial before, but now it has become more prevelant due to the 7.4 changes allowing us to do it every 1m
-    private static bool ShouldUseBurstStrike(Preset preset) =>
+    private static bool ShouldUseBurstStrike(Preset preset, int setup) =>
+        IsEnabled(preset) && //option enabled
         LevelChecked(BurstStrike) && //unlocked
         Ammo > 0 && //at least 1 cartridge
         ((Ammo > 3 && NMcd > 10) || //leftover carts - try to spend them asap, but not if No Mercy is close
-        (IsEnabled(preset) && LevelChecked(DoubleDown) && NMcd < 1) || //BS>NM logic
+        (setup == 0 && Slow && LevelChecked(DoubleDown) && NMcd < 1) || //BS>NM setup logic for 2.5 only
         (HasNM && GunStep == 0 && !HasStatusEffect(Buffs.ReadyToReign) && GetRemainingCharges(GnashingFang) == 0 && (!LevelChecked(DoubleDown) || IsOnCooldown(DoubleDown)))); //burst logic
 
-    private static bool ShouldUseFatedCircle(Preset preset) =>
+    private static bool ShouldUseFatedCircle(Preset preset, int setup) =>
+        IsEnabled(preset) && //option enabled
         LevelChecked(FatedCircle) && //unlocked
         Ammo > 0 && //at least 1 cartridge
-        ((Ammo > 1 && HasStatusEffect(Buffs.Bloodfest)) || //leftover extra Bloodfest carts
-        (IsEnabled(preset) && LevelChecked(DoubleDown) && NMcd < 1) || //FC>NM logic
+        ((Ammo > 3 && NMcd > 10) || //leftover carts - try to spend them asap, but not if No Mercy is close
+        (setup == 0 && Slow && LevelChecked(DoubleDown) && NMcd < 1) || //BS>NM setup logic for 2.5 only
         (HasNM && GunStep == 0 && !HasStatusEffect(Buffs.ReadyToReign) && (!LevelChecked(DoubleDown) || IsOnCooldown(DoubleDown)))); //burst logic
 
     private static bool ShouldUseDoubleDown(Preset preset) =>
@@ -504,7 +507,7 @@ internal partial class GNB : Tank
         ((Slow && //if slow SkS
             (IsOnCooldown(DoubleDown) || !LevelChecked(DoubleDown)) && //if DD is unlocked and on cooldown, else just send
             (GetRemainingCharges(GnashingFang) < 2 || !LevelChecked(GnashingFang))) || //if GF is unlocked and has less than 2 charges, else just send
-        (Fast && GetStatusEffectRemainingTime(Buffs.SonicBreak) <= (GCDLength + 10.000f))); //if fast SkS, use as last GCD in NM - determined by SB timer + 10s to prevent not sending at all if missed
+        (Fast && GetStatusEffectRemainingTime(Buffs.ReadyToBreak) <= (GCDLength + 10.000f))); //if fast SkS, use as last GCD in NM - determined by SB timer + 10s to prevent not sending at all if missed
 
     private static bool ShouldUseReignOfBeasts(Preset preset) =>
         IsEnabled(preset) && //option enabled

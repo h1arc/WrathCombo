@@ -35,6 +35,7 @@ internal partial class GNB
             GNB_ST_NoMercy_SubOption = new("GNB_ST_NoMercy_SubOption", 1),
             GNB_ST_Overcap_Choice = new("GNB_ST_Overcap_Choice", 0),
             GNB_ST_HoldLightningShot = new("GNB_ST_HoldLightningShot", 0),
+            GNB_ST_BurstStrike_Setup = new("GNB_ST_BurstStrike_Setup", 0),
             GNB_AoE_MitsOptions = new("GNB_AoE_MitsOptions", 1),
             GNB_AoE_Corundum_Health = new("GNB_AoE_CorundumOption", 90),
             GNB_AoE_Corundum_SubOption = new("GNB_AoE_Corundum_Option", 0),
@@ -55,9 +56,11 @@ internal partial class GNB
             GNB_AoE_FatedCircle_BurstStrike = new("GNB_AoE_FatedCircle_BurstStrike", 1),
             GNB_AoE_Overcap_Choice = new("GNB_AoE_Overcap_Choice", 0),
             GNB_AoE_NoMercyStop = new("GNB_AoE_NoMercyStop", 5),
+            GNB_AoE_FatedCircle_Setup = new("GNB_AoE_FatedCircle_Setup", 0),
             GNB_NM_Features_Weave = new("GNB_NM_Feature_Weave", 0),
             GNB_GF_Features_Choice = new("GNB_GF_Choice", 0),
             GNB_GF_Overcap_Choice = new("GNB_GF_Overcap_Choice", 0),
+            GNB_GF_BurstStrike_Setup = new("GNB_FC_BurstStrike_Setup", 0),
             GNB_ST_Balance_Content = new("GNB_ST_Balance_Content", 1),
             GNB_Mit_Superbolide_Health = new("GNB_Mit_Superbolide_Health", 30),
             GNB_Mit_Corundum_Health = new("GNB_Mit_Corundum_Health", 60),
@@ -93,7 +96,7 @@ internal partial class GNB
                         $"Normal {NoMercy.ActionName()}", $"Uses {NoMercy.ActionName()} normally in all openers", 0);
                     DrawHorizontalRadioButton(GNB_Opener_NM,
                         $"Early {NoMercy.ActionName()}", $"Uses {NoMercy.ActionName()} as soon as possible in all openers", 1);
-
+                    ImGui.Spacing();
                     if (DrawHorizontalRadioButton(GNB_Opener_StartChoice,
                         $"Normal Opener", $"Starts opener with {LightningShot.ActionName()}", 0))
                     {
@@ -102,7 +105,7 @@ internal partial class GNB
                     }
                     DrawHorizontalRadioButton(GNB_Opener_StartChoice,
                         $"Early Opener", $"Starts opener with {KeenEdge.ActionName()} instead, skipping {LightningShot.ActionName()}", 1);
-
+                    ImGui.Spacing();
                     DrawBossOnlyChoice(GNB_ST_Balance_Content);
                     break;
 
@@ -121,6 +124,11 @@ internal partial class GNB
                         "Include Overcap Protection", $"Includes {BurstStrike.ActionName()} to prevent overcapping on cartridges", 0);
                     DrawHorizontalRadioButton(GNB_ST_Overcap_Choice,
                         "Exclude Overcap Protection", $"Excludes {BurstStrike.ActionName()}, regardless of cartridge count", 1);
+                    ImGui.Spacing();
+                    DrawHorizontalRadioButton(GNB_ST_BurstStrike_Setup,
+                        "Precede No Mercy", $"Allow preceding {NoMercy.ActionName()} with {BurstStrike.ActionName()} for a buffed {Hypervelocity.ActionName()} (BS->NM->HV) - ONLY APPLIES TO 2.50", 0);
+                    DrawHorizontalRadioButton(GNB_ST_BurstStrike_Setup,
+                        "Don't Precede No Mercy", $"Forbid preceding {NoMercy.ActionName()} with {BurstStrike.ActionName()}", 1);
                     break;
 
                 case Preset.GNB_ST_RangedUptime:
@@ -129,6 +137,7 @@ internal partial class GNB
                     DrawHorizontalRadioButton(GNB_ST_HoldLightningShot,
                         "Don't Hold for Continuation", "Uses Lightning Shot regardless of any Continuation procs currently available", 0);
                     break;
+
                 #endregion
 
                 #region AoE
@@ -147,6 +156,12 @@ internal partial class GNB
                         "Include Burst Strike", $"Includes {BurstStrike.ActionName()} instead when {FatedCircle.ActionName()} is unavailable", 0);
                     DrawHorizontalRadioButton(GNB_AoE_FatedCircle_BurstStrike,
                         "Exclude Burst Strike", $"Excludes {BurstStrike.ActionName()} when {FatedCircle.ActionName()} is unavailable", 1);
+                    ImGui.Spacing();
+                    DrawHorizontalRadioButton(GNB_AoE_FatedCircle_Setup,
+                        "Precede No Mercy", $"Allow preceding {NoMercy.ActionName()} with {FatedCircle.ActionName()} for a buffed {FatedBrand.ActionName()} (FC->NM->FB) - ONLY APPLIES TO 2.50", 0);
+                    DrawHorizontalRadioButton(GNB_AoE_FatedCircle_Setup,
+                        "Don't Precede No Mercy", $"Forbid preceding {NoMercy.ActionName()} with {FatedCircle.ActionName()}", 1);
+
                     break;
                 #endregion
 
@@ -379,6 +394,11 @@ internal partial class GNB
                         "Include Overcap Protection", $"Includes {BurstStrike.ActionName()} to prevent overcapping on cartridges", 0);
                     DrawHorizontalRadioButton(GNB_GF_Overcap_Choice,
                         "Exclude Overcap Protection", $"Excludes {BurstStrike.ActionName()}, regardless of cartridge count", 1);
+                    ImGui.Spacing();
+                    DrawHorizontalRadioButton(GNB_GF_BurstStrike_Setup,
+                        "Precede No Mercy", $"Allow preceding {NoMercy.ActionName()} with {BurstStrike.ActionName()} for a buffed {Hypervelocity.ActionName()} (BS->NM->HV) - ONLY APPLIES TO 2.50", 0);
+                    DrawHorizontalRadioButton(GNB_GF_BurstStrike_Setup,
+                        "Don't Precede No Mercy", $"Forbid preceding {NoMercy.ActionName()} with {BurstStrike.ActionName()}", 1);
                     break;
 
                 case Preset.GNB_ST_Simple:

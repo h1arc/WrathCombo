@@ -111,10 +111,11 @@ internal partial class GNB : Tank
                 return OriginalHook(Continuation);
 
             //Hypervelocity
-            //if No Mercy is imminent, then we want to aim for buffing HV right after using Burst Strike (BS^NM^HV>GF>etc.)
+            //2.5 ONLY - if No Mercy is imminent, then we want to aim for buffing HV right after using Burst Strike (BS^NM^HV>GF>etc.)
             if (JustUsed(BurstStrike, 5f) &&
                 LevelChecked(Hypervelocity) &&
                 HasStatusEffect(Buffs.ReadyToBlast) &&
+                Slow &&
                 NMcd is > 1.3f)
                 return Hypervelocity;
 
@@ -161,7 +162,7 @@ internal partial class GNB : Tank
                 return OriginalHook(ReignOfBeasts);
 
             //Burst Strike
-            if (ShouldUseBurstStrike(Preset.GNB_ST_Simple))
+            if (ShouldUseBurstStrike(Preset.GNB_ST_Simple, 0))
                 return BurstStrike;
 
             //1-2-3
@@ -289,13 +290,14 @@ internal partial class GNB : Tank
                 return OriginalHook(Continuation);
 
             //Hypervelocity
-            //if No Mercy is imminent, then we want to aim for buffing HV right after using Burst Strike (BS^NM^HV>GF>etc.)
+            //2.5 ONLY - if No Mercy is imminent, then we want to aim for buffing HV right after using Burst Strike (BS^NM^HV>GF>etc.)
             if (IsEnabled(Preset.GNB_ST_Continuation) &&
                 IsEnabled(Preset.GNB_ST_NoMercy) &&
 				JustUsed(BurstStrike, 5f) &&
                 LevelChecked(Hypervelocity) &&
                 HasStatusEffect(Buffs.ReadyToBlast) &&
-				NMcd is > 1.3f)
+                Slow &&
+				NMcd > 1.3f)
 				return Hypervelocity;
 
             //Bow Shock & Zone
@@ -308,7 +310,7 @@ internal partial class GNB : Tank
 
             //NORMAL PRIORITY - within weave weave window
             //Gnashing Fang procs (Jugular Rip, Abdomen Tear, Eye Gouge)
-            if (CanContinue &&
+            if ((CanContinue || HasStatusEffect(Buffs.ReadyToBlast)) &&
                 IsEnabled(Preset.GNB_ST_Continuation) && 
 				CanWeave())
 				return OriginalHook(Continuation);
@@ -344,7 +346,7 @@ internal partial class GNB : Tank
                 return OriginalHook(ReignOfBeasts);
 
             //Burst Strike
-            if (ShouldUseBurstStrike(Preset.GNB_ST_BurstStrike))
+            if (ShouldUseBurstStrike(Preset.GNB_ST_BurstStrike, GNB_ST_BurstStrike_Setup))
                 return BurstStrike;
 
             //1-2-3
@@ -441,7 +443,7 @@ internal partial class GNB : Tank
                 if ((CanReign && HasNM) || GunStep is 3 or 4)
                     return OriginalHook(ReignOfBeasts);
 
-                if (ShouldUseFatedCircle(Preset.GNB_AoE_Simple))
+                if (ShouldUseFatedCircle(Preset.GNB_AoE_Simple, 0))
                     return LevelChecked(FatedCircle) ? FatedCircle : BurstStrike;
             }
 
@@ -572,7 +574,7 @@ internal partial class GNB : Tank
                     ((CanReign && HasNM) || GunStep is 3 or 4))
                     return OriginalHook(ReignOfBeasts);
 
-                if (ShouldUseFatedCircle(Preset.GNB_AoE_FatedCircle))
+                if (ShouldUseFatedCircle(Preset.GNB_AoE_FatedCircle, GNB_AoE_FatedCircle_Setup))
                     return 
                         LevelChecked(FatedCircle) ? FatedCircle :
                         LevelChecked(BurstStrike) && GNB_AoE_FatedCircle_BurstStrike == 0 ? BurstStrike : 
@@ -601,7 +603,7 @@ internal partial class GNB : Tank
             //MAX PRIORITY - just clip it, it's better than just losing it altogether
             //Continuation procs (Hypervelocity, Jugular Rip, Abdomen Tear, Eye Gouge)
             if ((CanContinue || HasStatusEffect(Buffs.ReadyToBlast)) &&
-                CanDelayedWeave(0.6f, 0.0f) &&
+                RemainingGCD < 0.6f &&
                 IsEnabled(Preset.GNB_GF_Continuation))
                 return OriginalHook(Continuation);
 
@@ -621,12 +623,13 @@ internal partial class GNB : Tank
                 return OriginalHook(Continuation);
 
             //Hypervelocity
-            //if No Mercy is imminent, then we want to aim for buffing HV right after using Burst Strike (BS^NM^HV>GF>etc.)
+            //2.5 ONLY - if No Mercy is imminent, then we want to aim for buffing HV right after using Burst Strike (BS^NM^HV>GF>etc.)
             if (IsEnabled(Preset.GNB_GF_Continuation) &&
                 IsEnabled(Preset.GNB_GF_NoMercy) &&
                 JustUsed(BurstStrike, 5f) &&
                 LevelChecked(Hypervelocity) &&
                 HasStatusEffect(Buffs.ReadyToBlast) &&
+                Slow &&
                 NMcd is > 1.3f)
                 return Hypervelocity;
 
@@ -640,7 +643,7 @@ internal partial class GNB : Tank
 
             //NORMAL PRIORITY - within weave weave window
             //Gnashing Fang procs (Jugular Rip, Abdomen Tear, Eye Gouge)
-            if (CanContinue &&
+            if ((CanContinue || HasStatusEffect(Buffs.ReadyToBlast)) &&
                 IsEnabled(Preset.GNB_GF_Continuation) &&
                 CanWeave())
                 return OriginalHook(Continuation);
@@ -676,7 +679,7 @@ internal partial class GNB : Tank
                 return OriginalHook(ReignOfBeasts);
 
             //Burst Strike
-            if (ShouldUseBurstStrike(Preset.GNB_GF_BurstStrike))
+            if (ShouldUseBurstStrike(Preset.GNB_GF_BurstStrike, GNB_GF_BurstStrike_Setup))
                 return BurstStrike;
 
             return actionID;
