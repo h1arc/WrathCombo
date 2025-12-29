@@ -400,9 +400,20 @@ internal abstract partial class CustomComboFunctions
     /// <returns></returns>
     public static unsafe bool TargetIsStatusCapped(IGameObject? target)
     {
-        target ??= LocalPlayer;
-        if (target is IBattleChara bc)
-            return bc.StatusList.Count(x => x.StatusId != 0) == bc.Struct()->StatusManager.NumValidStatuses;
+        try
+        {
+            target ??= LocalPlayer;
+            if (target is IBattleChara bc)
+                return bc.StatusList.Count(x => x.StatusId != 0) ==
+                       bc.Struct()->StatusManager.NumValidStatuses;
+        }
+        // Catch issues with:
+        // - Getting the StatusList from suddenly-stale GameObjects
+        // - Getting the number of valid statuses from scuffed NPCs
+        catch
+        {
+            // Ignored, assume false
+        }
 
         return false;
     }
