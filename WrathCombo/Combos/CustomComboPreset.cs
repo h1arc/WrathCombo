@@ -5082,7 +5082,7 @@ public enum Preset
 
     #endregion
 
-    //// Last value = 11085
+    //// Last value = 11099
 
     #endregion
 
@@ -7979,10 +7979,8 @@ public enum Preset
 
     #endregion
 
-    // Last value = 18130
-
     #endregion
-
+    // Last value = 18145
     #endregion
 
     #region WHITE MAGE
