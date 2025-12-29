@@ -194,10 +194,7 @@ internal partial class PLD
     
     private static bool CanUseNonBossMits(ref uint actionID)
     {
-        if (!InCombat() || 
-            !CanWeave() || 
-            InBossEncounter() || 
-            JustMitted || 
+        if (!InCombat() || !CanWeave() || InBossEncounter() || JustMitted || 
             IsNotEnabled(Preset.PLD_Mitigation_NonBoss) ||
             GetAvgEnemyHPPercentInRange(5f) <= PLD_Mitigation_NonBoss_MitigationThreshold) 
             return false;
@@ -208,60 +205,56 @@ internal partial class PLD
             actionID = OriginalHook(Sheltron);
             return true;
         }
-        
         if (IsEnabled(Preset.PLD_Mitigation_NonBoss_DivineVeil) && ActionReady(DivineVeil) && PlayerHealthPercentageHp() <= PLD_Mitigation_NonBoss_DivineVeil_Health)
         {
             actionID = DivineVeil;
             return true;
         }
-        
         if (Role.CanReprisal(enemyCount:5) && IsEnabled(Preset.PLD_Mitigation_NonBoss_Reprisal) && !HasStatusEffect(Buffs.HallowedGround))
         {
             actionID = Role.Reprisal;
             return true;
         }
         
-        if (MitigationRunning) return false;
+        if (MitigationRunning || NumberOfEnemiesInRange(Role.Reprisal) <= 2) return false; //Bail if already Mitted or too few enemies
         
-        switch (NumberOfEnemiesInRange(Role.Reprisal))
+        //Mitigations for 5 or more
+        if (NumberOfEnemiesInRange(Role.Reprisal) > 4)
         {
-            case >= 5:
+            if (ActionReady(HallowedGround) && IsEnabled(Preset.PLD_Mitigation_NonBoss_HallowedGround))
             {
-                if (ActionReady(HallowedGround) && IsEnabled(Preset.PLD_Mitigation_NonBoss_HallowedGround))
-                {
-                    actionID = HallowedGround;
-                    return true;
-                }
-                    
-                if (ActionReady(Role.ArmsLength) && IsEnabled(Preset.PLD_Mitigation_NonBoss_ArmsLength))
-                {
-                    actionID = Role.ArmsLength;
-                    return true;
-                }
-
-                break;
+                actionID = HallowedGround;
+                return true;
             }
-
-            case >= 3:
+            if (ActionReady(Role.ArmsLength) && IsEnabled(Preset.PLD_Mitigation_NonBoss_ArmsLength))
             {
-                if (Role.CanRampart() && IsEnabled(Preset.PLD_Mitigation_NonBoss_Rampart))
-                {
-                    actionID = Role.Rampart;
-                    return true;
-                }
-                if (ActionReady(Bulwark) && IsEnabled(Preset.PLD_Mitigation_NonBoss_Bulwark))
-                {
-                    actionID = Bulwark;
-                    return true;
-                }
-                if (ActionReady(OriginalHook(Sentinel)) && IsEnabled(Preset.PLD_Mitigation_NonBoss_Sentinel))
-                {
-                    actionID = OriginalHook(Sentinel);
-                    return true;
-                }
-                break;
+                actionID = Role.ArmsLength;
+                return true;
+            }
+            if (Role.CanRampart() && IsEnabled(Preset.PLD_Mitigation_NonBoss_Rampart))
+            {
+                actionID = Role.Rampart;
+                return true;
             }
         }
+        
+        //Mitigation for 3 or more
+        if (Role.CanRampart() && IsEnabled(Preset.PLD_Mitigation_NonBoss_Rampart))
+        {
+            actionID = Role.Rampart;
+            return true;
+        }
+        if (ActionReady(Bulwark) && IsEnabled(Preset.PLD_Mitigation_NonBoss_Bulwark))
+        {
+            actionID = Bulwark;
+            return true;
+        }
+        if (ActionReady(OriginalHook(Sentinel)) && IsEnabled(Preset.PLD_Mitigation_NonBoss_Sentinel))
+        {
+            actionID = OriginalHook(Sentinel);
+            return true;
+        }
+        
         return false;
     }
     

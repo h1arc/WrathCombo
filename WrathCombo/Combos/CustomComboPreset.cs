@@ -7454,6 +7454,65 @@ public enum Preset
     #endregion
 
     #region WARRIOR
+    
+    [CustomComboInfo("Mitigation Options", "Mitigation Options for Warrior. Enable in each combo", Job.WAR)]
+    WAR_Mitigation = 18131,
+    
+    [ParentCombo(WAR_Mitigation)]
+    [CustomComboInfo("Non Boss Encounter Mitigation", "Adds Mitigation to the combos when not in a boss encounter. Will not overlap separate options unless stated.", Job.WAR)]
+    WAR_Mitigation_NonBoss = 18132,
+    
+    [ParentCombo(WAR_Mitigation_NonBoss)]
+    [CustomComboInfo("Rampart Option", "Adds Rampart when 3 or more targets", Job.WAR)]
+    WAR_Mitigation_NonBoss_Rampart = 18133,
+    
+    [ParentCombo(WAR_Mitigation_NonBoss)]
+    [CustomComboInfo("Thrill Of Battle Option", "Adds Thrill Of Battle when 3 or more targets", Job.WAR)]
+    WAR_Mitigation_NonBoss_ThrillOfBattle = 18134,
+    
+    [ParentCombo(WAR_Mitigation_NonBoss)]
+    [CustomComboInfo("Vengeance/Damnation Option", "Adds Vengeance/Damnation when 5 or more targets", Job.WAR)]
+    WAR_Mitigation_NonBoss_Vengeance = 18135,
+    
+    [ParentCombo(WAR_Mitigation_NonBoss)]
+    [CustomComboInfo("Arm's Length Option", "Adds Arm's Length when 5 or more targets", Job.WAR)]
+    WAR_Mitigation_NonBoss_ArmsLength = 18136,
+    
+    [ParentCombo(WAR_Mitigation_NonBoss)]
+    [CustomComboInfo("Reprisal Option", "Adds Reprisal when 5 or more targets.", Job.WAR)]
+    WAR_Mitigation_NonBoss_Reprisal= 18137,
+    
+    [ParentCombo(WAR_Mitigation_NonBoss)]
+    [CustomComboInfo("Raw Intuition/Bloodwhetting Option", "Adds Raw Intuition/Bloodwhetting when available. Will overlap with others.", Job.WAR)]
+    WAR_Mitigation_NonBoss_RawIntuition = 18138,
+    
+    [ParentCombo(WAR_Mitigation_NonBoss)]
+    [CustomComboInfo("Shake It Off Option", "Adds Shake It Off for healing. Will not use when it would result in loss of Mitigation buffs. ", Job.WAR)]
+    WAR_Mitigation_NonBoss_ShakeItOff = 18139,
+    
+    [ParentCombo(WAR_Mitigation_NonBoss)]
+    [CustomComboInfo("Equilibrium Option", "Adds Equilibrium for healing.", Job.WAR)]
+    WAR_Mitigation_NonBoss_Equilibrium = 18140,
+    
+    [ParentCombo(WAR_Mitigation_NonBoss)]
+    [CustomComboInfo("Holmgang Option", "Adds Holmgang for Emergency Invuln.", Job.WAR)]
+    WAR_Mitigation_NonBoss_Holmgang= 18141,
+    
+    [ParentCombo(WAR_Mitigation)]
+    [CustomComboInfo("Boss Encounter Mitigation", "Adds Mitigation to the combos when not in a boss encounter. Will not overlap separate options unless stated.", Job.WAR)]
+    WAR_Mitigation_Boss = 18142,
+    
+    [ParentCombo(WAR_Mitigation_Boss)]
+    [CustomComboInfo("Raw Intuition/Bloodwhetting Option", "Adds Raw Intuition/Bloodwhetting on CD when targetted", Job.WAR)]
+    WAR_Mitigation_Boss_RawIntuition = 18143,
+    
+    [ParentCombo(WAR_Mitigation_Boss)]
+    [CustomComboInfo("Raidwide Reprisal Option", "Adds Reprisal when raidwide casting is detected.", Job.WAR)]
+    WAR_Mitigation_Boss_Reprisal = 18144,
+    
+    [ParentCombo(WAR_Mitigation_Boss)]
+    [CustomComboInfo("Raidwide Shake It Off Option", "Adds Shake it Off when raidwide casting is detected.", Job.WAR)]
+    WAR_Mitigation_Boss_ShakeItOff = 18145,
 
     #region Simple Mode
     [AutoAction(false, false)]
@@ -7535,45 +7594,6 @@ public enum Preset
     [CustomComboInfo("Interrupt with Stun Option", "Adds Low Blow to the rotation when your target is casting.\nNot advised outside of overworld content, as it can waste a lot of Low Blows on un-stun-able enemies, etc. Will try to not use it in boss fights.", Job.WAR)]
     WAR_ST_Stun = 18112,
 
-    #region Mitigations
-    [ParentCombo(WAR_ST_Advanced)]
-    [CustomComboInfo("Mitigation Options", "Adds defensive actions into the rotation based on Health percentage remaining.", Job.WAR)]
-    WAR_ST_Mitigation = 18040,
-
-    [ParentCombo(WAR_ST_Mitigation)]
-    [CustomComboInfo("Bloodwhetting Option", "Adds Raw Intuition / Bloodwhetting.\n- Player HP must be under:", Job.WAR)]
-    WAR_ST_Bloodwhetting = 18031,
-    
-    [ParentCombo(WAR_ST_Mitigation)]
-    [CustomComboInfo("Reprisal Option", "Uses Reprisal when a raidwide is in the process of casting.", Job.WAR)]
-    WAR_ST_Reprisal = 18061,
-
-    [ParentCombo(WAR_ST_Mitigation)]
-    [CustomComboInfo("Shake it Off Option", "Uses Shake it Off when a raidwide is in the process of casting.", Job.WAR)]
-    WAR_ST_ShakeItOff = 18131,
-
-    [ParentCombo(WAR_ST_ShakeItOff)]
-    [CustomComboInfo("Avoid Doubling up on Group Mit", "Won't use Shake it Off if your own Reprisal is on the target.", Job.WAR)]
-    WAR_ST_ShakeItOffAvoid = 18132,
-
-    [ParentCombo(WAR_ST_Mitigation)]
-    [CustomComboInfo("Equilibrium Option", "Adds Equilibrium.\n- Player HP must be under:", Job.WAR)]
-    WAR_ST_Equilibrium = 18043,
-    
-    [ParentCombo(WAR_ST_Mitigation)]
-    [CustomComboInfo("Thrill of Battle Option", "Adds Thrill of Battle.\n- Player HP must be under:", Job.WAR)]
-    WAR_ST_Thrill = 18042,
-
-    [ParentCombo(WAR_ST_Mitigation)]
-    [CustomComboInfo("Vengeance Option", "Adds Vengeance / Damnation.\n- Player HP must be under:", Job.WAR)]
-    WAR_ST_Vengeance = 18033,
-
-    [ParentCombo(WAR_ST_Mitigation)]
-    [CustomComboInfo("Holmgang Option", "Adds Holmgang.\n- Player HP must be under:", Job.WAR)]
-    WAR_ST_Holmgang = 18034,
-
-    #endregion
-
     #endregion
 
     #region Advanced AoE
@@ -7627,49 +7647,6 @@ public enum Preset
     [ParentCombo(WAR_AoE_Interrupt)]
     [CustomComboInfo("Interrupt with Stun Option", "Adds Low Blow to the AoE rotation when your target is casting, interruptible or not.", Job.WAR)]
     WAR_AoE_Stun = 18068,
-
-    #region Mitigations
-    [ParentCombo(WAR_AoE_Advanced)]
-    [CustomComboInfo("Mitigation Options", "Adds defensive actions into the rotation based on Health percentage remaining.", Job.WAR)]
-    WAR_AoE_Mitigation = 18035,
-
-    [ParentCombo(WAR_AoE_Mitigation)]
-    [CustomComboInfo("Bloodwhetting Option", "Adds Raw Intuition / Bloodwhetting.\n- Player HP must be under:", Job.WAR)]
-    WAR_AoE_Bloodwhetting = 18036,
-    
-    [ParentCombo(WAR_AoE_Mitigation)]
-    [CustomComboInfo("Reprisal Option", "Adds Reprisal.\n- Player HP must be under:", Job.WAR)]
-    WAR_AoE_Reprisal = 18063,
-
-    [ParentCombo(WAR_AoE_Mitigation)]
-    [CustomComboInfo("Shake it Off Option", "Adds Shake it Off.\n- Player HP must be under:", Job.WAR)]
-    WAR_AoE_ShakeItOff = 18133,
-
-    [ParentCombo(WAR_AoE_Mitigation)]
-    [CustomComboInfo("Rampart Option", "Adds Rampart.\n- Player HP must be under:", Job.WAR)]
-    WAR_AoE_Rampart = 18037,
-
-    [ParentCombo(WAR_AoE_Mitigation)]
-    [CustomComboInfo("Arm's Length Option", "Adds Arm's Length.", Job.WAR)]
-    WAR_AoE_ArmsLength = 18064,
-
-    [ParentCombo(WAR_AoE_Mitigation)]
-    [CustomComboInfo("Equilibrium Option", "Adds Equilibrium.\n- Player HP must be under:", Job.WAR)]
-    WAR_AoE_Equilibrium = 18044,
-    
-    [ParentCombo(WAR_AoE_Mitigation)]
-    [CustomComboInfo("Thrill of Battle Option", "Adds Thrill of Battle.\n- Player HP must be under:", Job.WAR)]
-    WAR_AoE_Thrill = 18041,
-
-    [ParentCombo(WAR_AoE_Mitigation)]
-    [CustomComboInfo("Vengeance Option", "Adds Vengeance / Damnation.\n- Player HP must be under:", Job.WAR)]
-    WAR_AoE_Vengeance = 18038,
-
-    [ParentCombo(WAR_AoE_Mitigation)]
-    [CustomComboInfo("Holmgang Option", "Adds Holmgang.\n- Player HP must be under:", Job.WAR)]
-    WAR_AoE_Holmgang = 18039,
-    
-    #endregion
 
     #endregion
 

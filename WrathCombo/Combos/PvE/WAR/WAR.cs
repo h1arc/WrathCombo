@@ -34,52 +34,12 @@ internal partial class WAR
                 return Role.LowBlow;
 
             #endregion
-
-            #region Mitigations
-
-            // Mitigation
-            var mitigationsOn =
-                WAR_ST_MitsOptions != 1 ||
-                (P.UIHelper.PresetControlled(Preset)?.enabled == true);
-            if (mitigationsOn && InCombat() && !MitUsed && IsPlayerTargeted())
+            
+            if (WAR_ST_MitsOptions == 0)
             {
-                // Holmgang
-                if (ActionReady(Holmgang) &&
-                    PlayerHealthPercentageHp() <= 30)
-                    return Holmgang;
-
-                // Raw Intuition/Bloodwhetting
-                if (ActionReady(OriginalHook(RawIntuition)) &&
-                    PlayerHealthPercentageHp() <= 85)
-                    return OriginalHook(RawIntuition);
-
-                // Reprisal
-                if (Role.CanReprisal() && RaidWideCasting(5f))
-                    return Role.Reprisal;
-
-                // Shake It Off
-                if (ActionReady(ShakeItOff) && RaidWideCasting(5f) &&
-                    NumberOfAlliesInRange(ShakeItOff) >= GetPartyMembers().Count * .75 &&
-                    !HasStatusEffect(Role.Debuffs.Reprisal, CurrentTarget, true))
-                    return OriginalHook(ShakeItOff);
-
-                // Vengeance
-                if (ActionReady(OriginalHook(Vengeance)) &&
-                    PlayerHealthPercentageHp() <= 60)
-                    return OriginalHook(Vengeance);
-
-                // Thrill
-                if (ActionReady(ThrillOfBattle) &&
-                    PlayerHealthPercentageHp() <= 70)
-                    return ThrillOfBattle;
-
-                // Equilibrium
-                if (ActionReady(Equilibrium) &&
-                    PlayerHealthPercentageHp() <= 50)
-                    return Equilibrium;
+                if (CanUseNonBossMits(ref action) || CanUseBossMits(ref action))
+                    return action;
             }
-
-            #endregion
 
             #region Rotation
 
@@ -138,61 +98,12 @@ internal partial class WAR
                 return Role.LowBlow;
 
             #endregion
-
-            #region Mitigations
-
-            // Mitigation
-            if (IsEnabled(Preset.WAR_ST_Mitigation) && InCombat() && !MitUsed &&
-                InMitigationContent && IsPlayerTargeted())
+            
+            if (WAR_ST_Advanced_MitsOptions == 0)
             {
-                // Holmgang
-                if (IsEnabled(Preset.WAR_ST_Holmgang) &&
-                    ActionReady(Holmgang) &&
-                    PlayerHealthPercentageHp() <= WAR_ST_Holmgang_Health &&
-                    (WAR_ST_HolmgangBoss == (int)BossAvoidance.On && InBossEncounter() ||
-                     WAR_ST_HolmgangBoss == (int)BossAvoidance.Off))
-                    return Holmgang;
-
-                // Raw Intuition/Bloodwhetting
-                if (IsEnabled(Preset.WAR_ST_Bloodwhetting) &&
-                    ActionReady(OriginalHook(RawIntuition)) &&
-                    PlayerHealthPercentageHp() <= WAR_ST_Bloodwhetting_Health &&
-                    (WAR_ST_Bloodwhetting_Boss == 0 || TargetIsBoss()))
-                    return OriginalHook(RawIntuition);
-
-                // Reprisal
-                if (IsEnabled(Preset.WAR_ST_Reprisal) &&
-                    Role.CanReprisal() && RaidWideCasting(5f))
-                    return Role.Reprisal;
-
-                // Shake It Off
-                if (IsEnabled(Preset.WAR_ST_ShakeItOff) &&
-                    ActionReady(ShakeItOff) && RaidWideCasting(5f) &&
-                    NumberOfAlliesInRange(ShakeItOff) >= GetPartyMembers().Count * .75 &&
-                    (IsNotEnabled(Preset.WAR_ST_ShakeItOffAvoid) ||
-                     !HasStatusEffect(Role.Debuffs.Reprisal, CurrentTarget, true)))
-                    return OriginalHook(ShakeItOff);
-
-                // Vengeance
-                if (IsEnabled(Preset.WAR_ST_Vengeance) &&
-                    ActionReady(OriginalHook(Vengeance)) &&
-                    PlayerHealthPercentageHp() <= WAR_ST_Vengeance_Health)
-                    return OriginalHook(Vengeance);
-
-                // Thrill
-                if (IsEnabled(Preset.WAR_ST_Thrill) &&
-                    ActionReady(ThrillOfBattle) &&
-                    PlayerHealthPercentageHp() <= WAR_ST_Thrill_Health)
-                    return ThrillOfBattle;
-
-                // Equilibrium
-                if (IsEnabled(Preset.WAR_ST_Equilibrium) &&
-                    ActionReady(Equilibrium) &&
-                    PlayerHealthPercentageHp() <= WAR_ST_Equilibrium_Health)
-                    return Equilibrium;
+                if (CanUseNonBossMits(ref action) || CanUseBossMits(ref action))
+                    return action;
             }
-
-            #endregion
 
             #region Rotation
 
@@ -245,52 +156,12 @@ internal partial class WAR
                 return Role.Interject;
             if (Role.CanLowBlow())
                 return Role.LowBlow;
-
-            #region Mitigations
-
-            // Mitigation
-            var mitigationsOn =
-                WAR_AoE_MitsOptions != 1 ||
-                (P.UIHelper.PresetControlled(Preset)?.enabled == true);
-            if (mitigationsOn &&
-                IsPlayerTargeted() && !MitUsed && InCombat())
+            
+            if (WAR_AoE_MitsOptions == 0)
             {
-                if (ActionReady(Holmgang) &&
-                    PlayerHealthPercentageHp() <= 30)
-                    return Holmgang;
-
-                if (ActionReady(OriginalHook(RawIntuition)) &&
-                    PlayerHealthPercentageHp() <= 85)
-                    return OriginalHook(RawIntuition);
-
-                if (Role.CanReprisal(80, 3, false))
-                    return Role.Reprisal;
-
-                if (ActionReady(ShakeItOff) &&
-                    NumberOfAlliesInRange(ShakeItOff) >= GetPartyMembers().Count * .75 &&
-                    PlayerHealthPercentageHp() < 80)
-                    return ShakeItOff;
-
-                if (Role.CanRampart(50))
-                    return Role.Rampart;
-
-                if (Role.CanArmsLength(3))
-                    return Role.ArmsLength;
-
-                if (ActionReady(OriginalHook(Vengeance)) &&
-                    PlayerHealthPercentageHp() <= 60)
-                    return OriginalHook(Vengeance);
-
-                if (ActionReady(ThrillOfBattle) &&
-                    PlayerHealthPercentageHp() <= 70)
-                    return ThrillOfBattle;
-
-                if (ActionReady(Equilibrium) &&
-                    PlayerHealthPercentageHp() <= 50)
-                    return Equilibrium;
+                if (CanUseNonBossMits(ref action) || CanUseBossMits(ref action))
+                    return action;
             }
-
-            #endregion
 
             #region Rotation
 
@@ -347,58 +218,12 @@ internal partial class WAR
                 () => HiddenFeaturesData.Content.InR6S,
                 () => HiddenFeaturesData.Targeting.R6SJabber))
                 return Role.LowBlow;
-
-            #region Mitigations
-
-            // Mitigation
-            if (IsEnabled(Preset.WAR_AoE_Mitigation) &&
-                IsPlayerTargeted() && !MitUsed && InCombat())
+            
+            if (WAR_AoE_Advanced_MitsOptions == 0)
             {
-                if (IsEnabled(Preset.WAR_AoE_Holmgang) &&
-                    ActionReady(Holmgang) &&
-                    PlayerHealthPercentageHp() <= WAR_AoE_Holmgang_Health)
-                    return Holmgang;
-
-                if (IsEnabled(Preset.WAR_AoE_Bloodwhetting) &&
-                    ActionReady(OriginalHook(RawIntuition)) &&
-                    PlayerHealthPercentageHp() <= WAR_AoE_Bloodwhetting_Health)
-                    return OriginalHook(RawIntuition);
-
-                if (IsEnabled(Preset.WAR_AoE_Reprisal) &&
-                    Role.CanReprisal(WAR_AoE_Reprisal_Health, WAR_AoE_Reprisal_Count, false))
-                    return Role.Reprisal;
-
-                if (IsEnabled(Preset.WAR_AoE_ShakeItOff) &&
-                    ActionReady(ShakeItOff) &&
-                    NumberOfAlliesInRange(ShakeItOff) >= GetPartyMembers().Count * .75 &&
-                    PlayerHealthPercentageHp() < WAR_AoE_ShakeItOff_Health)
-                    return ShakeItOff;
-
-                if (IsEnabled(Preset.WAR_AoE_Rampart) &&
-                    Role.CanRampart(WAR_AoE_Rampart_Health))
-                    return Role.Rampart;
-
-                if (IsEnabled(Preset.WAR_AoE_ArmsLength) &&
-                    Role.CanArmsLength(WAR_AoE_ArmsLength_Count))
-                    return Role.ArmsLength;
-
-                if (IsEnabled(Preset.WAR_AoE_Vengeance) &&
-                    ActionReady(OriginalHook(Vengeance)) &&
-                    PlayerHealthPercentageHp() <= WAR_AoE_Vengeance_Health)
-                    return OriginalHook(Vengeance);
-
-                if (IsEnabled(Preset.WAR_AoE_Thrill) &&
-                    ActionReady(ThrillOfBattle) &&
-                    PlayerHealthPercentageHp() <= WAR_AoE_Thrill_Health)
-                    return ThrillOfBattle;
-
-                if (IsEnabled(Preset.WAR_AoE_Equilibrium) &&
-                    ActionReady(Equilibrium) &&
-                    PlayerHealthPercentageHp() <= WAR_AoE_Equilibrium_Health)
-                    return Equilibrium;
+                if (CanUseNonBossMits(ref action) || CanUseBossMits(ref action))
+                    return action;
             }
-
-            #endregion
 
             if (!r6SReady) return AOECombo;
 

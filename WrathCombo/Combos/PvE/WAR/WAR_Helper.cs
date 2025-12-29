@@ -37,15 +37,26 @@ internal partial class WAR : Tank
     internal static bool HasNC => HasStatusEffect(Buffs.NascentChaos);
     internal static bool HasWrath => HasStatusEffect(Buffs.Wrathful);
     internal static bool Minimal => InCombat() && HasBattleTarget();
-    internal static bool MitUsed =>
-        JustUsed(OriginalHook(RawIntuition), 4f) ||
-        JustUsed(OriginalHook(Vengeance), 5f) ||
-        JustUsed(ThrillOfBattle, 5f) ||
-        JustUsed(Role.Rampart, 5f) ||
-        JustUsed(Holmgang, 9f);
 
-    private static bool InMitigationContent =>
-        ContentCheck.IsInConfiguredContent(WAR_ST_Mit_Difficulty, WAR_ST_Mit_DifficultyListSet);
+    internal static bool SafeToShakeItOff => !HasAnyStatusEffects([Buffs.ThrillOfBattle, Buffs.Damnation, Buffs.VengeanceDefense, Buffs.BloodwhettingDefenseLong]);
+    
+    private static bool JustMitted =>
+        JustUsed(OriginalHook(ThrillOfBattle)) ||
+        JustUsed(OriginalHook(Vengeance)) ||
+        JustUsed(OriginalHook(RawIntuition)) ||
+        JustUsed(Role.Reprisal) ||
+        JustUsed(Role.ArmsLength) ||
+        JustUsed(Role.Rampart) ||
+        JustUsed(Holmgang);
+    
+    internal static bool MitigationRunning =>
+        HasStatusEffect(Role.Buffs.ArmsLength) ||
+        HasStatusEffect(Role.Buffs.Rampart) || 
+        HasStatusEffect(Buffs.Holmgang) ||
+        HasStatusEffect(Buffs.ThrillOfBattle) ||
+        HasStatusEffect(Buffs.VengeanceDefense) || 
+        HasStatusEffect(Buffs.Damnation) ||
+        HasStatusEffect(Role.Debuffs.Reprisal, CurrentTarget);
 
     #endregion
 
@@ -276,6 +287,116 @@ internal partial class WAR : Tank
                IsEnabled(PrioritizedMitigation[index].Preset);
     }
 
+    #endregion
+    
+    #region Auto Mitigation System
+    
+    private static bool CanUseNonBossMits(ref uint action)
+    {
+        if (!InCombat() || !CanWeave() || InBossEncounter() || JustMitted || 
+            IsNotEnabled(Preset.WAR_Mitigation_NonBoss) ||
+            GetAvgEnemyHPPercentInRange(10f) <= WAR_Mitigation_NonBoss_MitigationThreshold) 
+            return false;
+        
+        if (IsEnabled(Preset.WAR_Mitigation_NonBoss_Holmgang) && ActionReady(Holmgang) &&
+            PlayerHealthPercentageHp() <= WAR_Mitigation_NonBoss_Holmgang_Health)
+        {
+            action = Holmgang;
+            return true;
+        }
+        
+        if (IsEnabled(Preset.WAR_Mitigation_NonBoss_Equilibrium) && ActionReady(Equilibrium) &&
+            PlayerHealthPercentageHp() <= WAR_Mitigation_NonBoss_Equilibrium_Health)
+        {
+            action = Equilibrium;
+            return true;
+        }
+        
+        if (IsEnabled(Preset.WAR_Mitigation_NonBoss_RawIntuition) && ActionReady(OriginalHook(RawIntuition)))
+        {
+            action = OriginalHook(RawIntuition);
+            return true;
+        }
+        
+        if (IsEnabled(Preset.WAR_Mitigation_NonBoss_ShakeItOff) && ActionReady(ShakeItOff) && SafeToShakeItOff &&
+            PlayerHealthPercentageHp() <= WAR_Mitigation_NonBoss_ShakeItOff_Health)
+        {
+            action = ShakeItOff;
+            return true;
+        }
+        
+        if (MitigationRunning || NumberOfEnemiesInRange(Role.Reprisal) <= 2) return false; //Bail if already Mitted or too few enemies
+        
+        //Mitigations for 5 or more
+        if (NumberOfEnemiesInRange(Role.Reprisal) > 4)
+        {
+            if (Role.CanReprisal(enemyCount:5) && IsEnabled(Preset.WAR_Mitigation_NonBoss_Reprisal))
+            {
+                action = Role.Reprisal;
+                return true;
+            }
+                
+            if (ActionReady(Role.ArmsLength) && IsEnabled(Preset.WAR_Mitigation_NonBoss_ArmsLength))
+            {
+                action = Role.ArmsLength;
+                return true;
+            }
+            
+            if (ActionReady(OriginalHook(Vengeance)) && IsEnabled(Preset.WAR_Mitigation_NonBoss_Vengeance))
+            {
+                action = OriginalHook(Vengeance);
+                return true;
+            }
+        }
+        
+        //Mitigations for 3 or more
+        if (Role.CanRampart() && IsEnabled(Preset.WAR_Mitigation_NonBoss_Rampart))
+        {
+            action = Role.Rampart;
+            return true;
+        }
+            
+        if (ActionReady(ThrillOfBattle) && IsEnabled(Preset.WAR_Mitigation_NonBoss_ThrillOfBattle))
+        {
+            action = ThrillOfBattle;
+            return true;
+        }
+        
+        return false;
+    }
+    
+    private static bool CanUseBossMits(ref uint actionID)
+    {
+        if (!InCombat() || !CanWeave() || !InBossEncounter() || JustMitted || IsNotEnabled(Preset.WAR_Mitigation_Boss)) return false;
+        
+        if (IsEnabled(Preset.WAR_Mitigation_Boss_RawIntuition) && 
+            ActionReady(OriginalHook(RawIntuition)) && IsPlayerTargeted() &&
+            PlayerHealthPercentageHp() <= WAR_Mitigation_Boss_RawIntuition_Health)
+        {
+            actionID = OriginalHook(RawIntuition);
+            return true;
+        }
+        
+        if (IsEnabled(Preset.WAR_Mitigation_Boss_Reprisal) && 
+            !JustUsed(ShakeItOff, 10f) &&
+            Role.CanReprisal(enemyCount:1) && RaidWideCasting())
+        {
+            actionID = Role.Reprisal;
+            return true;
+        }
+        
+        if (IsEnabled(Preset.WAR_Mitigation_Boss_ShakeItOff) && 
+            !JustUsed(Role.Reprisal, 10f) &&
+            ActionReady(ShakeItOff) && RaidWideCasting())
+        {
+            actionID = ShakeItOff;
+            return true;
+        }
+       
+        //Insert Tankbuster Stuff here
+        return false;
+    }
+    
     #endregion
 
     #region IDs
