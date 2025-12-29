@@ -440,7 +440,9 @@ internal abstract partial class CustomComboFunctions
     private static bool IsTankBusterEffectPath(VfxInfo vfx)
     {
         return vfx.Path.StartsWith("vfx/lockon/eff/tank", Lower) ||
-               vfx.Path.StartsWith("vfx/lockon/eff/x6fe_fan100_50_0t1", Lower); //Necron Blue Shockwave - Cone Tankbuster
+               vfx.Path.StartsWith("vfx/lockon/eff/x6fe_fan100_50_0t1", Lower) || //Necron Blue Shockwave - Cone Tankbuster
+               vfx.Path.StartsWith("vfx/common/eff/mon_eisyo03t", Lower) || //M10 Deep Impact AoE TB (also generic?)
+               vfx.Path.StartsWith("vfx/lockon/eff/m0676trg_tw_d0t1p", Lower); //M10 Hot Impact shared TB
     }
 
     /// <summary>
