@@ -153,7 +153,7 @@ internal partial class SAM
 
     private static bool CanUseThirdEye =>
         ActionReady(OriginalHook(ThirdEye)) &&
-        (RaidWideCasting(2f) || !IsInParty());
+        (GroupDamageIncoming(2f) || !IsInParty());
 
     //Auto Meditate
     private static bool CanUseMeditate =>
