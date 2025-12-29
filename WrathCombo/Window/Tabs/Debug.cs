@@ -1086,6 +1086,30 @@ internal class Debug : ConfigWindow, IDisposable
             ImGui.Unindent();
         }
 
+        if (ImGui.CollapsingHeader("VFX Info"))
+        {
+            ImGui.Indent(); 
+            if (ImGui.CollapsingHeader("Friendly Target VFX"))
+            {
+                ImGuiEx.TextWrapped($"Mainly to be used with ARR and real party members since they don't actually get added to the party for some reason.");
+                ImGui.Separator();
+                foreach (var obj in Svc.Objects.Where(x => x is IGameObject && x.IsFriendly()))
+                {
+                    ImGui.Text($"{obj.Name} ({obj.GameObjectId})");
+                    DrawVFXTree(obj);
+                }
+            }
+            if (ImGui.CollapsingHeader("Hostile Target VFX"))
+            {
+                foreach (var obj in Svc.Objects.Where(x => x is IGameObject && x.IsHostile()))
+                {
+                    ImGui.Text($"{obj.Name} ({obj.GameObjectId})");
+                    DrawVFXTree(obj);
+                }
+            }
+            ImGui.Unindent();
+        }
+
         #endregion
 
         ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
