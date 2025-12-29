@@ -425,7 +425,7 @@ internal partial class DRK
                     ? DRK_AoE_ReprisalEnemyCount
                     : 1;
             var reprisalUseForRaidwides =
-                flags.HasFlag(Combo.AoE) || RaidWideCasting();
+                flags.HasFlag(Combo.AoE) || GroupDamageIncoming();
 
             #endregion
 
@@ -459,7 +459,7 @@ internal partial class DRK
                 (flags.HasFlag(Combo.Simple) ||
                  IsEnabled(Preset.DRK_ST_Mit_Missionary)) &&
                 ActionReady(DarkMissionary) &&
-                RaidWideCasting() &&
+                GroupDamageIncoming() &&
                 missionaryAvoidanceSatisfied &&
                 PlayerHealthPercentageHp() <= missionaryThreshold)
                 return (action = DarkMissionary) != 0;

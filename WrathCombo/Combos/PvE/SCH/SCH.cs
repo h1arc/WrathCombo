@@ -215,10 +215,10 @@ internal partial class SCH : Healer
             if (EndAetherpact)
                 return DissolveUnion;
             
-            if (ActionReady(Expedient) && RaidWideCasting())
+            if (ActionReady(Expedient) && GroupDamageIncoming())
                 return Expedient;
             
-            if (ActionReady(SacredSoil) && RaidWideCasting())
+            if (ActionReady(SacredSoil) && GroupDamageIncoming())
                 return SacredSoil.Retarget([Succor, Concitation], SimpleTarget.Self);
             
             if (ActionReady(Aetherflow) && !HasAetherflow &&

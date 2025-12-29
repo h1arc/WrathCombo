@@ -1051,7 +1051,7 @@ internal class Debug : ConfigWindow, IDisposable
         {
             CustomStyleText("Countdown Active:", $"{CountdownActive}");
             CustomStyleText("Countdown Remaining:", $"{CountdownRemaining}");
-            CustomStyleText("Raidwide Incoming:", $"{RaidWideCasting()}");
+            CustomStyleText("Raidwide Incoming:", $"{GroupDamageIncoming()}");
 
             ImGui.Indent();
             if (ImGui.CollapsingHeader("Occult Crescent Job Icons"))
