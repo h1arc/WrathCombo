@@ -630,7 +630,7 @@ internal class Debug : ConfigWindow, IDisposable
 
                     ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
 
-                    DrawVFXTree(member);
+                    DrawVFXTree(member.GameObject);
 
                     ImGui.TreePop();
                 }
@@ -1277,7 +1277,7 @@ internal class Debug : ConfigWindow, IDisposable
 
     private static void DrawVFXTree(IGameObject? obj)
     {
-        if (ImGui.TreeNode("VFX Data"))
+        if (ImGui.TreeNode($"VFX Data###{obj.GameObjectId}"))
         {
             ImGui.Text($"VFX for Target (ObjectId: {obj!.GameObjectId}):");
             if (VfxManager.TryGetVfxFor(obj!.GameObjectId, out var vfxList, true))
