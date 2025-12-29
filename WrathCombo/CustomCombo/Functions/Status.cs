@@ -443,7 +443,7 @@ internal abstract partial class CustomComboFunctions
                vfx.Path.StartsWith("vfx/lockon/eff/x6fe_fan100_50_0t1", Lower) || //Necron Blue Shockwave - Cone Tankbuster
                vfx.Path.StartsWith("vfx/common/eff/mon_eisyo03t", Lower) || //M10 Deep Impact AoE TB (also generic?)
                vfx.Path.StartsWith("vfx/lockon/eff/m0676trg_tw_d0t1p", Lower) || //M10 Hot Impact shared TB
-               vfx.Path.StartsWith("vfx/lockon/eff/m0676trg_tw_s6_d0t1p", Lower) || //M11 Raw Steel 
+               vfx.Path.StartsWith("vfx/lockon/eff/m0676trg_tw_s6_d0t1p", Lower) || //M11 Raw Steel
                vfx.Path.StartsWith("vfx/lockon/eff/z6r2b3_8sec_lockon_c0a1", Lower); //Kam'lanaut Princely Blow
     }
 
@@ -520,22 +520,24 @@ internal abstract partial class CustomComboFunctions
     /// <param name="target">When this method returns, contains the battle character targeted by the tank buster effect, if found; otherwise,
     /// null. This parameter is passed uninitialized.</param>
     /// <returns>true if a tank buster target is found and assigned to target; otherwise, false.</returns>
-    public static bool TryGetTankBusterTarget(out IBattleChara? target)
+    public static bool TryGetTankBusterTarget(out IBattleChara target)
     {
-        VfxInfo tankBusterVfx = VfxManager.TrackedEffects
+        target = null!;
+
+        var tankBusterVfx = VfxManager.TrackedEffects
             .FilterToTargeted()
-            .FilterToTargetRole(CombatRole.Tank) // Ignore DPS and un-targeted
+            .FilterToTargetRole(CombatRole.Tank)
             .Where(x => x.TargetID.GetObject().IsInParty())
             .FirstOrDefault(IsTankBusterEffectPath);
 
         if (tankBusterVfx.VfxID == 0)
-        {
-            target = null;
             return false;
-        }
 
-        target = tankBusterVfx.TargetID.GetObject() as IBattleChara;
-        return target != null; // in case object ID is invalid/stale
+        if (tankBusterVfx.TargetID.GetObject() is not IBattleChara battleChara)
+            return false;
+
+        target = battleChara;
+        return true;
     }
 
     /// <summary>
