@@ -10,6 +10,7 @@ using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
+using ECommons.GameHelpers.LegacyPlayer;
 using ECommons.ImGuiMethods;
 using ECommons.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
@@ -40,6 +41,7 @@ using Action = Lumina.Excel.Sheets.Action;
 using BattleNPCSubKind = Dalamud.Game.ClientState.Objects.Enums.BattleNpcSubKind;
 using ObjectKind = Dalamud.Game.ClientState.Objects.Enums.ObjectKind;
 using Status = Dalamud.Game.ClientState.Statuses.IStatus;
+using Player = ECommons.GameHelpers.Player;
 
 #endregion
 
@@ -199,30 +201,6 @@ internal class Debug : ConfigWindow, IDisposable
 
         var target = CurrentTarget;
         var player = Player.Object;
-
-        // Custom 2-Column Styling
-        static void CustomStyleText(string firstColumn, object? secondColumn, bool useMonofont = false, Vector4? optionalColor = null)
-        {
-            ImGui.Columns(2, border: false);
-            if (!string.IsNullOrEmpty(firstColumn))
-            {
-                ImGui.TextUnformatted(firstColumn);
-            }
-
-            ImGui.NextColumn();
-
-            // Optional Color
-            Vector4 textColor = optionalColor ?? ImGuiColors.DalamudGrey;
-            ImGui.PushStyleColor(ImGuiCol.Text, textColor);
-
-            // Optional Monofont
-            if (useMonofont) ImGui.PushFont(UiBuilder.MonoFont);
-            ImGui.TextUnformatted(secondColumn?.ToString() ?? string.Empty);
-            if (useMonofont) ImGui.PopFont();
-
-            ImGui.PopStyleColor();
-            ImGui.Columns(1);
-        }
 
         if (player is null)
         {
@@ -454,24 +432,7 @@ internal class Debug : ConfigWindow, IDisposable
 
             ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
 
-            if (ImGui.TreeNode("VFX Data"))
-            {
-                ImGui.Text($"VFX for Player (ObjectId: {player.GameObjectId}):");
-                if (VfxManager.TryGetVfxFor(player.GameObjectId, out var vfxList))
-                {
-                    foreach (var vfx in vfxList)
-                    {
-                        CustomStyleText($"Path: {vfx.Path}", $"Age: {vfx.AgeSeconds:N1}s");
-                    }
-                }
-                else
-                {
-                    ImGui.TextUnformatted("No VFX data tracked for player.");
-                }
-
-                ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
-                ImGui.TreePop();
-            }
+            
 
             ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
         }
@@ -612,24 +573,7 @@ internal class Debug : ConfigWindow, IDisposable
 
                 ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
 
-                if (ImGui.TreeNode("VFX Data"))
-                {
-                    ImGui.Text($"VFX for Target (ObjectId: {target!.GameObjectId}):");
-                    if (VfxManager.TryGetVfxFor(target!.GameObjectId, out var vfxList, true))
-                    {
-                        foreach (var vfx in vfxList)
-                        {
-                            CustomStyleText($"Path: {vfx.Path}", $"Age: {vfx.AgeSeconds:N1}s");
-                        }
-                    }
-                    else
-                    {
-                        ImGui.TextUnformatted("No VFX data tracked for target.");
-                    }
-
-                    ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
-                    ImGui.TreePop();
-                }
+                DrawVFXTree(target);
             }
         }
 
@@ -682,6 +626,11 @@ internal class Debug : ConfigWindow, IDisposable
                         Util.ShowObject(member.BattleChara);
                         ImGui.TreePop();
                     }
+
+
+                    ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
+
+                    DrawVFXTree(member);
 
                     ImGui.TreePop();
                 }
@@ -971,6 +920,7 @@ internal class Debug : ConfigWindow, IDisposable
                 CustomStyleText("Charges (Level):", $"{GetCooldown(_debugSpell.Value.RowId).MaxCharges}");
                 CustomStyleText("Range:", $"{GetActionRange(_debugSpell.Value.RowId)}");
                 CustomStyleText("Effect Range:", $"{_debugSpell.Value.EffectRange}");
+                CustomStyleText("In Range:", $"{ActionManager.Instance()->IsActionTargetInRange(ActionType.Action, _debugSpell.Value.RowId)}");
                 CustomStyleText("Can Target Hostile:", $"{_debugSpell.Value.CanTargetHostile}");
                 CustomStyleText("Can Target Self:", $"{_debugSpell.Value.CanTargetSelf}");
                 CustomStyleText("Can Target Friendly:", $"{_debugSpell.Value.CanTargetAlly}");
@@ -1323,6 +1273,58 @@ internal class Debug : ConfigWindow, IDisposable
         }
 
         #endregion
+    }
+
+    private static void DrawVFXTree(IGameObject? obj)
+    {
+        if (ImGui.TreeNode("VFX Data"))
+        {
+            ImGui.Text($"VFX for Target (ObjectId: {obj!.GameObjectId}):");
+            if (VfxManager.TryGetVfxFor(obj!.GameObjectId, out var vfxList, true))
+            {
+                foreach (var vfx in vfxList)
+                {
+                    CustomStyleText($"Path: {vfx.Path}", $"Age: {vfx.AgeSeconds:N1}s");
+                    ImGui.SameLine();
+                    if (ImGui.Button($"Copy Path###{vfx.Path}{obj.GameObjectId}"))
+                    {
+                        ImGui.SetClipboardText(vfx.Path);
+                        Notify.Success($"{vfx.Path} copied.");
+                    }
+                }
+            }
+            else
+            {
+                ImGui.TextUnformatted("No VFX data tracked for target.");
+            }
+
+            ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
+            ImGui.TreePop();
+        }
+    }
+
+    // Custom 2-Column Styling
+    static void CustomStyleText(string firstColumn, object? secondColumn, bool useMonofont = false, Vector4? optionalColor = null)
+    {
+        ImGui.Columns(2, border: false);
+        if (!string.IsNullOrEmpty(firstColumn))
+        {
+            ImGui.TextUnformatted(firstColumn);
+        }
+
+        ImGui.NextColumn();
+
+        // Optional Color
+        Vector4 textColor = optionalColor ?? ImGuiColors.DalamudGrey;
+        ImGui.PushStyleColor(ImGuiCol.Text, textColor);
+
+        // Optional Monofont
+        if (useMonofont) ImGui.PushFont(UiBuilder.MonoFont);
+        ImGui.TextUnformatted(secondColumn?.ToString() ?? string.Empty);
+        if (useMonofont) ImGui.PopFont();
+
+        ImGui.PopStyleColor();
+        ImGui.Columns(1);
     }
 
     private static void DisableDebugConfig()
