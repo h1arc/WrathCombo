@@ -42,7 +42,7 @@ internal partial class PLD : Tank
             if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
 
-            if (PLD_ST_Advanced_MitOptions == 0)
+            if (PLD_ST_MitOptions == 0)
             {
                 if (CanUseNonBossMits(ref actionID) || CanUseBossMits(ref actionID))
                     return actionID;
@@ -205,7 +205,7 @@ internal partial class PLD : Tank
             if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
 
-            if (PLD_ST_Advanced_MitOptions == 0)
+            if (PLD_AoE_MitOptions == 0)
             {
                 if (CanUseNonBossMits(ref actionID) || CanUseBossMits(ref actionID))
                     return actionID;
@@ -483,7 +483,7 @@ internal partial class PLD : Tank
             if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
             
-            if (PLD_ST_Advanced_MitOptions == 0)
+            if (PLD_AoE_Advanced_MitOptions == 0)
             {
                 if (CanUseNonBossMits(ref actionID) || CanUseBossMits(ref actionID))
                     return actionID;
