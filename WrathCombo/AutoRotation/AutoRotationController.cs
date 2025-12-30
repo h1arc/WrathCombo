@@ -17,17 +17,14 @@ using WrathCombo.API.Enum;
 using WrathCombo.Attributes;
 using WrathCombo.Combos.PvE;
 using WrathCombo.Combos.PvE.Enums;
-using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
-using WrathCombo.Data;
 using WrathCombo.Extensions;
 using WrathCombo.Services;
 using WrathCombo.Services.IPC_Subscriber;
 using WrathCombo.Window.Functions;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using static WrathCombo.Data.ActionWatching;
-using static WrathCombo.Data.HiddenFeaturesData;
 using ActionType = FFXIVClientStructs.FFXIV.Client.Game.ActionType;
 
 #endregion
@@ -49,6 +46,8 @@ internal unsafe static class AutoRotationController
     static DateTime? TimeToHeal;
 
     const float QueryRange = 30f;
+
+    public static bool WouldLikeToGroundTarget;
 
     static Func<WrathPartyMember, bool> RezQuery => x =>
         x.BattleChara is not null &&
@@ -154,7 +153,7 @@ internal unsafe static class AutoRotationController
         // Pre-emptive HoT/Shield for healers
         if (cfg.HealerSettings.PreEmptiveHoT && Player.Job is Job.CNJ or Job.WHM or Job.AST)
             PreEmptiveHot();
-        
+
         if (cfg.HealerSettings.PreEmptiveHoT && Player.Job is Job.SGE or Job.SCH)
             PreEmptiveShield();
 
@@ -208,7 +207,7 @@ internal unsafe static class AutoRotationController
             OccultCrescent.IsEnabledAndUsable(Preset.Phantom_Chemist_Revive, OccultCrescent.Revive) ||
             Variant.CanRaise())
         {
-            if (!needsHeal && WrathOpener.CurrentOpener?.CurrentState is not 
+            if (!needsHeal && WrathOpener.CurrentOpener?.CurrentState is not
                 OpenerState.InOpener)
             {
                 if (cfg.HealerSettings.AutoCleanse && isHealer)
@@ -334,12 +333,12 @@ internal unsafe static class AutoRotationController
             }
         }
     }
-    
+
     private static void PreEmptiveShield()
     {
         if (PartyInCombat() || Svc.Targets.FocusTarget is null || (InDuty() && !Svc.DutyState.IsDutyStarted))
             return;
-       
+
         ushort shieldBuff = Player.Job switch
         {
             Job.SGE => SGE.Buffs.EukrasianDiagnosis,
@@ -353,7 +352,7 @@ internal unsafe static class AutoRotationController
             Job.SCH => SCH.Adloquium,
             _ => 0
         };
-        
+
         uint prepSpell = Player.Job switch
         {
             Job.SGE => SGE.Eukrasia,
@@ -375,7 +374,7 @@ internal unsafe static class AutoRotationController
                     return;
                 }
             }
-            
+
             var query = Svc.Objects.Where(x => !x.IsDead && x.IsTargetable && x.IsHostile());
             if (!query.Any())
                 return;
@@ -383,11 +382,11 @@ internal unsafe static class AutoRotationController
             if (query.Min(x => GetTargetDistance(x, Svc.Targets.FocusTarget)) <= QueryRange)
             {
                 var spell = ActionManager.Instance()->GetAdjustedActionId(shieldSpell);
-                
+
                 if (Svc.Targets.FocusTarget.IsDead)
                     return;
 
-                if (!ActionReady(spell) || 
+                if (!ActionReady(spell) ||
                     ActionManager.GetAdjustedCastTime(ActionType.Action, spell) > 0 && TimeStoodStill < TimeSpan.FromSeconds(1))
                     return;
 
@@ -428,14 +427,14 @@ internal unsafe static class AutoRotationController
 
         if (resSpell == 0)
             return;
-        
+
         IEnumerable<WrathPartyMember> deadPeople = DeadPeople;
 
         if (cfg.HealerSettings.AutoRezDPSJobsHealersOnly && Player.Job is Job.RDM or Job.SMN)
-        { 
+        {
             deadPeople = deadPeople.Where(x => x.GetRole() is CombatRole.Healer || x.RealJob?.GetJob() is Job.SMN or Job.RDM);
         }
-       
+
         if (ActionManager.Instance()->QueuedActionId == resSpell)
             ActionManager.Instance()->QueuedActionId = 0;
 
@@ -671,13 +670,16 @@ internal unsafe static class AutoRotationController
                         return false;
 
                     Service.ActionReplacer.DisableActionReplacingIfRequired();
-                    var ret = ActionManager.Instance()->UseAction(ActionType.Action, outAct);
+                    var targetId = player.GameObjectId;
+                    var changed = CheckForChangedTarget(gameAct, ref targetId, out var replacedWith);
+                    WouldLikeToGroundTarget = ActionSheet[outAct].TargetArea;
+                    var ret = ActionManager.Instance()->UseAction(ActionType.Action, outAct, targetId);
+                    WouldLikeToGroundTarget = false;
                     Service.ActionReplacer.EnableActionReplacingIfRequired();
 
-                    if (!ret)
-                        LastHealAt = Environment.TickCount64 + castTime;
+                    LastHealAt = Environment.TickCount64 + castTime;
 
-                    return !ret;
+                    return true;
                 }
             }
             else
@@ -748,7 +750,9 @@ internal unsafe static class AutoRotationController
                     Service.ActionReplacer.DisableActionReplacingIfRequired();
                     var targetId = (mustTarget && target != null) || switched ? target.GameObjectId : canUseSelf ? player.GameObjectId : 0xE000_0000;
                     var changed = CheckForChangedTarget(gameAct, ref targetId, out var replacedWith);
+                    WouldLikeToGroundTarget = ActionSheet[outAct].TargetArea;
                     var ret = ActionManager.Instance()->UseAction(ActionType.Action, outAct, targetId);
+                    WouldLikeToGroundTarget = false;
                     Service.ActionReplacer.EnableActionReplacingIfRequired();
                     OverrideTarget = null;
                     if (NIN.MudraSigns.Contains(outAct))
@@ -816,7 +820,7 @@ internal unsafe static class AutoRotationController
             {
                 OverrideTarget = null;
                 return false;
-            } 
+            }
 
             if (canUse && (inRange || areaTargeted))
             {
@@ -825,7 +829,9 @@ internal unsafe static class AutoRotationController
                 Service.ActionReplacer.DisableActionReplacingIfRequired();
                 var targetId = canUseTarget || areaTargeted ? target.GameObjectId : canUseSelf ? player.GameObjectId : 0xE000_0000;
                 var changed = CheckForChangedTarget(gameAct, ref targetId, out var replacedWith);
+                WouldLikeToGroundTarget = ActionSheet[outAct].TargetArea;
                 var ret = ActionManager.Instance()->UseAction(ActionType.Action, outAct, targetId);
+                WouldLikeToGroundTarget = false;
                 Service.ActionReplacer.EnableActionReplacingIfRequired();
                 OverrideTarget = null;
 
@@ -870,9 +876,9 @@ internal unsafe static class AutoRotationController
             foreach (var actToCheck in attributes.ReplaceSkill.ActionIDs)
             {
                 var customCombo = Service.ActionReplacer.CustomCombos.FirstOrDefault(x => x.Preset == preset);
-                if(customCombo != null)
+                if (customCombo != null)
                 {
-                    if(customCombo.TryInvoke(actToCheck, out var changedAct, optionalTarget))
+                    if (customCombo.TryInvoke(actToCheck, out var changedAct, optionalTarget))
                     {
                         originalAct = actToCheck;
                         outAct = changedAct;
@@ -1084,7 +1090,7 @@ internal unsafe static class AutoRotationController
         private static bool TargetHasImmortality(IGameObject? target)
         {
             if (target is null) return false;
-            
+
             return GetStatusEffectRemainingTime(DRK.Buffs.LivingDead, target, true) >= 3 ||
                    GetStatusEffectRemainingTime(DRK.Buffs.WalkingDead, target, true) >= 5 ||
                    GetStatusEffectRemainingTime(WAR.Buffs.Holmgang, target, true) >= 5;
@@ -1094,7 +1100,7 @@ internal unsafe static class AutoRotationController
         {
             if (target is null) return false;
 
-            return GetStatusEffectRemainingTime(GNB.Buffs.Superbolide, target) >= 5||
+            return GetStatusEffectRemainingTime(GNB.Buffs.Superbolide, target) >= 5 ||
                    GetStatusEffectRemainingTime(PLD.Buffs.HallowedGround, target) >= 5;
         }
     }

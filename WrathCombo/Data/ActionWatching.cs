@@ -393,7 +393,7 @@ public static class ActionWatching
                         targetId = originalTargetId;
 
                 // Support Retargeted ground actions
-                if (changed && areaTargeted)
+                if ((changed && areaTargeted) || AutoRotationController.WouldLikeToGroundTarget)
                 {
                     var location = Player.Position;
 
