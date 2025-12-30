@@ -42,7 +42,7 @@ internal partial class PLD : Tank
             if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
 
-            if (PLD_ST_MitOptions == 0)
+            if (PLD_ST_MitOptions != 1 || P.UIHelper.PresetControlled(Preset)?.enabled == true)
             {
                 if (TryUseMits(RotationMode.simple, ref actionID))
                     return actionID;
@@ -205,7 +205,7 @@ internal partial class PLD : Tank
             if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
 
-            if (PLD_AoE_MitOptions == 0)
+            if (PLD_AoE_MitOptions != 1 || P.UIHelper.PresetControlled(Preset)?.enabled == true)
             {
                 if (TryUseMits(RotationMode.simple, ref actionID))
                     return actionID;
@@ -308,7 +308,7 @@ internal partial class PLD : Tank
             if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
 
-            if (PLD_ST_Advanced_MitOptions == 0)
+            if (PLD_ST_Advanced_MitOptions != 1 || P.UIHelper.PresetControlled(Preset)?.enabled == true)
             {
                 if (TryUseMits(RotationMode.advanced, ref actionID))
                     return actionID;
@@ -483,7 +483,7 @@ internal partial class PLD : Tank
             if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
             
-            if (PLD_AoE_Advanced_MitOptions == 0)
+            if (PLD_AoE_Advanced_MitOptions != 1 || P.UIHelper.PresetControlled(Preset)?.enabled == true)
             {
                 if (TryUseMits(RotationMode.advanced, ref actionID))
                     return actionID;

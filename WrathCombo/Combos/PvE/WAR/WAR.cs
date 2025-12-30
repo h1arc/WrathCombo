@@ -35,7 +35,7 @@ internal partial class WAR
 
             #endregion
             
-            if (WAR_ST_MitsOptions == 0)
+            if (WAR_ST_MitsOptions != 1 || P.UIHelper.PresetControlled(Preset)?.enabled == true)
             {
                 if (TryUseMits(RotationMode.simple, ref action))
                     return action;
@@ -99,7 +99,7 @@ internal partial class WAR
 
             #endregion
             
-            if (WAR_ST_Advanced_MitsOptions == 0)
+            if (WAR_ST_Advanced_MitsOptions != 1 || P.UIHelper.PresetControlled(Preset)?.enabled == true)
             {
                 if (TryUseMits(RotationMode.advanced, ref action))
                     return action;
@@ -157,7 +157,7 @@ internal partial class WAR
             if (Role.CanLowBlow())
                 return Role.LowBlow;
             
-            if (WAR_AoE_MitsOptions == 0)
+            if (WAR_AoE_MitsOptions != 1 || P.UIHelper.PresetControlled(Preset)?.enabled == true)
             {
                 if (TryUseMits(RotationMode.simple, ref action))
                     return action;
@@ -219,7 +219,7 @@ internal partial class WAR
                 () => HiddenFeaturesData.Targeting.R6SJabber))
                 return Role.LowBlow;
             
-            if (WAR_AoE_Advanced_MitsOptions == 0)
+            if (WAR_AoE_Advanced_MitsOptions != 1 || P.UIHelper.PresetControlled(Preset)?.enabled == true)
             {
                 if (TryUseMits(RotationMode.advanced, ref action))
                     return action;
