@@ -882,6 +882,7 @@ internal unsafe static class AutoRotationController
                     {
                         originalAct = actToCheck;
                         outAct = changedAct;
+                        Service.ActionReplacer.LastActionInvokeFor[actToCheck] = outAct;
                         break;
                     }
                 }
