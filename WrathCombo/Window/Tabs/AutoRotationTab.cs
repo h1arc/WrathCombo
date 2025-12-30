@@ -288,7 +288,7 @@ internal class AutoRotationTab : ConfigWindow
             changed |= P.UIHelper.ShowIPCControlledCheckboxIfNeeded("Heal Friendly NPCs", ref cfg.HealerSettings.IncludeNPCs);
             ImGuiComponents.HelpMarker("Useful for healer quests where NPCs are expected to be healed but aren't added directly to your party.");
 
-            changed |= ImGui.Checkbox("Always Set Hard Target", ref cfg.HealerSettings.HealerAlwaysHardTarget);
+            changed |= ImGui.Checkbox("Always Set Hard Target###HealerHardTarget", ref cfg.HealerSettings.HealerAlwaysHardTarget);
 
             ImGuiComponents.HelpMarker("Auto-rotation does not need to target allies to work, however with this setting enabled it will always set your hard target when it executes a heal.");
 

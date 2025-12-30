@@ -271,7 +271,5 @@ public class HealerSettingsIPCWrapper(HealerSettings settings)
     
     public bool AutoRezDPSJobsHealersOnly => settings.AutoRezDPSJobsHealersOnly;
 
-    public bool HealerAlwaysHardTarget => settings.HealerAlwaysHardTarget;
-
     #endregion
 }
