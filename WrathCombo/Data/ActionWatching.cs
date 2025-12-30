@@ -393,7 +393,7 @@ public static class ActionWatching
                         targetId = originalTargetId;
 
                 // Support Retargeted ground actions
-                if (changed && areaTargeted)
+                if ((changed && areaTargeted) || AutoRotationController.WouldLikeToGroundTarget)
                 {
                     var location = Player.Position;
 
@@ -411,8 +411,8 @@ public static class ActionWatching
                 }
 
                 //Important to pass actionId here and not replaced. Performance mode = result from earlier, which could be modified. Non-performance mode = original action, which gets modified by the hook. Same result.
-                var hookResult = AutoRotationController.CurrentActIsAutorot ? UseActionHook.Original(actionManager, actionType, actionId, originalTargetId, extraParam, mode, comboRouteId, outOptAreaTargeted) :
-                    UseActionHook.Original(actionManager, actionType, actionId, targetId, extraParam, mode, comboRouteId, outOptAreaTargeted);
+                var hookResult = changed ? UseActionHook.Original(actionManager, actionType, actionId, targetId, extraParam, mode, comboRouteId, outOptAreaTargeted) :
+                    UseActionHook.Original(actionManager, actionType, actionId, originalTargetId, extraParam, mode, comboRouteId, outOptAreaTargeted);
 
                 // Fallback if the Retargeted ground action couldn't be placed smartly
                 if (changed && areaTargeted)
@@ -450,7 +450,7 @@ public static class ActionWatching
         }
     }
 
-    private static bool CheckForChangedTarget(uint actionId, ref ulong targetObjectId, out uint replacedWith)
+    public static bool CheckForChangedTarget(uint actionId, ref ulong targetObjectId, out uint replacedWith)
     {
         replacedWith = actionId;
         if (!P.ActionRetargeting.TryGetTargetFor(actionId, out var target, out replacedWith) ||

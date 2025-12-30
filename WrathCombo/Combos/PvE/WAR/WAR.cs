@@ -54,11 +54,11 @@ internal partial class WAR
                     return OriginalHook(RawIntuition);
 
                 // Reprisal
-                if (Role.CanReprisal() && RaidWideCasting(5f))
+                if (Role.CanReprisal() && GroupDamageIncoming(5f))
                     return Role.Reprisal;
 
                 // Shake It Off
-                if (ActionReady(ShakeItOff) && RaidWideCasting(5f) &&
+                if (ActionReady(ShakeItOff) && GroupDamageIncoming(5f) &&
                     NumberOfAlliesInRange(ShakeItOff) >= GetPartyMembers().Count * .75 &&
                     !HasStatusEffect(Role.Debuffs.Reprisal, CurrentTarget, true))
                     return OriginalHook(ShakeItOff);
@@ -162,12 +162,12 @@ internal partial class WAR
 
                 // Reprisal
                 if (IsEnabled(Preset.WAR_ST_Reprisal) &&
-                    Role.CanReprisal() && RaidWideCasting(5f))
+                    Role.CanReprisal() && GroupDamageIncoming(5f))
                     return Role.Reprisal;
 
                 // Shake It Off
                 if (IsEnabled(Preset.WAR_ST_ShakeItOff) &&
-                    ActionReady(ShakeItOff) && RaidWideCasting(5f) &&
+                    ActionReady(ShakeItOff) && GroupDamageIncoming(5f) &&
                     NumberOfAlliesInRange(ShakeItOff) >= GetPartyMembers().Count * .75 &&
                     (IsNotEnabled(Preset.WAR_ST_ShakeItOffAvoid) ||
                      !HasStatusEffect(Role.Debuffs.Reprisal, CurrentTarget, true)))

@@ -5421,8 +5421,8 @@ public enum Preset
     RDM_ST_DPS = 13001,
 
     [ParentCombo(RDM_ST_DPS)]
-    [CustomComboInfo("Opener (Level 100)",
-        "Adds the opener at level 100.\n**Standard Opener must move into melee range to use Corps/Engagement**", Job.RDM)]
+    [CustomComboInfo("Balance Opener (Level 100)",
+        "Adds the Balance opener at level 100.\nEnsure your opener timeout setting is higher than your Veraero III cast time!!!\n**Standard Opener must move into melee range to use Corps/Engagement**", Job.RDM)]
     RDM_Balance_Opener = 13002,
 
     [ParentCombo(RDM_ST_DPS)]
