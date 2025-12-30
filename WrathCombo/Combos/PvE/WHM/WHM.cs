@@ -458,19 +458,19 @@ internal partial class WHM : Healer
             
             if (ActionReady(OriginalHook(Temperance)) && 
                 (GetPartyAvgHPPercent() <= 70 ||
-                 RaidWideCasting() ||
+                 GroupDamageIncoming() ||
                  HasStatusEffect(Buffs.DivineGrace)))
                 return OriginalHook(Temperance);
             
             if (LevelChecked(LiturgyOfTheBell) &&
                 IsOffCooldown(LiturgyOfTheBell) &&
                 (GetPartyAvgHPPercent() <= 50 ||
-                 RaidWideCasting()))
+                 GroupDamageIncoming()))
                 return LiturgyOfTheBell;
 
             if (ActionReady(PlenaryIndulgence) &&
                 (GetPartyAvgHPPercent() <= 70 ||
-                 RaidWideCasting()))
+                 GroupDamageIncoming()))
                 return PlenaryIndulgence;
             
             if (ActionReady(AfflatusRapture) && !BloodLilyReady)

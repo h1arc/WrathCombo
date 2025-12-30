@@ -64,11 +64,11 @@ internal partial class PLD : Tank
                         return OriginalHook(Sheltron);
 
                     // Reprisal
-                    if (Role.CanReprisal() && RaidWideCasting(5f))
+                    if (Role.CanReprisal() && GroupDamageIncoming(5f))
                         return Role.Reprisal;
 
                     // Divine Veil
-                    if (ActionReady(DivineVeil) && RaidWideCasting(5f) &&
+                    if (ActionReady(DivineVeil) && GroupDamageIncoming(5f) &&
                         NumberOfAlliesInRange(DivineVeil) >= GetPartyMembers().Count * .75 &&
                         !HasStatusEffect(Role.Debuffs.Reprisal, CurrentTarget, true))
                         return OriginalHook(DivineVeil);
@@ -165,11 +165,11 @@ internal partial class PLD : Tank
                             return OriginalHook(Sheltron);
 
                         // Reprisal
-                        if (Role.CanReprisal() && RaidWideCasting(5f))
+                        if (Role.CanReprisal() && GroupDamageIncoming(5f))
                             return Role.Reprisal;
 
                         // Divine Veil
-                        if (ActionReady(DivineVeil) && RaidWideCasting(5f) &&
+                        if (ActionReady(DivineVeil) && GroupDamageIncoming(5f) &&
                             NumberOfAlliesInRange(DivineVeil) >= GetPartyMembers().Count * .75 &&
                             !HasStatusEffect(Role.Debuffs.Reprisal, CurrentTarget, true))
                             return OriginalHook(DivineVeil);
@@ -518,12 +518,12 @@ internal partial class PLD : Tank
 
                         // Reprisal
                         if (IsEnabled(Preset.PLD_ST_AdvancedMode_Reprisal) &&
-                            Role.CanReprisal() && RaidWideCasting(5f))
+                            Role.CanReprisal() && GroupDamageIncoming(5f))
                             return Role.Reprisal;
 
                         // Divine Veil
                         if (IsEnabled(Preset.PLD_ST_AdvancedMode_DivineVeil) &&
-                            ActionReady(DivineVeil) && RaidWideCasting(5f) &&
+                            ActionReady(DivineVeil) && GroupDamageIncoming(5f) &&
                             NumberOfAlliesInRange(DivineVeil) >= GetPartyMembers().Count * .75 &&
                             (IsNotEnabled(Preset.PLD_ST_AdvancedMode_DivineVeilAvoid) ||
                              !HasStatusEffect(Role.Debuffs.Reprisal, CurrentTarget, true)))
