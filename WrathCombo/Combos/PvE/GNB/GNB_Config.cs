@@ -12,46 +12,17 @@ internal partial class GNB
     internal static class Config
     {
         public static UserInt
+            GNB_ST_MitOptions = new("GNB_ST_MitOptions"),
+            GNB_AoE_MitOptions = new("GNB_AoE_MitOptions"),
+            GNB_ST_Advanced_MitOptions = new("GNB_ST_Advanced_MitOptions"),
+            GNB_AoE_Advanced_MitOptions = new("GNB_AoE_Advanced_MitOptions"),
+            
             GNB_Opener_StartChoice = new("GNB_Opener_StartChoice", 0),
             GNB_Opener_NM = new("GNB_Opener_NM", 0),
-            GNB_ST_MitsOptions = new("GNB_ST_MitsOptions", 1),
-            GNB_ST_Corundum_Health = new("GNB_ST_CorundumOption", 90),
-            GNB_ST_Corundum_SubOption = new("GNB_ST_Corundum_Option", 0),
-            GNB_ST_Aurora_Health = new("GNB_ST_Aurora_Health", 99),
-            GNB_ST_Aurora_Charges = new("GNB_ST_Aurora_Charges", 0),
-            GNB_ST_Aurora_SubOption = new("GNB_ST_Aurora_Option", 0),
-            GNB_ST_Rampart_Health = new("GNB_ST_Rampart_Health", 80),
-            GNB_ST_Rampart_SubOption = new("GNB_ST_Rampart_Option", 0),
-            GNB_ST_Camouflage_Health = new("GNB_ST_Camouflage_Health", 70),
-            GNB_ST_Camouflage_SubOption = new("GNB_ST_Camouflage_Option", 0),
-            GNB_ST_Nebula_Health = new("GNB_ST_Nebula_Health", 60),
-            GNB_ST_Nebula_SubOption = new("GNB_ST_Nebula_Option", 0),
-            GNB_ST_Superbolide_Health = new("GNB_ST_Superbolide_Health", 30),
-            GNB_ST_Superbolide_SubOption = new("GNB_ST_Superbolide_Option", 0),
-            GNB_ST_Reprisal_Health = new("GNB_ST_Reprisal_Health", 0),
-            GNB_ST_Reprisal_SubOption = new("GNB_ST_Reprisal_Option", 0),
-            GNB_ST_ArmsLength_Health = new("GNB_ST_ArmsLength_Health", 0),
             GNB_ST_NoMercyStop = new("GNB_ST_NoMercyStop", 5),
             GNB_ST_NoMercy_SubOption = new("GNB_ST_NoMercy_SubOption", 1),
             GNB_ST_Overcap_Choice = new("GNB_ST_Overcap_Choice", 0),
             GNB_ST_HoldLightningShot = new("GNB_ST_HoldLightningShot", 0),
-            GNB_AoE_MitsOptions = new("GNB_AoE_MitsOptions", 1),
-            GNB_AoE_Corundum_Health = new("GNB_AoE_CorundumOption", 90),
-            GNB_AoE_Corundum_SubOption = new("GNB_AoE_Corundum_Option", 0),
-            GNB_AoE_Aurora_Health = new("GNB_AoE_Aurora_Health", 99),
-            GNB_AoE_Aurora_Charges = new("GNB_AoE_Aurora_Charges", 0),
-            GNB_AoE_Aurora_SubOption = new("GNB_AoE_Aurora_Option", 0),
-            GNB_AoE_Rampart_Health = new("GNB_AoE_Rampart_Health", 80),
-            GNB_AoE_Rampart_SubOption = new("GNB_AoE_Rampart_Option", 10),
-            GNB_AoE_Camouflage_Health = new("GNB_AoE_Camouflage_Health", 80),
-            GNB_AoE_Camouflage_SubOption = new("GNB_AoE_Camouflage_Option", 0),
-            GNB_AoE_Nebula_Health = new("GNB_AoE_Nebula_Health", 60),
-            GNB_AoE_Nebula_SubOption = new("GNB_AoE_Nebula_Option", 0),
-            GNB_AoE_Superbolide_Health = new("GNB_AoE_Superbolide_Health", 30),
-            GNB_AoE_Superbolide_SubOption = new("GNB_AoE_Superbolide_Option", 0),
-            GNB_AoE_Reprisal_Health = new("GNB_AoE_Reprisal_Health", 0),
-            GNB_AoE_Reprisal_SubOption = new("GNB_AoE_Reprisal_Option", 0),
-            GNB_AoE_ArmsLength_Health = new("GNB_AoE_ArmsLength_Health", 0),
             GNB_AoE_FatedCircle_BurstStrike = new("GNB_AoE_FatedCircle_BurstStrike", 1),
             GNB_AoE_Overcap_Choice = new("GNB_AoE_Overcap_Choice", 0),
             GNB_AoE_NoMercyStop = new("GNB_AoE_NoMercyStop", 5),
@@ -73,13 +44,20 @@ internal partial class GNB
             GNB_Bozja_LostAethershield_Health = new("GNB_Bozja_LostAethershield_Health", 70),
             GNB_Bozja_LostReraise_Health = new("GNB_Bozja_LostReraise_Health", 10);
 
+        public static UserFloat
+            GNB_Mitigation_NonBoss_MitigationThreshold = new("GNB_Mitigation_NonBoss_MitigationThreshold", 20f);
+
         public static UserIntArray
             GNB_Mit_Priorities = new("GNB_Mit_Priorities");
 
         public static UserBoolArray
+            GNB_Mitigation_Boss_HeartOfLight_Difficulty = new("GNB_Mitigation_Boss_HeartOfLight_Difficulty", [true, false]),
+            GNB_Mitigation_Boss_Reprisal_Difficulty = new("GNB_Mitigation_Boss_Reprisal_Difficulty", [true, false]),
             GNB_Mit_Superbolide_Difficulty = new("GNB_Mit_Superbolide_Difficulty", [true, false]);
 
-        public static readonly ContentCheck.ListSet GNB_Mit_Superbolide_DifficultyListSet = ContentCheck.ListSet.Halved;
+        public static readonly ContentCheck.ListSet 
+            GNB_Boss_Mit_DifficultyListSet = ContentCheck.ListSet.CasualVSHard,
+            GNB_Mit_Superbolide_DifficultyListSet = ContentCheck.ListSet.CasualVSHard;
 
         private const int NumMitigationOptions = 8;
 
@@ -87,6 +65,42 @@ internal partial class GNB
         {
             switch (preset)
             {
+                #region Combo Mitigations
+                case Preset.GNB_ST_Simple:
+                    DrawHorizontalRadioButton(GNB_ST_MitOptions, "Include Simple Mitigations", "Enables the use of mitigations.", 0);
+                    DrawHorizontalRadioButton(GNB_ST_MitOptions, "Exclude Simple Mitigations", "Disables the use of mitigations.", 1);
+                    break;
+               
+                case Preset.GNB_AoE_Simple:
+                    DrawHorizontalRadioButton(GNB_AoE_MitOptions, "Include Simple Mitigations", "Enables the use of mitigations.", 0);
+                    DrawHorizontalRadioButton(GNB_AoE_MitOptions, "Exclude Simple Mitigations", "Disables the use of mitigations.", 1);
+                    break;
+                
+                case Preset.GNB_ST_Advanced:
+                    DrawHorizontalRadioButton(GNB_ST_Advanced_MitOptions, "Include Advanced Mitigations", "Enables the use of mitigations.", 0);
+                    DrawHorizontalRadioButton(GNB_ST_Advanced_MitOptions, "Exclude Advanced Mitigations", "Disables the use of mitigations.", 1);
+                    break;
+                
+                case Preset.GNB_AoE_Advanced:
+                    DrawHorizontalRadioButton(GNB_AoE_Advanced_MitOptions, "Include Advanced Mitigations", "Enables the use of mitigations.", 0);
+                    DrawHorizontalRadioButton(GNB_AoE_Advanced_MitOptions, "Exclude Advanced Mitigations", "Disables the use of mitigations.", 1);
+                    break;
+                
+                case Preset.GNB_Mitigation_NonBoss:
+                    DrawSliderFloat(0, 100, GNB_Mitigation_NonBoss_MitigationThreshold, "Stop using when average health percentage of nearby enemies is below set. \n(Set to 0 to disable this check) ", decimals: 0);
+                    break;
+                
+                case Preset.GNB_Mitigation_Boss_HeartOfLight:
+                    DrawDifficultyMultiChoice(GNB_Mitigation_Boss_HeartOfLight_Difficulty, GNB_Boss_Mit_DifficultyListSet ,
+                        "Select which difficulties the ability should be used in:");
+                    break;
+                    
+                case Preset.GNB_Mitigation_Boss_Reprisal:
+                    DrawDifficultyMultiChoice(GNB_Mitigation_Boss_Reprisal_Difficulty, GNB_Boss_Mit_DifficultyListSet ,
+                        "Select which difficulties the ability should be used in:");
+                    break;
+                #endregion
+                
                 #region Single-Target
                 case Preset.GNB_ST_Opener:
                     DrawHorizontalRadioButton(GNB_Opener_NM,
@@ -149,137 +163,6 @@ internal partial class GNB
                         "Exclude Burst Strike", $"Excludes {BurstStrike.ActionName()} when {FatedCircle.ActionName()} is unavailable", 1);
                     break;
                 #endregion
-
-                #region Mitigations
-                case Preset.GNB_ST_Corundum:
-                    DrawSliderInt(1, 100, GNB_ST_Corundum_Health,
-                        "Player HP% to be \nless than or equal to:", 200);
-                    DrawHorizontalRadioButton(GNB_ST_Corundum_SubOption,
-                        "All Enemies", $"Uses {HeartOfCorundum.ActionName()} regardless of targeted enemy type.", 0);
-                    DrawHorizontalRadioButton(GNB_ST_Corundum_SubOption,
-                        "Bosses Only", $"Only ses {HeartOfCorundum.ActionName()} when the targeted enemy is a boss.", 1);
-                    break;
-
-                case Preset.GNB_AoE_Corundum:
-                    DrawSliderInt(1, 100, GNB_AoE_Corundum_Health,
-                        "Player HP% to be \nless than or equal to:", 200);
-                    DrawHorizontalRadioButton(GNB_AoE_Corundum_SubOption,
-                        "All Enemies", $"Uses {HeartOfCorundum.ActionName()} regardless of targeted enemy type.", 0);
-                    DrawHorizontalRadioButton(GNB_AoE_Corundum_SubOption,
-                        "Bosses Only", $"Only uses {HeartOfCorundum.ActionName()} when the targeted enemy is a boss.", 1);
-                    break;
-
-                case Preset.GNB_ST_Aurora:
-                    DrawSliderInt(1, 100, GNB_ST_Aurora_Health,
-                        "Player HP% to be \nless than or equal to:", 200);
-                    DrawSliderInt(0, 1, GNB_ST_Aurora_Charges,
-                        "How many charges to keep ready?\n (0 = Use All)");
-                    DrawHorizontalRadioButton(GNB_ST_Aurora_SubOption,
-                        "All Enemies", $"Uses {Aurora.ActionName()} regardless of targeted enemy type.", 0);
-                    DrawHorizontalRadioButton(GNB_ST_Aurora_SubOption,
-                        "Bosses Only", $"Only uses {Aurora.ActionName()} when the targeted enemy is a boss.", 1);
-                    break;
-
-                case Preset.GNB_AoE_Aurora:
-                    DrawSliderInt(1, 100, GNB_AoE_Aurora_Health,
-                        "Player HP% to be \nless than or equal to:", 200);
-                    DrawSliderInt(0, 1, GNB_AoE_Aurora_Charges,
-                        "How many charges to keep ready?\n (0 = Use All)");
-                    DrawHorizontalRadioButton(GNB_AoE_Aurora_SubOption,
-                        "All Enemies", $"Uses {Aurora.ActionName()} regardless of targeted enemy type.", 0);
-                    DrawHorizontalRadioButton(GNB_AoE_Aurora_SubOption,
-                        "Bosses Only", $"Only uses {Aurora.ActionName()} when the targeted enemy is a boss.", 1);
-                    break;
-
-                case Preset.GNB_ST_Rampart:
-                    DrawSliderInt(1, 100, GNB_ST_Rampart_Health,
-                        "Player HP% to be \nless than or equal to:", 200);
-                    DrawHorizontalRadioButton(GNB_ST_Rampart_SubOption,
-                        "All Enemies", $"Uses {Role.Rampart.ActionName()} regardless of targeted enemy type.", 0);
-                    DrawHorizontalRadioButton(GNB_ST_Rampart_SubOption,
-                        "Bosses Only", $"Only uses {Role.Rampart.ActionName()} when the targeted enemy is a boss.", 1);
-                    break;
-
-                case Preset.GNB_AoE_Rampart:
-                    DrawSliderInt(1, 100, GNB_AoE_Rampart_Health,
-                        "Player HP% to be \nless than or equal to:", 200);
-                    DrawHorizontalRadioButton(GNB_AoE_Rampart_SubOption,
-                        "All Enemies", $"Uses {Role.Rampart.ActionName()} regardless of targeted enemy type.", 0);
-                    DrawHorizontalRadioButton(GNB_AoE_Rampart_SubOption,
-                        "Bosses Only", $"Only uses {Role.Rampart.ActionName()} when the targeted enemy is a boss.", 1);
-                    break;
-
-                case Preset.GNB_ST_Camouflage:
-                    DrawSliderInt(1, 100, GNB_ST_Camouflage_Health,
-                        "Player HP% to be \nless than or equal to:", 200);
-                    DrawHorizontalRadioButton(GNB_ST_Camouflage_SubOption,
-                        "All Enemies", $"Uses {Camouflage.ActionName()} regardless of targeted enemy type.", 0);
-                    DrawHorizontalRadioButton(GNB_ST_Camouflage_SubOption,
-                        "Bosses Only", $"Only uses {Camouflage.ActionName()} when the targeted enemy is a boss.", 1);
-                    break;
-
-                case Preset.GNB_AoE_Camouflage:
-                    DrawSliderInt(1, 100, GNB_AoE_Camouflage_Health,
-                        "Player HP% to be \nless than or equal to:", 200);
-                    DrawHorizontalRadioButton(GNB_AoE_Camouflage_SubOption,
-                        "All Enemies", $"Uses {Camouflage.ActionName()} regardless of targeted enemy type.", 0);
-                    DrawHorizontalRadioButton(GNB_AoE_Camouflage_SubOption,
-                        "Bosses Only", $"Only uses {Camouflage.ActionName()} when the targeted enemy is a boss.", 1);
-                    break;
-
-                case Preset.GNB_ST_Nebula:
-                    DrawSliderInt(1, 100, GNB_ST_Nebula_Health,
-                        "Player HP% to be \nless than or equal to:", 200);
-                    DrawHorizontalRadioButton(GNB_ST_Nebula_SubOption,
-                        "All Enemies", $"Uses {Nebula.ActionName()} regardless of targeted enemy type.", 0);
-                    DrawHorizontalRadioButton(GNB_ST_Nebula_SubOption,
-                        "Bosses Only", $"Only uses {Nebula.ActionName()} when the targeted enemy is a boss.", 1);
-                    break;
-
-                case Preset.GNB_AoE_Nebula:
-                    DrawSliderInt(1, 100, GNB_AoE_Nebula_Health,
-                        "Player HP% to be \nless than or equal to:", 200);
-                    DrawHorizontalRadioButton(GNB_AoE_Nebula_SubOption,
-                        "All Enemies", $"Uses {Nebula.ActionName()} regardless of targeted enemy type.", 0);
-                    DrawHorizontalRadioButton(GNB_AoE_Nebula_SubOption,
-                        "Bosses Only", $"Only uses {Nebula.ActionName()} when the targeted enemy is a boss.", 1);
-                    break;
-
-                case Preset.GNB_ST_Superbolide:
-                    DrawSliderInt(1, 100, GNB_ST_Superbolide_Health,
-                        "Player HP% to be \nless than or equal to:", 200);
-                    DrawHorizontalRadioButton(GNB_ST_Superbolide_SubOption,
-                        "All Enemies", $"Uses {Superbolide.ActionName()} regardless of targeted enemy type.", 0);
-                    DrawHorizontalRadioButton(GNB_ST_Superbolide_SubOption,
-                        "Bosses Only", $"Only uses {Superbolide.ActionName()} when the targeted enemy is a boss.", 1);
-                    break;
-
-                case Preset.GNB_AoE_Superbolide:
-                    DrawSliderInt(1, 100, GNB_AoE_Superbolide_Health,
-                        "Player HP% to be \nless than or equal to:", 200);
-                    DrawHorizontalRadioButton(GNB_AoE_Superbolide_SubOption,
-                        "All Enemies", $"Uses {Superbolide.ActionName()} regardless of targeted enemy type.", 0);
-                    DrawHorizontalRadioButton(GNB_AoE_Superbolide_SubOption,
-                        "Bosses Only", $"Only uses {Superbolide.ActionName()} when the targeted enemy is a boss.", 1);
-                    break;
-
-                case Preset.GNB_ST_Reprisal:
-                    DrawSliderInt(1, 100, GNB_ST_Reprisal_Health,
-                        "Player HP% to be \nless than or equal to:", 200);
-                    DrawHorizontalRadioButton(GNB_ST_Reprisal_SubOption,
-                        "All Enemies", $"Uses {Role.Reprisal.ActionName()} regardless of targeted enemy type.", 0);
-                    DrawHorizontalRadioButton(GNB_ST_Reprisal_SubOption,
-                        "Bosses Only", $"Only uses {Role.Reprisal.ActionName()} when the targeted enemy is a boss.", 1);
-                    break;
-
-                case Preset.GNB_AoE_Reprisal:
-                    DrawSliderInt(1, 100, GNB_AoE_Reprisal_Health,
-                        "Player HP% to be \nless than or equal to:", 200);
-                    DrawHorizontalRadioButton(GNB_AoE_Reprisal_SubOption,
-                        "All Enemies", $"Uses {Role.Reprisal.ActionName()} regardless of targeted enemy type.", 0);
-                    DrawHorizontalRadioButton(GNB_AoE_Reprisal_SubOption,
-                        "Bosses Only", $"Only uses {Role.Reprisal.ActionName()} when the targeted enemy is a boss.", 1);
-                    break;
 
                 #region One-Button Mitigation
 
@@ -357,8 +240,6 @@ internal partial class GNB
                     break;
                 #endregion
 
-                #endregion
-
                 #region Other
                 case Preset.GNB_NM_Features:
                     DrawHorizontalRadioButton(GNB_NM_Features_Weave,
@@ -379,20 +260,6 @@ internal partial class GNB
                         "Include Overcap Protection", $"Includes {BurstStrike.ActionName()} to prevent overcapping on cartridges", 0);
                     DrawHorizontalRadioButton(GNB_GF_Overcap_Choice,
                         "Exclude Overcap Protection", $"Excludes {BurstStrike.ActionName()}, regardless of cartridge count", 1);
-                    break;
-
-                case Preset.GNB_ST_Simple:
-                    DrawHorizontalRadioButton(GNB_ST_MitsOptions,
-                        "Include Mitigations", "Enables the use of mitigations in Simple Mode.", 0);
-                    DrawHorizontalRadioButton(GNB_ST_MitsOptions,
-                        "Exclude Mitigations", "Disables the use of mitigations in Simple Mode.", 1);
-                    break;
-
-                case Preset.GNB_AoE_Simple:
-                    DrawHorizontalRadioButton(GNB_AoE_MitsOptions,
-                        "Include Mitigations", "Enables the use of mitigations in Simple Mode.", 0);
-                    DrawHorizontalRadioButton(GNB_AoE_MitsOptions,
-                        "Exclude Mitigations", "Disables the use of mitigations in Simple Mode.", 1);
                     break;
 
                 case Preset.GNB_Bozja_LostCure:

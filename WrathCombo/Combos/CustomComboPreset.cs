@@ -3059,6 +3059,69 @@ public enum Preset
     [SimpleCombo]
     GNB_AoE_Simple = 7002,
     #endregion
+    
+    #region Advanced Mitigation 
+    //7700s LastUsed 7713
+    [CustomComboInfo("Advanced Mitigation Options", "Mitigation Options for Gunbreaker. Enable in each advanced combo", Job.GNB)]
+    GNB_Mitigation = 7700,
+    
+    [ParentCombo(GNB_Mitigation)]
+    [CustomComboInfo("Non Boss Encounter Mitigation", "Adds Mitigation to the combos when not in a boss encounter. Will not overlap separate options unless stated.", Job.GNB)]
+    GNB_Mitigation_NonBoss = 7701,
+    
+    [ParentCombo(GNB_Mitigation_NonBoss)]
+    [CustomComboInfo("Rampart Option", "Adds Rampart when 3 or more targets", Job.GNB)]
+    GNB_Mitigation_NonBoss_Rampart = 7702,
+    
+    [ParentCombo(GNB_Mitigation_NonBoss)]
+    [CustomComboInfo("Nebula Option", "Adds Nebula/Great Nebula when 3 or more targets", Job.GNB)]
+    GNB_Mitigation_NonBoss_Nebula = 7703,
+    
+    [ParentCombo(GNB_Mitigation_NonBoss)]
+    [CustomComboInfo("Camouflage Option", "Adds Camouflage when 3 or more targets", Job.GNB)]
+    GNB_Mitigation_NonBoss_Camouflage = 7704,
+    
+    [ParentCombo(GNB_Mitigation_NonBoss)]
+    [CustomComboInfo("Aurora Option", "Adds Aurora when 3 or more targets. Will overlap with other mits.", Job.GNB)]
+    GNB_Mitigation_NonBoss_Aurora = 7705,
+    
+    [ParentCombo(GNB_Mitigation_NonBoss)]
+    [CustomComboInfo("Superbolide Option", "Adds Superbolide when 5 or more targets", Job.GNB)]
+    GNB_Mitigation_NonBoss_Superbolide = 7706,
+    
+    [ParentCombo(GNB_Mitigation_NonBoss)]
+    [CustomComboInfo("Arm's Length Option", "Adds Arm's Length when 5 or more targets", Job.GNB)]
+    GNB_Mitigation_NonBoss_ArmsLength = 7707,
+    
+    [ParentCombo(GNB_Mitigation_NonBoss)]
+    [CustomComboInfo("Reprisal Option", "Adds Reprisal when 5 or more targets. Will overlap with others.", Job.GNB)]
+    GNB_Mitigation_NonBoss_Reprisal= 7708,
+    
+    [ParentCombo(GNB_Mitigation_NonBoss)]
+    [CustomComboInfo("Heart of Light Option", "Adds Heart of Light when 5 or more targets. Will overlap with others.", Job.GNB)]
+    GNB_Mitigation_NonBoss_HeartOfLight = 7709,
+    
+    [ParentCombo(GNB_Mitigation_NonBoss)]
+    [CustomComboInfo("Heart of Stone/Corundrum Option", "Adds Heart of Stone/Corundrum when available. Will overlap with others.", Job.GNB)]
+    GNB_Mitigation_NonBoss_HeartOfStone = 7710,
+    
+    [ParentCombo(GNB_Mitigation)]
+    [CustomComboInfo("Boss Encounter Mitigation", "Adds Mitigation to the combos when not in a boss encounter. Will not overlap separate options unless stated.", Job.GNB)]
+    GNB_Mitigation_Boss = 7711,
+    
+    [ParentCombo(GNB_Mitigation_Boss)]
+    [CustomComboInfo("Heart Of Stone Option", "Adds Heart Of Stone when targetted", Job.GNB)]
+    GNB_Mitigation_Boss_HeartOfStone = 7712,
+    
+    [ParentCombo(GNB_Mitigation_Boss)]
+    [CustomComboInfo("Raidwide Reprisal Option", "Adds Reprisal when raidwide casting is detected.", Job.GNB)]
+    GNB_Mitigation_Boss_Reprisal = 7713,
+    
+    [ParentCombo(GNB_Mitigation_Boss)]
+    [CustomComboInfo("Raidwide Heart Of Light Option", "Adds Heart Of Light when raidwide casting is detected.", Job.GNB)]
+    GNB_Mitigation_Boss_HeartOfLight = 7714,
+    
+    #endregion
 
     #region Advanced ST
     [AutoAction(false, false)]
@@ -3129,46 +3192,6 @@ public enum Preset
     [CustomComboInfo("Interrupt with Stun Option", "Adds Low Blow to the rotation when your target is casting.\nNot advised outside of overworld content, as it can waste a lot of Low Blows on un-stun-able enemies, etc. Will try to not use it in boss fights.", Job.GNB)]
     GNB_ST_Stun = 7086,
 
-    #region Mitigations
-
-    [ParentCombo(GNB_ST_Advanced)]
-    [CustomComboInfo("Mitigation Options", "Collection of Mitigation features.", Job.GNB)]
-    GNB_ST_Mitigation = 7019,
-
-    [ParentCombo(GNB_ST_Mitigation)]
-    [CustomComboInfo("Heart of Corundum Option", "Adds Heart of Stone / Corundum into the rotation based on Health percentage remaining.", Job.GNB)]
-    GNB_ST_Corundum = 7020,
-
-    [ParentCombo(GNB_ST_Mitigation)]
-    [CustomComboInfo("Aurora Option", "Adds Aurora into the rotation based on Health percentage remaining.", Job.GNB)]
-    GNB_ST_Aurora = 7024,
-
-    [ParentCombo(GNB_ST_Mitigation)]
-    [CustomComboInfo("Rampart Option", "Adds Rampart into the rotation based on Health percentage remaining.", Job.GNB)]
-    GNB_ST_Rampart = 7025,
-
-    [ParentCombo(GNB_ST_Mitigation)]
-    [CustomComboInfo("Camouflage Option", "Adds Camouflage into the rotation based on Health percentage remaining.", Job.GNB)]
-    GNB_ST_Camouflage = 7026,
-
-    [ParentCombo(GNB_ST_Mitigation)]
-    [CustomComboInfo("Nebula Option", "Adds Nebula into the rotation based on Health percentage remaining.", Job.GNB)]
-    GNB_ST_Nebula = 7021,
-
-    [ParentCombo(GNB_ST_Mitigation)]
-    [CustomComboInfo("Superbolide Option", "Adds Superbolide into the rotation based on Health percentage remaining.", Job.GNB)]
-    GNB_ST_Superbolide = 7022,
-
-    [ParentCombo(GNB_ST_Mitigation)]
-    [CustomComboInfo("Reprisal Option", "Adds Reprisal into the rotation based on Health percentage remaining.", Job.GNB)]
-    GNB_ST_Reprisal = 7027,
-
-    [ParentCombo(GNB_ST_Mitigation)]
-    [CustomComboInfo("Arm's Length Option", "Adds Arm's Length into the rotation based on Health percentage remaining.", Job.GNB)]
-    GNB_ST_ArmsLength = 7028,
-
-    #endregion
-
     #endregion
 
     #region Advanced AoE
@@ -3219,46 +3242,6 @@ public enum Preset
     [ParentCombo(GNB_AoE_Advanced)]
     [CustomComboInfo("Interrupt with Stun Option", "Adds Low Blow to the rotation when your target is casting, interruptible or not.", Job.GNB)]
     GNB_AoE_Stun = 7223,
-
-    #region Mitigations
-
-    [ParentCombo(GNB_AoE_Advanced)]
-    [CustomComboInfo("Mitigation Options", "Collection of Mitigation features.", Job.GNB)]
-    GNB_AoE_Mitigation = 7216,
-
-    [ParentCombo(GNB_AoE_Mitigation)]
-    [CustomComboInfo("Heart of Corundum Option", "Adds Heart of Stone / Corundum into the rotation based on Health percentage remaining.", Job.GNB)]
-    GNB_AoE_Corundum = 7213,
-
-    [ParentCombo(GNB_AoE_Mitigation)]
-    [CustomComboInfo("Aurora Option", "Adds Aurora into the rotation based on Health percentage remaining.", Job.GNB)]
-    GNB_AoE_Aurora = 7217,
-
-    [ParentCombo(GNB_AoE_Mitigation)]
-    [CustomComboInfo("Rampart Option", "Adds Rampart into the rotation based on Health percentage remaining.", Job.GNB)]
-    GNB_AoE_Rampart = 7218,
-
-    [ParentCombo(GNB_AoE_Mitigation)]
-    [CustomComboInfo("Camouflage Option", "Adds Camouflage into the rotation based on Health percentage remaining.", Job.GNB)]
-    GNB_AoE_Camouflage = 7219,
-
-    [ParentCombo(GNB_AoE_Mitigation)]
-    [CustomComboInfo("Nebula Option", "Adds Nebula into the rotation based on Health percentage remaining.", Job.GNB)]
-    GNB_AoE_Nebula = 7214,
-
-    [ParentCombo(GNB_AoE_Mitigation)]
-    [CustomComboInfo("Superbolide Option", "Adds Superbolide into the rotation based on Health percentage remaining.", Job.GNB)]
-    GNB_AoE_Superbolide = 7215,
-
-    [ParentCombo(GNB_AoE_Mitigation)]
-    [CustomComboInfo("Reprisal Option", "Adds Reprisal into the rotation based on Health percentage remaining.", Job.GNB)]
-    GNB_AoE_Reprisal = 7220,
-
-    [ParentCombo(GNB_AoE_Mitigation)]
-    [CustomComboInfo("Arm's Length Option", "Adds Arm's Length into the rotation based on Health percentage remaining.", Job.GNB)]
-    GNB_AoE_ArmsLength = 7221,
-
-    #endregion
 
     #endregion
 

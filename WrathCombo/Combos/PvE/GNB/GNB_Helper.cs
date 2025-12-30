@@ -63,6 +63,173 @@ internal partial class GNB : Tank
     private static bool CanUse(uint action) => 
         LevelChecked(action) && //unlocked
         GetCooldownRemainingTime(action) < 0.5f; //off cooldown
+    private static bool MitigationRunning =>
+        HasStatusEffect(Role.Buffs.ArmsLength) ||
+        HasStatusEffect(Role.Buffs.Rampart) || 
+        HasStatusEffect(Buffs.Superbolide) ||
+        HasStatusEffect(Buffs.Camouflage) ||
+        HasStatusEffect(Buffs.Nebula) || 
+        HasStatusEffect(Buffs.GreatNebula);
+    
+    private static bool JustMitted =>
+        JustUsed(OriginalHook(Camouflage)) ||
+        JustUsed(OriginalHook(Nebula)) ||
+        JustUsed(OriginalHook(HeartOfStone)) ||
+        JustUsed(Role.ArmsLength) ||
+        JustUsed(Role.Rampart) ||
+        JustUsed(Superbolide);
+    #endregion
+    
+    #region Auto Mitigation System
+    
+    [Flags]
+    private enum RotationMode{
+        simple = 1 << 0,
+        advanced = 1 << 1
+    }
+    
+    private static bool TryUseMits(RotationMode rotationFlags, ref uint actionID) => CanUseNonBossMits(rotationFlags, ref actionID) || CanUseBossMits(rotationFlags, ref actionID);
+    
+    private static bool CanUseNonBossMits(RotationMode rotationFlags, ref uint actionID)
+    {
+        if (!InCombat() || !CanWeave() || InBossEncounter() || JustMitted || !IsEnabled(Preset.GNB_Mitigation_NonBoss))  
+            return false;
+        
+        #region Always Mits
+        if (IsEnabled(Preset.GNB_Mitigation_NonBoss_HeartOfStone) && ActionReady(OriginalHook(HeartOfStone)) && 
+            !HasStatusEffect(Buffs.Superbolide))
+        {
+            actionID = OriginalHook(HeartOfStone);
+            return true;
+        }
+        #endregion
+
+        #region Mitigation Threshold Bailout
+        float mitigationThreshold = rotationFlags.HasFlag(RotationMode.simple) 
+            ? 10 
+            : GNB_Mitigation_NonBoss_MitigationThreshold;
+        
+        if (GetAvgEnemyHPPercentInRange(5f) <= mitigationThreshold) 
+            return false;
+        #endregion
+        
+        #region Overlapping Mits
+        if (NumberOfEnemiesInRange(Role.Reprisal) > 4 && IsEnabled(Preset.GNB_Mitigation_NonBoss_HeartOfLight) && ActionReady(HeartOfLight) && !HasStatusEffect(Buffs.Superbolide))
+        {
+            actionID = HeartOfLight;
+            return true;
+        }
+        if (Role.CanReprisal(enemyCount:5) && IsEnabled(Preset.GNB_Mitigation_NonBoss_Reprisal) && !HasStatusEffect(Buffs.Superbolide))
+        {
+            actionID = Role.Reprisal;
+            return true;
+        }
+        if (NumberOfEnemiesInRange(Role.Reprisal) > 2 && ActionReady(Aurora) && IsEnabled(Preset.GNB_Mitigation_NonBoss_Aurora) && !HasStatusEffect(Buffs.Aurora) &&!JustUsed(Aurora))
+        {
+            actionID = OriginalHook(Aurora);
+            return true;
+        }
+        #endregion
+        
+        if (MitigationRunning || NumberOfEnemiesInRange(Role.Reprisal) <= 2) return false; //Bail if already Mitted or too few enemies
+        
+        #region Mitigation 5+
+        if (NumberOfEnemiesInRange(Role.Reprisal) > 4)
+        {
+            if (ActionReady(Superbolide) && IsEnabled(Preset.GNB_Mitigation_NonBoss_Superbolide))
+            {
+                actionID = Superbolide;
+                return true;
+            }
+            if (ActionReady(Role.ArmsLength) && IsEnabled(Preset.GNB_Mitigation_NonBoss_ArmsLength))
+            {
+                actionID = Role.ArmsLength;
+                return true;
+            }
+            if (ActionReady(OriginalHook(Nebula)) && IsEnabled(Preset.GNB_Mitigation_NonBoss_Nebula))
+            {
+                actionID = OriginalHook(Nebula);
+                return true;
+            }
+        }
+        #endregion
+        
+        #region Mitigation 3+
+        //Mitigation for 3 or more
+        if (Role.CanRampart() && IsEnabled(Preset.GNB_Mitigation_NonBoss_Rampart))
+        {
+            actionID = Role.Rampart;
+            return true;
+        }
+        if (ActionReady(Camouflage) && IsEnabled(Preset.GNB_Mitigation_NonBoss_Camouflage))
+        {
+            actionID = Camouflage;
+            return true;
+        }
+        
+        #endregion
+        
+        return false;
+
+        bool IsEnabled(Preset preset)
+        {
+            if (rotationFlags.HasFlag(RotationMode.simple))
+                return true;
+            
+            return CustomComboFunctions.IsEnabled(preset);
+        }
+    }
+    
+    private static bool CanUseBossMits(RotationMode rotationFlags, ref uint actionID)
+    {
+        if (!InCombat() || !CanWeave() || !InBossEncounter() || JustMitted || !IsEnabled(Preset.PLD_Mitigation_Boss)) return false;
+        
+        #region Always Mits
+        if (IsEnabled(Preset.GNB_Mitigation_Boss_HeartOfStone) && 
+            ActionReady(OriginalHook(HeartOfStone)) && IsPlayerTargeted())
+        {
+            actionID = OriginalHook(HeartOfStone);
+            return true;
+        }
+        #endregion
+        
+        #region Reprisal
+        
+        var ReprisalInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) ||
+                                          ContentCheck.IsInConfiguredContent(GNB_Mitigation_Boss_Reprisal_Difficulty, GNB_Boss_Mit_DifficultyListSet);
+        
+        if (IsEnabled(Preset.GNB_Mitigation_Boss_Reprisal) && ReprisalInMitigationContent &&
+            !JustUsed(HeartOfLight, 10f) && Role.CanReprisal(enemyCount:1) && RaidWideCasting())
+        {
+            actionID = Role.Reprisal;
+            return true;
+        }
+        #endregion 
+        
+        #region Heart Of Light
+        var HeartOfLightInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) || 
+                                              ContentCheck.IsInConfiguredContent(GNB_Mitigation_Boss_HeartOfLight_Difficulty, GNB_Boss_Mit_DifficultyListSet);
+        
+        if (IsEnabled(Preset.GNB_Mitigation_Boss_HeartOfLight) && HeartOfLightInMitigationContent &&
+            !JustUsed(Role.Reprisal, 10f) && ActionReady(HeartOfLight) && RaidWideCasting())
+        {
+            actionID = HeartOfLight;
+            return true;
+        }
+        #endregion
+        
+        //Insert Tankbuster Stuff here
+        return false;
+        
+        bool IsEnabled(Preset preset)
+        {
+            if (rotationFlags.HasFlag(RotationMode.simple))
+                return true;
+            
+            return CustomComboFunctions.IsEnabled(preset);
+        }
+    }
+    
     #endregion
 
     #region Openers

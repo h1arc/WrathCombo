@@ -91,7 +91,7 @@ internal partial class PLD
         PLD_ST_FoF_BossOption == 1 ||
         !TargetIsBoss() ? PLD_ST_FoF_HPOption : 0;
     
-    internal static bool MitigationRunning =>
+    private static bool MitigationRunning =>
         HasStatusEffect(Role.Buffs.ArmsLength) ||
         HasStatusEffect(Role.Buffs.Rampart) || 
         HasStatusEffect(Buffs.HallowedGround) ||
