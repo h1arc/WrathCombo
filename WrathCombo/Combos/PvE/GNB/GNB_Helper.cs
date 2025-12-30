@@ -182,13 +182,20 @@ internal partial class GNB : Tank
     
     private static bool CanUseBossMits(RotationMode rotationFlags, ref uint actionID)
     {
-        if (!InCombat() || !CanWeave() || !InBossEncounter() || JustMitted || !IsEnabled(Preset.PLD_Mitigation_Boss)) return false;
+        if (!InCombat() || !CanWeave() || !InBossEncounter() || JustMitted || !IsEnabled(Preset.GNB_Mitigation_Boss)) return false;
         
         #region Always Mits
         if (IsEnabled(Preset.GNB_Mitigation_Boss_HeartOfStone) && 
             ActionReady(OriginalHook(HeartOfStone)) && IsPlayerTargeted())
         {
             actionID = OriginalHook(HeartOfStone);
+            return true;
+        }
+        
+        if (IsEnabled(Preset.GNB_Mitigation_Boss_Aurora) && ActionReady(Aurora) && 
+            IsPlayerTargeted() && !HasStatusEffect(Buffs.Aurora) &&!JustUsed(Aurora))
+        {
+            actionID = OriginalHook(Aurora);
             return true;
         }
         #endregion

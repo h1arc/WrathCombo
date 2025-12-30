@@ -3114,6 +3114,10 @@ public enum Preset
     GNB_Mitigation_Boss_HeartOfStone = 7712,
     
     [ParentCombo(GNB_Mitigation_Boss)]
+    [CustomComboInfo("Aurora Option", "Adds Aurora when targetted", Job.GNB)]
+    GNB_Mitigation_Boss_Aurora = 7715,
+    
+    [ParentCombo(GNB_Mitigation_Boss)]
     [CustomComboInfo("Raidwide Reprisal Option", "Adds Reprisal when raidwide casting is detected.", Job.GNB)]
     GNB_Mitigation_Boss_Reprisal = 7713,
     

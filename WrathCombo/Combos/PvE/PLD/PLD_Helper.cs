@@ -206,7 +206,7 @@ internal partial class PLD
             return false;
         
         #region Always Mits
-        if (IsEnabled(Preset.PLD_Mitigation_NonBoss_Sheltron) && ActionReady(OriginalHook(Sheltron)) && 
+        if (IsEnabled(Preset.PLD_Mitigation_NonBoss_Sheltron) && ActionReady(OriginalHook(Sheltron)) && !IsMoving() &&
             !HasStatusEffect(Buffs.Sheltron) && !HasStatusEffect(Buffs.HallowedGround) && Gauge.OathGauge >= 50)
         {
             actionID = OriginalHook(Sheltron);
