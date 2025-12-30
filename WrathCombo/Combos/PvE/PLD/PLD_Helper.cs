@@ -101,12 +101,6 @@ internal partial class PLD
 
     private static int RoyalAuthorityCount =>
         ActionWatching.CombatActions.Count(x => x == OriginalHook(RageOfHalone));
-    
-    private static bool ReprisalInMitigationContent =>
-        ContentCheck.IsInConfiguredContent(PLD_Mitigation_Boss_Reprisal_Difficulty, PLD_Boss_Mit_DifficultyListSet);
-    
-    private static bool DivineVeilInMitigationContent =>
-        ContentCheck.IsInConfiguredContent(PLD_Mitigation_Boss_DivineVeil_Difficulty, PLD_Boss_Mit_DifficultyListSet);
 
     #endregion
 
@@ -129,7 +123,7 @@ internal partial class PLD
     ///     <see cref="LevelChecked(uint)">level-checked</see>.<br />
     ///     Do not add any of these checks to <c>Logic</c>.
     /// </remarks>
-    private static (uint Action, Preset Preset, System.Func<bool> Logic)[]
+    private static (uint Action, Preset Preset, Func<bool> Logic)[]
         PrioritizedMitigation =>
     [
         //Sheltron
@@ -198,20 +192,43 @@ internal partial class PLD
 
     #region Auto Mitigation System
     
-    private static bool CanUseNonBossMits(ref uint actionID)
+    [Flags]
+    private enum RotationMode{
+        simple = 1 << 0,
+        advanced = 1 << 1
+    }
+    
+    private static bool TryUseMits(RotationMode rotationFlags, ref uint actionID) => CanUseNonBossMits(rotationFlags, ref actionID) || CanUseBossMits(rotationFlags, ref actionID);
+    
+    private static bool CanUseNonBossMits(RotationMode rotationFlags, ref uint actionID)
     {
-        if (!InCombat() || !CanWeave() || InBossEncounter() || JustMitted || 
-            IsNotEnabled(Preset.PLD_Mitigation_NonBoss) ||
-            GetAvgEnemyHPPercentInRange(5f) <= PLD_Mitigation_NonBoss_MitigationThreshold) 
+        if (!InCombat() || !CanWeave() || InBossEncounter() || JustMitted || !IsEnabled(Preset.PLD_Mitigation_NonBoss))  
             return false;
         
+        #region Always Mits
         if (IsEnabled(Preset.PLD_Mitigation_NonBoss_Sheltron) && ActionReady(OriginalHook(Sheltron)) && 
             !HasStatusEffect(Buffs.Sheltron) && !HasStatusEffect(Buffs.HallowedGround) && Gauge.OathGauge >= 50)
         {
             actionID = OriginalHook(Sheltron);
             return true;
         }
-        if (IsEnabled(Preset.PLD_Mitigation_NonBoss_DivineVeil) && ActionReady(DivineVeil) && PlayerHealthPercentageHp() <= PLD_Mitigation_NonBoss_DivineVeil_Health)
+        #endregion
+
+        #region Mitigation Threshold Bailout
+        float mitigationThreshold = rotationFlags.HasFlag(RotationMode.simple) 
+            ? 10 
+            : PLD_Mitigation_NonBoss_MitigationThreshold;
+        
+        if (GetAvgEnemyHPPercentInRange(5f) <= mitigationThreshold) 
+            return false;
+        #endregion
+        
+        #region Overlapping Mits
+        var divineVeilThreshold = rotationFlags.HasFlag(RotationMode.simple) 
+            ? 80 
+            : PLD_Mitigation_NonBoss_DivineVeil_Health;
+        
+        if (IsEnabled(Preset.PLD_Mitigation_NonBoss_DivineVeil) && ActionReady(DivineVeil) && PlayerHealthPercentageHp() <= divineVeilThreshold)
         {
             actionID = DivineVeil;
             return true;
@@ -221,10 +238,11 @@ internal partial class PLD
             actionID = Role.Reprisal;
             return true;
         }
+        #endregion
         
         if (MitigationRunning || NumberOfEnemiesInRange(Role.Reprisal) <= 2) return false; //Bail if already Mitted or too few enemies
         
-        //Mitigations for 5 or more
+        #region Mitigation 5+
         if (NumberOfEnemiesInRange(Role.Reprisal) > 4)
         {
             if (ActionReady(HallowedGround) && IsEnabled(Preset.PLD_Mitigation_NonBoss_HallowedGround))
@@ -237,13 +255,10 @@ internal partial class PLD
                 actionID = Role.ArmsLength;
                 return true;
             }
-            if (Role.CanRampart() && IsEnabled(Preset.PLD_Mitigation_NonBoss_Rampart))
-            {
-                actionID = Role.Rampart;
-                return true;
-            }
         }
+        #endregion
         
+        #region Mitigation 3+
         //Mitigation for 3 or more
         if (Role.CanRampart() && IsEnabled(Preset.PLD_Mitigation_NonBoss_Rampart))
         {
@@ -260,39 +275,70 @@ internal partial class PLD
             actionID = OriginalHook(Sentinel);
             return true;
         }
+        #endregion
         
         return false;
+
+        bool IsEnabled(Preset preset)
+        {
+            if (rotationFlags.HasFlag(RotationMode.simple))
+                return true;
+            
+            return CustomComboFunctions.IsEnabled(preset);
+        }
     }
     
-    private static bool CanUseBossMits(ref uint actionID)
+    private static bool CanUseBossMits(RotationMode rotationFlags, ref uint actionID)
     {
-        if (!InCombat() || !CanWeave() || !InBossEncounter() || JustMitted || IsNotEnabled(Preset.PLD_Mitigation_Boss)) return false;
+        if (!InCombat() || !CanWeave() || !InBossEncounter() || JustMitted || !IsEnabled(Preset.PLD_Mitigation_Boss)) return false;
         
+        #region Always Mits
+        var sheltronThreshold = rotationFlags.HasFlag(RotationMode.simple)
+            ? 95
+            : PLD_Mitigation_Boss_SheltronOvercap_Threshold;
         if (IsEnabled(Preset.PLD_Mitigation_Boss_SheltronOvercap) && 
-            ActionReady(OriginalHook(Sheltron)) && !HasStatusEffect(Buffs.Sheltron) && Gauge.OathGauge >= PLD_Mitigation_Boss_SheltronOvercap_Threshold && IsPlayerTargeted()) //Shelltron Overcap
+            ActionReady(OriginalHook(Sheltron)) && !HasStatusEffect(Buffs.Sheltron) && Gauge.OathGauge >= sheltronThreshold && IsPlayerTargeted()) //Sheltron Overcap
         {
             actionID = OriginalHook(Sheltron);
             return true;
         }
+        #endregion
+        
+        #region Reprisal
+        
+        var ReprisalInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) ||
+                                          ContentCheck.IsInConfiguredContent(PLD_Mitigation_Boss_Reprisal_Difficulty, PLD_Boss_Mit_DifficultyListSet);
         
         if (IsEnabled(Preset.PLD_Mitigation_Boss_Reprisal) && ReprisalInMitigationContent &&
-            !JustUsed(DivineVeil, 10f) &&
-            Role.CanReprisal(enemyCount:1) && RaidWideCasting())
+            !JustUsed(DivineVeil, 10f) && Role.CanReprisal(enemyCount:1) && RaidWideCasting())
         {
             actionID = Role.Reprisal;
             return true;
         }
+        #endregion 
+        
+        #region Divine Veil
+        var DivineVeilInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) || 
+                                            ContentCheck.IsInConfiguredContent(PLD_Mitigation_Boss_DivineVeil_Difficulty, PLD_Boss_Mit_DifficultyListSet);
         
         if (IsEnabled(Preset.PLD_Mitigation_Boss_DivineVeil) && DivineVeilInMitigationContent &&
-            !JustUsed(Role.Reprisal, 10f) &&
-            ActionReady(DivineVeil) && RaidWideCasting())
+            !JustUsed(Role.Reprisal, 10f) && ActionReady(DivineVeil) && RaidWideCasting())
         {
             actionID = DivineVeil;
             return true;
         }
-       
+        #endregion
+        
         //Insert Tankbuster Stuff here
         return false;
+        
+        bool IsEnabled(Preset preset)
+        {
+            if (rotationFlags.HasFlag(RotationMode.simple))
+                return true;
+            
+            return CustomComboFunctions.IsEnabled(preset);
+        }
     }
     
     #endregion

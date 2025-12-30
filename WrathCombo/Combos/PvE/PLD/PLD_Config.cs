@@ -17,6 +17,26 @@ internal partial class PLD
             switch (preset)
             {
                 #region Combo Mitigations
+                case Preset.PLD_ST_SimpleMode:
+                    DrawHorizontalRadioButton(PLD_ST_MitOptions, "Include Simple Mitigations", "Enables the use of mitigations.", 0);
+                    DrawHorizontalRadioButton(PLD_ST_MitOptions, "Exclude Simple Mitigations", "Disables the use of mitigations.", 1);
+                    break;
+               
+                case Preset.PLD_AoE_SimpleMode:
+                    DrawHorizontalRadioButton(PLD_AoE_MitOptions, "Include Simple Mitigations", "Enables the use of mitigations.", 0);
+                    DrawHorizontalRadioButton(PLD_AoE_MitOptions, "Exclude Simple Mitigations", "Disables the use of mitigations.", 1);
+                    break;
+                
+                case Preset.PLD_ST_AdvancedMode:
+                    DrawHorizontalRadioButton(PLD_ST_Advanced_MitOptions, "Include Advanced Mitigations", "Enables the use of mitigations.", 0);
+                    DrawHorizontalRadioButton(PLD_ST_Advanced_MitOptions, "Exclude Advanced Mitigations", "Disables the use of mitigations.", 1);
+                    break;
+                
+                case Preset.PLD_AoE_AdvancedMode:
+                    DrawHorizontalRadioButton(PLD_AoE_Advanced_MitOptions, "Include Advanced Mitigations", "Enables the use of mitigations.", 0);
+                    DrawHorizontalRadioButton(PLD_AoE_Advanced_MitOptions, "Exclude Advanced Mitigations", "Disables the use of mitigations.", 1);
+                    break;
+                
                 case Preset.PLD_Mitigation_NonBoss:
                     DrawSliderFloat(0, 100, PLD_Mitigation_NonBoss_MitigationThreshold, "Stop using when average health percentage of nearby enemies is below set. \n(Set to 0 to disable this check) ", decimals: 0);
                     break;
@@ -36,20 +56,9 @@ internal partial class PLD
                     DrawDifficultyMultiChoice(PLD_Mitigation_Boss_Reprisal_Difficulty, PLD_Boss_Mit_DifficultyListSet ,
                         "Select which difficulties the ability should be used in:");
                     break;
-                    
-                
                 #endregion
-                #region ST
                 
-                case Preset.PLD_ST_AdvancedMode:
-                    DrawHorizontalRadioButton(PLD_ST_Advanced_MitOptions,
-                        "Include Mitigations",
-                        "Enables the use of mitigations.", 0);
-
-                    DrawHorizontalRadioButton(PLD_ST_Advanced_MitOptions,
-                        "Exclude Mitigations",
-                        "Disables the use of mitigations.", 1);
-                    break;
+                #region ST
 
                 case Preset.PLD_ST_AdvancedMode_BalanceOpener:
                     DrawBossOnlyChoice(PLD_Balance_Content);
@@ -115,16 +124,6 @@ internal partial class PLD
                 #endregion
 
                 #region AoE
-                
-                case Preset.PLD_AoE_AdvancedMode:
-                    DrawHorizontalRadioButton(PLD_AoE_Advanced_MitOptions,
-                        "Include Mitigations",
-                        "Enables the use of mitigations.", 0);
-
-                    DrawHorizontalRadioButton(PLD_AoE_Advanced_MitOptions,
-                        "Exclude Mitigations",
-                        "Disables the use of mitigations.", 1);
-                    break;
 
                 case Preset.PLD_AoE_AdvancedMode_FoF:
                     DrawSliderInt(0, 50, PLD_AoE_FoF_Trigger, "Target HP%", 200);
@@ -154,32 +153,6 @@ internal partial class PLD
                 case Preset.PLD_AoE_AdvancedMode_MP_Reserve:
                     DrawSliderInt(1000, 5000, PLD_AoE_MP_Reserve, "Minimum MP", sliderIncrement: 100);
 
-                    break;
-
-                #endregion
-
-                #region Simple Modes
-
-                // Simple ST Mitigations Option
-                case Preset.PLD_ST_SimpleMode:
-                    DrawHorizontalRadioButton(PLD_ST_MitOptions,
-                        "Include Mitigations",
-                        "Enables the use of mitigations.", 0);
-
-                    DrawHorizontalRadioButton(PLD_ST_MitOptions,
-                        "Exclude Mitigations",
-                        "Disables the use of mitigations.", 1);
-                    break;
-
-                // Simple AoE Mitigations Option
-                case Preset.PLD_AoE_SimpleMode:
-                    DrawHorizontalRadioButton(PLD_AoE_MitOptions,
-                        "Include Mitigations",
-                        "Enables the use of mitigations.", 0);
-
-                    DrawHorizontalRadioButton(PLD_AoE_MitOptions,
-                        "Exclude Mitigations",
-                        "Disables the use of mitigations.", 1);
                     break;
 
                 #endregion

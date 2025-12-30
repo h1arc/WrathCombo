@@ -37,7 +37,7 @@ internal partial class WAR
             
             if (WAR_ST_MitsOptions == 0)
             {
-                if (CanUseNonBossMits(ref action) || CanUseBossMits(ref action))
+                if (TryUseMits(RotationMode.simple, ref action))
                     return action;
             }
 
@@ -101,7 +101,7 @@ internal partial class WAR
             
             if (WAR_ST_Advanced_MitsOptions == 0)
             {
-                if (CanUseNonBossMits(ref action) || CanUseBossMits(ref action))
+                if (TryUseMits(RotationMode.advanced, ref action))
                     return action;
             }
 
@@ -159,7 +159,7 @@ internal partial class WAR
             
             if (WAR_AoE_MitsOptions == 0)
             {
-                if (CanUseNonBossMits(ref action) || CanUseBossMits(ref action))
+                if (TryUseMits(RotationMode.simple, ref action))
                     return action;
             }
 
@@ -221,7 +221,7 @@ internal partial class WAR
             
             if (WAR_AoE_Advanced_MitsOptions == 0)
             {
-                if (CanUseNonBossMits(ref action) || CanUseBossMits(ref action))
+                if (TryUseMits(RotationMode.advanced, ref action))
                     return action;
             }
 

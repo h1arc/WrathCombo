@@ -4680,7 +4680,33 @@ public enum Preset
     #endregion
 
     #region PALADIN
-    [CustomComboInfo("Mitigation Options", "Mitigation Options for Paladin. Enable in each combo", Job.PLD)]
+    
+    #region Simple Mode
+
+    // Simple Modes
+    [AutoAction(false, false)]
+    [ConflictingCombos(PLD_ST_AdvancedMode)]
+    [ReplaceSkill(PLD.FastBlade)]
+    [CustomComboInfo("Simple Mode - Single Target",
+        "Replaces Fast Blade with a full one-button single target rotation.\nThis is the ideal option for newcomers to the job.",
+        Job.PLD)]
+    [SimpleCombo]
+    PLD_ST_SimpleMode = 11000,
+
+    [AutoAction(true, false)]
+    [ConflictingCombos(PLD_AoE_AdvancedMode)]
+    [ReplaceSkill(PLD.TotalEclipse)]
+    [CustomComboInfo("Simple Mode - AoE",
+        "Replaces Total Eclipse with a full one-button AoE rotation.\nThis is the ideal option for newcomers to the job.",
+        Job.PLD)]
+    [SimpleCombo]
+    PLD_AoE_SimpleMode = 11001,
+
+    #endregion
+    
+    #region Advanced Mitigation
+    
+    [CustomComboInfo("Advanced Mitigation Options", "Mitigation Options for Paladin. Enable in each advanced combo", Job.PLD)]
     PLD_Mitigation = 11086,
     
     [ParentCombo(PLD_Mitigation)]
@@ -4740,27 +4766,6 @@ public enum Preset
     [CustomComboInfo("Block Combos for Passage of Arms",
         "Will block the main Combos with Savage Blade while Passage of Arms is still active, to prevent actions from those combos cancelling Passage of Arms early.\nThis will leave it up to you to cancel Passage of Arms via other actions or movement (or letting it be used fully).", Job.PLD)]
     PLD_BlockForWings = 11074,
-
-    #region Simple Mode
-
-    // Simple Modes
-    [AutoAction(false, false)]
-    [ConflictingCombos(PLD_ST_AdvancedMode)]
-    [ReplaceSkill(PLD.FastBlade)]
-    [CustomComboInfo("Simple Mode - Single Target",
-        "Replaces Fast Blade with a full one-button single target rotation.\nThis is the ideal option for newcomers to the job.",
-        Job.PLD)]
-    [SimpleCombo]
-    PLD_ST_SimpleMode = 11000,
-
-    [AutoAction(true, false)]
-    [ConflictingCombos(PLD_AoE_AdvancedMode)]
-    [ReplaceSkill(PLD.TotalEclipse)]
-    [CustomComboInfo("Simple Mode - AoE",
-        "Replaces Total Eclipse with a full one-button AoE rotation.\nThis is the ideal option for newcomers to the job.",
-        Job.PLD)]
-    [SimpleCombo]
-    PLD_AoE_SimpleMode = 11001,
 
     #endregion
 
@@ -7455,7 +7460,28 @@ public enum Preset
 
     #region WARRIOR
     
-    [CustomComboInfo("Mitigation Options", "Mitigation Options for Warrior. Enable in each combo", Job.WAR)]
+    #region Simple Mode
+    [AutoAction(false, false)]
+    [ConflictingCombos(WAR_ST_Advanced)]
+    [ReplaceSkill(WAR.HeavySwing)]
+    [CustomComboInfo("Simple Mode - Single Target",
+        "Replaces Heavy Swing with a full one-button single target rotation.\nThis is the ideal option for newcomers to the job.",
+        Job.WAR)]
+    [SimpleCombo]
+    WAR_ST_Simple = 18000,
+
+    [AutoAction(true, false)]
+    [ConflictingCombos(WAR_AoE_Advanced)]
+    [ReplaceSkill(WAR.Overpower)]
+    [CustomComboInfo("Simple Mode - AoE",
+        "Replaces Overpower with a full one-button AoE rotation.\nThis is the ideal option for newcomers to the job.",
+        Job.WAR)]
+    [SimpleCombo]
+    WAR_AoE_Simple = 18001,
+    #endregion
+    
+    #region Advanced Mitigation
+    [CustomComboInfo("Advanced Mitigation Options", "Mitigation Options for Warrior. Enable in each Advanced combo", Job.WAR)]
     WAR_Mitigation = 18131,
     
     [ParentCombo(WAR_Mitigation)]
@@ -7518,24 +7544,6 @@ public enum Preset
     [CustomComboInfo("Raidwide Shake It Off Option", "Adds Shake it Off when raidwide casting is detected.", Job.WAR)]
     WAR_Mitigation_Boss_ShakeItOff = 18145,
 
-    #region Simple Mode
-    [AutoAction(false, false)]
-    [ConflictingCombos(WAR_ST_Advanced)]
-    [ReplaceSkill(WAR.HeavySwing)]
-    [CustomComboInfo("Simple Mode - Single Target",
-        "Replaces Heavy Swing with a full one-button single target rotation.\nThis is the ideal option for newcomers to the job.",
-        Job.WAR)]
-    [SimpleCombo]
-    WAR_ST_Simple = 18000,
-
-    [AutoAction(true, false)]
-    [ConflictingCombos(WAR_AoE_Advanced)]
-    [ReplaceSkill(WAR.Overpower)]
-    [CustomComboInfo("Simple Mode - AoE",
-        "Replaces Overpower with a full one-button AoE rotation.\nThis is the ideal option for newcomers to the job.",
-        Job.WAR)]
-    [SimpleCombo]
-    WAR_AoE_Simple = 18001,
     #endregion
 
     #region Advanced ST

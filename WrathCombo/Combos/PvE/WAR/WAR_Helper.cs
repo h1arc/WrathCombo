@@ -40,14 +40,7 @@ internal partial class WAR : Tank
 
     internal static bool SafeToShakeItOff => !HasAnyStatusEffects([Buffs.ThrillOfBattle, Buffs.Damnation, Buffs.VengeanceDefense, Buffs.BloodwhettingDefenseLong]);
     
-    private static bool ReprisalInMitigationContent =>
-        ContentCheck.IsInConfiguredContent(WAR_Mitigation_Boss_Reprisal_Difficulty, WAR_Boss_Mit_DifficultyListSet);
     
-    private static bool ShakeItOffInMitigationContent =>
-        ContentCheck.IsInConfiguredContent(WAR_Mitigation_Boss_ShakeItOff_Difficulty, WAR_Boss_Mit_DifficultyListSet);
-    
-    private static bool RawIntuitionInMitigationContent =>
-        ContentCheck.IsInConfiguredContent(WAR_Mitigation_Boss_RawIntuition_Difficulty, WAR_Boss_Mit_DifficultyListSet);
     
     private static bool JustMitted =>
         JustUsed(OriginalHook(ThrillOfBattle)) ||
@@ -300,43 +293,70 @@ internal partial class WAR : Tank
     
     #region Auto Mitigation System
     
-    private static bool CanUseNonBossMits(ref uint actionID)
+    [Flags]
+    private enum RotationMode{
+        simple = 1 << 0,
+        advanced = 1 << 1
+    }
+    
+    private static bool TryUseMits(RotationMode rotationFlags, ref uint actionID) => CanUseNonBossMits(rotationFlags, ref actionID) || CanUseBossMits(rotationFlags, ref actionID);
+    
+    private static bool CanUseNonBossMits(RotationMode rotationFlags, ref uint actionID)
     {
-        if (!InCombat() || !CanWeave() || InBossEncounter() || JustMitted || 
-            IsNotEnabled(Preset.WAR_Mitigation_NonBoss) ||
-            GetAvgEnemyHPPercentInRange(10f) <= WAR_Mitigation_NonBoss_MitigationThreshold) 
+        if (!InCombat() || !CanWeave() || InBossEncounter() || JustMitted || !IsEnabled(Preset.WAR_Mitigation_NonBoss)) 
             return false;
         
-        if (IsEnabled(Preset.WAR_Mitigation_NonBoss_Holmgang) && ActionReady(Holmgang) &&
-            PlayerHealthPercentageHp() <= WAR_Mitigation_NonBoss_Holmgang_Health)
-        {
-            actionID = Holmgang;
-            return true;
-        }
-        
-        if (IsEnabled(Preset.WAR_Mitigation_NonBoss_Equilibrium) && ActionReady(Equilibrium) &&
-            PlayerHealthPercentageHp() <= WAR_Mitigation_NonBoss_Equilibrium_Health)
-        {
-            actionID = Equilibrium;
-            return true;
-        }
-        
+        #region Always Mits
         if (IsEnabled(Preset.WAR_Mitigation_NonBoss_RawIntuition) && ActionReady(OriginalHook(RawIntuition)))
         {
             actionID = OriginalHook(RawIntuition);
             return true;
         }
+        #endregion
+        
+        #region Mitigation Threshold Bailout
+        float mitigationThreshold = rotationFlags.HasFlag(RotationMode.simple) 
+            ? 10 
+            : WAR_Mitigation_NonBoss_MitigationThreshold;
+        if (GetAvgEnemyHPPercentInRange(10f) <= mitigationThreshold) 
+            return false;
+        #endregion
+        
+        #region Healing and Invulnerability
+        var holmgangThreshold = rotationFlags.HasFlag(RotationMode.simple) ? 10 : WAR_Mitigation_NonBoss_Holmgang_Health;
+        
+        if (IsEnabled(Preset.WAR_Mitigation_NonBoss_Holmgang) && ActionReady(Holmgang) &&
+            PlayerHealthPercentageHp() <= holmgangThreshold)
+        {
+            actionID = Holmgang;
+            return true;
+        }
+        
+        
+       
+        var equilibriumThreshold = rotationFlags.HasFlag(RotationMode.simple) ? 65 : WAR_Mitigation_NonBoss_Equilibrium_Health;
+        
+        if (IsEnabled(Preset.WAR_Mitigation_NonBoss_Equilibrium) && ActionReady(Equilibrium) &&
+            PlayerHealthPercentageHp() <= equilibriumThreshold)
+        {
+            actionID = Equilibrium;
+            return true;
+        }
+        
+        var shakeItOffThreshold = rotationFlags.HasFlag(RotationMode.simple) ? 80 : WAR_Mitigation_NonBoss_ShakeItOff_Health;
         
         if (IsEnabled(Preset.WAR_Mitigation_NonBoss_ShakeItOff) && ActionReady(ShakeItOff) && SafeToShakeItOff &&
-            PlayerHealthPercentageHp() <= WAR_Mitigation_NonBoss_ShakeItOff_Health)
+            PlayerHealthPercentageHp() <= shakeItOffThreshold)
         {
             actionID = ShakeItOff;
             return true;
         }
         
+        #endregion
+        
         if (MitigationRunning || NumberOfEnemiesInRange(Role.Reprisal) <= 2) return false; //Bail if already Mitted or too few enemies
         
-        //Mitigations for 5 or more
+        #region Mitigation 5+
         if (NumberOfEnemiesInRange(Role.Reprisal) > 4)
         {
             if (Role.CanReprisal(enemyCount:5) && IsEnabled(Preset.WAR_Mitigation_NonBoss_Reprisal))
@@ -357,8 +377,9 @@ internal partial class WAR : Tank
                 return true;
             }
         }
+        #endregion
         
-        //Mitigations for 3 or more
+        #region Mitigation 3+
         if (Role.CanRampart() && IsEnabled(Preset.WAR_Mitigation_NonBoss_Rampart))
         {
             actionID = Role.Rampart;
@@ -370,14 +391,27 @@ internal partial class WAR : Tank
             actionID = ThrillOfBattle;
             return true;
         }
+        #endregion
         
         return false;
+        
+        bool IsEnabled(Preset preset)
+        {
+            if (rotationFlags.HasFlag(RotationMode.simple))
+                return true;
+            
+            return CustomComboFunctions.IsEnabled(preset);
+        }
     }
     
-    private static bool CanUseBossMits(ref uint actionID)
+    private static bool CanUseBossMits(RotationMode rotationFlags, ref uint actionID)
     {
-        if (!InCombat() || !CanWeave() || !InBossEncounter() || JustMitted || IsNotEnabled(Preset.WAR_Mitigation_Boss)) return false;
+        if (!InCombat() || !CanWeave() || !InBossEncounter() || JustMitted || !IsEnabled(Preset.WAR_Mitigation_Boss)) return false;
         
+        #region Raw Intuition/Bloodwhetting
+        var RawIntuitionInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) ||
+                                              ContentCheck.IsInConfiguredContent(WAR_Mitigation_Boss_RawIntuition_Difficulty, WAR_Boss_Mit_DifficultyListSet);
+            
         if (IsEnabled(Preset.WAR_Mitigation_Boss_RawIntuition) && RawIntuitionInMitigationContent &&
             ActionReady(OriginalHook(RawIntuition)) && IsPlayerTargeted() &&
             PlayerHealthPercentageHp() <= WAR_Mitigation_Boss_RawIntuition_Health)
@@ -385,12 +419,21 @@ internal partial class WAR : Tank
             actionID = OriginalHook(RawIntuition);
             return true;
         }
+        #endregion
+        
+        #region Equilibrium
+        var equilibriumThreshold = rotationFlags.HasFlag(RotationMode.simple) ? 50 : WAR_Mitigation_Boss_Equilibrium_Health;
         if (IsEnabled(Preset.WAR_Mitigation_Boss_Equilibrium) && ActionReady(Equilibrium) &&
-            PlayerHealthPercentageHp() <= WAR_Mitigation_Boss_Equilibrium_Health)
+            PlayerHealthPercentageHp() <= equilibriumThreshold)
         {
             actionID = Equilibrium;
             return true;
         }
+        #endregion
+        
+        #region Reprisal
+        var ReprisalInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) ||
+                                          ContentCheck.IsInConfiguredContent(WAR_Mitigation_Boss_Reprisal_Difficulty, WAR_Boss_Mit_DifficultyListSet);
         
         if (IsEnabled(Preset.WAR_Mitigation_Boss_Reprisal) && ReprisalInMitigationContent &&
             !JustUsed(ShakeItOff, 10f) &&
@@ -399,6 +442,11 @@ internal partial class WAR : Tank
             actionID = Role.Reprisal;
             return true;
         }
+        #endregion
+        
+        #region Shake it Off
+        var ShakeItOffInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) ||
+                                            ContentCheck.IsInConfiguredContent(WAR_Mitigation_Boss_ShakeItOff_Difficulty, WAR_Boss_Mit_DifficultyListSet);
         
         if (IsEnabled(Preset.WAR_Mitigation_Boss_ShakeItOff) && ShakeItOffInMitigationContent &&
             !JustUsed(Role.Reprisal, 10f) &&
@@ -407,9 +455,18 @@ internal partial class WAR : Tank
             actionID = ShakeItOff;
             return true;
         }
+        #endregion
        
         //Insert Tankbuster Stuff here
         return false;
+        
+        bool IsEnabled(Preset preset)
+        {
+            if (rotationFlags.HasFlag(RotationMode.simple))
+                return true;
+            
+            return CustomComboFunctions.IsEnabled(preset);
+        }
     }
     
     #endregion

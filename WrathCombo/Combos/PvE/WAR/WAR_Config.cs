@@ -19,30 +19,22 @@ internal partial class WAR
             {
                 #region Combo Mitigations
                 case Preset.WAR_ST_Simple:
-                    DrawHorizontalRadioButton(WAR_ST_MitsOptions,
-                        "Include Mitigations", "Enables the use of mitigations in Simple Mode.", 0);
-                    DrawHorizontalRadioButton(WAR_ST_MitsOptions,
-                        "Exclude Mitigations", "Disables the use of mitigations in Simple Mode.", 1);
+                    DrawHorizontalRadioButton(WAR_ST_MitsOptions, "Include Simple Mitigations", "Enables the use of mitigations.", 0);
+                    DrawHorizontalRadioButton(WAR_ST_MitsOptions, "Exclude Simple Mitigations", "Disables the use of mitigations.", 1);
                     break;
 
                 case Preset.WAR_AoE_Simple:
-                    DrawHorizontalRadioButton(WAR_AoE_MitsOptions,
-                        "Include Mitigations", "Enables the use of mitigations in Simple Mode.", 0);
-                    DrawHorizontalRadioButton(WAR_AoE_MitsOptions,
-                        "Exclude Mitigations", "Disables the use of mitigations in Simple Mode.", 1);
+                    DrawHorizontalRadioButton(WAR_AoE_MitsOptions, "Include Simple Mitigations", "Enables the use of mitigations.", 0);
+                    DrawHorizontalRadioButton(WAR_AoE_MitsOptions, "Exclude Simple Mitigations", "Disables the use of mitigations.", 1);
                     break;
                 case Preset.WAR_ST_Advanced:
-                    DrawHorizontalRadioButton(WAR_ST_Advanced_MitsOptions,
-                        "Include Mitigations", "Enables the use of mitigations in Simple Mode.", 0);
-                    DrawHorizontalRadioButton(WAR_ST_Advanced_MitsOptions,
-                        "Exclude Mitigations", "Disables the use of mitigations in Simple Mode.", 1);
+                    DrawHorizontalRadioButton(WAR_ST_Advanced_MitsOptions, "Include Advanced Mitigations", "Enables the use of mitigations.", 0);
+                    DrawHorizontalRadioButton(WAR_ST_Advanced_MitsOptions, "Exclude Advanced Mitigations", "Disables the use of mitigations.", 1);
                     break;
 
                 case Preset.WAR_AoE_Advanced:
-                    DrawHorizontalRadioButton(WAR_AoE_Advanced_MitsOptions,
-                        "Include Mitigations", "Enables the use of mitigations in Simple Mode.", 0);
-                    DrawHorizontalRadioButton(WAR_AoE_Advanced_MitsOptions,
-                        "Exclude Mitigations", "Disables the use of mitigations in Simple Mode.", 1);
+                    DrawHorizontalRadioButton(WAR_AoE_Advanced_MitsOptions, "Include Advanced Mitigations", "Enables the use of advanced mitigations.", 0);
+                    DrawHorizontalRadioButton(WAR_AoE_Advanced_MitsOptions, "Exclude Advanced Mitigations", "Disables the use of mitigations.", 1);
                     break;
                 case Preset.WAR_Mitigation_NonBoss:
                     DrawSliderFloat(0, 100, WAR_Mitigation_NonBoss_MitigationThreshold, "Stop using when average health percentage of nearby enemies is below set. \n(Set to 0 to disable this check) ", decimals: 0);
