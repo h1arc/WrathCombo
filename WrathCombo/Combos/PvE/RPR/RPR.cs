@@ -356,7 +356,7 @@ internal partial class RPR : Melee
                 //Auto Feint
                 if (IsEnabled(Preset.RPR_ST_Feint) &&
                     Role.CanFeint() &&
-                    RaidWideCasting())
+                    GroupDamageIncoming())
                     return Role.Feint;
 
                 //Auto Arcane Crest

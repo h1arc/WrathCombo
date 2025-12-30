@@ -265,7 +265,7 @@ internal partial class SAM : Melee
 
                 if (IsEnabled(Preset.SAM_ST_Feint) &&
                     Role.CanFeint() &&
-                    RaidWideCasting())
+                    GroupDamageIncoming())
                     return Role.Feint;
 
                 //Auto Third Eye
