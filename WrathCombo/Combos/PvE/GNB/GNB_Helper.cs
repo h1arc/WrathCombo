@@ -366,67 +366,6 @@ internal partial class GNB : Tank
 
     #endregion
 
-    //TODO: revise Bozja stuff - this shit looks crazy
-    #region lol
-    internal static uint BozjaActions()
-    {
-        if (!Bozja.IsInBozja)
-            return 0;
-
-        bool CanUse(uint action) => HasActionEquipped(action) && IsOffCooldown(action);
-        bool IsEnabledAndUsable(Preset preset, uint action) => IsEnabled(preset) && CanUse(action);
-
-        if (!InCombat() && IsEnabledAndUsable(Preset.GNB_Bozja_LostStealth, Bozja.LostStealth))
-            return Bozja.LostStealth;
-
-        if (CanWeave())
-        {
-            foreach (var (preset, action) in new[]
-            { (Preset.GNB_Bozja_LostFocus, Bozja.LostFocus),
-            (Preset.GNB_Bozja_LostFontOfPower, Bozja.LostFontOfPower),
-            (Preset.GNB_Bozja_LostSlash, Bozja.LostSlash),
-            (Preset.GNB_Bozja_LostFairTrade, Bozja.LostFairTrade),
-            (Preset.GNB_Bozja_LostAssassination, Bozja.LostAssassination), })
-                if (IsEnabledAndUsable(preset, action))
-                    return action;
-
-            foreach (var (preset, action, powerPreset) in new[]
-            { (Preset.GNB_Bozja_BannerOfNobleEnds, Bozja.BannerOfNobleEnds, Preset.GNB_Bozja_PowerEnds),
-            (Preset.GNB_Bozja_BannerOfHonoredSacrifice, Bozja.BannerOfHonoredSacrifice, Preset.GNB_Bozja_PowerSacrifice) })
-                if (IsEnabledAndUsable(preset, action) && (!IsEnabled(powerPreset) || JustUsed(Bozja.LostFontOfPower, 5f)))
-                    return action;
-
-            if (IsEnabledAndUsable(Preset.GNB_Bozja_BannerOfHonedAcuity, Bozja.BannerOfHonedAcuity) &&
-                !HasStatusEffect(Bozja.Buffs.BannerOfTranscendentFinesse))
-                return Bozja.BannerOfHonedAcuity;
-        }
-
-        foreach (var (preset, action, condition) in new[]
-        { (Preset.GNB_Bozja_LostDeath, Bozja.LostDeath, true),
-        (Preset.GNB_Bozja_LostCure, Bozja.LostCure, PlayerHealthPercentageHp() <= GNB_Bozja_LostCure_Health),
-        (Preset.GNB_Bozja_LostArise, Bozja.LostArise, GetTargetHPPercent() == 0 && !HasStatusEffect(RoleActions.Magic.Buffs.Raise)),
-        (Preset.GNB_Bozja_LostReraise, Bozja.LostReraise, PlayerHealthPercentageHp() <= GNB_Bozja_LostReraise_Health),
-        (Preset.GNB_Bozja_LostProtect, Bozja.LostProtect, !HasStatusEffect(Bozja.Buffs.LostProtect)),
-        (Preset.GNB_Bozja_LostShell, Bozja.LostShell, !HasStatusEffect(Bozja.Buffs.LostShell)),
-        (Preset.GNB_Bozja_LostBravery, Bozja.LostBravery, !HasStatusEffect(Bozja.Buffs.LostBravery)),
-        (Preset.GNB_Bozja_LostBubble, Bozja.LostBubble, !HasStatusEffect(Bozja.Buffs.LostBubble)),
-        (Preset.GNB_Bozja_LostParalyze3, Bozja.LostParalyze3, !JustUsed(Bozja.LostParalyze3, 60f)) })
-            if (IsEnabledAndUsable(preset, action) && condition)
-                return action;
-
-        if (IsEnabled(Preset.GNB_Bozja_LostSpellforge) &&
-            CanUse(Bozja.LostSpellforge) &&
-            (!HasStatusEffect(Bozja.Buffs.LostSpellforge) || !HasStatusEffect(Bozja.Buffs.LostSteelsting)))
-            return Bozja.LostSpellforge;
-        if (IsEnabled(Preset.GNB_Bozja_LostSteelsting) &&
-            CanUse(Bozja.LostSteelsting) &&
-            (!HasStatusEffect(Bozja.Buffs.LostSpellforge) || !HasStatusEffect(Bozja.Buffs.LostSteelsting)))
-            return Bozja.LostSteelsting;
-
-        return 0; //No conditions met
-    }
-    #endregion
-
     #region Rotation
     private static bool ShouldUseNoMercy(Preset preset, int stop, int boss)
     {

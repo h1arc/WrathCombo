@@ -495,13 +495,7 @@ internal partial class WAR
             WAR_Mit_ShakeItOff_PartyRequirement = new("WAR_Mit_ShakeItOff_PartyRequirement", (int)PartyRequirement.Yes),
             WAR_ST_HolmgangBoss = new("WAR_ST_HolmgangBoss", (int)BossAvoidance.On),
             WAR_Mit_ArmsLength_Boss = new("WAR_Mit_ArmsLength_Boss", (int)BossAvoidance.On),
-            WAR_Mit_ArmsLength_EnemyCount = new("WAR_Mit_ArmsLength_EnemyCount"),
-            WAR_Bozja_LostCure_Health = new("WAR_Bozja_LostCure_Health", 50),
-            WAR_Bozja_LostCure2_Health = new("WAR_Bozja_LostCure2_Health", 50),
-            WAR_Bozja_LostCure3_Health = new("WAR_Bozja_LostCure3_Health", 50),
-            WAR_Bozja_LostCure4_Health = new("WAR_Bozja_LostCure4_Health", 50),
-            WAR_Bozja_LostAethershield_Health = new("WAR_Bozja_LostAethershield_Health", 70),
-            WAR_Bozja_LostReraise_Health = new("WAR_Bozja_LostReraise_Health", 10);
+            WAR_Mit_ArmsLength_EnemyCount = new("WAR_Mit_ArmsLength_EnemyCount");
 
         public static UserFloat
             WAR_ST_Onslaught_Distance = new("WAR_ST_Ons_Distance", 3.0f),
