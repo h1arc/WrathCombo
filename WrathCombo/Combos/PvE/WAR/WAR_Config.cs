@@ -388,10 +388,10 @@ internal partial class WAR
 
         private const int NumMitigationOptions = 8;
         public static UserInt
-            WAR_ST_MitsOptions = new("WAR_ST_MitsOptions", 1),
-            WAR_AoE_MitsOptions = new("WAR_AoE_MitsOptions", 1),
-            WAR_ST_Advanced_MitsOptions = new("WAR_ST_Advanced_MitsOptions", 1),
-            WAR_AoE_Advanced_MitsOptions = new("WAR_AoE_Advanced_MitsOptions", 1),
+            WAR_ST_MitsOptions = new("WAR_ST_MitsOptions"),
+            WAR_AoE_MitsOptions = new("WAR_AoE_MitsOptions"),
+            WAR_ST_Advanced_MitsOptions = new("WAR_ST_Advanced_MitsOptions"),
+            WAR_AoE_Advanced_MitsOptions = new("WAR_AoE_Advanced_MitsOptions"),
             WAR_Mitigation_NonBoss_ShakeItOff_Health = new("WAR_Mitigation_NonBoss_ShakeItOff_Health", 80),
             WAR_Mitigation_NonBoss_Equilibrium_Health = new("WAR_Mitigation_NonBoss_Equilibrium_Health", 50),
             WAR_Mitigation_NonBoss_Holmgang_Health = new("WAR_Mitigation_NonBoss_Holmgang_Health", 20),
