@@ -673,6 +673,9 @@ internal unsafe static class AutoRotationController
 
         public static bool ExecuteAoE(Enum mode, Preset preset, Presets.PresetAttributes attributes, uint gameAct)
         {
+            if (LocalPlayer is not { } player)
+                return false;
+
             if (attributes.AutoAction!.IsHeal)
             {
                 LockedAoE = false;
@@ -691,7 +694,9 @@ internal unsafe static class AutoRotationController
                         return false;
 
                     CurrentActIsAutorot = true;
-                    var ret = ActionManager.Instance()->UseAction(ActionType.Action, Service.ActionReplacer.getActionHook.IsEnabled ? gameAct : outAct);
+                    DisableActionReplacingIfRequired();
+                    var ret = ActionManager.Instance()->UseAction(ActionType.Action, outAct);
+                    EnableActionReplacingIfRequired();
                     CurrentActIsAutorot = false;
 
                     if (!ret)
@@ -749,6 +754,10 @@ internal unsafe static class AutoRotationController
                 if (cfg.DPSSettings.AlwaysHardTarget)
                     Svc.Targets.Target = target;
 
+                var canUseSelf = sheet.CanTargetSelf;
+                var acRangeCheck = ActionManager.GetActionInRangeOrLoS(outAct, player.GameObject(), target is null ? player.GameObject() : target.Struct());
+                var inRange = acRangeCheck is 0 or 565 || canUseSelf;
+
                 if (mustTarget && target is not null)
                 {
                     Svc.GameConfig.TryGet(Dalamud.Game.Config.UiControlOption.AutoFaceTargetOnAction, out uint original);
@@ -758,19 +767,22 @@ internal unsafe static class AutoRotationController
                     Svc.GameConfig.Set(Dalamud.Game.Config.UiControlOption.AutoFaceTargetOnAction, original);
                 }
 
-                //Chance target of target.GameObjectID can be null
-                var ret = ActionManager.Instance()->UseAction(
-                    ActionType.Action,
-                    Service.ActionReplacer.getActionHook.IsEnabled ? gameAct : outAct,
-                    (mustTarget && target != null) || switched ? target.GameObjectId : Player.Object.GameObjectId);
+                if (inRange)
+                {
+                    //Chance target of target.GameObjectID can be null
+                    DisableActionReplacingIfRequired();
+                    var ret = ActionManager.Instance()->UseAction(
+                        ActionType.Action, outAct,
+                        (mustTarget && target != null) || switched ? target.GameObjectId : canUseSelf ? player.GameObjectId : 0xE000_0000);
+                    EnableActionReplacingIfRequired();
+                    OverrideTarget = null;
+                    if (NIN.MudraSigns.Contains(outAct))
+                        _lockedAoE = true;
+                    else
+                        _lockedAoE = false;
 
-                OverrideTarget = null;
-                if (NIN.MudraSigns.Contains(outAct))
-                    _lockedAoE = true;
-                else
-                    _lockedAoE = false;
-
-                return true;
+                    return true;
+                }
 
             }
             return false;
@@ -778,6 +790,9 @@ internal unsafe static class AutoRotationController
 
         public static bool ExecuteST(Enum mode, Preset preset, Presets.PresetAttributes attributes, uint gameAct)
         {
+            if (LocalPlayer is not { } player)
+                return false;
+
             var target = GetSingleTarget(mode);
             OverrideTarget = target;
             var outAct = OriginalHook(InvokeCombo(preset, attributes, ref gameAct, target));
@@ -811,11 +826,8 @@ internal unsafe static class AutoRotationController
             var areaTargeted = ActionSheet[outAct].TargetArea;
             var canUseTarget = target is not null && ActionManager.CanUseActionOnTarget(outAct, target.Struct());
 
-            var inRange = target is null
-                ? canUseSelf
-                : IsInLineOfSight(target) && (NIN.MudraSigns.Contains(outAct)
-                    ? GetTargetDistance(target) <= 20f
-                    : InActionRange(outAct, target));
+            var acRangeCheck = ActionManager.GetActionInRangeOrLoS(outAct, player.GameObject(), target is null ? player.GameObject() : target.Struct());
+            var inRange = acRangeCheck is 0 or 565 || canUseSelf;
 
             var canUse = (canUseSelf || canUseTarget || areaTargeted) && outAct.ActionAttackType() is { } type && (type is ActionAttackType.Ability || type is not ActionAttackType.Ability && RemainingGCD == 0);
             var isHeal = attributes.AutoAction!.IsHeal;
@@ -833,8 +845,12 @@ internal unsafe static class AutoRotationController
 
             if (canUse && (inRange || areaTargeted))
             {
+                Svc.Log.Debug($"Using {outAct.ActionName()} on {(canUseTarget ? target?.Name : player.Name)}");
+
                 if (isHeal) CurrentActIsAutorot = true;
-                var ret = ActionManager.Instance()->UseAction(ActionType.Action, Service.ActionReplacer.getActionHook.IsEnabled ? gameAct : outAct, canUseTarget || areaTargeted ? target.GameObjectId : Player.Object.GameObjectId);
+                DisableActionReplacingIfRequired();
+                var ret = ActionManager.Instance()->UseAction(ActionType.Action, outAct, canUseTarget || areaTargeted ? target.GameObjectId : canUseSelf ? player.GameObjectId : 0xE000_0000);
+                EnableActionReplacingIfRequired();
                 CurrentActIsAutorot = false;
                 OverrideTarget = null;
 
@@ -850,6 +866,19 @@ internal unsafe static class AutoRotationController
             }
 
             return false;
+        }
+
+        private static bool actionReplacementEnabled;
+        private static void EnableActionReplacingIfRequired()
+        {
+            if (actionReplacementEnabled)
+                Service.ActionReplacer.getActionHook.Enable();
+        }
+
+        private static void DisableActionReplacingIfRequired()
+        {
+            actionReplacementEnabled = Service.ActionReplacer.getActionHook.IsEnabled;
+            Service.ActionReplacer.getActionHook.Disable();
         }
 
         private static bool SwitchOnDChole(Presets.PresetAttributes attributes, uint outAct, ref IGameObject? newtarget)
