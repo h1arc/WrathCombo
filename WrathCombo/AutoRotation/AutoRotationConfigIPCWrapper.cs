@@ -130,13 +130,23 @@ public class DPSSettingsIPCWrapper(DPSSettings settings)
         }
     }
 
+    public bool DPSAlwaysHardTarget
+    {
+        get
+        {
+            var checkControlled =
+                P.UIHelper.AutoRotationConfigControlled("DPSAlwaysHardTarget");
+            return checkControlled is not null
+                ? checkControlled.Value.state == 1
+                : settings.DPSAlwaysHardTarget;
+        }
+    }
+
     #region Direct Pass-Throughs (no IPC check)
 
     public bool PreferNonCombat => settings.PreferNonCombat;
 
     public float MaxDistance => settings.MaxDistance;
-
-    public bool AlwaysHardTarget => settings.AlwaysHardTarget;
 
     public bool AoEIgnoreManual => settings.AoEIgnoreManual;
     
@@ -235,6 +245,18 @@ public class HealerSettingsIPCWrapper(HealerSettings settings)
         }
     }
 
+    public bool HealerAlwaysHardTarget
+    {
+        get
+        {
+            var checkControlled =
+                P.UIHelper.AutoRotationConfigControlled("HealerAlwaysHardTarget");
+            return checkControlled is not null
+                ? checkControlled.Value.state == 1
+                : settings.HealerAlwaysHardTarget;
+        }
+    }
+
     #region Direct Pass-Throughs (no IPC check)
 
     public bool AutoRezRequireSwift => settings.AutoRezRequireSwift;
@@ -249,7 +271,7 @@ public class HealerSettingsIPCWrapper(HealerSettings settings)
     
     public bool AutoRezDPSJobsHealersOnly => settings.AutoRezDPSJobsHealersOnly;
 
-    public bool AlwaysHardTarget => settings.AlwaysHardTarget;
+    public bool HealerAlwaysHardTarget => settings.HealerAlwaysHardTarget;
 
     #endregion
 }
