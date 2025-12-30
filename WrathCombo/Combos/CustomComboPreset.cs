@@ -204,7 +204,7 @@ public enum Preset
 
     [Bozja]
     [Role(JobRole.Tank)]
-    [CustomComboInfo("Bozja Tank", "Adds Bozja actions into the rotation.", Job.ADV)]
+    [CustomComboInfo("Bozja Tank", "Adds Tank-relative Bozja actions into the rotation.", Job.ADV)]
     Bozja_Tank = 210000,
 
     #region Tank
@@ -215,7 +215,7 @@ public enum Preset
 
     [Bozja]
     [ParentCombo(Bozja_Tank)]
-    [CustomComboInfo("Lost Font Of Power", "Use Lost Font Of Power when available.", Job.ADV)]
+    [CustomComboInfo("Lost Font of Power", "Use Lost Font of Power when available.", Job.ADV)]
     Bozja_Tank_LostFontOfPower = 210002,
 
     [Bozja]
@@ -230,27 +230,27 @@ public enum Preset
 
     [Bozja]
     [ParentCombo(Bozja_Tank)]
-    [CustomComboInfo("Banner Of Noble Ends", "Use Banner Of Noble Ends when available.", Job.ADV)]
+    [CustomComboInfo("Banner of Noble Ends", "Use Banner of Noble Ends when available.", Job.ADV)]
     Bozja_Tank_BannerOfNobleEnds = 210005,
 
     [Bozja]
     [ParentCombo(Bozja_Tank_BannerOfNobleEnds)]
-    [CustomComboInfo("Only with 'Lost Font Of Power'", "Use Banner Of Noble Ends only when under Lost Font of Power.", Job.ADV)]
+    [CustomComboInfo("Only with 'Lost Font of Power'", "Use Banner of Noble Ends only when under Lost Font of Power.", Job.ADV)]
     Bozja_Tank_PowerEnds = 210006,
 
     [Bozja]
     [ParentCombo(Bozja_Tank)]
-    [CustomComboInfo("Banner Of Honored Sacrifice", "Use Banner Of Honored Sacrifice when available.", Job.ADV)]
+    [CustomComboInfo("Banner of Honored Sacrifice", "Use Banner of Honored Sacrifice when available.", Job.ADV)]
     Bozja_Tank_BannerOfHonoredSacrifice = 210007,
 
     [Bozja]
     [ParentCombo(Bozja_Tank_BannerOfHonoredSacrifice)]
-    [CustomComboInfo("Only with 'Lost Font Of Power'", "Use Banner Of Honored Sacrifice only when under Lost Font of Power.", Job.ADV)]
+    [CustomComboInfo("Only with 'Lost Font of Power'", "Use Banner of Honored Sacrifice only when under Lost Font of Power.", Job.ADV)]
     Bozja_Tank_PowerSacrifice = 210008,
 
     [Bozja]
     [ParentCombo(Bozja_Tank)]
-    [CustomComboInfo("Banner Of Honed Acuity", "Use Banner Of Honed Acuity when available.", Job.ADV)]
+    [CustomComboInfo("Banner of Honed Acuity", "Use Banner of Honed Acuity when available.", Job.ADV)]
     Bozja_Tank_BannerOfHonedAcuity = 210009,
 
     [Bozja]
@@ -270,7 +270,7 @@ public enum Preset
 
     [Bozja]
     [ParentCombo(Bozja_Tank)]
-    [CustomComboInfo("Banner Of Tireless Conviction", "Use Banner Of Tireless Conviction when available.", Job.ADV)]
+    [CustomComboInfo("Banner of Tireless Conviction", "Use Banner of Tireless Conviction when available.", Job.ADV)]
     Bozja_Tank_BannerOfTirelessConviction = 210013,
 
     [Bozja]
@@ -280,7 +280,7 @@ public enum Preset
 
     [Bozja]
     [ParentCombo(Bozja_Tank)]
-    [CustomComboInfo("Banner Of Solemn Clarity", "Use Banner Of Solemn Clarity when available.", Job.ADV)]
+    [CustomComboInfo("Banner of Solemn Clarity", "Use Banner of Solemn Clarity when available.", Job.ADV)]
     Bozja_Tank_BannerOfSolemnClarity = 210015,
 
     [Bozja]
@@ -380,7 +380,7 @@ public enum Preset
 
     [Bozja]
     [ParentCombo(Bozja_Tank)]
-    [CustomComboInfo("Lost Font Of Skill", "Use Lost Font Of Skill when available.", Job.ADV)]
+    [CustomComboInfo("Lost Font of Skill", "Use Lost Font of Skill when available.", Job.ADV)]
     Bozja_Tank_LostFontOfSkill = 210035,
 
     [Bozja]
