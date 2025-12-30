@@ -343,7 +343,7 @@ internal partial class DNC : PhysicalRanged
                 return StarfallDance;
 
             // ST Tillana (Emergency Use)
-            if (GetStatusEffectRemainingTime(Buffs.FlourishingFinish) < GCD * 2.5 &&
+            if (GetPossessedStatusRemainingTime(Buffs.FlourishingFinish) < GCD * 2.5 &&
                 tillanaDropProtectionActive &&
                 LevelChecked(Tillana) &&
                 EnemyIn15Yalms)
@@ -647,7 +647,7 @@ internal partial class DNC : PhysicalRanged
                 return StarfallDance;
 
             // ST Tillana (Emergency Use)
-            if (GetStatusEffectRemainingTime(Buffs.FlourishingFinish) < GCD * 1.5 &&
+            if (GetPossessedStatusRemainingTime(Buffs.FlourishingFinish) < GCD * 1.5 &&
                 Gauge.Esprit < 100 &&
                 LevelChecked(Tillana) &&
                 EnemyIn15Yalms)

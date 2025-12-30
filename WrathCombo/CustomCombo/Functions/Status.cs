@@ -1,4 +1,5 @@
-﻿using Dalamud.Game.ClientState.Objects.Types;
+﻿using System;
+using Dalamud.Game.ClientState.Objects.Types;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.GameFunctions;
@@ -100,6 +101,19 @@ internal abstract partial class CustomComboFunctions
     /// <returns>Float representing remaining status effect time</returns>
     public unsafe static float GetStatusEffectRemainingTime(ushort effectId, IGameObject? target = null, bool anyOwner = false) =>
         GetStatusEffectRemainingTime(GetStatusEffect(effectId, target, anyOwner));
+    
+    /// <summary>
+    ///     Same as <see cref="GetStatusEffectRemainingTime(ushort, IGameObject?, bool)"/>,
+    ///     but returns NaN if the status effect is not found, failing
+    ///     any comparisons.<br/>
+    ///     As in: It will not return <c>0</c>, and pass less than checks.
+    /// </summary>
+    /// <seealso cref="GetStatusEffectRemainingTime(ushort, IGameObject?, bool)"/>
+    public static float GetPossessedStatusRemainingTime
+    (ushort effectId, IGameObject? target = null, bool anyOwner = false) =>
+    HasStatusEffect(effectId, out var status, target, anyOwner)
+        ? GetStatusEffectRemainingTime(status)
+        : float.NaN;
 
     /// <summary>
     /// Retrieves remaining time of a Status Effect
