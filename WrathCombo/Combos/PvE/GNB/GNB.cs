@@ -54,7 +54,7 @@ internal partial class GNB : Tank
 
                     if (IsPlayerTargeted())
                     {
-                        if (HPP < 60 && 
+                        if (HPP < 60 &&
                             ActionReady(OriginalHook(Nebula)))
                             return OriginalHook(Nebula);
 
@@ -69,12 +69,12 @@ internal partial class GNB : Tank
                         ActionReady(Camouflage))
                         return Camouflage;
 
-                    if (HPP < 90 && 
+                    if (HPP < 90 &&
                         ActionReady(OriginalHook(HeartOfStone)))
                         return OriginalHook(HeartOfStone);
 
                     if (HPP < 85 &&
-                        ActionReady(Aurora) && 
+                        ActionReady(Aurora) &&
                         !(HasStatusEffect(Buffs.Aurora) || HasStatusEffect(Buffs.Aurora, CurrentTarget, true)))
                         return Aurora;
                 }
@@ -86,14 +86,13 @@ internal partial class GNB : Tank
             #region Rotation
 
             //Lightning Shot
-            if (ShouldUseLightningShot(Preset.GNB_ST_Simple, 0))
+            if (ShouldUseLightningShot(Preset.GNB_ST_Simple, 1))
                 return LightningShot;
 
             //MAX PRIORITY - just clip it, it's better than just losing it altogether
             //Continuation procs (Hypervelocity, Jugular Rip, Abdomen Tear, Eye Gouge)
             if ((CanContinue || HasStatusEffect(Buffs.ReadyToBlast)) &&
-                RemainingGCD < 0.6f &&
-                IsEnabled(Preset.GNB_ST_Continuation))
+                RemainingGCD < 0.6f)
                 return OriginalHook(Continuation);
 
             //No Mercy
@@ -111,12 +110,12 @@ internal partial class GNB : Tank
                 return OriginalHook(Continuation);
 
             //Hypervelocity
-            //2.5 ONLY - if No Mercy is imminent, then we want to aim for buffing HV right after using Burst Strike (BS^NM^HV>GF>etc.)
+            //2.5 - if No Mercy is imminent, then we want to aim for buffing HV after using Burst Strike instead of sending it right away (BS^NM^HV>GF>etc.)
+            //2.4x - just use it after Burst Strike
             if (JustUsed(BurstStrike, 5f) &&
                 LevelChecked(Hypervelocity) &&
                 HasStatusEffect(Buffs.ReadyToBlast) &&
-                Slow &&
-                NMcd is > 1.3f)
+                (!Slow || NMcd > 1.3f))
                 return Hypervelocity;
 
             //Bow Shock & Zone
@@ -186,7 +185,7 @@ internal partial class GNB : Tank
 
             #region Non-Rotation
 
-            if (Role.CanInterject() && 
+            if (Role.CanInterject() &&
                 IsEnabled(Preset.GNB_ST_Interrupt))
                 return Role.Interject;
 
@@ -203,26 +202,26 @@ internal partial class GNB : Tank
             #region Mitigations
             if (IsEnabled(Preset.GNB_ST_Mitigation) && InCombat() && !MitUsed)
             {
-                if (IsEnabled(Preset.GNB_ST_Superbolide) && 
-                    ActionReady(Superbolide) && 
+                if (IsEnabled(Preset.GNB_ST_Superbolide) &&
+                    ActionReady(Superbolide) &&
                     HPP < GNB_ST_Superbolide_Health &&
                     (GNB_ST_Superbolide_SubOption == 0 || TargetIsBoss() && GNB_ST_Superbolide_SubOption == 1))
                     return Superbolide;
 
                 if (IsPlayerTargeted())
                 {
-                    if (IsEnabled(Preset.GNB_ST_Nebula) && 
-                        ActionReady(OriginalHook(Nebula)) && 
+                    if (IsEnabled(Preset.GNB_ST_Nebula) &&
+                        ActionReady(OriginalHook(Nebula)) &&
                         HPP < GNB_ST_Nebula_Health &&
                         (GNB_ST_Nebula_SubOption == 0 || TargetIsBoss() && GNB_ST_Nebula_SubOption == 1))
                         return OriginalHook(Nebula);
 
-                    if (IsEnabled(Preset.GNB_ST_Rampart) && 
+                    if (IsEnabled(Preset.GNB_ST_Rampart) &&
                         Role.CanRampart(GNB_ST_Rampart_Health) &&
                         (GNB_ST_Rampart_SubOption == 0 || TargetIsBoss() && GNB_ST_Rampart_SubOption == 1))
                         return Role.Rampart;
 
-                    if (IsEnabled(Preset.GNB_ST_Reprisal) && 
+                    if (IsEnabled(Preset.GNB_ST_Reprisal) &&
                         Role.CanReprisal(GNB_ST_Reprisal_Health) &&
                         (GNB_ST_Reprisal_SubOption == 0 || TargetIsBoss() && GNB_ST_Reprisal_SubOption == 1))
                         return Role.Reprisal;
@@ -233,19 +232,19 @@ internal partial class GNB : Tank
                         return Role.ArmsLength;
                 }
 
-                if (IsEnabled(Preset.GNB_ST_Camouflage) && 
+                if (IsEnabled(Preset.GNB_ST_Camouflage) &&
                     ActionReady(Camouflage) &&
                     HPP < GNB_ST_Camouflage_Health &&
                     (GNB_ST_Camouflage_SubOption == 0 || TargetIsBoss() && GNB_ST_Camouflage_SubOption == 1))
                     return Camouflage;
 
-                if (IsEnabled(Preset.GNB_ST_Corundum) && 
-                    ActionReady(OriginalHook(HeartOfStone)) && 
+                if (IsEnabled(Preset.GNB_ST_Corundum) &&
+                    ActionReady(OriginalHook(HeartOfStone)) &&
                     HPP < GNB_ST_Corundum_Health &&
                     (GNB_ST_Corundum_SubOption == 0 || TargetIsBoss() && GNB_ST_Corundum_SubOption == 1))
                     return OriginalHook(HeartOfStone);
 
-                if (IsEnabled(Preset.GNB_ST_Aurora) && 
+                if (IsEnabled(Preset.GNB_ST_Aurora) &&
                     ActionReady(Aurora) &&
                     !(HasStatusEffect(Buffs.Aurora) || HasStatusEffect(Buffs.Aurora, CurrentTarget, true)) &&
                     GetRemainingCharges(Aurora) > GNB_ST_Aurora_Charges && HPP < GNB_ST_Aurora_Health &&
@@ -264,7 +263,7 @@ internal partial class GNB : Tank
                 return actionID;
 
             //Lightning Shot
-			if (ShouldUseLightningShot(Preset.GNB_ST_RangedUptime, GNB_ST_HoldLightningShot))
+            if (ShouldUseLightningShot(Preset.GNB_ST_RangedUptime, GNB_ST_HoldLightningShot))
                 return LightningShot;
 
             //MAX PRIORITY - just clip it, it's better than just losing it altogether
@@ -275,12 +274,12 @@ internal partial class GNB : Tank
                 return OriginalHook(Continuation);
 
             //No Mercy
-			if (ShouldUseNoMercy(Preset.GNB_ST_NoMercy, GNB_ST_NoMercyStop, GNB_ST_NoMercy_SubOption))
-				return NoMercy;
+            if (ShouldUseNoMercy(Preset.GNB_ST_NoMercy, GNB_ST_NoMercyStop, GNB_ST_NoMercy_SubOption))
+                return NoMercy;
 
             //Bloodfest
             if (ShouldUseBloodfest(Preset.GNB_ST_Bloodfest))
-				return Bloodfest;
+                return Bloodfest;
 
             //HIGH PRIORITY - within late weave window, send now
             //Continuation procs (Hypervelocity, Jugular Rip, Abdomen Tear, Eye Gouge)
@@ -290,53 +289,52 @@ internal partial class GNB : Tank
                 return OriginalHook(Continuation);
 
             //Hypervelocity
-            //2.5 ONLY - if No Mercy is imminent, then we want to aim for buffing HV right after using Burst Strike (BS^NM^HV>GF>etc.)
+            //2.5 - if No Mercy is imminent, then we want to aim for buffing HV after using Burst Strike instead of sending it right away (BS^NM^HV>GF>etc.)
+            //2.4x - just use it after Burst Strike
             if (IsEnabled(Preset.GNB_ST_Continuation) &&
-                IsEnabled(Preset.GNB_ST_NoMercy) &&
-				JustUsed(BurstStrike, 5f) &&
+                JustUsed(BurstStrike, 5f) &&
                 LevelChecked(Hypervelocity) &&
                 HasStatusEffect(Buffs.ReadyToBlast) &&
-                Slow &&
-				NMcd > 1.3f)
-				return Hypervelocity;
+                (!Slow || (IsEnabled(Preset.GNB_ST_NoMercy) && NMcd > 1.3f)))
+                return Hypervelocity;
 
             //Bow Shock & Zone
-			//with SKS, we want Zone first because it can drift really bad while Bow usually remains static
-			//without SKS, we don't really care since both usually remain static
-			if (Slow ? ShouldUseBowShock(Preset.GNB_ST_BowShock) : ShouldUseZone(Preset.GNB_ST_Zone))
-				return Slow ? BowShock : OriginalHook(DangerZone);
-			if (Slow ? ShouldUseZone(Preset.GNB_ST_Zone) : ShouldUseBowShock(Preset.GNB_ST_BowShock))
-				return Slow ? OriginalHook(DangerZone) : BowShock;
+            //with SKS, we want Zone first because it can drift really bad while Bow usually remains static
+            //without SKS, we don't really care since both usually remain static
+            if (Slow ? ShouldUseBowShock(Preset.GNB_ST_BowShock) : ShouldUseZone(Preset.GNB_ST_Zone))
+                return Slow ? BowShock : OriginalHook(DangerZone);
+            if (Slow ? ShouldUseZone(Preset.GNB_ST_Zone) : ShouldUseBowShock(Preset.GNB_ST_BowShock))
+                return Slow ? OriginalHook(DangerZone) : BowShock;
 
             //NORMAL PRIORITY - within weave weave window
             //Gnashing Fang procs (Jugular Rip, Abdomen Tear, Eye Gouge)
-            if ((CanContinue || HasStatusEffect(Buffs.ReadyToBlast)) &&
-                IsEnabled(Preset.GNB_ST_Continuation) && 
-				CanWeave())
-				return OriginalHook(Continuation);
+            if (CanContinue &&
+                IsEnabled(Preset.GNB_ST_Continuation) &&
+                CanWeave())
+                return OriginalHook(Continuation);
 
             //Gnashing Fang - burst
             if (ShouldUseGnashingFangBurst(Preset.GNB_ST_GnashingFang))
-				return GnashingFang;
+                return GnashingFang;
 
             //Double Down
             if (ShouldUseDoubleDown(Preset.GNB_ST_DoubleDown))
-				return DoubleDown;
+                return DoubleDown;
 
             //Sonic Break
             if (ShouldUseSonicBreak(Preset.GNB_ST_SonicBreak))
-				return SonicBreak;
+                return SonicBreak;
 
             //Reign of Beasts
             if (ShouldUseReignOfBeasts(Preset.GNB_ST_Reign))
-				return OriginalHook(ReignOfBeasts);
+                return OriginalHook(ReignOfBeasts);
 
             //Gnashing Fang 2 - filler boogaloo
             if (ShouldUseGnashingFangFiller(Preset.GNB_ST_GnashingFang))
                 return GnashingFang;
 
             //Savage Claw & Wicked Talon
-			if (IsEnabled(Preset.GNB_ST_GnashingFang) && 
+            if (IsEnabled(Preset.GNB_ST_GnashingFang) &&
                 GunStep is 1 or 2)
                 return OriginalHook(GnashingFang);
 
@@ -421,7 +419,7 @@ internal partial class GNB : Tank
                     if (ShouldUseNoMercy(Preset.GNB_AoE_NoMercy, 10, 0))
                         return NoMercy;
 
-                    if (LevelChecked(FatedBrand) && 
+                    if (LevelChecked(FatedBrand) &&
                         HasStatusEffect(Buffs.ReadyToRaze))
                         return FatedBrand;
                 }
@@ -481,21 +479,21 @@ internal partial class GNB : Tank
             #region Mitigations
             if (IsEnabled(Preset.GNB_AoE_Mitigation) && InCombat() && !MitUsed)
             {
-                if (IsEnabled(Preset.GNB_AoE_Superbolide) && 
-                    ActionReady(Superbolide) && 
+                if (IsEnabled(Preset.GNB_AoE_Superbolide) &&
+                    ActionReady(Superbolide) &&
                     HPP < GNB_AoE_Superbolide_Health &&
                     (GNB_AoE_Superbolide_SubOption == 0 || TargetIsBoss() && GNB_AoE_Superbolide_SubOption == 1))
                     return Superbolide;
 
                 if (IsPlayerTargeted())
                 {
-                    if (IsEnabled(Preset.GNB_AoE_Nebula) && 
+                    if (IsEnabled(Preset.GNB_AoE_Nebula) &&
                         ActionReady(OriginalHook(Nebula)) &&
                         HPP < GNB_AoE_Nebula_Health &&
                         (GNB_AoE_Nebula_SubOption == 0 || TargetIsBoss() && GNB_AoE_Nebula_SubOption == 1))
                         return OriginalHook(Nebula);
 
-                    if (IsEnabled(Preset.GNB_AoE_Rampart) && 
+                    if (IsEnabled(Preset.GNB_AoE_Rampart) &&
                         Role.CanRampart(GNB_AoE_Rampart_Health) &&
                         (GNB_AoE_Rampart_SubOption == 0 || TargetIsBoss() && GNB_AoE_Rampart_SubOption == 1))
                         return Role.Rampart;
@@ -512,27 +510,27 @@ internal partial class GNB : Tank
                 }
 
                 if (IsEnabled(Preset.GNB_AoE_Camouflage) &&
-                    ActionReady(Camouflage) && 
+                    ActionReady(Camouflage) &&
                     HPP < GNB_AoE_Camouflage_Health &&
                     (GNB_AoE_Camouflage_SubOption == 0 || TargetIsBoss() && GNB_AoE_Camouflage_SubOption == 1))
                     return Camouflage;
                 if (IsEnabled(Preset.GNB_AoE_Corundum) &&
-                    ActionReady(OriginalHook(HeartOfStone)) && 
+                    ActionReady(OriginalHook(HeartOfStone)) &&
                     HPP < GNB_AoE_Corundum_Health &&
                     (GNB_AoE_Corundum_SubOption == 0 || TargetIsBoss() && GNB_AoE_Corundum_SubOption == 1))
                     return OriginalHook(HeartOfStone);
 
-                if (IsEnabled(Preset.GNB_AoE_Aurora) && 
-                    ActionReady(Aurora) && 
+                if (IsEnabled(Preset.GNB_AoE_Aurora) &&
+                    ActionReady(Aurora) &&
                     GetRemainingCharges(Aurora) > GNB_AoE_Aurora_Charges &&
-                    !(HasStatusEffect(Buffs.Aurora) || HasStatusEffect(Buffs.Aurora, CurrentTarget, true)) && 
+                    !(HasStatusEffect(Buffs.Aurora) || HasStatusEffect(Buffs.Aurora, CurrentTarget, true)) &&
                     HPP < GNB_AoE_Aurora_Health &&
                     (GNB_AoE_Aurora_SubOption == 0 || TargetIsBoss() && GNB_AoE_Aurora_SubOption == 1))
                     return Aurora;
             }
 
             #endregion
-            
+
             #endregion
 
             #region Rotation
@@ -545,7 +543,7 @@ internal partial class GNB : Tank
                     if (ShouldUseNoMercy(Preset.GNB_AoE_NoMercy, GNB_AoE_NoMercyStop, 0))
                         return NoMercy;
 
-                    if (LevelChecked(FatedBrand) && 
+                    if (LevelChecked(FatedBrand) &&
                         HasStatusEffect(Buffs.ReadyToRaze))
                         return FatedBrand;
 
@@ -566,18 +564,18 @@ internal partial class GNB : Tank
                     return SonicBreak;
 
                 if (IsEnabled(Preset.GNB_AoE_DoubleDown) &&
-                    CanDD && 
+                    CanDD &&
                     HasNM)
                     return DoubleDown;
 
-                if (IsEnabled(Preset.GNB_AoE_Reign) && 
+                if (IsEnabled(Preset.GNB_AoE_Reign) &&
                     ((CanReign && HasNM) || GunStep is 3 or 4))
                     return OriginalHook(ReignOfBeasts);
 
                 if (ShouldUseFatedCircle(Preset.GNB_AoE_FatedCircle, GNB_AoE_FatedCircle_Setup))
-                    return 
+                    return
                         LevelChecked(FatedCircle) ? FatedCircle :
-                        LevelChecked(BurstStrike) && GNB_AoE_FatedCircle_BurstStrike == 0 ? BurstStrike : 
+                        LevelChecked(BurstStrike) && GNB_AoE_FatedCircle_BurstStrike == 0 ? BurstStrike :
                         aoe;
             }
 
@@ -595,7 +593,7 @@ internal partial class GNB : Tank
         protected override uint Invoke(uint actionID)
         {
             var GFchoice = GNB_GF_Features_Choice == 0; //Gnashing Fang as button
-			var NMchoice = GNB_GF_Features_Choice == 1; //No Mercy as button
+            var NMchoice = GNB_GF_Features_Choice == 1; //No Mercy as button
             if ((GFchoice && actionID != GnashingFang) ||
                 (NMchoice && actionID != NoMercy))
                 return actionID;
@@ -623,14 +621,13 @@ internal partial class GNB : Tank
                 return OriginalHook(Continuation);
 
             //Hypervelocity
-            //2.5 ONLY - if No Mercy is imminent, then we want to aim for buffing HV right after using Burst Strike (BS^NM^HV>GF>etc.)
+            //2.5 - if No Mercy is imminent, then we want to aim for buffing HV after using Burst Strike instead of sending it right away (BS^NM^HV>GF>etc.)
+            //2.4x - just use it after Burst Strike
             if (IsEnabled(Preset.GNB_GF_Continuation) &&
-                IsEnabled(Preset.GNB_GF_NoMercy) &&
                 JustUsed(BurstStrike, 5f) &&
                 LevelChecked(Hypervelocity) &&
                 HasStatusEffect(Buffs.ReadyToBlast) &&
-                Slow &&
-                NMcd is > 1.3f)
+                (!Slow || (IsEnabled(Preset.GNB_GF_NoMercy) && NMcd > 1.3f)))
                 return Hypervelocity;
 
             //Bow Shock & Zone
@@ -643,14 +640,10 @@ internal partial class GNB : Tank
 
             //NORMAL PRIORITY - within weave weave window
             //Gnashing Fang procs (Jugular Rip, Abdomen Tear, Eye Gouge)
-            if ((CanContinue || HasStatusEffect(Buffs.ReadyToBlast)) &&
+            if (CanContinue &&
                 IsEnabled(Preset.GNB_GF_Continuation) &&
                 CanWeave())
                 return OriginalHook(Continuation);
-
-            //Sonic Break
-            if (ShouldUseSonicBreak(Preset.GNB_GF_SonicBreak))
-                return SonicBreak;
 
             //Gnashing Fang - burst
             if (ShouldUseGnashingFangBurst(Preset.GNB_GF_Features))
@@ -659,6 +652,10 @@ internal partial class GNB : Tank
             //Double Down
             if (ShouldUseDoubleDown(Preset.GNB_GF_DoubleDown))
                 return DoubleDown;
+
+            //Sonic Break
+            if (ShouldUseSonicBreak(Preset.GNB_GF_SonicBreak))
+                return SonicBreak;
 
             //Reign of Beasts
             if (ShouldUseReignOfBeasts(Preset.GNB_GF_Reign))
@@ -704,7 +701,7 @@ internal partial class GNB : Tank
                     (JustUsed(BurstStrike, 1) || HasStatusEffect(Buffs.ReadyToBlast)))
                     return Hypervelocity;
 
-                if (!IsEnabled(Preset.GNB_BS_Hypervelocity) && 
+                if (!IsEnabled(Preset.GNB_BS_Hypervelocity) &&
                     (CanContinue || (LevelChecked(Hypervelocity) && HasStatusEffect(Buffs.ReadyToBlast))))
                     return OriginalHook(Continuation);
             }
@@ -740,12 +737,12 @@ internal partial class GNB : Tank
             if (actionID != FatedCircle)
                 return actionID;
 
-            if (IsEnabled(Preset.GNB_FC_Continuation) && 
+            if (IsEnabled(Preset.GNB_FC_Continuation) &&
                 HasStatusEffect(Buffs.ReadyToRaze) &&
                 LevelChecked(FatedBrand))
                 return FatedBrand;
 
-            if (IsEnabled(Preset.GNB_FC_DoubleDown) && 
+            if (IsEnabled(Preset.GNB_FC_DoubleDown) &&
                 IsEnabled(Preset.GNB_FC_DoubleDown_NM) &&
                 CanDD && HasNM)
                 return DoubleDown;
@@ -780,7 +777,7 @@ internal partial class GNB : Tank
             {
                 var useZone = IsEnabled(Preset.GNB_NM_Zone) && CanUse(OriginalHook(DangerZone)) && NMcd is < 57.5f and > 17f;
                 var useBow = IsEnabled(Preset.GNB_NM_BowShock) && CanUse(BowShock) && NMcd is < 57.5f and >= 40;
-                if (IsEnabled(Preset.GNB_NM_Continuation) && CanContinue && 
+                if (IsEnabled(Preset.GNB_NM_Continuation) && CanContinue &&
                     (HasStatusEffect(Buffs.ReadyToRip) || HasStatusEffect(Buffs.ReadyToTear) || HasStatusEffect(Buffs.ReadyToGouge) || (LevelChecked(Hypervelocity) && HasStatusEffect(Buffs.ReadyToBlast) || (LevelChecked(FatedBrand) && HasStatusEffect(Buffs.ReadyToRaze)))))
                     return OriginalHook(Continuation);
                 if (IsEnabled(Preset.GNB_NM_Bloodfest) && HasBattleTarget() && CanUse(Bloodfest))
@@ -811,7 +808,7 @@ internal partial class GNB : Tank
                 HPP <= GNB_Mit_Superbolide_Health &&
                 ContentCheck.IsInConfiguredContent(GNB_Mit_Superbolide_Difficulty, GNB_Mit_Superbolide_DifficultyListSet))
                 return Superbolide;
-            foreach(int priority in GNB_Mit_Priorities.OrderBy(x => x))
+            foreach (int priority in GNB_Mit_Priorities.OrderBy(x => x))
             {
                 int index = GNB_Mit_Priorities.IndexOf(priority);
                 if (CheckMitigationConfigMeetsRequirements(index, out uint action))
@@ -867,7 +864,7 @@ internal partial class GNB : Tank
         }
     }
     #endregion
-    
+
     #region Heart of Corundum Retarget
 
     internal class GNB_RetargetHeartofStone : CustomCombo
@@ -886,7 +883,7 @@ internal partial class GNB : Tank
                     : null);
 
             if (target is not null && CanApplyStatus(target, Buffs.HeartOfStone))
-                return OriginalHook(actionID).Retarget([HeartOfStone,HeartOfCorundum], target);
+                return OriginalHook(actionID).Retarget([HeartOfStone, HeartOfCorundum], target);
 
             return actionID;
 

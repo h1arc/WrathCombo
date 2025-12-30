@@ -60,7 +60,7 @@ internal partial class GNB : Tank
         GunStep == 0 && //not in GF combo
         LevelChecked(ReignOfBeasts) && //unlocked
         HasStatusEffect(Buffs.ReadyToReign); //has appropriate buff needed
-    private static bool CanUse(uint action) => 
+    private static bool CanUse(uint action) =>
         LevelChecked(action) && //unlocked
         GetCooldownRemainingTime(action) < 0.5f; //off cooldown
     #endregion
@@ -242,9 +242,9 @@ internal partial class GNB : Tank
             NoMercy, //LateWeave
             GnashingFang, //-1 (2)
             JugularRip,
-            BowShock,
             DoubleDown, //-1 (0)
             BlastingZone,
+            BowShock,
             SonicBreak,
             SavageClaw,
             AbdomenTear,
@@ -305,9 +305,9 @@ internal partial class GNB : Tank
             NoMercy, //LateWeave
             GnashingFang, //-1 (2)
             JugularRip,
-            BowShock,
             DoubleDown, //-1 (0)
             BlastingZone,
+            BowShock,
             SonicBreak,
             SavageClaw,
             AbdomenTear,
@@ -489,7 +489,7 @@ internal partial class GNB : Tank
 
     private static bool ShouldUseFatedCircle(Preset preset, int setup) =>
         IsEnabled(preset) && //option enabled
-        LevelChecked(FatedCircle) && //unlocked
+        LevelChecked(BurstStrike) && //unlocked
         Ammo > 0 && //at least 1 cartridge
         ((Ammo > 3 && NMcd > 10) || //leftover carts - try to spend them asap, but not if No Mercy is close
         (setup == 0 && Slow && LevelChecked(DoubleDown) && NMcd < 1) || //BS>NM setup logic for 2.5 only
