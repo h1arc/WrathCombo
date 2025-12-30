@@ -57,6 +57,7 @@ internal partial class GNB
             GNB_AoE_Overcap_Choice = new("GNB_AoE_Overcap_Choice", 0),
             GNB_AoE_NoMercyStop = new("GNB_AoE_NoMercyStop", 5),
             GNB_AoE_FatedCircle_Setup = new("GNB_AoE_FatedCircle_Setup", 0),
+            GNB_AoE_SonicBreak_EarlyOrLate = new("GNB_AoE_SonicBreak_EarlyOrLate", 0),
             GNB_NM_Features_Weave = new("GNB_NM_Feature_Weave", 0),
             GNB_GF_Features_Choice = new("GNB_GF_Choice", 0),
             GNB_GF_Overcap_Choice = new("GNB_GF_Overcap_Choice", 0),
@@ -161,7 +162,13 @@ internal partial class GNB
                         "Precede No Mercy", $"Allow preceding {NoMercy.ActionName()} with {FatedCircle.ActionName()} for a buffed {FatedBrand.ActionName()} (FC->NM->FB) - ONLY APPLIES TO 2.50", 0);
                     DrawHorizontalRadioButton(GNB_AoE_FatedCircle_Setup,
                         "Don't Precede No Mercy", $"Forbid preceding {NoMercy.ActionName()} with {FatedCircle.ActionName()}", 1);
+                    break;
 
+                case Preset.GNB_AoE_SonicBreak:
+                    DrawHorizontalRadioButton(GNB_AoE_SonicBreak_EarlyOrLate,
+                        "Normal Usage", $"Uses {SonicBreak.ActionName()} normally", 0);
+                    DrawHorizontalRadioButton(GNB_AoE_SonicBreak_EarlyOrLate,
+                        "Late Usage", $"Uses {SonicBreak.ActionName()} as the last GCD in burst", 1);
                     break;
                 #endregion
 

@@ -557,9 +557,9 @@ internal partial class GNB : Tank
                         return Bloodfest;
                 }
 
-                if (IsEnabled(Preset.GNB_AoE_SonicBreak) &&
-                    CanSB &&
-                    HasNM &&
+                if (IsEnabled(Preset.GNB_AoE_SonicBreak) && CanSB &&
+                    ((GNB_AoE_SonicBreak_EarlyOrLate == 0 && HasNM) ||
+                    (GNB_AoE_SonicBreak_EarlyOrLate == 1 && GetStatusEffectRemainingTime(Buffs.ReadyToBreak) <= (GCDLength + 10.000f))) &&
                     !HasStatusEffect(Buffs.ReadyToRaze))
                     return SonicBreak;
 
