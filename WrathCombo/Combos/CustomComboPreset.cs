@@ -3110,12 +3110,28 @@ public enum Preset
     GNB_Mitigation_Boss = 7711,
     
     [ParentCombo(GNB_Mitigation_Boss)]
-    [CustomComboInfo("Heart Of Stone Option", "Adds Heart Of Stone when targetted", Job.GNB)]
-    GNB_Mitigation_Boss_HeartOfStone = 7712,
+    [CustomComboInfo("Aurora Option", "Adds Aurora when below threshold.", Job.GNB)]
+    GNB_Mitigation_Boss_Aurora = 7712,
     
     [ParentCombo(GNB_Mitigation_Boss)]
-    [CustomComboInfo("Aurora Option", "Adds Aurora when targetted", Job.GNB)]
-    GNB_Mitigation_Boss_Aurora = 7715,
+    [CustomComboInfo("Heart Of Stone/Corundrum on Cooldown Option", "Adds Heart Of Stone/Corundrum on CD when below threshold.", Job.GNB)]
+    GNB_Mitigation_Boss_HeartOfStone_OnCD = 7716,
+    
+    [ParentCombo(GNB_Mitigation_Boss)]
+    [CustomComboInfo("Heart Of Stone/Corundrum Tankbuster Option", "Adds Heart Of Stone/Corundrum when tankbuster is detected.", Job.GNB)]
+    GNB_Mitigation_Boss_HeartOfStone_TankBuster = 7717,
+        
+    [ParentCombo(GNB_Mitigation_Boss)]
+    [CustomComboInfo("Nebula/Great Nebula Tankbuster Option", "Adds Nebula/Great Nebula when tankbuster is detected. Will not overlap with Rampart.", Job.GNB)]
+    GNB_Mitigation_Boss_Nebula = 7718,
+    
+    [ParentCombo(GNB_Mitigation_Boss)]
+    [CustomComboInfo("Rampart Tankbuster Option", "Adds Rampart when tankbuster is detected. Will not overlap with Nebula/Great Nebula.", Job.GNB)]
+    GNB_Mitigation_Boss_Rampart = 7719,
+    
+    [ParentCombo(GNB_Mitigation_Boss)]
+    [CustomComboInfo("Camouflage Tankbuster Option", "Adds Camouflage when tankbuster is detected. Will not overlap unless below set threshold or aligned with rampart.", Job.GNB)]
+    GNB_Mitigation_Boss_Camouflage = 7720,
     
     [ParentCombo(GNB_Mitigation_Boss)]
     [CustomComboInfo("Raidwide Reprisal Option", "Adds Reprisal when raidwide casting is detected.", Job.GNB)]
@@ -4753,7 +4769,7 @@ public enum Preset
     PLD_Mitigation_Boss_Rampart = 11102,
     
     [ParentCombo(PLD_Mitigation_Boss)]
-    [CustomComboInfo("Bulwark Tankbuster Option", "Adds Bulwark when an incoming tankbuster is detected.", Job.PLD)]
+    [CustomComboInfo("Bulwark Tankbuster Option", "Adds Bulwark when an incoming tankbuster is detected. Will not overlap unless below set threshold or aligned with rampart.", Job.PLD)]
     PLD_Mitigation_Boss_Bulwark = 11103,
     
     [ParentCombo(PLD_Mitigation_Boss)]
@@ -7552,7 +7568,7 @@ public enum Preset
     WAR_Mitigation_Boss_Rampart = 18149,
     
     [ParentCombo(WAR_Mitigation_Boss)]
-    [CustomComboInfo("Thrill of Battle Tankbuster Option", "Adds Thrill of Battle when tankbuster is detected.", Job.WAR)]
+    [CustomComboInfo("Thrill of Battle Tankbuster Option", "Adds Thrill of Battle when tankbuster is detected. Will not overlap unless below set threshold or aligned with rampart.", Job.WAR)]
     WAR_Mitigation_Boss_ThrillOfBattle = 18150,
     
     [ParentCombo(WAR_Mitigation_Boss)]

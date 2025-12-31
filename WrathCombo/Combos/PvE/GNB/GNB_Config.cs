@@ -16,6 +16,8 @@ internal partial class GNB
             GNB_AoE_MitOptions = new("GNB_AoE_MitOptions"),
             GNB_ST_Advanced_MitOptions = new("GNB_ST_Advanced_MitOptions"),
             GNB_AoE_Advanced_MitOptions = new("GNB_AoE_Advanced_MitOptions"),
+            GNB_Mitigation_Boss_Aurora_Health = new("GNB_Mitigation_Boss_Aurora_Health", 99),
+            GNB_Mitigation_Boss_HeartOfStone_Health = new("GNB_Mitigation_Boss_HeartOfStone_Health", 80),
             
             GNB_Opener_StartChoice = new("GNB_Opener_StartChoice", 0),
             GNB_Opener_NM = new("GNB_Opener_NM", 0),
@@ -45,12 +47,22 @@ internal partial class GNB
             GNB_Bozja_LostReraise_Health = new("GNB_Bozja_LostReraise_Health", 10);
 
         public static UserFloat
+            GNB_Mitigation_Boss_Camouflage_Threshold = new("GNB_Mitigation_Boss_Camouflage_Threshold", 80f),
             GNB_Mitigation_NonBoss_MitigationThreshold = new("GNB_Mitigation_NonBoss_MitigationThreshold", 20f);
+        
+        public static UserBool
+            GNB_Mitigation_Boss_Camouflage_Align = new("GNB_Mitigation_Boss_Camouflage_Align", true),
+            GNB_Mitigation_Boss_Nebula_First = new("GNB_Mitigation_Boss_Nebula_First", true);
 
         public static UserIntArray
             GNB_Mit_Priorities = new("GNB_Mit_Priorities");
 
         public static UserBoolArray
+            GNB_Mitigation_Boss_HeartOfStone_OnCD_Difficulty = new("GNB_Mitigation_Boss_HeartOfStone_OnCD_Difficulty", [true, false]),
+            GNB_Mitigation_Boss_HeartOfStone_TankBuster_Difficulty = new("GNB_Mitigation_Boss_HeartOfStone_TankBuster_Difficulty", [true, false]),
+            GNB_Mitigation_Boss_Rampart_Difficulty = new("GNB_Mitigation_Boss_Rampart_Difficulty", [true, false]),
+            GNB_Mitigation_Boss_Nebula_Difficulty = new("GNB_Mitigation_Boss_Nebula_Difficulty", [true, false]),
+            GNB_Mitigation_Boss_Camouflage_Difficulty = new("GNB_Mitigation_Boss_Camouflage_Difficulty", [true, false]),
             GNB_Mitigation_Boss_HeartOfLight_Difficulty = new("GNB_Mitigation_Boss_HeartOfLight_Difficulty", [true, false]),
             GNB_Mitigation_Boss_Reprisal_Difficulty = new("GNB_Mitigation_Boss_Reprisal_Difficulty", [true, false]),
             GNB_Mit_Superbolide_Difficulty = new("GNB_Mit_Superbolide_Difficulty", [true, false]);
@@ -88,6 +100,39 @@ internal partial class GNB
                 
                 case Preset.GNB_Mitigation_NonBoss:
                     DrawSliderFloat(0, 100, GNB_Mitigation_NonBoss_MitigationThreshold, "Stop using when average health percentage of nearby enemies is below set. \n(Set to 0 to disable this check) ", decimals: 0);
+                    break;
+                
+                case Preset.GNB_Mitigation_Boss_Aurora:
+                    DrawSliderInt(1, 100, GNB_Mitigation_Boss_Aurora_Health, "Player HP% to use Aurora at or below (100 = Disable check)");
+                    break;
+                
+                case Preset.GNB_Mitigation_Boss_HeartOfStone_OnCD:
+                    DrawDifficultyMultiChoice(GNB_Mitigation_Boss_HeartOfStone_OnCD_Difficulty, GNB_Boss_Mit_DifficultyListSet ,
+                        "Select which difficulties the ability should be used in:");
+                    DrawSliderInt(1, 100, GNB_Mitigation_Boss_HeartOfStone_Health, "Player HP% to use Heart of Stone/Corundum at or below (100 = Disable check)");
+                    break;
+                
+                case Preset.GNB_Mitigation_Boss_HeartOfStone_TankBuster:
+                    DrawDifficultyMultiChoice(GNB_Mitigation_Boss_HeartOfStone_TankBuster_Difficulty, GNB_Boss_Mit_DifficultyListSet ,
+                        "Select which difficulties the ability should be used in:");
+                    break;
+                
+                case Preset.GNB_Mitigation_Boss_Rampart:
+                    DrawDifficultyMultiChoice(GNB_Mitigation_Boss_Rampart_Difficulty, GNB_Boss_Mit_DifficultyListSet ,
+                        "Select which difficulties the ability should be used in:");
+                    break;
+                
+                case Preset.GNB_Mitigation_Boss_Nebula:
+                    DrawDifficultyMultiChoice(GNB_Mitigation_Boss_Nebula_Difficulty, GNB_Boss_Mit_DifficultyListSet ,
+                        "Select which difficulties the ability should be used in:");
+                    DrawAdditionalBoolChoice(GNB_Mitigation_Boss_Nebula_First, "Use Nebula First", "Uses Nebula before Rampart");
+                    break;
+                
+                case Preset.GNB_Mitigation_Boss_Camouflage:
+                    DrawDifficultyMultiChoice(GNB_Mitigation_Boss_Camouflage_Difficulty, GNB_Boss_Mit_DifficultyListSet ,
+                        "Select which difficulties the ability should be used in:");
+                    DrawSliderFloat(1, 100, GNB_Mitigation_Boss_Camouflage_Threshold, "Will use Camouflage as extra tankbuster mitigation if under this HP%", decimals: 0);
+                    DrawAdditionalBoolChoice(GNB_Mitigation_Boss_Camouflage_Align, "Align Camouflage", "Tries to align Camouflage with Rampart for tankbusters.");
                     break;
                 
                 case Preset.GNB_Mitigation_Boss_HeartOfLight:

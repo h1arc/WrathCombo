@@ -514,7 +514,6 @@ internal partial class WAR : Tank
         }
         #endregion
        
-        //Insert Tankbuster Stuff here
         return false;
         
         bool IsEnabled(Preset preset)

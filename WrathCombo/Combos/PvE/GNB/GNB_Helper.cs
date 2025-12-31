@@ -182,18 +182,85 @@ internal partial class GNB : Tank
     
     private static bool CanUseBossMits(RotationMode rotationFlags, ref uint actionID)
     {
-        if (!InCombat() || !CanWeave() || !InBossEncounter() || JustMitted || !IsEnabled(Preset.GNB_Mitigation_Boss)) return false;
+        if (!InCombat() || !CanWeave() || !InBossEncounter() || !IsEnabled(Preset.GNB_Mitigation_Boss)) return false;
         
-        #region Always Mits
-        if (IsEnabled(Preset.GNB_Mitigation_Boss_HeartOfStone) && 
-            ActionReady(OriginalHook(HeartOfStone)) && IsPlayerTargeted())
+        #region Nebula and Rampart
+        var nebulaFirst = rotationFlags.HasFlag(RotationMode.simple)
+            ? false
+            : GNB_Mitigation_Boss_Nebula_First;
+        
+        var nebulaInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) || 
+                                           ContentCheck.IsInConfiguredContent(GNB_Mitigation_Boss_Nebula_Difficulty, GNB_Boss_Mit_DifficultyListSet);
+        
+        
+        if (IsEnabled(Preset.GNB_Mitigation_Boss_Nebula) && ActionReady(OriginalHook(Nebula)) && nebulaInMitigationContent &&
+            HasIncomingTankBusterEffect() && !JustUsed(Role.Rampart, 20f) &&
+            (!ActionReady(Role.Rampart) || nebulaFirst))
+        {
+            actionID = OriginalHook(Nebula);
+            return true;
+        }
+        
+        var rampartInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) || 
+                                         ContentCheck.IsInConfiguredContent(GNB_Mitigation_Boss_Rampart_Difficulty, GNB_Boss_Mit_DifficultyListSet);
+        
+        if (IsEnabled(Preset.GNB_Mitigation_Boss_Rampart) && ActionReady(Role.Rampart) && rampartInMitigationContent &&
+            HasIncomingTankBusterEffect() && !JustUsed(OriginalHook(Nebula), 15f))
+        {
+            actionID = Role.Rampart;
+            return true;
+        }
+        #endregion
+        
+        #region Heart of Stone/Corundrum
+        var HeartOfStoneOnCDInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) ||
+                                                  ContentCheck.IsInConfiguredContent(GNB_Mitigation_Boss_HeartOfStone_OnCD_Difficulty, GNB_Boss_Mit_DifficultyListSet);
+        
+        var HeartOfStoneTankBusterInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) ||
+                                                        ContentCheck.IsInConfiguredContent(GNB_Mitigation_Boss_HeartOfStone_TankBuster_Difficulty, GNB_Boss_Mit_DifficultyListSet);
+        var HeartOfStoneHealthThreshold = rotationFlags.HasFlag(RotationMode.simple) 
+            ? 50
+            : GNB_Mitigation_Boss_HeartOfStone_Health;
+            
+        if (ActionReady(OriginalHook(HeartOfStone)) &&
+            (IsEnabled(Preset.GNB_Mitigation_Boss_HeartOfStone_OnCD) &&  PlayerHealthPercentageHp() <= HeartOfStoneHealthThreshold && IsPlayerTargeted() && HeartOfStoneOnCDInMitigationContent ||
+             IsEnabled(Preset.GNB_Mitigation_Boss_HeartOfStone_TankBuster) && HasIncomingTankBusterEffect() && HeartOfStoneTankBusterInMitigationContent))
         {
             actionID = OriginalHook(HeartOfStone);
             return true;
         }
+        #endregion
         
-        if (IsEnabled(Preset.GNB_Mitigation_Boss_Aurora) && ActionReady(Aurora) && 
-            IsPlayerTargeted() && !HasStatusEffect(Buffs.Aurora) &&!JustUsed(Aurora))
+        #region Camouflage
+        float emergencyCamouflageThreshold = rotationFlags.HasFlag(RotationMode.simple)
+            ? 80
+            : GNB_Mitigation_Boss_Camouflage_Threshold;
+        
+        var alignCamouflage = rotationFlags.HasFlag(RotationMode.simple)
+            ? true
+            : GNB_Mitigation_Boss_Camouflage_Align;
+        
+        var CamouflageInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) || 
+                                         ContentCheck.IsInConfiguredContent(GNB_Mitigation_Boss_Camouflage_Difficulty, GNB_Boss_Mit_DifficultyListSet);
+        
+        
+        if (IsEnabled(Preset.GNB_Mitigation_Boss_Camouflage) && ActionReady(Camouflage) && HasIncomingTankBusterEffect() && CamouflageInMitigationContent &&
+            (PlayerHealthPercentageHp() <= emergencyCamouflageThreshold ||
+             !ActionReady(OriginalHook(Nebula)) && !JustUsed(OriginalHook(Nebula), 13f) && !ActionReady(Role.Rampart) && !JustUsed(Role.Rampart, 18f) ||
+             JustUsed(Role.Rampart, 20f) && alignCamouflage))
+        {
+            actionID = Camouflage;
+            return true;
+        }
+        #endregion
+        
+        #region Aurora
+        var auroraThreshold = rotationFlags.HasFlag(RotationMode.simple)
+            ? 90
+            : GNB_Mitigation_Boss_Aurora_Health;
+        
+        if (IsEnabled(Preset.GNB_Mitigation_Boss_Aurora) && ActionReady(Aurora) && PlayerHealthPercentageHp() <= auroraThreshold &&
+            !HasStatusEffect(Buffs.Aurora) &&!JustUsed(Aurora))
         {
             actionID = OriginalHook(Aurora);
             return true;
@@ -225,7 +292,6 @@ internal partial class GNB : Tank
         }
         #endregion
         
-        //Insert Tankbuster Stuff here
         return false;
         
         bool IsEnabled(Preset preset)
