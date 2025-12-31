@@ -7536,8 +7536,24 @@ public enum Preset
     WAR_Mitigation_Boss_Equilibrium = 18146,
     
     [ParentCombo(WAR_Mitigation_Boss)]
-    [CustomComboInfo("Raw Intuition/Bloodwhetting Option", "Adds Raw Intuition/Bloodwhetting on CD when targetted", Job.WAR)]
-    WAR_Mitigation_Boss_RawIntuition = 18143,
+    [CustomComboInfo("Raw Intuition/Bloodwhetting on Cooldown Option", "Adds Raw Intuition/Bloodwhetting on CD when targetted", Job.WAR)]
+    WAR_Mitigation_Boss_RawIntuition_OnCD = 18143,
+    
+    [ParentCombo(WAR_Mitigation_Boss)]
+    [CustomComboInfo("Raw Intuition/Bloodwhetting Tankbuster Option", "Adds Raw Intuition/Bloodwhetting when tankbuster is detected.", Job.WAR)]
+    WAR_Mitigation_Boss_RawIntuition_TankBuster = 18147,
+        
+    [ParentCombo(WAR_Mitigation_Boss)]
+    [CustomComboInfo("Vengeance/Damnation Tankbuster Option", "Adds Vengeance/Damnation when tankbuster is detected. Will not overlap with Rampart.", Job.WAR)]
+    WAR_Mitigation_Boss_Vengeance = 18148,
+    
+    [ParentCombo(WAR_Mitigation_Boss)]
+    [CustomComboInfo("Rampart Tankbuster Option", "Adds Rampart when tankbuster is detected. Will not overlap with Vengeance/Damnation.", Job.WAR)]
+    WAR_Mitigation_Boss_Rampart = 18149,
+    
+    [ParentCombo(WAR_Mitigation_Boss)]
+    [CustomComboInfo("Thrill of Battle Tankbuster Option", "Adds Thrill of Battle when tankbuster is detected.", Job.WAR)]
+    WAR_Mitigation_Boss_ThrillOfBattle = 18150,
     
     [ParentCombo(WAR_Mitigation_Boss)]
     [CustomComboInfo("Raidwide Reprisal Option", "Adds Reprisal when raidwide casting is detected.", Job.WAR)]

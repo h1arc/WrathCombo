@@ -406,17 +406,71 @@ internal partial class WAR : Tank
     
     private static bool CanUseBossMits(RotationMode rotationFlags, ref uint actionID)
     {
-        if (!InCombat() || !CanWeave() || !InBossEncounter() || JustMitted || !IsEnabled(Preset.WAR_Mitigation_Boss)) return false;
+        if (!InCombat() || !CanWeave() || !InBossEncounter() || !IsEnabled(Preset.WAR_Mitigation_Boss)) return false;
         
         #region Raw Intuition/Bloodwhetting
         var RawIntuitionInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) ||
-                                              ContentCheck.IsInConfiguredContent(WAR_Mitigation_Boss_RawIntuition_Difficulty, WAR_Boss_Mit_DifficultyListSet);
+                                              ContentCheck.IsInConfiguredContent(WAR_Mitigation_Boss_RawIntuition_OnCD_Difficulty, WAR_Boss_Mit_DifficultyListSet);
+        var RawIntuitionHealthThreshold = rotationFlags.HasFlag(RotationMode.simple) 
+            ? 80
+            : WAR_Mitigation_Boss_RawIntuition_Health;
             
-        if (IsEnabled(Preset.WAR_Mitigation_Boss_RawIntuition) && RawIntuitionInMitigationContent &&
-            ActionReady(OriginalHook(RawIntuition)) && IsPlayerTargeted() &&
-            PlayerHealthPercentageHp() <= WAR_Mitigation_Boss_RawIntuition_Health)
+        if (ActionReady(OriginalHook(RawIntuition)) && RawIntuitionInMitigationContent &&
+            (IsEnabled(Preset.WAR_Mitigation_Boss_RawIntuition_OnCD) &&  PlayerHealthPercentageHp() <= RawIntuitionHealthThreshold && IsPlayerTargeted() ||
+             IsEnabled(Preset.WAR_Mitigation_Boss_RawIntuition_TankBuster) && HasIncomingTankBusterEffect()))
         {
             actionID = OriginalHook(RawIntuition);
+            return true;
+        }
+        #endregion
+        
+        #region Vengeance and Rampart
+        var vengeanceFirst = rotationFlags.HasFlag(RotationMode.simple)
+            ? false
+            : WAR_Mitigation_Boss_Vengeance_First;
+        
+        var vengeanceInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) || 
+                                           ContentCheck.IsInConfiguredContent(WAR_Mitigation_Boss_Vengeance_Difficulty, WAR_Boss_Mit_DifficultyListSet);
+        
+        
+        if (IsEnabled(Preset.WAR_Mitigation_Boss_Vengeance) && ActionReady(OriginalHook(Vengeance)) && vengeanceInMitigationContent &&
+            HasIncomingTankBusterEffect() && !JustUsed(Role.Rampart, 20f) &&
+            (!ActionReady(Role.Rampart) || vengeanceFirst))
+        {
+            actionID = OriginalHook(Vengeance);
+            return true;
+        }
+        
+        var rampartInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) || 
+                                         ContentCheck.IsInConfiguredContent(WAR_Mitigation_Boss_Rampart_Difficulty, WAR_Boss_Mit_DifficultyListSet);
+        
+        if (IsEnabled(Preset.WAR_Mitigation_Boss_Rampart) && ActionReady(Role.Rampart) && rampartInMitigationContent &&
+            HasIncomingTankBusterEffect() && !JustUsed(OriginalHook(Vengeance), 15f))
+        {
+            actionID = Role.Rampart;
+            return true;
+        }
+        #endregion
+        
+        #region Thrill of Battle
+        float emergencyThrillThreshold = rotationFlags.HasFlag(RotationMode.simple)
+            ? 80
+            : WAR_Mitigation_Boss_ThrillOfBattle_Threshold;
+        
+        var alignThrillOfBattle = rotationFlags.HasFlag(RotationMode.simple)
+            ? true
+            : WAR_Mitigation_Boss_ThrillOfBattle_Align;
+        
+        var ThrillOfBattleInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) || 
+                                         ContentCheck.IsInConfiguredContent(WAR_Mitigation_Boss_ThrillOfBattle_Difficulty, WAR_Boss_Mit_DifficultyListSet);
+        
+        
+        if (IsEnabled(Preset.WAR_Mitigation_Boss_ThrillOfBattle) && ActionReady(ThrillOfBattle) && HasIncomingTankBusterEffect() && ThrillOfBattleInMitigationContent &&
+            (PlayerHealthPercentageHp() <= emergencyThrillThreshold ||
+             !ActionReady(OriginalHook(Vengeance)) && !JustUsed(OriginalHook(Vengeance), 13f) && !ActionReady(Role.Rampart) && !JustUsed(Role.Rampart, 18f) ||
+             JustUsed(Role.Rampart, 20f) && alignThrillOfBattle))
+        {
+            actionID = ThrillOfBattle;
             return true;
         }
         #endregion

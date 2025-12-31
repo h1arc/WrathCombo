@@ -53,10 +53,33 @@ internal partial class WAR
                     DrawSliderInt(1, 100, WAR_Mitigation_Boss_Equilibrium_Health, "Player HP% to use Equilibrium at or below (100 = Disable check)");
                     break;
                 
-                case Preset.WAR_Mitigation_Boss_RawIntuition:
-                    DrawDifficultyMultiChoice(WAR_Mitigation_Boss_RawIntuition_Difficulty, WAR_Boss_Mit_DifficultyListSet ,
+                case Preset.WAR_Mitigation_Boss_RawIntuition_OnCD:
+                    DrawDifficultyMultiChoice(WAR_Mitigation_Boss_RawIntuition_OnCD_Difficulty, WAR_Boss_Mit_DifficultyListSet ,
                         "Select which difficulties the ability should be used in:");
                     DrawSliderInt(1, 100, WAR_Mitigation_Boss_RawIntuition_Health, "Player HP% to use Raw Intuition/Bloodwhetting at or below (100 = Disable check)");
+                    break;
+                
+                case Preset.WAR_Mitigation_Boss_RawIntuition_TankBuster:
+                    DrawDifficultyMultiChoice(WAR_Mitigation_Boss_RawIntuition_TankBuster_Difficulty, WAR_Boss_Mit_DifficultyListSet ,
+                        "Select which difficulties the ability should be used in:");
+                    break;
+                
+                case Preset.WAR_Mitigation_Boss_Rampart:
+                    DrawDifficultyMultiChoice(WAR_Mitigation_Boss_Rampart_Difficulty, WAR_Boss_Mit_DifficultyListSet ,
+                        "Select which difficulties the ability should be used in:");
+                    break;
+                
+                case Preset.WAR_Mitigation_Boss_Vengeance:
+                    DrawDifficultyMultiChoice(WAR_Mitigation_Boss_Vengeance_Difficulty, WAR_Boss_Mit_DifficultyListSet ,
+                        "Select which difficulties the ability should be used in:");
+                    DrawAdditionalBoolChoice(WAR_Mitigation_Boss_Vengeance_First, "Use Vengeance First", "Uses Vengeance before Rampart");
+                    break;
+                
+                case Preset.WAR_Mitigation_Boss_ThrillOfBattle:
+                    DrawDifficultyMultiChoice(WAR_Mitigation_Boss_ThrillOfBattle_Difficulty, WAR_Boss_Mit_DifficultyListSet ,
+                        "Select which difficulties the ability should be used in:");
+                    DrawSliderFloat(1, 100, WAR_Mitigation_Boss_ThrillOfBattle_Threshold, "Will use Thrill Of Battle as extra tankbuster mitigation if under this HP%", decimals: 0);
+                    DrawAdditionalBoolChoice(WAR_Mitigation_Boss_ThrillOfBattle_Align, "Align Thrill Of Battle", "Tries to align Thrill Of Battle with Rampart for tankbusters.");
                     break;
                 
                 case Preset.WAR_Mitigation_Boss_ShakeItOff:
@@ -442,6 +465,7 @@ internal partial class WAR
 
         public static UserFloat
             WAR_Mitigation_NonBoss_MitigationThreshold = new("WAR_Mitigation_NonBoss_MitigationThreshold", 20f),
+            WAR_Mitigation_Boss_ThrillOfBattle_Threshold = new("WAR_Mitigation_Boss_ThrillOfBattle_Threshold", 20f),
             WAR_ST_Onslaught_Distance = new("WAR_ST_Ons_Distance", 3.0f),
             WAR_ST_PrimalRend_Distance = new("WAR_ST_PR_Distance", 3.0f),
             WAR_AoE_Onslaught_Distance = new("WAR_AoE_Ons_Distance", 3.0f),
@@ -455,11 +479,19 @@ internal partial class WAR
             WAR_FC_Onslaught_TimeStill = new("WAR_FC_Onslaught_TimeStill"),
             WAR_FC_PrimalRend_TimeStill = new("WAR_FC_PrimalRend_TimeStill");
 
+        public static UserBool
+            WAR_Mitigation_Boss_ThrillOfBattle_Align = new("WAR_Mitigation_Boss_ThrillOfBattle_Align", true),
+            WAR_Mitigation_Boss_Vengeance_First = new("WAR_Mitigation_Boss_Vengeance_First", true);
+
         public static UserIntArray
             WAR_Mit_Priorities = new("WAR_Mit_Priorities");
 
        public static UserBoolArray
-            WAR_Mitigation_Boss_RawIntuition_Difficulty = new("WAR_Mitigation_Boss_RawIntuition_Difficulty", [true, false]),
+            WAR_Mitigation_Boss_RawIntuition_OnCD_Difficulty = new("WAR_Mitigation_Boss_RawIntuition_Difficulty", [true, false]),
+            WAR_Mitigation_Boss_RawIntuition_TankBuster_Difficulty = new("WAR_Mitigation_Boss_RawIntuition_TankBuster_Difficulty", [true, false]),
+            WAR_Mitigation_Boss_Rampart_Difficulty = new("WAR_Mitigation_Boss_Rampart_Difficulty", [true, false]),
+            WAR_Mitigation_Boss_Vengeance_Difficulty = new("WAR_Mitigation_Boss_Vengeance_Difficulty", [true, false]),
+            WAR_Mitigation_Boss_ThrillOfBattle_Difficulty = new("WAR_Mitigation_Boss_ThrillOfBattle_Difficulty", [true, false]),
             WAR_Mitigation_Boss_ShakeItOff_Difficulty = new("WAR_Mitigation_Boss_ShakeItOff_Difficulty", [true, false]),
             WAR_Mitigation_Boss_Reprisal_Difficulty = new("WAR_Mitigation_Boss_Reprisal_Difficulty", [true, false]),
             WAR_Mit_Holmgang_Max_Difficulty = new("WAR_Mit_Holmgang_Max_Difficulty", [true, false]);
