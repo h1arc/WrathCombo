@@ -292,14 +292,69 @@ internal partial class PLD
     {
         if (!InCombat() || !CanWeave() || !InBossEncounter() || JustMitted || !IsEnabled(Preset.PLD_Mitigation_Boss)) return false;
         
-        #region Always Mits
+        
+        #region Sentinel and Rampart
+        var sentinelFirst = rotationFlags.HasFlag(RotationMode.simple)
+            ? false
+            : PLD_Mitigation_Boss_Sentinel_First;
+        
+        var sentinelInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) || 
+                                         ContentCheck.IsInConfiguredContent(PLD_Mitigation_Boss_Sentinel_Difficulty, PLD_Boss_Mit_DifficultyListSet);
+        
+        
+        if (IsEnabled(Preset.PLD_Mitigation_Boss_Sentinel) && ActionReady(OriginalHook(Sentinel)) && sentinelInMitigationContent &&
+            HasIncomingTankBusterEffect() && !JustUsed(Role.Rampart, 20f) &&
+            (!ActionReady(Role.Rampart) || sentinelFirst))
+        {
+            actionID = OriginalHook(Sentinel);
+            return true;
+        }
+        
+        var rampartInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) || 
+                                         ContentCheck.IsInConfiguredContent(PLD_Mitigation_Boss_Rampart_Difficulty, PLD_Boss_Mit_DifficultyListSet);
+        
+        if (IsEnabled(Preset.PLD_Mitigation_Boss_Rampart) && ActionReady(Role.Rampart) && rampartInMitigationContent &&
+            HasIncomingTankBusterEffect() && !JustUsed(OriginalHook(Sentinel), 15f))
+        {
+            actionID = Role.Rampart;
+            return true;
+        }
+        #endregion
+        
+        #region Sheltron
         var sheltronThreshold = rotationFlags.HasFlag(RotationMode.simple)
             ? 95
             : PLD_Mitigation_Boss_SheltronOvercap_Threshold;
-        if (IsEnabled(Preset.PLD_Mitigation_Boss_SheltronOvercap) && 
-            ActionReady(OriginalHook(Sheltron)) && !HasStatusEffect(Buffs.Sheltron) && Gauge.OathGauge >= sheltronThreshold && IsPlayerTargeted()) //Sheltron Overcap
+        
+        
+        if (ActionReady(OriginalHook(Sheltron)) &&  !HasStatusEffect(Buffs.Sheltron) &&
+            (IsEnabled(Preset.PLD_Mitigation_Boss_SheltronOvercap) && Gauge.OathGauge >= sheltronThreshold && IsPlayerTargeted() || //Sheltron Overcap
+             IsEnabled(Preset.PLD_Mitigation_Boss_SheltronTankbuster) && Gauge.OathGauge >= 50 && HasIncomingTankBusterEffect()))
         {
             actionID = OriginalHook(Sheltron);
+            return true;
+        }
+        #endregion
+        
+        #region Bulwark
+        float emergencyBulwarkThreshold = rotationFlags.HasFlag(RotationMode.simple)
+            ? 80
+            : PLD_Mitigation_Boss_Bulwark_Threshold;
+        
+        var alignBulwark = rotationFlags.HasFlag(RotationMode.simple)
+            ? true
+            : PLD_Mitigation_Boss_Bulwark_Align;
+        
+        var BulwarkInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) || 
+                                         ContentCheck.IsInConfiguredContent(PLD_Mitigation_Boss_Bulwark_Difficulty, PLD_Boss_Mit_DifficultyListSet);
+        
+        
+        if (IsEnabled(Preset.PLD_Mitigation_Boss_Bulwark) && ActionReady(Bulwark) && HasIncomingTankBusterEffect() && BulwarkInMitigationContent &&
+            (PlayerHealthPercentageHp() <= emergencyBulwarkThreshold ||
+             !ActionReady(OriginalHook(Sentinel)) && !JustUsed(OriginalHook(Sentinel), 13f) && !ActionReady(Role.Rampart) && !JustUsed(Role.Rampart, 18f) ||
+             JustUsed(Role.Rampart, 20f) && alignBulwark))
+        {
+            actionID = Bulwark;
             return true;
         }
         #endregion
@@ -329,7 +384,6 @@ internal partial class PLD
         }
         #endregion
         
-        //Insert Tankbuster Stuff here
         return false;
         
         bool IsEnabled(Preset preset)

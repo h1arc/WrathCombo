@@ -4733,12 +4733,28 @@ public enum Preset
     PLD_Mitigation_NonBoss_DivineVeil = 11094,
     
     [ParentCombo(PLD_Mitigation)]
-    [CustomComboInfo("Boss Encounter Mitigation", "Adds Mitigation to the combos when not in a boss encounter. Will not overlap separate options unless stated.", Job.PLD)]
+    [CustomComboInfo("Boss Encounter Mitigation", "Adds Mitigation to the combos when not in a boss encounter. \nTankbuster Detection Experimental", Job.PLD)]
     PLD_Mitigation_Boss = 11095,
     
     [ParentCombo(PLD_Mitigation_Boss)]
     [CustomComboInfo("Sheltron Overcap Option", "Adds Sheltron when Above Selected Oath Gague and targetted", Job.PLD)]
     PLD_Mitigation_Boss_SheltronOvercap = 11096,
+    
+    [ParentCombo(PLD_Mitigation_Boss)]
+    [CustomComboInfo("Sheltron Tankbuster Option", "Adds Sheltron when an incoming tankbuster is detected", Job.PLD)]
+    PLD_Mitigation_Boss_SheltronTankbuster = 11100,
+    
+    [ParentCombo(PLD_Mitigation_Boss)]
+    [CustomComboInfo("Sentinel/Guardian Tankbuster Option", "Adds Sentinel/Guardian when an incoming tankbuster is detected. Will not overlap with Rampart.", Job.PLD)]
+    PLD_Mitigation_Boss_Sentinel = 11101,
+    
+    [ParentCombo(PLD_Mitigation_Boss)]
+    [CustomComboInfo("Rampart Tankbuster Option", "Adds Rampart when an incoming tankbuster is detected. Will Not Overlap with Sentinel/Guardian.", Job.PLD)]
+    PLD_Mitigation_Boss_Rampart = 11102,
+    
+    [ParentCombo(PLD_Mitigation_Boss)]
+    [CustomComboInfo("Bulwark Tankbuster Option", "Adds Bulwark when an incoming tankbuster is detected.", Job.PLD)]
+    PLD_Mitigation_Boss_Bulwark = 11103,
     
     [ParentCombo(PLD_Mitigation_Boss)]
     [CustomComboInfo("Raidwide Reprisal Option", "Adds Reprisal when raidwide casting is detected.", Job.PLD)]

@@ -56,6 +56,25 @@ internal partial class PLD
                     DrawDifficultyMultiChoice(PLD_Mitigation_Boss_Reprisal_Difficulty, PLD_Boss_Mit_DifficultyListSet ,
                         "Select which difficulties the ability should be used in:");
                     break;
+                
+                case Preset.PLD_Mitigation_Boss_Rampart:
+                    DrawDifficultyMultiChoice(PLD_Mitigation_Boss_Rampart_Difficulty, PLD_Boss_Mit_DifficultyListSet ,
+                        "Select which difficulties the ability should be used in:");
+                    break;
+                
+                case Preset.PLD_Mitigation_Boss_Sentinel:
+                    DrawDifficultyMultiChoice(PLD_Mitigation_Boss_Sentinel_Difficulty, PLD_Boss_Mit_DifficultyListSet ,
+                        "Select which difficulties the ability should be used in:");
+                    DrawAdditionalBoolChoice(PLD_Mitigation_Boss_Sentinel_First, "Use Sentinel First", "Uses Sentinel before Rampart");
+                    break;
+                
+                case Preset.PLD_Mitigation_Boss_Bulwark:
+                    DrawDifficultyMultiChoice(PLD_Mitigation_Boss_Bulwark_Difficulty, PLD_Boss_Mit_DifficultyListSet ,
+                        "Select which difficulties the ability should be used in:");
+                    DrawSliderFloat(1, 100, PLD_Mitigation_Boss_Bulwark_Threshold, "Will use Bulwark as extra tankbuster mitigation if under this HP%", decimals: 0);
+                    DrawAdditionalBoolChoice(PLD_Mitigation_Boss_Bulwark_Align, "Align Bulwark", "Tries to align Bulwark with Rampart for tankbusters.");
+                    break;
+                
                 #endregion
                 
                 #region ST
@@ -350,11 +369,14 @@ internal partial class PLD
 
         public static UserFloat
             PLD_Mitigation_NonBoss_MitigationThreshold = new("PLD_Mitigation_NonBoss_MitigationThreshold", 20f),
+            PLD_Mitigation_Boss_Bulwark_Threshold = new("PLD_Mitigation_Boss_Bulwark_Threshold", 80f),
             PLD_ST_InterveneTimeStill = new("PLD_ST_InterveneTimeStill", 2.5f),
             PLD_AoE_InterveneTimeStill = new("PLD_AoE_InterveneTimeStill", 2.5f);
 
         public static UserBool
-            PLD_RetargetStunLockout = new("PLD_RetargetStunLockout");
+            PLD_RetargetStunLockout = new("PLD_RetargetStunLockout"),
+            PLD_Mitigation_Boss_Bulwark_Align = new("PLD_Mitigation_Boss_Bulwark_Align"),
+            PLD_Mitigation_Boss_Sentinel_First = new("PLD_Mitigation_Boss_Sentinel_First");
 
         public static UserIntArray
             PLD_Mit_Priorities = new("PLD_Mit_Priorities");
@@ -362,6 +384,9 @@ internal partial class PLD
         public static UserBoolArray
             PLD_Mitigation_Boss_DivineVeil_Difficulty = new("PLD_Mitigation_Boss_DivineVeil_Difficulty", [true, false]),
             PLD_Mitigation_Boss_Reprisal_Difficulty = new("PLD_Mitigation_Boss_Reprisal_Difficulty", [true, false]),
+            PLD_Mitigation_Boss_Sentinel_Difficulty = new("PLD_Mitigation_Boss_Sentinel_Difficulty", [true, false]),
+            PLD_Mitigation_Boss_Rampart_Difficulty = new("PLD_Mitigation_Boss_Rampart_Difficulty", [true, false]),
+            PLD_Mitigation_Boss_Bulwark_Difficulty = new("PLD_Mitigation_Boss_Bulwark_Difficulty", [true, false]),
             PLD_Mit_HallowedGround_Max_Difficulty = new("PLD_Mit_HallowedGround_Max_Difficulty", [true, false]);
 
         public static readonly ContentCheck.ListSet
