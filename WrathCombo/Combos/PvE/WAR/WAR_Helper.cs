@@ -437,7 +437,7 @@ internal partial class WAR : Tank
         
         if (IsEnabled(Preset.WAR_Mitigation_Boss_Reprisal) && ReprisalInMitigationContent &&
             !JustUsed(ShakeItOff, 10f) &&
-            Role.CanReprisal(enemyCount:1) && RaidWideCasting())
+            Role.CanReprisal(enemyCount:1) && GroupDamageIncoming())
         {
             actionID = Role.Reprisal;
             return true;
@@ -450,7 +450,7 @@ internal partial class WAR : Tank
         
         if (IsEnabled(Preset.WAR_Mitigation_Boss_ShakeItOff) && ShakeItOffInMitigationContent &&
             !JustUsed(Role.Reprisal, 10f) &&
-            ActionReady(ShakeItOff) && RaidWideCasting())
+            ActionReady(ShakeItOff) && GroupDamageIncoming())
         {
             actionID = ShakeItOff;
             return true;

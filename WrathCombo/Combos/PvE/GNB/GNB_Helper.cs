@@ -206,7 +206,7 @@ internal partial class GNB : Tank
                                           ContentCheck.IsInConfiguredContent(GNB_Mitigation_Boss_Reprisal_Difficulty, GNB_Boss_Mit_DifficultyListSet);
         
         if (IsEnabled(Preset.GNB_Mitigation_Boss_Reprisal) && ReprisalInMitigationContent &&
-            !JustUsed(HeartOfLight, 10f) && Role.CanReprisal(enemyCount:1) && RaidWideCasting())
+            !JustUsed(HeartOfLight, 10f) && Role.CanReprisal(enemyCount:1) && GroupDamageIncoming())
         {
             actionID = Role.Reprisal;
             return true;
@@ -218,7 +218,7 @@ internal partial class GNB : Tank
                                               ContentCheck.IsInConfiguredContent(GNB_Mitigation_Boss_HeartOfLight_Difficulty, GNB_Boss_Mit_DifficultyListSet);
         
         if (IsEnabled(Preset.GNB_Mitigation_Boss_HeartOfLight) && HeartOfLightInMitigationContent &&
-            !JustUsed(Role.Reprisal, 10f) && ActionReady(HeartOfLight) && RaidWideCasting())
+            !JustUsed(Role.Reprisal, 10f) && ActionReady(HeartOfLight) && GroupDamageIncoming())
         {
             actionID = HeartOfLight;
             return true;

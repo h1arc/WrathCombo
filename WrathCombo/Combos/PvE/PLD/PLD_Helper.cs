@@ -310,7 +310,7 @@ internal partial class PLD
                                           ContentCheck.IsInConfiguredContent(PLD_Mitigation_Boss_Reprisal_Difficulty, PLD_Boss_Mit_DifficultyListSet);
         
         if (IsEnabled(Preset.PLD_Mitigation_Boss_Reprisal) && ReprisalInMitigationContent &&
-            !JustUsed(DivineVeil, 10f) && Role.CanReprisal(enemyCount:1) && RaidWideCasting())
+            !JustUsed(DivineVeil, 10f) && Role.CanReprisal(enemyCount:1) && GroupDamageIncoming())
         {
             actionID = Role.Reprisal;
             return true;
@@ -322,7 +322,7 @@ internal partial class PLD
                                             ContentCheck.IsInConfiguredContent(PLD_Mitigation_Boss_DivineVeil_Difficulty, PLD_Boss_Mit_DifficultyListSet);
         
         if (IsEnabled(Preset.PLD_Mitigation_Boss_DivineVeil) && DivineVeilInMitigationContent &&
-            !JustUsed(Role.Reprisal, 10f) && ActionReady(DivineVeil) && RaidWideCasting())
+            !JustUsed(Role.Reprisal, 10f) && ActionReady(DivineVeil) && GroupDamageIncoming())
         {
             actionID = DivineVeil;
             return true;
