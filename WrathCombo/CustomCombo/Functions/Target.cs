@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using ECommons.DalamudServices;
 using ECommons.GameFunctions;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using System;
@@ -252,16 +253,15 @@ internal abstract partial class CustomComboFunctions
     #region Distance Checks
 
     /// <summary> Checks if an object is within melee range. Defaults to CurrentTarget unless specified. </summary>
-    public static bool InMeleeRange(IGameObject? optionalTarget = null)
+    public unsafe static bool InMeleeRange(IGameObject? optionalTarget = null)
     {
-        if ((optionalTarget ?? CurrentTarget) is not { } chara)
+        if ((optionalTarget ?? CurrentTarget) is not { } chara || LocalPlayer is not { })
             return false;
 
+        var inRangeActionManagerCheck = ActionManager.GetActionInRangeOrLoS(7, LocalPlayer.GameObject(), chara.Struct()) is 0 or 565;
         var distance = GetTargetDistance(chara);
-        var height   = GetTargetHeightDifference(optionalTarget);
-        var largest = Math.Max(distance, height);
 
-        return largest <= (InPvP() ? 5f : 3f) + Service.Configuration.MeleeOffset;
+        return distance <= (InPvP() ? 5f : 3f) + Service.Configuration.MeleeOffset && inRangeActionManagerCheck;
     }
 
     /// <summary> Checks if an object is within a given range. Defaults to CurrentTarget unless specified. </summary>

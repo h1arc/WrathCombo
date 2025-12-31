@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
+using WrathCombo.Data;
 using static WrathCombo.Combos.PvE.MCH.Config;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 namespace WrathCombo.Combos.PvE;
@@ -110,11 +111,13 @@ internal partial class MCH
     {
         if (HasStatusEffect(Buffs.Reassembled) || !HasBattleTarget() || !InActionRange(Drill))
             return false;
-
-        ushort maxCharges = GetMaxCharges(Reassemble);
+        
         uint remainingCharges = GetRemainingCharges(Reassemble);
 
-        var numberOfReadyTools = ReadyTools();
+        if (remainingCharges == 0)
+            return false;
+
+        int numberOfReadyTools = ReadyTools();
 
         bool enoughToolsForBurst = numberOfReadyTools >= remainingCharges;
 
@@ -130,7 +133,6 @@ internal partial class MCH
 
         return false;
     }
-
 
     #endregion
 
@@ -198,8 +200,6 @@ internal partial class MCH
 
     private static bool CanUseTools(ref uint actionID)
     {
-        var reassembleCD = GetCooldown(Reassemble);
-
         if (ActionReady(Chainsaw) && !HasStatusEffect(Buffs.ExcavatorReady))
         {
             actionID = Chainsaw;

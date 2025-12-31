@@ -153,7 +153,7 @@ internal partial class SAM
 
     private static bool CanUseThirdEye =>
         ActionReady(OriginalHook(ThirdEye)) &&
-        (RaidWideCasting(2f) || !IsInParty());
+        (GroupDamageIncoming(2f) || !IsInParty());
 
     //Auto Meditate
     private static bool CanUseMeditate =>
@@ -258,9 +258,9 @@ internal partial class SAM
     private static bool CanTsubame() =>
         LevelChecked(TsubameGaeshi) && ActionReady(TsubameGaeshi) &&
         (HasStatusEffect(Buffs.TendoKaeshiSetsugekkaReady) ||
-         HasStatusEffect(Buffs.TsubameReady) &&
-         (SenCount is 3 || EnhancedSenei && GetCooldownRemainingTime(Senei) > 33) ||
-         GetStatusEffectRemainingTime(Buffs.TendoKaeshiSetsugekkaReady) < 5 ||
+         HasStatusEffect(Buffs.TsubameReady)) &&
+        (SenCount is 3 ||
+         EnhancedSenei && GetCooldownRemainingTime(Senei) > 33 ||
          GetStatusEffectRemainingTime(Buffs.TsubameReady) < 5);
 
     private static bool CanShoha() =>
