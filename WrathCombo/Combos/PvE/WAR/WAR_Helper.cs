@@ -408,22 +408,6 @@ internal partial class WAR : Tank
     {
         if (!InCombat() || !CanWeave() || !InBossEncounter() || !IsEnabled(Preset.WAR_Mitigation_Boss)) return false;
         
-        #region Raw Intuition/Bloodwhetting
-        var RawIntuitionInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) ||
-                                              ContentCheck.IsInConfiguredContent(WAR_Mitigation_Boss_RawIntuition_OnCD_Difficulty, WAR_Boss_Mit_DifficultyListSet);
-        var RawIntuitionHealthThreshold = rotationFlags.HasFlag(RotationMode.simple) 
-            ? 80
-            : WAR_Mitigation_Boss_RawIntuition_Health;
-            
-        if (ActionReady(OriginalHook(RawIntuition)) && RawIntuitionInMitigationContent &&
-            (IsEnabled(Preset.WAR_Mitigation_Boss_RawIntuition_OnCD) &&  PlayerHealthPercentageHp() <= RawIntuitionHealthThreshold && IsPlayerTargeted() ||
-             IsEnabled(Preset.WAR_Mitigation_Boss_RawIntuition_TankBuster) && HasIncomingTankBusterEffect()))
-        {
-            actionID = OriginalHook(RawIntuition);
-            return true;
-        }
-        #endregion
-        
         #region Vengeance and Rampart
         var vengeanceFirst = rotationFlags.HasFlag(RotationMode.simple)
             ? false
@@ -448,6 +432,25 @@ internal partial class WAR : Tank
             HasIncomingTankBusterEffect() && !JustUsed(OriginalHook(Vengeance), 15f))
         {
             actionID = Role.Rampart;
+            return true;
+        }
+        #endregion
+        
+        #region Raw Intuition/Bloodwhetting
+        var RawIntuitionOnCDInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) ||
+                                              ContentCheck.IsInConfiguredContent(WAR_Mitigation_Boss_RawIntuition_OnCD_Difficulty, WAR_Boss_Mit_DifficultyListSet);
+        
+        var RawIntuitionTankBusterInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) ||
+                                              ContentCheck.IsInConfiguredContent(WAR_Mitigation_Boss_RawIntuition_TankBuster_Difficulty, WAR_Boss_Mit_DifficultyListSet);
+        var RawIntuitionHealthThreshold = rotationFlags.HasFlag(RotationMode.simple) 
+            ? 80
+            : WAR_Mitigation_Boss_RawIntuition_Health;
+            
+        if (ActionReady(OriginalHook(RawIntuition)) &&
+            (IsEnabled(Preset.WAR_Mitigation_Boss_RawIntuition_OnCD) &&  PlayerHealthPercentageHp() <= RawIntuitionHealthThreshold && IsPlayerTargeted() && RawIntuitionOnCDInMitigationContent ||
+             IsEnabled(Preset.WAR_Mitigation_Boss_RawIntuition_TankBuster) && HasIncomingTankBusterEffect() && RawIntuitionTankBusterInMitigationContent))
+        {
+            actionID = OriginalHook(RawIntuition);
             return true;
         }
         #endregion
