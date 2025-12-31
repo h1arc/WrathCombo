@@ -451,7 +451,7 @@ internal abstract partial class CustomComboFunctions
     /// <returns>Bool if vfx path matches</returns>
     public static bool IsTankBusterEffectPath(VfxInfo vfx)
     {
-        return TankbusterPaths.Any(x => vfx.Path.StartsWith(x));
+        return TankbusterPaths.Any(x => vfx.Path.StartsWith(x, Lower));
     }
 
     private static List<string> TankbusterPaths =
