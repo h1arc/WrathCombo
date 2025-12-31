@@ -1308,7 +1308,7 @@ internal class Debug : ConfigWindow, IDisposable
             {
                 foreach (var vfx in vfxList)
                 {
-                    CustomStyleText($"Path: {vfx.Path}", $"Age: {vfx.AgeSeconds:N1}s");
+                    CustomStyleText($"Path: {vfx.Path}{(IsTankBusterEffectPath(vfx) ? " (Tank Buster)": "")}", $"Age: {vfx.AgeSeconds:N1}s");
                     ImGui.SameLine();
                     if (ImGui.Button($"Copy Path###{vfx.Path}{obj.GameObjectId}"))
                     {

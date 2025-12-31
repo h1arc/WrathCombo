@@ -448,7 +448,7 @@ internal abstract partial class CustomComboFunctions
     /// </summary>
     /// <param name="vfx">The VFX to check the Path of</param>
     /// <returns>Bool if vfx path matches</returns>
-    private static bool IsTankBusterEffectPath(VfxInfo vfx)
+    public static bool IsTankBusterEffectPath(VfxInfo vfx)
     {
         return vfx.Path.StartsWith("vfx/lockon/eff/tank", Lower) ||
                vfx.Path.StartsWith("vfx/lockon/eff/x6fe_fan100_50_0t1", Lower) || //Necron Blue Shockwave - Cone Tankbuster
