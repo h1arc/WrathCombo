@@ -326,10 +326,12 @@ internal partial class PLD
             ? 95
             : PLD_Mitigation_Boss_SheltronOvercap_Threshold;
         
+        var SheltronInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) || 
+                                         ContentCheck.IsInConfiguredContent(PLD_Mitigation_Boss_SheltronTankbuster_Difficulty, PLD_Boss_Mit_DifficultyListSet);
         
         if (ActionReady(OriginalHook(Sheltron)) &&  !HasStatusEffect(Buffs.Sheltron) &&
             (IsEnabled(Preset.PLD_Mitigation_Boss_SheltronOvercap) && Gauge.OathGauge >= sheltronThreshold && IsPlayerTargeted() || //Sheltron Overcap
-             IsEnabled(Preset.PLD_Mitigation_Boss_SheltronTankbuster) && Gauge.OathGauge >= 50 && HasIncomingTankBusterEffect()))
+             IsEnabled(Preset.PLD_Mitigation_Boss_SheltronTankbuster) && Gauge.OathGauge >= 50 && HasIncomingTankBusterEffect() && SheltronInMitigationContent))
         {
             actionID = OriginalHook(Sheltron);
             return true;
