@@ -178,6 +178,10 @@ internal abstract partial class CustomComboFunctions
         if (target is not IBattleChara { IsCasting: true } chara)
             return false;
 
+        // Bail if blacklisted
+        if (Service.Configuration.StatusBlacklist.Any(x => x.Status == All.Debuffs.Stun && x.BaseId == chara.BaseId))
+            return false;
+
         // Bail if it fails the Internal Cooldown tracker for Stuns
         if (!(ICDTracker.StatusIsExpired(All.Debuffs.Stun,
                   CurrentTarget.GameObjectId) ||
