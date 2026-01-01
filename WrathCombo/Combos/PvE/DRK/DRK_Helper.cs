@@ -9,6 +9,7 @@ using System.Linq;
 using WrathCombo.AutoRotation;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
+using WrathCombo.Data;
 using static WrathCombo.Combos.PvE.DRK.Config;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using EZ = ECommons.Throttlers.EzThrottler;
@@ -194,7 +195,252 @@ internal partial class DRK
 
         return WrathOpener.Dummy;
     }
-
+    
+    #region Auto Mitigation System
+    
+    private static bool JustMitted =>
+        JustUsed(OriginalHook(DarkMind)) ||
+        JustUsed(OriginalHook(ShadowWall)) ||
+        JustUsed(Role.Reprisal) ||
+        JustUsed(Role.ArmsLength) ||
+        JustUsed(Role.Rampart) ||
+        JustUsed(LivingDead);
+    
+    internal static bool MitigationRunning =>
+        HasStatusEffect(Role.Buffs.ArmsLength) ||
+        HasStatusEffect(Role.Buffs.Rampart) || 
+        HasStatusEffect(Buffs.LivingDead) ||
+        HasStatusEffect(Buffs.DarkMind) ||
+        HasStatusEffect(Buffs.ShadowedVigil) || 
+        HasStatusEffect(Buffs.ShadowWall) ||
+        HasStatusEffect(Role.Debuffs.Reprisal, CurrentTarget);
+    
+    [Flags]
+    private enum RotationMode{
+        simple = 1 << 0,
+        advanced = 1 << 1
+    }
+    
+    private static bool TryUseMits(RotationMode rotationFlags, ref uint actionID) => CanUseNonBossMits(rotationFlags, ref actionID) || CanUseBossMits(rotationFlags, ref actionID);
+    
+    private static bool CanUseNonBossMits(RotationMode rotationFlags, ref uint actionID)
+    {
+        if (!InCombat() || !CanWeave() || InBossEncounter() || JustMitted || !IsEnabled(Preset.DRK_Mitigation_NonBoss)) 
+            return false;
+        
+        #region Living Dead
+        var livingDeadThreshold = rotationFlags.HasFlag(RotationMode.simple) ? 10 : DRK_Mitigation_NonBoss_LivingDead_Health;
+        
+        if (IsEnabled(Preset.DRK_Mitigation_NonBoss_LivingDead) && ActionReady(LivingDead) &&
+            PlayerHealthPercentageHp() <= livingDeadThreshold)
+        {
+            actionID = LivingDead;
+            return true;
+        }
+        #endregion
+        
+        #region OverLapping Mitigation
+        if (IsEnabled(Preset.DRK_Mitigation_NonBoss_BlackestNight) && ActionReady(BlackestNight))
+        {
+            actionID = BlackestNight;
+            return true;
+        }
+        
+        if (IsEnabled(Preset.DRK_Mitigation_NonBoss_DarkMissionary) && ActionReady(DarkMissionary) && NumberOfEnemiesInRange(Role.Reprisal) > 4 
+            && !JustUsed(OriginalHook(ShadowWall), 15f))
+        {
+            actionID = DarkMissionary;
+            return true;
+        }
+        
+        if (ActionReady(Oblation) && IsEnabled(Preset.DRK_Mitigation_NonBoss_Oblation) && NumberOfEnemiesInRange(Role.Reprisal) > 4 && 
+            !JustUsed(OriginalHook(Oblation), 10f) && !JustUsed(OriginalHook(ShadowWall), 15f))
+        {
+            actionID = Oblation;
+            return true;
+        }
+        #endregion
+        
+        #region Mitigation Threshold Bailout
+        float mitigationThreshold = rotationFlags.HasFlag(RotationMode.simple) 
+            ? 10 
+            : DRK_Mitigation_NonBoss_MitigationThreshold;
+        if (GetAvgEnemyHPPercentInRange(10f) <= mitigationThreshold) 
+            return false;
+        #endregion
+        
+        if (MitigationRunning || NumberOfEnemiesInRange(Role.Reprisal) <= 2) return false; //Bail if already Mitted or too few enemies
+        
+        #region Mitigation 5+
+        if (NumberOfEnemiesInRange(Role.Reprisal) > 4)
+        {
+            if (ActionReady(OriginalHook(ShadowWall)) && IsEnabled(Preset.DRK_Mitigation_NonBoss_ShadowWall))
+            {
+                actionID = OriginalHook(ShadowWall);
+                return true;
+            }
+            
+            if (Role.CanReprisal(enemyCount:5) && IsEnabled(Preset.DRK_Mitigation_NonBoss_Reprisal))
+            {
+                actionID = Role.Reprisal;
+                return true;
+            }
+                
+            if (ActionReady(Role.ArmsLength) && IsEnabled(Preset.DRK_Mitigation_NonBoss_ArmsLength))
+            {
+                actionID = Role.ArmsLength;
+                return true;
+            }
+        }
+        #endregion
+        
+        #region Mitigation 3+
+        if (ActionReady(DarkMind) && IsEnabled(Preset.DRK_Mitigation_NonBoss_DarkMind))
+        {
+            actionID = DarkMind;
+            return true;
+        }
+        
+        if (Role.CanRampart() && IsEnabled(Preset.DRK_Mitigation_NonBoss_Rampart))
+        {
+            actionID = Role.Rampart;
+            return true;
+        }
+        #endregion
+        
+        return false;
+        
+        bool IsEnabled(Preset preset)
+        {
+            if (rotationFlags.HasFlag(RotationMode.simple))
+                return true;
+            
+            return CustomComboFunctions.IsEnabled(preset);
+        }
+    }
+    
+    private static bool CanUseBossMits(RotationMode rotationFlags, ref uint actionID)
+    {
+        if (!InCombat() || !CanWeave() || !InBossEncounter() || !IsEnabled(Preset.DRK_Mitigation_Boss)) return false;
+        
+        #region Shadow Wall and Rampart
+        var shadowWallFirst = rotationFlags.HasFlag(RotationMode.simple)
+            ? false
+            : DRK_Mitigation_Boss_ShadowWall_First;
+        
+        var shadowWallInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) || 
+                                            ContentCheck.IsInConfiguredContent(DRK_Mitigation_Boss_ShadowWall_Difficulty, DRK_Boss_Mit_DifficultyListSet);
+        
+        
+        if (IsEnabled(Preset.DRK_Mitigation_Boss_ShadowWall) && ActionReady(OriginalHook(ShadowWall)) && shadowWallInMitigationContent &&
+            HasIncomingTankBusterEffect() && !JustUsed(Role.Rampart, 20f) &&
+            (!ActionReady(Role.Rampart) || shadowWallFirst))
+        {
+            actionID = OriginalHook(ShadowWall);
+            return true;
+        }
+        
+        var rampartInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) || 
+                                         ContentCheck.IsInConfiguredContent(DRK_Mitigation_Boss_Rampart_Difficulty, DRK_Boss_Mit_DifficultyListSet);
+        
+        if (IsEnabled(Preset.DRK_Mitigation_Boss_Rampart) && ActionReady(Role.Rampart) && rampartInMitigationContent &&
+            HasIncomingTankBusterEffect() && !JustUsed(OriginalHook(ShadowWall), 15f))
+        {
+            actionID = Role.Rampart;
+            return true;
+        }
+        #endregion
+        
+        #region Blackest Night
+        var blackestNightOnCDInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) ||
+                                              ContentCheck.IsInConfiguredContent(DRK_Mitigation_Boss_BlackestNight_OnCD_Difficulty, DRK_Boss_Mit_DifficultyListSet);
+        
+        var blackestNightInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) ||
+                                               ContentCheck.IsInConfiguredContent(DRK_Mitigation_Boss_BlackestNight_TankBuster_Difficulty, DRK_Boss_Mit_DifficultyListSet);
+        var blackestNightHealthThreshold = rotationFlags.HasFlag(RotationMode.simple) 
+            ? 25
+            : DRK_Mitigation_Boss_BlackestNight_Health;
+            
+        if (ActionReady(BlackestNight) &&
+            (IsEnabled(Preset.DRK_Mitigation_Boss_BlackestNight_OnCD) &&  PlayerHealthPercentageHp() <= blackestNightHealthThreshold && IsPlayerTargeted() && blackestNightOnCDInMitigationContent ||
+             IsEnabled(Preset.DRK_Mitigation_Boss_BlackestNight_TankBuster) && HasIncomingTankBusterEffect() && blackestNightInMitigationContent))
+        {
+            actionID = OriginalHook(BlackestNight);
+            return true;
+        }
+        #endregion
+        
+        #region Oblation
+        var oblationInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) ||
+                                               ContentCheck.IsInConfiguredContent(DRK_Mitigation_Boss_Oblation_TankBuster_Difficulty, DRK_Boss_Mit_DifficultyListSet);
+        if (ActionReady(Oblation) && IsEnabled(Preset.DRK_Mitigation_Boss_Oblation) && HasIncomingTankBusterEffect() && !JustUsed(OriginalHook(Oblation), 10f) && oblationInMitigationContent)
+        {
+            actionID = Oblation;
+            return true;
+        }
+        #endregion
+        
+        #region Dark Mind
+        float emergencyDarkMindThreshold = rotationFlags.HasFlag(RotationMode.simple)
+            ? 80
+            : DRK_Mitigation_Boss_DarkMind_Threshold;
+        
+        var alignDarkMind = rotationFlags.HasFlag(RotationMode.simple)
+            ? true
+            : DRK_Mitigation_Boss_DarkMind_Align;
+        
+        var darkMindInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) || 
+                                          ContentCheck.IsInConfiguredContent(DRK_Mitigation_Boss_DarkMind_Difficulty, DRK_Boss_Mit_DifficultyListSet);
+        
+        
+        if (IsEnabled(Preset.DRK_Mitigation_Boss_DarkMind) && ActionReady(DarkMind) && HasIncomingTankBusterEffect() && darkMindInMitigationContent &&
+            (PlayerHealthPercentageHp() <= emergencyDarkMindThreshold ||
+             !ActionReady(OriginalHook(ShadowWall)) && !JustUsed(OriginalHook(ShadowWall), 13f) && !ActionReady(Role.Rampart) && !JustUsed(Role.Rampart, 18f) ||
+             JustUsed(Role.Rampart, 20f) && alignDarkMind))
+        {
+            actionID = DarkMind;
+            return true;
+        }
+        #endregion
+        
+        #region Reprisal
+        var reprisalInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) ||
+                                          ContentCheck.IsInConfiguredContent(DRK_Mitigation_Boss_Reprisal_Difficulty, DRK_Boss_Mit_DifficultyListSet);
+        
+        if (IsEnabled(Preset.DRK_Mitigation_Boss_Reprisal) && reprisalInMitigationContent &&
+            !JustUsed(DarkMissionary, 10f) &&
+            Role.CanReprisal(enemyCount:1) && GroupDamageIncoming())
+        {
+            actionID = Role.Reprisal;
+            return true;
+        }
+        #endregion
+        
+        #region Dark Missionary
+        var darkMissionaryInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) ||
+                                                ContentCheck.IsInConfiguredContent(DRK_Mitigation_Boss_DarkMissionary_Difficulty, DRK_Boss_Mit_DifficultyListSet);
+        
+        if (IsEnabled(Preset.DRK_Mitigation_Boss_DarkMissionary) && darkMissionaryInMitigationContent &&
+            !JustUsed(Role.Reprisal, 10f) &&
+            ActionReady(DarkMissionary) && GroupDamageIncoming())
+        {
+            actionID = DarkMissionary;
+            return true;
+        }
+        #endregion
+       
+        return false;
+        
+        bool IsEnabled(Preset preset)
+        {
+            if (rotationFlags.HasFlag(RotationMode.simple))
+                return true;
+            
+            return CustomComboFunctions.IsEnabled(preset);
+        }
+    }
+    #endregion
+    
     #region Openers
 
     private static void handleEdgeCasts
@@ -426,6 +672,13 @@ internal partial class DRK
 
         /// Damage Reduction part of Vigil
         public const ushort ShadowedVigil = 3835;
+        
+        /// Shadow Wall Active
+        public const ushort ShadowWall = 747;
+        
+        /// DarkMind Active
+        
+        public const ushort DarkMind = 746;
 
         /// The triggered part of Vigil that needs procc'd to heal (happens below 50%)
         public const ushort ShadowedVigilant = 3902;

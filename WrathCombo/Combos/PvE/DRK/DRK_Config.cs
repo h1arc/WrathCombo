@@ -58,6 +58,84 @@ internal partial class DRK
                         "Disables the use of mitigations in Simple Mode.",
                         (int)SimpleMitigation.Off);
                     break;
+                
+                case Preset.DRK_ST_Adv:
+                    UserConfig.DrawHorizontalRadioButton(DRK_ST_AdvancedMitigation,
+                        "Include Mitigations",
+                        "Enables the use of advanced mitigations",
+                        (int)SimpleMitigation.On);
+
+                    UserConfig.DrawHorizontalRadioButton(DRK_ST_AdvancedMitigation,
+                        "Exclude Mitigations",
+                        "Disables the use of advanced mitigations",
+                        (int)SimpleMitigation.Off);
+                    break;
+
+                case Preset.DRK_AoE_Adv:
+                    UserConfig.DrawHorizontalRadioButton(DRK_AoE_AdvancedMitigation,
+                        "Include Mitigations",
+                        "Enables the use of advanced mitigations",
+                        (int)SimpleMitigation.On);
+
+                    UserConfig.DrawHorizontalRadioButton(DRK_AoE_AdvancedMitigation,
+                        "Exclude Mitigations",
+                        "Disables the use of advanced mitigations ",
+                        (int)SimpleMitigation.Off);
+                    break;
+                
+                 case Preset.DRK_Mitigation_NonBoss:
+                    UserConfig.DrawSliderFloat(0, 100, DRK_Mitigation_NonBoss_MitigationThreshold, "Stop using when average health percentage of nearby enemies is below set. \n(Set to 0 to disable this check) ", decimals: 0);
+                    break;
+                
+                case Preset.DRK_Mitigation_NonBoss_LivingDead:
+                    UserConfig.DrawSliderInt(1, 100, DRK_Mitigation_NonBoss_LivingDead_Health, "Player HP% to use Holmgang at or below (100 = Disable check)");
+                    break;
+                
+                case Preset.DRK_Mitigation_Boss_BlackestNight_OnCD:
+                    UserConfig.DrawDifficultyMultiChoice(DRK_Mitigation_Boss_BlackestNight_OnCD_Difficulty, DRK_Boss_Mit_DifficultyListSet ,
+                        "Select which difficulties the ability should be used in:");
+                    UserConfig.DrawSliderInt(1, 100, DRK_Mitigation_Boss_BlackestNight_Health, "Player HP% to use The Blackest Night at or below (100 = Disable check)");
+                    break;
+                
+                case Preset.DRK_Mitigation_Boss_BlackestNight_TankBuster:
+                    UserConfig.DrawDifficultyMultiChoice(DRK_Mitigation_Boss_BlackestNight_TankBuster_Difficulty, DRK_Boss_Mit_DifficultyListSet ,
+                        "Select which difficulties the ability should be used in:");
+                    break;
+                
+                case Preset.DRK_Mitigation_Boss_Rampart:
+                    UserConfig.DrawDifficultyMultiChoice(DRK_Mitigation_Boss_Rampart_Difficulty, DRK_Boss_Mit_DifficultyListSet ,
+                        "Select which difficulties the ability should be used in:");
+                    break;
+                
+                case Preset.DRK_Mitigation_Boss_ShadowWall:
+                    UserConfig.DrawDifficultyMultiChoice(DRK_Mitigation_Boss_ShadowWall_Difficulty, DRK_Boss_Mit_DifficultyListSet ,
+                        "Select which difficulties the ability should be used in:");
+                    UserConfig.DrawAdditionalBoolChoice(DRK_Mitigation_Boss_ShadowWall_First, "Use ShadowWall/Shadowed Vigil First", "Uses ShadowWall/Shadowed Vigil before Rampart");
+                    break;
+                
+                case Preset.DRK_Mitigation_Boss_DarkMind:
+                    UserConfig.DrawDifficultyMultiChoice(DRK_Mitigation_Boss_DarkMind_Difficulty, DRK_Boss_Mit_DifficultyListSet ,
+                        "Select which difficulties the ability should be used in:");
+                    UserConfig.DrawSliderFloat(1, 100, DRK_Mitigation_Boss_DarkMind_Threshold, "Will use DarkMind as extra tankbuster mitigation if under this HP%", decimals: 0);
+                    UserConfig.DrawAdditionalBoolChoice(DRK_Mitigation_Boss_DarkMind_Align, "Align DarkMind", "Tries to align DarkMind with Rampart for tankbusters.");
+                    break;
+                
+                case Preset.DRK_Mitigation_Boss_Oblation:
+                    UserConfig.DrawDifficultyMultiChoice(DRK_Mitigation_Boss_Oblation_TankBuster_Difficulty, DRK_Boss_Mit_DifficultyListSet ,
+                        "Select which difficulties the ability should be used in:");
+                    break;
+                
+                case Preset.DRK_Mitigation_Boss_DarkMissionary:
+                    UserConfig.DrawDifficultyMultiChoice(DRK_Mitigation_Boss_DarkMissionary_Difficulty, DRK_Boss_Mit_DifficultyListSet ,
+                        "Select which difficulties the ability should be used in:");
+                    break;
+                    
+                case Preset.DRK_Mitigation_Boss_Reprisal:
+                    UserConfig.DrawDifficultyMultiChoice(DRK_Mitigation_Boss_Reprisal_Difficulty, DRK_Boss_Mit_DifficultyListSet ,
+                        "Select which difficulties the ability should be used in:");
+                    break;
+                
+                
 
                 #endregion
 
@@ -527,12 +605,12 @@ internal partial class DRK
         }
 
         /// <summary>
-        ///     Whether Simple Mode should include mitigation or not.
+        ///     Whether Combos should include mitigation or not.
         /// </summary>
         internal enum SimpleMitigation
         {
-            Off,
             On,
+            Off,
         }
 
         internal enum PullAction
@@ -546,7 +624,7 @@ internal partial class DRK
 
         #region Options
 
-        #region Simple
+        #region Mitigation
 
         /// <summary>
         ///     Simple Mitigation option for Single Target.
@@ -571,6 +649,57 @@ internal partial class DRK
         /// <seealso cref="Preset.DRK_AoE_Simple" />
         public static readonly UserInt DRK_AoE_SimpleMitigation =
             new("DRK_AoE_SimpleMitigation", (int)SimpleMitigation.On);
+        
+        /// <summary>
+        ///     Simple Mitigation option for Single Target.
+        /// </summary>
+        /// <value>
+        ///     <b>Default</b>: <see cref="SimpleMitigation.On" /> <br />
+        ///     <b>Options</b>: <see cref="SimpleMitigation.Off" /> or
+        ///     <see cref="SimpleMitigation.On" />
+        /// </value>
+        /// <seealso cref="Preset.DRK_ST_Adv" />
+        public static readonly UserInt DRK_ST_AdvancedMitigation =
+            new("DRK_ST_AdvancedMitigation", (int)SimpleMitigation.On);
+
+        /// <summary>
+        ///     Simple Mitigation option for AoE.
+        /// </summary>
+        /// <value>
+        ///     <b>Default</b>: <see cref="SimpleMitigation.On" /> <br />
+        ///     <b>Options</b>: <see cref="SimpleMitigation.Off" /> or
+        ///     <see cref="SimpleMitigation.On" />
+        /// </value>
+        /// <seealso cref="Preset.DRK_AoE_Adv" />
+        public static readonly UserInt DRK_AoE_AdvancedMitigation =
+            new("DRK_AoE_AdvancedMitigation", (int)SimpleMitigation.On);
+
+        public static readonly ContentCheck.ListSet DRK_Boss_Mit_DifficultyListSet = ContentCheck.ListSet.CasualVSHard;
+        
+        public static readonly UserFloat DRK_Mitigation_NonBoss_MitigationThreshold = new("DRK_Mitigation_NonBoss_MitigationThreshold", 10f);
+        
+        public static readonly UserInt DRK_Mitigation_NonBoss_LivingDead_Health = new("DRK_Mitigation_NonBoss_LivingDead_Health", 15);
+        
+        public static readonly UserBoolArray DRK_Mitigation_Boss_BlackestNight_OnCD_Difficulty = new("DRK_Mitigation_Boss_BlackestNight_OnCD_Difficulty",  [true, false]);
+        public static readonly UserInt DRK_Mitigation_Boss_BlackestNight_Health = new("DRK_Mitigation_Boss_BlackestNight_Health", 30);
+        
+        public static readonly UserBoolArray DRK_Mitigation_Boss_BlackestNight_TankBuster_Difficulty = new("DRK_Mitigation_Boss_BlackestNight_TankBuster_Difficulty",  [true, false]);
+        
+        public static readonly UserBoolArray DRK_Mitigation_Boss_Rampart_Difficulty = new("DRK_Mitigation_Boss_Rampart_Difficulty",  [true, false]);
+        
+        public static readonly UserBoolArray DRK_Mitigation_Boss_ShadowWall_Difficulty = new("DRK_Mitigation_Boss_ShadowWall_Difficulty",  [true, false]);
+        public static readonly UserBool DRK_Mitigation_Boss_ShadowWall_First = new("DRK_Mitigation_Boss_ShadowWall_First", true);
+        
+        public static readonly UserBoolArray DRK_Mitigation_Boss_DarkMind_Difficulty = new("DRK_Mitigation_Boss_DarkMind_Difficulty",  [true, false]);
+        public static readonly UserFloat DRK_Mitigation_Boss_DarkMind_Threshold = new("DRK_Mitigation_Boss_DarkMind_Threshold", 80f);
+        public static readonly UserBool DRK_Mitigation_Boss_DarkMind_Align= new("DRK_Mitigation_Boss_DarkMind_Align", true);
+        
+        public static readonly UserBoolArray DRK_Mitigation_Boss_Oblation_TankBuster_Difficulty = new("DRK_Mitigation_Boss_Oblation_TankBuster_Difficulty",  [true, false]);
+        
+        public static readonly UserBoolArray DRK_Mitigation_Boss_DarkMissionary_Difficulty = new("DRK_Mitigation_Boss_DarkMissionary_Difficulty",  [true, false]);
+        
+        public static readonly UserBoolArray DRK_Mitigation_Boss_Reprisal_Difficulty = new("DRK_Mitigation_Boss_Reprisal_Difficulty",  [true, false]);
+        
 
         #endregion
 
