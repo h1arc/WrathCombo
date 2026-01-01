@@ -110,7 +110,7 @@ public static class ActionWatching
                 // Cache Data
                 var targetId = target.id;
 #if DEBUG
-                var debugTargetName = debugObjectTable.FirstOrDefault(x => x.GameObjectId == targetId)?.Name ?? "Unknown";
+                var debugTargetName = debugObjectTable.SearchById(targetId)?.Name ?? "Unknown";
 #endif
 
                 foreach (var eff in target.effects)
@@ -287,7 +287,7 @@ public static class ActionWatching
                     $"Action: {actionId.ActionName()} (ID: {actionId}) | " +
                     $"Type: {actionType} | " +
                     $"Sequence: {sequence} | " +
-                    $"Target: {Svc.Objects.FirstOrDefault(x => x.GameObjectId == targetObjectId)?.Name ?? "Unknown"} | " +
+                    $"Target: {Svc.Objects.SearchById(targetObjectId)?.Name ?? "Unknown"} | " +
                     $"Params: [{a5}, {a6}, {a7}, {a8}, {a9}]"
                 );
 #endif

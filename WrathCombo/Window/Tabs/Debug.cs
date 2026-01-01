@@ -432,7 +432,7 @@ internal class Debug : ConfigWindow, IDisposable
 
             ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
 
-            
+
 
             ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
         }
@@ -528,7 +528,7 @@ internal class Debug : ConfigWindow, IDisposable
                     {
                         foreach (var h in EnmityDictParty)
                         {
-                            CustomStyleText($"{Svc.Objects.First(x => x.GameObjectId == h.Key).Name}:", $"{h.Value}%");
+                            CustomStyleText($"{Svc.Objects.SearchById(h.Key).Name}:", $"{h.Value}%");
                         }
 
                         ImGui.TreePop();
@@ -1088,7 +1088,7 @@ internal class Debug : ConfigWindow, IDisposable
 
         if (ImGui.CollapsingHeader("VFX Info"))
         {
-            ImGui.Indent(); 
+            ImGui.Indent();
             if (ImGui.CollapsingHeader("Friendly Target VFX"))
             {
                 ImGuiEx.TextWrapped($"Mainly to be used with ARR and real party members since they don't actually get added to the party for some reason.");

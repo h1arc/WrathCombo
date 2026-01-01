@@ -1,6 +1,5 @@
 #region
 
-using System;
 using System.Linq;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
@@ -33,7 +32,7 @@ public static class GameObjectExtensions
                 return chara.GetRole();
             }
         }
-        
+
         public float HPP
         {
             get {
@@ -198,9 +197,7 @@ public static class GameObjectExtensions
         ///     game.
         /// </summary>
         public IGameObject? IfStillAround() =>
-            obj != null &&
-            Svc.Objects
-                .Any(x => x.GameObjectId == obj.GameObjectId)
+            obj != null && Svc.Objects.SearchById(obj.GameObjectId) != null
                 ? obj
                 : null;
 
@@ -317,10 +314,7 @@ public static class GameObjectExtensions
         ///     Can be chained onto a <see cref="IGameObject" /> to make it a quick
         ///     boolean check for if the object is still loaded in the player's game.
         /// </summary>
-        public bool IsStillAround() =>
-            obj != null &&
-            Svc.Objects
-                .Any(x => x.GameObjectId == obj.GameObjectId);
+        public bool IsStillAround() => IfStillAround(obj) != null;
 
         /// <summary>
         ///     Can be chained onto a <see cref="IGameObject" /> to make it a quick
@@ -352,8 +346,7 @@ public static class GameObjectExtensions
     public static unsafe IGameObject? GetObjectFrom(GameObject* ptr) =>
         ptr == null
             ? null
-            : Svc.Objects
-                .FirstOrDefault(x => x.Address == (IntPtr)ptr);
+            : Svc.Objects.CreateObjectReference((nint)ptr);
 
     /// <summary>
     ///     Converts a GameObjectID to an IGameObject from the object table.
@@ -361,7 +354,7 @@ public static class GameObjectExtensions
     /// <param name="id">The GameObjectID to convert.</param>
     /// <returns>An IGameObject if found in the object table; otherwise, null.</returns>
     public static IGameObject? GetObjectFrom(ulong id) =>
-        Svc.Objects.FirstOrDefault(x => x.GameObjectId == id);
+        Svc.Objects.SearchById(id);
 
     /// <summary>
     ///     Converts a GameObjectID to an IGameObject from the object table.
