@@ -138,10 +138,10 @@ internal partial class MCH
             if (ActionReady(Chainsaw) && !HasStatusEffect(Buffs.ExcavatorReady))
                 return true;
 
-            if (!LevelChecked(Chainsaw) && LevelChecked(AirAnchor) && ActionReady(AirAnchor))
+            if (ActionReady(AirAnchor) && (!LevelChecked(Chainsaw) || GetCooldownRemainingTime(Chainsaw) > GCD * 2))
                 return true;
 
-            if (!LevelChecked(AirAnchor) && ActionReady(Drill))
+            if (ActionReady(Drill) && (!LevelChecked(AirAnchor) || GetCooldownRemainingTime(AirAnchor) > GCD * 2))
                 return true;
 
             if (!LevelChecked(CleanShot) && ActionReady(HotShot))
