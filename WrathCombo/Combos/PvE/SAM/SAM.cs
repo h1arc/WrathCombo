@@ -500,6 +500,7 @@ internal partial class SAM : Melee
                     if (SAM_Yukaze_Gekko &&
                         LevelChecked(Jinpu) &&
                         ((OnTargetsRear() || OnTargetsFront()) && !HasGetsu ||
+                         HasKa && !HasGetsu ||
                          SAM_ST_YukikazeCombo_Prio == 1 && !HasStatusEffect(Buffs.Fugetsu) ||
                          SenCount is 3 && RefreshFugetsu))
                         return Jinpu;
@@ -507,6 +508,7 @@ internal partial class SAM : Melee
                     if (SAM_Yukaze_Kasha &&
                         LevelChecked(Shifu) &&
                         ((OnTargetsFlank() || OnTargetsFront()) && !HasKa ||
+                         HasGetsu && !HasKa ||
                          SAM_ST_YukikazeCombo_Prio == 1 && !HasStatusEffect(Buffs.Fuka) ||
                          SenCount is 3 && RefreshFuka))
                         return Shifu;
