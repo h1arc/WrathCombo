@@ -1106,7 +1106,6 @@ internal class Debug : ConfigWindow, IDisposable
                     DrawVFXTree(obj);
                 }
             }
-
             ImGui.Unindent();
         }
 
