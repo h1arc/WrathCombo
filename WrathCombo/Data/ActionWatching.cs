@@ -235,6 +235,9 @@ public static class ActionWatching
                 ActionTimestamps[actionId] = currentTick;
                 UsedOnDict[(actionId, targetObjectId)] = currentTick;
             }
+
+            if (actionSheet.Unknown4 != 1 && castTime > 0)
+                AutoRotationController.HealThrottle = Environment.TickCount64 + 1000;
         }
 
         if (castTime == 0)
