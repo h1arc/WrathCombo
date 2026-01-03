@@ -240,7 +240,8 @@ internal abstract partial class CustomComboFunctions
         if ((optionalTarget ?? CurrentTarget) is not { } chara || LocalPlayer is not { })
             return false;
 
-        var inRangeActionManagerCheck = ActionManager.GetActionInRangeOrLoS(2, LocalPlayer.GameObject(), chara.Struct()) is 0 or 565;
+        uint actionId = (uint)(InPvP() ? 29058 : 2); //PvP Check against PLD Fast Blade (range 5) and outside PvP check interaction range
+        var inRangeActionManagerCheck = ActionManager.GetActionInRangeOrLoS(actionId, LocalPlayer.GameObject(), chara.Struct()) is 0 or 565;
         var distance = GetTargetDistance(chara);
 
         var distanceCheck = (InPvP() ? 5f : 3f);
