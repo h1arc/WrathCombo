@@ -1,6 +1,5 @@
 #region
 
-using System.Linq;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
@@ -114,22 +113,8 @@ internal partial class DRK : Tank
                 HasBattleTarget())
                 return Unmend;
 
-            if (DRK_ST_AdvancedMitigation != 1 || P.UIHelper.PresetControlled(Preset)?.enabled == true)
-            {
-                if (TryUseMits(RotationMode.advanced, ref actionID))
-                    return actionID;
-            }
-            
-            //var inMitigationContent =
-                //ContentCheck.IsInConfiguredContent(
-                    //DRK_ST_MitDifficulty,
-                    //DRK_ST_MitDifficultyListSet
-                //);
-
-            //if (IsEnabled(Preset.DRK_ST_Mitigation) &&
-                //inMitigationContent &&
-                //TryGetAction<Mitigation>(comboFlags, ref newAction))
-                //return newAction;
+            if (TryGetAction<Mitigation>(comboFlags, ref newAction))
+                return newAction;
 
             var specialManaOnly = true;
             if (IsEnabled(Preset.DRK_ST_Spenders) &&
@@ -187,11 +172,6 @@ internal partial class DRK : Tank
                 return HardSlash;
             }
 
-            if (DRK_ST_SimpleMitigation != 1 || P.UIHelper.PresetControlled(Preset)?.enabled == true)
-            {
-                if (TryUseMits(RotationMode.simple, ref actionID))
-                    return actionID;
-            }
             if (TryGetAction<Mitigation>(comboFlags, ref newAction))
                 return newAction;
 
@@ -238,15 +218,8 @@ internal partial class DRK : Tank
                 TryGetAction<Cooldown>(comboFlags, ref newAction))
                 return newAction;
             
-            if (DRK_AoE_AdvancedMitigation != 1 || P.UIHelper.PresetControlled(Preset)?.enabled == true)
-            {
-                if (TryUseMits(RotationMode.advanced, ref actionID))
-                    return actionID;
-            }
-
-            //if (IsEnabled(Preset.DRK_AoE_Mitigation) &&
-                //TryGetAction<Mitigation>(comboFlags, ref newAction))
-                //return newAction;
+            if (TryGetAction<Mitigation>(comboFlags, ref newAction))
+                return newAction;
 
             if (IsEnabled(Preset.DRK_AoE_Spenders) &&
                 TryGetAction<Spender>(comboFlags, ref newAction))
@@ -285,14 +258,8 @@ internal partial class DRK : Tank
             if (TryGetAction<Cooldown>(comboFlags, ref newAction))
                 return newAction;
 
-            if (DRK_AoE_SimpleMitigation != 1 || P.UIHelper.PresetControlled(Preset)?.enabled == true)
-            {
-                if (TryUseMits(RotationMode.simple, ref actionID))
-                    return actionID;
-            }
-            
-            //if (TryGetAction<Mitigation>(comboFlags, ref newAction))
-               // return newAction;
+            if (TryGetAction<Mitigation>(comboFlags, ref newAction))
+                return newAction;
 
             if (TryGetAction<Spender>(comboFlags, ref newAction))
                 return newAction;

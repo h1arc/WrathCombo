@@ -2332,7 +2332,11 @@ public enum Preset
     #endregion
     // Last value = 5003
     
-    [CustomComboInfo("Advanced Mitigation Options", "Mitigation Options for Dark Knight. Enable in each advanced combo", Job.DRK)]
+    [CustomComboInfo("Advanced Mitigation Options",
+        "Options for Advanced Combos' In-Combo Mitigation.\n" +
+        "Enable Mitigation in each Advanced Combo to use these options.\n" +
+        "(Simple Mode does not use these Options, instead Recommended Values in " +
+        "place of them)", Job.DRK)]
     DRK_Mitigation = 5300,
     
     [ParentCombo(DRK_Mitigation)]
@@ -2385,7 +2389,7 @@ public enum Preset
     
     [ParentCombo(DRK_Mitigation_Boss)]
     [CustomComboInfo("The Blackest Night Tankbuster Option", "Adds The Blackest Night when an incoming tankbuster is detected", Job.DRK)]
-    DRK_Mitigation_Boss_BlackestNight_TankBuster = 5314,
+    DRK_Mitigation_Boss_BlackestNight_TB = 5314,
     
     [ParentCombo(DRK_Mitigation_Boss)]
     [CustomComboInfo("Oblation Tankbuster Option", "Adds Oblation when an incoming tankbuster is detected", Job.DRK)]

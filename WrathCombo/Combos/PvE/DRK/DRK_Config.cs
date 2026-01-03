@@ -114,7 +114,7 @@ internal partial class DRK
                         itemWidth: medium, sliderIncrement: SliderIncrements.Fives);
                     break;
 
-                case Preset.DRK_Mitigation_Boss_BlackestNight_TankBuster:
+                case Preset.DRK_Mitigation_Boss_BlackestNight_TB:
                     UserConfig.DrawDifficultyMultiChoice(
                         DRK_Mit_Boss_BlackestNight_TankBuster_Difficulty,
                         DRK_Boss_Mit_DifficultyListSet,
