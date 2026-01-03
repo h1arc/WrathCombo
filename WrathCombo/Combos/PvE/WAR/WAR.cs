@@ -452,6 +452,22 @@ internal partial class WAR
             (ComboTimer > 0 && ComboAction == Maim && LevelChecked(StormsEye)) ? StormsEye :
             HeavySwing;
     }
+    
+    internal class WAR_AoE_BasicCombo : CustomCombo
+    {
+        protected internal override Preset Preset => Preset.WAR_AoE_BasicCombo;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not MythrilTempest)
+                return actionID;
+            
+            if (ComboAction is Overpower && ComboTimer > 0 && LevelChecked(MythrilTempest))
+                return MythrilTempest;
+
+            return Overpower;
+        }
+    }
 
     #endregion
 }

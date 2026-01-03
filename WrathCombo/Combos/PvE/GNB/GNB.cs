@@ -745,5 +745,21 @@ internal partial class GNB : Tank
             ComboTimer > 0 && ComboAction is KeenEdge && LevelChecked(BrutalShell) ? BrutalShell :
             ComboTimer > 0 && ComboAction is BrutalShell && LevelChecked(SolidBarrel) ? SolidBarrel : KeenEdge;
     }
+    
+    internal class GNB_AoE_BasicCombo : CustomCombo
+    {
+        protected internal override Preset Preset => Preset.GNB_AoE_BasicCombo;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not DemonSlaughter)
+                return actionID;
+            
+            if (ComboAction is DemonSlice && ComboTimer > 0 && LevelChecked(DemonSlaughter))
+                return DemonSlaughter;
+
+            return DemonSlice;
+        }
+    }
     #endregion
 }

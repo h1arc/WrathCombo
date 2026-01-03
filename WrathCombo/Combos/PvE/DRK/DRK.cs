@@ -38,6 +38,25 @@ internal partial class DRK : Tank
         }
     }
     
+    internal class DRK_AoE_BasicCombo : CustomCombo
+    {
+        protected internal override Preset Preset => Preset.DRK_AoE_BasicCombo;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not StalwartSoul)
+                return actionID;
+            
+            const Combo comboFlags = Combo.AoE | Combo.Basic;
+            var newAction = Unleash;
+
+            if (TryGetAction<Core>(comboFlags, ref newAction))
+                return newAction;
+
+            return Unleash;
+        }
+    }
+    
     internal class DRK_ST_Advanced : CustomCombo
     {
         protected internal override Preset Preset => Preset.DRK_ST_Adv;

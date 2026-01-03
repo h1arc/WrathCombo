@@ -578,6 +578,22 @@ internal partial class PLD : Tank
             return FastBlade;
         }
     }
+    
+    internal class PLD_AoE_BasicCombo : CustomCombo
+    {
+        protected internal override Preset Preset => Preset.PLD_AoE_BasicCombo;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Prominence)
+                return actionID;
+            
+            if (ComboAction is TotalEclipse && ComboTimer > 0 && LevelChecked(Prominence))
+                return Prominence;
+
+            return TotalEclipse;
+        }
+    }
 
     internal class PLD_Requiescat_Confiteor : CustomCombo
     {

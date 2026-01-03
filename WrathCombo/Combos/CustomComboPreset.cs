@@ -2742,9 +2742,14 @@ public enum Preset
     #region Basic combo
 
     [ReplaceSkill(DRK.Souleater)]
-    [CustomComboInfo("Basic Combo", "Replace Souleater with its combo chain.", Job.DRK)]
+    [CustomComboInfo("ST Basic Combo", "Replace Souleater with its combo chain.", Job.DRK)]
     [BasicCombo]
     DRK_ST_BasicCombo = 5003,
+    
+    [ReplaceSkill(DRK.StalwartSoul)]
+    [CustomComboInfo("AoE Basic Combo", "Replace Stalwart Soul with its combo chain.", Job.DRK)]
+    [BasicCombo]
+    DRK_AoE_BasicCombo = 5004,
 
     #endregion
 
@@ -3399,9 +3404,14 @@ public enum Preset
     #region Basic combo
 
     [ReplaceSkill(GNB.SolidBarrel)]
-    [CustomComboInfo("Basic Combo", "Replace Solid Barrel with its combo chain.", Job.GNB)]
+    [CustomComboInfo("ST Basic Combo", "Replace Solid Barrel with its combo chain.", Job.GNB)]
     [BasicCombo]
     GNB_ST_BasicCombo = 7100,
+    
+    [ReplaceSkill(GNB.DemonSlaughter)]
+    [CustomComboInfo("AoE Basic Combo", "Replace Demon Slaughter with its combo chain.", Job.GNB)]
+    [BasicCombo]
+    GNB_AoE_BasicCombo = 7101,
 
     #endregion
 
@@ -5052,9 +5062,14 @@ public enum Preset
     #region Basic combo
 
     [ReplaceSkill(PLD.RageOfHalone, PLD.RoyalAuthority)]
-    [CustomComboInfo("Basic Combo", "Replace Rage Of Halone or Royal Authority with its combo chain.", Job.PLD)]
+    [CustomComboInfo("ST Basic Combo", "Replace Rage Of Halone or Royal Authority with its combo chain.", Job.PLD)]
     [BasicCombo]
     PLD_ST_BasicCombo = 11061,
+    
+    [ReplaceSkill(PLD.RageOfHalone, PLD.Prominence)]
+    [CustomComboInfo("AoE Basic Combo", "Replace Prominence with its combo chain.", Job.PLD)]
+    [BasicCombo]
+    PLD_AoE_BasicCombo =11078,
 
     #endregion
 
@@ -7869,6 +7884,10 @@ public enum Preset
     [ReplaceSkill(WAR.StormsEye)]
     [CustomComboInfo("Storm's Eye Combo", "Replace Storm's Eye with its combo chain.", Job.WAR)]
     WAR_ST_StormsEyeCombo = 18070,
+    
+    [ReplaceSkill(WAR.MythrilTempest)]
+    [CustomComboInfo("Mythril Tempest Combo", "Replace Mythril Tempest with its combo chain.", Job.WAR)]
+    WAR_AoE_BasicCombo = 18151,
     #endregion
 
     [ReplaceSkill(WAR.FellCleave, WAR.Decimate)]
