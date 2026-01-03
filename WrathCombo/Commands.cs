@@ -519,7 +519,7 @@ public partial class WrathCombo
         var stateControlled =
             P.UIHelper.AutoRotationStateControlled() is not null;
 
-        if (!Service.Configuration.SuppressSetCommands)
+        if (!Service.Configuration.SuppressAutorotCommand)
             DuoLog.Information(
                 "Auto-Rotation set to "
                 + (Service.Configuration.RotationConfig.Enabled ? "ON" : "OFF")
