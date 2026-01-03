@@ -82,60 +82,102 @@ internal partial class DRK
                         "Disables the use of advanced mitigations ",
                         (int)SimpleMitigation.Off);
                     break;
-                
-                 case Preset.DRK_Mitigation_NonBoss:
-                    UserConfig.DrawSliderFloat(0, 100, DRK_Mitigation_NonBoss_MitigationThreshold, "Stop using when average health percentage of nearby enemies is below set. \n(Set to 0 to disable this check) ", decimals: 0);
+
+                #endregion
+
+                #region In-Combo Mitigation
+
+                case Preset.DRK_Mitigation_NonBoss:
+                    ImGui.Indent();
+                    UserConfig.DrawSliderFloat(0, 100,
+                        DRK_Mit_NonBoss_Threshold,
+                        stopUsingAtAverageDescription,
+                        itemWidth: medium, decimals: 0);
+                    ImGui.Unindent();
                     break;
-                
+
                 case Preset.DRK_Mitigation_NonBoss_LivingDead:
-                    UserConfig.DrawSliderInt(1, 100, DRK_Mitigation_NonBoss_LivingDead_Health, "Player HP% to use Holmgang at or below (100 = Disable check)");
+                    UserConfig.DrawSliderInt(1, 100,
+                        DRK_Mit_NonBoss_LivingDead_Health,
+                        startUsingAtDescription,
+                        itemWidth: medium, sliderIncrement: SliderIncrements.Fives);
                     break;
-                
+
                 case Preset.DRK_Mitigation_Boss_BlackestNight_OnCD:
-                    UserConfig.DrawDifficultyMultiChoice(DRK_Mitigation_Boss_BlackestNight_OnCD_Difficulty, DRK_Boss_Mit_DifficultyListSet ,
-                        "Select which difficulties the ability should be used in:");
-                    UserConfig.DrawSliderInt(1, 100, DRK_Mitigation_Boss_BlackestNight_Health, "Player HP% to use The Blackest Night at or below (100 = Disable check)");
+                    UserConfig.DrawDifficultyMultiChoice(
+                        DRK_Mit_Boss_BlackestNight_OnCD_Difficulty,
+                        DRK_Boss_Mit_DifficultyListSet,
+                        "Select what difficulties TBN should be used on CD:");
+                    UserConfig.DrawSliderInt(1, 100,
+                        DRK_Mit_Boss_BlackestNight_Health,
+                        startUsingAtDescriptionPlusDisable,
+                        itemWidth: medium, sliderIncrement: SliderIncrements.Fives);
                     break;
-                
+
                 case Preset.DRK_Mitigation_Boss_BlackestNight_TankBuster:
-                    UserConfig.DrawDifficultyMultiChoice(DRK_Mitigation_Boss_BlackestNight_TankBuster_Difficulty, DRK_Boss_Mit_DifficultyListSet ,
-                        "Select which difficulties the ability should be used in:");
+                    UserConfig.DrawDifficultyMultiChoice(
+                        DRK_Mit_Boss_BlackestNight_TankBuster_Difficulty,
+                        DRK_Boss_Mit_DifficultyListSet,
+                        contentToUseAbilityDescription);
                     break;
-                
+
                 case Preset.DRK_Mitigation_Boss_Rampart:
-                    UserConfig.DrawDifficultyMultiChoice(DRK_Mitigation_Boss_Rampart_Difficulty, DRK_Boss_Mit_DifficultyListSet ,
-                        "Select which difficulties the ability should be used in:");
+                    UserConfig.DrawDifficultyMultiChoice(
+                        DRK_Mit_Boss_Rampart_Difficulty,
+                        DRK_Boss_Mit_DifficultyListSet,
+                        contentToUseAbilityDescription);
                     break;
-                
+
                 case Preset.DRK_Mitigation_Boss_ShadowWall:
-                    UserConfig.DrawDifficultyMultiChoice(DRK_Mitigation_Boss_ShadowWall_Difficulty, DRK_Boss_Mit_DifficultyListSet ,
-                        "Select which difficulties the ability should be used in:");
-                    UserConfig.DrawAdditionalBoolChoice(DRK_Mitigation_Boss_ShadowWall_First, "Use ShadowWall/Shadowed Vigil First", "Uses ShadowWall/Shadowed Vigil before Rampart");
+                    UserConfig.DrawDifficultyMultiChoice(
+                        DRK_Mit_Boss_ShadowWall_Difficulty,
+                        DRK_Boss_Mit_DifficultyListSet,
+                        contentToUseAbilityDescription);
+                    UserConfig.DrawAdditionalBoolChoice(
+                        DRK_Mit_Boss_ShadowWall_First,
+                        "Use ShadowWall/Shadowed Vigil First",
+                        "Uses ShadowWall/Shadowed Vigil before Rampart",
+                        indentDescription: true);
                     break;
-                
+
                 case Preset.DRK_Mitigation_Boss_DarkMind:
-                    UserConfig.DrawDifficultyMultiChoice(DRK_Mitigation_Boss_DarkMind_Difficulty, DRK_Boss_Mit_DifficultyListSet ,
-                        "Select which difficulties the ability should be used in:");
-                    UserConfig.DrawSliderFloat(1, 100, DRK_Mitigation_Boss_DarkMind_Threshold, "Will use DarkMind as extra tankbuster mitigation if under this HP%", decimals: 0);
-                    UserConfig.DrawAdditionalBoolChoice(DRK_Mitigation_Boss_DarkMind_Align, "Align DarkMind", "Tries to align DarkMind with Rampart for tankbusters.");
+                    UserConfig.DrawDifficultyMultiChoice(
+                        DRK_Mit_Boss_DarkMind_Difficulty,
+                        DRK_Boss_Mit_DifficultyListSet,
+                        contentToUseAbilityDescription);
+                    ImGui.Indent();
+                    UserConfig.DrawSliderFloat(1, 100,
+                        DRK_Mit_Boss_DarkMind_Threshold,
+                        startUsingAtDescriptionPlusDisable,
+                        decimals: 0);
+                    ImGui.Unindent();
+                    UserConfig.DrawAdditionalBoolChoice(DRK_Mit_Boss_DarkMind_Align,
+                        "Align Dark Mind",
+                        "Tries to align Dark Mind with Rampart for tankbusters.\n" +
+                        "(as it is lesser than Shadow Wall/Shadowed Vigil)",
+                        indentDescription: true);
                     break;
-                
+
                 case Preset.DRK_Mitigation_Boss_Oblation:
-                    UserConfig.DrawDifficultyMultiChoice(DRK_Mitigation_Boss_Oblation_TankBuster_Difficulty, DRK_Boss_Mit_DifficultyListSet ,
-                        "Select which difficulties the ability should be used in:");
+                    UserConfig.DrawDifficultyMultiChoice(
+                        DRK_Mit_Boss_Oblation_TankBuster_Difficulty,
+                        DRK_Boss_Mit_DifficultyListSet,
+                        contentToUseAbilityDescription);
                     break;
-                
+
                 case Preset.DRK_Mitigation_Boss_DarkMissionary:
-                    UserConfig.DrawDifficultyMultiChoice(DRK_Mitigation_Boss_DarkMissionary_Difficulty, DRK_Boss_Mit_DifficultyListSet ,
-                        "Select which difficulties the ability should be used in:");
+                    UserConfig.DrawDifficultyMultiChoice(
+                        DRK_Mit_Boss_DarkMissionary_Difficulty,
+                        DRK_Boss_Mit_DifficultyListSet,
+                        contentToUseAbilityDescription);
                     break;
-                    
+
                 case Preset.DRK_Mitigation_Boss_Reprisal:
-                    UserConfig.DrawDifficultyMultiChoice(DRK_Mitigation_Boss_Reprisal_Difficulty, DRK_Boss_Mit_DifficultyListSet ,
-                        "Select which difficulties the ability should be used in:");
+                    UserConfig.DrawDifficultyMultiChoice(
+                        DRK_Mit_Boss_Reprisal_Difficulty,
+                        DRK_Boss_Mit_DifficultyListSet,
+                        contentToUseAbilityDescription);
                     break;
-                
-                
 
                 #endregion
 
@@ -572,6 +614,10 @@ internal partial class DRK
         /// Biggest bar width
         private const float biggest = 200f;
 
+        /// Bar Description for Average HP% to stop using
+        private const string stopUsingAtAverageDescription =
+            "Average Nearby Target HP% to stop using (0 = Use Always)";
+
         /// Bar Description for HP% to stop using
         private const string stopUsingAtDescription =
             "Target HP% to stop using (0 = Use Always)";
@@ -588,12 +634,17 @@ internal partial class DRK
         private const string startUsingAtDescriptionPlusDisable =
             "HP% to use at or below (100 = Disable check)";
 
-        /// Bar Description for # to start using (above)
+        /// Bar Description for # to start using above
         private const string startUsingAboveDescription =
             "# to use at or above";
 
+        /// Bar Description for # of charges to keep
         private const string chargesToKeepDescription =
             "# charges to keep (0 = Use All)";
+        
+        /// Content choice description for when to use an ability
+        private const string contentToUseAbilityDescription =
+            "Select what difficulties the ability should be used in:";
 
         /// <summary>
         ///     Whether abilities should be restricted to bosses or not.
@@ -624,7 +675,7 @@ internal partial class DRK
 
         #region Options
 
-        #region Mitigation
+        #region In-Combo Mitigation
 
         /// <summary>
         ///     Simple Mitigation option for Single Target.
@@ -676,29 +727,29 @@ internal partial class DRK
 
         public static readonly ContentCheck.ListSet DRK_Boss_Mit_DifficultyListSet = ContentCheck.ListSet.CasualVSHard;
         
-        public static readonly UserFloat DRK_Mitigation_NonBoss_MitigationThreshold = new("DRK_Mitigation_NonBoss_MitigationThreshold", 10f);
+        public static readonly UserFloat DRK_Mit_NonBoss_Threshold = new("DRK_Mit_NonBoss_Threshold", 10f);
         
-        public static readonly UserInt DRK_Mitigation_NonBoss_LivingDead_Health = new("DRK_Mitigation_NonBoss_LivingDead_Health", 15);
+        public static readonly UserInt DRK_Mit_NonBoss_LivingDead_Health = new("DRK_Mit_NonBoss_LivingDead_Health", 15);
         
-        public static readonly UserBoolArray DRK_Mitigation_Boss_BlackestNight_OnCD_Difficulty = new("DRK_Mitigation_Boss_BlackestNight_OnCD_Difficulty",  [true, false]);
-        public static readonly UserInt DRK_Mitigation_Boss_BlackestNight_Health = new("DRK_Mitigation_Boss_BlackestNight_Health", 30);
+        public static readonly UserBoolArray DRK_Mit_Boss_BlackestNight_OnCD_Difficulty = new("DRK_Mit_Boss_BlackestNight_OnCD_Difficulty",  [true, false]);
+        public static readonly UserInt DRK_Mit_Boss_BlackestNight_Health = new("DRK_Mit_Boss_BlackestNight_Health", 30);
         
-        public static readonly UserBoolArray DRK_Mitigation_Boss_BlackestNight_TankBuster_Difficulty = new("DRK_Mitigation_Boss_BlackestNight_TankBuster_Difficulty",  [true, false]);
+        public static readonly UserBoolArray DRK_Mit_Boss_BlackestNight_TankBuster_Difficulty = new("DRK_Mit_Boss_BlackestNight_TankBuster_Difficulty",  [true, false]);
         
-        public static readonly UserBoolArray DRK_Mitigation_Boss_Rampart_Difficulty = new("DRK_Mitigation_Boss_Rampart_Difficulty",  [true, false]);
+        public static readonly UserBoolArray DRK_Mit_Boss_Rampart_Difficulty = new("DRK_Mit_Boss_Rampart_Difficulty",  [true, false]);
         
-        public static readonly UserBoolArray DRK_Mitigation_Boss_ShadowWall_Difficulty = new("DRK_Mitigation_Boss_ShadowWall_Difficulty",  [true, false]);
-        public static readonly UserBool DRK_Mitigation_Boss_ShadowWall_First = new("DRK_Mitigation_Boss_ShadowWall_First", true);
+        public static readonly UserBoolArray DRK_Mit_Boss_ShadowWall_Difficulty = new("DRK_Mit_Boss_ShadowWall_Difficulty",  [true, false]);
+        public static readonly UserBool DRK_Mit_Boss_ShadowWall_First = new("DRK_Mit_Boss_ShadowWall_First", true);
         
-        public static readonly UserBoolArray DRK_Mitigation_Boss_DarkMind_Difficulty = new("DRK_Mitigation_Boss_DarkMind_Difficulty",  [true, false]);
-        public static readonly UserFloat DRK_Mitigation_Boss_DarkMind_Threshold = new("DRK_Mitigation_Boss_DarkMind_Threshold", 80f);
-        public static readonly UserBool DRK_Mitigation_Boss_DarkMind_Align= new("DRK_Mitigation_Boss_DarkMind_Align", true);
+        public static readonly UserBoolArray DRK_Mit_Boss_DarkMind_Difficulty = new("DRK_Mit_Boss_DarkMind_Difficulty",  [true, false]);
+        public static readonly UserFloat DRK_Mit_Boss_DarkMind_Threshold = new("DRK_Mit_Boss_DarkMind_Threshold", 80f);
+        public static readonly UserBool DRK_Mit_Boss_DarkMind_Align= new("DRK_Mit_Boss_DarkMind_Align", true);
         
-        public static readonly UserBoolArray DRK_Mitigation_Boss_Oblation_TankBuster_Difficulty = new("DRK_Mitigation_Boss_Oblation_TankBuster_Difficulty",  [true, false]);
+        public static readonly UserBoolArray DRK_Mit_Boss_Oblation_TankBuster_Difficulty = new("DRK_Mit_Boss_Oblation_TankBuster_Difficulty",  [true, false]);
         
-        public static readonly UserBoolArray DRK_Mitigation_Boss_DarkMissionary_Difficulty = new("DRK_Mitigation_Boss_DarkMissionary_Difficulty",  [true, false]);
+        public static readonly UserBoolArray DRK_Mit_Boss_DarkMissionary_Difficulty = new("DRK_Mit_Boss_DarkMissionary_Difficulty",  [true, false]);
         
-        public static readonly UserBoolArray DRK_Mitigation_Boss_Reprisal_Difficulty = new("DRK_Mitigation_Boss_Reprisal_Difficulty",  [true, false]);
+        public static readonly UserBoolArray DRK_Mit_Boss_Reprisal_Difficulty = new("DRK_Mit_Boss_Reprisal_Difficulty",  [true, false]);
         
 
         #endregion

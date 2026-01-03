@@ -32,8 +32,8 @@ internal partial class DRK
     ///     Checking if there is space to weave an oGCD, with consideration for
     ///     whether triple weaves should be avoided or not.
     /// </summary>
-    /// <seealso cref="CustomComboFunctions.CanWeave(double)" />
-    /// <seealso cref="CanDelayedWeave(double,double)" />
+    /// <seealso cref="CustomComboFunctions.CanWeave(float, int?)" />
+    /// <seealso cref="CanDelayedWeave(float,float,int?)" />
     private static bool CanWeave => CanWeave() || CanDelayedWeave();
 
     /// <summary>
@@ -229,7 +229,7 @@ internal partial class DRK
             return false;
         
         #region Living Dead
-        var livingDeadThreshold = rotationFlags.HasFlag(RotationMode.simple) ? 10 : DRK_Mitigation_NonBoss_LivingDead_Health;
+        var livingDeadThreshold = rotationFlags.HasFlag(RotationMode.simple) ? 10 : DRK_Mit_NonBoss_LivingDead_Health;
         
         if (IsEnabled(Preset.DRK_Mitigation_NonBoss_LivingDead) && ActionReady(LivingDead) &&
             PlayerHealthPercentageHp() <= livingDeadThreshold)
@@ -264,7 +264,7 @@ internal partial class DRK
         #region Mitigation Threshold Bailout
         float mitigationThreshold = rotationFlags.HasFlag(RotationMode.simple) 
             ? 10 
-            : DRK_Mitigation_NonBoss_MitigationThreshold;
+            : DRK_Mit_NonBoss_Threshold;
         if (GetAvgEnemyHPPercentInRange(10f) <= mitigationThreshold) 
             return false;
         #endregion
@@ -326,12 +326,14 @@ internal partial class DRK
         #region Shadow Wall and Rampart
         var shadowWallFirst = rotationFlags.HasFlag(RotationMode.simple)
             ? false
-            : DRK_Mitigation_Boss_ShadowWall_First;
+            : DRK_Mit_Boss_ShadowWall_First;
         
-        var shadowWallInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) || 
-                                            ContentCheck.IsInConfiguredContent(DRK_Mitigation_Boss_ShadowWall_Difficulty, DRK_Boss_Mit_DifficultyListSet);
-        
-        
+        var shadowWallInMitigationContent =
+            rotationFlags.HasFlag(RotationMode.simple) || 
+            ContentCheck.IsInConfiguredContent(
+                DRK_Mit_Boss_ShadowWall_Difficulty,
+                DRK_Boss_Mit_DifficultyListSet);
+
         if (IsEnabled(Preset.DRK_Mitigation_Boss_ShadowWall) && ActionReady(OriginalHook(ShadowWall)) && shadowWallInMitigationContent &&
             HasIncomingTankBusterEffect() && !JustUsed(Role.Rampart, 20f) &&
             (!ActionReady(Role.Rampart) || shadowWallFirst))
@@ -340,8 +342,11 @@ internal partial class DRK
             return true;
         }
         
-        var rampartInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) || 
-                                         ContentCheck.IsInConfiguredContent(DRK_Mitigation_Boss_Rampart_Difficulty, DRK_Boss_Mit_DifficultyListSet);
+        var rampartInMitigationContent =
+            rotationFlags.HasFlag(RotationMode.simple) ||
+            ContentCheck.IsInConfiguredContent(
+                DRK_Mit_Boss_Rampart_Difficulty,
+                DRK_Boss_Mit_DifficultyListSet);
         
         if (IsEnabled(Preset.DRK_Mitigation_Boss_Rampart) && ActionReady(Role.Rampart) && rampartInMitigationContent &&
             HasIncomingTankBusterEffect() && !JustUsed(OriginalHook(ShadowWall), 15f))
@@ -350,16 +355,23 @@ internal partial class DRK
             return true;
         }
         #endregion
-        
+
         #region Blackest Night
-        var blackestNightOnCDInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) ||
-                                              ContentCheck.IsInConfiguredContent(DRK_Mitigation_Boss_BlackestNight_OnCD_Difficulty, DRK_Boss_Mit_DifficultyListSet);
+        var blackestNightOnCDInMitigationContent =
+            rotationFlags.HasFlag(RotationMode.simple) ||
+            ContentCheck.IsInConfiguredContent(
+                DRK_Mit_Boss_BlackestNight_OnCD_Difficulty,
+                DRK_Boss_Mit_DifficultyListSet);
         
-        var blackestNightInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) ||
-                                               ContentCheck.IsInConfiguredContent(DRK_Mitigation_Boss_BlackestNight_TankBuster_Difficulty, DRK_Boss_Mit_DifficultyListSet);
-        var blackestNightHealthThreshold = rotationFlags.HasFlag(RotationMode.simple) 
+        var blackestNightInMitigationContent =
+            rotationFlags.HasFlag(RotationMode.simple) ||
+            ContentCheck.IsInConfiguredContent(
+                DRK_Mit_Boss_BlackestNight_TankBuster_Difficulty,
+                DRK_Boss_Mit_DifficultyListSet);
+        var blackestNightHealthThreshold = rotationFlags.HasFlag(RotationMode
+            .simple) 
             ? 25
-            : DRK_Mitigation_Boss_BlackestNight_Health;
+            : DRK_Mit_Boss_BlackestNight_Health;
             
         if (ActionReady(BlackestNight) &&
             (IsEnabled(Preset.DRK_Mitigation_Boss_BlackestNight_OnCD) &&  PlayerHealthPercentageHp() <= blackestNightHealthThreshold && IsPlayerTargeted() && blackestNightOnCDInMitigationContent ||
@@ -371,8 +383,12 @@ internal partial class DRK
         #endregion
         
         #region Oblation
-        var oblationInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) ||
-                                               ContentCheck.IsInConfiguredContent(DRK_Mitigation_Boss_Oblation_TankBuster_Difficulty, DRK_Boss_Mit_DifficultyListSet);
+        var oblationInMitigationContent =
+            rotationFlags.HasFlag(RotationMode.simple) ||
+            ContentCheck.IsInConfiguredContent(
+                DRK_Mit_Boss_Oblation_TankBuster_Difficulty,
+                DRK_Boss_Mit_DifficultyListSet);
+
         if (ActionReady(Oblation) && IsEnabled(Preset.DRK_Mitigation_Boss_Oblation) && HasIncomingTankBusterEffect() && !JustUsed(OriginalHook(Oblation), 10f) && oblationInMitigationContent)
         {
             actionID = Oblation;
@@ -383,14 +399,17 @@ internal partial class DRK
         #region Dark Mind
         float emergencyDarkMindThreshold = rotationFlags.HasFlag(RotationMode.simple)
             ? 80
-            : DRK_Mitigation_Boss_DarkMind_Threshold;
+            : DRK_Mit_Boss_DarkMind_Threshold;
         
         var alignDarkMind = rotationFlags.HasFlag(RotationMode.simple)
             ? true
-            : DRK_Mitigation_Boss_DarkMind_Align;
+            : DRK_Mit_Boss_DarkMind_Align;
         
-        var darkMindInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) || 
-                                          ContentCheck.IsInConfiguredContent(DRK_Mitigation_Boss_DarkMind_Difficulty, DRK_Boss_Mit_DifficultyListSet);
+        var darkMindInMitigationContent =
+            rotationFlags.HasFlag(RotationMode.simple) ||
+            ContentCheck.IsInConfiguredContent(
+                DRK_Mit_Boss_DarkMind_Difficulty,
+                DRK_Boss_Mit_DifficultyListSet);
         
         
         if (IsEnabled(Preset.DRK_Mitigation_Boss_DarkMind) && ActionReady(DarkMind) && HasIncomingTankBusterEffect() && darkMindInMitigationContent &&
@@ -404,8 +423,11 @@ internal partial class DRK
         #endregion
         
         #region Reprisal
-        var reprisalInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) ||
-                                          ContentCheck.IsInConfiguredContent(DRK_Mitigation_Boss_Reprisal_Difficulty, DRK_Boss_Mit_DifficultyListSet);
+        var reprisalInMitigationContent =
+            rotationFlags.HasFlag(RotationMode.simple) ||
+            ContentCheck.IsInConfiguredContent(
+                DRK_Mit_Boss_Reprisal_Difficulty,
+                DRK_Boss_Mit_DifficultyListSet);
         
         if (IsEnabled(Preset.DRK_Mitigation_Boss_Reprisal) && reprisalInMitigationContent &&
             !JustUsed(DarkMissionary, 10f) &&
@@ -417,8 +439,11 @@ internal partial class DRK
         #endregion
         
         #region Dark Missionary
-        var darkMissionaryInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) ||
-                                                ContentCheck.IsInConfiguredContent(DRK_Mitigation_Boss_DarkMissionary_Difficulty, DRK_Boss_Mit_DifficultyListSet);
+        var darkMissionaryInMitigationContent =
+            rotationFlags.HasFlag(RotationMode.simple) ||
+            ContentCheck.IsInConfiguredContent(
+                DRK_Mit_Boss_DarkMissionary_Difficulty,
+                DRK_Boss_Mit_DifficultyListSet);
         
         if (IsEnabled(Preset.DRK_Mitigation_Boss_DarkMissionary) && darkMissionaryInMitigationContent &&
             !JustUsed(Role.Reprisal, 10f) &&

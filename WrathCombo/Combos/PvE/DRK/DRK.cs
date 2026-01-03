@@ -192,8 +192,8 @@ internal partial class DRK : Tank
                 if (TryUseMits(RotationMode.simple, ref actionID))
                     return actionID;
             }
-            //if (TryGetAction<Mitigation>(comboFlags, ref newAction))
-                //return newAction;
+            if (TryGetAction<Mitigation>(comboFlags, ref newAction))
+                return newAction;
 
             if (TryGetAction<Cooldown>(comboFlags, ref newAction, true))
                 return newAction;
