@@ -25,12 +25,10 @@ internal partial class GNB : Tank
 
             #region Non-Rotation
 
-            if (Role.CanInterject() &&
-                IsEnabled(Preset.GNB_ST_Interrupt))
+            if (Role.CanInterject())
                 return Role.Interject;
 
-            if (Role.CanLowBlow() &&
-                IsEnabled(Preset.GNB_ST_Stun))
+            if (Role.CanLowBlow())
                 return Role.LowBlow;
 
             if (BozjaActions() != 0)
@@ -92,8 +90,7 @@ internal partial class GNB : Tank
             //MAX PRIORITY - just clip it, it's better than just losing it altogether
             //Continuation procs (Hypervelocity, Jugular Rip, Abdomen Tear, Eye Gouge)
             if ((CanContinue || HasStatusEffect(Buffs.ReadyToBlast)) &&
-                RemainingGCD < 0.6f &&
-                IsEnabled(Preset.GNB_ST_Continuation))
+                RemainingGCD < 0.6f)
                 return OriginalHook(Continuation);
 
             //No Mercy
