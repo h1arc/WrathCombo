@@ -173,10 +173,19 @@ internal abstract partial class CustomComboFunctions
         IGameObject? optionalTarget = null)
     {
         var target = optionalTarget ?? CurrentTarget;
+        IBattleChara chara;
 
         // Bail if the target is not casting (and is a valid target)
-        if (target is not IBattleChara { IsCasting: true } chara)
+        try
+        {
+            if (target is not IBattleChara { IsCasting: true } character)
+                return false;
+            chara = character;
+        }
+        catch
+        {
             return false;
+        }
 
         // Bail if blacklisted
         if (Service.Configuration.StatusBlacklist.Any(x => x.Status == All.Debuffs.Stun && x.BaseId == chara.BaseId))
