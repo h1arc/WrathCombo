@@ -46,6 +46,14 @@ internal partial class VPR
         !HasStatusEffect(Buffs.HindsbaneVenom) &&
         !HasStatusEffect(Buffs.HindstungVenom);
 
+    private static bool RefreshHuntersInstinct =>
+        GetStatusEffectRemainingTime(Buffs.HuntersInstinct) <
+        GetStatusEffectRemainingTime(Buffs.Swiftscaled);
+
+    private static bool RefreshSwiftscaled =>
+        GetStatusEffectRemainingTime(Buffs.Swiftscaled) <=
+        GetStatusEffectRemainingTime(Buffs.HuntersInstinct);
+
     #endregion
 
     #region Reawaken
@@ -208,6 +216,46 @@ internal partial class VPR
     }
 
    #endregion
+    
+    #region Vicewinder
+
+    private static bool UseVicewinder()
+    {
+        //Vicewinder Usage
+        if (IsEnabled(Preset.VPR_ST_Vicewinder) &&
+            HasStatusEffect(Buffs.Swiftscaled) && !IsComboExpiring(3) &&
+            ActionReady(Vicewinder) && !HasStatusEffect(Buffs.Reawakened) && InMeleeRange() &&
+            (IreCD >= GCD * 5 && InBossEncounter() || !InBossEncounter() || !LevelChecked(SerpentsIre)) &&
+            !IsVenomExpiring(3) && !IsHoningExpiring(3))
+            return VPR_TrueNortVicewinder &&
+                   Role.CanTrueNorth()
+                ? Role.TrueNorth
+                : Vicewinder;
+        
+        //Vicewinder Combo
+        if (IsEnabled(Preset.VPR_ST_VicewinderCombo) &&
+            !HasStatusEffect(Buffs.Reawakened) &&
+            LevelChecked(Vicewinder) && InMeleeRange())
+        {
+            // Swiftskin's Coil
+            if (VicewinderReady &&
+                (!OnTargetsFlank() ||
+                 !TargetNeedsPositionals()) ||
+                HuntersCoilReady)
+                return SwiftskinsCoil;
+
+            // Hunter's Coil
+            if (VicewinderReady &&
+                (!OnTargetsRear() ||
+                 !TargetNeedsPositionals()) ||
+                SwiftskinsCoilReady)
+                return HuntersCoil;
+        }
+    }
+
+
+    #endregion
+    
 
     #region Combos
 
