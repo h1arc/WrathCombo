@@ -2647,12 +2647,12 @@ public enum Preset
     DRK_Mitigation_Boss_Oblation = 5319,
     
     [ParentCombo(DRK_Mitigation_Boss)]
-    [CustomComboInfo("Shadow Wall/Shadowed Vigil Tankbuster Option", "Adds Shadow Wall/Shadowed Vigil when an incoming tankbuster is detected. Will not overlap with Rampart.", Job.DRK)]
-    DRK_Mitigation_Boss_ShadowWall = 5315,
-    
-    [ParentCombo(DRK_Mitigation_Boss)]
     [CustomComboInfo("Rampart Tankbuster Option", "Adds Rampart when an incoming tankbuster is detected. Will Not Overlap with Shadow Wall/Shadowed Vigil", Job.DRK)]
     DRK_Mitigation_Boss_Rampart = 5316,
+    
+    [ParentCombo(DRK_Mitigation_Boss)]
+    [CustomComboInfo("Shadow Wall/Shadowed Vigil Tankbuster Option", "Adds Shadow Wall/Shadowed Vigil when an incoming tankbuster is detected. Will not overlap with Rampart.", Job.DRK)]
+    DRK_Mitigation_Boss_ShadowWall = 5315,
     
     [ParentCombo(DRK_Mitigation_Boss)]
     [CustomComboInfo("Dark Mind Tankbuster Option", "Adds Dark Mind when an incoming tankbuster is detected. Will not overlap unless below set threshold or aligned with rampart.", Job.DRK)]
@@ -3073,89 +3073,6 @@ public enum Preset
     [SimpleCombo]
     GNB_AoE_Simple = 7002,
     #endregion
-    
-    #region Advanced Mitigation 
-    //7700s LastUsed 7713
-    [CustomComboInfo("Advanced Mitigation Options", "Mitigation Options for Gunbreaker. Enable in each advanced combo", Job.GNB)]
-    GNB_Mitigation = 7700,
-    
-    [ParentCombo(GNB_Mitigation)]
-    [CustomComboInfo("Non Boss Encounter Mitigation", "Adds Mitigation to the combos when not in a boss encounter. Will not overlap separate options unless stated.", Job.GNB)]
-    GNB_Mitigation_NonBoss = 7701,
-    
-    [ParentCombo(GNB_Mitigation_NonBoss)]
-    [CustomComboInfo("Rampart Option", "Adds Rampart when 3 or more targets", Job.GNB)]
-    GNB_Mitigation_NonBoss_Rampart = 7702,
-    
-    [ParentCombo(GNB_Mitigation_NonBoss)]
-    [CustomComboInfo("Nebula Option", "Adds Nebula/Great Nebula when 3 or more targets", Job.GNB)]
-    GNB_Mitigation_NonBoss_Nebula = 7703,
-    
-    [ParentCombo(GNB_Mitigation_NonBoss)]
-    [CustomComboInfo("Camouflage Option", "Adds Camouflage when 3 or more targets", Job.GNB)]
-    GNB_Mitigation_NonBoss_Camouflage = 7704,
-    
-    [ParentCombo(GNB_Mitigation_NonBoss)]
-    [CustomComboInfo("Aurora Option", "Adds Aurora when 3 or more targets. Will overlap with other mits.", Job.GNB)]
-    GNB_Mitigation_NonBoss_Aurora = 7705,
-    
-    [ParentCombo(GNB_Mitigation_NonBoss)]
-    [CustomComboInfo("Superbolide Option", "Adds Superbolide when 5 or more targets", Job.GNB)]
-    GNB_Mitigation_NonBoss_Superbolide = 7706,
-    
-    [ParentCombo(GNB_Mitigation_NonBoss)]
-    [CustomComboInfo("Arm's Length Option", "Adds Arm's Length when 5 or more targets", Job.GNB)]
-    GNB_Mitigation_NonBoss_ArmsLength = 7707,
-    
-    [ParentCombo(GNB_Mitigation_NonBoss)]
-    [CustomComboInfo("Reprisal Option", "Adds Reprisal when 5 or more targets. Will overlap with others.", Job.GNB)]
-    GNB_Mitigation_NonBoss_Reprisal= 7708,
-    
-    [ParentCombo(GNB_Mitigation_NonBoss)]
-    [CustomComboInfo("Heart of Light Option", "Adds Heart of Light when 5 or more targets. Will overlap with others.", Job.GNB)]
-    GNB_Mitigation_NonBoss_HeartOfLight = 7709,
-    
-    [ParentCombo(GNB_Mitigation_NonBoss)]
-    [CustomComboInfo("Heart of Stone/Corundrum Option", "Adds Heart of Stone/Corundrum when available. Will overlap with others.", Job.GNB)]
-    GNB_Mitigation_NonBoss_HeartOfStone = 7710,
-    
-    [ParentCombo(GNB_Mitigation)]
-    [CustomComboInfo("Boss Encounter Mitigation", "Adds Mitigation to the combos when not in a boss encounter. Will not overlap separate options unless stated.", Job.GNB)]
-    GNB_Mitigation_Boss = 7711,
-    
-    [ParentCombo(GNB_Mitigation_Boss)]
-    [CustomComboInfo("Aurora Option", "Adds Aurora when below threshold.", Job.GNB)]
-    GNB_Mitigation_Boss_Aurora = 7712,
-    
-    [ParentCombo(GNB_Mitigation_Boss)]
-    [CustomComboInfo("Heart Of Stone/Corundrum on Cooldown Option", "Adds Heart Of Stone/Corundrum on CD when below threshold.", Job.GNB)]
-    GNB_Mitigation_Boss_HeartOfStone_OnCD = 7716,
-    
-    [ParentCombo(GNB_Mitigation_Boss)]
-    [CustomComboInfo("Heart Of Stone/Corundrum Tankbuster Option", "Adds Heart Of Stone/Corundrum when tankbuster is detected.", Job.GNB)]
-    GNB_Mitigation_Boss_HeartOfStone_TankBuster = 7717,
-        
-    [ParentCombo(GNB_Mitigation_Boss)]
-    [CustomComboInfo("Nebula/Great Nebula Tankbuster Option", "Adds Nebula/Great Nebula when tankbuster is detected. Will not overlap with Rampart.", Job.GNB)]
-    GNB_Mitigation_Boss_Nebula = 7718,
-    
-    [ParentCombo(GNB_Mitigation_Boss)]
-    [CustomComboInfo("Rampart Tankbuster Option", "Adds Rampart when tankbuster is detected. Will not overlap with Nebula/Great Nebula.", Job.GNB)]
-    GNB_Mitigation_Boss_Rampart = 7719,
-    
-    [ParentCombo(GNB_Mitigation_Boss)]
-    [CustomComboInfo("Camouflage Tankbuster Option", "Adds Camouflage when tankbuster is detected. Will not overlap unless below set threshold or aligned with rampart.", Job.GNB)]
-    GNB_Mitigation_Boss_Camouflage = 7720,
-    
-    [ParentCombo(GNB_Mitigation_Boss)]
-    [CustomComboInfo("Raidwide Reprisal Option", "Adds Reprisal when raidwide casting is detected.", Job.GNB)]
-    GNB_Mitigation_Boss_Reprisal = 7713,
-    
-    [ParentCombo(GNB_Mitigation_Boss)]
-    [CustomComboInfo("Raidwide Heart Of Light Option", "Adds Heart Of Light when raidwide casting is detected.", Job.GNB)]
-    GNB_Mitigation_Boss_HeartOfLight = 7714,
-    
-    #endregion
 
     #region Advanced ST
     [AutoAction(false, false)]
@@ -3277,6 +3194,92 @@ public enum Preset
     [CustomComboInfo("Interrupt with Stun Option", "Adds Low Blow to the rotation when your target is casting, interruptible or not.", Job.GNB)]
     GNB_AoE_Stun = 7223,
 
+    #endregion
+    
+    #region Advanced Mitigation 
+    //7700s LastUsed 7713
+    [CustomComboInfo("Advanced Mitigation Options",
+        "Options for Advanced Combos' In-Combo Mitigation.\n" +
+        "Enable Mitigation in each Advanced Combo to use these options.\n" +
+        "(Simple Mode does not use these Options, instead Recommended Values in " +
+        "place of them)", Job.GNB)]
+    GNB_Mitigation = 7700,
+    
+    [ParentCombo(GNB_Mitigation)]
+    [CustomComboInfo("Non Boss Encounter Mitigation", "Adds Mitigation to the combos when not in a boss encounter. Will not overlap separate options unless stated.", Job.GNB)]
+    GNB_Mitigation_NonBoss = 7701,
+    
+    [ParentCombo(GNB_Mitigation_NonBoss)]
+    [CustomComboInfo("Rampart Option", "Adds Rampart when 3 or more targets", Job.GNB)]
+    GNB_Mitigation_NonBoss_Rampart = 7702,
+    
+    [ParentCombo(GNB_Mitigation_NonBoss)]
+    [CustomComboInfo("Nebula Option", "Adds Nebula/Great Nebula when 3 or more targets", Job.GNB)]
+    GNB_Mitigation_NonBoss_Nebula = 7703,
+    
+    [ParentCombo(GNB_Mitigation_NonBoss)]
+    [CustomComboInfo("Camouflage Option", "Adds Camouflage when 3 or more targets", Job.GNB)]
+    GNB_Mitigation_NonBoss_Camouflage = 7704,
+    
+    [ParentCombo(GNB_Mitigation_NonBoss)]
+    [CustomComboInfo("Aurora Option", "Adds Aurora when 3 or more targets. Will overlap with other mits.", Job.GNB)]
+    GNB_Mitigation_NonBoss_Aurora = 7705,
+    
+    [ParentCombo(GNB_Mitigation_NonBoss)]
+    [CustomComboInfo("Superbolide Option", "Adds Superbolide when 5 or more targets", Job.GNB)]
+    GNB_Mitigation_NonBoss_Superbolide = 7706,
+    
+    [ParentCombo(GNB_Mitigation_NonBoss)]
+    [CustomComboInfo("Arm's Length Option", "Adds Arm's Length when 5 or more targets", Job.GNB)]
+    GNB_Mitigation_NonBoss_ArmsLength = 7707,
+    
+    [ParentCombo(GNB_Mitigation_NonBoss)]
+    [CustomComboInfo("Reprisal Option", "Adds Reprisal when 5 or more targets. Will overlap with others.", Job.GNB)]
+    GNB_Mitigation_NonBoss_Reprisal= 7708,
+    
+    [ParentCombo(GNB_Mitigation_NonBoss)]
+    [CustomComboInfo("Heart of Light Option", "Adds Heart of Light when 5 or more targets. Will overlap with others.", Job.GNB)]
+    GNB_Mitigation_NonBoss_HeartOfLight = 7709,
+    
+    [ParentCombo(GNB_Mitigation_NonBoss)]
+    [CustomComboInfo("Heart of Stone/Corundrum Option", "Adds Heart of Stone/Corundrum when available. Will overlap with others.", Job.GNB)]
+    GNB_Mitigation_NonBoss_HeartOfStone = 7710,
+    
+    [ParentCombo(GNB_Mitigation)]
+    [CustomComboInfo("Boss Encounter Mitigation", "Adds Mitigation to the combos when not in a boss encounter. Will not overlap separate options unless stated.", Job.GNB)]
+    GNB_Mitigation_Boss = 7711,
+    
+    [ParentCombo(GNB_Mitigation_Boss)]
+    [CustomComboInfo("Aurora Option", "Adds Aurora when below threshold.", Job.GNB)]
+    GNB_Mitigation_Boss_Aurora = 7712,
+    
+    [ParentCombo(GNB_Mitigation_Boss)]
+    [CustomComboInfo("Heart Of Stone/Corundrum on Cooldown Option", "Adds Heart Of Stone/Corundrum on CD when below threshold.", Job.GNB)]
+    GNB_Mitigation_Boss_HeartOfStone_OnCD = 7716,
+    
+    [ParentCombo(GNB_Mitigation_Boss)]
+    [CustomComboInfo("Heart Of Stone/Corundrum Tankbuster Option", "Adds Heart Of Stone/Corundrum when tankbuster is detected.", Job.GNB)]
+    GNB_Mitigation_Boss_HeartOfStone_TankBuster = 7717,
+    
+    [ParentCombo(GNB_Mitigation_Boss)]
+    [CustomComboInfo("Rampart Tankbuster Option", "Adds Rampart when tankbuster is detected. Will not overlap with Nebula/Great Nebula.", Job.GNB)]
+    GNB_Mitigation_Boss_Rampart = 7719,
+        
+    [ParentCombo(GNB_Mitigation_Boss)]
+    [CustomComboInfo("Nebula/Great Nebula Tankbuster Option", "Adds Nebula/Great Nebula when tankbuster is detected. Will not overlap with Rampart.", Job.GNB)]
+    GNB_Mitigation_Boss_Nebula = 7718,
+    
+    [ParentCombo(GNB_Mitigation_Boss)]
+    [CustomComboInfo("Camouflage Tankbuster Option", "Adds Camouflage when tankbuster is detected. Will not overlap unless below set threshold or aligned with rampart.", Job.GNB)]
+    GNB_Mitigation_Boss_Camouflage = 7720,
+    
+    [ParentCombo(GNB_Mitigation_Boss)]
+    [CustomComboInfo("Raidwide Reprisal Option", "Adds Reprisal when raidwide casting is detected.", Job.GNB)]
+    GNB_Mitigation_Boss_Reprisal = 7713,
+    
+    [ParentCombo(GNB_Mitigation_Boss)]
+    [CustomComboInfo("Raidwide Heart Of Light Option", "Adds Heart Of Light when raidwide casting is detected.", Job.GNB)]
+    GNB_Mitigation_Boss_HeartOfLight = 7714,
     #endregion
 
     #region One-Button Mitigation
@@ -4725,87 +4728,6 @@ public enum Preset
     PLD_AoE_SimpleMode = 11001,
 
     #endregion
-    
-    #region Advanced Mitigation
-    
-    [CustomComboInfo("Advanced Mitigation Options", "Mitigation Options for Paladin. Enable in each advanced combo", Job.PLD)]
-    PLD_Mitigation = 11086,
-    
-    [ParentCombo(PLD_Mitigation)]
-    [CustomComboInfo("Non Boss Encounter Mitigation", "Adds Mitigation to the combos when not in a boss encounter. Will not overlap separate options unless stated.", Job.PLD)]
-    PLD_Mitigation_NonBoss = 11087,
-    
-    [ParentCombo(PLD_Mitigation_NonBoss)]
-    [CustomComboInfo("Rampart Option", "Adds Rampart when 3 or more targets", Job.PLD)]
-    PLD_Mitigation_NonBoss_Rampart = 11088,
-    
-    [ParentCombo(PLD_Mitigation_NonBoss)]
-    [CustomComboInfo("Sentinel/Guardian Option", "Adds Sentinel/Guardian when 3 or more targets", Job.PLD)]
-    PLD_Mitigation_NonBoss_Sentinel = 11089,
-    
-    [ParentCombo(PLD_Mitigation_NonBoss)]
-    [CustomComboInfo("Bulwark Option", "Adds Bulwark when 3 or more targets", Job.PLD)]
-    PLD_Mitigation_NonBoss_Bulwark = 11090,
-    
-    [ParentCombo(PLD_Mitigation_NonBoss)]
-    [CustomComboInfo("Hallowed Ground Option", "Adds Hallowed Ground when 5 or more targets", Job.PLD)]
-    PLD_Mitigation_NonBoss_HallowedGround = 11091,
-    
-    [ParentCombo(PLD_Mitigation_NonBoss)]
-    [CustomComboInfo("Arm's Length Option", "Adds Arm's Length when 5 or more targets", Job.PLD)]
-    PLD_Mitigation_NonBoss_ArmsLength = 11092,
-    
-    [ParentCombo(PLD_Mitigation_NonBoss)]
-    [CustomComboInfo("Reprisal Option", "Adds Reprisal when 5 or more targets. Will overlap with others.", Job.PLD)]
-    PLD_Mitigation_NonBoss_Reprisal= 11099,
-    
-    [ParentCombo(PLD_Mitigation_NonBoss)]
-    [CustomComboInfo("Sheltron Option", "Adds Sheltron when available. Will overlap with others.", Job.PLD)]
-    PLD_Mitigation_NonBoss_Sheltron = 11093,
-    
-    [ParentCombo(PLD_Mitigation_NonBoss)]
-    [CustomComboInfo("Divine Veil Option", "Adds Divine Veil for healing.", Job.PLD)]
-    PLD_Mitigation_NonBoss_DivineVeil = 11094,
-    
-    [ParentCombo(PLD_Mitigation)]
-    [CustomComboInfo("Boss Encounter Mitigation", "Adds Mitigation to the combos when not in a boss encounter. \nTankbuster Detection Experimental", Job.PLD)]
-    PLD_Mitigation_Boss = 11095,
-    
-    [ParentCombo(PLD_Mitigation_Boss)]
-    [CustomComboInfo("Sheltron Overcap Option", "Adds Sheltron when Above Selected Oath Gague and targetted", Job.PLD)]
-    PLD_Mitigation_Boss_SheltronOvercap = 11096,
-    
-    [ParentCombo(PLD_Mitigation_Boss)]
-    [CustomComboInfo("Sheltron Tankbuster Option", "Adds Sheltron when an incoming tankbuster is detected", Job.PLD)]
-    PLD_Mitigation_Boss_SheltronTankbuster = 11100,
-    
-    [ParentCombo(PLD_Mitigation_Boss)]
-    [CustomComboInfo("Sentinel/Guardian Tankbuster Option", "Adds Sentinel/Guardian when an incoming tankbuster is detected. Will not overlap with Rampart.", Job.PLD)]
-    PLD_Mitigation_Boss_Sentinel = 11101,
-    
-    [ParentCombo(PLD_Mitigation_Boss)]
-    [CustomComboInfo("Rampart Tankbuster Option", "Adds Rampart when an incoming tankbuster is detected. Will Not Overlap with Sentinel/Guardian.", Job.PLD)]
-    PLD_Mitigation_Boss_Rampart = 11102,
-    
-    [ParentCombo(PLD_Mitigation_Boss)]
-    [CustomComboInfo("Bulwark Tankbuster Option", "Adds Bulwark when an incoming tankbuster is detected. Will not overlap unless below set threshold or aligned with rampart.", Job.PLD)]
-    PLD_Mitigation_Boss_Bulwark = 11103,
-    
-    [ParentCombo(PLD_Mitigation_Boss)]
-    [CustomComboInfo("Raidwide Reprisal Option", "Adds Reprisal when raidwide casting is detected.", Job.PLD)]
-    PLD_Mitigation_Boss_Reprisal = 11097,
-    
-    [ParentCombo(PLD_Mitigation_Boss)]
-    [CustomComboInfo("Raidwide Divine Veil Option", "Adds Divine Veil when raidwide casting is detected.", Job.PLD)]
-    PLD_Mitigation_Boss_DivineVeil = 11098,
-    
-    
-    [ParentCombo(PLD_Mitigation)]
-    [CustomComboInfo("Block Combos for Passage of Arms",
-        "Will block the main Combos with Savage Blade while Passage of Arms is still active, to prevent actions from those combos cancelling Passage of Arms early.\nThis will leave it up to you to cancel Passage of Arms via other actions or movement (or letting it be used fully).", Job.PLD)]
-    PLD_BlockForWings = 11074,
-
-    #endregion
 
     #region ST Advanced Mode
 
@@ -4987,6 +4909,89 @@ public enum Preset
     PLD_AoE_AdvancedMode_MP_Reserve = 11036,
 
     // AoE Mitigation Options
+    #endregion
+    
+    #region Advanced Mitigation
+    
+    [CustomComboInfo("Advanced Mitigation Options",
+        "Options for Advanced Combos' In-Combo Mitigation.\n" +
+        "Enable Mitigation in each Advanced Combo to use these options.\n" +
+        "(Simple Mode does not use these Options, instead Recommended Values in " +
+        "place of them)", Job.PLD)]
+    PLD_Mitigation = 11086,
+    
+    [ParentCombo(PLD_Mitigation)]
+    [CustomComboInfo("Non Boss Encounter Mitigation", "Adds Mitigation to the combos when not in a boss encounter. Will not overlap separate options unless stated.", Job.PLD)]
+    PLD_Mitigation_NonBoss = 11087,
+    
+    [ParentCombo(PLD_Mitigation_NonBoss)]
+    [CustomComboInfo("Rampart Option", "Adds Rampart when 3 or more targets", Job.PLD)]
+    PLD_Mitigation_NonBoss_Rampart = 11088,
+    
+    [ParentCombo(PLD_Mitigation_NonBoss)]
+    [CustomComboInfo("Sentinel/Guardian Option", "Adds Sentinel/Guardian when 3 or more targets", Job.PLD)]
+    PLD_Mitigation_NonBoss_Sentinel = 11089,
+    
+    [ParentCombo(PLD_Mitigation_NonBoss)]
+    [CustomComboInfo("Bulwark Option", "Adds Bulwark when 3 or more targets", Job.PLD)]
+    PLD_Mitigation_NonBoss_Bulwark = 11090,
+    
+    [ParentCombo(PLD_Mitigation_NonBoss)]
+    [CustomComboInfo("Hallowed Ground Option", "Adds Hallowed Ground when 5 or more targets", Job.PLD)]
+    PLD_Mitigation_NonBoss_HallowedGround = 11091,
+    
+    [ParentCombo(PLD_Mitigation_NonBoss)]
+    [CustomComboInfo("Arm's Length Option", "Adds Arm's Length when 5 or more targets", Job.PLD)]
+    PLD_Mitigation_NonBoss_ArmsLength = 11092,
+    
+    [ParentCombo(PLD_Mitigation_NonBoss)]
+    [CustomComboInfo("Reprisal Option", "Adds Reprisal when 5 or more targets. Will overlap with others.", Job.PLD)]
+    PLD_Mitigation_NonBoss_Reprisal= 11099,
+    
+    [ParentCombo(PLD_Mitigation_NonBoss)]
+    [CustomComboInfo("Sheltron Option", "Adds Sheltron when available. Will overlap with others.", Job.PLD)]
+    PLD_Mitigation_NonBoss_Sheltron = 11093,
+    
+    [ParentCombo(PLD_Mitigation_NonBoss)]
+    [CustomComboInfo("Divine Veil Option", "Adds Divine Veil for healing.", Job.PLD)]
+    PLD_Mitigation_NonBoss_DivineVeil = 11094,
+    
+    [ParentCombo(PLD_Mitigation)]
+    [CustomComboInfo("Boss Encounter Mitigation", "Adds Mitigation to the combos when not in a boss encounter. \nTankbuster Detection Experimental", Job.PLD)]
+    PLD_Mitigation_Boss = 11095,
+    
+    [ParentCombo(PLD_Mitigation_Boss)]
+    [CustomComboInfo("Sheltron Overcap Option", "Adds Sheltron when Above Selected Oath Gague and targetted", Job.PLD)]
+    PLD_Mitigation_Boss_SheltronOvercap = 11096,
+    
+    [ParentCombo(PLD_Mitigation_Boss)]
+    [CustomComboInfo("Sheltron Tankbuster Option", "Adds Sheltron when an incoming tankbuster is detected", Job.PLD)]
+    PLD_Mitigation_Boss_SheltronTankbuster = 11100,
+    
+    [ParentCombo(PLD_Mitigation_Boss)]
+    [CustomComboInfo("Rampart Tankbuster Option", "Adds Rampart when an incoming tankbuster is detected. Will Not Overlap with Sentinel/Guardian.", Job.PLD)]
+    PLD_Mitigation_Boss_Rampart = 11102,
+    
+    [ParentCombo(PLD_Mitigation_Boss)]
+    [CustomComboInfo("Sentinel/Guardian Tankbuster Option", "Adds Sentinel/Guardian when an incoming tankbuster is detected. Will not overlap with Rampart.", Job.PLD)]
+    PLD_Mitigation_Boss_Sentinel = 11101,
+    
+    [ParentCombo(PLD_Mitigation_Boss)]
+    [CustomComboInfo("Bulwark Tankbuster Option", "Adds Bulwark when an incoming tankbuster is detected. Will not overlap unless below set threshold or aligned with rampart.", Job.PLD)]
+    PLD_Mitigation_Boss_Bulwark = 11103,
+    
+    [ParentCombo(PLD_Mitigation_Boss)]
+    [CustomComboInfo("Raidwide Reprisal Option", "Adds Reprisal when raidwide casting is detected.", Job.PLD)]
+    PLD_Mitigation_Boss_Reprisal = 11097,
+    
+    [ParentCombo(PLD_Mitigation_Boss)]
+    [CustomComboInfo("Raidwide Divine Veil Option", "Adds Divine Veil when raidwide casting is detected.", Job.PLD)]
+    PLD_Mitigation_Boss_DivineVeil = 11098,
+    
+    [ParentCombo(PLD_Mitigation)]
+    [CustomComboInfo("Block Combos for Passage of Arms",
+        "Will block the main Combos with Savage Blade while Passage of Arms is still active, to prevent actions from those combos cancelling Passage of Arms early.\nThis will leave it up to you to cancel Passage of Arms via other actions or movement (or letting it be used fully).", Job.PLD)]
+    PLD_BlockForWings = 11074,
     #endregion
 
     #region Basic combo
@@ -7522,88 +7527,6 @@ public enum Preset
     [SimpleCombo]
     WAR_AoE_Simple = 18001,
     #endregion
-    
-    #region Advanced Mitigation
-    [CustomComboInfo("Advanced Mitigation Options", "Mitigation Options for Warrior. Enable in each Advanced combo", Job.WAR)]
-    WAR_Mitigation = 18131,
-    
-    [ParentCombo(WAR_Mitigation)]
-    [CustomComboInfo("Non Boss Encounter Mitigation", "Adds Mitigation to the combos when not in a boss encounter. Will not overlap separate options unless stated.", Job.WAR)]
-    WAR_Mitigation_NonBoss = 18132,
-    
-    [ParentCombo(WAR_Mitigation_NonBoss)]
-    [CustomComboInfo("Rampart Option", "Adds Rampart when 3 or more targets", Job.WAR)]
-    WAR_Mitigation_NonBoss_Rampart = 18133,
-    
-    [ParentCombo(WAR_Mitigation_NonBoss)]
-    [CustomComboInfo("Thrill Of Battle Option", "Adds Thrill Of Battle when 3 or more targets", Job.WAR)]
-    WAR_Mitigation_NonBoss_ThrillOfBattle = 18134,
-    
-    [ParentCombo(WAR_Mitigation_NonBoss)]
-    [CustomComboInfo("Vengeance/Damnation Option", "Adds Vengeance/Damnation when 5 or more targets", Job.WAR)]
-    WAR_Mitigation_NonBoss_Vengeance = 18135,
-    
-    [ParentCombo(WAR_Mitigation_NonBoss)]
-    [CustomComboInfo("Arm's Length Option", "Adds Arm's Length when 5 or more targets", Job.WAR)]
-    WAR_Mitigation_NonBoss_ArmsLength = 18136,
-    
-    [ParentCombo(WAR_Mitigation_NonBoss)]
-    [CustomComboInfo("Reprisal Option", "Adds Reprisal when 5 or more targets.", Job.WAR)]
-    WAR_Mitigation_NonBoss_Reprisal= 18137,
-    
-    [ParentCombo(WAR_Mitigation_NonBoss)]
-    [CustomComboInfo("Raw Intuition/Bloodwhetting Option", "Adds Raw Intuition/Bloodwhetting when available. Will overlap with others.", Job.WAR)]
-    WAR_Mitigation_NonBoss_RawIntuition = 18138,
-    
-    [ParentCombo(WAR_Mitigation_NonBoss)]
-    [CustomComboInfo("Shake It Off Option", "Adds Shake It Off for healing. Will not use when it would result in loss of Mitigation buffs. ", Job.WAR)]
-    WAR_Mitigation_NonBoss_ShakeItOff = 18139,
-    
-    [ParentCombo(WAR_Mitigation_NonBoss)]
-    [CustomComboInfo("Equilibrium Option", "Adds Equilibrium for healing.", Job.WAR)]
-    WAR_Mitigation_NonBoss_Equilibrium = 18140,
-    
-    [ParentCombo(WAR_Mitigation_NonBoss)]
-    [CustomComboInfo("Holmgang Option", "Adds Holmgang for Emergency Invuln.", Job.WAR)]
-    WAR_Mitigation_NonBoss_Holmgang= 18141,
-    
-    [ParentCombo(WAR_Mitigation)]
-    [CustomComboInfo("Boss Encounter Mitigation", "Adds Mitigation to the combos when not in a boss encounter. Will not overlap separate options unless stated.", Job.WAR)]
-    WAR_Mitigation_Boss = 18142,
-    
-    [ParentCombo(WAR_Mitigation_Boss)]
-    [CustomComboInfo("Equilibrium Option", "Adds Equilibrium for Healing.", Job.WAR)]
-    WAR_Mitigation_Boss_Equilibrium = 18146,
-    
-    [ParentCombo(WAR_Mitigation_Boss)]
-    [CustomComboInfo("Raw Intuition/Bloodwhetting on Cooldown Option", "Adds Raw Intuition/Bloodwhetting on CD when targetted", Job.WAR)]
-    WAR_Mitigation_Boss_RawIntuition_OnCD = 18143,
-    
-    [ParentCombo(WAR_Mitigation_Boss)]
-    [CustomComboInfo("Raw Intuition/Bloodwhetting Tankbuster Option", "Adds Raw Intuition/Bloodwhetting when tankbuster is detected.", Job.WAR)]
-    WAR_Mitigation_Boss_RawIntuition_TankBuster = 18147,
-        
-    [ParentCombo(WAR_Mitigation_Boss)]
-    [CustomComboInfo("Vengeance/Damnation Tankbuster Option", "Adds Vengeance/Damnation when tankbuster is detected. Will not overlap with Rampart.", Job.WAR)]
-    WAR_Mitigation_Boss_Vengeance = 18148,
-    
-    [ParentCombo(WAR_Mitigation_Boss)]
-    [CustomComboInfo("Rampart Tankbuster Option", "Adds Rampart when tankbuster is detected. Will not overlap with Vengeance/Damnation.", Job.WAR)]
-    WAR_Mitigation_Boss_Rampart = 18149,
-    
-    [ParentCombo(WAR_Mitigation_Boss)]
-    [CustomComboInfo("Thrill of Battle Tankbuster Option", "Adds Thrill of Battle when tankbuster is detected. Will not overlap unless below set threshold or aligned with rampart.", Job.WAR)]
-    WAR_Mitigation_Boss_ThrillOfBattle = 18150,
-    
-    [ParentCombo(WAR_Mitigation_Boss)]
-    [CustomComboInfo("Raidwide Reprisal Option", "Adds Reprisal when raidwide casting is detected.", Job.WAR)]
-    WAR_Mitigation_Boss_Reprisal = 18144,
-    
-    [ParentCombo(WAR_Mitigation_Boss)]
-    [CustomComboInfo("Raidwide Shake It Off Option", "Adds Shake it Off when raidwide casting is detected.", Job.WAR)]
-    WAR_Mitigation_Boss_ShakeItOff = 18145,
-
-    #endregion
 
     #region Advanced ST
     [AutoAction(false, false)]
@@ -7718,6 +7641,92 @@ public enum Preset
     [ParentCombo(WAR_AoE_Interrupt)]
     [CustomComboInfo("Interrupt with Stun Option", "Adds Low Blow to the AoE rotation when your target is casting, interruptible or not.", Job.WAR)]
     WAR_AoE_Stun = 18068,
+
+    #endregion
+    
+    #region Advanced Mitigation
+    [CustomComboInfo("Advanced Mitigation Options",
+        "Options for Advanced Combos' In-Combo Mitigation.\n" +
+        "Enable Mitigation in each Advanced Combo to use these options.\n" +
+        "(Simple Mode does not use these Options, instead Recommended Values in " +
+        "place of them)", Job.WAR)]
+    WAR_Mitigation = 18131,
+    
+    [ParentCombo(WAR_Mitigation)]
+    [CustomComboInfo("Non Boss Encounter Mitigation", "Adds Mitigation to the combos when not in a boss encounter. Will not overlap separate options unless stated.", Job.WAR)]
+    WAR_Mitigation_NonBoss = 18132,
+    
+    [ParentCombo(WAR_Mitigation_NonBoss)]
+    [CustomComboInfo("Rampart Option", "Adds Rampart when 3 or more targets", Job.WAR)]
+    WAR_Mitigation_NonBoss_Rampart = 18133,
+    
+    [ParentCombo(WAR_Mitigation_NonBoss)]
+    [CustomComboInfo("Thrill Of Battle Option", "Adds Thrill Of Battle when 3 or more targets", Job.WAR)]
+    WAR_Mitigation_NonBoss_ThrillOfBattle = 18134,
+    
+    [ParentCombo(WAR_Mitigation_NonBoss)]
+    [CustomComboInfo("Vengeance/Damnation Option", "Adds Vengeance/Damnation when 5 or more targets", Job.WAR)]
+    WAR_Mitigation_NonBoss_Vengeance = 18135,
+    
+    [ParentCombo(WAR_Mitigation_NonBoss)]
+    [CustomComboInfo("Arm's Length Option", "Adds Arm's Length when 5 or more targets", Job.WAR)]
+    WAR_Mitigation_NonBoss_ArmsLength = 18136,
+    
+    [ParentCombo(WAR_Mitigation_NonBoss)]
+    [CustomComboInfo("Reprisal Option", "Adds Reprisal when 5 or more targets.", Job.WAR)]
+    WAR_Mitigation_NonBoss_Reprisal= 18137,
+    
+    [ParentCombo(WAR_Mitigation_NonBoss)]
+    [CustomComboInfo("Raw Intuition/Bloodwhetting Option", "Adds Raw Intuition/Bloodwhetting when available. Will overlap with others.", Job.WAR)]
+    WAR_Mitigation_NonBoss_RawIntuition = 18138,
+    
+    [ParentCombo(WAR_Mitigation_NonBoss)]
+    [CustomComboInfo("Shake It Off Option", "Adds Shake It Off for healing. Will not use when it would result in loss of Mitigation buffs. ", Job.WAR)]
+    WAR_Mitigation_NonBoss_ShakeItOff = 18139,
+    
+    [ParentCombo(WAR_Mitigation_NonBoss)]
+    [CustomComboInfo("Equilibrium Option", "Adds Equilibrium for healing.", Job.WAR)]
+    WAR_Mitigation_NonBoss_Equilibrium = 18140,
+    
+    [ParentCombo(WAR_Mitigation_NonBoss)]
+    [CustomComboInfo("Holmgang Option", "Adds Holmgang for Emergency Invuln.", Job.WAR)]
+    WAR_Mitigation_NonBoss_Holmgang= 18141,
+    
+    [ParentCombo(WAR_Mitigation)]
+    [CustomComboInfo("Boss Encounter Mitigation", "Adds Mitigation to the combos when not in a boss encounter. Will not overlap separate options unless stated.", Job.WAR)]
+    WAR_Mitigation_Boss = 18142,
+    
+    [ParentCombo(WAR_Mitigation_Boss)]
+    [CustomComboInfo("Equilibrium Option", "Adds Equilibrium for Healing.", Job.WAR)]
+    WAR_Mitigation_Boss_Equilibrium = 18146,
+    
+    [ParentCombo(WAR_Mitigation_Boss)]
+    [CustomComboInfo("Raw Intuition/Bloodwhetting on Cooldown Option", "Adds Raw Intuition/Bloodwhetting on CD when targetted", Job.WAR)]
+    WAR_Mitigation_Boss_RawIntuition_OnCD = 18143,
+    
+    [ParentCombo(WAR_Mitigation_Boss)]
+    [CustomComboInfo("Raw Intuition/Bloodwhetting Tankbuster Option", "Adds Raw Intuition/Bloodwhetting when tankbuster is detected.", Job.WAR)]
+    WAR_Mitigation_Boss_RawIntuition_TankBuster = 18147,
+    
+    [ParentCombo(WAR_Mitigation_Boss)]
+    [CustomComboInfo("Rampart Tankbuster Option", "Adds Rampart when tankbuster is detected. Will not overlap with Vengeance/Damnation.", Job.WAR)]
+    WAR_Mitigation_Boss_Rampart = 18149,
+        
+    [ParentCombo(WAR_Mitigation_Boss)]
+    [CustomComboInfo("Vengeance/Damnation Tankbuster Option", "Adds Vengeance/Damnation when tankbuster is detected. Will not overlap with Rampart.", Job.WAR)]
+    WAR_Mitigation_Boss_Vengeance = 18148,
+    
+    [ParentCombo(WAR_Mitigation_Boss)]
+    [CustomComboInfo("Thrill of Battle Tankbuster Option", "Adds Thrill of Battle when tankbuster is detected. Will not overlap unless below set threshold or aligned with rampart.", Job.WAR)]
+    WAR_Mitigation_Boss_ThrillOfBattle = 18150,
+    
+    [ParentCombo(WAR_Mitigation_Boss)]
+    [CustomComboInfo("Raidwide Reprisal Option", "Adds Reprisal when raidwide casting is detected.", Job.WAR)]
+    WAR_Mitigation_Boss_Reprisal = 18144,
+    
+    [ParentCombo(WAR_Mitigation_Boss)]
+    [CustomComboInfo("Raidwide Shake It Off Option", "Adds Shake it Off when raidwide casting is detected.", Job.WAR)]
+    WAR_Mitigation_Boss_ShakeItOff = 18145,
 
     #endregion
 
