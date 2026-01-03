@@ -240,10 +240,15 @@ internal abstract partial class CustomComboFunctions
         if ((optionalTarget ?? CurrentTarget) is not { } chara || LocalPlayer is not { })
             return false;
 
-        var inRangeActionManagerCheck = ActionManager.GetActionInRangeOrLoS(7, LocalPlayer.GameObject(), chara.Struct()) is 0 or 565;
+        uint actionId = (uint)(InPvP() ? 29058 : 2); //PvP Check against PLD Fast Blade (range 5) and outside PvP check interaction range
+        var inRangeActionManagerCheck = ActionManager.GetActionInRangeOrLoS(actionId, LocalPlayer.GameObject(), chara.Struct()) is 0 or 565;
         var distance = GetTargetDistance(chara);
 
-        return distance <= (InPvP() ? 5f : 3f) + Service.Configuration.MeleeOffset && inRangeActionManagerCheck;
+        var distanceCheck = (InPvP() ? 5f : 3f);
+        if (distance <= distanceCheck)
+            return inRangeActionManagerCheck;
+        else
+            return distance <= distanceCheck + Service.Configuration.MeleeOffset;
     }
 
     /// <summary> Checks if an object is within a given range. Defaults to CurrentTarget unless specified. </summary>
