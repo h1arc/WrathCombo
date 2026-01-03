@@ -6419,7 +6419,7 @@ public enum Preset
 
     [ReplaceSkill(SAM.MeikyoShisui)]
     [ConflictingCombos(SAM_MeikyoSens)]
-    [CustomComboInfo("Meikyo Shisui Protection", "Replaces Meikyo Shisui with Savage Blade when you already have Meikyo Shisui active.", Job.SAM)]
+    [CustomComboInfo("Meikyo Shisui Protection", "Blocks Meikyo Shisui with Savage Blade when you already have Meikyo Shisui active.", Job.SAM)]
     SAM_MeikyoShisuiProtection = 15214,
 
     #endregion
