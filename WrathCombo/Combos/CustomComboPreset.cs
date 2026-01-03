@@ -2332,89 +2332,6 @@ public enum Preset
     #endregion
     // Last value = 5003
     
-    [CustomComboInfo("Advanced Mitigation Options",
-        "Options for Advanced Combos' In-Combo Mitigation.\n" +
-        "Enable Mitigation in each Advanced Combo to use these options.\n" +
-        "(Simple Mode does not use these Options, instead Recommended Values in " +
-        "place of them)", Job.DRK)]
-    DRK_Mitigation = 5300,
-    
-    [ParentCombo(DRK_Mitigation)]
-    [CustomComboInfo("Non Boss Encounter Mitigation", "Adds Mitigation to the combos when not in a boss encounter. Will not overlap separate options unless stated.", Job.DRK)]
-    DRK_Mitigation_NonBoss = 5301,
-    
-    [ParentCombo(DRK_Mitigation_NonBoss)]
-    [CustomComboInfo("The Blackest Night Option", "Adds The Blackest Night when available. Will overlap with others.", Job.DRK)]
-    DRK_Mitigation_NonBoss_BlackestNight = 5307,
-    
-    [ParentCombo(DRK_Mitigation_NonBoss)]
-    [CustomComboInfo("Living Dead Option", "Adds Living Dead based on set health threshold.", Job.DRK)]
-    DRK_Mitigation_NonBoss_LivingDead = 5305,
-    
-    [ParentCombo(DRK_Mitigation_NonBoss)]
-    [CustomComboInfo("Rampart Option", "Adds Rampart when 3 or more targets.", Job.DRK)]
-    DRK_Mitigation_NonBoss_Rampart = 5302,
-    
-    [ParentCombo(DRK_Mitigation_NonBoss)]
-    [CustomComboInfo("Dark Mind Option", "Adds Dark Mind when 3 or more targets.", Job.DRK)]
-    DRK_Mitigation_NonBoss_DarkMind = 5304,
-    
-    [ParentCombo(DRK_Mitigation_NonBoss)]
-    [CustomComboInfo("Shadow Wall/Shadowed Vigil", "Adds Shadow Wall/Shadowed Vigil when 5 or more targets.", Job.DRK)]
-    DRK_Mitigation_NonBoss_ShadowWall = 5303,
-    
-    [ParentCombo(DRK_Mitigation_NonBoss)]
-    [CustomComboInfo("Arm's Length Option", "Adds Arm's Length when 5 or more targets", Job.DRK)]
-    DRK_Mitigation_NonBoss_ArmsLength = 5306,
-    
-    [ParentCombo(DRK_Mitigation_NonBoss)]
-    [CustomComboInfo("Reprisal Option", "Adds Reprisal when 5 or more targets.", Job.DRK)]
-    DRK_Mitigation_NonBoss_Reprisal= 5313,
-    
-    [ParentCombo(DRK_Mitigation_NonBoss)]
-    [CustomComboInfo("Dark Missionary Option", "Adds Dark Missionary when 5 or more targets. Will overlap with others.", Job.DRK)]
-    DRK_Mitigation_NonBoss_DarkMissionary = 5308,
-    
-    [ParentCombo(DRK_Mitigation_NonBoss)]
-    [CustomComboInfo("Oblation Option", "Adds Oblation when 5 or more targets. Will overlap with others.", Job.DRK)]
-    DRK_Mitigation_NonBoss_Oblation = 5318,
-    
-    [ParentCombo(DRK_Mitigation)]
-    [CustomComboInfo("Boss Encounter Mitigation", "Adds Mitigation to the combos when not in a boss encounter.", Job.DRK)]
-    DRK_Mitigation_Boss = 5309,
-    
-    [ParentCombo(DRK_Mitigation_Boss)]
-    [CustomComboInfo("The Blackest Night Emergency Healing", "Adds The Blackest Night when below  HP threshold and targetted", Job.DRK)]
-    DRK_Mitigation_Boss_BlackestNight_OnCD = 5310,
-    
-    [ParentCombo(DRK_Mitigation_Boss)]
-    [CustomComboInfo("The Blackest Night Tankbuster Option", "Adds The Blackest Night when an incoming tankbuster is detected", Job.DRK)]
-    DRK_Mitigation_Boss_BlackestNight_TB = 5314,
-    
-    [ParentCombo(DRK_Mitigation_Boss)]
-    [CustomComboInfo("Oblation Tankbuster Option", "Adds Oblation when an incoming tankbuster is detected", Job.DRK)]
-    DRK_Mitigation_Boss_Oblation = 5319,
-    
-    [ParentCombo(DRK_Mitigation_Boss)]
-    [CustomComboInfo("Shadow Wall/Shadowed Vigil Tankbuster Option", "Adds Shadow Wall/Shadowed Vigil when an incoming tankbuster is detected. Will not overlap with Rampart.", Job.DRK)]
-    DRK_Mitigation_Boss_ShadowWall = 5315,
-    
-    [ParentCombo(DRK_Mitigation_Boss)]
-    [CustomComboInfo("Rampart Tankbuster Option", "Adds Rampart when an incoming tankbuster is detected. Will Not Overlap with Shadow Wall/Shadowed Vigil", Job.DRK)]
-    DRK_Mitigation_Boss_Rampart = 5316,
-    
-    [ParentCombo(DRK_Mitigation_Boss)]
-    [CustomComboInfo("Dark Mind Tankbuster Option", "Adds Dark Mind when an incoming tankbuster is detected. Will not overlap unless below set threshold or aligned with rampart.", Job.DRK)]
-    DRK_Mitigation_Boss_DarkMind = 5317,
-    
-    [ParentCombo(DRK_Mitigation_Boss)]
-    [CustomComboInfo("Raidwide Reprisal Option", "Adds Reprisal when raidwide casting is detected.", Job.DRK)]
-    DRK_Mitigation_Boss_Reprisal = 5311,
-    
-    [ParentCombo(DRK_Mitigation_Boss)]
-    [CustomComboInfo("Raidwide Dark Missionary Option", "Adds Dark Missionary when raidwide casting is detected.", Job.DRK)]
-    DRK_Mitigation_Boss_DarkMissionary = 5312,
-
     #region Advanced Single Target Combo
 
     [AutoAction(false, false)]
@@ -2554,44 +2471,6 @@ public enum Preset
 
     #endregion
 
-    #region Mitigation Options
-
-    [ParentCombo(DRK_ST_Adv)]
-    [CustomComboInfo("Mitigation Options", "Collection of Mitigations to add to the rotation.", Job.DRK)]
-    DRK_ST_Mitigation = 5031,
-
-    [ParentCombo(DRK_ST_Mitigation)]
-    [CustomComboInfo("The Blackest Night Option",
-        "Uses The Blackest Night based on Health Remaining.\n" +
-        "(Note: makes no attempt to ensure shield will break)", Job.DRK)]
-    DRK_ST_Mit_TBN = 5032,
-
-    [ParentCombo(DRK_ST_Mitigation)]
-    [CustomComboInfo("Oblation Option", "Uses Oblation based on Health Remaining.", Job.DRK)]
-    DRK_ST_Mit_Oblation = 5033,
-
-    [ParentCombo(DRK_ST_Mitigation)]
-    [CustomComboInfo("Reprisal Option", "Uses Reprisal when a raidwide is in the process of casting.", Job.DRK)]
-    DRK_ST_Mit_Reprisal = 5034,
-
-    [ParentCombo(DRK_ST_Mitigation)]
-    [CustomComboInfo("Dark Missionary Option", "Uses Dark Missionary when a raidwide is in the process of casting.", Job.DRK)]
-    DRK_ST_Mit_Missionary = 5035,
-
-    [ParentCombo(DRK_ST_Mit_Missionary)]
-    [CustomComboInfo("Avoid Doubling up on Group Mit", "Won't use Dark Missionary if your own Reprisal is on the target.", Job.DRK)]
-    DRK_ST_Mit_MissionaryAvoid = 5039,
-
-    [ParentCombo(DRK_ST_Mitigation)]
-    [CustomComboInfo("Shadowed Vigil Option", "Uses Shadowed Vigil based on Health Remaining.", Job.DRK)]
-    DRK_ST_Mit_Vigil = 5036,
-
-    [ParentCombo(DRK_ST_Mitigation)]
-    [CustomComboInfo("Living Dead Option", "Uses Living Dead based on Health Remaining.", Job.DRK)]
-    DRK_ST_Mit_LivingDead = 5037,
-
-    #endregion
-
     #endregion
     // Last value = 5040
 
@@ -2700,48 +2579,95 @@ public enum Preset
 
     #endregion
 
-    #region Mitigation Options
-
-    [ParentCombo(DRK_AoE_Adv)]
-    [CustomComboInfo("Mitigation Options", "Collection of Mitigations to add to the rotation.", Job.DRK)]
-    DRK_AoE_Mitigation = 5067,
-
-    [ParentCombo(DRK_AoE_Mitigation)]
-    [CustomComboInfo("The Blackest Night Option", "Adds The Blackest Night to the rotation.", Job.DRK)]
-    DRK_AoE_Mit_TBN = 5068,
-
-    [ParentCombo(DRK_AoE_Mitigation)]
-    [CustomComboInfo("Oblation Option", "Uses Oblation based on Health Remaining.", Job.DRK)]
-    DRK_AoE_Mit_Oblation = 5069,
-
-    [ParentCombo(DRK_AoE_Mitigation)]
-    [CustomComboInfo("Reprisal Option", "Adds Reprisal to the rotation.", Job.DRK)]
-    DRK_AoE_Mit_Reprisal = 5070,
-
-    [ParentCombo(DRK_AoE_Mitigation)]
-    [CustomComboInfo("Dark Mind Option", "Adds Dark Mind to the rotation.", Job.DRK)]
-    DRK_AoE_Mit_DarkMind = 5075,
-
-    [ParentCombo(DRK_AoE_Mitigation)]
-    [CustomComboInfo("Rampart Option", "Adds Rampart to the rotation.", Job.DRK)]
-    DRK_AoE_Mit_Rampart = 5071,
-
-    [ParentCombo(DRK_AoE_Mitigation)]
-    [CustomComboInfo("Arm's Length Option", "Adds Arm's Length to the rotation, when the set number of enemies are within range of you.", Job.DRK)]
-    DRK_AoE_Mit_ArmsLength = 5072,
-
-    [ParentCombo(DRK_AoE_Mitigation)]
-    [CustomComboInfo("Shadowed Vigil Option", "Uses Shadowed Vigil based on Health Remaining.", Job.DRK)]
-    DRK_AoE_Mit_Vigil = 5073,
-
-    [ParentCombo(DRK_AoE_Mitigation)]
-    [CustomComboInfo("Living Dead Option", "Uses Living Dead based on your and your enemy's Remaining Health.", Job.DRK)]
-    DRK_AoE_Mit_LivingDead = 5074,
-
-    #endregion
-
     #endregion
     // Last value = 5075
+    
+    #region Advanced Mitigation
+    [CustomComboInfo("Advanced Mitigation Options",
+        "Options for Advanced Combos' In-Combo Mitigation.\n" +
+        "Enable Mitigation in each Advanced Combo to use these options.\n" +
+        "(Simple Mode does not use these Options, instead Recommended Values in " +
+        "place of them)", Job.DRK)]
+    DRK_Mitigation = 5300,
+    
+    [ParentCombo(DRK_Mitigation)]
+    [CustomComboInfo("Non Boss Encounter Mitigation", "Adds Mitigation to the combos when not in a boss encounter. Will not overlap separate options unless stated.", Job.DRK)]
+    DRK_Mitigation_NonBoss = 5301,
+    
+    [ParentCombo(DRK_Mitigation_NonBoss)]
+    [CustomComboInfo("The Blackest Night Option", "Adds The Blackest Night when available. Will overlap with others.", Job.DRK)]
+    DRK_Mitigation_NonBoss_BlackestNight = 5307,
+    
+    [ParentCombo(DRK_Mitigation_NonBoss)]
+    [CustomComboInfo("Living Dead Option", "Adds Living Dead based on set health threshold.", Job.DRK)]
+    DRK_Mitigation_NonBoss_LivingDead = 5305,
+    
+    [ParentCombo(DRK_Mitigation_NonBoss)]
+    [CustomComboInfo("Rampart Option", "Adds Rampart when 3 or more targets.", Job.DRK)]
+    DRK_Mitigation_NonBoss_Rampart = 5302,
+    
+    [ParentCombo(DRK_Mitigation_NonBoss)]
+    [CustomComboInfo("Dark Mind Option", "Adds Dark Mind when 3 or more targets.", Job.DRK)]
+    DRK_Mitigation_NonBoss_DarkMind = 5304,
+    
+    [ParentCombo(DRK_Mitigation_NonBoss)]
+    [CustomComboInfo("Shadow Wall/Shadowed Vigil", "Adds Shadow Wall/Shadowed Vigil when 5 or more targets.", Job.DRK)]
+    DRK_Mitigation_NonBoss_ShadowWall = 5303,
+    
+    [ParentCombo(DRK_Mitigation_NonBoss)]
+    [CustomComboInfo("Arm's Length Option", "Adds Arm's Length when 5 or more targets", Job.DRK)]
+    DRK_Mitigation_NonBoss_ArmsLength = 5306,
+    
+    [ParentCombo(DRK_Mitigation_NonBoss)]
+    [CustomComboInfo("Reprisal Option", "Adds Reprisal when 5 or more targets.", Job.DRK)]
+    DRK_Mitigation_NonBoss_Reprisal= 5313,
+    
+    [ParentCombo(DRK_Mitigation_NonBoss)]
+    [CustomComboInfo("Dark Missionary Option", "Adds Dark Missionary when 5 or more targets. Will overlap with others.", Job.DRK)]
+    DRK_Mitigation_NonBoss_DarkMissionary = 5308,
+    
+    [ParentCombo(DRK_Mitigation_NonBoss)]
+    [CustomComboInfo("Oblation Option", "Adds Oblation when 5 or more targets. Will overlap with others.", Job.DRK)]
+    DRK_Mitigation_NonBoss_Oblation = 5318,
+    
+    [ParentCombo(DRK_Mitigation)]
+    [CustomComboInfo("Boss Encounter Mitigation", "Adds Mitigation to the combos when not in a boss encounter.", Job.DRK)]
+    DRK_Mitigation_Boss = 5309,
+    
+    [ParentCombo(DRK_Mitigation_Boss)]
+    [CustomComboInfo("The Blackest Night Emergency Healing", "Adds The Blackest Night when below  HP threshold and targetted", Job.DRK)]
+    DRK_Mitigation_Boss_BlackestNight_OnCD = 5310,
+    
+    [ParentCombo(DRK_Mitigation_Boss)]
+    [CustomComboInfo("The Blackest Night Tankbuster Option", "Adds The Blackest Night when an incoming tankbuster is detected", Job.DRK)]
+    DRK_Mitigation_Boss_BlackestNight_TB = 5314,
+    
+    [ParentCombo(DRK_Mitigation_Boss)]
+    [CustomComboInfo("Oblation Tankbuster Option", "Adds Oblation when an incoming tankbuster is detected", Job.DRK)]
+    DRK_Mitigation_Boss_Oblation = 5319,
+    
+    [ParentCombo(DRK_Mitigation_Boss)]
+    [CustomComboInfo("Shadow Wall/Shadowed Vigil Tankbuster Option", "Adds Shadow Wall/Shadowed Vigil when an incoming tankbuster is detected. Will not overlap with Rampart.", Job.DRK)]
+    DRK_Mitigation_Boss_ShadowWall = 5315,
+    
+    [ParentCombo(DRK_Mitigation_Boss)]
+    [CustomComboInfo("Rampart Tankbuster Option", "Adds Rampart when an incoming tankbuster is detected. Will Not Overlap with Shadow Wall/Shadowed Vigil", Job.DRK)]
+    DRK_Mitigation_Boss_Rampart = 5316,
+    
+    [ParentCombo(DRK_Mitigation_Boss)]
+    [CustomComboInfo("Dark Mind Tankbuster Option", "Adds Dark Mind when an incoming tankbuster is detected. Will not overlap unless below set threshold or aligned with rampart.", Job.DRK)]
+    DRK_Mitigation_Boss_DarkMind = 5317,
+    
+    [ParentCombo(DRK_Mitigation_Boss)]
+    [CustomComboInfo("Raidwide Reprisal Option", "Adds Reprisal when raidwide casting is detected.", Job.DRK)]
+    DRK_Mitigation_Boss_Reprisal = 5311,
+    
+    [ParentCombo(DRK_Mitigation_Boss)]
+    [CustomComboInfo("Raidwide Dark Missionary Option", "Adds Dark Missionary when raidwide casting is detected.", Job.DRK)]
+    DRK_Mitigation_Boss_DarkMissionary = 5312,
+
+    #endregion
+    // Lastvalue = 5319
 
     #region Basic combo
 
