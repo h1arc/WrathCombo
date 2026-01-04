@@ -528,8 +528,8 @@ internal partial class DRK
         /// </summary>
         internal enum SimpleMitigation
         {
-            Off,
-            On,
+            Off = 0,
+            On = 1,
         }
 
         internal enum PullAction
