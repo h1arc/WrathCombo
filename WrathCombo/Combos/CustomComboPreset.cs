@@ -2615,7 +2615,7 @@ public enum Preset
     DRK_Mitigation_NonBoss_ShadowWall = 5303,
     
     [ParentCombo(DRK_Mitigation_NonBoss)]
-    [CustomComboInfo("Arm's Length Option", "Adds Arm's Length when 5 or more targets", Job.DRK)]
+    [CustomComboInfo("Arm's Length Option", "Adds Arm's Length when 5 or more targets.", Job.DRK)]
     DRK_Mitigation_NonBoss_ArmsLength = 5306,
     
     [ParentCombo(DRK_Mitigation_NonBoss)]
@@ -2635,19 +2635,19 @@ public enum Preset
     DRK_Mitigation_Boss = 5309,
     
     [ParentCombo(DRK_Mitigation_Boss)]
-    [CustomComboInfo("The Blackest Night Emergency Healing", "Adds The Blackest Night when below  HP threshold and targetted", Job.DRK)]
+    [CustomComboInfo("The Blackest Night Emergency Usage", "Adds The Blackest Night when below HP threshold and targeted.", Job.DRK)]
     DRK_Mitigation_Boss_BlackestNight_OnCD = 5310,
     
     [ParentCombo(DRK_Mitigation_Boss)]
-    [CustomComboInfo("The Blackest Night Tankbuster Option", "Adds The Blackest Night when an incoming tankbuster is detected", Job.DRK)]
+    [CustomComboInfo("The Blackest Night Tankbuster Option", "Adds The Blackest Night when an incoming tankbuster is detected.", Job.DRK)]
     DRK_Mitigation_Boss_BlackestNight_TB = 5314,
     
     [ParentCombo(DRK_Mitigation_Boss)]
-    [CustomComboInfo("Oblation Tankbuster Option", "Adds Oblation when an incoming tankbuster is detected", Job.DRK)]
+    [CustomComboInfo("Oblation Tankbuster Option", "Adds Oblation when an incoming tankbuster is detected.", Job.DRK)]
     DRK_Mitigation_Boss_Oblation = 5319,
     
     [ParentCombo(DRK_Mitigation_Boss)]
-    [CustomComboInfo("Rampart Tankbuster Option", "Adds Rampart when an incoming tankbuster is detected. Will Not Overlap with Shadow Wall/Shadowed Vigil", Job.DRK)]
+    [CustomComboInfo("Rampart Tankbuster Option", "Adds Rampart when an incoming tankbuster is detected. Will Not Overlap with Shadow Wall/Shadowed Vigil.", Job.DRK)]
     DRK_Mitigation_Boss_Rampart = 5316,
     
     [ParentCombo(DRK_Mitigation_Boss)]
