@@ -21,8 +21,6 @@ internal partial class WAR
         {
             if (action != HeavySwing)
                 return action;
-            if (ShouldUseOther)
-                return OtherAction;
             if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
 
@@ -81,8 +79,6 @@ internal partial class WAR
         {
             if (action != HeavySwing)
                 return action;
-            if (ShouldUseOther)
-                return OtherAction;
             if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
 
@@ -152,8 +148,6 @@ internal partial class WAR
         {
             if (action != Overpower)
                 return action;
-            if (ShouldUseOther)
-                return OtherAction;
             if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
             if (Role.CanInterject())
@@ -205,8 +199,6 @@ internal partial class WAR
         {
             if (action != Overpower)
                 return action; //Our button
-            if (ShouldUseOther)
-                return OtherAction;
             if (ContentSpecificActions.TryGet(out uint contentAction))
                 return contentAction;
 

@@ -38,13 +38,7 @@ internal partial class GNB
             GNB_Mit_Aurora_Health = new("GNB_Mit_Aurora_Health", 60),
             GNB_Mit_HeartOfLight_PartyRequirement = new("GNB_Mit_HeartOfLight_PartyRequirement", (int)PartyRequirement.Yes),
             GNB_Mit_ArmsLength_Boss = new("GNB_Mit_ArmsLength_Boss", (int)BossAvoidance.On),
-            GNB_Mit_ArmsLength_EnemyCount = new("GNB_Mit_ArmsLength_EnemyCount", 0),
-            GNB_Bozja_LostCure_Health = new("GNB_Bozja_LostCure_Health", 50),
-            GNB_Bozja_LostCure2_Health = new("GNB_Bozja_LostCure2_Health", 50),
-            GNB_Bozja_LostCure3_Health = new("GNB_Bozja_LostCure3_Health", 50),
-            GNB_Bozja_LostCure4_Health = new("GNB_Bozja_LostCure4_Health", 50),
-            GNB_Bozja_LostAethershield_Health = new("GNB_Bozja_LostAethershield_Health", 70),
-            GNB_Bozja_LostReraise_Health = new("GNB_Bozja_LostReraise_Health", 10);
+            GNB_Mit_ArmsLength_EnemyCount = new("GNB_Mit_ArmsLength_EnemyCount", 0);
 
         public static UserFloat
             GNB_Mitigation_Boss_Camouflage_Threshold = new("GNB_Mitigation_Boss_Camouflage_Threshold", 80f),
@@ -307,6 +301,18 @@ internal partial class GNB
                         "Exclude Overcap Protection", $"Excludes {BurstStrike.ActionName()}, regardless of cartridge count", 1);
                     break;
 
+                case Preset.GNB_ST_Simple:
+                    DrawHorizontalRadioButton(GNB_ST_MitsOptions,
+                        "Include Mitigations", "Enables the use of mitigations in Simple Mode.", 0);
+                    DrawHorizontalRadioButton(GNB_ST_MitsOptions,
+                        "Exclude Mitigations", "Disables the use of mitigations in Simple Mode.", 1);
+                    break;
+
+                case Preset.GNB_AoE_Simple:
+                    DrawHorizontalRadioButton(GNB_AoE_MitsOptions,
+                        "Include Mitigations", "Enables the use of mitigations in Simple Mode.", 0);
+                    DrawHorizontalRadioButton(GNB_AoE_MitsOptions,
+                        "Exclude Mitigations", "Disables the use of mitigations in Simple Mode.", 1);
                 case Preset.GNB_Bozja_LostCure:
                     DrawSliderInt(1, 100, GNB_Bozja_LostCure_Health,
                         "Player HP% to be \nless than or equal to:", 200);

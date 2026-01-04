@@ -31,9 +31,6 @@ internal partial class GNB : Tank
             if (Role.CanLowBlow())
                 return Role.LowBlow;
 
-            if (BozjaActions() != 0)
-                return BozjaActions();
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
@@ -153,9 +150,6 @@ internal partial class GNB : Tank
             if (Role.CanLowBlow() &&
                 IsEnabled(Preset.GNB_ST_Stun))
                 return Role.LowBlow;
-
-            if (BozjaActions() != 0)
-                return BozjaActions();
 
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
@@ -286,9 +280,6 @@ internal partial class GNB : Tank
             if (Role.CanLowBlow())
                 return Role.LowBlow;
 
-            if (BozjaActions() != 0)
-                return BozjaActions();
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
@@ -359,9 +350,6 @@ internal partial class GNB : Tank
 
             if (IsEnabled(Preset.GNB_AoE_Stun) && Role.CanLowBlow())
                 return Role.LowBlow;
-
-            if (BozjaActions() != 0)
-                return BozjaActions();
 
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
