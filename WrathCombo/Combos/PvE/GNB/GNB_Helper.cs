@@ -265,11 +265,11 @@ internal partial class GNB : Tank
                                          ContentCheck.IsInConfiguredContent(GNB_Mitigation_Boss_Camouflage_Difficulty, GNB_Boss_Mit_DifficultyListSet);
 
         bool emergencyCamo = PlayerHealthPercentageHp() <= emergencyCamouflageThreshold;
-        bool noOtherMits= !ActionReady(OriginalHook(Nebula)) && !JustUsed(OriginalHook(Nebula), 13f) && !ActionReady(Role.Rampart) && !JustUsed(Role.Rampart, 18f);
+        bool noOtherMitsToUse = !ActionReady(OriginalHook(Nebula)) && !JustUsed(OriginalHook(Nebula), 13f) && !ActionReady(Role.Rampart) && !JustUsed(Role.Rampart, 18f);
         bool alignCamouflageWithRampart = JustUsed(Role.Rampart, 20f) && alignCamouflage;
         
         if (IsEnabled(Preset.GNB_Mitigation_Boss_Camouflage) && ActionReady(Camouflage) && HasIncomingTankBusterEffect() && CamouflageInMitigationContent &&
-            ( emergencyCamo || noOtherMits || alignCamouflageWithRampart))
+            ( emergencyCamo || noOtherMitsToUse || alignCamouflageWithRampart))
         {
             actionID = Camouflage;
             return true;

@@ -38,7 +38,9 @@ internal partial class WAR
             if (WAR_ST_MitsOptions != 1 || P.UIHelper.PresetControlled(Preset)?.enabled == true)
             {
                 if (TryUseMits(RotationMode.simple, ref action))
-                    return action;
+                    return action == Holmgang && IsEnabled(Preset.WAR_RetargetHolmgang)
+                        ? action.Retarget(HeavySwing, SimpleTarget.Self)
+                        : action;
             }
 
             #region Rotation
@@ -102,7 +104,9 @@ internal partial class WAR
             if (WAR_ST_Advanced_MitsOptions != 1 || P.UIHelper.PresetControlled(Preset)?.enabled == true)
             {
                 if (TryUseMits(RotationMode.advanced, ref action))
-                    return action;
+                    return action == Holmgang && IsEnabled(Preset.WAR_RetargetHolmgang)
+                        ? action.Retarget(HeavySwing, SimpleTarget.Self)
+                        : action;
             }
 
             #region Rotation
@@ -160,7 +164,9 @@ internal partial class WAR
             if (WAR_AoE_MitsOptions != 1 || P.UIHelper.PresetControlled(Preset)?.enabled == true)
             {
                 if (TryUseMits(RotationMode.simple, ref action))
-                    return action;
+                    return action == Holmgang && IsEnabled(Preset.WAR_RetargetHolmgang)
+                        ? action.Retarget(Overpower, SimpleTarget.Self)
+                        : action;
             }
 
             #region Rotation
@@ -222,7 +228,9 @@ internal partial class WAR
             if (WAR_AoE_Advanced_MitsOptions != 1 || P.UIHelper.PresetControlled(Preset)?.enabled == true)
             {
                 if (TryUseMits(RotationMode.advanced, ref action))
-                    return action;
+                    return action == Holmgang && IsEnabled(Preset.WAR_RetargetHolmgang)
+                        ? action.Retarget(Overpower, SimpleTarget.Self)
+                        : action;
             }
 
             if (!r6SReady) return AOECombo;

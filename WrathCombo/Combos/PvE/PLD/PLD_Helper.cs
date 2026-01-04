@@ -368,13 +368,13 @@ internal partial class PLD
                                          ContentCheck.IsInConfiguredContent(PLD_Mitigation_Boss_Bulwark_Difficulty, PLD_Boss_Mit_DifficultyListSet);
 
         bool emergencyBulwark = PlayerHealthPercentageHp() <= emergencyBulwarkThreshold;
-        bool noOtherMits = !ActionReady(OriginalHook(Sentinel)) && !JustUsed(OriginalHook(Sentinel), 13f) &&
+        bool noOtherMitsToUse = !ActionReady(OriginalHook(Sentinel)) && !JustUsed(OriginalHook(Sentinel), 13f) &&
                            !ActionReady(Role.Rampart) && !JustUsed(Role.Rampart, 18f);
         bool alignBulwarkWithRampart = JustUsed(Role.Rampart, 20f) && alignBulwark;
         
         
         if (IsEnabled(Preset.PLD_Mitigation_Boss_Bulwark) && ActionReady(Bulwark) && HasIncomingTankBusterEffect() && BulwarkInMitigationContent &&
-            (emergencyBulwark || noOtherMits || alignBulwarkWithRampart))
+            (emergencyBulwark || noOtherMitsToUse || alignBulwarkWithRampart))
         {
             actionID = Bulwark;
             return true;
