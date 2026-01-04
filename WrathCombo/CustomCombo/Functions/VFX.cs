@@ -38,10 +38,13 @@ internal abstract partial class CustomComboFunctions
 
     // List of Multi-Hit Shared Damage Effect Paths
     private static readonly FrozenSet<string> MHSharedDmgPaths = FrozenSet.ToFrozenSet([
-        "vfx/lockon/eff/com_share8s_0v",
-        "vfx/lockon/eff/com_share5a1",
         "vfx/lockon/eff/com_share4a1",
-        "vfx/lockon/eff/m0922trg_t2w"
+        "vfx/lockon/eff/com_share5a1",
+        "vfx/lockon/eff/com_share6m7s_1v",
+        "vfx/lockon/eff/com_share8s_0v",
+        "vfx/lockon/eff/share_laser_5s_c0w", // Line
+        "vfx/lockon/eff/share_laser_8s_c0g", // Line
+        "vfx/lockon/eff/m0922trg_t2w" //Some Lightning based effect, presume specific raid?
     ], StringComparer.OrdinalIgnoreCase);
 
     // List of Regular Shared Damage Effect Paths
@@ -103,7 +106,7 @@ internal abstract partial class CustomComboFunctions
             Svc.Log.Debug($"Found Incoming Shared Damage Effects {AoEEffects.Count}");
         }
 
-        // Expected Outcome from the LinQ:
+        // Expected Outcome from the LINQ:
         // Multi - hit on party member, Closest in your party
         // Multi - hit on other alliance player, That player(raid - wide stack)
         // Multi - hit on NPC/ ground marker, That marker
@@ -114,7 +117,7 @@ internal abstract partial class CustomComboFunctions
         IBattleChara? bestTarget = AoEEffects
             .Select(vfx => vfx.TargetID.GetObject())
             .OfType<IBattleChara>()
-            // Multi-hit can be on anyone, regular only on party members or NPCs,
+            // Multi-hit can be on anyone (only 1 per alliance), regular only on party members or NPCs,
             .Where(chara => MH || chara.IsInParty() || chara is IBattleNpc)
             // Prioritize party members first, then by distance
             .OrderBy(chara => chara.IsInParty() ? 0 : 1)
