@@ -963,6 +963,7 @@ public enum Preset
 
     [ParentCombo(AST_AOE_DPS)]
     [CustomComboInfo("Multitarget Dot Option", "Maintains dots on multiple targets.", Job.AST)]
+    [Retargeted(AST.Combust, AST.Combust2, AST.Combust3)]
     AST_AOE_DPS_DoT = 1083,
 
     [ParentCombo(AST_AOE_DPS)]
@@ -1751,6 +1752,7 @@ public enum Preset
 
     [ParentCombo(BRD_AoE_AdvMode)]
     [CustomComboInfo("Bard Dot Option", "Will maintain dots on up to 3 targets.", Job.BRD)]
+    [Retargeted(BRD.Windbite, BRD.VenomousBite, BRD.IronJaws, BRD.CausticBite, BRD.Stormbite)]
     BRD_AoE_Adv_Multidot = 3065,
 
     [ParentCombo(BRD_AoE_AdvMode)]
@@ -6636,6 +6638,7 @@ public enum Preset
 
     [ParentCombo(SCH_AoE_ADV_DPS)]
     [CustomComboInfo("Multitarget Dot Option", "Maintains dots on multiple targets.", Job.SCH)]
+    [Retargeted(SCH.Bio, SCH.Bio2, SCH.Biolysis)]
     SCH_AoE_ADV_DPS_DoT = 16072,
 
     [ParentCombo(SCH_AoE_ADV_DPS)]
