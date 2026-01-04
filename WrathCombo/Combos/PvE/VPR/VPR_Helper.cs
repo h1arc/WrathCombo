@@ -16,31 +16,31 @@ internal partial class VPR
     private static float IreCD =>
         GetCooldownRemainingTime(SerpentsIre);
 
-    private static bool InRange() =>
+    private static bool InRange =>
         IsInRange(CurrentTarget, 5f);
 
-    private static bool MaxCoils() =>
+    private static bool MaxCoils =>
         TraitLevelChecked(Traits.EnhancedVipersRattle) && RattlingCoilStacks > 2 ||
         !TraitLevelChecked(Traits.EnhancedVipersRattle) && RattlingCoilStacks > 1;
 
-    private static bool HasRattlingCoilStack() =>
+    private static bool HasRattlingCoilStack =>
         RattlingCoilStacks > 0;
 
-    private static bool HasHindVenom() =>
+    private static bool HasHindVenom =>
         HasStatusEffect(Buffs.HindstungVenom) ||
         HasStatusEffect(Buffs.HindsbaneVenom);
 
-    private static bool HasFlankVenom() =>
+    private static bool HasFlankVenom =>
         HasStatusEffect(Buffs.FlankstungVenom) ||
         HasStatusEffect(Buffs.FlanksbaneVenom);
 
-    private static bool NoSwiftscaled() =>
+    private static bool NoSwiftscaled =>
         !HasStatusEffect(Buffs.Swiftscaled);
 
-    private static bool NoHuntersInstinct() =>
+    private static bool NoHuntersInstinct =>
         !HasStatusEffect(Buffs.HuntersInstinct);
 
-    private static bool NoVenom() =>
+    private static bool NoVenom =>
         !HasStatusEffect(Buffs.FlanksbaneVenom) &&
         !HasStatusEffect(Buffs.FlankstungVenom) &&
         !HasStatusEffect(Buffs.HindsbaneVenom) &&
@@ -63,7 +63,7 @@ internal partial class VPR
         if (LevelChecked(Reawaken) && !HasStatusEffect(Buffs.Reawakened) && InActionRange(Reawaken) &&
             !HasStatusEffect(Buffs.HuntersVenom) && !HasStatusEffect(Buffs.SwiftskinsVenom) && HasBattleTarget() &&
             !HasStatusEffect(Buffs.PoisedForTwinblood) && !HasStatusEffect(Buffs.PoisedForTwinfang) &&
-            !IsEmpowermentExpiring(6))
+            !IsEmpowermentExpiring(6) && !IsComboExpiring(6))
         {
             //Use whenever
             if (SerpentOffering >= 50 && TargetIsBoss() &&
@@ -216,46 +216,6 @@ internal partial class VPR
     }
 
    #endregion
-    
-    #region Vicewinder
-
-    private static bool UseVicewinder()
-    {
-        //Vicewinder Usage
-        if (IsEnabled(Preset.VPR_ST_Vicewinder) &&
-            HasStatusEffect(Buffs.Swiftscaled) && !IsComboExpiring(3) &&
-            ActionReady(Vicewinder) && !HasStatusEffect(Buffs.Reawakened) && InMeleeRange() &&
-            (IreCD >= GCD * 5 && InBossEncounter() || !InBossEncounter() || !LevelChecked(SerpentsIre)) &&
-            !IsVenomExpiring(3) && !IsHoningExpiring(3))
-            return VPR_TrueNortVicewinder &&
-                   Role.CanTrueNorth()
-                ? Role.TrueNorth
-                : Vicewinder;
-        
-        //Vicewinder Combo
-        if (IsEnabled(Preset.VPR_ST_VicewinderCombo) &&
-            !HasStatusEffect(Buffs.Reawakened) &&
-            LevelChecked(Vicewinder) && InMeleeRange())
-        {
-            // Swiftskin's Coil
-            if (VicewinderReady &&
-                (!OnTargetsFlank() ||
-                 !TargetNeedsPositionals()) ||
-                HuntersCoilReady)
-                return SwiftskinsCoil;
-
-            // Hunter's Coil
-            if (VicewinderReady &&
-                (!OnTargetsRear() ||
-                 !TargetNeedsPositionals()) ||
-                SwiftskinsCoilReady)
-                return HuntersCoil;
-        }
-    }
-
-
-    #endregion
-    
 
     #region Combos
 
@@ -291,6 +251,58 @@ internal partial class VPR
         float gcd = GCD * times;
 
         return Instance()->Combo.Timer != 0 && Instance()->Combo.Timer < gcd;
+    }
+
+    private static bool CanUseVicewinder =>
+        !IsComboExpiring(4) && ActionReady(Vicewinder) &&
+        !HasStatusEffect(Buffs.Reawakened) && InMeleeRange() &&
+        !VicewinderReady && !HuntersCoilReady && !SwiftskinsCoilReady &&
+        (IreCD >= GCD * 5 && InBossEncounter() || !InBossEncounter() || !LevelChecked(SerpentsIre)) &&
+        !IsVenomExpiring(4) && !IsHoningExpiring(4);
+
+    private static bool CanUseUncoiledFury(bool simplemode = false)
+    {
+        if (!IsComboExpiring(2) && ActionReady(UncoiledFury) && HasStatusEffect(Buffs.Swiftscaled) && HasStatusEffect(Buffs.HuntersInstinct) &&
+            (RattlingCoilStacks > VPR_ST_UncoiledFury_HoldCharges ||
+             GetTargetHPPercent() < VPR_ST_UncoiledFury_Threshold && HasRattlingCoilStack) &&
+            !VicewinderReady && !HuntersCoilReady && !SwiftskinsCoilReady &&
+            !HasStatusEffect(Buffs.Reawakened) && !HasStatusEffect(Buffs.ReadyToReawaken) &&
+            !WasLastWeaponskill(Ouroboros) && !IsEmpowermentExpiring(3))
+            return true;
+
+        return false;
+    }
+
+    private static bool CanVicewinderCombo(ref uint actionID)
+    {
+        if (!HasStatusEffect(Buffs.Reawakened) &&
+            LevelChecked(Vicewinder) && InMeleeRange())
+        {
+            // Swiftskin's Coil
+            if (VicewinderReady &&
+                (!OnTargetsFlank() ||
+                 !TargetNeedsPositionals()) ||
+                !HasStatusEffect(Buffs.Swiftscaled) ||
+                RefreshSwiftscaled ||
+                HuntersCoilReady)
+            {
+                actionID = SwiftskinsCoil;
+                return true;
+            }
+
+            // Hunter's Coil
+            if (VicewinderReady &&
+                (!OnTargetsRear() ||
+                 !TargetNeedsPositionals()) ||
+                !HasStatusEffect(Buffs.HuntersInstinct) ||
+                RefreshHuntersInstinct ||
+                SwiftskinsCoilReady)
+            {
+                actionID = HuntersCoil;
+                return true;
+            }
+        }
+        return false;
     }
 
     #endregion
