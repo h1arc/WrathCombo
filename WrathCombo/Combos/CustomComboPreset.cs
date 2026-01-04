@@ -5239,8 +5239,12 @@ public enum Preset
     RPR_ST_StunInterupt = 12096,
 
     [ParentCombo(RPR_ST_AdvancedMode)]
-    [CustomComboInfo("Ranged Filler Option", "Replaces the combo chain with Harpe when outside of melee range. Will not override Communio.", Job.RPR)]
+    [CustomComboInfo("Harpe Option", "Replaces the combo chain with Harpe when outside of melee range. Will not override Communio.", Job.RPR)]
     RPR_ST_RangedFiller = 12017,
+    
+    [ParentCombo(RPR_ST_AdvancedMode)]
+    [CustomComboInfo("Harvest Moon Option", "Replaces the combo chain with Harvest Moon when outside of melee range.", Job.RPR)]
+    RPR_ST_RangedFillerHarvestMoon = 12024,
 
     [ParentCombo(RPR_ST_AdvancedMode)]
     [CustomComboInfo("Combo Heals Option", "Adds Bloodbath and Second Wind to the combo, using them when below the HP Percentage threshold.", Job.RPR)]
@@ -5254,7 +5258,7 @@ public enum Preset
     [CustomComboInfo("Arcane Crest Raidwide Option", "Adds Arcane Crest when Raidwide is detected casting.", Job.RPR)]
     RPR_ST_ArcaneCrest = 12022,
     
-    //last value = 12022
+    //last value = 12024
 
     #endregion
 
@@ -5341,6 +5345,10 @@ public enum Preset
     [CustomComboInfo("Basic Combo", "Replace Infernal Slice with its combo chain.", Job.RPR)]
     [BasicCombo]
     RPR_ST_BasicCombo = 12021,
+
+    [ParentCombo(RPR_ST_BasicCombo)]
+    [CustomComboInfo("Shadow Of Death Option", "Adds Shadow of Death to the rotation.", Job.RPR)]
+    RPR_ST_BasicCombo_SoD = 12023,
 
     #endregion
 
@@ -6454,7 +6462,7 @@ public enum Preset
 
     [ReplaceSkill(SAM.MeikyoShisui)]
     [ConflictingCombos(SAM_MeikyoSens)]
-    [CustomComboInfo("Meikyo Shisui Protection", "Replaces Meikyo Shisui with Savage Blade when you already have Meikyo Shisui active.", Job.SAM)]
+    [CustomComboInfo("Meikyo Shisui Protection", "Blocks Meikyo Shisui with Savage Blade when you already have Meikyo Shisui active.", Job.SAM)]
     SAM_MeikyoShisuiProtection = 15214,
 
     #endregion
