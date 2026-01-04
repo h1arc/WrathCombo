@@ -418,11 +418,11 @@ internal partial class DRK
                     return (action = OriginalHook(ShadowWall)) != 0;
 
                 if (IsEnabled(Preset.DRK_Mitigation_NonBoss_Reprisal) &&
-                    Role.CanReprisal(enemyCount: 5))
-                    return (action = Role.Rampart) != 0;
+                    ActionReady(Role.Reprisal))
+                    return (action = Role.Reprisal) != 0;
 
                 if (IsEnabled(Preset.DRK_Mitigation_NonBoss_ArmsLength) &&
-                    Role.CanArmsLength())
+                    ActionReady(Role.ArmsLength))
                     return (action = Role.ArmsLength) != 0;
             }
 
