@@ -25,6 +25,7 @@ internal partial class GNB
             GNB_ST_NoMercy_SubOption = new("GNB_ST_NoMercy_SubOption", 1),
             GNB_ST_Overcap_Choice = new("GNB_ST_Overcap_Choice", 0),
             GNB_ST_HoldLightningShot = new("GNB_ST_HoldLightningShot", 0),
+            GNB_ST_BurstStrike_Setup = new("GNB_ST_BurstStrike_Setup", 0),
             GNB_AoE_FatedCircle_BurstStrike = new("GNB_AoE_FatedCircle_BurstStrike", 1),
             GNB_AoE_Overcap_Choice = new("GNB_AoE_Overcap_Choice", 0),
             GNB_AoE_NoMercyStop = new("GNB_AoE_NoMercyStop", 5),
@@ -33,7 +34,7 @@ internal partial class GNB
             GNB_NM_Features_Weave = new("GNB_NM_Feature_Weave", 0),
             GNB_GF_Features_Choice = new("GNB_GF_Choice", 0),
             GNB_GF_Overcap_Choice = new("GNB_GF_Overcap_Choice", 0),
-            GNB_GF_BurstStrike_Setup = new("GNB_FC_BurstStrike_Setup", 0),
+            GNB_GF_BurstStrike_Setup = new("GNB_GF_BurstStrike_Setup", 0),
             GNB_ST_Balance_Content = new("GNB_ST_Balance_Content", 1),
             GNB_Mit_Superbolide_Health = new("GNB_Mit_Superbolide_Health", 30),
             GNB_Mit_Corundum_Health = new("GNB_Mit_Corundum_Health", 60),
@@ -325,48 +326,6 @@ internal partial class GNB
                         "Precede No Mercy", $"Allow preceding {NoMercy.ActionName()} with {BurstStrike.ActionName()} for a buffed {Hypervelocity.ActionName()} (BS->NM->HV) - ONLY APPLIES TO 2.50", 0);
                     DrawHorizontalRadioButton(GNB_GF_BurstStrike_Setup,
                         "Don't Precede No Mercy", $"Forbid preceding {NoMercy.ActionName()} with {BurstStrike.ActionName()}", 1);
-                    break;
-
-                case Preset.GNB_ST_Simple:
-                    DrawHorizontalRadioButton(GNB_ST_MitsOptions,
-                        "Include Mitigations", "Enables the use of mitigations in Simple Mode.", 0);
-                    DrawHorizontalRadioButton(GNB_ST_MitsOptions,
-                        "Exclude Mitigations", "Disables the use of mitigations in Simple Mode.", 1);
-                    break;
-
-                case Preset.GNB_AoE_Simple:
-                    DrawHorizontalRadioButton(GNB_AoE_MitsOptions,
-                        "Include Mitigations", "Enables the use of mitigations in Simple Mode.", 0);
-                    DrawHorizontalRadioButton(GNB_AoE_MitsOptions,
-                        "Exclude Mitigations", "Disables the use of mitigations in Simple Mode.", 1);
-                case Preset.GNB_Bozja_LostCure:
-                    DrawSliderInt(1, 100, GNB_Bozja_LostCure_Health,
-                        "Player HP% to be \nless than or equal to:", 200);
-                    break;
-
-                case Preset.GNB_Bozja_LostCure2:
-                    DrawSliderInt(1, 100, GNB_Bozja_LostCure2_Health,
-                        "Player HP% to be \nless than or equal to:", 200);
-                    break;
-
-                case Preset.GNB_Bozja_LostCure3:
-                    DrawSliderInt(1, 100, GNB_Bozja_LostCure3_Health,
-                        "Player HP% to be \nless than or equal to:", 200);
-                    break;
-
-                case Preset.GNB_Bozja_LostCure4:
-                    DrawSliderInt(1, 100, GNB_Bozja_LostCure4_Health,
-                        "Player HP% to be \nless than or equal to:", 200);
-                    break;
-
-                case Preset.GNB_Bozja_LostAethershield:
-                    DrawSliderInt(1, 100, GNB_Bozja_LostAethershield_Health,
-                        "Player HP% to be \nless than or equal to:", 200);
-                    break;
-
-                case Preset.GNB_Bozja_LostReraise:
-                    DrawSliderInt(1, 100, GNB_Bozja_LostReraise_Health,
-                        "Player HP% to be \nless than or equal to:", 200);
                     break;
 
                     #endregion
