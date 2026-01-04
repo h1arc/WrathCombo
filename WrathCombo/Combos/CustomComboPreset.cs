@@ -4961,7 +4961,7 @@ public enum Preset
     PLD_Mitigation_Boss = 11095,
     
     [ParentCombo(PLD_Mitigation_Boss)]
-    [CustomComboInfo("Sheltron Overcap Option", "Adds Sheltron when Above Selected Oath Gague and targetted", Job.PLD)]
+    [CustomComboInfo("Sheltron Overcap Option", "Adds Sheltron when Above Selected Oath Gauge and targetted", Job.PLD)]
     PLD_Mitigation_Boss_SheltronOvercap = 11096,
     
     [ParentCombo(PLD_Mitigation_Boss)]
