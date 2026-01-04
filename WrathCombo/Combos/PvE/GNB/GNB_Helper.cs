@@ -92,11 +92,14 @@ internal partial class GNB : Tank
     
     private static bool CanUseNonBossMits(RotationMode rotationFlags, ref uint actionID)
     {
+        #region Initial Bailout
         if (!InCombat() || !CanWeave() || InBossEncounter() || JustMitted || !IsEnabled(Preset.GNB_Mitigation_NonBoss))  
             return false;
+        #endregion
         
-        #region Always Mits
-        if (IsEnabled(Preset.GNB_Mitigation_NonBoss_HeartOfStone) && ActionReady(OriginalHook(HeartOfStone)) && 
+        #region Heart Of Stone/Corundrum Use Always
+        if (IsEnabled(Preset.GNB_Mitigation_NonBoss_HeartOfStone) && 
+            ActionReady(OriginalHook(HeartOfStone)) && 
             !HasStatusEffect(Buffs.Superbolide))
         {
             actionID = OriginalHook(HeartOfStone);
@@ -113,37 +116,43 @@ internal partial class GNB : Tank
             return false;
         #endregion
         
-        #region Overlapping Mits
-        if (NumberOfEnemiesInRange(Role.Reprisal) > 4 && IsEnabled(Preset.GNB_Mitigation_NonBoss_HeartOfLight) && ActionReady(HeartOfLight) && !HasStatusEffect(Buffs.Superbolide))
+        var numberOfEnemies = NumberOfEnemiesInRange(Role.Reprisal);
+        
+        #region Heart of Light Overlapping 5+
+        if (numberOfEnemies >= 5 && IsEnabled(Preset.GNB_Mitigation_NonBoss_HeartOfLight) && 
+            ActionReady(HeartOfLight) && !HasStatusEffect(Buffs.Superbolide))
         {
             actionID = HeartOfLight;
             return true;
         }
-        if (Role.CanReprisal(enemyCount:5) && IsEnabled(Preset.GNB_Mitigation_NonBoss_Reprisal) && !HasStatusEffect(Buffs.Superbolide))
+        #endregion
+        
+        #region Reprisal Overlapping 5+
+        if (numberOfEnemies >= 5 &&  IsEnabled(Preset.GNB_Mitigation_NonBoss_Reprisal) && 
+            ActionReady(Role.Reprisal) && !HasStatusEffect(Buffs.Superbolide))
         {
             actionID = Role.Reprisal;
             return true;
         }
-        if (NumberOfEnemiesInRange(Role.Reprisal) > 2 && ActionReady(Aurora) && IsEnabled(Preset.GNB_Mitigation_NonBoss_Aurora) && !HasStatusEffect(Buffs.Aurora) &&!JustUsed(Aurora))
+        #endregion
+        
+        #region Aurora Overlapping 3+
+        if (numberOfEnemies >= 3 &&  IsEnabled(Preset.GNB_Mitigation_NonBoss_Aurora) && 
+            ActionReady(Aurora) && !HasStatusEffect(Buffs.Aurora) && !JustUsed(Aurora))
         {
             actionID = OriginalHook(Aurora);
             return true;
         }
         #endregion
         
-        if (MitigationRunning || NumberOfEnemiesInRange(Role.Reprisal) <= 2) return false; //Bail if already Mitted or too few enemies
+        if (MitigationRunning || numberOfEnemies <= 2) return false; //Bail if already Mitted or too few enemies
         
         #region Mitigation 5+
-        if (NumberOfEnemiesInRange(Role.Reprisal) > 4)
+        if (numberOfEnemies >= 5)
         {
             if (ActionReady(Superbolide) && IsEnabled(Preset.GNB_Mitigation_NonBoss_Superbolide))
             {
                 actionID = Superbolide;
-                return true;
-            }
-            if (ActionReady(Role.ArmsLength) && IsEnabled(Preset.GNB_Mitigation_NonBoss_ArmsLength))
-            {
-                actionID = Role.ArmsLength;
                 return true;
             }
             if (ActionReady(OriginalHook(Nebula)) && IsEnabled(Preset.GNB_Mitigation_NonBoss_Nebula))
@@ -151,11 +160,15 @@ internal partial class GNB : Tank
                 actionID = OriginalHook(Nebula);
                 return true;
             }
+            if (ActionReady(Role.ArmsLength) && IsEnabled(Preset.GNB_Mitigation_NonBoss_ArmsLength))
+            {
+                actionID = Role.ArmsLength;
+                return true;
+            }
         }
         #endregion
         
         #region Mitigation 3+
-        //Mitigation for 3 or more
         if (Role.CanRampart() && IsEnabled(Preset.GNB_Mitigation_NonBoss_Rampart))
         {
             actionID = Role.Rampart;
@@ -182,9 +195,11 @@ internal partial class GNB : Tank
     
     private static bool CanUseBossMits(RotationMode rotationFlags, ref uint actionID)
     {
+        #region Initial Bailout
         if (!InCombat() || !CanWeave() || !InBossEncounter() || !IsEnabled(Preset.GNB_Mitigation_Boss)) return false;
+        #endregion
         
-        #region Nebula and Rampart
+        #region Nebula
         var nebulaFirst = rotationFlags.HasFlag(RotationMode.simple)
             ? false
             : GNB_Mitigation_Boss_Nebula_First;
@@ -192,20 +207,23 @@ internal partial class GNB : Tank
         var nebulaInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) || 
                                            ContentCheck.IsInConfiguredContent(GNB_Mitigation_Boss_Nebula_Difficulty, GNB_Boss_Mit_DifficultyListSet);
         
-        
-        if (IsEnabled(Preset.GNB_Mitigation_Boss_Nebula) && ActionReady(OriginalHook(Nebula)) && nebulaInMitigationContent &&
-            HasIncomingTankBusterEffect() && !JustUsed(Role.Rampart, 20f) &&
-            (!ActionReady(Role.Rampart) || nebulaFirst))
+        if (IsEnabled(Preset.GNB_Mitigation_Boss_Nebula) && 
+            ActionReady(OriginalHook(Nebula)) && nebulaInMitigationContent && HasIncomingTankBusterEffect() && 
+            !JustUsed(Role.Rampart, 20f) && // Prevent double big mits
+            (!ActionReady(Role.Rampart) || nebulaFirst)) //Nebula First or don't use unless rampart is on cd.
         {
             actionID = OriginalHook(Nebula);
             return true;
         }
+        #endregion
         
+        #region Rampart
         var rampartInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) || 
                                          ContentCheck.IsInConfiguredContent(GNB_Mitigation_Boss_Rampart_Difficulty, GNB_Boss_Mit_DifficultyListSet);
         
-        if (IsEnabled(Preset.GNB_Mitigation_Boss_Rampart) && ActionReady(Role.Rampart) && rampartInMitigationContent &&
-            HasIncomingTankBusterEffect() && !JustUsed(OriginalHook(Nebula), 15f))
+        if (IsEnabled(Preset.GNB_Mitigation_Boss_Rampart) && 
+            ActionReady(Role.Rampart) && rampartInMitigationContent && HasIncomingTankBusterEffect() && 
+            !JustUsed(OriginalHook(Nebula), 15f)) // Prevent double big mits
         {
             actionID = Role.Rampart;
             return true;
@@ -221,10 +239,13 @@ internal partial class GNB : Tank
         var HeartOfStoneHealthThreshold = rotationFlags.HasFlag(RotationMode.simple) 
             ? 50
             : GNB_Mitigation_Boss_HeartOfStone_Health;
+
+        bool heartOfStoneOnCD = IsEnabled(Preset.GNB_Mitigation_Boss_HeartOfStone_OnCD) &&  
+                                PlayerHealthPercentageHp() <= HeartOfStoneHealthThreshold && IsPlayerTargeted() && HeartOfStoneOnCDInMitigationContent;
+        bool heartOfStoneTankBuster = IsEnabled(Preset.GNB_Mitigation_Boss_HeartOfStone_TankBuster) &&
+                                      HasIncomingTankBusterEffect() && HeartOfStoneTankBusterInMitigationContent;
             
-        if (ActionReady(OriginalHook(HeartOfStone)) &&
-            (IsEnabled(Preset.GNB_Mitigation_Boss_HeartOfStone_OnCD) &&  PlayerHealthPercentageHp() <= HeartOfStoneHealthThreshold && IsPlayerTargeted() && HeartOfStoneOnCDInMitigationContent ||
-             IsEnabled(Preset.GNB_Mitigation_Boss_HeartOfStone_TankBuster) && HasIncomingTankBusterEffect() && HeartOfStoneTankBusterInMitigationContent))
+        if (ActionReady(OriginalHook(HeartOfStone)) && (heartOfStoneOnCD || heartOfStoneTankBuster))
         {
             actionID = OriginalHook(HeartOfStone);
             return true;
@@ -242,12 +263,13 @@ internal partial class GNB : Tank
         
         var CamouflageInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) || 
                                          ContentCheck.IsInConfiguredContent(GNB_Mitigation_Boss_Camouflage_Difficulty, GNB_Boss_Mit_DifficultyListSet);
-        
+
+        bool emergencyCamo = PlayerHealthPercentageHp() <= emergencyCamouflageThreshold;
+        bool noOtherMits= !ActionReady(OriginalHook(Nebula)) && !JustUsed(OriginalHook(Nebula), 13f) && !ActionReady(Role.Rampart) && !JustUsed(Role.Rampart, 18f);
+        bool alignCamouflageWithRampart = JustUsed(Role.Rampart, 20f) && alignCamouflage;
         
         if (IsEnabled(Preset.GNB_Mitigation_Boss_Camouflage) && ActionReady(Camouflage) && HasIncomingTankBusterEffect() && CamouflageInMitigationContent &&
-            (PlayerHealthPercentageHp() <= emergencyCamouflageThreshold ||
-             !ActionReady(OriginalHook(Nebula)) && !JustUsed(OriginalHook(Nebula), 13f) && !ActionReady(Role.Rampart) && !JustUsed(Role.Rampart, 18f) ||
-             JustUsed(Role.Rampart, 20f) && alignCamouflage))
+            ( emergencyCamo || noOtherMits || alignCamouflageWithRampart))
         {
             actionID = Camouflage;
             return true;
@@ -259,8 +281,9 @@ internal partial class GNB : Tank
             ? 90
             : GNB_Mitigation_Boss_Aurora_Health;
         
-        if (IsEnabled(Preset.GNB_Mitigation_Boss_Aurora) && ActionReady(Aurora) && PlayerHealthPercentageHp() <= auroraThreshold &&
-            !HasStatusEffect(Buffs.Aurora) &&!JustUsed(Aurora))
+        if (IsEnabled(Preset.GNB_Mitigation_Boss_Aurora) && 
+            ActionReady(Aurora) && PlayerHealthPercentageHp() <= auroraThreshold &&
+            !HasStatusEffect(Buffs.Aurora) && !JustUsed(Aurora))
         {
             actionID = OriginalHook(Aurora);
             return true;
@@ -272,8 +295,9 @@ internal partial class GNB : Tank
         var ReprisalInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) ||
                                           ContentCheck.IsInConfiguredContent(GNB_Mitigation_Boss_Reprisal_Difficulty, GNB_Boss_Mit_DifficultyListSet);
         
-        if (IsEnabled(Preset.GNB_Mitigation_Boss_Reprisal) && ReprisalInMitigationContent &&
-            !JustUsed(HeartOfLight, 10f) && Role.CanReprisal(enemyCount:1) && GroupDamageIncoming())
+        if (IsEnabled(Preset.GNB_Mitigation_Boss_Reprisal) && 
+            ReprisalInMitigationContent && Role.CanReprisal(enemyCount:1) && GroupDamageIncoming() &&
+            !JustUsed(HeartOfLight, 10f))
         {
             actionID = Role.Reprisal;
             return true;
@@ -284,8 +308,9 @@ internal partial class GNB : Tank
         var HeartOfLightInMitigationContent = rotationFlags.HasFlag(RotationMode.simple) || 
                                               ContentCheck.IsInConfiguredContent(GNB_Mitigation_Boss_HeartOfLight_Difficulty, GNB_Boss_Mit_DifficultyListSet);
         
-        if (IsEnabled(Preset.GNB_Mitigation_Boss_HeartOfLight) && HeartOfLightInMitigationContent &&
-            !JustUsed(Role.Reprisal, 10f) && ActionReady(HeartOfLight) && GroupDamageIncoming())
+        if (IsEnabled(Preset.GNB_Mitigation_Boss_HeartOfLight) && 
+            HeartOfLightInMitigationContent && ActionReady(HeartOfLight) && GroupDamageIncoming() &&
+            !JustUsed(Role.Reprisal, 10f))
         {
             actionID = HeartOfLight;
             return true;

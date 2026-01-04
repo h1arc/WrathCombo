@@ -226,8 +226,6 @@ internal partial class PLD
         if (GetAvgEnemyHPPercentInRange(5f) <= mitigationThreshold) return false;
         #endregion
         
-        var numberOfEnemies = NumberOfEnemiesInRange(Role.Reprisal);
-        
         #region Divine Veil Health Checked
         var divineVeilThreshold = rotationFlags.HasFlag(RotationMode.simple) 
             ? 80 
@@ -240,6 +238,8 @@ internal partial class PLD
             return true;
         }
         #endregion
+        
+        var numberOfEnemies = NumberOfEnemiesInRange(Role.Reprisal);
         
         #region Reprisal 5+ Overlaps
         if (IsEnabled(Preset.PLD_Mitigation_NonBoss_Reprisal) && ActionReady(Role.Reprisal) &&
@@ -261,6 +261,11 @@ internal partial class PLD
                 actionID = HallowedGround;
                 return true;
             }
+            if (ActionReady(OriginalHook(Sentinel)) && IsEnabled(Preset.PLD_Mitigation_NonBoss_Sentinel))
+            {
+                actionID = OriginalHook(Sentinel);
+                return true;
+            }
             if (ActionReady(Role.ArmsLength) && IsEnabled(Preset.PLD_Mitigation_NonBoss_ArmsLength))
             {
                 actionID = Role.ArmsLength;
@@ -278,11 +283,6 @@ internal partial class PLD
         if (ActionReady(Bulwark) && IsEnabled(Preset.PLD_Mitigation_NonBoss_Bulwark))
         {
             actionID = Bulwark;
-            return true;
-        }
-        if (ActionReady(OriginalHook(Sentinel)) && IsEnabled(Preset.PLD_Mitigation_NonBoss_Sentinel))
-        {
-            actionID = OriginalHook(Sentinel);
             return true;
         }
         #endregion

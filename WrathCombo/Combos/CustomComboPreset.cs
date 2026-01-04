@@ -4929,7 +4929,7 @@ public enum Preset
     PLD_Mitigation_NonBoss_Rampart = 11088,
     
     [ParentCombo(PLD_Mitigation_NonBoss)]
-    [CustomComboInfo("Sentinel/Guardian Option", "Adds Sentinel/Guardian when 3 or more targets", Job.PLD)]
+    [CustomComboInfo("Sentinel/Guardian Option", "Adds Sentinel/Guardian when 5 or more targets", Job.PLD)]
     PLD_Mitigation_NonBoss_Sentinel = 11089,
     
     [ParentCombo(PLD_Mitigation_NonBoss)]
