@@ -25,61 +25,20 @@ internal partial class GNB : Tank
 
             #region Non-Rotation
 
-            if (Role.CanInterject() &&
-                IsEnabled(Preset.GNB_ST_Interrupt))
+            if (Role.CanInterject())
                 return Role.Interject;
 
-            if (Role.CanLowBlow() &&
-                IsEnabled(Preset.GNB_ST_Stun))
+            if (Role.CanLowBlow())
                 return Role.LowBlow;
-
-            if (BozjaActions() != 0)
-                return BozjaActions();
 
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
-            #region Mitigations
-            var mitigationsOn =
-                GNB_ST_MitsOptions != 1 ||
-                (P.UIHelper.PresetControlled(Preset)?.enabled == true);
-            if (mitigationsOn)
+            if (GNB_ST_MitOptions != 1 || P.UIHelper.PresetControlled(Preset)?.enabled == true)
             {
-                if (!MitUsed &&
-                    InCombat())
-                {
-                    if (HPP < 30 &&
-                        ActionReady(Superbolide))
-                        return Superbolide;
-
-                    if (IsPlayerTargeted())
-                    {
-                        if (HPP < 60 &&
-                            ActionReady(OriginalHook(Nebula)))
-                            return OriginalHook(Nebula);
-
-                        if (HPP < 80 &&
-                            ActionReady(Role.Rampart))
-                            return Role.Rampart;
-
-                        if (Role.CanReprisal(90))
-                            return Role.Reprisal;
-                    }
-                    if (HPP < 70 &&
-                        ActionReady(Camouflage))
-                        return Camouflage;
-
-                    if (HPP < 90 &&
-                        ActionReady(OriginalHook(HeartOfStone)))
-                        return OriginalHook(HeartOfStone);
-
-                    if (HPP < 85 &&
-                        ActionReady(Aurora) &&
-                        !(HasStatusEffect(Buffs.Aurora) || HasStatusEffect(Buffs.Aurora, CurrentTarget, true)))
-                        return Aurora;
-                }
-            }
-            #endregion
+                if (TryUseMits(RotationMode.simple, ref actionID))
+                    return actionID;
+            }           
 
             #endregion
 
@@ -193,65 +152,14 @@ internal partial class GNB : Tank
                 IsEnabled(Preset.GNB_ST_Stun))
                 return Role.LowBlow;
 
-            if (BozjaActions() != 0)
-                return BozjaActions();
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
-            #region Mitigations
-            if (IsEnabled(Preset.GNB_ST_Mitigation) && InCombat() && !MitUsed)
+            if (GNB_ST_Advanced_MitOptions != 1 || P.UIHelper.PresetControlled(Preset)?.enabled == true)
             {
-                if (IsEnabled(Preset.GNB_ST_Superbolide) &&
-                    ActionReady(Superbolide) &&
-                    HPP < GNB_ST_Superbolide_Health &&
-                    (GNB_ST_Superbolide_SubOption == 0 || TargetIsBoss() && GNB_ST_Superbolide_SubOption == 1))
-                    return Superbolide;
-
-                if (IsPlayerTargeted())
-                {
-                    if (IsEnabled(Preset.GNB_ST_Nebula) &&
-                        ActionReady(OriginalHook(Nebula)) &&
-                        HPP < GNB_ST_Nebula_Health &&
-                        (GNB_ST_Nebula_SubOption == 0 || TargetIsBoss() && GNB_ST_Nebula_SubOption == 1))
-                        return OriginalHook(Nebula);
-
-                    if (IsEnabled(Preset.GNB_ST_Rampart) &&
-                        Role.CanRampart(GNB_ST_Rampart_Health) &&
-                        (GNB_ST_Rampart_SubOption == 0 || TargetIsBoss() && GNB_ST_Rampart_SubOption == 1))
-                        return Role.Rampart;
-
-                    if (IsEnabled(Preset.GNB_ST_Reprisal) &&
-                        Role.CanReprisal(GNB_ST_Reprisal_Health) &&
-                        (GNB_ST_Reprisal_SubOption == 0 || TargetIsBoss() && GNB_ST_Reprisal_SubOption == 1))
-                        return Role.Reprisal;
-
-                    if (IsEnabled(Preset.GNB_ST_ArmsLength) &&
-                        HPP < GNB_AoE_ArmsLength_Health &&
-                        Role.CanArmsLength())
-                        return Role.ArmsLength;
-                }
-
-                if (IsEnabled(Preset.GNB_ST_Camouflage) &&
-                    ActionReady(Camouflage) &&
-                    HPP < GNB_ST_Camouflage_Health &&
-                    (GNB_ST_Camouflage_SubOption == 0 || TargetIsBoss() && GNB_ST_Camouflage_SubOption == 1))
-                    return Camouflage;
-
-                if (IsEnabled(Preset.GNB_ST_Corundum) &&
-                    ActionReady(OriginalHook(HeartOfStone)) &&
-                    HPP < GNB_ST_Corundum_Health &&
-                    (GNB_ST_Corundum_SubOption == 0 || TargetIsBoss() && GNB_ST_Corundum_SubOption == 1))
-                    return OriginalHook(HeartOfStone);
-
-                if (IsEnabled(Preset.GNB_ST_Aurora) &&
-                    ActionReady(Aurora) &&
-                    !(HasStatusEffect(Buffs.Aurora) || HasStatusEffect(Buffs.Aurora, CurrentTarget, true)) &&
-                    GetRemainingCharges(Aurora) > GNB_ST_Aurora_Charges && HPP < GNB_ST_Aurora_Health &&
-                    (GNB_ST_Aurora_SubOption == 0 || TargetIsBoss() && GNB_ST_Aurora_SubOption == 1))
-                    return Aurora;
+                if (TryUseMits(RotationMode.advanced, ref actionID))
+                    return actionID;
             }
-            #endregion
 
             #endregion
 
@@ -373,40 +281,14 @@ internal partial class GNB : Tank
             if (Role.CanLowBlow())
                 return Role.LowBlow;
 
-            if (BozjaActions() != 0)
-                return BozjaActions();
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
-            #region Mitigations
-            var mitigationsOn =
-                GNB_AoE_MitsOptions != 1 ||
-                (P.UIHelper.PresetControlled(Preset)?.enabled == true);
-            if (mitigationsOn)
+            if (GNB_AoE_MitOptions != 1 || P.UIHelper.PresetControlled(Preset)?.enabled == true)
             {
-                if (InCombat() && !MitUsed)
-                {
-                    if (ActionReady(Superbolide) && HPP < 30)
-                        return Superbolide;
-                    if (IsPlayerTargeted())
-                    {
-                        if (ActionReady(OriginalHook(Nebula)) && HPP < 60)
-                            return OriginalHook(Nebula);
-                        if (Role.CanRampart(80))
-                            return Role.Rampart;
-                        if (Role.CanReprisal(90, checkTargetForDebuff: false))
-                            return Role.Reprisal;
-                    }
-                    if (ActionReady(Camouflage) && HPP < 70)
-                        return Camouflage;
-                    if (ActionReady(OriginalHook(HeartOfStone)) && HPP < 90)
-                        return OriginalHook(HeartOfStone);
-                    if (ActionReady(Aurora) && !(HasStatusEffect(Buffs.Aurora) || HasStatusEffect(Buffs.Aurora, CurrentTarget, true)) && HPP < 85)
-                        return Aurora;
-                }
+                if (TryUseMits(RotationMode.simple, ref actionID))
+                    return actionID;
             }
-            #endregion
 
             #endregion
 
@@ -470,67 +352,15 @@ internal partial class GNB : Tank
             if (IsEnabled(Preset.GNB_AoE_Stun) && Role.CanLowBlow())
                 return Role.LowBlow;
 
-            if (BozjaActions() != 0)
-                return BozjaActions();
-
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
-            #region Mitigations
-            if (IsEnabled(Preset.GNB_AoE_Mitigation) && InCombat() && !MitUsed)
+            if (GNB_AoE_Advanced_MitOptions != 1 || P.UIHelper.PresetControlled(Preset)?.enabled == true)
             {
-                if (IsEnabled(Preset.GNB_AoE_Superbolide) &&
-                    ActionReady(Superbolide) &&
-                    HPP < GNB_AoE_Superbolide_Health &&
-                    (GNB_AoE_Superbolide_SubOption == 0 || TargetIsBoss() && GNB_AoE_Superbolide_SubOption == 1))
-                    return Superbolide;
-
-                if (IsPlayerTargeted())
-                {
-                    if (IsEnabled(Preset.GNB_AoE_Nebula) &&
-                        ActionReady(OriginalHook(Nebula)) &&
-                        HPP < GNB_AoE_Nebula_Health &&
-                        (GNB_AoE_Nebula_SubOption == 0 || TargetIsBoss() && GNB_AoE_Nebula_SubOption == 1))
-                        return OriginalHook(Nebula);
-
-                    if (IsEnabled(Preset.GNB_AoE_Rampart) &&
-                        Role.CanRampart(GNB_AoE_Rampart_Health) &&
-                        (GNB_AoE_Rampart_SubOption == 0 || TargetIsBoss() && GNB_AoE_Rampart_SubOption == 1))
-                        return Role.Rampart;
-
-                    if (IsEnabled(Preset.GNB_AoE_Reprisal) &&
-                        Role.CanReprisal(GNB_AoE_Reprisal_Health, checkTargetForDebuff: false) &&
-                        (GNB_AoE_Reprisal_SubOption == 0 || TargetIsBoss() && GNB_AoE_Reprisal_SubOption == 1))
-                        return Role.Reprisal;
-
-                    if (IsEnabled(Preset.GNB_AoE_ArmsLength) &&
-                        HPP < GNB_AoE_ArmsLength_Health &&
-                        Role.CanArmsLength())
-                        return Role.ArmsLength;
-                }
-
-                if (IsEnabled(Preset.GNB_AoE_Camouflage) &&
-                    ActionReady(Camouflage) &&
-                    HPP < GNB_AoE_Camouflage_Health &&
-                    (GNB_AoE_Camouflage_SubOption == 0 || TargetIsBoss() && GNB_AoE_Camouflage_SubOption == 1))
-                    return Camouflage;
-                if (IsEnabled(Preset.GNB_AoE_Corundum) &&
-                    ActionReady(OriginalHook(HeartOfStone)) &&
-                    HPP < GNB_AoE_Corundum_Health &&
-                    (GNB_AoE_Corundum_SubOption == 0 || TargetIsBoss() && GNB_AoE_Corundum_SubOption == 1))
-                    return OriginalHook(HeartOfStone);
-
-                if (IsEnabled(Preset.GNB_AoE_Aurora) &&
-                    ActionReady(Aurora) &&
-                    GetRemainingCharges(Aurora) > GNB_AoE_Aurora_Charges &&
-                    !(HasStatusEffect(Buffs.Aurora) || HasStatusEffect(Buffs.Aurora, CurrentTarget, true)) &&
-                    HPP < GNB_AoE_Aurora_Health &&
-                    (GNB_AoE_Aurora_SubOption == 0 || TargetIsBoss() && GNB_AoE_Aurora_SubOption == 1))
-                    return Aurora;
+                if (TryUseMits(RotationMode.advanced, ref actionID))
+                    return actionID;
             }
-
-            #endregion
-
+            
             #endregion
 
             #region Rotation
@@ -900,6 +730,22 @@ internal partial class GNB : Tank
         protected override uint Invoke(uint actionID) => actionID != SolidBarrel ? actionID :
             ComboTimer > 0 && ComboAction is KeenEdge && LevelChecked(BrutalShell) ? BrutalShell :
             ComboTimer > 0 && ComboAction is BrutalShell && LevelChecked(SolidBarrel) ? SolidBarrel : KeenEdge;
+    }
+    
+    internal class GNB_AoE_BasicCombo : CustomCombo
+    {
+        protected internal override Preset Preset => Preset.GNB_AoE_BasicCombo;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not DemonSlaughter)
+                return actionID;
+            
+            if (ComboAction is DemonSlice && ComboTimer > 0 && LevelChecked(DemonSlaughter))
+                return DemonSlaughter;
+
+            return DemonSlice;
+        }
     }
     #endregion
 }
