@@ -5,6 +5,7 @@ using ECommons.ExcelServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using Lumina.Excel.Sheets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -580,4 +581,14 @@ internal abstract partial class CustomComboFunctions
             .Any(IsTankBusterEffectPath);
     }
 
+    public static bool HasCleansableDoom(IGameObject? target = null)
+    {
+        target ??= CurrentTarget;
+        target ??= LocalPlayer;
+
+        if (target is not IBattleChara { } chara)
+            return false;
+
+        return StatusCache.HasCleansableDoom(target);
+    }
 }

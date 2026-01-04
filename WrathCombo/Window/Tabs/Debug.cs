@@ -762,7 +762,7 @@ internal class Debug : ConfigWindow, IDisposable
         {
             if (ImGui.TreeNode("PvE"))
             {
-                foreach (var act in actionsPvE)
+                foreach (var act in actionsPvE.OrderBy(x => x.Name.ToString()))
                 {
                     var status = ActionManager.Instance()->GetActionStatus(ActionType.Action, act.RowId, checkRecastActive: false, checkCastingActive: false);
                     CustomStyleText(act.Name.ExtractText(), $"{ActionReady(act.RowId)}, {status} ({Svc.Data.GetExcelSheet<LogMessage>().GetRow(status).Text})");
@@ -928,6 +928,7 @@ internal class Debug : ConfigWindow, IDisposable
                 CustomStyleText("Can Target Area:", $"{_debugSpell.Value.TargetArea}");
                 CustomStyleText("Can Queue:", $"{CanQueue(_debugSpell.Value.RowId)}");
                 CustomStyleText("Cast Type:", $"{_debugSpell.Value.CastType}");
+                CustomStyleText("Friendly?:", $"{(_debugSpell.Value.Unknown4 == 1 ? "No" : $"Yes {_debugSpell.Value.Unknown4}")}");
 
                 if (ActionWatching.ActionTimestamps.TryGetValue(_debugSpell.Value.RowId, out long lastUseTimestamp))
                     CustomStyleText("Time Since Last Use:", $"{(Environment.TickCount64 - lastUseTimestamp) / 1000f:F2}");
