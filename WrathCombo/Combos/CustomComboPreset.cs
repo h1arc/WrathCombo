@@ -3355,10 +3355,6 @@ public enum Preset
     GNB_ST_Reign = 7014,
 
     [ParentCombo(GNB_ST_Advanced)]
-    [CustomComboInfo("Scuffed Option", "Adds Solid Barrel into the rotation under scuffed conditions:\n- Level 90 or above\n- No Mercy is active\n- Only 1 cartridge available\n- Last combo action was Brutal Shell\n- Gnashing Fang combo is still not active", Job.GNB)]
-    GNB_ST_Scuffed = 7372,
-
-    [ParentCombo(GNB_ST_Advanced)]
     [CustomComboInfo("Lightning Shot Uptime Option", "Adds Lightning Shot to the main combo when you are out of range.", Job.GNB)]
     GNB_ST_RangedUptime = 7004,
 
