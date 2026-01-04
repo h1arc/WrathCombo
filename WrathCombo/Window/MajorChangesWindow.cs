@@ -32,7 +32,10 @@ internal class MajorChangesWindow : Dalamud.Interface.Windowing.Window
             "MajorChangesWindow: " +
             $"IsVersionProblematic: {DoesVersionHaveChange}, " +
             $"IsSuggestionHiddenForThisVersion: {IsPopupHiddenForThisVersion}, " +
-            $"WasUsingOldNINJitsuOptions: {WasUsingOldDRKConfigs}"
+            $"WasUsingOldDRKOptions: {WasUsingOldDRKConfigs}, " +
+            $"WasUsingOldGNBOptions: {WasUsingOldGNBConfigs}, " +
+            $"WasUsingOldPLDOptions: {WasUsingOldPLDConfigs}, " +
+            $"WasUsingOldWAROptions: {WasUsingOldWARConfigs}"
         );
         if (DoesVersionHaveChange &&
             !IsPopupHiddenForThisVersion)
