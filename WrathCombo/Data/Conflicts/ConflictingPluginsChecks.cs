@@ -227,7 +227,7 @@ public static class ConflictingPluginsChecks
             if (!ThrottlePassed(forceRefresh: forceRefresh))
                 return;
 
-            ConflictingActions = [0, 0];
+            ConflictingActions = [0, 0, 0];
 
             // Check if the user has bunny recently
             if (CustomComboFunctions.JustUsed(NIN.Rabbit, 45) &&
@@ -261,6 +261,17 @@ public static class ConflictingPluginsChecks
                 PluginLog.Verbose(
                     $"[ConflictingPlugins] [{Name}] Beneficial Actions are Redirected");
                 ConflictingActions[1] = 1;
+                MarkConflict();
+                conflictedThisCheck = true;
+            }
+            
+            // Check if all Hostile Actions are redirected
+            if (IPC.AreHostileActionsRedirected() &&
+                wrathRetargeted.Any(x => x.IsEnemyTargetable()))
+            {
+                PluginLog.Verbose(
+                    $"[ConflictingPlugins] [{Name}] Hostile Actions are Redirected");
+                ConflictingActions[2] = 1;
                 MarkConflict();
                 conflictedThisCheck = true;
             }
