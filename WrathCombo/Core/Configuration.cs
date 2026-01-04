@@ -647,5 +647,7 @@ public partial class Configuration : IPluginConfiguration
 
     #endregion
 
+    public HashSet<(ushort Status, uint BaseId)> StatusBlacklist = [];
+
     #endregion
 }

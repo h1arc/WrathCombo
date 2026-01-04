@@ -173,9 +173,22 @@ internal abstract partial class CustomComboFunctions
         IGameObject? optionalTarget = null)
     {
         var target = optionalTarget ?? CurrentTarget;
+        IBattleChara chara;
 
         // Bail if the target is not casting (and is a valid target)
-        if (target is not IBattleChara { IsCasting: true } chara)
+        try
+        {
+            if (target is not IBattleChara { IsCasting: true } character)
+                return false;
+            chara = character;
+        }
+        catch
+        {
+            return false;
+        }
+
+        // Bail if blacklisted
+        if (Service.Configuration.StatusBlacklist.Any(x => x.Status == All.Debuffs.Stun && x.BaseId == chara.BaseId))
             return false;
 
         // Bail if it fails the Internal Cooldown tracker for Stuns
@@ -229,6 +242,24 @@ internal abstract partial class CustomComboFunctions
 
     /// <summary> Gets an object's current HP. Defaults to CurrentTarget unless specified. </summary>
     public static uint GetTargetCurrentHP(IGameObject? optionalTarget = null) => (optionalTarget ?? CurrentTarget) is IBattleChara chara ? chara.CurrentHp : 0;
+    
+    /// <summary> Gets the average HP percentage of all enemies within a specified range. </summary>
+    public static float GetAvgEnemyHPPercentInRange(float range)
+    {
+        var enemies = Svc.Objects
+            .OfType<IBattleChara>()
+            .Where(x => x.IsHostile() && !x.IsDead && x.IsTargetable &&
+                        IsInRange(x, range))
+            .ToList();
+
+        if (enemies.Count == 0)
+            return float.NaN;
+
+        var totalHpPercent = enemies
+            .Sum(enemy => enemy.CurrentHp * 100f / enemy.MaxHp);
+
+        return totalHpPercent / enemies.Count;
+    }
 
     #endregion
 
