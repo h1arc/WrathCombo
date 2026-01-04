@@ -1,6 +1,8 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
+using ECommons.DalamudServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
+using ECommons.Throttlers;
 using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
@@ -36,6 +38,7 @@ internal abstract partial class CustomComboFunctions
 
     // List of Multi-Hit Shared Damage Effect Paths
     private static readonly FrozenSet<string> MHSharedDmgPaths = FrozenSet.ToFrozenSet([
+        "vfx/lockon/eff/com_share8s_0v",
         "vfx/lockon/eff/com_share5a1",
         "vfx/lockon/eff/com_share4a1",
         "vfx/lockon/eff/m0922trg_t2w"
@@ -68,6 +71,8 @@ internal abstract partial class CustomComboFunctions
         distance = float.MaxValue;
         isMultiHit = false;
 
+        bool MH = false; //holder for isMultiHit
+
         var vfxEffects = VfxManager.TrackedEffects.FilterToTargeted();
 
         if (vfxEffects.Count == 0)
@@ -77,50 +82,59 @@ internal abstract partial class CustomComboFunctions
         List<VfxInfo> multiHitEffects = [.. vfxEffects.Where(v =>
             v.VfxID != 0 && MHSharedDmgPaths.Any(p => v.Path.StartsWith(p, Lower)))];
 
-        // If any multi-hit found → use that list (priority)
-        List<VfxInfo> AoEEffects = multiHitEffects.Count != 0 ? multiHitEffects :
-            [.. vfxEffects.Where(v =>
+        // If any multi-hit found → use that list (priority), else look for regular shared damage effects
+        List<VfxInfo> AoEEffects;
+        if (multiHitEffects.Count != 0)
+        {
+            AoEEffects = multiHitEffects;
+            MH = true;
+        }
+        else
+        {
+            AoEEffects = [.. vfxEffects.Where(v =>
                 v.VfxID != 0 && SharedDmgPaths.Any(p => v.Path.StartsWith(p, Lower)))];
+        }
 
         if (AoEEffects.Count == 0)
             return false;
 
-        // Get all targets of relevant effects
-        // ID to BattleChara to In Party or NPC then sort by distance
+        if (EzThrottler.Throttle("DebugSharedDamageEffectVFX1", 5000))
+        {
+            Svc.Log.Debug($"Found Incoming Shared Damage Effects {AoEEffects.Count}");
+        }
+
+        // Expected Outcome from the LinQ:
+        // Multi - hit on party member, Closest in your party
+        // Multi - hit on other alliance player, That player(raid - wide stack)
+        // Multi - hit on NPC/ ground marker, That marker
+        // Regular share on party member, Closest in your party
+        // Regular share on other alliance, Ignored
+        // Regular share on NPC, That marker
+
         IBattleChara? bestTarget = AoEEffects
             .Select(vfx => vfx.TargetID.GetObject())
             .OfType<IBattleChara>()
-            .Where(chara => chara.IsInParty() || chara is IBattleNpc)     // Exclude other alliances
-            .OrderBy(chara => chara.IsInParty() ? 0 : 1)                 // Party members first, then Helper NPCs
-            .ThenBy(chara => GetTargetDistance(chara))                   // Then closest
+            // Multi-hit can be on anyone, regular only on party members or NPCs,
+            .Where(chara => MH || chara.IsInParty() || chara is IBattleNpc)
+            // Prioritize party members first, then by distance
+            .OrderBy(chara => chara.IsInParty() ? 0 : 1)
+            .ThenBy(chara => GetTargetDistance(chara))
             .FirstOrDefault();
 
-        if (bestTarget != null)
+        if (bestTarget is null)
+            return false;
+
+        if (EzThrottler.Throttle("DebugSharedDamageEffectVFX2", 5000))
         {
-            if (bestTarget is not IBattleNpc) partyMember = bestTarget;
-            distance = GetTargetDistance(bestTarget);
-            return true;
+            Svc.Log.Debug($"Found Shared Damage Effects. Name:{bestTarget.Name} MH:{MH} Party:{bestTarget.IsInParty()}");
         }
 
-        //// Prioritize Multi-Hit Shared Damage Effects as their paths are more precise pathing over Shared Damage Effects paths
-        //VfxInfo sharedVfx = vfxEffects.FirstOrDefault(AoE => MHSharedDmgPaths.Any(PathInList => AoE.Path.StartsWith(PathInList, Lower)));
-        //// Found Multi-Hit Shared Damage Effect?
-        //if (sharedVfx.VfxID != 0) isMultiHit = true;
-        //// Else look for regular Shared Damage Effect
-        //else sharedVfx = vfxEffects.FirstOrDefault(AoE => SharedDmgPaths.Any(PathInList => AoE.Path.StartsWith(PathInList, Lower)));
+        //return only party member object (Don't want to illegally dash to Alliance or NPCs)
+        isMultiHit = MH;
+        partyMember = bestTarget.IsInParty() ? bestTarget : null;
+        distance = GetTargetDistance(bestTarget);
+        return true;
 
-        //if (sharedVfx.VfxID == 0)
-        //    return false;
-
-        //if (sharedVfx.TargetID.GetObject() is IBattleChara targetobj)
-        //{
-        //    // Set Party Member if in party
-        //    if (targetobj.IsInParty()) partyMember = targetobj;
-        //    // Get Distance of target if it's only in the party or is an NPC (ground-targeted shared damage)
-        //    if (partyMember != null || targetobj is IBattleNpc)
-        //        distance = GetTargetDistance(targetobj);
-        //    return true;
-        //}
         // Flan: Saving this here for later in case I figure out how to handle no-object shared damage effects properly.
         // Don't want to remember what I wrote here otherwise.
         //else //Not in the object list, all players stack on a tower, not checking at all times.
@@ -137,7 +151,7 @@ internal abstract partial class CustomComboFunctions
         //    return true;
         //}
 
-        return false;
+        //return false;
     }
 
     /// <summary>
