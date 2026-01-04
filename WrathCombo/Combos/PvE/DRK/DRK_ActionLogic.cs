@@ -310,17 +310,21 @@ internal partial class DRK
         {
             #region Variables
 
-            var preset = flags.HasFlag(Combo.ST) ? flags.HasFlag(Combo.Adv)
+            var preset = flags.HasFlag(Combo.ST)
+                ? flags.HasFlag(Combo.Adv)
                     ? Preset.DRK_ST_Adv
-                    : Preset.DRK_ST_Simple :
-                flags.HasFlag(Combo.Adv) ? Preset.DRK_AoE_Adv :
-                Preset.DRK_AoE_Simple;
+                    : Preset.DRK_ST_Simple
+                : flags.HasFlag(Combo.Adv)
+                    ? Preset.DRK_AoE_Adv
+                    : Preset.DRK_AoE_Simple;
 
-            var config = flags.HasFlag(Combo.ST) ? flags.HasFlag(Combo.Adv)
+            var config = flags.HasFlag(Combo.ST)
+                ? flags.HasFlag(Combo.Adv)
                     ? DRK_ST_AdvancedMitigation
-                    : DRK_ST_SimpleMitigation :
-                flags.HasFlag(Combo.Adv) ? DRK_AoE_AdvancedMitigation :
-                DRK_AoE_SimpleMitigation;
+                    : DRK_ST_SimpleMitigation
+                : flags.HasFlag(Combo.Adv)
+                    ? DRK_AoE_AdvancedMitigation
+                    : DRK_AoE_SimpleMitigation;
 
             #endregion
 
