@@ -6,6 +6,7 @@ using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using WrathCombo.Data;
 using WrathCombo.Extensions;
@@ -448,15 +449,22 @@ internal abstract partial class CustomComboFunctions
     /// </summary>
     /// <param name="vfx">The VFX to check the Path of</param>
     /// <returns>Bool if vfx path matches</returns>
-    private static bool IsTankBusterEffectPath(VfxInfo vfx)
+    public static bool IsTankBusterEffectPath(VfxInfo vfx)
     {
-        return vfx.Path.StartsWith("vfx/lockon/eff/tank", Lower) ||
-               vfx.Path.StartsWith("vfx/lockon/eff/x6fe_fan100_50_0t1", Lower) || //Necron Blue Shockwave - Cone Tankbuster
-               vfx.Path.StartsWith("vfx/common/eff/mon_eisyo03t", Lower) || //M10 Deep Impact AoE TB (also generic?)
-               vfx.Path.StartsWith("vfx/lockon/eff/m0676trg_tw_d0t1p", Lower) || //M10 Hot Impact shared TB
-               vfx.Path.StartsWith("vfx/lockon/eff/m0676trg_tw_s6_d0t1p", Lower) || //M11 Raw Steel
-               vfx.Path.StartsWith("vfx/lockon/eff/z6r2b3_8sec_lockon_c0a1", Lower); //Kam'lanaut Princely Blow
+        return TankbusterPaths.Any(x => vfx.Path.StartsWith(x, Lower));
     }
+
+    private static List<string> TankbusterPaths =
+    [
+        "vfx/lockon/eff/tank", //Generic TB check
+        "vfx/lockon/eff/x6fe_fan100_50_0t1", //Necron Blue Shockwave - Cone Tankbuster
+        "vfx/common/eff/mon_eisyo03t", //M10 Deep Impact AoE TB (also generic?)
+        "vfx/lockon/eff/m0676trg_tw_d0t1p", //M10 Hot Impact shared TB
+        "vfx/lockon/eff/m0676trg_tw_s6_d0t1p", //M11 Raw Steel
+        "vfx/lockon/eff/z6r2b3_8sec_lockon_c0a1", //Kam'lanaut Princely Blow
+        "vfx/lockon/eff/m0742trg_b1t1", //M7 Abominable Blink
+        "vfx/lockon/eff/x6r9_tank_lockonae" //M9 Hardcore Large TB
+    ];
 
     /// <summary>
     /// Text Comparison for Shared Damage Effect VFX Paths
