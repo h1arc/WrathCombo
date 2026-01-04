@@ -6,9 +6,6 @@ using ECommons.ExcelServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using Lumina.Excel.Sheets;
-using System;
-using System.Collections.Frozen;
 using System.Linq;
 using WrathCombo.Data;
 using WrathCombo.Extensions;
@@ -106,7 +103,7 @@ internal abstract partial class CustomComboFunctions
     /// <returns>Float representing remaining status effect time</returns>
     public unsafe static float GetStatusEffectRemainingTime(ushort effectId, IGameObject? target = null, bool anyOwner = false) =>
         GetStatusEffectRemainingTime(GetStatusEffect(effectId, target, anyOwner));
-    
+
     /// <summary>
     ///     Same as <see cref="GetStatusEffectRemainingTime(ushort, IGameObject?, bool)"/>,
     ///     but returns NaN if the status effect is not found, failing
@@ -456,5 +453,16 @@ internal abstract partial class CustomComboFunctions
     /// <seealso cref="CanApplyStatus(IGameObject?,ushort)"/>
     public static bool CanApplyStatus(IGameObject? target, ushort[] status) =>
         status.Any(statusId => CanApplyStatus(target, statusId));
+
+    public static bool HasCleansableDoom(IGameObject? target = null)
+    {
+        target ??= CurrentTarget;
+        target ??= LocalPlayer;
+
+        if (target is not IBattleChara { } chara)
+            return false;
+
+        return StatusCache.HasCleansableDoom(target);
+    }
 
 }
