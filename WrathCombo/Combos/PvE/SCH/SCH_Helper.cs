@@ -58,15 +58,15 @@ internal partial class SCH
     
     internal static bool RaidwideSacredSoil()
     {
-        return IsEnabled(Preset.SCH_Raidwide_SacredSoil) && ActionReady(SacredSoil) && CanWeave() && RaidWideCasting();
+        return IsEnabled(Preset.SCH_Raidwide_SacredSoil) && ActionReady(SacredSoil) && CanWeave() && GroupDamageIncoming();
     }
     internal static bool RaidwideExpedient()
     {
-        return IsEnabled(Preset.SCH_Raidwide_Expedient) && ActionReady(Expedient) && CanWeave() && RaidWideCasting();
+        return IsEnabled(Preset.SCH_Raidwide_Expedient) && ActionReady(Expedient) && CanWeave() && GroupDamageIncoming();
     }
     internal static bool RaidwideSuccor()
     {
-        return IsEnabled(Preset.SCH_Raidwide_Succor) && ActionReady(OriginalHook(Succor)) && ShieldCheck && RaidWideCasting();
+        return IsEnabled(Preset.SCH_Raidwide_Succor) && ActionReady(OriginalHook(Succor)) && ShieldCheck && GroupDamageIncoming();
     }
     internal static bool RaidwideRecitation()
     {
