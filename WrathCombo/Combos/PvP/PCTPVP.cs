@@ -88,8 +88,8 @@ internal static class PCTPvP
             // Tempera Coat / Tempera Grassa
             if (IsEnabled(Preset.PCTPvP_TemperaCoat))
             {
-                if ((IsOffCooldown(TemperaCoat) &&
-                     InCombat() && PlayerHealthPercentageHp() < PCTPvP_TemperaHP) || isTemperaCoatExpiring)
+                if (IsOffCooldown(TemperaCoat) &&
+                    InCombat() && PlayerHealthPercentageHp() < PCTPvP_TemperaHP || isTemperaCoatExpiring)
                     return OriginalHook(TemperaCoat);
             }
             if (hasTarget && !PvPCommon.TargetImmuneToDamage())
@@ -130,7 +130,7 @@ internal static class PCTPvP
         }
         internal class PCTPvP_Toshitweaks : CustomCombo
         {
-            protected internal override Preset Preset { get; } = Preset.PCTPvP_Toshitweaks;
+            protected internal override Preset Preset => Preset.PCTPvP_OneButtonMotifs;
 
             protected override uint Invoke(uint actionID)
             {

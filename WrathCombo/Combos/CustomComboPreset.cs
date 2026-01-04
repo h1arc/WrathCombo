@@ -9254,16 +9254,11 @@ public enum Preset
     PCTPvP_PhantomDart = 140009,
     
     [PvPCustomCombo]
-    [CustomComboInfo("Toshi Tweaks", "Random collection of tweaks by Toshi", Job.PCT)]
-    PCTPvP_Toshitweaks = 140010,
-    
-    [ParentCombo(PCTPvP_Toshitweaks)]
-    [PvPCustomCombo]
     [ReplaceSkill(PCTPvP.LivingMuse)]
     [CustomComboInfo("1 Button Motifs", "Replaces Living Muse with 1 button Motifs", Job.PCT)]
-    PCTPvP_Toshimotifs = 140011,
+    PCTPvP_OneButtonMotifs = 140010,
 
-    // Last value = 140011
+    // Last value = 140010t
 
     #endregion
 
@@ -9778,16 +9773,11 @@ public enum Preset
     WHMPvP_Aquaveil = 129007,
     
     [PvPCustomCombo]
-    [CustomComboInfo("Toshi Tweaks", "Random collection of tweaks by Toshi", Job.WHM)]
-    WHMPvP_Toshitweaks = 129011,
-        
-    [PvPCustomCombo]
-    [ParentCombo(WHMPvP_Toshitweaks)]
     [ReplaceSkill(WHMPvP.SeraphStrike)]
-    [CustomComboInfo("Seraph Strike Option", "Replaces Seraph Strike with Glare 4", Job.WHM)]
-    WHMPvP_Toshiseraphstrike = 129012,
+    [CustomComboInfo("Seraph Strike to Glare 4", "Replaces Seraph Strike with Glare 4", Job.WHM)]
+    WHMPvP_Seraphstrike = 129011,
 
-    // Last value = 129012
+    // Last value = 129011
 
     #endregion
 
