@@ -5307,6 +5307,10 @@ public enum Preset
     [BasicCombo]
     RPR_ST_BasicCombo = 12021,
 
+    [ParentCombo(RPR_ST_BasicCombo)]
+    [CustomComboInfo("Shadow Of Death Option", "Adds Shadow of Death to the rotation.", Job.RPR)]
+    RPR_ST_BasicCombo_SoD = 12023,
+
     #endregion
 
     #region Blood Stalk/Grim Swathe Combo Section

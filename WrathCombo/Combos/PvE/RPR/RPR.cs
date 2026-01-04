@@ -616,6 +616,11 @@ internal partial class RPR : Melee
             if (actionID is not InfernalSlice)
                 return actionID;
 
+            if (IsEnabled(Preset.RPR_ST_BasicCombo_SoD) &&
+                ActionReady(ShadowOfDeath) &&
+                GetStatusEffectRemainingTime(Debuffs.DeathsDesign, CurrentTarget) < RPR_SoDRefreshRangeBasicCombo)
+                return ShadowOfDeath;
+
             if (ComboTimer > 0)
             {
                 if (ComboAction is Slice && LevelChecked(WaxingSlice))

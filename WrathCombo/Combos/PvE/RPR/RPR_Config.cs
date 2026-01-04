@@ -87,6 +87,11 @@ internal partial class RPR
                     DrawSliderInt(0, 100, RPR_AoEBloodbathHPThreshold,
                         $"{Role.Bloodbath.ActionName()} HP percentage threshold");
                     break;
+                
+                case Preset.RPR_ST_BasicCombo_SoD:
+                    DrawSliderInt(0, 10, RPR_SoDRefreshRangeBasicCombo,
+                        $"Seconds remaining before refreshing {ShadowOfDeath.ActionName()}.");
+                    break;
 
                 case Preset.RPR_Soulsow:
                     DrawHorizontalMultiChoice(RPR_SoulsowOptions,
@@ -116,6 +121,7 @@ internal partial class RPR
             RPR_Opener_StartChoice = new("RPR_Opener_StartChoice"),
             RPR_Balance_Content = new("RPR_Balance_Content", 1),
             RPR_SoDRefreshRange = new("RPR_SoDRefreshRange", 6),
+            RPR_SoDRefreshRangeBasicCombo = new("RPR_SoDRefreshRangeBasicCombo", 6),
             RPR_SoDHPThreshold = new("RPR_SoDThreshold"),
             RPR_ST_ArcaneCircleBossOption = new("RPR_ST_ArcaneCircle_SubOption", 1),
             RPR_STSecondWindHPThreshold = new("RPR_STSecondWindThreshold", 40),
