@@ -8,7 +8,6 @@ using ECommons.Logging;
 using System;
 using System.Linq;
 using System.Numerics;
-using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
 using EZ = ECommons.Throttlers.EzThrottler;
 using TS = System.TimeSpan;
@@ -321,11 +320,12 @@ public static class ConflictingPlugins
 
         #region Redirect
 
-        if (ConflictingPluginsChecks.Redirect.Conflicted)
+        if (ConflictingPluginsChecks.Redirect.Conflicted &&
+            ConflictingPluginsChecks.Redirect.ConflictingActions.Length > 3)
         {
             var actions = ConflictingPluginsChecks.Redirect.ConflictingActions;
             var conflictMessage = actions
-                .Where((action, i) => action is not (0 or 1 or 2) || i >= 3)
+                .Where((action, i) => action is not (0 or 1) || i >= 3)
                 .Aggregate("",
                     (current, action) => current + action.ActionName() + ",");
             conflictMessage = conflictMessage[..^1]; // remove last comma

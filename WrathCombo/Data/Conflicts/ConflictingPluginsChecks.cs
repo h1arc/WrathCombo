@@ -207,6 +207,7 @@ public static class ConflictingPluginsChecks
         /// <remarks>
         ///     <b>Key <c>0</c></b> is Ground Targeting enabled meta action,<br />
         ///     <b>Key <c>1</c></b> is Beneficial Actions enabled meta action,<br />
+        ///     <b>Key <c>2</c></b> is Hostile Actions enabled meta action,<br />
         ///     <b>Key <c>3</c>+</b> are all overlapping action retargets.
         /// </remarks>
         public uint[] ConflictingActions = [0, 0];
