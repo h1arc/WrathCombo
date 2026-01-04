@@ -157,7 +157,7 @@ internal static class WHMPvP
                 : actionID;
         }
 
-        internal class WHMPvP_Toshitweaks : CustomCombo
+        internal class WHMPvP_Seraphstrike : CustomCombo
         {
             protected internal override Preset Preset => Preset.WHMPvP_Seraphstrike;
 

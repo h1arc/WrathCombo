@@ -128,7 +128,7 @@ internal static class PCTPvP
             }
             return actionID;
         }
-        internal class PCTPvP_Toshitweaks : CustomCombo
+        internal class PCTPvP_OneButtonMotifs : CustomCombo
         {
             protected internal override Preset Preset => Preset.PCTPvP_OneButtonMotifs;
 
