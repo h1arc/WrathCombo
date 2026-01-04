@@ -5204,8 +5204,12 @@ public enum Preset
     RPR_ST_StunInterupt = 12096,
 
     [ParentCombo(RPR_ST_AdvancedMode)]
-    [CustomComboInfo("Ranged Filler Option", "Replaces the combo chain with Harpe when outside of melee range. Will not override Communio.", Job.RPR)]
+    [CustomComboInfo("Harpe Option", "Replaces the combo chain with Harpe when outside of melee range. Will not override Communio.", Job.RPR)]
     RPR_ST_RangedFiller = 12017,
+    
+    [ParentCombo(RPR_ST_AdvancedMode)]
+    [CustomComboInfo("Harvest Moon Option", "Replaces the combo chain with Harvest Moon when outside of melee range.", Job.RPR)]
+    RPR_ST_RangedFillerHarvestMoon = 12024,
 
     [ParentCombo(RPR_ST_AdvancedMode)]
     [CustomComboInfo("Combo Heals Option", "Adds Bloodbath and Second Wind to the combo, using them when below the HP Percentage threshold.", Job.RPR)]
@@ -5219,7 +5223,7 @@ public enum Preset
     [CustomComboInfo("Arcane Crest Raidwide Option", "Adds Arcane Crest when Raidwide is detected casting.", Job.RPR)]
     RPR_ST_ArcaneCrest = 12022,
     
-    //last value = 12022
+    //last value = 12024
 
     #endregion
 

@@ -56,12 +56,7 @@ internal partial class RPR
                     DrawAdditionalBoolChoice(RPR_ST_TrueNorthDynamic_HoldCharge,
                         "Hold True North for Gluttony Option", "Will hold the last charge of True North for use with Gluttony, even when out of position for Gibbet/Gallows.");
                     break;
-
-                case Preset.RPR_ST_RangedFiller:
-                    DrawAdditionalBoolChoice(RPR_ST_RangedFillerHarvestMoon,
-                        "Add Harvest Moon", "Adds Harvest Moon if available, when outside of melee range. Will not override Communio.");
-                    break;
-
+                
                 case Preset.RPR_AoE_WoD:
                     DrawSliderInt(0, 100, RPR_WoDHPThreshold,
                         $"Set a HP% Threshold for when {WhorlOfDeath.ActionName()} will not be automatically applied to the target.");
@@ -132,8 +127,7 @@ internal partial class RPR
             RPR_AoEBloodbathHPThreshold = new("RPR_AoEBloodbathThreshold", 30);
 
         public static UserBool
-            RPR_ST_TrueNorthDynamic_HoldCharge = new("RPR_ST_TrueNorthDynamic_HoldCharge"),
-            RPR_ST_RangedFillerHarvestMoon = new("RPR_ST_RangedFillerHarvestMoon");
+            RPR_ST_TrueNorthDynamic_HoldCharge = new("RPR_ST_TrueNorthDynamic_HoldCharge");
 
         public static UserBoolArray
             RPR_SoulsowOptions = new("RPR_SoulsowOptions");

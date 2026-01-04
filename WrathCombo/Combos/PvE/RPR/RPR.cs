@@ -379,19 +379,20 @@ internal partial class RPR : Melee
                     return Role.LegSweep;
             }
 
+            //Harvest Moon
+            if (IsEnabled(Preset.RPR_ST_RangedFillerHarvestMoon) &&
+                ActionReady(HarvestMoon) && !InMeleeRange() && HasBattleTarget() &&
+                !HasStatusEffect(Buffs.Executioner) && !HasStatusEffect(Buffs.SoulReaver) && HasStatusEffect(Buffs.Soulsow))
+                return HarvestMoon;
+                
             //Ranged Attacks
             if (IsEnabled(Preset.RPR_ST_RangedFiller) &&
                 ActionReady(Harpe) && !InMeleeRange() && HasBattleTarget() &&
                 !HasStatusEffect(Buffs.Executioner) && !HasStatusEffect(Buffs.SoulReaver))
             {
-                //Communio
-                if (HasStatusEffect(Buffs.Enshrouded) && Lemure is 1 &&
-                    LevelChecked(Communio))
-                    return Communio;
-
-                return RPR_ST_RangedFillerHarvestMoon &&
-                       HasStatusEffect(Buffs.Soulsow)
-                    ? HarvestMoon
+                return HasStatusEffect(Buffs.Enshrouded) && Lemure is 1 &&
+                       LevelChecked(Communio) 
+                    ? Communio
                     : Harpe;
             }
 
