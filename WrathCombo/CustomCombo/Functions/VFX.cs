@@ -3,6 +3,7 @@ using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using System;
 using System.Collections.Frozen;
+using System.Collections.Generic;
 using System.Linq;
 using WrathCombo.Extensions;
 
@@ -72,25 +73,54 @@ internal abstract partial class CustomComboFunctions
         if (vfxEffects.Count == 0)
             return false;
 
-        // Prioritize Multi-Hit Shared Damage Effects as their paths are more precise pathing over Shared Damage Effects paths
-        VfxInfo sharedVfx = vfxEffects.FirstOrDefault(AoE => MHSharedDmgPaths.Any(PathInList => AoE.Path.StartsWith(PathInList, Lower)));
-        // Found Multi-Hit Shared Damage Effect?
-        if (sharedVfx.VfxID != 0) isMultiHit = true;
-        // Else look for regular Shared Damage Effect
-        else sharedVfx = vfxEffects.FirstOrDefault(AoE => SharedDmgPaths.Any(PathInList => AoE.Path.StartsWith(PathInList, Lower)));
+        // First: Get all valid multi-hit effects
+        List<VfxInfo> multiHitEffects = [.. vfxEffects.Where(v =>
+            v.VfxID != 0 && MHSharedDmgPaths.Any(p => v.Path.StartsWith(p, Lower)))];
 
-        if (sharedVfx.VfxID == 0)
+        // If any multi-hit found → use that list (priority)
+        List<VfxInfo> AoEEffects = multiHitEffects.Count != 0 ? multiHitEffects :
+            [.. vfxEffects.Where(v =>
+                v.VfxID != 0 && SharedDmgPaths.Any(p => v.Path.StartsWith(p, Lower)))];
+
+        if (AoEEffects.Count == 0)
             return false;
 
-        if (sharedVfx.TargetID.GetObject() is IBattleChara targetobj)
+        // Get all targets of relevant effects
+        // ID to BattleChara to In Party or NPC then sort by distance
+        IBattleChara? bestTarget = AoEEffects
+            .Select(vfx => vfx.TargetID.GetObject())
+            .OfType<IBattleChara>()
+            .Where(chara => chara.IsInParty() || chara is IBattleNpc)     // Exclude other alliances
+            .OrderBy(chara => chara.IsInParty() ? 0 : 1)                 // Party members first, then Helper NPCs
+            .ThenBy(chara => GetTargetDistance(chara))                   // Then closest
+            .FirstOrDefault();
+
+        if (bestTarget != null)
         {
-            // Set Party Member if in party
-            if (targetobj.IsInParty()) partyMember = targetobj;
-            // Get Distance of target if it's only in the party or is an NPC (ground-targeted shared damage)
-            if (partyMember != null || targetobj is IBattleNpc)
-                distance = GetTargetDistance(targetobj);
+            if (bestTarget is not IBattleNpc) partyMember = bestTarget;
+            distance = GetTargetDistance(bestTarget);
             return true;
         }
+
+        //// Prioritize Multi-Hit Shared Damage Effects as their paths are more precise pathing over Shared Damage Effects paths
+        //VfxInfo sharedVfx = vfxEffects.FirstOrDefault(AoE => MHSharedDmgPaths.Any(PathInList => AoE.Path.StartsWith(PathInList, Lower)));
+        //// Found Multi-Hit Shared Damage Effect?
+        //if (sharedVfx.VfxID != 0) isMultiHit = true;
+        //// Else look for regular Shared Damage Effect
+        //else sharedVfx = vfxEffects.FirstOrDefault(AoE => SharedDmgPaths.Any(PathInList => AoE.Path.StartsWith(PathInList, Lower)));
+
+        //if (sharedVfx.VfxID == 0)
+        //    return false;
+
+        //if (sharedVfx.TargetID.GetObject() is IBattleChara targetobj)
+        //{
+        //    // Set Party Member if in party
+        //    if (targetobj.IsInParty()) partyMember = targetobj;
+        //    // Get Distance of target if it's only in the party or is an NPC (ground-targeted shared damage)
+        //    if (partyMember != null || targetobj is IBattleNpc)
+        //        distance = GetTargetDistance(targetobj);
+        //    return true;
+        //}
         // Flan: Saving this here for later in case I figure out how to handle no-object shared damage effects properly.
         // Don't want to remember what I wrote here otherwise.
         //else //Not in the object list, all players stack on a tower, not checking at all times.
