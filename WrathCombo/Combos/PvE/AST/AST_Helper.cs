@@ -191,6 +191,14 @@ internal partial class AST
                           ActionReady(EssentialDignity) &&
                           (CanWeave() || !AST_ST_SimpleHeals_WeaveEmergencyED);
                 return AST_ST_SimpleHeals_EmergencyED_Threshold;
+            
+            case 12:
+                action = OriginalHook(NeutralSect);
+                enabled = IsEnabled(Preset.AST_ST_Heals_NeutralSect) && 
+                          (!AST_ST_Heals_NeutralSectOptions[1] || !InBossEncounter()) &&
+                          (!AST_ST_Heals_NeutralSectOptions[0] || CanWeave());
+                return AST_ST_Heals_NeutralSect_Threshold;
+        
         }
 
         enabled = false;
