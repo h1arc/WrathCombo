@@ -28,7 +28,8 @@ internal partial class VPR
                             (HasHindVenom || NoSwiftscaled || NoBasicComboVenom))
                             return OriginalHook(ReavingFangs);
 
-                        if (LevelChecked(HuntersSting) && (HasFlankVenom || NoHuntersInstinct))
+                        if (LevelChecked(HuntersSting) &&
+                            (HasFlankVenom || NoHuntersInstinct))
                             return OriginalHook(SteelFangs);
                     }
 
@@ -65,7 +66,7 @@ internal partial class VPR
                      !HasStatusEffect(Buffs.HonedReavers) && !HasStatusEffect(Buffs.HonedSteel)))
                     return OriginalHook(ReavingFangs);
 
-                break;
+                return actionId;
             }
 
             case true:
@@ -105,11 +106,10 @@ internal partial class VPR
                     (HasStatusEffect(Buffs.HonedReavers) ||
                      !HasStatusEffect(Buffs.HonedReavers) && !HasStatusEffect(Buffs.HonedSteel)))
                     return OriginalHook(ReavingMaw);
-                break;
+
+                return actionId;
             }
         }
-
-        return actionId;
     }
 
     #endregion
@@ -224,107 +224,50 @@ internal partial class VPR
         return false;
     }
 
-    private static uint ReawakenCombo(uint actionId, bool isAoE = false)
+    private static uint ReawakenCombo(uint actionId)
     {
-        switch (isAoE)
-        {
-            case false:
+        #region Pre Ouroboros
+
+        if (!TraitLevelChecked(Traits.EnhancedSerpentsLineage))
+            switch (AnguineTribute)
             {
-                #region Pre Ouroboros
+                case 4:
+                    return OriginalHook(SteelFangs);
 
-                if (!TraitLevelChecked(Traits.EnhancedSerpentsLineage))
-                    switch (AnguineTribute)
-                    {
-                        case 4:
-                            return OriginalHook(SteelFangs);
+                case 3:
+                    return OriginalHook(ReavingFangs);
 
-                        case 3:
-                            return OriginalHook(ReavingFangs);
+                case 2:
+                    return OriginalHook(HuntersCoil);
 
-                        case 2:
-                            return OriginalHook(HuntersCoil);
-
-                        case 1:
-                            return OriginalHook(SwiftskinsCoil);
-                    }
-
-                #endregion
-
-                #region With Ouroboros
-
-                if (TraitLevelChecked(Traits.EnhancedSerpentsLineage))
-                    switch (AnguineTribute)
-                    {
-                        case 5:
-                            return OriginalHook(SteelFangs);
-
-                        case 4:
-                            return OriginalHook(ReavingFangs);
-
-                        case 3:
-                            return OriginalHook(HuntersCoil);
-
-                        case 2:
-                            return OriginalHook(SwiftskinsCoil);
-
-                        case 1:
-                            return OriginalHook(Reawaken);
-                    }
-
-                #endregion
-
-                break;
+                case 1:
+                    return OriginalHook(SwiftskinsCoil);
             }
 
-            case true:
-            {
-                #region Pre Ouroboros
-
-                if (!TraitLevelChecked(Traits.EnhancedSerpentsLineage))
-                    switch (AnguineTribute)
-                    {
-                        case 4:
-                            return OriginalHook(SteelMaw);
-
-                        case 3:
-                            return OriginalHook(ReavingMaw);
-
-                        case 2:
-                            return OriginalHook(HuntersDen);
-
-                        case 1:
-                            return OriginalHook(SwiftskinsDen);
-                    }
-
                 #endregion
 
-                #region With Ouroboros
+        #region With Ouroboros
 
-                if (TraitLevelChecked(Traits.EnhancedSerpentsLineage))
-                    switch (AnguineTribute)
-                    {
-                        case 5:
-                            return OriginalHook(SteelMaw);
+        if (TraitLevelChecked(Traits.EnhancedSerpentsLineage))
+            switch (AnguineTribute)
+            {
+                case 5:
+                    return OriginalHook(SteelFangs);
 
-                        case 4:
-                            return OriginalHook(ReavingMaw);
+                case 4:
+                    return OriginalHook(ReavingFangs);
 
-                        case 3:
-                            return OriginalHook(HuntersDen);
+                case 3:
+                    return OriginalHook(HuntersCoil);
 
-                        case 2:
-                            return OriginalHook(SwiftskinsDen);
+                case 2:
+                    return OriginalHook(SwiftskinsCoil);
 
-
-                        case 1:
-                            return OriginalHook(Reawaken);
-                    }
-
-                 #endregion
-
-                break;
+                case 1:
+                    return OriginalHook(Reawaken);
             }
-        }
+
+                #endregion
 
         return actionId;
     }
@@ -380,7 +323,7 @@ internal partial class VPR
     #region Vicewinder & Uncoied Fury Combo
 
     private static bool CanUseVicewinder =>
-        ActionReady(Vicewinder) && InActionRange(Vicewinder) &&
+        ActionReady(Vicewinder) && InActionRange(Vicewinder) && InCombat() &&
         !IsComboExpiring(4) && !IsVenomExpiring(4) && !IsHoningExpiring(4) &&
         !VicewinderReady && !HuntersCoilReady && !SwiftskinsCoilReady &&
         (IreCD >= GCD * 3 && InBossEncounter() || !InBossEncounter() || !LevelChecked(SerpentsIre));
@@ -416,22 +359,29 @@ internal partial class VPR
         }
     }
 
-    private static uint CanVicewinderCombo(uint actionId)
+    private static bool CanVicewinderCombo(ref uint actionId)
     {
         if ((VicewinderReady || SwiftskinsCoilReady || HuntersCoilReady) &&
-            LevelChecked(Vicewinder) && InActionRange(Vicewinder))
+            LevelChecked(Vicewinder) && InActionRange(Vicewinder) &&
+            !HasStatusEffect(Buffs.Reawakened))
         {
             // Swiftskin's Coil
             if (VicewinderReady &&
                 (!OnTargetsFlank() || !TargetNeedsPositionals() || !HasStatusEffect(Buffs.Swiftscaled) || RefreshSwiftscaled) || HuntersCoilReady)
-                return SwiftskinsCoil;
-
+            {
+                actionId = SwiftskinsCoil;
+                return true;
+            }
+            
             // Hunter's Coil
             if (VicewinderReady &&
                 (!OnTargetsRear() || !TargetNeedsPositionals() || !HasStatusEffect(Buffs.HuntersInstinct) || RefreshHuntersInstinct) || SwiftskinsCoilReady)
-                return HuntersCoil;
+            {
+                actionId = HuntersCoil;
+                return true;
+            }
         }
-        return actionId;
+        return false;
     }
 
     #endregion

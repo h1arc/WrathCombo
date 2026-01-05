@@ -74,8 +74,8 @@ internal partial class VPR : Melee
                     : WrithingSnap;
 
             //Vicewinder Combo
-            if (!HasStatusEffect(Buffs.Reawakened))
-                return CanVicewinderCombo(actionID);
+            if (CanVicewinderCombo(ref actionID))
+                return actionID;
 
             //Reawakend Usage
             if (CanReawaken())
@@ -193,7 +193,7 @@ internal partial class VPR : Melee
 
             //Reawaken combo / 1-2-3 combo
             return HasStatusEffect(Buffs.Reawakened)
-                ? ReawakenCombo(actionID, true)
+                ? ReawakenCombo(actionID)
                 : DoBasicCombo(actionID, false, true);
         }
     }
@@ -281,8 +281,8 @@ internal partial class VPR : Melee
 
             //Vicewinder Combo
             if (IsEnabled(Preset.VPR_ST_VicewinderCombo) &&
-                !HasStatusEffect(Buffs.Reawakened))
-                return CanVicewinderCombo(actionID);
+                CanVicewinderCombo(ref actionID) )
+                return actionID;
 
             //Reawakend Usage
             if (IsEnabled(Preset.VPR_ST_Reawaken) &&
@@ -422,7 +422,7 @@ internal partial class VPR : Melee
             //Reawaken combo / 1-2-3 combo
             return IsEnabled(Preset.VPR_AoE_ReawakenCombo) &&
                    HasStatusEffect(Buffs.Reawakened)
-                ? ReawakenCombo(actionID, true)
+                ? ReawakenCombo(actionID)
                 : DoBasicCombo(actionID, false, true);
         }
 
