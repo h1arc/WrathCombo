@@ -9255,10 +9255,15 @@ public enum Preset
     
     [PvPCustomCombo]
     [ReplaceSkill(PCTPvP.LivingMuse)]
-    [CustomComboInfo("One Button Motifs", "Replaces Living Muse with 1 button Motifs", Job.PCT)]
+    [CustomComboInfo("One Button Motifs", "Replaces Living Muse with One button Motifs", Job.PCT)]
     PCTPvP_OneButtonMotifs = 140010,
 
-    // Last value = 140010
+    [PvPCustomCombo]
+    [ParentCombo(PCTPvP_OneButtonMotifs)]
+    [CustomComboInfo("Star Prism Option", "Adds Star Prism.", Job.PCT)]
+    PCTPvP_StarPrismOneButtonMotifs = 140011,
+
+    // Last value = 140011
 
     #endregion
 
