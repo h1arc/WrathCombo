@@ -161,9 +161,6 @@ internal partial class SAM
         !IsMoving() && TimeStoodStill > TimeSpan.FromSeconds(SAM_ST_MeditateTimeStill) &&
         InCombat() && !HasBattleTarget();
 
-    //  private static bool HasMaxMeikyoCharges =>
-    //    GetRemainingCharges(MeikyoShisui) == GetMaxCharges(MeikyoShisui);
-
     #endregion
 
     #region Meikyo
@@ -583,7 +580,7 @@ internal partial class SAM
         public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } =
         [
             ([18, 23], () => Kenki < SAMKenki.Shinten),
-            ([20, 25], () => Kenki < SAMKenki.Gyoten)
+            ([20, 25], () => Kenki < SAMKenki.Gyoten || IsOnCooldown(Gyoten))
         ];
 
         public override Preset Preset => Preset.SAM_ST_Opener;
