@@ -3433,15 +3433,15 @@ public enum Preset
     GNB_Mitigation_NonBoss = 7701,
     
     [ParentCombo(GNB_Mitigation_NonBoss)]
-    [CustomComboInfo("Rampart Option", "Adds Rampart when 3 or more targets", Job.GNB)]
+    [CustomComboInfo("Rampart Option", "Adds Rampart when 3 or more targets.", Job.GNB)]
     GNB_Mitigation_NonBoss_Rampart = 7702,
     
     [ParentCombo(GNB_Mitigation_NonBoss)]
-    [CustomComboInfo("Nebula Option", "Adds Nebula/Great Nebula when 3 or more targets", Job.GNB)]
+    [CustomComboInfo("Nebula Option", "Adds Nebula/Great Nebula when 3 or more targets.", Job.GNB)]
     GNB_Mitigation_NonBoss_Nebula = 7703,
     
     [ParentCombo(GNB_Mitigation_NonBoss)]
-    [CustomComboInfo("Camouflage Option", "Adds Camouflage when 3 or more targets", Job.GNB)]
+    [CustomComboInfo("Camouflage Option", "Adds Camouflage when 3 or more targets.", Job.GNB)]
     GNB_Mitigation_NonBoss_Camouflage = 7704,
     
     [ParentCombo(GNB_Mitigation_NonBoss)]
@@ -3449,11 +3449,15 @@ public enum Preset
     GNB_Mitigation_NonBoss_Aurora = 7705,
     
     [ParentCombo(GNB_Mitigation_NonBoss)]
-    [CustomComboInfo("Superbolide Option", "Adds Superbolide when 5 or more targets", Job.GNB)]
+    [CustomComboInfo("Superbolide Option", "Adds Superbolide when 5 or more targets as part of the mitigation rotation. (Recommended)", Job.GNB)]
     GNB_Mitigation_NonBoss_Superbolide = 7706,
     
     [ParentCombo(GNB_Mitigation_NonBoss)]
-    [CustomComboInfo("Arm's Length Option", "Adds Arm's Length when 5 or more targets", Job.GNB)]
+    [CustomComboInfo("Superbolide Emergency Option", "Adds Superbolide when in emergency health situation. \nWill likely be on coodown if using above setting as reccomended.", Job.GNB)]
+    GNB_Mitigation_NonBoss_SuperBolideEmergency = 7721,
+    
+    [ParentCombo(GNB_Mitigation_NonBoss)]
+    [CustomComboInfo("Arm's Length Option", "Adds Arm's Length when 5 or more targets.", Job.GNB)]
     GNB_Mitigation_NonBoss_ArmsLength = 7707,
     
     [ParentCombo(GNB_Mitigation_NonBoss)]
@@ -4998,8 +5002,12 @@ public enum Preset
     PLD_Mitigation_NonBoss_Bulwark = 11090,
     
     [ParentCombo(PLD_Mitigation_NonBoss)]
-    [CustomComboInfo("Hallowed Ground Option", "Adds Hallowed Ground when 5 or more targets", Job.PLD)]
+    [CustomComboInfo("Hallowed Ground Option", "Adds Hallowed Ground when 5 or more targets as part of the mitigation rotation. (Recommended)", Job.PLD)]
     PLD_Mitigation_NonBoss_HallowedGround = 11091,
+    
+    [ParentCombo(PLD_Mitigation_NonBoss)]
+    [CustomComboInfo("Hallowed Ground Emergency Option", "Adds Hallowed Ground when in emergency health situation. \nWill likely be on coodown if using above setting as reccomended.", Job.PLD)]
+    PLD_Mitigation_NonBoss_HallowedGroundEmergency = 11104,
     
     [ParentCombo(PLD_Mitigation_NonBoss)]
     [CustomComboInfo("Arm's Length Option", "Adds Arm's Length when 5 or more targets", Job.PLD)]

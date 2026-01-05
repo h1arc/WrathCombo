@@ -93,13 +93,25 @@ internal partial class GNB : Tank
     private static bool CanUseNonBossMits(RotationMode rotationFlags, ref uint actionID)
     {
         #region Initial Bailout
-        if (!InCombat() || !CanWeave() || InBossEncounter() || JustMitted || !IsEnabled(Preset.GNB_Mitigation_NonBoss))  
+        if (!InCombat() || InBossEncounter() || !IsEnabled(Preset.GNB_Mitigation_NonBoss))  
             return false;
+        #endregion
+        
+        #region Superbolide Invulnerability
+        var bolideThreshold = rotationFlags.HasFlag(RotationMode.simple) ? 20 : GNB_Mitigation_NonBoss_SuperBolide_Health;
+        
+        if (IsEnabled(Preset.GNB_Mitigation_NonBoss_SuperBolideEmergency) && ActionReady(Superbolide) &&
+            PlayerHealthPercentageHp() <= bolideThreshold)
+        {
+            actionID = Superbolide;
+            return true;
+        }
         #endregion
         
         #region Heart Of Stone/Corundrum Use Always
         if (IsEnabled(Preset.GNB_Mitigation_NonBoss_HeartOfStone) && 
             ActionReady(OriginalHook(HeartOfStone)) && 
+            CanWeave() && !JustMitted &&
             !HasStatusEffect(Buffs.Superbolide))
         {
             actionID = OriginalHook(HeartOfStone);
@@ -112,7 +124,7 @@ internal partial class GNB : Tank
             ? 10 
             : GNB_Mitigation_NonBoss_MitigationThreshold;
         
-        if (GetAvgEnemyHPPercentInRange(5f) <= mitigationThreshold) 
+        if (GetAvgEnemyHPPercentInRange(5f) <= mitigationThreshold || !CanWeave() || JustMitted) 
             return false;
         #endregion
         

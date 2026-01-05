@@ -16,6 +16,7 @@ internal partial class GNB
             GNB_AoE_MitOptions = new("GNB_AoE_MitOptions"),
             GNB_ST_Advanced_MitOptions = new("GNB_ST_Advanced_MitOptions"),
             GNB_AoE_Advanced_MitOptions = new("GNB_AoE_Advanced_MitOptions"),
+            GNB_Mitigation_NonBoss_SuperBolide_Health = new("GNB_Mitigation_NonBoss_SuperBolide_Health", 20),
             GNB_Mitigation_Boss_Aurora_Health = new("GNB_Mitigation_Boss_Aurora_Health", 99),
             GNB_Mitigation_Boss_HeartOfStone_Health = new("GNB_Mitigation_Boss_HeartOfStone_Health", 80),
             
@@ -100,8 +101,12 @@ internal partial class GNB
                     DrawSliderFloat(0, 100, GNB_Mitigation_NonBoss_MitigationThreshold, "Stop using when average health percentage of nearby enemies is below set. \n(Set to 0 to disable this check) ", decimals: 0);
                     break;
                 
+                case Preset.GNB_Mitigation_NonBoss_SuperBolideEmergency:
+                    DrawSliderInt(1,100, GNB_Mitigation_NonBoss_SuperBolide_Health, "Player HP% to use Emergency Superbolide at or below.");
+                    break;
+                
                 case Preset.GNB_Mitigation_Boss_Aurora:
-                    DrawSliderInt(1, 100, GNB_Mitigation_Boss_Aurora_Health, "Player HP% to use Aurora at or below (100 = Disable check)");
+                    DrawSliderInt(1, 100, GNB_Mitigation_Boss_Aurora_Health, "Player HP% to use Aurora at or below. (100 = Disable check)");
                     break;
                 
                 case Preset.GNB_Mitigation_Boss_HeartOfStone_OnCD:
