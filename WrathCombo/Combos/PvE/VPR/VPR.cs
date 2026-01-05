@@ -86,16 +86,7 @@ internal partial class VPR : Melee
                     : Vicewinder;
 
             // Uncoiled Fury usage
-            if (ActionReady(UncoiledFury) &&
-                HasStatusEffect(Buffs.Swiftscaled) &&
-                HasStatusEffect(Buffs.HuntersInstinct) &&
-                !IsComboExpiring(2) &&
-                RattlingCoilStacks > 1 &&
-                !VicewinderReady && !HuntersCoilReady && !SwiftskinsCoilReady &&
-                !HasStatusEffect(Buffs.Reawakened) && !HasStatusEffect(Buffs.ReadyToReawaken) &&
-                !WasLastWeaponskill(Ouroboros) &&
-                !IsEmpowermentExpiring(6) && !IsVenomExpiring(3) &&
-                !IsHoningExpiring(3))
+            if (CanUseUncoiledFury())
                 return UncoiledFury;
 
             //Reawaken combo
@@ -396,13 +387,8 @@ internal partial class VPR : Melee
                     : Vicewinder;
 
             // Uncoiled Fury usage
-            if (IsEnabled(Preset.VPR_ST_UncoiledFury) && !IsComboExpiring(2) &&
-                ActionReady(UncoiledFury) && HasStatusEffect(Buffs.Swiftscaled) && HasStatusEffect(Buffs.HuntersInstinct) &&
-                (RattlingCoilStacks > VPR_ST_UncoiledFury_HoldCharges ||
-                 GetTargetHPPercent() < VPR_ST_UncoiledFury_Threshold && HasRattlingCoilStack) &&
-                !VicewinderReady && !HuntersCoilReady && !SwiftskinsCoilReady &&
-                !HasStatusEffect(Buffs.Reawakened) && !HasStatusEffect(Buffs.ReadyToReawaken) &&
-                !WasLastWeaponskill(Ouroboros) && !IsEmpowermentExpiring(3))
+            if (IsEnabled(Preset.VPR_ST_UncoiledFury) && 
+                CanUseUncoiledFury())
                 return UncoiledFury;
 
             //Reawaken combo

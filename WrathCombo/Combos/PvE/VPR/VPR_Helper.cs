@@ -260,17 +260,18 @@ internal partial class VPR
         (IreCD >= GCD * 5 && InBossEncounter() || !InBossEncounter() || !LevelChecked(SerpentsIre)) &&
         !IsVenomExpiring(4) && !IsHoningExpiring(4);
 
-    private static bool CanUseUncoiledFury(bool simplemode = false)
+    private static bool CanUseUncoiledFury()
     {
-        if (!IsComboExpiring(2) && ActionReady(UncoiledFury) && HasStatusEffect(Buffs.Swiftscaled) && HasStatusEffect(Buffs.HuntersInstinct) &&
-            (RattlingCoilStacks > VPR_ST_UncoiledFury_HoldCharges ||
-             GetTargetHPPercent() < VPR_ST_UncoiledFury_Threshold && HasRattlingCoilStack) &&
-            !VicewinderReady && !HuntersCoilReady && !SwiftskinsCoilReady &&
-            !HasStatusEffect(Buffs.Reawakened) && !HasStatusEffect(Buffs.ReadyToReawaken) &&
-            !WasLastWeaponskill(Ouroboros) && !IsEmpowermentExpiring(3))
-            return true;
-
-        return false;
+        int ufHoldCharges = IsNotEnabled(Preset.VPR_ST_SimpleMode) ? VPR_ST_UncoiledFury_HoldCharges : 1;
+        int ufHPThreshold = IsNotEnabled(Preset.VPR_ST_SimpleMode) ? VPR_ST_UncoiledFury_Threshold : 1;
+        
+        return !IsComboExpiring(2) && ActionReady(UncoiledFury) && 
+               HasStatusEffect(Buffs.Swiftscaled) && HasStatusEffect(Buffs.HuntersInstinct) &&
+               (RattlingCoilStacks > ufHoldCharges ||
+                GetTargetHPPercent() < ufHPThreshold && HasRattlingCoilStack) &&
+               !VicewinderReady && !HuntersCoilReady && !SwiftskinsCoilReady &&
+               !HasStatusEffect(Buffs.Reawakened) && !HasStatusEffect(Buffs.ReadyToReawaken) &&
+               !WasLastWeaponskill(Ouroboros) && !IsEmpowermentExpiring(3);
     }
 
     private static bool CanVicewinderCombo(ref uint actionID)
