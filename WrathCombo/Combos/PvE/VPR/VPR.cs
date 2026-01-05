@@ -89,56 +89,10 @@ internal partial class VPR : Melee
             if (CanUseUncoiledFury())
                 return UncoiledFury;
 
-            //Reawaken combo
-            if (ReawakenCombo(ref actionID))
-                return actionID;
-
-            //1-2-3 (4-5-6) Combo
-            if (ComboTimer > 0 && !HasStatusEffect(Buffs.Reawakened))
-            {
-                if (ComboAction is ReavingFangs or SteelFangs)
-                {
-                    if (LevelChecked(SwiftskinsSting) &&
-                        (HasHindVenom || NoSwiftscaled || NoVenom))
-                        return OriginalHook(ReavingFangs);
-
-                    if (LevelChecked(HuntersSting) && (HasFlankVenom || NoHuntersInstinct))
-                        return OriginalHook(SteelFangs);
-                }
-
-                if (ComboAction is HuntersSting or SwiftskinsSting)
-                {
-                    if ((HasStatusEffect(Buffs.FlankstungVenom) || HasStatusEffect(Buffs.HindstungVenom)) &&
-                        LevelChecked(FlanksbaneFang))
-                        return Role.CanTrueNorth() &&
-                               (!OnTargetsRear() && HasStatusEffect(Buffs.HindstungVenom) ||
-                                !OnTargetsFlank() && HasStatusEffect(Buffs.FlankstungVenom))
-                            ? Role.TrueNorth
-                            : OriginalHook(SteelFangs);
-
-
-                    if ((HasStatusEffect(Buffs.FlanksbaneVenom) || HasStatusEffect(Buffs.HindsbaneVenom)) &&
-                        LevelChecked(HindstingStrike))
-                        return Role.CanTrueNorth() &&
-                               (!OnTargetsRear() && HasStatusEffect(Buffs.HindsbaneVenom) ||
-                                OnTargetsFlank() && HasStatusEffect(Buffs.FlanksbaneVenom))
-                            ? Role.TrueNorth
-                            : OriginalHook(ReavingFangs);
-                }
-
-                if (ComboAction is HindstingStrike or HindsbaneFang or FlankstingStrike or FlanksbaneFang)
-                    return LevelChecked(ReavingFangs) && HasStatusEffect(Buffs.HonedReavers)
-                        ? OriginalHook(ReavingFangs)
-                        : OriginalHook(SteelFangs);
-            }
-
-            //LowLevels
-            if (LevelChecked(ReavingFangs) &&
-                (HasStatusEffect(Buffs.HonedReavers) ||
-                 !HasStatusEffect(Buffs.HonedReavers) && !HasStatusEffect(Buffs.HonedSteel)))
-                return OriginalHook(ReavingFangs);
-
-            return actionID;
+            //Reawaken combo/ 1-2-3 (4-5-6) Combo
+            return ReawakenCombo(ref actionID)
+                ? actionID
+                : DoBasicCombo(actionID);
         }
     }
 
@@ -387,63 +341,15 @@ internal partial class VPR : Melee
                     : Vicewinder;
 
             // Uncoiled Fury usage
-            if (IsEnabled(Preset.VPR_ST_UncoiledFury) && 
+            if (IsEnabled(Preset.VPR_ST_UncoiledFury) &&
                 CanUseUncoiledFury())
                 return UncoiledFury;
 
-            //Reawaken combo
-            if (IsEnabled(Preset.VPR_ST_GenerationCombo) &&
-                ReawakenCombo(ref actionID))
-                return actionID;
-
-            //1-2-3 (4-5-6) Combo
-            if (ComboTimer > 0 && !HasStatusEffect(Buffs.Reawakened))
-            {
-                if (ComboAction is ReavingFangs or SteelFangs)
-                {
-                    if (LevelChecked(SwiftskinsSting) &&
-                        (HasHindVenom || NoSwiftscaled || NoVenom))
-                        return OriginalHook(ReavingFangs);
-
-                    if (LevelChecked(HuntersSting) && (HasFlankVenom || NoHuntersInstinct))
-                        return OriginalHook(SteelFangs);
-                }
-
-
-                if (ComboAction is HuntersSting or SwiftskinsSting)
-                {
-                    if ((HasStatusEffect(Buffs.FlanksbaneVenom) || HasStatusEffect(Buffs.HindsbaneVenom)) &&
-                        LevelChecked(HindstingStrike))
-                        return IsEnabled(Preset.VPR_TrueNorthDynamic) &&
-                               Role.CanTrueNorth() &&
-                               (!OnTargetsRear() && HasStatusEffect(Buffs.HindsbaneVenom) ||
-                                !OnTargetsFlank() && HasStatusEffect(Buffs.FlanksbaneVenom))
-                            ? Role.TrueNorth
-                            : OriginalHook(ReavingFangs);
-
-                    if ((HasStatusEffect(Buffs.FlankstungVenom) || HasStatusEffect(Buffs.HindstungVenom)) &&
-                        LevelChecked(FlanksbaneFang))
-                        return IsEnabled(Preset.VPR_TrueNorthDynamic) &&
-                               Role.CanTrueNorth() &&
-                               (!OnTargetsRear() && HasStatusEffect(Buffs.HindstungVenom) ||
-                                !OnTargetsFlank() && HasStatusEffect(Buffs.FlankstungVenom))
-                            ? Role.TrueNorth
-                            : OriginalHook(SteelFangs);
-                }
-
-                if (ComboAction is HindstingStrike or HindsbaneFang or FlankstingStrike or FlanksbaneFang)
-                    return LevelChecked(ReavingFangs) && HasStatusEffect(Buffs.HonedReavers)
-                        ? OriginalHook(ReavingFangs)
-                        : OriginalHook(SteelFangs);
-            }
-
-            //LowLevels
-            if (LevelChecked(ReavingFangs) &&
-                (HasStatusEffect(Buffs.HonedReavers) ||
-                 !HasStatusEffect(Buffs.HonedReavers) && !HasStatusEffect(Buffs.HonedSteel)))
-                return OriginalHook(ReavingFangs);
-
-            return actionID;
+            //Reawaken combo / 1-2-3 (4-5-6) Combo
+            return IsEnabled(Preset.VPR_ST_GenerationCombo) &&
+                   ReawakenCombo(ref actionID)
+                ? actionID
+                : DoBasicCombo(actionID, IsEnabled(Preset.VPR_TrueNorthDynamic));
         }
     }
 

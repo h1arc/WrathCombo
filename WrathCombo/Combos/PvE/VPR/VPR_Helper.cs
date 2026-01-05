@@ -11,6 +11,61 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class VPR
 {
+    #region Basic Combo
+
+    private static uint DoBasicCombo(uint actionId, bool useTrueNorthIfEnabled = true)
+    {
+        //1-2-3 (4-5-6) Combo
+        if (ComboTimer > 0 && !HasStatusEffect(Buffs.Reawakened))
+        {
+            if (ComboAction is ReavingFangs or SteelFangs)
+            {
+                if (LevelChecked(SwiftskinsSting) &&
+                    (HasHindVenom || NoSwiftscaled || NoVenom))
+                    return OriginalHook(ReavingFangs);
+
+                if (LevelChecked(HuntersSting) && (HasFlankVenom || NoHuntersInstinct))
+                    return OriginalHook(SteelFangs);
+            }
+
+
+            if (ComboAction is HuntersSting or SwiftskinsSting)
+            {
+                if ((HasStatusEffect(Buffs.FlanksbaneVenom) || HasStatusEffect(Buffs.HindsbaneVenom)) &&
+                    LevelChecked(HindstingStrike))
+                    return useTrueNorthIfEnabled &&
+                           Role.CanTrueNorth() &&
+                           (!OnTargetsRear() && HasStatusEffect(Buffs.HindsbaneVenom) ||
+                            !OnTargetsFlank() && HasStatusEffect(Buffs.FlanksbaneVenom))
+                        ? Role.TrueNorth
+                        : OriginalHook(ReavingFangs);
+
+                if ((HasStatusEffect(Buffs.FlankstungVenom) || HasStatusEffect(Buffs.HindstungVenom)) &&
+                    LevelChecked(FlanksbaneFang))
+                    return useTrueNorthIfEnabled &&
+                           Role.CanTrueNorth() &&
+                           (!OnTargetsRear() && HasStatusEffect(Buffs.HindstungVenom) ||
+                            !OnTargetsFlank() && HasStatusEffect(Buffs.FlankstungVenom))
+                        ? Role.TrueNorth
+                        : OriginalHook(SteelFangs);
+            }
+
+            if (ComboAction is HindstingStrike or HindsbaneFang or FlankstingStrike or FlanksbaneFang)
+                return LevelChecked(ReavingFangs) && HasStatusEffect(Buffs.HonedReavers)
+                    ? OriginalHook(ReavingFangs)
+                    : OriginalHook(SteelFangs);
+        }
+
+        //LowLevels
+        if (LevelChecked(ReavingFangs) &&
+            (HasStatusEffect(Buffs.HonedReavers) ||
+             !HasStatusEffect(Buffs.HonedReavers) && !HasStatusEffect(Buffs.HonedSteel)))
+            return OriginalHook(ReavingFangs);
+
+        return actionId;
+    }
+
+            #endregion
     #region Misc
 
     private static float IreCD =>
@@ -264,8 +319,8 @@ internal partial class VPR
     {
         int ufHoldCharges = IsNotEnabled(Preset.VPR_ST_SimpleMode) ? VPR_ST_UncoiledFury_HoldCharges : 1;
         int ufHPThreshold = IsNotEnabled(Preset.VPR_ST_SimpleMode) ? VPR_ST_UncoiledFury_Threshold : 1;
-        
-        return !IsComboExpiring(2) && ActionReady(UncoiledFury) && 
+
+        return !IsComboExpiring(2) && ActionReady(UncoiledFury) &&
                HasStatusEffect(Buffs.Swiftscaled) && HasStatusEffect(Buffs.HuntersInstinct) &&
                (RattlingCoilStacks > ufHoldCharges ||
                 GetTargetHPPercent() < ufHPThreshold && HasRattlingCoilStack) &&
