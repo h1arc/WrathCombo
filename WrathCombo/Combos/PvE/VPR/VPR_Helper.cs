@@ -65,14 +65,12 @@ internal partial class VPR
         return actionId;
     }
 
-            #endregion
+    #endregion
+    
     #region Misc
 
     private static float IreCD =>
         GetCooldownRemainingTime(SerpentsIre);
-
-    private static bool InRange =>
-        IsInRange(CurrentTarget, 5f);
 
     private static bool MaxCoils =>
         TraitLevelChecked(Traits.EnhancedVipersRattle) && RattlingCoilStacks > 2 ||
@@ -331,7 +329,8 @@ internal partial class VPR
 
     private static bool CanVicewinderCombo(ref uint actionID)
     {
-        if (!HasStatusEffect(Buffs.Reawakened) &&
+        if (!HasStatusEffect(Buffs.Reawakened) && 
+            (JustUsed(Vicewinder) || JustUsed(HuntersCoil) || JustUsed(SwiftskinsCoil)) &&
             LevelChecked(Vicewinder) && InMeleeRange())
         {
             // Swiftskin's Coil
