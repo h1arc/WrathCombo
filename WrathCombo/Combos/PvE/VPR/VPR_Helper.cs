@@ -20,7 +20,7 @@ internal partial class VPR
             case false:
             {
                 //1-2-3 (4-5-6) Combo
-                if (ComboTimer > 0 && !HasStatusEffect(Buffs.Reawakened))
+                if (ComboTimer > 0)
                 {
                     if (ComboAction is ReavingFangs or SteelFangs)
                     {
@@ -31,7 +31,6 @@ internal partial class VPR
                         if (LevelChecked(HuntersSting) && (HasFlankVenom || NoHuntersInstinct))
                             return OriginalHook(SteelFangs);
                     }
-
 
                     if (ComboAction is HuntersSting or SwiftskinsSting)
                     {
@@ -72,7 +71,7 @@ internal partial class VPR
             case true:
             {
                 //1-2-3 (4-5-6) Combo
-                if (ComboTimer > 0 && !HasStatusEffect(Buffs.Reawakened))
+                if (ComboTimer > 0)
                 {
                     if (ComboAction is ReavingMaw or SteelMaw)
                     {
@@ -124,7 +123,7 @@ internal partial class VPR
         TraitLevelChecked(Traits.EnhancedVipersRattle) && RattlingCoilStacks > 2 ||
         !TraitLevelChecked(Traits.EnhancedVipersRattle) && RattlingCoilStacks > 1;
 
-    private static bool HasRattlingCoilStack =>
+    private static bool HasRattlingCoilStacks =>
         RattlingCoilStacks > 0;
 
     private static bool HasHindVenom =>
@@ -162,7 +161,7 @@ internal partial class VPR
         int hpThresholdUsage = IsNotEnabled(Preset.VPR_ST_SimpleMode) ? ComputeHpThresholdReawaken() : 0;
         int hpThresholdDontSave = IsNotEnabled(Preset.VPR_ST_SimpleMode) ? VPR_ST_ReAwaken_Threshold : 5;
 
-        if (LevelChecked(Reawaken) && !HasStatusEffect(Buffs.Reawakened) && InActionRange(Reawaken) &&
+        if (ActionReady(Reawaken) && !HasStatusEffect(Buffs.Reawakened) && InActionRange(Reawaken) &&
             !HasStatusEffect(Buffs.HuntersVenom) && !HasStatusEffect(Buffs.SwiftskinsVenom) && HasBattleTarget() &&
             !HasStatusEffect(Buffs.PoisedForTwinblood) && !HasStatusEffect(Buffs.PoisedForTwinfang) &&
             !IsEmpowermentExpiring(6) && !IsComboExpiring(6) && GetTargetHPPercent() > hpThresholdUsage)
@@ -355,49 +354,41 @@ internal partial class VPR
     #region Vicewinder & Uncoied Fury Combo
 
     private static bool CanUseVicewinder =>
-        !IsComboExpiring(4) && ActionReady(Vicewinder) &&
-        !HasStatusEffect(Buffs.Reawakened) && InMeleeRange() &&
+        ActionReady(Vicewinder) &&
+        !IsComboExpiring(4) && !IsVenomExpiring(4) && !IsHoningExpiring(4) &&
+        !HasStatusEffect(Buffs.Reawakened) && InActionRange(Vicewinder) &&
         !VicewinderReady && !HuntersCoilReady && !SwiftskinsCoilReady &&
-        (IreCD >= GCD * 5 && InBossEncounter() || !InBossEncounter() || !LevelChecked(SerpentsIre)) &&
-        !IsVenomExpiring(4) && !IsHoningExpiring(4);
+        (IreCD >= GCD * 3 && InBossEncounter() || !InBossEncounter() || !LevelChecked(SerpentsIre));
 
     private static bool CanUseUncoiledFury()
     {
         int ufHoldCharges = IsNotEnabled(Preset.VPR_ST_SimpleMode) ? VPR_ST_UncoiledFury_HoldCharges : 1;
         int ufHPThreshold = IsNotEnabled(Preset.VPR_ST_SimpleMode) ? VPR_ST_UncoiledFury_Threshold : 1;
 
-        return !IsComboExpiring(2) && ActionReady(UncoiledFury) &&
-               HasStatusEffect(Buffs.Swiftscaled) && HasStatusEffect(Buffs.HuntersInstinct) &&
-               (RattlingCoilStacks > ufHoldCharges ||
-                GetTargetHPPercent() < ufHPThreshold && HasRattlingCoilStack) &&
+        return !IsComboExpiring(2) && !IsVenomExpiring(2) && !IsHoningExpiring(2) &&
+               ActionReady(UncoiledFury) && HasStatusEffect(Buffs.Swiftscaled) && HasStatusEffect(Buffs.HuntersInstinct) &&
+               (RattlingCoilStacks > ufHoldCharges || GetTargetHPPercent() < ufHPThreshold && HasRattlingCoilStacks) &&
                !VicewinderReady && !HuntersCoilReady && !SwiftskinsCoilReady &&
                !HasStatusEffect(Buffs.Reawakened) && !HasStatusEffect(Buffs.ReadyToReawaken) &&
                !WasLastWeaponskill(Ouroboros) && !IsEmpowermentExpiring(3);
     }
 
-    private static bool CanVicewinderCombo(ref uint actionID)
+    private static uint CanVicewinderCombo(uint actionId)
     {
-        if (!HasStatusEffect(Buffs.Reawakened) &&
-            (VicewinderReady || SwiftskinsCoilReady || HuntersCoilReady) &&
-            LevelChecked(Vicewinder) && InMeleeRange())
+        if ((VicewinderReady || SwiftskinsCoilReady || HuntersCoilReady) &&
+            LevelChecked(Vicewinder) && InActionRange(Vicewinder))
         {
             // Swiftskin's Coil
             if (VicewinderReady &&
                 (!OnTargetsFlank() || !TargetNeedsPositionals() || !HasStatusEffect(Buffs.Swiftscaled) || RefreshSwiftscaled) || HuntersCoilReady)
-            {
-                actionID = SwiftskinsCoil;
-                return true;
-            }
+                return SwiftskinsCoil;
 
             // Hunter's Coil
             if (VicewinderReady &&
                 (!OnTargetsRear() || !TargetNeedsPositionals() || !HasStatusEffect(Buffs.HuntersInstinct) || RefreshHuntersInstinct) || SwiftskinsCoilReady)
-            {
-                actionID = HuntersCoil;
-                return true;
-            }
+                return HuntersCoil;
         }
-        return false;
+        return actionId;
     }
 
     #endregion

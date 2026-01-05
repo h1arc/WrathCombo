@@ -60,13 +60,13 @@ internal partial class VPR : Melee
 
             //Ranged
             if (LevelChecked(WrithingSnap) && !InMeleeRange() && HasBattleTarget())
-                return HasRattlingCoilStack
+                return HasRattlingCoilStacks
                     ? UncoiledFury
                     : WrithingSnap;
 
             //Vicewinder Combo
-            if (CanVicewinderCombo(ref actionID))
-                return actionID;
+            if (!HasStatusEffect(Buffs.Reawakened))
+                return CanVicewinderCombo(actionID);
 
             //Reawakend Usage
             if (CanReawaken())
@@ -181,7 +181,7 @@ internal partial class VPR : Melee
 
             // Uncoiled Fury usage
             if (ActionReady(UncoiledFury) &&
-                HasRattlingCoilStack &&
+                HasRattlingCoilStacks &&
                 HasStatusEffect(Buffs.Swiftscaled) && HasStatusEffect(Buffs.HuntersInstinct) &&
                 !VicepitReady && !HuntersDenReady && !SwiftskinsDenReady &&
                 !HasStatusEffect(Buffs.Reawakened) && !HasStatusEffect(Buffs.FellskinsVenom) &&
@@ -273,14 +273,14 @@ internal partial class VPR : Melee
             if (IsEnabled(Preset.VPR_ST_RangedUptime) &&
                 LevelChecked(WrithingSnap) && !InMeleeRange() && HasBattleTarget())
                 return VPR_ST_RangedUptimeUncoiledFury &&
-                       HasRattlingCoilStack
+                       HasRattlingCoilStacks
                     ? UncoiledFury
                     : WrithingSnap;
 
             //Vicewinder Combo
             if (IsEnabled(Preset.VPR_ST_VicewinderCombo) &&
-                CanVicewinderCombo(ref actionID))
-                return actionID;
+                !HasStatusEffect(Buffs.Reawakened))
+                return CanVicewinderCombo(actionID);
 
             //Reawakend Usage
             if (IsEnabled(Preset.VPR_ST_Reawaken) &&
@@ -291,10 +291,10 @@ internal partial class VPR : Melee
             if (IsEnabled(Preset.VPR_ST_UncoiledFury) && MaxCoils &&
                 (HasCharges(Vicewinder) && !HasStatusEffect(Buffs.SwiftskinsVenom) &&
                  !HasStatusEffect(Buffs.HuntersVenom) && !HasStatusEffect(Buffs.Reawakened) || //spend if Vicewinder is up, after Reawaken
-                 IreCD <= GCD * 5)) //spend in case under Reawaken right as Ire comes up
+                 IreCD <= GCD * 3)) //spend in case under Reawaken right as Ire comes up
                 return UncoiledFury;
 
-            //Vicewinder Usage
+            //Vicewinder
             if (IsEnabled(Preset.VPR_ST_Vicewinder) &&
                 CanUseVicewinder)
                 return VPR_TrueNortVicewinder &&
@@ -302,13 +302,14 @@ internal partial class VPR : Melee
                     ? Role.TrueNorth
                     : Vicewinder;
 
-            // Uncoiled Fury usage
+            // Uncoiled Fury
             if (IsEnabled(Preset.VPR_ST_UncoiledFury) &&
                 CanUseUncoiledFury())
                 return UncoiledFury;
 
             //Reawaken combo / 1-2-3 (4-5-6) Combo
-            return IsEnabled(Preset.VPR_ST_GenerationCombo)
+            return IsEnabled(Preset.VPR_ST_GenerationCombo) && 
+                   HasStatusEffect(Buffs.Reawakened)
                 ? ReawakenCombo(actionID)
                 : DoBasicCombo(actionID, IsEnabled(Preset.VPR_TrueNorthDynamic));
         }
@@ -422,7 +423,7 @@ internal partial class VPR : Melee
                 ActionReady(UncoiledFury) &&
                 (RattlingCoilStacks > VPR_AoE_UncoiledFury_HoldCharges ||
                  GetTargetHPPercent() < VPR_AoE_UncoiledFury_Threshold &&
-                 HasRattlingCoilStack) &&
+                 HasRattlingCoilStacks) &&
                 HasStatusEffect(Buffs.Swiftscaled) && HasStatusEffect(Buffs.HuntersInstinct) &&
                 !VicepitReady && !HuntersDenReady && !SwiftskinsDenReady &&
                 !HasStatusEffect(Buffs.Reawakened) && !HasStatusEffect(Buffs.FellskinsVenom) &&
