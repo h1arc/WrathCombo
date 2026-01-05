@@ -325,14 +325,14 @@ internal abstract partial class CustomComboFunctions
 
     public static bool GroupDamageIncoming(float? maxTimeRemaining = null) =>
         RaidwideCasting(maxTimeRemaining) ||
-        (CheckForSharedDamageEffect(out _, out _, out float distance) &&
+        (CheckForSharedDamageEffect(out float distance, out _, out _) &&
          distance <= 6);
 
     public static bool GroupDamageIncoming
         (out bool isMultiHit, float? maxTimeRemaining = null)
     {
         isMultiHit = false;
-        return (CheckForSharedDamageEffect(out _, out isMultiHit, out float distance) &&
+        return (CheckForSharedDamageEffect(out float distance, out isMultiHit, out _) &&
                 distance <= 6) ||
                RaidwideCasting(maxTimeRemaining);
     }

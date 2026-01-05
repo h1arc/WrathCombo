@@ -51,7 +51,8 @@ internal abstract partial class CustomComboFunctions
     private static readonly FrozenSet<string> SharedDmgPaths = FrozenSet.ToFrozenSet([
         "vfx/lockon/eff/coshare",
         "vfx/lockon/eff/share_laser",
-        "vfx/lockon/eff/com_share"
+        "vfx/lockon/eff/com_share",
+        "vfx/monster/gimmick2/eff/z3o7_b1_g06c0t" // Line Puppet's Bunker 2nd Boss
     ], StringComparer.OrdinalIgnoreCase);
 
     //private static readonly FrozenSet<ushort> NoObjectStackDuties = FrozenSet.ToFrozenSet<ushort>([
@@ -59,16 +60,19 @@ internal abstract partial class CustomComboFunctions
     //]);
 
     /// <summary>
-    /// Checks for the presence of a shared damage effect on party members or some ground locations, and determines if effect is multi-hit.
+    /// Checks for incoming shared damage effects and retrieves relevant information.
     /// </summary>
-    /// <remarks>Only effects targeting party members or used by hidden boss NPC helpers are considered.</remarks>
-    /// <param name="partyMember">When this method returns, will return a party member IF they were targetted.</param>
-    /// <param name="isMultiHit">When this method returns, contains a value indicating whether the detected shared damage effect is a multi-hit
-    /// effect.</param>
-    /// <param name="distance">When this method returns, contains the distance from the detected to the affected party member or ground location,
-    /// or 'float.MaxValue' if no effect is found.</param>
-    /// <returns>true if a shared damage effect is detected on a party member or invisible helper NPC; otherwise, false.</returns>
-    public static bool CheckForSharedDamageEffect(out IBattleChara? partyMember, out bool isMultiHit, out float distance)
+    /// <remarks>
+    /// A shared damage effect is identified by its visual effect path matching known shared damage effect paths.
+    /// Not all shared damage effects may be detected, depending on the duty and effect used.
+    /// Party members are prioritized when multiple valid effects are found, and the closest party member is selected.
+    /// PartyMember will be null if no party member is affected (alliance / NPC helper).
+    /// </remarks>
+    /// <param name="distance">Distance to the effect</param>
+    /// <param name="isMultiHit">Returns true if the effect will do multiple hits</param>
+    /// <param name="partyMember">Returns an IBattleChara if the effect is on a party member</param>
+    /// <returns></returns>
+    public static bool CheckForSharedDamageEffect(out float distance, out bool isMultiHit, out IBattleChara? partyMember)
     {
         partyMember = null;
         distance = float.MaxValue;
