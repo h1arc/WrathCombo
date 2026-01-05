@@ -2858,7 +2858,7 @@ public enum Preset
     DRK_Mitigation_NonBoss_Oblation = 5318,
     
     [ParentCombo(DRK_Mitigation)]
-    [CustomComboInfo("Boss Encounter Mitigation", "Adds Mitigation to the combos when not in a boss encounter.", Job.DRK)]
+    [CustomComboInfo("Boss Encounter Mitigation", "Adds Mitigation to the combos when in a boss encounter.", Job.DRK)]
     DRK_Mitigation_Boss = 5309,
     
     [ParentCombo(DRK_Mitigation_Boss)]
@@ -3469,7 +3469,7 @@ public enum Preset
     GNB_Mitigation_NonBoss_HeartOfStone = 7710,
     
     [ParentCombo(GNB_Mitigation)]
-    [CustomComboInfo("Boss Encounter Mitigation", "Adds Mitigation to the combos when not in a boss encounter. Will not overlap separate options unless stated.", Job.GNB)]
+    [CustomComboInfo("Boss Encounter Mitigation", "Adds Mitigation to the combos when in a boss encounter. Will not overlap separate options unless stated.", Job.GNB)]
     GNB_Mitigation_Boss = 7711,
     
     [ParentCombo(GNB_Mitigation_Boss)]
@@ -5018,7 +5018,7 @@ public enum Preset
     PLD_Mitigation_NonBoss_DivineVeil = 11094,
     
     [ParentCombo(PLD_Mitigation)]
-    [CustomComboInfo("Boss Encounter Mitigation", "Adds Mitigation to the combos when not in a boss encounter. \nTankbuster Detection Experimental", Job.PLD)]
+    [CustomComboInfo("Boss Encounter Mitigation", "Adds Mitigation to the combos when in a boss encounter. \nTankbuster Detection Experimental", Job.PLD)]
     PLD_Mitigation_Boss = 11095,
     
     [ParentCombo(PLD_Mitigation_Boss)]
@@ -7763,7 +7763,7 @@ public enum Preset
     WAR_Mitigation_NonBoss_Holmgang= 18141,
     
     [ParentCombo(WAR_Mitigation)]
-    [CustomComboInfo("Boss Encounter Mitigation", "Adds Mitigation to the combos when not in a boss encounter. Will not overlap separate options unless stated.", Job.WAR)]
+    [CustomComboInfo("Boss Encounter Mitigation", "Adds Mitigation to the combos when in a boss encounter. Will not overlap separate options unless stated.", Job.WAR)]
     WAR_Mitigation_Boss = 18142,
     
     [ParentCombo(WAR_Mitigation_Boss)]
