@@ -281,7 +281,7 @@ internal partial class VPR : Melee
 
             //Vicewinder Combo
             if (IsEnabled(Preset.VPR_ST_VicewinderCombo) &&
-                CanVicewinderCombo(ref actionID) )
+                CanVicewinderCombo(ref actionID))
                 return actionID;
 
             //Reawakend Usage

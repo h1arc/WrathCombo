@@ -158,11 +158,11 @@ internal partial class VPR
         !HasStatusEffect(Buffs.PoisedForTwinblood) &&
         !HasStatusEffect(Buffs.PoisedForTwinfang);
 
-    private static bool RefreshHuntersInstinct =>
-        GetStatusEffectRemainingTime(Buffs.HuntersInstinct) <= GCD * 6;
+    // private static bool RefreshHuntersInstinct =>
+    //   GetStatusEffectRemainingTime(Buffs.HuntersInstinct) <= GCD * 6;
 
-    private static bool RefreshSwiftscaled =>
-        GetStatusEffectRemainingTime(Buffs.Swiftscaled) <= GCD * 6;
+    // private static bool RefreshSwiftscaled =>
+    //   GetStatusEffectRemainingTime(Buffs.Swiftscaled) <= GCD * 6;
 
     #endregion
 
@@ -229,45 +229,35 @@ internal partial class VPR
         #region Pre Ouroboros
 
         if (!TraitLevelChecked(Traits.EnhancedSerpentsLineage))
-            switch (AnguineTribute)
+        {
+            return AnguineTribute switch
             {
-                case 4:
-                    return OriginalHook(SteelFangs);
+                4 => OriginalHook(SteelFangs),
+                3 => OriginalHook(ReavingFangs),
+                2 => OriginalHook(HuntersCoil),
+                1 => OriginalHook(SwiftskinsCoil),
+                var _ => actionId
+            };
+        }
 
-                case 3:
-                    return OriginalHook(ReavingFangs);
-
-                case 2:
-                    return OriginalHook(HuntersCoil);
-
-                case 1:
-                    return OriginalHook(SwiftskinsCoil);
-            }
-
-                #endregion
+        #endregion
 
         #region With Ouroboros
 
         if (TraitLevelChecked(Traits.EnhancedSerpentsLineage))
-            switch (AnguineTribute)
+        {
+            return AnguineTribute switch
             {
-                case 5:
-                    return OriginalHook(SteelFangs);
+                5 => OriginalHook(SteelFangs),
+                4 => OriginalHook(ReavingFangs),
+                3 => OriginalHook(HuntersCoil),
+                2 => OriginalHook(SwiftskinsCoil),
+                1 => OriginalHook(Reawaken),
+                var _ => actionId
+            };
+        }
 
-                case 4:
-                    return OriginalHook(ReavingFangs);
-
-                case 3:
-                    return OriginalHook(HuntersCoil);
-
-                case 2:
-                    return OriginalHook(SwiftskinsCoil);
-
-                case 1:
-                    return OriginalHook(Reawaken);
-            }
-
-                #endregion
+        #endregion
 
         return actionId;
     }
@@ -367,15 +357,23 @@ internal partial class VPR
         {
             // Swiftskin's Coil
             if (VicewinderReady &&
-                (!OnTargetsFlank() || !TargetNeedsPositionals() || !HasStatusEffect(Buffs.Swiftscaled) || RefreshSwiftscaled) || HuntersCoilReady)
+                (!OnTargetsFlank() ||
+                 !TargetNeedsPositionals() ||
+                 !HasStatusEffect(Buffs.Swiftscaled) ||
+                 IsEmpowermentExpiring(6)) ||
+                HuntersCoilReady)
             {
                 actionId = SwiftskinsCoil;
                 return true;
             }
-            
+
             // Hunter's Coil
             if (VicewinderReady &&
-                (!OnTargetsRear() || !TargetNeedsPositionals() || !HasStatusEffect(Buffs.HuntersInstinct) || RefreshHuntersInstinct) || SwiftskinsCoilReady)
+                (!OnTargetsRear() ||
+                 !TargetNeedsPositionals() ||
+                 !HasStatusEffect(Buffs.HuntersInstinct) ||
+                 IsEmpowermentExpiring(6)) ||
+                SwiftskinsCoilReady)
             {
                 actionId = HuntersCoil;
                 return true;
