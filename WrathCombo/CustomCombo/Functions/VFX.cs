@@ -52,7 +52,9 @@ internal abstract partial class CustomComboFunctions
         "vfx/lockon/eff/coshare",
         "vfx/lockon/eff/share_laser",
         "vfx/lockon/eff/com_share",
-        "vfx/monster/gimmick2/eff/z3o7_b1_g06c0t" // Line Puppet's Bunker 2nd Boss
+        // Puppet's Bunker, Superior Flight Unit.
+        // Won't work till Static VFX tracking is added
+        "vfx/monster/gimmick2/eff/z3o7_b1_g06c0t"
     ], StringComparer.OrdinalIgnoreCase);
 
     //private static readonly FrozenSet<ushort> NoObjectStackDuties = FrozenSet.ToFrozenSet<ushort>([
