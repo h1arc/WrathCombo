@@ -582,10 +582,12 @@ internal partial class WHM : Healer
                     if (GetTargetHPPercent(healTarget,
                             WHM_STHeals_IncludeShields) <= config &&
                         ActionReady(spell))
-                        return spell.RetargetIfEnabled(healTarget, Cure);
+                        return spell is Asylum or LiturgyOfTheBell
+                            ? spell.Retarget(Cure,SimpleTarget.Self)
+                            : spell.RetargetIfEnabled(healTarget, Cure);
                 }
             }
-
+            
             if (LevelChecked(Cure2))
                 return IsEnabled(Preset.WHM_STHeals_ThinAir) && canThinAir
                     ? ThinAir
@@ -640,10 +642,15 @@ internal partial class WHM : Healer
 
                 if (enabled && GetPartyAvgHPPercent() <= config &&
                     ActionReady(spell))
-                    return IsEnabled(Preset.WHM_AoEHeals_ThinAir) && canThinAir &&
-                           spell is Cure3 or Medica2 or Medica3
-                        ? ThinAir
+                {
+                    if (IsEnabled(Preset.WHM_AoEHeals_ThinAir) && canThinAir && spell is Cure3 or Medica2 or Medica3)
+                        return ThinAir;
+                    
+                    return spell is Asylum or LiturgyOfTheBell
+                        ? spell.Retarget(Medica1, SimpleTarget.Self)
                         : spell.RetargetIfEnabled(healTarget, Medica1);
+                }
+                   
             }
             return actionID;
         }
