@@ -47,6 +47,7 @@ internal partial class WHM
                     ImGui.Indent();
                     DrawRoundedSliderFloat(0, 4, WHM_ST_DPS_AeroUptime_Threshold, "Seconds remaining before reapplying the DoT. Set to Zero to disable this check.", digits: 1);
                     ImGui.Unindent();
+                    DrawAdditionalBoolChoice(WHM_ST_MainCombo_DoT_TwoTarget, "Two target dotting", "Will maintain Damage over time spells on two targets if applicable.");
                     break;
                 
                 case Preset.WHM_ST_MainCombo_Misery:
@@ -474,6 +475,13 @@ internal partial class WHM
         /// <seealso cref="Preset.WHM_ST_MainCombo_DoT" />
         public static UserInt WHM_ST_DPS_AeroBossOption =
             new("WHM_ST_DPS_AeroBossOption", 0);
+        
+        /// <summary>
+        ///     Two Target DoT Option.
+        /// </summary> 
+        /// <seealso cref="Preset.WHM_ST_MainCombo_DoT" />
+        public static UserBool WHM_ST_MainCombo_DoT_TwoTarget = 
+            new("WHM_ST_MainCombo_DoT_TwoTarget", true);
 
         /// <summary>
         ///     HP threshold to stop applying DoTs on Non-Bosses in boss encounters.
