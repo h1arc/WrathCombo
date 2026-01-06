@@ -63,10 +63,11 @@ internal partial class WHM : Healer
             
             var dotAction = OriginalHook(Aero);
             AeroList.TryGetValue(dotAction, out var dotDebuffID);
-            var target = SimpleTarget.DottableEnemy(dotAction, dotDebuffID, 0, 3, 2);
+            var target = IsMoving() && !BloodLilyReady && !HasStatusEffect(Buffs.SacredSight) && !FullLily
+                ? SimpleTarget.DottableEnemy(dotAction, dotDebuffID, 0, 30, 99) //if moving and dont have other mobile gcds
+                : SimpleTarget.DottableEnemy(dotAction, dotDebuffID, 0, 3, 2); 
             
-            //2 target Dotting System to maintain dots on 2 enemies. Works with the same sliders and one target
-            if (target is not null && CanApplyStatus(target, dotDebuffID) && !JustUsedOn(dotAction, target) && WHM_ST_MainCombo_DoT_TwoTarget)
+            if (target is not null && CanApplyStatus(target, dotDebuffID) && !JustUsedOn(dotAction, target))
                 return dotAction.Retarget(StoneGlareList.ToArray(), target);
             
             // Blood Lily Spend
@@ -81,18 +82,6 @@ internal partial class WHM : Healer
             if (ActionReady(AfflatusRapture) &&
                 (FullLily || AlmostFullLily))
                 return AfflatusRapture;
-
-            #region Movement Options
-
-            if (IsMoving())
-            {
-                var targetMoving = SimpleTarget.DottableEnemy(
-                    dotAction, dotDebuffID, 0, 20, 99);
-                if (targetMoving is not null)
-                    return dotAction.Retarget(StoneGlareList.ToArray(), targetMoving);
-            }
-
-            #endregion
 
             return actionID;
 

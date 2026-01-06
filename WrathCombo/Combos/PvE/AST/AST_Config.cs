@@ -86,6 +86,7 @@ internal partial class AST
             AST_AoE_SimpleHeals_WeaveHoroscopeHeal = new("AST_AoE_SimpleHeals_WeaveHoroscopeHeal"),
             AST_AoE_SimpleHeals_WeaveStellarDetonation = new("AST_AoE_SimpleHeals_WeaveStellarDetonation"),
             //DPS
+            AST_ST_DPS_CombustUptime_TwoTarget = new("AST_ST_DPS_CombustUptime_TwoTarget"),
             AST_ST_DPS_OverwriteHealCards = new("AST_ST_DPS_OverwriteHealCards"),
             AST_AOE_DPS_OverwriteHealCards = new("AST_AOE_DPS_OverwriteHealCards"),
             AST_QuickTarget_Manuals = new("AST_QuickTarget_Manuals", true);
@@ -131,6 +132,7 @@ internal partial class AST
                     ImGui.Indent();
                     DrawRoundedSliderFloat(0, 4, AST_ST_DPS_CombustUptime_Threshold, "Seconds remaining before reapplying the DoT. Set to Zero to disable this check.", digits: 1);
                     ImGui.Unindent();
+                    DrawAdditionalBoolChoice(AST_ST_DPS_CombustUptime_TwoTarget, "Two target dotting", "Will maintain Damage over time spells on two targets if applicable.");
                     break;
 
                 case Preset.AST_DPS_Divination:

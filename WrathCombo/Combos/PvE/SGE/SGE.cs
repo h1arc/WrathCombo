@@ -60,10 +60,9 @@ internal partial class SGE : Healer
            
             var dotAction = OriginalHook(Dosis);;
             EukrasianDosisList.TryGetValue(dotAction, out ushort dotDebuffID);
-            var target = SimpleTarget.DottableEnemy(dotAction, dotDebuffID, ComputeHpThreshold(), SGE_ST_DPS_EukrasianDosisUptime_Threshold, 2);
+            var target = SimpleTarget.DottableEnemy(dotAction, dotDebuffID, 0, 3, 2);
             
-            //2 target Dotting System to maintain dots on 2 enemies. Works with the same sliders and one target
-            if (target is not null && CanApplyStatus(target, dotDebuffID) && !JustUsedOn(dotAction, target) && SGE_ST_DPS_EDosis_TwoTarget)
+            if (target is not null && CanApplyStatus(target, dotDebuffID) && !JustUsedOn(dotAction, target))
                 return HasStatusEffect(Buffs.Eukrasia)
                     ? dotAction.Retarget(DosisActions.ToArray(), target)
                     : Eukrasia;

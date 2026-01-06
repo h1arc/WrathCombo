@@ -25,7 +25,7 @@ internal partial class SCH
                         descriptionColor: ImGuiColors.DalamudWhite);
                     DrawHorizontalRadioButton(SCH_ST_DPS_Adv_Actions, "On Bio/Bio II/Biolysis", "Apply options to Bio and Biolysis.", 1,
                         descriptionColor: ImGuiColors.DalamudWhite);
-                    DrawHorizontalRadioButton(SCH_ST_DPS_Adv_Actions, "On Ruin II", "Apply options to Ruin II.", 2,
+                    DrawHorizontalRadioButton(SCH_ST_DPS_Adv_Actions, "On Broil II", "Apply options to Broil II.", 2,
                         descriptionColor: ImGuiColors.DalamudWhite);
                     break;
 
@@ -40,6 +40,7 @@ internal partial class SCH
                     ImGui.Indent();
                     DrawRoundedSliderFloat(0, 4, SCH_ST_DPS_BioUptime_Threshold, "Seconds remaining before reapplying the DoT. Set to Zero to disable this check.", digits: 1);
                     ImGui.Unindent();
+                    DrawAdditionalBoolChoice(SCH_ST_ADV_DPS_Bio_TwoTarget, "Two target dotting", "Will maintain Damage over time spells on two targets if applicable.");
                     break;
 
                 case Preset.SCH_ST_ADV_DPS_ChainStrat:
@@ -359,6 +360,7 @@ internal partial class SCH
 
 
         internal static UserBool
+            SCH_ST_ADV_DPS_Bio_TwoTarget = new("SCH_ST_ADV_DPS_Bio_TwoTarget"),
             SCH_ST_DPS_EnergyDrain_Burst = new("SCH_ST_DPS_EnergyDrain_Burst"),
             SCH_AoE_DPS_EnergyDrain_Burst = new("SCH_AoE_DPS_EnergyDrain_Burst"),
             SCH_AoE_DPS_ChainStratagemBanefulOption = new("SCH_AoE_DPS_ChainStratagemBanefulOption"),
