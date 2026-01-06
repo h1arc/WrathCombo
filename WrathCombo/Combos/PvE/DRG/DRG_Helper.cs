@@ -12,7 +12,7 @@ internal partial class DRG
 {
     #region Basic Combo
 
-    private static uint BasicCombo(uint actionId)
+    private static uint BasicCombo(uint actionId, bool useTrueNorth = false )
     {
         if (ComboTimer > 0)
         {
@@ -25,13 +25,13 @@ internal partial class DRG
                     : OriginalHook(VorpalThrust);
 
             if (ComboAction == OriginalHook(Disembowel) && LevelChecked(ChaosThrust))
-                return IsEnabled(Preset.DRG_TrueNorthDynamic) &&
+                return useTrueNorth &&
                        Role.CanTrueNorth() && CanDRGWeave() && !OnTargetsRear()
                     ? Role.TrueNorth
                     : OriginalHook(ChaosThrust);
 
             if (ComboAction == OriginalHook(ChaosThrust) && LevelChecked(WheelingThrust))
-                return IsEnabled(Preset.DRG_TrueNorthDynamic) &&
+                return useTrueNorth &&
                        Role.CanTrueNorth() && CanDRGWeave() && !OnTargetsRear()
                     ? Role.TrueNorth
                     : WheelingThrust;
@@ -40,7 +40,7 @@ internal partial class DRG
                 return OriginalHook(FullThrust);
 
             if (ComboAction == OriginalHook(FullThrust) && LevelChecked(FangAndClaw))
-                return IsEnabled(Preset.DRG_TrueNorthDynamic) &&
+                return useTrueNorth &&
                        Role.CanTrueNorth() && CanDRGWeave() && !OnTargetsFlank()
                     ? Role.TrueNorth
                     : FangAndClaw;

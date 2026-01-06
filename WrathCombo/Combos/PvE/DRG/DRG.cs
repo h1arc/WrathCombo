@@ -110,7 +110,7 @@ internal partial class DRG : Melee
                     return Stardiver;
             }
 
-            return BasicCombo(actionID);
+            return BasicCombo(actionID,true);
         }
     }
 
@@ -400,7 +400,7 @@ internal partial class DRG : Melee
             }
 
             //1-2-3 Combo
-            return BasicCombo(actionID);
+            return BasicCombo(actionID, IsEnabled(Preset.DRG_TrueNorthDynamic));
         }
     }
 

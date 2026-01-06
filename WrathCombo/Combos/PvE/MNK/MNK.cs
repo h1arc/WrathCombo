@@ -39,7 +39,7 @@ internal partial class MNK : Melee
                     return RiddleOfWind;
 
                 if (CanUseChakra())
-                    return OriginalHook(SteeledMeditation);
+                    return OriginalHook(SteelPeak);
 
                 if (Role.CanSecondWind(25))
                     return Role.SecondWind;
