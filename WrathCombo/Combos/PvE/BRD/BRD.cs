@@ -115,7 +115,9 @@ internal partial class BRD : PhysicalRanged
 
             #region GCDS
             if (HasStatusEffect(Buffs.Barrage))
-                return OriginalHook(WideVolley);
+                return NumberOfEnemiesInRange(OriginalHook(WideVolley)) >= 3
+                    ? OriginalHook(WideVolley)
+                    : OriginalHook(StraightShot);
 
             if (HasStatusEffect(Buffs.BlastArrowReady))
                 return BlastArrow;
@@ -448,7 +450,9 @@ internal partial class BRD : PhysicalRanged
 
             #region GCDS
             if (HasStatusEffect(Buffs.Barrage))
-                return OriginalHook(WideVolley);
+                return NumberOfEnemiesInRange(OriginalHook(WideVolley)) >= 3
+                    ? OriginalHook(WideVolley)
+                    : OriginalHook(StraightShot);
 
             if (IsEnabled(Preset.BRD_AoE_BuffsEncore) && HasStatusEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 16 &&
                (HasStatusEffect(Buffs.RagingStrikes) || !ragingEnabled))
