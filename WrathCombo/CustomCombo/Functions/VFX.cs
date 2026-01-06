@@ -107,10 +107,12 @@ internal abstract partial class CustomComboFunctions
         if (AoEEffects.Count == 0)
             return false;
 
+        #if DEBUG
         if (EzThrottler.Throttle("DebugSharedDamageEffectVFX1", 5000))
         {
             Svc.Log.Debug($"Found Incoming Shared Damage Effects {AoEEffects.Count}");
         }
+        #endif
 
         // Expected Outcome from the LINQ:
         // Multi - hit on party member, Closest in your party
@@ -133,10 +135,12 @@ internal abstract partial class CustomComboFunctions
         if (bestTarget is null)
             return false;
 
+        #if DEBUG
         if (EzThrottler.Throttle("DebugSharedDamageEffectVFX2", 5000))
         {
             Svc.Log.Debug($"Found Shared Damage Effects. Name:{bestTarget.Name} MH:{MH} Party:{bestTarget.IsInParty()}");
         }
+        #endif
 
         //return only party member object (Don't want to illegally dash to Alliance or NPCs)
         isMultiHit = MH;
