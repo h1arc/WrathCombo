@@ -37,6 +37,7 @@ internal partial class SGE
                     ImGui.Indent();
                     DrawRoundedSliderFloat(0, 4, SGE_ST_DPS_EukrasianDosisUptime_Threshold, "Seconds remaining before reapplying the DoT. Set to Zero to disable this check.", digits: 1);
                     ImGui.Unindent();
+                    DrawAdditionalBoolChoice(SGE_ST_DPS_EDosis_TwoTarget, "Two target dotting", "Will maintain Damage over time spells on two targets if applicable.");
                     break;
 
                 case Preset.SGE_ST_DPS_Lucid:
@@ -389,6 +390,7 @@ internal partial class SGE
         #region DPS
 
         public static UserBool
+            SGE_ST_DPS_EDosis_TwoTarget = new("SGE_ST_DPS_EDosis_TwoTarget"),
             SGE_ST_DPS_Phlegma_Burst = new("SGE_ST_DPS_Phlegma_Burst");
 
         public static UserBoolArray
