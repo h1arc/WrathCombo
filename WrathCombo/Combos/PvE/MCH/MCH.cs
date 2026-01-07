@@ -550,7 +550,8 @@ internal partial class MCH : PhysicalRanged
                 return HasBattleTarget() &&
                        (!LevelChecked(CheckMate) ||
                         LevelChecked(CheckMate) &&
-                        NumberOfEnemiesInRange(AutoCrossbow, CurrentTarget) >= 5)
+                        NumberOfEnemiesInRange(AutoCrossbow, CurrentTarget) >= 5 ||
+                        IsNotEnabled(Preset.MCH_AoE_Adv_GaussRicochet))
                     ? AutoCrossbow
                     : BlazingShot;
 
