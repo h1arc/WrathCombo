@@ -141,9 +141,9 @@ internal partial class BRD : PhysicalRanged
             var purpleDotAction = OriginalHook(VenomousBite);
             BlueList.TryGetValue(blueDotAction, out var blueDotDebuffID);
             PurpleList.TryGetValue(purpleDotAction, out var purpleDotDebuffID);
-            var ironTarget = SimpleTarget.BardRefreshableEnemy(IronJaws, blueDotDebuffID, purpleDotDebuffID, 50, 6);
-            var blueTarget = SimpleTarget.DottableEnemy(blueDotAction, blueDotDebuffID, 50, 0);
-            var purpleTarget = SimpleTarget.DottableEnemy(purpleDotAction, purpleDotDebuffID, 50, 0);
+            var ironTarget = SimpleTarget.BardRefreshableEnemy(IronJaws, blueDotDebuffID, purpleDotDebuffID, 50, computeAoERefresh());
+            var blueTarget = SimpleTarget.DottableEnemy(blueDotAction, blueDotDebuffID, 50, computeAoERefresh());
+            var purpleTarget = SimpleTarget.DottableEnemy(purpleDotAction, purpleDotDebuffID, 50, computeAoERefresh());
             #endregion
 
             if (ironTarget is not null && LevelChecked(IronJaws))
@@ -156,7 +156,7 @@ internal partial class BRD : PhysicalRanged
                 return purpleDotAction.Retarget([Ladonsbite, QuickNock], purpleTarget);
 
             #endregion
-
+            
             #endregion
 
             return actionID;
@@ -484,9 +484,9 @@ internal partial class BRD : PhysicalRanged
                 var purpleDotAction = OriginalHook(VenomousBite);
                 BlueList.TryGetValue(blueDotAction, out var blueDotDebuffID);
                 PurpleList.TryGetValue(purpleDotAction, out var purpleDotDebuffID);
-                var ironTarget = SimpleTarget.BardRefreshableEnemy(IronJaws, blueDotDebuffID, purpleDotDebuffID, BRD_AoE_Adv_Multidot_HPThreshold, 6);
-                var blueTarget = SimpleTarget.DottableEnemy(blueDotAction, blueDotDebuffID, BRD_AoE_Adv_Multidot_HPThreshold, 0);
-                var purpleTarget = SimpleTarget.DottableEnemy(purpleDotAction, purpleDotDebuffID, BRD_AoE_Adv_Multidot_HPThreshold, 0);
+                var ironTarget = SimpleTarget.BardRefreshableEnemy(IronJaws, blueDotDebuffID, purpleDotDebuffID, computeAoEDoTHpThreshold(), computeAoERefresh());
+                var blueTarget = SimpleTarget.DottableEnemy(blueDotAction, blueDotDebuffID, computeAoEDoTHpThreshold(), computeAoERefresh());
+                var purpleTarget = SimpleTarget.DottableEnemy(purpleDotAction, purpleDotDebuffID, computeAoEDoTHpThreshold(), computeAoERefresh());
                 #endregion
 
                 if (ironTarget is not null && LevelChecked(IronJaws))
@@ -497,11 +497,9 @@ internal partial class BRD : PhysicalRanged
 
                 if (purpleTarget is not null && LevelChecked(VenomousBite))
                     return purpleDotAction.Retarget([Ladonsbite, QuickNock], purpleTarget);
-
-
             }
             #endregion
-
+            
             #endregion
 
             return actionID;

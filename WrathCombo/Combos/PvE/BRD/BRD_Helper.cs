@@ -151,6 +151,16 @@ internal partial class BRD
             }
             return BRD_ST_DPS_DotTrashOption;
         }
+        internal static int computeAoEDoTHpThreshold()
+        {
+            if (InBossEncounter())
+            {
+                return TargetIsBoss() ? BRD_AoE_Adv_MultidotBossOption : BRD_AoE_Adv_MultidotBossAddsOption;
+            }
+            return BRD_AoE_Adv_MultidotTrashOption;
+        }
+
+        internal static int computeAoERefresh() => IsEnabled(Preset.BRD_AoE_SimpleMode) ? 5 : BRD_AoE_Adv_Multidot_Refresh;
 
         internal static int computeRefresh() => IsEnabled(Preset.BRD_ST_SimpleMode) ? 4 : BRD_Adv_DoT_Refresh;
         

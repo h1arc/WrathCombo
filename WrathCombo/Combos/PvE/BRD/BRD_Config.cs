@@ -27,9 +27,12 @@ internal partial class BRD
             BRD_ST_DPS_DotTrashOption = new("BRD_ST_DPS_DotTrashOption", 30),
             BRD_Adv_Buffs_Threshold = new("BRD_Adv_Buffs_Threshold", 30),
             BRD_Adv_Buffs_SubOption = new("BRD_Adv_Buffs_SubOption", 0),
+            BRD_AoE_Adv_MultidotBossOption = new("BRD_AoE_Adv_MultidotBossOption", 0),
+            BRD_AoE_Adv_MultidotBossAddsOption = new("BRD_AoE_Adv_MultidotBossAddsOption", 100),
+            BRD_AoE_Adv_MultidotTrashOption = new("BRD_AoE_Adv_MultidotTrashOption", 30),
+            BRD_AoE_Adv_Multidot_Refresh = new("BRD_AoE_Adv_Multidot_Refresh", 4),
             BRD_AoE_Adv_Buffs_Threshold = new("BRD_AoE_Adv_Buffs_Threshold", 30),
-            BRD_AoE_Adv_Buffs_SubOption = new("BRD_AoE_Adv_Buffs_SubOption", 0),
-            BRD_AoE_Adv_Multidot_HPThreshold = new("BRD_AoE_Adv_Multidot_HPThreshold", 40);
+            BRD_AoE_Adv_Buffs_SubOption = new("BRD_AoE_Adv_Buffs_SubOption", 0);
 
         public static UserBoolArray
             BRD_AoE_Adv_Buffs_Options = new("BRD_AoE_Adv_Buffs_Options"),
@@ -118,7 +121,10 @@ internal partial class BRD
                     break;
 
                 case Preset.BRD_AoE_Adv_Multidot:
-                    DrawSliderInt(0, 100, BRD_AoE_Adv_Multidot_HPThreshold, "Target HP% to stop using (0 = Use Always, 100 = Never)");
+                    DrawSliderInt(0, 100, BRD_AoE_Adv_MultidotBossOption, "Bosses Only. Stop using at Enemy HP %.");
+                    DrawSliderInt(0, 100, BRD_AoE_Adv_MultidotBossAddsOption, "Boss Encounter Non Bosses. Stop using at Enemy HP %.");
+                    DrawSliderInt(0, 100, BRD_AoE_Adv_MultidotTrashOption, "Non boss encounter. Stop using at Enemy HP %.");
+                    DrawSliderInt(3, 10, BRD_AoE_Adv_Multidot_Refresh, "Renew time for dots (In seconds).");
                     break;
 
                 case Preset.BRD_AoE_Wardens:
