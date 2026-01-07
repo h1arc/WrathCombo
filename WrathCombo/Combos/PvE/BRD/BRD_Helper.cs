@@ -126,23 +126,34 @@ internal partial class BRD
         internal static bool UseIronJaws()
         {
             return ActionReady(IronJaws) && Purple is not null && Blue is not null &&
-                   (PurpleRemaining < 4 || BlueRemaining < 4);
+                   (PurpleRemaining < computeRefresh() || BlueRemaining < computeRefresh());
         }
         //Blue dot application and low level refresh
         internal static bool ApplyBlueDot()
         {
-            return ActionReady(Windbite) && DebuffCapCanBlue && (Blue is null || !CanIronJaws && BlueRemaining < 4);
+            return ActionReady(Windbite) && DebuffCapCanBlue && (Blue is null || !CanIronJaws && BlueRemaining < computeRefresh());
         }
         //Purple dot application and low level refresh
         internal static bool ApplyPurpleDot()
         {
-            return ActionReady(VenomousBite) && DebuffCapCanPurple && (Purple is null || !CanIronJaws && PurpleRemaining < 4);
+            return ActionReady(VenomousBite) && DebuffCapCanPurple && (Purple is null || !CanIronJaws && PurpleRemaining < computeRefresh());
         }
         //Raging jaws option dot refresh for snapshot
         internal static bool RagingJawsRefresh()
         {
             return ActionReady(IronJaws) && HasStatusEffect(Buffs.RagingStrikes) && PurpleRemaining < 35 && BlueRemaining < 35;
         }
+        internal static int computeHpThreshold()
+        {
+            if (InBossEncounter())
+            {
+                return TargetIsBoss() ? BRD_ST_DPS_DotBossOption : BRD_ST_DPS_DotBossAddsOption;
+            }
+            return BRD_ST_DPS_DotTrashOption;
+        }
+
+        internal static int computeRefresh() => IsEnabled(Preset.BRD_ST_SimpleMode) ? 4 : BRD_Adv_DoT_Refresh;
+        
         #endregion
 
         #region Buff Timing
