@@ -812,7 +812,7 @@ internal unsafe static class AutoRotationController
             var canUse = (canUseSelf || canUseTarget || areaTargeted) && outAct.ActionAttackType() is { } type && (type is ActionAttackType.Ability || type is not ActionAttackType.Ability && RemainingGCD == 0);
             var isHeal = attributes.AutoAction!.IsHeal;
 
-            if ((!isHeal && cfg.DPSSettings.DPSAlwaysHardTarget) || (isHeal && cfg.HealerSettings.HealerAlwaysHardTarget))
+            if ((!isHeal && cfg.DPSSettings.DPSAlwaysHardTarget && mode is not DPSRotationMode.Manual) || (isHeal && cfg.HealerSettings.HealerAlwaysHardTarget && mode is not HealerRotationMode.Manual))
                 Svc.Targets.Target = target;
 
             var castTime = ActionManager.GetAdjustedCastTime(ActionType.Action, outAct);
