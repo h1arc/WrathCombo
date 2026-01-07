@@ -580,7 +580,7 @@ internal partial class SAM
         public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } =
         [
             ([18, 23], () => Kenki < SAMKenki.Shinten),
-            ([20, 25], () => Kenki < SAMKenki.Gyoten || IsOnCooldown(Gyoten))
+            ([20, 25], () => Kenki < SAMKenki.Gyoten || IsOnCooldown(Gyoten) || SAM_Opener_IncludeGyoten == 1)
         ];
 
         public override Preset Preset => Preset.SAM_ST_Opener;
