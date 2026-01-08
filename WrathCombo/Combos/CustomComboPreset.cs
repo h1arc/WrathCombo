@@ -2030,6 +2030,13 @@ public enum Preset
     BRD_AoE_Wardens = 3046,
 
     #endregion
+    
+    [CustomComboInfo("M10S Bandaid fix",
+        "Do not use Venomous Shot on Watery Grave because it is Immune. " +
+        "\nApplies to every ST Combo and Standalone." +
+        "\nIn the event of hotfix, turn this option off. It will be removed in the update following hotfix.",
+        Job.BRD)]
+    BRD_M10S_Bandaid = 3071,
 
     #region Smaller Features
 
@@ -2095,7 +2102,7 @@ public enum Preset
 
     #endregion
 
-    // Last value = 3069
+    // Last value = 3071
 
     #endregion
 
