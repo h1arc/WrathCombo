@@ -410,27 +410,28 @@ internal partial class AST
 
     private static Dictionary<Job, int> _cardPriorities = new()
     {
+        //Melee Cards
         { Job.SAM, 1 },
         { Job.NIN, 2 },
-        { Job.VPR, 3 },
-        { Job.DRG, 4 },
-        { Job.MNK, 5 },
+        { Job.DRG, 3 },
+        { Job.MNK, 4 },
+        { Job.VPR, 5 },
         { Job.DRK, 6 },
         { Job.RPR, 7 },
         { Job.GNB, 8 },
         { Job.PLD, 9 },
         { Job.WAR, 10 },
+        //Ranged Cards
         { Job.PCT, 11 },
-        { Job.SMN, 12 },
-        { Job.MCH, 13 },
-        { Job.BRD, 14 },
-        { Job.RDM, 15 },
-        { Job.DNC, 16 },
-        { Job.BLM, 17 },
+        { Job.RDM, 12 },
+        { Job.SMN, 13 },
+        { Job.MCH, 14 },
+        { Job.BRD, 15 },
+        { Job.BLM, 16 },
+        { Job.DNC, 17 },
         { Job.WHM, 18 },
         { Job.SGE, 19 },
-        { Job.SCH, 20 },
-        
+        { Job.SCH, 20 }
     };
 
     private static readonly Restrictions[] RestrictionSteps =
