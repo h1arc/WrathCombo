@@ -57,17 +57,7 @@ internal partial class BRD
     internal static bool BuffWindow => HasStatusEffect(Buffs.RagingStrikes) && 
                                        (HasStatusEffect(Buffs.BattleVoice) || !LevelChecked(BattleVoice)) &&
                                        (HasStatusEffect(Buffs.RadiantFinale) || !LevelChecked(RadiantFinale));
-
-    public static bool TargetIsImmuneToPoison(IGameObject? target)
-    {
-        if (target is not IBattleChara tar || IsNotEnabled(Preset.BRD_M10S_Bandaid))
-            return false;
-
-        uint targetID = tar.BaseId;
-        //return targetID == 901; My test dummy
-        return targetID == 19292;
-    }
-
+    
     //Buff Tracking
     internal static float RagingCD => GetCooldownRemainingTime(RagingStrikes);
     internal static float BattleVoiceCD => GetCooldownRemainingTime(BattleVoice);
@@ -146,7 +136,7 @@ internal partial class BRD
         //Purple dot application and low level refresh
         internal static bool ApplyPurpleDot()
         {
-            return ActionReady(VenomousBite) && DebuffCapCanPurple && (Purple is null || !CanIronJaws && PurpleRemaining < computeRefresh()) && !TargetIsImmuneToPoison(CurrentTarget);
+            return ActionReady(VenomousBite) && DebuffCapCanPurple && (Purple is null || !CanIronJaws && PurpleRemaining < computeRefresh());
         }
         //Raging jaws option dot refresh for snapshot
         internal static bool RagingJawsRefresh()

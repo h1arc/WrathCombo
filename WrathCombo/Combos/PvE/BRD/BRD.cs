@@ -314,7 +314,7 @@ internal partial class BRD : PhysicalRanged
             if (blueTarget is not null && LevelChecked(Windbite))
                 return blueDotAction.Retarget([HeavyShot, BurstShot], blueTarget);
 
-            if (purpleTarget is not null && LevelChecked(VenomousBite) && !TargetIsImmuneToPoison(purpleTarget))
+            if (purpleTarget is not null && LevelChecked(VenomousBite))
                 return purpleDotAction.Retarget([HeavyShot, BurstShot], purpleTarget);
 
             #endregion
@@ -717,7 +717,7 @@ internal partial class BRD : PhysicalRanged
                 if (blueTarget is not null && LevelChecked(Windbite))
                     return blueDotAction.Retarget([HeavyShot, BurstShot], blueTarget);
 
-                if (purpleTarget is not null && LevelChecked(VenomousBite) && !TargetIsImmuneToPoison(purpleTarget))
+                if (purpleTarget is not null && LevelChecked(VenomousBite))
                     return purpleDotAction.Retarget([HeavyShot, BurstShot], purpleTarget);
             }
             #endregion
@@ -765,7 +765,7 @@ internal partial class BRD : PhysicalRanged
                     (Blue is null || !CanIronJaws && BlueRemaining < 4))
                     return OriginalHook(Windbite);
                 
-                if (ActionReady(VenomousBite) && DebuffCapCanPurple && !TargetIsImmuneToPoison(CurrentTarget) &&
+                if (ActionReady(VenomousBite) && DebuffCapCanPurple &&
                     (Purple is null || !CanIronJaws && PurpleRemaining < 4))
                     return OriginalHook(VenomousBite);
             }
@@ -792,7 +792,7 @@ internal partial class BRD : PhysicalRanged
                 (Blue is null || !CanIronJaws && BlueRemaining < 4))
                 return OriginalHook(Windbite);
             
-            if (ActionReady(VenomousBite) && DebuffCapCanPurple && !TargetIsImmuneToPoison(CurrentTarget) &&
+            if (ActionReady(VenomousBite) && DebuffCapCanPurple &&
                 (Purple is null || !CanIronJaws && PurpleRemaining < 4))
                 return OriginalHook(VenomousBite);
 
@@ -807,7 +807,7 @@ internal partial class BRD : PhysicalRanged
             }
             
             if (BRD_IronJaws_Alternate)
-                return LevelChecked(Windbite) && (BlueRemaining <= PurpleRemaining || TargetIsImmuneToPoison(CurrentTarget)) ?
+                return LevelChecked(Windbite) && BlueRemaining <= PurpleRemaining ?
                     OriginalHook(Windbite) :
                     OriginalHook(VenomousBite);
             
