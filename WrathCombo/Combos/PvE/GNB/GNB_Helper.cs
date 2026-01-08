@@ -3,8 +3,6 @@ using Dalamud.Game.ClientState.JobGauge.Types;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using WrathCombo.Combos.PvE.Content;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
@@ -78,6 +76,10 @@ internal partial class GNB : Tank
         JustUsed(Role.ArmsLength) ||
         JustUsed(Role.Rampart) ||
         JustUsed(Superbolide);
+
+    private static int HPThresholNM =>
+        GNB_ST_NM_BossOption == 1 ||
+        !TargetIsBoss() ? GNB_ST_NM_HPOption : 0;
     #endregion
     
     #region Auto Mitigation System
@@ -644,7 +646,7 @@ internal partial class GNB : Tank
     #endregion
 
     #region Rotation
-    private static bool ShouldUseNoMercy(Preset preset, int stop, int boss)
+    private static bool ShouldUseNoMercy(Preset preset, int stop)
     {
         var condition =
             IsEnabled(preset) && //option enabled
@@ -652,9 +654,8 @@ internal partial class GNB : Tank
             NMcd < 0.5f && //off cooldown
             HasBattleTarget() && //has a battle target
             GetTargetDistance() <= 5 && //not far from target
-            GetTargetHPPercent() > stop && //HP% stop condition
-            (boss == 0 || boss == 1 && InBossEncounter()); //boss encounter condition
-
+            GetTargetHPPercent() > stop; //HP% stop condition
+        
         return
             (Slow && condition && CanWeave()) || //weave anywhere
             (Fast && condition && CanDelayedWeave(0.9f)); //late weave only
