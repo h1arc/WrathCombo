@@ -297,7 +297,7 @@ internal partial class SAM
                     Kenki >= 90)
                     return true;
 
-                if (JustUsed(Senei, 15f) &&
+                if (JustUsed(Senei, 20f) &&
                     !JustUsed(Ikishoten))
                     return true;
 
@@ -339,10 +339,10 @@ internal partial class SAM
                 return true;
 
             if (!simpleMode &&
-                IsNotEnabled(Preset.SAM_ST_CDs_UseHiganbana) && JustUsed(Ikishoten, 15f))
+                IsNotEnabled(Preset.SAM_ST_CDs_UseHiganbana) && JustUsed(Ikishoten, 20f))
                 return true;
 
-            if (JustUsed(TendoKaeshiSetsugekka, 15f) &&
+            if (JustUsed(TendoKaeshiSetsugekka, 20f) &&
                 GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) > 8)
                 return true;
 
