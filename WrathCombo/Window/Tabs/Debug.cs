@@ -709,6 +709,7 @@ internal class Debug : ConfigWindow, IDisposable
                         ? "Unknown"
                         : GetActionName(player.CastActionId))} (ID: {player.CastActionId})");
             CustomStyleText("GCD Total:", GCDTotal);
+            CustomStyleText("GCD Remaining:", RemainingGCD);
             CustomStyleText("Queued Action:", ActionManager.Instance()->QueuedActionId.ActionName());
             CustomStyleText("Animation Lock:", $"{ActionManager.Instance()->AnimationLock:F1}");
             CustomStyleText($"Duty Action 1:", $"{Action1.ActionName()}");

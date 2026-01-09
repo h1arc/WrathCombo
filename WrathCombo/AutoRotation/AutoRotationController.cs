@@ -29,8 +29,6 @@ using ActionType = FFXIVClientStructs.FFXIV.Client.Game.ActionType;
 
 #endregion
 
-#pragma warning disable CS0414 // Field is assigned but its value is never used
-
 namespace WrathCombo.AutoRotation;
 
 internal unsafe static class AutoRotationController
@@ -225,9 +223,9 @@ internal unsafe static class AutoRotationController
         if (Player.Job is Job.SGE && cfg.HealerSettings.ManageKardia)
             UpdateKardiaTarget();
 
-        // Don't act if animation locked
-        if (ActionManager.Instance()->AnimationLock > 0)
-            return;
+        //// Don't act if animation locked
+        //if (ActionManager.Instance()->AnimationLock > 0)
+        //    return;
 
         // Reset locks if no action for 3 seconds
         if (TimeSinceLastAction.TotalSeconds >= 3)
@@ -809,7 +807,7 @@ internal unsafe static class AutoRotationController
             var acRangeCheck = ActionManager.GetActionInRangeOrLoS(outAct, player.GameObject(), target is null ? player.GameObject() : target.Struct());
             var inRange = acRangeCheck is 0 or 565 || canUseSelf;
 
-            var canUse = (canUseSelf || canUseTarget || areaTargeted) && outAct.ActionAttackType() is { } type && (type is ActionAttackType.Ability || type is not ActionAttackType.Ability && RemainingGCD == 0);
+            var canUse = (canUseSelf || canUseTarget || areaTargeted) && outAct.ActionAttackType() is { } type && (type is ActionAttackType.Ability || type is not ActionAttackType.Ability && RemainingGCD <= 0.3);
             var isHeal = attributes.AutoAction!.IsHeal;
 
             if ((!isHeal && cfg.DPSSettings.DPSAlwaysHardTarget && mode is not DPSRotationMode.Manual) || (isHeal && cfg.HealerSettings.HealerAlwaysHardTarget && mode is not HealerRotationMode.Manual))
