@@ -52,9 +52,9 @@ internal abstract partial class CustomComboFunctions
         "vfx/lockon/eff/coshare",
         "vfx/lockon/eff/share_laser",
         "vfx/lockon/eff/com_share",
-        // Puppet's Bunker, Superior Flight Unit.
         // Won't work till Static VFX tracking is added
-        "vfx/monster/gimmick2/eff/z3o7_b1_g06c0t"
+        "vfx/monster/gimmick2/eff/z3o7_b1_g06c0t",      // Puppet's Bunker, Superior Flight Unit.
+        "vfx/monster/gimmick4/eff/z5r1_b4_g09c0c"       // Aglaia, Nald'thal
     ], StringComparer.OrdinalIgnoreCase);
 
     //private static readonly FrozenSet<ushort> NoObjectStackDuties = FrozenSet.ToFrozenSet<ushort>([
@@ -112,7 +112,7 @@ internal abstract partial class CustomComboFunctions
         {
             Svc.Log.Debug($"Found Incoming Shared Damage Effects {AoEEffects.Count}");
         }
-        #endif
+		#endif
 
         // Expected Outcome from the LINQ:
         // Multi - hit on party member, Closest in your party
@@ -122,15 +122,19 @@ internal abstract partial class CustomComboFunctions
         // Regular share on other alliance, Ignored
         // Regular share on NPC, That marker
 
-        IBattleChara? bestTarget = AoEEffects
-            .Select(vfx => vfx.TargetID.GetObject())
-            .OfType<IBattleChara>()
-            // Multi-hit can be on anyone (only 1 per alliance), regular only on party members or NPCs,
-            .Where(chara => MH || chara.IsInParty() || chara is IBattleNpc)
-            // Prioritize party members first, then by distance
-            .OrderBy(chara => chara.IsInParty() ? 0 : 1)
-            .ThenBy(chara => GetTargetDistance(chara))
-            .FirstOrDefault();
+        IBattleChara? bestTarget = null;
+        if (AoEEffects.Count == 1) // Most battles are singular, skip LINQ if so
+            bestTarget = AoEEffects[0].TargetID.GetObject() as IBattleChara;
+        else
+            bestTarget = AoEEffects //Note this will fail on Player based ARR Recordings. Trust Recordings are fine
+                .Select(vfx => vfx.TargetID.GetObject())
+                .OfType<IBattleChara>()
+                // Multi-hit can be on anyone (only 1 per alliance), regular only on party members or NPCs,
+                .Where(chara => MH || chara.IsInParty() || chara is IBattleNpc)
+                // Prioritize party members first, then by distance
+                .OrderBy(chara => chara.IsInParty() ? 0 : 1)
+                .ThenBy(chara => GetTargetDistance(chara))
+                .FirstOrDefault();
 
         if (bestTarget is null)
             return false;
