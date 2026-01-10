@@ -419,7 +419,8 @@ internal partial class DRG : Melee
             // Piercing Talon Uptime Option
             if (IsEnabled(Preset.DRG_AoE_RangedUptime) &&
                 ActionReady(PiercingTalon) && 
-                !InActionRange(DoomSpike) && HasBattleTarget())
+                !InActionRange(DoomSpike) && HasBattleTarget() && 
+                !CanDRGWeave())
                 return PiercingTalon;
 
             if (HasStatusEffect(Buffs.PowerSurge))
