@@ -50,6 +50,7 @@ internal partial class BRD
 
     //Useful Bools
     internal static bool BardHasTarget => HasBattleTarget();
+    internal static bool JustSangSong => JustUsed(WanderersMinuet) || JustUsed(MagesBallad) || JustUsed(ArmysPaeon);
     internal static bool CanBardWeave => CanWeave();
     internal static bool CanWeaveDelayed => CanDelayedWeave();
     internal static bool CanIronJaws => LevelChecked(IronJaws);
@@ -192,7 +193,7 @@ internal partial class BRD
         #region Songs
         internal static bool WandererSong()
         {
-            if (ActionReady(WanderersMinuet))
+            if (ActionReady(WanderersMinuet) && !JustSangSong)
             {
                 if (SongNone) // No song, use wanderer first
                    return true;
@@ -204,7 +205,7 @@ internal partial class BRD
         }
         internal static bool MagesSong()
         {
-            if (ActionReady(MagesBallad) && (CanBardWeave || !BardHasTarget))
+            if (ActionReady(MagesBallad) && !JustSangSong && (CanBardWeave || !BardHasTarget))
             {
                 if (SongNone && !ActionReady(WanderersMinuet)) //No song, Use Mages if wanderer is on cd or not aquaired yet
                     return true;
@@ -216,7 +217,7 @@ internal partial class BRD
         }
         internal static bool ArmySong()
         {
-            if (ActionReady(ArmysPaeon) && (CanBardWeave || !BardHasTarget))
+            if (ActionReady(ArmysPaeon) && !JustSangSong && (CanBardWeave || !BardHasTarget))
             {
                 if (SongNone && !ActionReady(MagesBallad) && !ActionReady(WanderersMinuet)) //No song, Use army as last resort
                     return true;
