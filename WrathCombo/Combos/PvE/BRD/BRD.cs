@@ -861,10 +861,13 @@ internal partial class BRD : PhysicalRanged
                 if (blueDotTarget != null && ActionReady(blueDotAction))
                     return blueDotAction.Retarget([CausticBite, VenomousBite], blueDotTarget);
 
-                if (lowestPurpleRemaining <= lowestBlueRemaining)
-                    return purpleDotAction.Retarget([CausticBite, VenomousBite], lowestPurple);
-                else
-                    return blueDotAction.Retarget([CausticBite, VenomousBite], lowestBlue);
+                if (lowestPurple != null && lowestBlue != null)
+                {
+                    if (lowestPurpleRemaining <= lowestBlueRemaining)
+                        return purpleDotAction.Retarget([CausticBite, VenomousBite], lowestPurple);
+                    else
+                        return blueDotAction.Retarget([CausticBite, VenomousBite], lowestBlue);
+                }
             }
 
             return actionID;
