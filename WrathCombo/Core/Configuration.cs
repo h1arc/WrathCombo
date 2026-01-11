@@ -264,7 +264,7 @@ public partial class Configuration : IPluginConfiguration
         defaultValue: "On",
         extraHelpMark: "With this enabled, whenever you queue an action that is not the same as the button you are pressing, it will disable every other button's feature from running. " +
                        "This resolves a number of issues where incorrect actions are performed due to how the game processes queued actions, however the visual experience on your hotbars is degraded. " +
-                       "This is not recommended to be disabled, however if you feel uncomfortable with hotbar icons changing quickly this is one way to resolve it (or use Performance Mode) but be aware that this may introduce unintended side effects to combos if you have a lot enabled for a job.\n\n" +
+                       "This is not recommended to be disabled, however if you feel uncomfortable with hotbar icons changing quickly this is one way to resolve it but be aware that this may introduce unintended side effects to combos if you have a lot enabled for a job.\n\n" +
                        "For a more complicated explanation, whenever an action is used, the following happens:\n" +
                        "1. If the action invokes the GCD (Weaponskills & Spells), if the GCD currently isn't active it will use it right away.\n" +
                        "2. Otherwise, if you're within the \"Queue Window\" (normally the last 0.5s of the GCD), it gets added to the queue before it is used.\n" +
