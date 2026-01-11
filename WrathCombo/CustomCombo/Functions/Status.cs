@@ -443,6 +443,8 @@ internal abstract partial class CustomComboFunctions
     public static bool CanApplyStatus(IGameObject? target, ushort statusId)
     {
         target ??= LocalPlayer;
+        if (target is null)
+            return false;
 
         //Check to see if it's a buff or debuff and therefore if the target is suitable for the status
         var status = Svc.Data.GetExcelSheet<Lumina.Excel.Sheets.Status>().GetRow(statusId);
