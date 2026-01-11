@@ -28,6 +28,7 @@ internal partial class DRG
 
             if (ComboAction == OriginalHook(Disembowel) && LevelChecked(ChaosThrust))
                 return useTrueNorth &&
+                       GetRemainingCharges(Role.TrueNorth) > tnCharges &&
                        Role.CanTrueNorth() && CanDRGWeave() && !OnTargetsRear()
                     ? Role.TrueNorth
                     : OriginalHook(ChaosThrust);
