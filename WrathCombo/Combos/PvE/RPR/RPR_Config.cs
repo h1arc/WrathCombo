@@ -58,7 +58,7 @@ internal partial class RPR
 
                     DrawAdditionalBoolChoice(RPR_ST_TrueNorthDynamic_HoldCharge,
                         "Hold True North for Gluttony Option", "Will hold the last charge of True North for use with Gluttony, even when out of position for Gibbet/Gallows.\n" +
-                                                               "If Above Slider is set, it will NOT use the remaining charge for Gluttony, but for manual use.");
+                                                               "If Above Slider is set to 1, it will NOT use the remaining charge for Gluttony, but for manual use.");
                     break;
 
                 case Preset.RPR_AoE_WoD:
