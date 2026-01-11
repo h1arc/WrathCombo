@@ -53,7 +53,6 @@ internal partial class RPR
                     break;
 
                 case Preset.RPR_ST_TrueNorthDynamic:
-
                     DrawSliderInt(0, 1, RPR_ManualTN,
                         "How many charges to keep for manual usage.");
 
