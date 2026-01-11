@@ -12,8 +12,10 @@ internal partial class DRG
 {
     #region Basic Combo
 
-    private static uint BasicCombo(uint actionId, bool useTrueNorth = false )
+    private static uint BasicCombo(uint actionId, bool useTrueNorth = false)
     {
+        int tnCharges = IsNotEnabled(Preset.SAM_ST_SimpleMode) ? DRG_ManualTN : 0;
+
         if (ComboTimer > 0)
         {
             if (ComboAction is TrueThrust or RaidenThrust && LevelChecked(VorpalThrust))
@@ -32,6 +34,7 @@ internal partial class DRG
 
             if (ComboAction == OriginalHook(ChaosThrust) && LevelChecked(WheelingThrust))
                 return useTrueNorth &&
+                       GetRemainingCharges(Role.TrueNorth) > tnCharges &&
                        Role.CanTrueNorth() && CanDRGWeave() && !OnTargetsRear()
                     ? Role.TrueNorth
                     : WheelingThrust;
@@ -41,6 +44,7 @@ internal partial class DRG
 
             if (ComboAction == OriginalHook(FullThrust) && LevelChecked(FangAndClaw))
                 return useTrueNorth &&
+                       GetRemainingCharges(Role.TrueNorth) > tnCharges &&
                        Role.CanTrueNorth() && CanDRGWeave() && !OnTargetsFlank()
                     ? Role.TrueNorth
                     : FangAndClaw;

@@ -110,7 +110,7 @@ internal partial class DRG : Melee
                     return Stardiver;
             }
 
-            return BasicCombo(actionID,true);
+            return BasicCombo(actionID, true);
         }
     }
 
@@ -418,8 +418,8 @@ internal partial class DRG : Melee
 
             // Piercing Talon Uptime Option
             if (IsEnabled(Preset.DRG_AoE_RangedUptime) &&
-                ActionReady(PiercingTalon) && 
-                !InActionRange(DoomSpike) && HasBattleTarget() && 
+                ActionReady(PiercingTalon) &&
+                !InActionRange(DoomSpike) && HasBattleTarget() &&
                 !CanDRGWeave())
                 return PiercingTalon;
 
