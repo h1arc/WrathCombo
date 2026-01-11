@@ -99,6 +99,11 @@ internal partial class SAM
                             "Kenki Amount", sliderIncrement: SliderIncrements.Fives);
                     break;
 
+                case Preset.SAM_ST_TrueNorth:
+                    DrawSliderInt(0, 1, SAM_ST_ManualTN,
+                        "How many charges to keep for manual usage.");
+                    break;
+
                 case Preset.SAM_ST_Meditate:
                     ImGui.SetCursorPosX(48f.Scale());
                     DrawSliderFloat(0, 3, SAM_ST_MeditateTimeStill,
@@ -162,6 +167,7 @@ internal partial class SAM
             SAM_ST_KenkiOvercapAmount = new("SAM_ST_KenkiOvercapAmount", 65),
             SAM_ST_YukikazeCombo_Prio = new("SAM_ST_YukikazeCombo_Prio", 1),
             SAM_ST_ExecuteThreshold = new("SAM_ST_ExecuteThreshold", 1),
+            SAM_ST_ManualTN = new("SAM_ST_ManualTN"),
             SAM_STSecondWindHPThreshold = new("SAM_STSecondWindThreshold", 40),
             SAM_STBloodbathHPThreshold = new("SAM_STBloodbathThreshold", 30),
             SAM_AoE_KenkiOvercapAmount = new("SAM_AoE_KenkiOvercapAmount", 50),

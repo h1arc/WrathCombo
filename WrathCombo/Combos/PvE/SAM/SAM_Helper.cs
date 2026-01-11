@@ -17,6 +17,8 @@ internal partial class SAM
 
     private static uint DoBasicCombo(uint actionId, bool useTrueNorth = true, bool simpleMode = false)
     {
+        int tnCharges = IsNotEnabled(Preset.SAM_ST_SimpleMode) ? SAM_ST_ManualTN : 0;
+
         if (ComboTimer > 0)
         {
             if (ComboAction is Hakaze or Gyofu)
@@ -47,6 +49,7 @@ internal partial class SAM
             if (ComboAction is Jinpu && LevelChecked(Gekko))
                 return !OnTargetsRear() &&
                        Role.CanTrueNorth() &&
+                       GetRemainingCharges(Role.TrueNorth) > tnCharges &&
                        useTrueNorth
                     ? Role.TrueNorth
                     : Gekko;
@@ -54,6 +57,7 @@ internal partial class SAM
             if (ComboAction is Shifu && LevelChecked(Kasha))
                 return !OnTargetsFlank() &&
                        Role.CanTrueNorth() &&
+                       GetRemainingCharges(Role.TrueNorth) > tnCharges &&
                        useTrueNorth
                     ? Role.TrueNorth
                     : Kasha;
@@ -204,6 +208,8 @@ internal partial class SAM
 
     private static uint DoMeikyoCombo(uint actionId, bool useTrueNorth = true, bool simpleMode = false)
     {
+        int tnCharges = IsNotEnabled(Preset.SAM_ST_SimpleMode) ? SAM_ST_ManualTN : 0;
+
         if ((simpleMode || IsEnabled(Preset.SAM_ST_Yukikaze)) &&
             LevelChecked(Yukikaze) && !HasSetsu &&
             (HasKa || IsNotEnabled(Preset.SAM_ST_Gekko)) &&
@@ -217,6 +223,7 @@ internal partial class SAM
              OnTargetsFlank() && HasKa))
             return !OnTargetsRear() &&
                    Role.CanTrueNorth() &&
+                   GetRemainingCharges(Role.TrueNorth) > tnCharges &&
                    useTrueNorth
                 ? Role.TrueNorth
                 : Gekko;
@@ -228,6 +235,7 @@ internal partial class SAM
              OnTargetsRear() && HasGetsu))
             return !OnTargetsFlank() &&
                    Role.CanTrueNorth() &&
+                   GetRemainingCharges(Role.TrueNorth) > tnCharges &&
                    useTrueNorth
                 ? Role.TrueNorth
                 : Kasha;
