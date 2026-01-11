@@ -659,8 +659,11 @@ internal unsafe static class AutoRotationController
                 LockedST = false;
 
                 uint outAct = OriginalHook(InvokeCombo(preset, attributes, ref gameAct, Player.Object));
-                if (ActionManager.Instance()->GetActionStatus(ActionType.Action, outAct) != 0) return false;
                 if (!ActionReady(outAct))
+                    return false;
+
+                var canQueue = outAct.ActionAttackType() is { } type && (type is ActionAttackType.Ability || type is not ActionAttackType.Ability && RemainingGCD <= cfg.QueueWindow);
+                if (!canQueue)
                     return false;
 
                 if (HealerTargeting.CanAoEHeal(outAct))
@@ -709,12 +712,12 @@ internal unsafe static class AutoRotationController
                     return false;
                 }
 
-                if (ActionManager.Instance()->GetActionStatus(ActionType.Action, outAct) != 0)
+                var canQueue = outAct.ActionAttackType() is { } type && (type is ActionAttackType.Ability || type is not ActionAttackType.Ability && RemainingGCD <= cfg.QueueWindow);
+                if (!canQueue)
                 {
                     OverrideTarget = null;
                     return false;
                 }
-
                 var sheet = ActionSheet[outAct];
                 var mustTarget = sheet.CanTargetHostile;
 
