@@ -160,13 +160,14 @@ public abstract class WrathOpener
 
     public unsafe bool FullOpener(ref uint actionID)
     {
+        if (CurrentOpener != this)
+            SelectOpener();
+
         bool inContent = ContentCheckConfig is UserBoolArray ? ContentCheck.IsInConfiguredContent((UserBoolArray)ContentCheckConfig, ContentCheck.ListSet.BossOnly) : ContentCheckConfig is UserInt ? ContentCheck.IsInConfiguredContent((UserInt)ContentCheckConfig, ContentCheck.ListSet.BossOnly) : false;
         if (!LevelChecked || OpenerActions.Count == 0 || !inContent || !CacheReady)
         {
             return false;
         }
-
-        CurrentOpener = this;
 
         if (CurrentState == OpenerState.OpenerNotReady)
         {
