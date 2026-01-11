@@ -14,6 +14,8 @@ internal partial class MNK
 
     private static uint DoBasicCombo(uint actionId, bool useTrueNorth = true)
     {
+        int tnCharges = IsNotEnabled(Preset.MNK_ST_SimpleMode) ? MNK_ManualTN : 0;
+
         if (!LevelChecked(TrueStrike))
             return Bootshine;
 
@@ -32,6 +34,7 @@ internal partial class MNK
             if (CoeurlStacks is 0 && LevelChecked(Demolish))
                 return !OnTargetsRear() &&
                        Role.CanTrueNorth() &&
+                       GetRemainingCharges(Role.TrueNorth) > tnCharges &&
                        useTrueNorth
                     ? Role.TrueNorth
                     : Demolish;
@@ -39,6 +42,7 @@ internal partial class MNK
             if (LevelChecked(SnapPunch))
                 return !OnTargetsFlank() &&
                        Role.CanTrueNorth() &&
+                       GetRemainingCharges(Role.TrueNorth) > tnCharges &&
                        useTrueNorth
                     ? Role.TrueNorth
                     : OriginalHook(SnapPunch);

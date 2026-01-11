@@ -14,7 +14,7 @@ internal partial class DRG
 
     private static uint BasicCombo(uint actionId, bool useTrueNorth = false)
     {
-        int tnCharges = IsNotEnabled(Preset.SAM_ST_SimpleMode) ? DRG_ManualTN : 0;
+        int tnCharges = IsNotEnabled(Preset.DRG_ST_SimpleMode) ? DRG_ManualTN : 0;
 
         if (ComboTimer > 0)
         {
