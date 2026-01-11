@@ -292,9 +292,9 @@ internal class Settings : ConfigWindow
             {
                 var value = (float)setting.Value;
                 ImGui.PushItemWidth(75);
-                changed = ImGui.InputFloat(label, ref value);
+                changed = ImGui.InputFloat(label, ref value, format: $"{value:N1}");
                 if (changed)
-                    setting.Value = value;
+                    setting.Value = Math.Round(value,1);
                 ImGui.SameLine();
                 cursorXAfterInput = ImGui.GetCursorPosX();
                 ImGui.Text(setting.UnitLabel ?? setting.Name);
