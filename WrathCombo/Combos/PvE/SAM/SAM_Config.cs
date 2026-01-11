@@ -18,6 +18,12 @@ internal partial class SAM
                     ImGui.NewLine();
                     DrawSliderInt(0, 13, SAM_Opener_PrePullDelay,
                         $"Delay from first {MeikyoShisui.ActionName()} to next step. (seconds)\nDelay is enforced by replacing your button with Savage Blade.");
+
+                    DrawHorizontalRadioButton(SAM_Opener_IncludeGyoten,
+                        $"Include {Gyoten.ActionName()}", $"Include {Gyoten.ActionName()}", 0);
+
+                    DrawHorizontalRadioButton(SAM_Opener_IncludeGyoten,
+                        $"Skip {Gyoten.ActionName()}", $"Skip {Gyoten.ActionName()} in the opener.", 1);
                     break;
 
                 case Preset.SAM_ST_CDs_UseHiganbana:
@@ -93,6 +99,11 @@ internal partial class SAM
                             "Kenki Amount", sliderIncrement: SliderIncrements.Fives);
                     break;
 
+                case Preset.SAM_ST_TrueNorth:
+                    DrawSliderInt(0, 1, SAM_ST_ManualTN,
+                        "How many charges to keep for manual usage.");
+                    break;
+
                 case Preset.SAM_ST_Meditate:
                     ImGui.SetCursorPosX(48f.Scale());
                     DrawSliderFloat(0, 3, SAM_ST_MeditateTimeStill,
@@ -148,6 +159,7 @@ internal partial class SAM
         public static UserInt
             SAM_Balance_Content = new("SAM_Balance_Content", 1),
             SAM_Opener_PrePullDelay = new("SAM_Opener_PrePullDelay", 13),
+            SAM_Opener_IncludeGyoten = new("SAM_Opener_IncludeGyoten"),
             SAM_ST_HiganbanaBossOption = new("SAM_ST_HiganbanaBossOption"),
             SAM_ST_HiganbanaBossAddsOption = new("SAM_ST_HiganbanaBossAddsOption", 50),
             SAM_ST_HiganbanaTrashOption = new("SAM_ST_HiganbanaTrashOption", 100),
@@ -155,6 +167,7 @@ internal partial class SAM
             SAM_ST_KenkiOvercapAmount = new("SAM_ST_KenkiOvercapAmount", 65),
             SAM_ST_YukikazeCombo_Prio = new("SAM_ST_YukikazeCombo_Prio", 1),
             SAM_ST_ExecuteThreshold = new("SAM_ST_ExecuteThreshold", 1),
+            SAM_ST_ManualTN = new("SAM_ST_ManualTN"),
             SAM_STSecondWindHPThreshold = new("SAM_STSecondWindThreshold", 40),
             SAM_STBloodbathHPThreshold = new("SAM_STBloodbathThreshold", 30),
             SAM_AoE_KenkiOvercapAmount = new("SAM_AoE_KenkiOvercapAmount", 50),
