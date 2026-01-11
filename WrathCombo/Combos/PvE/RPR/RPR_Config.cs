@@ -57,7 +57,7 @@ internal partial class RPR
                         "How many charges to keep for manual usage.");
 
                     DrawAdditionalBoolChoice(RPR_ST_TrueNorthDynamic_HoldCharge,
-                        "Hold True North for Gluttony Option", "Will hold the last charge of True North for use with Gluttony, even when out of position for Gibbet/Gallows./n" +
+                        "Hold True North for Gluttony Option", "Will hold the last charge of True North for use with Gluttony, even when out of position for Gibbet/Gallows.\n" +
                                                                "If Above Slider is set, it will NOT use the remaining charge for Gluttony, but for manual use.");
                     break;
 
