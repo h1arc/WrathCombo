@@ -847,7 +847,7 @@ internal partial class BRD : PhysicalRanged
                 var purpleDotTarget = SimpleTarget.DottableEnemy(purpleDotAction, purpleDotDebuffID, maxNumberOfEnemiesInRange: 99);
                 var blueDotTarget = SimpleTarget.DottableEnemy(blueDotAction, blueDotDebuffID, maxNumberOfEnemiesInRange: 99);
 
-                if (ironJaws && purpleDotTarget == null && blueDotTarget == null && ActionReady(IronJaws))
+                if (ironJaws && InCombat() && purpleDotTarget == null && blueDotTarget == null && ActionReady(IronJaws))
                 {
                     if (lowestPurpleRemaining <= lowestBlueRemaining)
                         return IronJaws.Retarget([CausticBite, VenomousBite], lowestPurple);
