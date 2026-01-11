@@ -55,9 +55,14 @@ internal partial class VPR
 
                 case Preset.VPR_ST_Vicewinder:
                     DrawAdditionalBoolChoice(VPR_TrueNortVicewinder,
-                        $"{Role.TrueNorth.ActionName()} Option", "Adds True North when available.");
+                        $"{Role.TrueNorth.ActionName()} Option", "Adds True North when available./n Respects the manual TN charge.");
                     break;
 
+                case Preset.VPR_TrueNorthDynamic:
+                    DrawSliderInt(0, 1, VPR_ManualTN,
+                        "How many charges to keep for manual usage.");
+                    break;
+                
                 case Preset.VPR_ST_ComboHeals:
                     DrawSliderInt(0, 100, VPR_ST_SecondWind_Threshold,
                         $"{Role.SecondWind.ActionName()} HP percentage threshold");
@@ -135,6 +140,7 @@ internal partial class VPR
             VPR_ST_ReawakenBossAddsOption = new("VPR_ST_ReawakenBossAddsOption", 10),
             VPR_ST_ReawakenTrashOption = new("VPR_ST_ReawakenTrashOption", 25),
             VPR_ST_ReAwaken_Threshold = new("VPR_ST_ReAwaken_Threshold", 5),
+            VPR_ManualTN = new("VPR_ManualTN"),
             VPR_ST_SecondWind_Threshold = new("VPR_ST_SecondWindThreshold", 40),
             VPR_ST_Bloodbath_Threshold = new("VPR_ST_BloodbathThreshold", 30),
             VPR_AoE_UncoiledFury_Threshold = new("VPR_AoE_UncoiledFury_Threshold", 1),

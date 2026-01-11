@@ -13,7 +13,7 @@ internal partial class VPR
 {
     #region Basic Combo
 
-    private static uint DoBasicCombo(uint actionId, bool useTrueNorth = true, bool isAoE = false)
+    private static uint DoBasicCombo(uint actionId, bool useTrueNorth = false, bool isAoE = false)
     {
         switch (isAoE)
         {
@@ -38,6 +38,7 @@ internal partial class VPR
                         if ((HasStatusEffect(Buffs.FlanksbaneVenom) || HasStatusEffect(Buffs.HindsbaneVenom)) &&
                             LevelChecked(HindstingStrike))
                             return useTrueNorth &&
+                                   GetRemainingCharges(Role.TrueNorth) > TnCharges &&
                                    Role.CanTrueNorth() &&
                                    (!OnTargetsRear() && HasStatusEffect(Buffs.HindsbaneVenom) ||
                                     !OnTargetsFlank() && HasStatusEffect(Buffs.FlanksbaneVenom))
@@ -47,6 +48,7 @@ internal partial class VPR
                         if ((HasStatusEffect(Buffs.FlankstungVenom) || HasStatusEffect(Buffs.HindstungVenom)) &&
                             LevelChecked(FlanksbaneFang))
                             return useTrueNorth &&
+                                   GetRemainingCharges(Role.TrueNorth) > TnCharges &&
                                    Role.CanTrueNorth() &&
                                    (!OnTargetsRear() && HasStatusEffect(Buffs.HindstungVenom) ||
                                     !OnTargetsFlank() && HasStatusEffect(Buffs.FlankstungVenom))
@@ -157,12 +159,6 @@ internal partial class VPR
         !HasStatusEffect(Buffs.FellskinsVenom) &&
         !HasStatusEffect(Buffs.PoisedForTwinblood) &&
         !HasStatusEffect(Buffs.PoisedForTwinfang);
-
-    // private static bool RefreshHuntersInstinct =>
-    //   GetStatusEffectRemainingTime(Buffs.HuntersInstinct) <= GCD * 6;
-
-    // private static bool RefreshSwiftscaled =>
-    //   GetStatusEffectRemainingTime(Buffs.Swiftscaled) <= GCD * 6;
 
     #endregion
 
@@ -275,6 +271,8 @@ internal partial class VPR
     #region Combos
 
     private static float GCD => GetCooldown(OriginalHook(ReavingFangs)).CooldownTotal;
+
+    private static int TnCharges => IsNotEnabled(Preset.VPR_ST_SimpleMode) ? VPR_ManualTN : 0;
 
     private static bool IsHoningExpiring(float times)
     {

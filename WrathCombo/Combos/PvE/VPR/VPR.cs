@@ -101,7 +101,7 @@ internal partial class VPR : Melee
             //Reawaken combo / 1-2-3 (4-5-6) Combo
             return HasStatusEffect(Buffs.Reawakened)
                 ? ReawakenCombo(actionID)
-                : DoBasicCombo(actionID, IsEnabled(Preset.VPR_TrueNorthDynamic));
+                : DoBasicCombo(actionID, true);
         }
     }
 
@@ -194,7 +194,7 @@ internal partial class VPR : Melee
             //Reawaken combo / 1-2-3 combo
             return HasStatusEffect(Buffs.Reawakened)
                 ? ReawakenCombo(actionID)
-                : DoBasicCombo(actionID, false, true);
+                : DoBasicCombo(actionID, isAoE: true);
         }
     }
 
@@ -300,6 +300,7 @@ internal partial class VPR : Melee
             if (IsEnabled(Preset.VPR_ST_Vicewinder) &&
                 CanUseVicewinder)
                 return VPR_TrueNortVicewinder &&
+                       GetRemainingCharges(Role.TrueNorth) > TnCharges &&
                        Role.CanTrueNorth()
                     ? Role.TrueNorth
                     : Vicewinder;
@@ -439,7 +440,7 @@ internal partial class VPR : Melee
                     LevelChecked(SerpentsTail) && InActionRange(DeathRattle))
                     return OriginalHook(SerpentsTail);
 
-                return DoBasicCombo(actionID, false);
+                return DoBasicCombo(actionID);
             }
         }
 
