@@ -55,7 +55,7 @@ internal partial class VPR
 
                 case Preset.VPR_ST_Vicewinder:
                     DrawAdditionalBoolChoice(VPR_TrueNortVicewinder,
-                        $"{Role.TrueNorth.ActionName()} Option", "Adds True North when available./n Respects the manual TN charge.");
+                        $"{Role.TrueNorth.ActionName()} Option", "Adds True North when available.\n Respects the manual TN charge.");
                     break;
 
                 case Preset.VPR_TrueNorthDynamic:
