@@ -488,7 +488,7 @@ internal partial class MNK
         public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } =
         [
             ([1], () => Chakra >= 5),
-            ([2], () => HasStatusEffect(Buffs.FormlessFist))
+            ([2], () => JustUsed(FormShift, 30f))
         ];
 
         internal override UserData ContentCheckConfig => MNK_Balance_Content;
@@ -539,7 +539,7 @@ internal partial class MNK
         public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } =
         [
             ([1], () => Chakra >= 5),
-            ([2], () => HasStatusEffect(Buffs.FormlessFist))
+            ([2], () => JustUsed(FormShift, 30f))
         ];
 
         internal override UserData ContentCheckConfig => MNK_Balance_Content;
@@ -591,7 +591,7 @@ internal partial class MNK
         public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } =
         [
             ([1], () => Chakra >= 5),
-            ([2], () => HasStatusEffect(Buffs.FormlessFist))
+            ([2], () => JustUsed(FormShift, 30f))
         ];
 
         internal override UserData ContentCheckConfig => MNK_Balance_Content;
@@ -643,7 +643,7 @@ internal partial class MNK
         public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } =
         [
             ([1], () => Chakra >= 5),
-            ([2], () => HasStatusEffect(Buffs.FormlessFist))
+            ([2], () => JustUsed(FormShift, 30f))
         ];
 
         internal override UserData ContentCheckConfig => MNK_Balance_Content;
