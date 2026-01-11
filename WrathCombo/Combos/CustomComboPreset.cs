@@ -2102,11 +2102,13 @@ public enum Preset
     [CustomComboInfo("Multi-Target Feature", "Will apply DoTs to as many targets you're in combat with as possible.", Job.BRD)]
     BRD_OneButtonDots_Retargeted = 3072,
 
-
+    [ParentCombo(BRD_OneButtonDots_Retargeted)]
+    [CustomComboInfo("Savage Blade Lockout Feature", "If nothing is left to DoT or refresh within 5s, lockout with Savage Blade", Job.BRD)]
+    BRD_OneButtonDots_SavageBlade = 3073,
 
     #endregion
 
-    // Last value = 3072
+    // Last value = 3073
 
     #endregion
 
